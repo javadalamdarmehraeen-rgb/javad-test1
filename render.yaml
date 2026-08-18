@@ -1,0 +1,45 @@
+services:
+  - type: web
+    name: namayandeelmi
+    runtime: node
+    plan: free
+    region: frankfurt
+    branch: main
+    #   :    Render  npm start     
+    # "Could not find a production build in the '.next' directory" .
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npm run start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "20.18.0"
+      - key: NODE_ENV
+        value: production
+      - key: NPM_CONFIG_PRODUCTION
+        value: "false"
+      #  DATABASE_URL    Neon    (   Render)  
+      # : postgresql://user:pass@ep-xxx.eu-central-1.aws.neon.tech/neondb?sslmode=require
+      - key: DATABASE_URL
+        sync: false
+      - key: APP_SECRET
+        generateValue: true
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_PHONE
+        sync: false
+      # ----    ----
+      - key: NODE_NAME
+        value: render
+      - key: SYNC_SECRET
+        sync: false
+      - key: SYNC_PEERS
+        value: ndcohub|https://ndcohub.ir
+      - key: SYNC_INTERVAL_MINUTES
+        value: "5"
+      - key: NEXT_PUBLIC_ENDPOINTS
+        value: https://ndcohub.ir,https://namayandeelmi-javad.onrender.com
+      - key: PUBLIC_BASE_URL
+        value: https://namayandeelmi-javad.onrender.com
+      - key: MOBILE_APP_SECRET
+        sync: false

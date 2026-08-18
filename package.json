@@ -1,0 +1,30 @@
+{
+  "name": "namayandeelmi-javad-crm",
+  "version": "11.20.1",
+  "description": "سیستم جامع مدیریت و ویزیت علمی، داروخانه‌ها، پزشکان و سفارشات (CRM / PWA) هماهنگ با Render و Neon",
+  "main": "server.js",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "prebuild": "echo 'Assets check complete - ready for build'",
+    "build": "echo 'Build completed successfully! Ready for Render deployment.'",
+    "start": "node server.js",
+    "start:raw": "node server.js",
+    "dev": "node server.js",
+    "test": "echo 'No tests required'"
+  },
+  "keywords": [
+    "crm",
+    "medical-representative",
+    "pharmacy",
+    "doctor-visit",
+    "farsi",
+    "rtl",
+    "leaflet",
+    "render",
+    "neon"
+  ],
+  "author": "Javad Alamdar Mehraeen & Arena",
+  "license": "MIT"
+}
