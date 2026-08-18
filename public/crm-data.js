@@ -413,7 +413,9 @@ const PERMISSION_GROUPS = {
     { key: "snapp_year_month_chain", label: "وابستگی ماه به انتخاب سال" },
     { key: "snapp_exact_row_dedupe", label: "حذف خودکار ردیف کاملاً تکراری اکسل سفر و شارژ" },
     { key: "sys_all_dates_jalali", label: "تقویم شمسی و اسلش خودکار برای همه فیلدهای تاریخ" },
-    { key: "sys_structure_manager_only", label: "قفل تعداد و جای فیلد/کادر/کلید مگر با تغییر مدیر" }
+    { key: "sys_structure_manager_only", label: "قفل تعداد و جای فیلد/کادر/کلید مگر با تغییر مدیر" },
+    { key: "sys_restore_v11203_layout", label: "بازگردانی یک‌باره تنظیمات و چیدمان نسخه ۱۱.۲۰.۳" },
+    { key: "sys_no_automatic_structure_mutation", label: "منع تغییر خودکار ساختار پس از بازیابی" }
   ]
 };
 

@@ -1128,3 +1128,6 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Snapp temporal checkbox mode is exclusive year/month/range; range checks both From+To; month disabled until year value.
 - Historical backup union is one-time (`_allSnapshotsMergedV11204`); do not resurrect manager-deleted structures later.
 - Every date field gets Jalali picker/auto-slash; password/year/month are excluded.
+## Addendum — v11.20.5
+- Baseline settings/layout is restored once from latest snapshot lacking `_allSnapshotsMergedV11204` (the requested 11.20.3 baseline), while its records are re-merged.
+- Keep mobile/filter/date features layered on top without mutating desktop structure.

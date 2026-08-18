@@ -87,10 +87,18 @@ function loadState() {
         if (score > bestScore) { state = parsed; bestScore = score; }
       } catch (e) {}
     }
-    // وضعیت جاری مبنای تنظیمات و چیدمان است؛ پشتیبان‌ها فقط موارد گم‌شده را به آن اضافه می‌کنند.
+    // وضعیت جاری مبنای داده است. چیدمان نسخه ۱۱.۲۰.۳ یک‌بار از آخرین snapshot قبل از مهاجرت ۱۱.۲۰.۴ برگردانده می‌شود.
     if (currentParsed) state = currentParsed;
+    if (state && !state._settingsRestoredFromV11203) {
+      const preMigration = validStates.filter(x => !x._allSnapshotsMergedV11204).sort((a,b) => Number(b._lastSavedAt||0)-Number(a._lastSavedAt||0))[0];
+      if (preMigration) {
+        ["settings","formFieldMeta","formBoxes","manualLayouts","tabOrder","selectExtraOptions","userTabs"].forEach(k => { if (preMigration[k] != null) state[k] = JSON.parse(JSON.stringify(preMigration[k])); });
+        state._settingsRestoreSourceFound = true;
+      }
+      state._settingsRestoredFromV11203 = true;
+    }
     // ادغام تاریخی فقط یک‌بار انجام می‌شود؛ پس از آن حذف/تغییر مستقیم مدیر دوباره از backup قدیمی برنمی‌گردد.
-    const shouldMergeHistorical = !(currentParsed && currentParsed._allSnapshotsMergedV11204);
+    const shouldMergeHistorical = !(currentParsed && currentParsed._allSnapshotsMergedV11204) || (state._settingsRestoreSourceFound && !state._v11203DataReMerged);
     // ادغام بدون حذف: هر رکوردی که در هر نسخه پشتیبان هست باید باقی بماند.
     if (state && validStates.length && shouldMergeHistorical) {
       const mergeArray = (target, source, keyHint) => {
@@ -124,14 +132,15 @@ function loadState() {
       });
       // برای چیدمان، کامل‌ترین نسخه موجود برنده است؛ نسخه جدید حق ندارد آن را صفر کند.
       ["formFieldMeta","formBoxes","manualLayouts","tabOrder","selectExtraOptions"].forEach(k => {
-        const currentLayout = currentParsed && currentParsed[k];
+        const currentLayout = state._settingsRestoredFromV11203 ? state[k] : (currentParsed && currentParsed[k]);
         if (currentLayout && JSON.stringify(currentLayout).length > 2) { state[k] = currentLayout; return; }
         let richest = state[k] || {}, size = JSON.stringify(richest).length;
         validStates.forEach(src => { const cand = src[k] || {}; const n = JSON.stringify(cand).length; if (n > size) { richest = cand; size = n; } });
         state[k] = richest;
       });
-      state.userTabs = validStates.reduce((acc,src) => mergeArray(acc, src.userTabs, "userTabs"), state.userTabs || []);
+      if (!Array.isArray(state.userTabs) || !state.userTabs.length) state.userTabs = validStates.reduce((acc,src) => mergeArray(acc, src.userTabs, "userTabs"), []);
       state._allSnapshotsMergedV11204 = true;
+      state._v11203DataReMerged = true;
       state._mergedRecoverySummary = { users:(state.users||[]).length, pharmacies:(state.pharmacies||[]).length, doctors:(state.doctors||[]).length, products:(state.products||[]).length, snapshots:validStates.length, at:Date.now() };
       try { localStorage.setItem("CRM_APP_STATE_MERGED_RECOVERY", JSON.stringify(state)); } catch (e) {}
     }

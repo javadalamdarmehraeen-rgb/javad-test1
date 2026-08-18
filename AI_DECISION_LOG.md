@@ -1399,5 +1399,9 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - زیر 768px nav افقی حذف و همه عرض/گریدها داخل viewport محدود می‌شوند.
 - temporal mode اسنپ year/month/range انحصاری است و ماه به سال وابسته.
 - historical union یک‌بار با marker انجام می‌شود تا حذف بعدی مدیر resurrect نشود؛ current layout برنده است.
+## تصمیم ۶۰ — نسخه ۱۱.۲۰.۵: rebase تنظیمات روی snapshot 11.20.3 (2026-08-18)
+- آخرین snapshot بدون marker مهاجرت 11.20.4 منبع settings/layout است؛ record data آن نیز یک‌بار re-merge می‌شود.
+- پس از marker، هیچ backup/remote قدیمی ساختار مدیر را resurrect نمی‌کند.
+- mobile/filter/date features حفظ شدند ولی روی layout بازگردانده‌شده اجرا می‌شوند.
 
 # END OF AI DECISION LOG
