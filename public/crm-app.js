@@ -63,27 +63,35 @@ function loadState() {
     }
   } catch (eBak) {}
   const saved = localStorage.getItem(STORAGE_KEY);
+  window.__CRM_HAD_SAVED_STATE = !!saved;
   if (saved) {
-    try {
-      state = JSON.parse(saved);
-      if (!state.customFields) state.customFields = DEFAULT_INITIAL_DATA.customFields;
-      if (!state.settings) state.settings = DEFAULT_INITIAL_DATA.settings;
-      if (!state.users) state.users = DEFAULT_INITIAL_DATA.users;
-      if (!state.activityLog) state.activityLog = DEFAULT_INITIAL_DATA.activityLog;
-      if (!state.repHomes) state.repHomes = DEFAULT_INITIAL_DATA.repHomes;
-      if (!state.repRoutes) state.repRoutes = DEFAULT_INITIAL_DATA.repRoutes;
-      if (!state.leaves) state.leaves = DEFAULT_INITIAL_DATA.leaves;
-      if (!state.notifications) state.notifications = DEFAULT_INITIAL_DATA.notifications;
-      if (!state.salesTargets) state.salesTargets = DEFAULT_INITIAL_DATA.salesTargets;
-      if (!state.messengers) state.messengers = DEFAULT_INITIAL_DATA.messengers;
-      if (!state.products) state.products = DEFAULT_INITIAL_DATA.products;
-      if (!state.hospitals) state.hospitals = DEFAULT_INITIAL_DATA.hospitals || [];
-      if (!state.visits) state.visits = DEFAULT_INITIAL_DATA.visits || [];
-      if (!state.formFieldMeta) state.formFieldMeta = {};
-    } catch (e) {
-      console.error("خطا در خواندن اطلاعات قبلی، بارگذاری اطلاعات پیش‌فرض:", e);
-      state = JSON.parse(JSON.stringify(DEFAULT_INITIAL_DATA));
+    // هرگز با خطای یک نسخه، داده کاربر را با اطلاعات نمونه جایگزین نکن؛ از نسخه‌های سالم قبلی بازیابی کن.
+    const candidates = [saved, localStorage.getItem("CRM_APP_STATE_ROLLING_BACKUP"), localStorage.getItem("CRM_APP_STATE_BACKUP_LATEST"), localStorage.getItem("CRM_APP_STATE_BACKUP_BEFORE_11_11_0")].filter(Boolean);
+    let bestScore = -1;
+    for (let i = 0; i < candidates.length; i++) {
+      try {
+        const parsed = JSON.parse(candidates[i]);
+        if (!parsed || typeof parsed !== "object") continue;
+        const arrayKeys = ["pharmacies","doctors","orders","products","users","reps","salesTargets","repRoutes","leaves","notifications"];
+        let score = arrayKeys.reduce((n, k) => n + (Array.isArray(parsed[k]) ? parsed[k].length : 0), 0);
+        score += Object.keys(parsed.formFieldMeta || {}).length * 100;
+        score += Object.keys(parsed.formBoxes || {}).length * 100;
+        score += Object.keys(parsed.manualLayouts || {}).length * 100;
+        score += Object.keys(parsed.customFields || {}).reduce((n,k) => n + ((parsed.customFields[k] || []).length * 200), 0);
+        score += (((parsed.snappCorporate || {}).rows || []).length + ((parsed.snappCorporate || {}).topups || []).length) * 10;
+        if (score > bestScore) { state = parsed; bestScore = score; }
+      } catch (e) {}
     }
+    if (!state) {
+      try { localStorage.setItem("CRM_APP_STATE_CORRUPT_ARCHIVE_" + Date.now(), saved); } catch (e) {}
+      state = { settings: {}, users: [], pharmacies: [], doctors: [], orders: [], products: [] };
+    }
+    // در وضعیت موجود، کلید مفقود با آرایه خالی تکمیل شود؛ هرگز داده نمونه وارد اطلاعات واقعی نشود.
+    if (!state.customFields) state.customFields = {};
+    if (!state.settings) state.settings = {};
+    ["users","activityLog","repHomes","repRoutes","leaves","notifications","salesTargets","products","hospitals","visits","pharmacies","doctors","orders","reps"].forEach(k => { if (!Array.isArray(state[k])) state[k] = []; });
+    if (!state.messengers) state.messengers = { channels: {}, allowPeerMessaging: false };
+    if (!state.formFieldMeta) state.formFieldMeta = {};
   } else {
     state = JSON.parse(JSON.stringify(DEFAULT_INITIAL_DATA));
   }
@@ -99,6 +107,10 @@ function loadState() {
 }
 
 function saveState(triggerAutoBackup = true) {
+  // پیش از هر ذخیره، آخرین وضعیت سالم نگه داشته شود تا هیچ ارتقایی داده/چیدمان را نابود نکند.
+  const previous = localStorage.getItem(STORAGE_KEY);
+  if (previous) localStorage.setItem("CRM_APP_STATE_ROLLING_BACKUP", previous);
+  state._lastSavedAt = Date.now();
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   if (triggerAutoBackup && state.settings && state.settings.autoBackupEnabled) {
     performAutoBackup();
@@ -2751,8 +2763,8 @@ function setupRestoreSection() {
     btnConfirm.addEventListener("click", () => {
       if (!tempRestoreData) return;
       state = tempRestoreData;
-      if (!state.users) state.users = DEFAULT_INITIAL_DATA.users;
-      if (!state.settings) state.settings = DEFAULT_INITIAL_DATA.settings;
+      if (!state.users) state.users = [];
+      if (!state.settings) state.settings = {};
 
       saveState(false);
       previewCard.style.display = "none";

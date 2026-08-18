@@ -1114,3 +1114,8 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Do not make order items/totals configurable: orderFixedBlock is intentionally stable.
 - Snapp date inputs must remain empty by default; year/month reports depend on that.
 - Topup rows with amount <= 0 are neither newly archived nor shown.
+## Addendum — v11.20.2
+- Data preservation is absolute. Never replace missing arrays in an existing state with DEFAULT_INITIAL_DATA.
+- Recovery candidates are scored for records/customFields/layouts/Snapp archives; richest wins.
+- saveState rolling backup and v20 debounced /api/state sync must remain.
+- Snapp date filters are force-blanked once against browser autofill; report buttons move to sticky v20SnappActionBar.

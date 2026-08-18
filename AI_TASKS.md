@@ -1162,5 +1162,11 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] دو کلید گزارش بالای اسنپ و تاریخ اختیاری
 - [x] حذف شارژ صفر/خالی و سه‌رقمی اعداد
 - [ ] تأیید مرورگری کاربر
+## ۴۵) نسخه ۱۱.۲۰.۲
+- [x] نوار ثابت و آشکار کلیدهای اسنپ
+- [x] خالی‌سازی مقاوم تاریخ‌ها در برابر autofill
+- [x] منع مطلق تزریق نمونه به state موجود
+- [x] rolling backup + انتخاب غنی‌ترین backup + server sync/recovery
+- [ ] تأیید حفظ داده واقعی کاربر پس از deploy
 
 # END OF AI TASKS

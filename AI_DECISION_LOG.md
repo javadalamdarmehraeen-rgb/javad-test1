@@ -1387,5 +1387,9 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - اقلام و دو جمع مالی از تنظیم فیلدهای مدیر جدا و همیشه با قالب ثابت ساخته می‌شوند.
 - تاریخ‌های اسنپ دیگر auto-fill نیستند تا year/month مستقل عمل کند؛ topup فقط amount>0 است.
 - formatter دیداری اعداد، تاریخ/سال/تلفن/مختصات را مستثنی می‌کند.
+## تصمیم ۵۷ — نسخه ۱۱.۲۰.۲: داده و چیدمان هرگز با نمونه جایگزین نشود (2026-08-18)
+- loadState از current/rolling/latest/pre-11.11 غنی‌ترین وضعیت را انتخاب می‌کند.
+- missing keys در state واقعی با empty تکمیل می‌شوند نه DEFAULT sample.
+- saveState قبل از نوشتن rolling backup می‌گیرد؛ v20 وضعیت را debounced به server می‌فرستد و remote جدیدتر را بازیابی می‌کند.
 
 # END OF AI DECISION LOG

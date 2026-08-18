@@ -1,6 +1,6 @@
 CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.17 | تاریخ به‌روزرسانی: 2026-08-17 (۲۷ مرداد ۱۴۰۵) | نسخه برنامه: 11.20.1
+نسخه این فایل: 1.18 | تاریخ به‌روزرسانی: 2026-08-18 (۲۸ مرداد ۱۴۰۵) | نسخه برنامه: 11.20.2
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -333,7 +333,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
 بخش ۴) تاریخچه نسخه‌ها و آخرین دوره تغییرات
 ══════════════════════════════════════════════════════════════════════════════════
 • مسیر نسخه‌ها (بازسازی از ریپو): V1 → … → V9 → V10 → V11 → V11.1 … V11.14 → V11.15
-  → V11.15.1 → V11.15.2 → V11.15.3 → V11.16.0 → V11.16.1 → V11.16.2 → V11.17.0 → V11.17.1 → V11.18.0 → V11.19.0 → V11.20.0 → V11.20.1.
+  → V11.15.1 → V11.15.2 → V11.15.3 → V11.16.0 → V11.16.1 → V11.16.2 → V11.17.0 → V11.17.1 → V11.18.0 → V11.19.0 → V11.20.0 → V11.20.1 → V11.20.2.
 • جزئیات کامل هر نسخه V9 به بعد در CHANGES_V9.md / CHANGES_V10.md / CHANGES_V11.md
   (محتوای کاملشان در بخش ۹ همین فایل هست).
 
@@ -569,18 +569,18 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     1082 بایت  .gitignore
   [متنی ]     2057 بایت  .gitlab-ci.yml
   [متنی ]    18437 بایت  AI_ARCHITECTURE.md
-  [متنی ]    39797 بایت  AI_DECISION_LOG.md
-  [متنی ]    18905 بایت  AI_PROJECT_CONTEXT.md
+  [متنی ]    40324 بایت  AI_DECISION_LOG.md
+  [متنی ]    19285 بایت  AI_PROJECT_CONTEXT.md
   [متنی ]    25437 بایت  AI_RULES.md
-  [متنی ]    26708 بایت  AI_TASKS.md
-  [متنی ]    23203 بایت  ARENA_HANDOFF_PROMPT.md
+  [متنی ]    27103 بایت  AI_TASKS.md
+  [متنی ]    23627 بایت  ARENA_HANDOFF_PROMPT.md
   [متنی ]      600 بایت  CHANGES_V10.md
-  [متنی ]    41697 بایت  CHANGES_V11.md
+  [متنی ]    42636 بایت  CHANGES_V11.md
   [متنی ]     3939 بایت  CHANGES_V9.md
   [متنی ]     1806 بایت  CLEAN_EXTRA_FILES.bat
   [متنی ]     2377 بایت  KEEP_ONLY_GITHUB.bat
   [متنی ]     6275 بایت  OFFICIAL_FILELIST.txt
-  [متنی ]    38413 بایت  PROJECT_GRAPH.md
+  [متنی ]    38771 بایت  PROJECT_GRAPH.md
   [متنی ]     2642 بایت  PUSH_FRESH_GITHUB.bat
   [متنی ]     2680 بایت  PUSH_GITHUB_CLEAN.bat
   [متنی ]     6579 بایت  RAHNAMA_GITLAB.txt
@@ -600,7 +600,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     9666 بایت  server.js
   [متنی ]     2426 بایت  sync_all.sh
   [متنی ]      738 بایت  tsconfig.json
-  [متنی ]   171041 بایت  update_chat_arena.py
+  [متنی ]   175385 بایت  update_chat_arena.py
   [متنی ]    10215 بایت  update_project_graph.py
   [متنی ]     2727 بایت  .github/workflows/deploy.yml
   [متنی ]      214 بایت  .github/workflows/keep_alive.yml
@@ -608,8 +608,8 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     9805 بایت  mobile/README.md
   [متنی ]     9796 بایت  mobile/src/simAuth.ts
   [متنی ]     8066 بایت  public/cloudflare-worker.js
-  [متنی ]   169394 بایت  public/crm-app.js
-  [متنی ]    39545 بایت  public/crm-data.js
+  [متنی ]   170659 بایت  public/crm-app.js
+  [متنی ]    40187 بایت  public/crm-data.js
   [متنی ]    13643 بایت  public/crm-features-v10.js
   [متنی ]   107385 بایت  public/crm-features-v11.js
   [متنی ]    44613 بایت  public/crm-features-v12.js
@@ -620,10 +620,10 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]    19662 بایت  public/crm-features-v17.js
   [متنی ]    33040 بایت  public/crm-features-v18.js
   [متنی ]    60932 بایت  public/crm-features-v19.js
-  [متنی ]   118863 بایت  public/crm-features-v20.js
+  [متنی ]   121238 بایت  public/crm-features-v20.js
   [متنی ]    69121 بایت  public/crm-features-v9.js
   [متنی ]    25683 بایت  public/crm-jalali.js
-  [متنی ]   132995 بایت  public/index.html
+  [متنی ]   133155 بایت  public/index.html
   [متنی ]    11799 بایت  public/iran-facilities.js
   [متنی ]     7100 بایت  public/login.html
   [متنی ]      966 بایت  public/manifest.json
@@ -1820,6 +1820,58 @@ git push gitlab main
 ```powershell
 git add -A
 git commit -m "v11.20.1: تثبیت قالب سفارش و گزارش‌های اسنپ"
+git pull --no-rebase origin main
+git push origin main
+git push gitlab main
+```
+
+سپس ۱ تا ۲ دقیقه صبر کنید و **Ctrl+Shift+R** بزنید.
+
+
+──────────────────────────────── نوبت ۲۳ ────────────────────────────────
+🧑 کاربر (عیناً):
+«در اسنپ کلیدی اضافه نشده و همچنان فیلدهای تاریخ پر است
+
+وقتی ورزن جدیدی بهم میدی همه اطلاعات قبلی حذف شده و اطلاعات جدید امده است.به هیچ عنوان اطلاعات قبلی مخصوصا اطلاعات که توسط مدیر و کاربر اضافه شده حذف نشود و جای فیلدها یا کادرها و کلیدها عوض نشود»
+
+🤖 دستیار:
+نسخه **۱۱.۲۰.۲** آماده شد. این نسخه با اولویت «حفظ مطلق اطلاعات و چیدمان» ساخته شد.
+
+### اسنپ سازمانی
+- دو کلید گزارش داخل یک نوار ثابت، رنگی و همیشه قابل‌مشاهده در بالای تب قرار گرفتند:
+  - **تهیه گزارش نماینده**
+  - **تهیه گزارش افزایش موجودی**
+- این کلیدها از محل قبلی خود به نوار ثابت منتقل می‌شوند؛ بنابراین چیدمان ذخیره‌شده یا کمبود عرض صفحه نمی‌تواند آن‌ها را مخفی کند.
+- چهار فیلد تاریخ سفر و شارژ هنگام اولین بارگذاری اجباری خالی می‌شوند.
+- `autocomplete` مرورگر برای این تاریخ‌ها غیرفعال شد و یک کنترل تأخیری نیز جلوی پرشدن دوباره توسط مرورگر را می‌گیرد.
+
+### قانون قطعی حفظ اطلاعات
+از این نسخه به بعد:
+- اطلاعات موجود هرگز با اطلاعات نمونه نسخه جدید جایگزین نمی‌شود؛
+- اگر یک کلید اطلاعاتی در وضعیت قبلی وجود نداشت، با آرایه خالی تکمیل می‌شود، نه با داروخانه/پزشک/کاربر نمونه؛
+- پیش از هر ذخیره، یک نسخه **Rolling Backup** از وضعیت قبلی نگهداری می‌شود؛
+- برنامه بین وضعیت فعلی، Rolling Backup، آخرین پشتیبان و پشتیبان قبل از ۱۱.۱۱، غنی‌ترین نسخه سالم را انتخاب می‌کند؛
+- فیلدهای سفارشی، ترتیب‌ها، کادرها، طراحی دستی و آرشیو اسنپ در بازیابی امتیاز بالاتری دارند؛
+- وضعیت با تأخیر کنترل‌شده به `/api/state` سرور نیز ارسال می‌شود؛
+- اگر حافظه مرورگر خالی باشد و سرور نسخه ذخیره‌شده داشته باشد، نسخه سرور خودکار بازیابی می‌شود.
+
+در نتیجه جای فیلدها، کادرها، کلیدها و داده‌های افزوده‌شده مدیر/کاربر نباید با ارتقای نسخه تغییر یا حذف شوند.
+
+> اگر داده‌ای در نسخه‌های قبلی واقعاً پاک شده باشد، این نسخه ابتدا نسخه‌های پشتیبان موجود در همان مرورگر را بررسی می‌کند. اگر خود حافظه مرورگر و تمام پشتیبان‌ها قبلاً پاک شده باشند، بازیابی آن بخش ممکن نیست؛ اما از این نسخه چند لایه محافظت برای جلوگیری از تکرار مشکل فعال است.
+
+### وضعیت آزمایش
+- همه ۲۰ فایل JavaScript و سرور: **موفق**
+- ساخت برنامه: **موفق**
+- سلامت سرور: **نسخه 11.20.2**
+- `/api/state`: **فعال و آزمایش‌شده**
+- ۱۷ برچسب کش برنامه: **همگی 11.20.2**
+- تأیید اطلاعات واقعی و چیدمان مرورگر شما: **در انتظار تست شما پس از استقرار**
+
+پس از جایگزینی فایل‌ها:
+
+```powershell
+git add -A
+git commit -m "v11.20.2: حفظ دائمی اطلاعات و تثبیت کلیدهای اسنپ"
 git pull --no-rebase origin main
 git push origin main
 git push gitlab main
@@ -3145,7 +3197,7 @@ Then change only what is requested.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_DECISION_LOG.md (39797 بایت)
+فایل: AI_DECISION_LOG.md (40324 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI DECISION LOG
@@ -4537,12 +4589,16 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - اقلام و دو جمع مالی از تنظیم فیلدهای مدیر جدا و همیشه با قالب ثابت ساخته می‌شوند.
 - تاریخ‌های اسنپ دیگر auto-fill نیستند تا year/month مستقل عمل کند؛ topup فقط amount>0 است.
 - formatter دیداری اعداد، تاریخ/سال/تلفن/مختصات را مستثنی می‌کند.
+## تصمیم ۵۷ — نسخه ۱۱.۲۰.۲: داده و چیدمان هرگز با نمونه جایگزین نشود (2026-08-18)
+- loadState از current/rolling/latest/pre-11.11 غنی‌ترین وضعیت را انتخاب می‌کند.
+- missing keys در state واقعی با empty تکمیل می‌شوند نه DEFAULT sample.
+- saveState قبل از نوشتن rolling backup می‌گیرد؛ v20 وضعیت را debounced به server می‌فرستد و remote جدیدتر را بازیابی می‌کند.
 
 # END OF AI DECISION LOG
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_PROJECT_CONTEXT.md (18905 بایت)
+فایل: AI_PROJECT_CONTEXT.md (19285 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI PROJECT CONTEXT
@@ -5380,6 +5436,8 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.20.0 است. schema سفر و شارژ اسنپ صریح است؛ نمایندگان از users غیرمدیر می‌آیند. email backup endpoint به Resend متصل است ولی بدون env عمداً 503 می‌دهد. جزئیات سفارش و share متن یک منبع دارند.
 ## افزونه وضعیت نسخه ۱۱.۲۰.۱
 نسخه فعال 11.20.1 است. orderFixedBlock مستقل از share selection است. فیلترهای تاریخ اسنپ خالی‌اند و topup amount باید >0 باشد. formatVisibleNumbers اعداد دیداری غیرشناسه‌ای را گروه‌بندی می‌کند.
+## افزونه وضعیت نسخه ۱۱.۲۰.۲
+نسخه فعال 11.20.2 است. loadState غنی‌ترین کاندیدای سالم را انتخاب می‌کند و هیچ sample data به state موجود تزریق نمی‌کند. rolling backup محلی و server state sync فعال‌اند. کلیدهای اسنپ در v20SnappActionBar منتقل می‌شوند.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -6748,7 +6806,7 @@ Use manual manager login or an official provider API/service account.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_TASKS.md (26708 بایت)
+فایل: AI_TASKS.md (27103 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI TASKS
@@ -7915,12 +7973,18 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] دو کلید گزارش بالای اسنپ و تاریخ اختیاری
 - [x] حذف شارژ صفر/خالی و سه‌رقمی اعداد
 - [ ] تأیید مرورگری کاربر
+## ۴۵) نسخه ۱۱.۲۰.۲
+- [x] نوار ثابت و آشکار کلیدهای اسنپ
+- [x] خالی‌سازی مقاوم تاریخ‌ها در برابر autofill
+- [x] منع مطلق تزریق نمونه به state موجود
+- [x] rolling backup + انتخاب غنی‌ترین backup + server sync/recovery
+- [ ] تأیید حفظ داده واقعی کاربر پس از deploy
 
 # END OF AI TASKS
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: ARENA_HANDOFF_PROMPT.md (23203 بایت)
+فایل: ARENA_HANDOFF_PROMPT.md (23627 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # ARENA AI MASTER HANDOFF PROMPT
@@ -9039,6 +9103,11 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Do not make order items/totals configurable: orderFixedBlock is intentionally stable.
 - Snapp date inputs must remain empty by default; year/month reports depend on that.
 - Topup rows with amount <= 0 are neither newly archived nor shown.
+## Addendum — v11.20.2
+- Data preservation is absolute. Never replace missing arrays in an existing state with DEFAULT_INITIAL_DATA.
+- Recovery candidates are scored for records/customFields/layouts/Snapp archives; richest wins.
+- saveState rolling backup and v20 debounced /api/state sync must remain.
+- Snapp date filters are force-blanked once against browser autofill; report buttons move to sticky v20SnappActionBar.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -9058,9 +9127,17 @@ Leaflet محلی. فونت گوگل حذف شد. gzip روی JS/CSS/HTML.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: CHANGES_V11.md (41697 بایت)
+فایل: CHANGES_V11.md (42636 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
+# نسخه ۱۱.۲۰.۲
+
+1. نوار ثابت کلیدهای گزارش اسنپ ساخته شد و تاریخ‌ها هنگام اولین بارگذاری/پس از autofill مرورگر خالی می‌شوند.
+2. بارگذاری وضعیت دیگر هیچ کلید مفقودی را با اطلاعات نمونه پر نمی‌کند؛ در خطای JSON از چهار نسخه محلی و غنی‌ترین نسخه بازیابی می‌شود.
+3. قبل از هر ذخیره rolling backup ساخته و وضعیت با debounce به `/api/state` سرور همگام می‌شود؛ نسخه جدیدتر سرور خودکار بازیابی می‌شود.
+4. ترتیب‌ها، customFields، formBoxes، manualLayouts و آرشیو اسنپ در امتیاز بازیابی اولویت بالا دارند.
+5. قابلیت‌های حفظ داده/چیدمان و نوار اسنپ به دسترسی‌ها اضافه شد.
+
 # نسخه ۱۱.۲۰.۱
 
 1. بلوک اقلام سفارش ثابت شد: نام = تعداد کالا / تعداد جایزه / جمع مبلغ؛ سپس جمع بدون و با ارزش افزوده، مستقل از تنظیم فیلدهای مدیر.
@@ -9825,7 +9902,7 @@ update_project_graph.py
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: PROJECT_GRAPH.md (38413 بایت)
+فایل: PROJECT_GRAPH.md (38771 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # 🕸️ گراف دانش پروژه «نماینده علمی» (PROJECT_GRAPH.md)
@@ -9886,12 +9963,12 @@ update_project_graph.py
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (169394 بایت)
+### `public/crm-app.js` (170659 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 162
-- نام‌های window که تعریف/بازنویسی می‌کند: `_editingProductId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
+- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `_editingProductId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
 
-### `public/crm-data.js` (39545 بایت)
+### `public/crm-data.js` (40187 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 1
 
@@ -9945,9 +10022,9 @@ update_project_graph.py
 - تعداد توابع داخلی: 65
 - نام‌های window که تعریف/بازنویسی می‌کند: `_v18DefaultReq`, `_v19BackupLayoutGuard`, `_v19ComboHook`, `_v19Hist`, `_v19IcObs`, `_v19ProdTableWrap`, `_v19Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `extraListColumns`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderPharmaciesList`, `switchTab`, `testServerConnectivity`
 
-### `public/crm-features-v20.js` (118863 بایت)
+### `public/crm-features-v20.js` (121238 بایت)
 - نقش: ============================================================
-- تعداد توابع داخلی: 136
+- تعداد توابع داخلی: 139
 - نام‌های window که تعریف/بازنویسی می‌کند: `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFullFormLayout`, `builtinFieldValue`, `deleteCustomField`, `extraListColumns`, `getUnifiedFieldList`, `openRowDetailsModal`, `performAutoBackup`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`, `v20RenderProductExtras`
 
 ### `public/crm-features-v9.js` (69121 بایت)
@@ -9970,7 +10047,7 @@ update_project_graph.py
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (1145 بایت)
-- نقش: const CACHE = "ttt-v11.20.1";
+- نقش: const CACHE = "ttt-v11.20.2";
 - تعداد توابع داخلی: 0
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -10030,13 +10107,15 @@ update_project_graph.py
 - `/api/geocode?q=` [؟] — مصرف‌کننده: `public/crm-app.js`
 - `/api/health` [؟] — مصرف‌کننده: `public/crm-features-v10.js`, `public/crm-features-v19.js`
 - `/api/reverse?lat=` [؟] — مصرف‌کننده: `public/crm-app.js`, `public/crm-features-v20.js`
-- `/api/state` [GET] — مصرف‌کننده: `public/crm-features-v19.js`
+- `/api/state` [GET] — مصرف‌کننده: `public/crm-features-v19.js`, `public/crm-features-v20.js`
 
 ## هـ) گراف حافظه مرورگر (کلید ↔ فایل‌های دست‌زننده)
 
 - `CRM_APP_STATE_BACKUP_BEFORE_11_11_0` ← localStorage: `public/crm-app.js`
-- `CRM_APP_STATE_BACKUP_LATEST` ← localStorage: `public/crm-features-v15.js`
-- `CRM_APP_STATE_V2` ← localStorage: `public/crm-features-v10.js`, `public/crm-features-v15.js`, `public/crm-features-v19.js`
+- `CRM_APP_STATE_BACKUP_LATEST` ← localStorage: `public/crm-app.js`, `public/crm-features-v15.js`, `public/crm-features-v20.js`
+- `CRM_APP_STATE_CORRUPT_ARCHIVE_` ← localStorage: `public/crm-app.js`
+- `CRM_APP_STATE_ROLLING_BACKUP` ← localStorage: `public/crm-app.js`
+- `CRM_APP_STATE_V2` ← localStorage: `public/crm-features-v10.js`, `public/crm-features-v15.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`
 - `CRM_DIAG_LOG` ← localStorage: `public/crm-features-v11.js`
 - `CRM_LAST_GPS` ← localStorage: `public/crm-features-v11.js`
 - `CRM_SOFTEN_ABS_11_11_0` ← localStorage: `public/crm-features-v15.js`
@@ -10046,6 +10125,7 @@ update_project_graph.py
 - `crmUserName` ← sessionStorage: `public/crm-features-v10.js`, `public/crm-features-v11.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`
 - `crmUserRole` ← sessionStorage: `public/crm-features-v10.js`, `public/crm-features-v11.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`
 - `crmUsername` ← sessionStorage: `public/crm-features-v19.js`, `public/crm-features-v20.js`
+- `v20RemoteRecoveryChecked` ← sessionStorage: `public/crm-features-v20.js`
 
 ## و) گراف تب‌ها (تب ↔ فایل‌هایی که با المان‌هایش کار می‌کنند)
 
@@ -11277,13 +11357,13 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.20.1",
+  "version": "11.20.2",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
       "name": "namayandeelmi-javad-crm",
-      "version": "11.20.1",
+      "version": "11.20.2",
       "license": "MIT",
       "engines": {
         "node": ">=20.0.0"
@@ -11299,7 +11379,7 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.20.1",
+  "version": "11.20.2",
   "description": "سیستم جامع مدیریت و ویزیت علمی، داروخانه‌ها، پزشکان و سفارشات (CRM / PWA) هماهنگ با Render و Neon",
   "main": "server.js",
   "engines": {
@@ -11490,7 +11570,7 @@ const server = http.createServer((req, res) => {
     return send(req, res, 200, JSON.stringify({
       ok: true, status: "healthy", message: "OK",
       service: "namayandeelmi-javad-crm",
-      version: "11.20.1",
+      version: "11.20.2",
       timestamp: new Date().toISOString()
     }), "application/json; charset=utf-8");
   }
@@ -11604,7 +11684,7 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, "0.0.0.0", () => {
-  console.log("CRM v11.20.1 listening on 0.0.0.0:" + PORT);
+  console.log("CRM v11.20.2 listening on 0.0.0.0:" + PORT);
 });
 ~~~~~~~~
 
@@ -11726,7 +11806,7 @@ git status -sb
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: update_chat_arena.py (171041 بایت)
+فایل: update_chat_arena.py (175385 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~python
 #!/usr/bin/env python3
@@ -11780,7 +11860,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.17 | تاریخ به‌روزرسانی: 2026-08-17 (۲۷ مرداد ۱۴۰۵) | نسخه برنامه: 11.20.1
+نسخه این فایل: 1.18 | تاریخ به‌روزرسانی: 2026-08-18 (۲۸ مرداد ۱۴۰۵) | نسخه برنامه: 11.20.2
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -12113,7 +12193,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
 بخش ۴) تاریخچه نسخه‌ها و آخرین دوره تغییرات
 ══════════════════════════════════════════════════════════════════════════════════
 • مسیر نسخه‌ها (بازسازی از ریپو): V1 → … → V9 → V10 → V11 → V11.1 … V11.14 → V11.15
-  → V11.15.1 → V11.15.2 → V11.15.3 → V11.16.0 → V11.16.1 → V11.16.2 → V11.17.0 → V11.17.1 → V11.18.0 → V11.19.0 → V11.20.0 → V11.20.1.
+  → V11.15.1 → V11.15.2 → V11.15.3 → V11.16.0 → V11.16.1 → V11.16.2 → V11.17.0 → V11.17.1 → V11.18.0 → V11.19.0 → V11.20.0 → V11.20.1 → V11.20.2.
 • جزئیات کامل هر نسخه V9 به بعد در CHANGES_V9.md / CHANGES_V10.md / CHANGES_V11.md
   (محتوای کاملشان در بخش ۹ همین فایل هست).
 
@@ -13350,6 +13430,58 @@ git push gitlab main
 ```powershell
 git add -A
 git commit -m "v11.20.1: تثبیت قالب سفارش و گزارش‌های اسنپ"
+git pull --no-rebase origin main
+git push origin main
+git push gitlab main
+```
+
+سپس ۱ تا ۲ دقیقه صبر کنید و **Ctrl+Shift+R** بزنید.
+
+
+──────────────────────────────── نوبت ۲۳ ────────────────────────────────
+🧑 کاربر (عیناً):
+«در اسنپ کلیدی اضافه نشده و همچنان فیلدهای تاریخ پر است
+
+وقتی ورزن جدیدی بهم میدی همه اطلاعات قبلی حذف شده و اطلاعات جدید امده است.به هیچ عنوان اطلاعات قبلی مخصوصا اطلاعات که توسط مدیر و کاربر اضافه شده حذف نشود و جای فیلدها یا کادرها و کلیدها عوض نشود»
+
+🤖 دستیار:
+نسخه **۱۱.۲۰.۲** آماده شد. این نسخه با اولویت «حفظ مطلق اطلاعات و چیدمان» ساخته شد.
+
+### اسنپ سازمانی
+- دو کلید گزارش داخل یک نوار ثابت، رنگی و همیشه قابل‌مشاهده در بالای تب قرار گرفتند:
+  - **تهیه گزارش نماینده**
+  - **تهیه گزارش افزایش موجودی**
+- این کلیدها از محل قبلی خود به نوار ثابت منتقل می‌شوند؛ بنابراین چیدمان ذخیره‌شده یا کمبود عرض صفحه نمی‌تواند آن‌ها را مخفی کند.
+- چهار فیلد تاریخ سفر و شارژ هنگام اولین بارگذاری اجباری خالی می‌شوند.
+- `autocomplete` مرورگر برای این تاریخ‌ها غیرفعال شد و یک کنترل تأخیری نیز جلوی پرشدن دوباره توسط مرورگر را می‌گیرد.
+
+### قانون قطعی حفظ اطلاعات
+از این نسخه به بعد:
+- اطلاعات موجود هرگز با اطلاعات نمونه نسخه جدید جایگزین نمی‌شود؛
+- اگر یک کلید اطلاعاتی در وضعیت قبلی وجود نداشت، با آرایه خالی تکمیل می‌شود، نه با داروخانه/پزشک/کاربر نمونه؛
+- پیش از هر ذخیره، یک نسخه **Rolling Backup** از وضعیت قبلی نگهداری می‌شود؛
+- برنامه بین وضعیت فعلی، Rolling Backup، آخرین پشتیبان و پشتیبان قبل از ۱۱.۱۱، غنی‌ترین نسخه سالم را انتخاب می‌کند؛
+- فیلدهای سفارشی، ترتیب‌ها، کادرها، طراحی دستی و آرشیو اسنپ در بازیابی امتیاز بالاتری دارند؛
+- وضعیت با تأخیر کنترل‌شده به `/api/state` سرور نیز ارسال می‌شود؛
+- اگر حافظه مرورگر خالی باشد و سرور نسخه ذخیره‌شده داشته باشد، نسخه سرور خودکار بازیابی می‌شود.
+
+در نتیجه جای فیلدها، کادرها، کلیدها و داده‌های افزوده‌شده مدیر/کاربر نباید با ارتقای نسخه تغییر یا حذف شوند.
+
+> اگر داده‌ای در نسخه‌های قبلی واقعاً پاک شده باشد، این نسخه ابتدا نسخه‌های پشتیبان موجود در همان مرورگر را بررسی می‌کند. اگر خود حافظه مرورگر و تمام پشتیبان‌ها قبلاً پاک شده باشند، بازیابی آن بخش ممکن نیست؛ اما از این نسخه چند لایه محافظت برای جلوگیری از تکرار مشکل فعال است.
+
+### وضعیت آزمایش
+- همه ۲۰ فایل JavaScript و سرور: **موفق**
+- ساخت برنامه: **موفق**
+- سلامت سرور: **نسخه 11.20.2**
+- `/api/state`: **فعال و آزمایش‌شده**
+- ۱۷ برچسب کش برنامه: **همگی 11.20.2**
+- تأیید اطلاعات واقعی و چیدمان مرورگر شما: **در انتظار تست شما پس از استقرار**
+
+پس از جایگزینی فایل‌ها:
+
+```powershell
+git add -A
+git commit -m "v11.20.2: حفظ دائمی اطلاعات و تثبیت کلیدهای اسنپ"
 git pull --no-rebase origin main
 git push origin main
 git push gitlab main
@@ -14692,7 +14824,7 @@ async function sendWhatsappCloud(text, to, token) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-app.js (169394 بایت)
+فایل: public/crm-app.js (170659 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================================
@@ -14760,27 +14892,35 @@ function loadState() {
     }
   } catch (eBak) {}
   const saved = localStorage.getItem(STORAGE_KEY);
+  window.__CRM_HAD_SAVED_STATE = !!saved;
   if (saved) {
-    try {
-      state = JSON.parse(saved);
-      if (!state.customFields) state.customFields = DEFAULT_INITIAL_DATA.customFields;
-      if (!state.settings) state.settings = DEFAULT_INITIAL_DATA.settings;
-      if (!state.users) state.users = DEFAULT_INITIAL_DATA.users;
-      if (!state.activityLog) state.activityLog = DEFAULT_INITIAL_DATA.activityLog;
-      if (!state.repHomes) state.repHomes = DEFAULT_INITIAL_DATA.repHomes;
-      if (!state.repRoutes) state.repRoutes = DEFAULT_INITIAL_DATA.repRoutes;
-      if (!state.leaves) state.leaves = DEFAULT_INITIAL_DATA.leaves;
-      if (!state.notifications) state.notifications = DEFAULT_INITIAL_DATA.notifications;
-      if (!state.salesTargets) state.salesTargets = DEFAULT_INITIAL_DATA.salesTargets;
-      if (!state.messengers) state.messengers = DEFAULT_INITIAL_DATA.messengers;
-      if (!state.products) state.products = DEFAULT_INITIAL_DATA.products;
-      if (!state.hospitals) state.hospitals = DEFAULT_INITIAL_DATA.hospitals || [];
-      if (!state.visits) state.visits = DEFAULT_INITIAL_DATA.visits || [];
-      if (!state.formFieldMeta) state.formFieldMeta = {};
-    } catch (e) {
-      console.error("خطا در خواندن اطلاعات قبلی، بارگذاری اطلاعات پیش‌فرض:", e);
-      state = JSON.parse(JSON.stringify(DEFAULT_INITIAL_DATA));
+    // هرگز با خطای یک نسخه، داده کاربر را با اطلاعات نمونه جایگزین نکن؛ از نسخه‌های سالم قبلی بازیابی کن.
+    const candidates = [saved, localStorage.getItem("CRM_APP_STATE_ROLLING_BACKUP"), localStorage.getItem("CRM_APP_STATE_BACKUP_LATEST"), localStorage.getItem("CRM_APP_STATE_BACKUP_BEFORE_11_11_0")].filter(Boolean);
+    let bestScore = -1;
+    for (let i = 0; i < candidates.length; i++) {
+      try {
+        const parsed = JSON.parse(candidates[i]);
+        if (!parsed || typeof parsed !== "object") continue;
+        const arrayKeys = ["pharmacies","doctors","orders","products","users","reps","salesTargets","repRoutes","leaves","notifications"];
+        let score = arrayKeys.reduce((n, k) => n + (Array.isArray(parsed[k]) ? parsed[k].length : 0), 0);
+        score += Object.keys(parsed.formFieldMeta || {}).length * 100;
+        score += Object.keys(parsed.formBoxes || {}).length * 100;
+        score += Object.keys(parsed.manualLayouts || {}).length * 100;
+        score += Object.keys(parsed.customFields || {}).reduce((n,k) => n + ((parsed.customFields[k] || []).length * 200), 0);
+        score += (((parsed.snappCorporate || {}).rows || []).length + ((parsed.snappCorporate || {}).topups || []).length) * 10;
+        if (score > bestScore) { state = parsed; bestScore = score; }
+      } catch (e) {}
     }
+    if (!state) {
+      try { localStorage.setItem("CRM_APP_STATE_CORRUPT_ARCHIVE_" + Date.now(), saved); } catch (e) {}
+      state = { settings: {}, users: [], pharmacies: [], doctors: [], orders: [], products: [] };
+    }
+    // در وضعیت موجود، کلید مفقود با آرایه خالی تکمیل شود؛ هرگز داده نمونه وارد اطلاعات واقعی نشود.
+    if (!state.customFields) state.customFields = {};
+    if (!state.settings) state.settings = {};
+    ["users","activityLog","repHomes","repRoutes","leaves","notifications","salesTargets","products","hospitals","visits","pharmacies","doctors","orders","reps"].forEach(k => { if (!Array.isArray(state[k])) state[k] = []; });
+    if (!state.messengers) state.messengers = { channels: {}, allowPeerMessaging: false };
+    if (!state.formFieldMeta) state.formFieldMeta = {};
   } else {
     state = JSON.parse(JSON.stringify(DEFAULT_INITIAL_DATA));
   }
@@ -14796,6 +14936,10 @@ function loadState() {
 }
 
 function saveState(triggerAutoBackup = true) {
+  // پیش از هر ذخیره، آخرین وضعیت سالم نگه داشته شود تا هیچ ارتقایی داده/چیدمان را نابود نکند.
+  const previous = localStorage.getItem(STORAGE_KEY);
+  if (previous) localStorage.setItem("CRM_APP_STATE_ROLLING_BACKUP", previous);
+  state._lastSavedAt = Date.now();
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   if (triggerAutoBackup && state.settings && state.settings.autoBackupEnabled) {
     performAutoBackup();
@@ -17448,8 +17592,8 @@ function setupRestoreSection() {
     btnConfirm.addEventListener("click", () => {
       if (!tempRestoreData) return;
       state = tempRestoreData;
-      if (!state.users) state.users = DEFAULT_INITIAL_DATA.users;
-      if (!state.settings) state.settings = DEFAULT_INITIAL_DATA.settings;
+      if (!state.users) state.users = [];
+      if (!state.settings) state.settings = {};
 
       saveState(false);
       previewCard.style.display = "none";
@@ -18727,7 +18871,7 @@ function deleteProductCatalogItem(id) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-data.js (39545 بایت)
+فایل: public/crm-data.js (40187 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================================
@@ -19128,7 +19272,12 @@ const PERMISSION_GROUPS = {
     { key: "snapp_report_buttons", label: "کلیدهای بالای تهیه گزارش نماینده و افزایش موجودی" },
     { key: "snapp_optional_dates", label: "گزارش سال/ماه بدون اجبار تاریخ" },
     { key: "snapp_positive_topup", label: "نمایش فقط مبلغ شارژ بیشتر از صفر" },
-    { key: "sys_number_grouping", label: "نمایش سه‌رقمی اعداد در سراسر برنامه" }
+    { key: "sys_number_grouping", label: "نمایش سه‌رقمی اعداد در سراسر برنامه" },
+    { key: "sys_data_never_reset", label: "حفظ قطعی اطلاعات قبلی و جلوگیری از ورود داده نمونه" },
+    { key: "sys_layout_never_reset", label: "حفظ جای فیلدها، کادرها و کلیدها بین نسخه‌ها" },
+    { key: "sys_server_state_sync", label: "همگام‌سازی ماندگار وضعیت با سرور و بازیابی خودکار" },
+    { key: "snapp_fixed_actionbar", label: "نوار ثابت و واضح کلیدهای گزارش اسنپ" },
+    { key: "snapp_blank_date_filters", label: "خالی‌ماندن قطعی فیلدهای تاریخ گزارش" }
   ]
 };
 
@@ -28216,7 +28365,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-features-v20.js (118863 بایت)
+فایل: public/crm-features-v20.js (121238 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================
@@ -28553,7 +28702,7 @@ button.v19-gps svg{display:block}
       tabs += "<button type='button' class='" + (p[0] === v20AddPane ? "v20-on" : "") + "' data-pane='" + p[0] + "'>" + p[1] + "</button>";
     });
     var h = "<div class='v20-addmgr' style='border-top:2px solid #e2e8f0;padding-top:10px;'>" +
-      "<h4 style='margin:8px 0;color:#0f172a;'>🎛️ مدیر کشویی‌ها (نسخه ۱۱.۲۰.۱) — هر فیلد، زیرمجموعه‌هایش دقیقاً زیر همان فیلد است</h4>" +
+      "<h4 style='margin:8px 0;color:#0f172a;'>🎛️ مدیر کشویی‌ها (نسخه ۱۱.۲۰.۲) — هر فیلد، زیرمجموعه‌هایش دقیقاً زیر همان فیلد است</h4>" +
       "<div class='v20-tabbar'>" + tabs + "</div>" +
       "<div class='v20-card-tools' style='margin-bottom:4px'>" +
       "<label class='v20-mini'><input type='checkbox' id='v20GreyOnChk'" + (greyOn ? " checked" : "") + "> حالت طوسی زنجیره‌ای فعال باشد</label>" +
@@ -29273,7 +29422,7 @@ button.v19-gps svg{display:block}
   }
   function renderVersionBadge() {
     var b = $("v20VersionBadge"), actions = document.querySelector(".header-actions"); if (!actions) return;
-    if (!b) { b = document.createElement("span"); b.id = "v20VersionBadge"; b.className = "v20-version"; b.textContent = "نسخه ۱۱.۲۰.۱"; b.title = "نسخه دقیق برنامه نصب‌شده"; actions.insertBefore(b, actions.firstChild); }
+    if (!b) { b = document.createElement("span"); b.id = "v20VersionBadge"; b.className = "v20-version"; b.textContent = "نسخه ۱۱.۲۰.۲"; b.title = "نسخه دقیق برنامه نصب‌شده"; actions.insertBefore(b, actions.firstChild); }
     b.style.display = v20IsManager() ? "inline-block" : "none";
   }
 
@@ -29454,7 +29603,9 @@ button.v19-gps svg{display:block}
   function snappTopupFilters(){return{year:enDigits(($("snappTopupYear")||{}).value||""),month:enDigits(($("snappTopupMonth")||{}).value||""),from:normSnappDate(($("snappTopupFrom")||{}).value||""),to:normSnappDate(($("snappTopupTo")||{}).value||"")};}
   async function importSnappTopups(files){var D=snappStore(),all=[],names=[];for(var i=0;i<files.length;i++){try{var rows=await parseSnappFile(files[i]);if(rows.length){var hi=findHeaderRow(rows,"topup"),head=rows[hi]||[];if(!D.topupHeaders.length)D.topupHeaders=head.slice();all=all.concat(rows.slice(hi+1));names.push(files[i].name);}}catch(e){alert("خطا در گزارش افزایش موجودی «"+files[i].name+"»: "+e.message);}}var seen={},fresh=[],ti=topupIndexes(D.topupHeaders||[]);(D.topups||[]).forEach(function(r){seen[r.join("¦")]=1;});all.forEach(function(r){var k=r.join("¦");if(snappNumber(r[ti.amount])>0&&!seen[k]){seen[k]=1;fresh.push(r);}});D.topups=fresh.concat(D.topups||[]);D.topupFiles=names.concat(D.topupFiles||[]).slice(0,200);D.lastTopupImport=new Date().toLocaleString("fa-IR",{timeZone:"Asia/Tehran"});save();renderSnappCorporate();v20Toast("✅ "+fresh.length.toLocaleString("fa-IR")+" ردیف افزایش موجودی بالای آرشیو دائمی اضافه شد.");}
   function renderSnappTopups(){var D=snappStore(),h=D.topupHeaders||[],idx=topupIndexes(h),f=snappTopupFilters(),rows=(D.topups||[]).filter(function(r){return snappNumber(r[idx.amount])>0&&datePass(splitSnappDateTime(r[idx.date]).date,f);}),sum=rows.reduce(function(s,r){return s+snappNumber(r[idx.amount]);},0),cards=$("snappTopupSummaryCards");if(cards)cards.innerHTML=[["تعداد شارژ",rows.length.toLocaleString("fa-IR")],["جمع مبلغ شارژ",sum.toLocaleString("fa-IR")+" ریال"],["کل آرشیو",(D.topups||[]).length.toLocaleString("fa-IR")],["آخرین ورود",D.lastTopupImport||"—"]].map(function(x){return"<div class='v20-metric'>"+x[0]+"<b>"+x[1]+"</b></div>";}).join("");var head=$("snappTopupHead");if(head)head.innerHTML="<th>ردیف</th><th>تاریخ</th><th>ساعت</th><th>مبلغ شارژ</th>";var body=$("snappTopupBody");if(body)body.innerHTML=rows.slice(0,2000).map(function(r,i){var dt=splitSnappDateTime(r[idx.date]);return"<tr><td>"+(i+1)+"</td><td>"+esc(dt.date)+"</td><td>"+esc(dt.time)+"</td><td>"+snappNumber(r[idx.amount]).toLocaleString("fa-IR")+" ریال</td></tr>";}).join("")||"<tr><td colspan='4'>گزارش افزایش موجودی وارد نشده است.</td></tr>";window._v20TopupRows=rows;}
-  function setupSnappCorporate(){var open=$("btnOpenSnappCorporate"),inp=$("snappReportFiles"),top=$("snappTopupFiles"),exp=$("btnExportSnappView"),texp=$("btnExportSnappTopups"),build=$("btnBuildSnappReport");if(open&&!open.dataset.bound){open.dataset.bound="1";open.addEventListener("click",function(){window.open("https://corporate.snapp.taxi/auth/login","_blank","noopener");});}if(inp&&!inp.dataset.bound){inp.dataset.bound="1";inp.addEventListener("change",function(){if(inp.files&&inp.files.length)importSnappFiles(Array.prototype.slice.call(inp.files));inp.value="";});}if(top&&!top.dataset.bound){top.dataset.bound="1";top.addEventListener("change",function(){if(top.files&&top.files.length)importSnappTopups(Array.prototype.slice.call(top.files));top.value="";});}if(build&&!build.dataset.bound){build.dataset.bound="1";build.addEventListener("click",function(){renderSnappCorporate();v20Toast("✅ گزارش طبق سال، ماه، نماینده و بازه تاریخ تهیه شد.");});}if(exp&&!exp.dataset.bound){exp.dataset.bound="1";exp.addEventListener("click",function(){var D=snappStore(),idx=tripSchema(D.headers||[]),heads=["تاریخ شروع سفر","ساعت شروع سفر","تاریخ پایان سفر","ساعت پایان سفر","نام مسافر","مبدأ","مقصد","مقصد دوم","نوع سرویس","هزینه","شهر"],rows=snappFilteredRows.map(function(r){var a=splitSnappDateTime(r[idx.start]),b=splitSnappDateTime(r[idx.end]);return[a.date,a.time,b.date,b.time,r[idx.rep],r[idx.origin],r[idx.dest],r[idx.dest2],r[idx.service],r[idx.amount],r[idx.city]];});window.downloadCSVFile("snapp-corporate-report.xls",heads,rows);});}if(texp&&!texp.dataset.bound){texp.dataset.bound="1";texp.addEventListener("click",function(){var D=snappStore(),idx=topupIndexes(D.topupHeaders||[]),rows=(window._v20TopupRows||[]).map(function(r,i){var d=splitSnappDateTime(r[idx.date]);return[i+1,d.date,d.time,snappNumber(r[idx.amount])];});window.downloadCSVFile("snapp-topup-report.xls",["ردیف","تاریخ","ساعت","مبلغ شارژ"],rows);});}var topBuild=$("btnBuildSnappTopupReport");if(topBuild&&!topBuild.dataset.bound){topBuild.dataset.bound="1";topBuild.addEventListener("click",function(){renderSnappTopups();v20Toast("✅ گزارش مبلغ شارژ تهیه شد.");});}["snappTopupYear","snappTopupMonth","snappTopupFrom","snappTopupTo"].forEach(function(id){var el=$(id);if(el&&!el.dataset.bound){el.dataset.bound="1";el.addEventListener("input",renderSnappTopups);el.addEventListener("change",renderSnappTopups);}});["snappFilterYear","snappFilterMonth","snappFilterRep","snappFilterFrom","snappFilterTo"].forEach(function(id){var el=$(id);if(el&&!el.dataset.bound){el.dataset.bound="1";el.addEventListener("input",renderSnappCorporate);el.addEventListener("change",renderSnappCorporate);}});renderSnappCorporate();}
+  function ensureSnappActionBar(){var pane=$("tab-snapp-corporate"),card=pane&&pane.querySelector(".card");if(!card)return;var bar=$("v20SnappActionBar");if(!bar){bar=document.createElement("div");bar.id="v20SnappActionBar";bar.style.cssText="display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:#ecfeff;border:2px solid #0891b2;border-radius:12px;padding:12px;margin-bottom:14px;position:sticky;top:6px;z-index:50";card.insertBefore(bar,card.firstChild);}['btnBuildSnappReport','btnBuildSnappTopupReport'].forEach(function(id){var b=$(id);if(b&&b.parentNode!==bar){b.classList.add('btn-sm');b.style.cssText='width:auto!important;max-width:260px!important;display:inline-flex!important';bar.appendChild(b);}});}
+  function forceBlankSnappDates(){["snappFilterFrom","snappFilterTo","snappTopupFrom","snappTopupTo"].forEach(function(id){var e=$(id);if(!e||e.dataset.v20Blanked)return;e.dataset.v20Blanked="1";e.value="";e.addEventListener("input",function(){e.dataset.userTouched="1";});setTimeout(function(){if(e.dataset.userTouched!=="1")e.value="";},700);});}
+  function setupSnappCorporate(){ensureSnappActionBar();forceBlankSnappDates();var open=$("btnOpenSnappCorporate"),inp=$("snappReportFiles"),top=$("snappTopupFiles"),exp=$("btnExportSnappView"),texp=$("btnExportSnappTopups"),build=$("btnBuildSnappReport");if(open&&!open.dataset.bound){open.dataset.bound="1";open.addEventListener("click",function(){window.open("https://corporate.snapp.taxi/auth/login","_blank","noopener");});}if(inp&&!inp.dataset.bound){inp.dataset.bound="1";inp.addEventListener("change",function(){if(inp.files&&inp.files.length)importSnappFiles(Array.prototype.slice.call(inp.files));inp.value="";});}if(top&&!top.dataset.bound){top.dataset.bound="1";top.addEventListener("change",function(){if(top.files&&top.files.length)importSnappTopups(Array.prototype.slice.call(top.files));top.value="";});}if(build&&!build.dataset.bound){build.dataset.bound="1";build.addEventListener("click",function(){renderSnappCorporate();v20Toast("✅ گزارش طبق سال، ماه، نماینده و بازه تاریخ تهیه شد.");});}if(exp&&!exp.dataset.bound){exp.dataset.bound="1";exp.addEventListener("click",function(){var D=snappStore(),idx=tripSchema(D.headers||[]),heads=["تاریخ شروع سفر","ساعت شروع سفر","تاریخ پایان سفر","ساعت پایان سفر","نام مسافر","مبدأ","مقصد","مقصد دوم","نوع سرویس","هزینه","شهر"],rows=snappFilteredRows.map(function(r){var a=splitSnappDateTime(r[idx.start]),b=splitSnappDateTime(r[idx.end]);return[a.date,a.time,b.date,b.time,r[idx.rep],r[idx.origin],r[idx.dest],r[idx.dest2],r[idx.service],r[idx.amount],r[idx.city]];});window.downloadCSVFile("snapp-corporate-report.xls",heads,rows);});}if(texp&&!texp.dataset.bound){texp.dataset.bound="1";texp.addEventListener("click",function(){var D=snappStore(),idx=topupIndexes(D.topupHeaders||[]),rows=(window._v20TopupRows||[]).map(function(r,i){var d=splitSnappDateTime(r[idx.date]);return[i+1,d.date,d.time,snappNumber(r[idx.amount])];});window.downloadCSVFile("snapp-topup-report.xls",["ردیف","تاریخ","ساعت","مبلغ شارژ"],rows);});}var topBuild=$("btnBuildSnappTopupReport");if(topBuild&&!topBuild.dataset.bound){topBuild.dataset.bound="1";topBuild.addEventListener("click",function(){renderSnappTopups();v20Toast("✅ گزارش مبلغ شارژ تهیه شد.");});}["snappTopupYear","snappTopupMonth","snappTopupFrom","snappTopupTo"].forEach(function(id){var el=$(id);if(el&&!el.dataset.bound){if(/From|To/.test(id))el.value="";el.dataset.bound="1";el.addEventListener("input",renderSnappTopups);el.addEventListener("change",renderSnappTopups);}});["snappFilterYear","snappFilterMonth","snappFilterRep","snappFilterFrom","snappFilterTo"].forEach(function(id){var el=$(id);if(el&&!el.dataset.bound){if(/From|To/.test(id))el.value="";el.dataset.bound="1";el.addEventListener("input",renderSnappCorporate);el.addEventListener("change",renderSnappCorporate);}});renderSnappCorporate();}
 
 
   /* ---------- ۲۱) همه نمایندگان + آدرس متنی موقعیت زنده ---------- */
@@ -29475,6 +29626,10 @@ button.v19-gps svg{display:block}
   /* ---------- ۲۴) نمایش سه‌رقمی اعداد در خروجی‌های دیداری ---------- */
   function formatVisibleNumbers(root){if(!root||!document.createTreeWalker)return;var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),nodes=[],n;while(n=w.nextNode())nodes.push(n);nodes.forEach(function(t){var p=t.parentElement;if(!p||/^(SCRIPT|STYLE|INPUT|TEXTAREA|SELECT|OPTION)$/.test(p.tagName))return;var context=String(p.textContent||"");if(/تاریخ|سال|ماه|تلفن|همراه|مختصات|عرض جغرافیایی|طول جغرافیایی|کد|پلاک/.test(context))return;var old=t.nodeValue,nw=old.replace(/[0-9۰-۹]{4,}/g,function(x,off,all){if(all[off-1]==="/"||all[off+x.length]==="/"||all[off-1]==="."||all[off+x.length]===".")return x;var raw=enDigits(x);if(/^0\d{9,}$/.test(raw))return x;var v=Number(raw);return isFinite(v)?v.toLocaleString("fa-IR"):x;});if(nw!==old)t.nodeValue=nw;});}
   function bindNumberFormatting(){formatVisibleNumbers(document.body);if(window.MutationObserver){var timer;new MutationObserver(function(){clearTimeout(timer);timer=setTimeout(function(){formatVisibleNumbers(document.body);},80);}).observe(document.body,{childList:true,subtree:true,characterData:true});}}
+
+  /* ---------- ۲۵) ماندگاری نسخه‌ای: محلی + سرور، بدون جایگزینی با نمونه ---------- */
+  function bindDurableServerState(){var old=window.saveState;if(typeof old!=="function"||old._v20durable)return;var timer;var w=function(){var r=old.apply(this,arguments);clearTimeout(timer);timer=setTimeout(function(){var S=st();if(!S)return;fetch("/api/state",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(S)}).catch(function(){});},1500);return r;};w._v20durable=true;window.saveState=w;
+    if(sessionStorage.getItem("v20RemoteRecoveryChecked")==="1")return;sessionStorage.setItem("v20RemoteRecoveryChecked","1");fetch("/api/state").then(function(r){return r.json();}).then(function(res){var remote=res&&res.data;if(!remote||typeof remote!=="object")return;var local=st()||{},use=!window.__CRM_HAD_SAVED_STATE||Number(remote._lastSavedAt||0)>Number(local._lastSavedAt||0);if(use){localStorage.setItem("CRM_APP_STATE_V2",JSON.stringify(remote));localStorage.setItem("CRM_APP_STATE_BACKUP_LATEST",JSON.stringify(remote));location.reload();}}).catch(function(){});}
 
   /* ---------- هُوک رفتن به تب‌ها ---------- */
   var v20LastTab = (document.querySelector(".tab-pane.active") || {}).id || "";
@@ -29578,6 +29733,7 @@ button.v19-gps svg{display:block}
     try { bindEmailBackup(); } catch (e) {}
     try { bindTargetsV20(); } catch (e) {}
     try { bindNumberFormatting(); } catch (e) {}
+    try { bindDurableServerState(); } catch (e) {}
     try { wrapNewestTables(); } catch (e) {}
     try { mirrorPharmacyFieldsToOrder(true); } catch (e) {}
     // اعمال اولیه موتورها روی تب فعال
@@ -31769,7 +31925,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/index.html (132995 بایت)
+فایل: public/index.html (133155 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~html
 <!DOCTYPE html>
@@ -31790,7 +31946,7 @@ button.v19-gps svg{display:block}
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.20.1" />
+  <link rel="stylesheet" href="style.css?v=11.20.2" />
 </head>
 <body>
 
@@ -32765,8 +32921,8 @@ button.v19-gps svg{display:block}
           <div class="form-group"><label class="form-label" for="snappFilterYear">سال</label><input id="snappFilterYear" class="form-input" inputmode="numeric" placeholder="مثال: ۱۴۰۵"></div>
           <div class="form-group"><label class="form-label" for="snappFilterMonth">ماه</label><select id="snappFilterMonth" class="form-select"><option value="">همه ماه‌ها</option><option value="01">فروردین</option><option value="02">اردیبهشت</option><option value="03">خرداد</option><option value="04">تیر</option><option value="05">مرداد</option><option value="06">شهریور</option><option value="07">مهر</option><option value="08">آبان</option><option value="09">آذر</option><option value="10">دی</option><option value="11">بهمن</option><option value="12">اسفند</option></select></div>
           <div class="form-group"><label class="form-label" for="snappFilterRep">نماینده / مسافر</label><select id="snappFilterRep" class="form-select"><option value="">همه نمایندگان</option></select></div>
-          <div class="form-group"><label class="form-label" for="snappFilterFrom">از تاریخ</label><input id="snappFilterFrom" class="form-input" placeholder="۱۴۰۵/۰۵/۲۵"></div>
-          <div class="form-group"><label class="form-label" for="snappFilterTo">تا تاریخ</label><input id="snappFilterTo" class="form-input" placeholder="۱۴۰۵/۰۵/۲۵"></div>
+          <div class="form-group"><label class="form-label" for="snappFilterFrom">از تاریخ</label><input id="snappFilterFrom" class="form-input" autocomplete="off" data-no-autofill="1" placeholder="۱۴۰۵/۰۵/۲۵"></div>
+          <div class="form-group"><label class="form-label" for="snappFilterTo">تا تاریخ</label><input id="snappFilterTo" class="form-input" autocomplete="off" data-no-autofill="1" placeholder="۱۴۰۵/۰۵/۲۵"></div>
         </div>
         <div id="snappSummaryCards" class="v20-visit-metrics"></div>
       </div>
@@ -32780,7 +32936,7 @@ button.v19-gps svg{display:block}
       </div>
       <div class="card">
         <div class="card-header"><div class="card-title"><span>💳 گزارش افزایش موجودی — آرشیو دائمی</span></div><button type="button" id="btnExportSnappTopups" class="btn btn-primary btn-sm btn-excel">📊 خروجی افزایش موجودی</button></div>
-        <div class="form-grid" style="margin:1rem 0"><div class="form-group"><label class="form-label">سال شارژ</label><input id="snappTopupYear" class="form-input" placeholder="۱۴۰۵"></div><div class="form-group"><label class="form-label">ماه شارژ</label><select id="snappTopupMonth" class="form-select"><option value="">همه ماه‌ها</option><option value="01">فروردین</option><option value="02">اردیبهشت</option><option value="03">خرداد</option><option value="04">تیر</option><option value="05">مرداد</option><option value="06">شهریور</option><option value="07">مهر</option><option value="08">آبان</option><option value="09">آذر</option><option value="10">دی</option><option value="11">بهمن</option><option value="12">اسفند</option></select></div><div class="form-group"><label class="form-label">از تاریخ شارژ</label><input id="snappTopupFrom" class="form-input" placeholder="۱۴۰۵/۰۵/۲۶"></div><div class="form-group"><label class="form-label">تا تاریخ شارژ</label><input id="snappTopupTo" class="form-input" placeholder="۱۴۰۵/۰۵/۲۶"></div></div>
+        <div class="form-grid" style="margin:1rem 0"><div class="form-group"><label class="form-label">سال شارژ</label><input id="snappTopupYear" class="form-input" placeholder="۱۴۰۵"></div><div class="form-group"><label class="form-label">ماه شارژ</label><select id="snappTopupMonth" class="form-select"><option value="">همه ماه‌ها</option><option value="01">فروردین</option><option value="02">اردیبهشت</option><option value="03">خرداد</option><option value="04">تیر</option><option value="05">مرداد</option><option value="06">شهریور</option><option value="07">مهر</option><option value="08">آبان</option><option value="09">آذر</option><option value="10">دی</option><option value="11">بهمن</option><option value="12">اسفند</option></select></div><div class="form-group"><label class="form-label">از تاریخ شارژ</label><input id="snappTopupFrom" class="form-input" autocomplete="off" data-no-autofill="1" placeholder="۱۴۰۵/۰۵/۲۶"></div><div class="form-group"><label class="form-label">تا تاریخ شارژ</label><input id="snappTopupTo" class="form-input" autocomplete="off" data-no-autofill="1" placeholder="۱۴۰۵/۰۵/۲۶"></div></div>
         <div id="snappTopupSummaryCards" class="v20-visit-metrics"></div>
         <div class="table-responsive"><table class="data-table"><thead><tr id="snappTopupHead"><th>ردیف</th><th>تاریخ</th><th>افزایش موجودی</th></tr></thead><tbody id="snappTopupBody"></tbody></table></div>
       </div>
@@ -33893,22 +34049,22 @@ button.v19-gps svg{display:block}
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.20.1"></script>
-  <script src="crm-app.js?v=11.20.1"></script>
-  <script src="crm-features-v9.js?v=11.20.1"></script>
-  <script src="iran-facilities.js?v=11.20.1" defer></script>
-  <script src="crm-features-v10.js?v=11.20.1"></script>
-  <script src="crm-features-v11.js?v=11.20.1"></script>
-  <script src="crm-features-v12.js?v=11.20.1"></script>
-  <script src="crm-features-v13.js?v=11.20.1"></script>
-  <script src="crm-jalali.js?v=11.20.1"></script>
-  <script src="crm-features-v14.js?v=11.20.1"></script>
-  <script src="crm-features-v15.js?v=11.20.1"></script>
-  <script src="crm-features-v16.js?v=11.20.1"></script>
-  <script src="crm-features-v17.js?v=11.20.1"></script>
-  <script src="crm-features-v18.js?v=11.20.1"></script>
-  <script src="crm-features-v19.js?v=11.20.1"></script>
-  <script src="crm-features-v20.js?v=11.20.1"></script>
+  <script src="crm-data.js?v=11.20.2"></script>
+  <script src="crm-app.js?v=11.20.2"></script>
+  <script src="crm-features-v9.js?v=11.20.2"></script>
+  <script src="iran-facilities.js?v=11.20.2" defer></script>
+  <script src="crm-features-v10.js?v=11.20.2"></script>
+  <script src="crm-features-v11.js?v=11.20.2"></script>
+  <script src="crm-features-v12.js?v=11.20.2"></script>
+  <script src="crm-features-v13.js?v=11.20.2"></script>
+  <script src="crm-jalali.js?v=11.20.2"></script>
+  <script src="crm-features-v14.js?v=11.20.2"></script>
+  <script src="crm-features-v15.js?v=11.20.2"></script>
+  <script src="crm-features-v16.js?v=11.20.2"></script>
+  <script src="crm-features-v17.js?v=11.20.2"></script>
+  <script src="crm-features-v18.js?v=11.20.2"></script>
+  <script src="crm-features-v19.js?v=11.20.2"></script>
+  <script src="crm-features-v20.js?v=11.20.2"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
@@ -36934,7 +37090,7 @@ self.addEventListener("fetch", (event) => {
 فایل: public/sw.js (1145 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
-const CACHE = "ttt-v11.20.1";
+const CACHE = "ttt-v11.20.2";
 const PRECACHE = ["/", "/login", "/favicon.png", "/logo.png", "/vendor/leaflet.js", "/vendor/leaflet.css"];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(PRECACHE).catch(function () {}); }).then(function () { return self.skipWaiting(); }));

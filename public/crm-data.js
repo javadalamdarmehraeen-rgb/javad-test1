@@ -396,7 +396,12 @@ const PERMISSION_GROUPS = {
     { key: "snapp_report_buttons", label: "کلیدهای بالای تهیه گزارش نماینده و افزایش موجودی" },
     { key: "snapp_optional_dates", label: "گزارش سال/ماه بدون اجبار تاریخ" },
     { key: "snapp_positive_topup", label: "نمایش فقط مبلغ شارژ بیشتر از صفر" },
-    { key: "sys_number_grouping", label: "نمایش سه‌رقمی اعداد در سراسر برنامه" }
+    { key: "sys_number_grouping", label: "نمایش سه‌رقمی اعداد در سراسر برنامه" },
+    { key: "sys_data_never_reset", label: "حفظ قطعی اطلاعات قبلی و جلوگیری از ورود داده نمونه" },
+    { key: "sys_layout_never_reset", label: "حفظ جای فیلدها، کادرها و کلیدها بین نسخه‌ها" },
+    { key: "sys_server_state_sync", label: "همگام‌سازی ماندگار وضعیت با سرور و بازیابی خودکار" },
+    { key: "snapp_fixed_actionbar", label: "نوار ثابت و واضح کلیدهای گزارش اسنپ" },
+    { key: "snapp_blank_date_filters", label: "خالی‌ماندن قطعی فیلدهای تاریخ گزارش" }
   ]
 };
 
