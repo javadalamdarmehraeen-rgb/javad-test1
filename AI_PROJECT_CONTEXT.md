@@ -837,3 +837,5 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.20.2 است. loadState غنی‌ترین کاندیدای سالم را انتخاب می‌کند و هیچ sample data به state موجود تزریق نمی‌کند. rolling backup محلی و server state sync فعال‌اند. کلیدهای اسنپ در v20SnappActionBar منتقل می‌شوند.
 ## افزونه وضعیت نسخه ۱۱.۲۰.۳
 نسخه فعال 11.20.3 است. بازیابی record arrays و custom fields از همه snapshotها union است؛ layout object کامل‌تر حفظ می‌شود. mergeStateWithoutLoss برای remote نیز استفاده می‌شود.
+## افزونه وضعیت نسخه ۱۱.۲۰.۴
+نسخه فعال 11.20.4 است. mobile CSS در v20 زیر 768px hamburger-only است. Snapp mode checkboxها year/month/range انحصاری‌اند. historical recovery فقط یک‌بار اجرا و layout جاری حفظ می‌شود.

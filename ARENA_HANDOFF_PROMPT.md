@@ -1123,3 +1123,8 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Never select only one backup again. Record arrays/custom fields must be unioned across every local snapshot and remote state.
 - Richest layout objects win; remote is merged, never wholesale-replaced.
 - personMatch handles Persian honorifics and partial normalized names.
+## Addendum — v11.20.4
+- Mobile <=768: horizontal app-nav hidden, hamburger only, forms one-column, tables internally scroll.
+- Snapp temporal checkbox mode is exclusive year/month/range; range checks both From+To; month disabled until year value.
+- Historical backup union is one-time (`_allSnapshotsMergedV11204`); do not resurrect manager-deleted structures later.
+- Every date field gets Jalali picker/auto-slash; password/year/month are excluded.

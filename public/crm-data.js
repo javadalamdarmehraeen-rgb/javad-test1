@@ -406,7 +406,14 @@ const PERMISSION_GROUPS = {
     { key: "sys_restore_records_layout", label: "بازیابی کاربران، داروخانه‌ها، پزشکان، کالاها و چیدمان" },
     { key: "snapp_fuzzy_user_match", label: "تطبیق هوشمند مسافر با کاربر بدون آقا/خانم" },
     { key: "snapp_latest_file_dates", label: "نمایش آخرین تاریخ واقعی فایل سفر و شارژ" },
-    { key: "sys_stable_row_alignment", label: "تراز ثابت فیلدهای فرم بدون تغییر ترتیب ذخیره‌شده" }
+    { key: "sys_stable_row_alignment", label: "تراز ثابت فیلدهای فرم بدون تغییر ترتیب ذخیره‌شده" },
+    { key: "sys_mobile_responsive", label: "نمای واکنش‌گرای کامل Android و iOS" },
+    { key: "sys_mobile_hamburger_only", label: "مخفی‌سازی تب‌های افقی و نمایش فقط همبرگری در گوشی" },
+    { key: "snapp_single_filter_mode", label: "فیلتر تک‌حالته سال، ماه یا بازه برای سفر و شارژ" },
+    { key: "snapp_year_month_chain", label: "وابستگی ماه به انتخاب سال" },
+    { key: "snapp_exact_row_dedupe", label: "حذف خودکار ردیف کاملاً تکراری اکسل سفر و شارژ" },
+    { key: "sys_all_dates_jalali", label: "تقویم شمسی و اسلش خودکار برای همه فیلدهای تاریخ" },
+    { key: "sys_structure_manager_only", label: "قفل تعداد و جای فیلد/کادر/کلید مگر با تغییر مدیر" }
   ]
 };
 

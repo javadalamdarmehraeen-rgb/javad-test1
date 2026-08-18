@@ -1395,5 +1395,9 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - همه snapshotها برای رکوردها union می‌شوند؛ تنظیمات layout کامل‌تر برنده است.
 - remote state با local merge می‌شود و هرگز جایگزینی کامل ندارد.
 - personMatch القاب فارسی و تطبیق جزئی نام اسنپ را پوشش می‌دهد.
+## تصمیم ۵۹ — نسخه ۱۱.۲۰.۴: Mobile-first و structure manager-only (2026-08-18)
+- زیر 768px nav افقی حذف و همه عرض/گریدها داخل viewport محدود می‌شوند.
+- temporal mode اسنپ year/month/range انحصاری است و ماه به سال وابسته.
+- historical union یک‌بار با marker انجام می‌شود تا حذف بعدی مدیر resurrect نشود؛ current layout برنده است.
 
 # END OF AI DECISION LOG

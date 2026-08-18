@@ -70,11 +70,13 @@ function loadState() {
     for (let i=0;i<localStorage.length;i++) { const k=localStorage.key(i); if (k && /^CRM_APP_STATE_(CORRUPT_ARCHIVE_|MERGED_RECOVERY)/.test(k)) { const v=localStorage.getItem(k); if (v) candidates.push(v); } }
     let bestScore = -1;
     const validStates = [];
+    let currentParsed = null;
     for (let i = 0; i < candidates.length; i++) {
       try {
         const parsed = JSON.parse(candidates[i]);
         if (!parsed || typeof parsed !== "object") continue;
         validStates.push(parsed);
+        if (i === 0) currentParsed = parsed;
         const arrayKeys = ["pharmacies","doctors","orders","products","users","reps","salesTargets","repRoutes","leaves","notifications"];
         let score = arrayKeys.reduce((n, k) => n + (Array.isArray(parsed[k]) ? parsed[k].length : 0), 0);
         score += Object.keys(parsed.formFieldMeta || {}).length * 100;
@@ -85,8 +87,12 @@ function loadState() {
         if (score > bestScore) { state = parsed; bestScore = score; }
       } catch (e) {}
     }
+    // وضعیت جاری مبنای تنظیمات و چیدمان است؛ پشتیبان‌ها فقط موارد گم‌شده را به آن اضافه می‌کنند.
+    if (currentParsed) state = currentParsed;
+    // ادغام تاریخی فقط یک‌بار انجام می‌شود؛ پس از آن حذف/تغییر مستقیم مدیر دوباره از backup قدیمی برنمی‌گردد.
+    const shouldMergeHistorical = !(currentParsed && currentParsed._allSnapshotsMergedV11204);
     // ادغام بدون حذف: هر رکوردی که در هر نسخه پشتیبان هست باید باقی بماند.
-    if (state && validStates.length) {
+    if (state && validStates.length && shouldMergeHistorical) {
       const mergeArray = (target, source, keyHint) => {
         const out = Array.isArray(target) ? target.slice() : [];
         const keyOf = (x) => {
@@ -118,11 +124,14 @@ function loadState() {
       });
       // برای چیدمان، کامل‌ترین نسخه موجود برنده است؛ نسخه جدید حق ندارد آن را صفر کند.
       ["formFieldMeta","formBoxes","manualLayouts","tabOrder","selectExtraOptions"].forEach(k => {
+        const currentLayout = currentParsed && currentParsed[k];
+        if (currentLayout && JSON.stringify(currentLayout).length > 2) { state[k] = currentLayout; return; }
         let richest = state[k] || {}, size = JSON.stringify(richest).length;
         validStates.forEach(src => { const cand = src[k] || {}; const n = JSON.stringify(cand).length; if (n > size) { richest = cand; size = n; } });
         state[k] = richest;
       });
       state.userTabs = validStates.reduce((acc,src) => mergeArray(acc, src.userTabs, "userTabs"), state.userTabs || []);
+      state._allSnapshotsMergedV11204 = true;
       state._mergedRecoverySummary = { users:(state.users||[]).length, pharmacies:(state.pharmacies||[]).length, doctors:(state.doctors||[]).length, products:(state.products||[]).length, snapshots:validStates.length, at:Date.now() };
       try { localStorage.setItem("CRM_APP_STATE_MERGED_RECOVERY", JSON.stringify(state)); } catch (e) {}
     }
@@ -159,7 +168,7 @@ window.mergeStateWithoutLoss = function(base, source) {
   arrays.forEach(k => base[k]=merge(base[k],source[k]));
   base.customFields=base.customFields||{};Object.keys(source.customFields||{}).forEach(k=>base.customFields[k]=merge(base.customFields[k],source.customFields[k]));
   base.snappCorporate=base.snappCorporate||{};const sc=source.snappCorporate||{};base.snappCorporate.rows=merge(base.snappCorporate.rows,sc.rows);base.snappCorporate.topups=merge(base.snappCorporate.topups,sc.topups);
-  ["formFieldMeta","formBoxes","manualLayouts","tabOrder","selectExtraOptions"].forEach(k=>{if(JSON.stringify(source[k]||{}).length>JSON.stringify(base[k]||{}).length)base[k]=source[k];});
+  ["formFieldMeta","formBoxes","manualLayouts","tabOrder","selectExtraOptions"].forEach(k=>{if(JSON.stringify(base[k]||{}).length<=2&&JSON.stringify(source[k]||{}).length>2)base[k]=source[k];});
   base.userTabs=merge(base.userTabs,source.userTabs);base._lastSavedAt=Math.max(Number(base._lastSavedAt||0),Number(source._lastSavedAt||0));return base;
 };
 
