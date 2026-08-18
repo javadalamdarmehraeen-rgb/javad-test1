@@ -1168,5 +1168,12 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] منع مطلق تزریق نمونه به state موجود
 - [x] rolling backup + انتخاب غنی‌ترین backup + server sync/recovery
 - [ ] تأیید حفظ داده واقعی کاربر پس از deploy
+## ۴۶) نسخه ۱۱.۲۰.۳
+- [x] ادغام همه backupها و بازیابی رکوردهای جاافتاده
+- [x] تست مستقل بازیابی کاربر «خانم فائزه مغانی» + داروخانه/پزشک/کالا
+- [x] remote merge بدون overwrite
+- [x] تطبیق هوشمند اسنپ و آخرین تاریخ فایل‌ها
+- [x] تراز فرم بدون تغییر ترتیب
+- [ ] تأیید بازیابی واقعی در مرورگر کاربر
 
 # END OF AI TASKS

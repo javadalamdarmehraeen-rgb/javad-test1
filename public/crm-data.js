@@ -401,7 +401,12 @@ const PERMISSION_GROUPS = {
     { key: "sys_layout_never_reset", label: "حفظ جای فیلدها، کادرها و کلیدها بین نسخه‌ها" },
     { key: "sys_server_state_sync", label: "همگام‌سازی ماندگار وضعیت با سرور و بازیابی خودکار" },
     { key: "snapp_fixed_actionbar", label: "نوار ثابت و واضح کلیدهای گزارش اسنپ" },
-    { key: "snapp_blank_date_filters", label: "خالی‌ماندن قطعی فیلدهای تاریخ گزارش" }
+    { key: "snapp_blank_date_filters", label: "خالی‌ماندن قطعی فیلدهای تاریخ گزارش" },
+    { key: "sys_merge_all_backups", label: "ادغام بدون حذف همه نسخه‌های پشتیبان" },
+    { key: "sys_restore_records_layout", label: "بازیابی کاربران، داروخانه‌ها، پزشکان، کالاها و چیدمان" },
+    { key: "snapp_fuzzy_user_match", label: "تطبیق هوشمند مسافر با کاربر بدون آقا/خانم" },
+    { key: "snapp_latest_file_dates", label: "نمایش آخرین تاریخ واقعی فایل سفر و شارژ" },
+    { key: "sys_stable_row_alignment", label: "تراز ثابت فیلدهای فرم بدون تغییر ترتیب ذخیره‌شده" }
   ]
 };
 

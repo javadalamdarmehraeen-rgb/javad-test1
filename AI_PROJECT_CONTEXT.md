@@ -835,3 +835,5 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.20.1 است. orderFixedBlock مستقل از share selection است. فیلترهای تاریخ اسنپ خالی‌اند و topup amount باید >0 باشد. formatVisibleNumbers اعداد دیداری غیرشناسه‌ای را گروه‌بندی می‌کند.
 ## افزونه وضعیت نسخه ۱۱.۲۰.۲
 نسخه فعال 11.20.2 است. loadState غنی‌ترین کاندیدای سالم را انتخاب می‌کند و هیچ sample data به state موجود تزریق نمی‌کند. rolling backup محلی و server state sync فعال‌اند. کلیدهای اسنپ در v20SnappActionBar منتقل می‌شوند.
+## افزونه وضعیت نسخه ۱۱.۲۰.۳
+نسخه فعال 11.20.3 است. بازیابی record arrays و custom fields از همه snapshotها union است؛ layout object کامل‌تر حفظ می‌شود. mergeStateWithoutLoss برای remote نیز استفاده می‌شود.

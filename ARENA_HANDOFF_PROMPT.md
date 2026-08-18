@@ -1119,3 +1119,7 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Recovery candidates are scored for records/customFields/layouts/Snapp archives; richest wins.
 - saveState rolling backup and v20 debounced /api/state sync must remain.
 - Snapp date filters are force-blanked once against browser autofill; report buttons move to sticky v20SnappActionBar.
+## Addendum — v11.20.3
+- Never select only one backup again. Record arrays/custom fields must be unioned across every local snapshot and remote state.
+- Richest layout objects win; remote is merged, never wholesale-replaced.
+- personMatch handles Persian honorifics and partial normalized names.

@@ -67,11 +67,14 @@ function loadState() {
   if (saved) {
     // هرگز با خطای یک نسخه، داده کاربر را با اطلاعات نمونه جایگزین نکن؛ از نسخه‌های سالم قبلی بازیابی کن.
     const candidates = [saved, localStorage.getItem("CRM_APP_STATE_ROLLING_BACKUP"), localStorage.getItem("CRM_APP_STATE_BACKUP_LATEST"), localStorage.getItem("CRM_APP_STATE_BACKUP_BEFORE_11_11_0")].filter(Boolean);
+    for (let i=0;i<localStorage.length;i++) { const k=localStorage.key(i); if (k && /^CRM_APP_STATE_(CORRUPT_ARCHIVE_|MERGED_RECOVERY)/.test(k)) { const v=localStorage.getItem(k); if (v) candidates.push(v); } }
     let bestScore = -1;
+    const validStates = [];
     for (let i = 0; i < candidates.length; i++) {
       try {
         const parsed = JSON.parse(candidates[i]);
         if (!parsed || typeof parsed !== "object") continue;
+        validStates.push(parsed);
         const arrayKeys = ["pharmacies","doctors","orders","products","users","reps","salesTargets","repRoutes","leaves","notifications"];
         let score = arrayKeys.reduce((n, k) => n + (Array.isArray(parsed[k]) ? parsed[k].length : 0), 0);
         score += Object.keys(parsed.formFieldMeta || {}).length * 100;
@@ -81,6 +84,47 @@ function loadState() {
         score += (((parsed.snappCorporate || {}).rows || []).length + ((parsed.snappCorporate || {}).topups || []).length) * 10;
         if (score > bestScore) { state = parsed; bestScore = score; }
       } catch (e) {}
+    }
+    // ادغام بدون حذف: هر رکوردی که در هر نسخه پشتیبان هست باید باقی بماند.
+    if (state && validStates.length) {
+      const mergeArray = (target, source, keyHint) => {
+        const out = Array.isArray(target) ? target.slice() : [];
+        const keyOf = (x) => {
+          if (!x || typeof x !== "object") return "v:" + String(x);
+          return String(x.id || x.username || x.phone || x.name || x.fullName || x.label || JSON.stringify(x));
+        };
+        const at = {};
+        out.forEach((x,i) => { at[keyOf(x)] = i; });
+        (Array.isArray(source) ? source : []).forEach(x => {
+          const k = keyOf(x);
+          if (at[k] == null) { at[k] = out.length; out.push(x); }
+          else if (x && typeof x === "object") out[at[k]] = { ...x, ...out[at[k]] };
+        });
+        return out;
+      };
+      const recordArrays = ["pharmacies","doctors","orders","products","users","reps","salesTargets","repRoutes","repHomes","leaves","notifications","visits","activityLog","hospitals"];
+      validStates.forEach(src => { recordArrays.forEach(k => { state[k] = mergeArray(state[k], src[k], k); }); });
+      state.customFields = state.customFields || {};
+      validStates.forEach(src => { Object.keys(src.customFields || {}).forEach(k => { state.customFields[k] = mergeArray(state.customFields[k], src.customFields[k], k); }); });
+      state.snappCorporate = state.snappCorporate || {};
+      validStates.forEach(src => {
+        const sc = src.snappCorporate || {};
+        state.snappCorporate.rows = mergeArray(state.snappCorporate.rows, sc.rows, "snappRows");
+        state.snappCorporate.topups = mergeArray(state.snappCorporate.topups, sc.topups, "snappTopups");
+        state.snappCorporate.files = mergeArray(state.snappCorporate.files, sc.files, "files");
+        state.snappCorporate.topupFiles = mergeArray(state.snappCorporate.topupFiles, sc.topupFiles, "files");
+        if (!state.snappCorporate.headers && sc.headers) state.snappCorporate.headers = sc.headers;
+        if (!state.snappCorporate.topupHeaders && sc.topupHeaders) state.snappCorporate.topupHeaders = sc.topupHeaders;
+      });
+      // برای چیدمان، کامل‌ترین نسخه موجود برنده است؛ نسخه جدید حق ندارد آن را صفر کند.
+      ["formFieldMeta","formBoxes","manualLayouts","tabOrder","selectExtraOptions"].forEach(k => {
+        let richest = state[k] || {}, size = JSON.stringify(richest).length;
+        validStates.forEach(src => { const cand = src[k] || {}; const n = JSON.stringify(cand).length; if (n > size) { richest = cand; size = n; } });
+        state[k] = richest;
+      });
+      state.userTabs = validStates.reduce((acc,src) => mergeArray(acc, src.userTabs, "userTabs"), state.userTabs || []);
+      state._mergedRecoverySummary = { users:(state.users||[]).length, pharmacies:(state.pharmacies||[]).length, doctors:(state.doctors||[]).length, products:(state.products||[]).length, snapshots:validStates.length, at:Date.now() };
+      try { localStorage.setItem("CRM_APP_STATE_MERGED_RECOVERY", JSON.stringify(state)); } catch (e) {}
     }
     if (!state) {
       try { localStorage.setItem("CRM_APP_STATE_CORRUPT_ARCHIVE_" + Date.now(), saved); } catch (e) {}
@@ -103,8 +147,21 @@ function loadState() {
   if (!state.customRecords) state.customRecords = {};
   if (!state.tabOrder) state.tabOrder = {};
   if (!state.manualLayouts) state.manualLayouts = {};
+  if (saved) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {} }
   applyGeneralSettingsToUI();
 }
+
+window.mergeStateWithoutLoss = function(base, source) {
+  base = base && typeof base === "object" ? base : {};
+  source = source && typeof source === "object" ? source : {};
+  const arrays = ["pharmacies","doctors","orders","products","users","reps","salesTargets","repRoutes","repHomes","leaves","notifications","visits","activityLog","hospitals"];
+  const merge = (a,b) => { const out=(Array.isArray(a)?a:[]).slice(), pos={}; const key=x=>String((x&&typeof x==="object")?(x.id||x.username||x.phone||x.name||x.fullName||x.label||JSON.stringify(x)):x); out.forEach((x,i)=>pos[key(x)]=i); (Array.isArray(b)?b:[]).forEach(x=>{const k=key(x);if(pos[k]==null){pos[k]=out.length;out.push(x);}else if(x&&typeof x==="object")out[pos[k]]={...x,...out[pos[k]]};});return out; };
+  arrays.forEach(k => base[k]=merge(base[k],source[k]));
+  base.customFields=base.customFields||{};Object.keys(source.customFields||{}).forEach(k=>base.customFields[k]=merge(base.customFields[k],source.customFields[k]));
+  base.snappCorporate=base.snappCorporate||{};const sc=source.snappCorporate||{};base.snappCorporate.rows=merge(base.snappCorporate.rows,sc.rows);base.snappCorporate.topups=merge(base.snappCorporate.topups,sc.topups);
+  ["formFieldMeta","formBoxes","manualLayouts","tabOrder","selectExtraOptions"].forEach(k=>{if(JSON.stringify(source[k]||{}).length>JSON.stringify(base[k]||{}).length)base[k]=source[k];});
+  base.userTabs=merge(base.userTabs,source.userTabs);base._lastSavedAt=Math.max(Number(base._lastSavedAt||0),Number(source._lastSavedAt||0));return base;
+};
 
 function saveState(triggerAutoBackup = true) {
   // پیش از هر ذخیره، آخرین وضعیت سالم نگه داشته شود تا هیچ ارتقایی داده/چیدمان را نابود نکند.

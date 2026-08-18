@@ -1391,5 +1391,9 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - loadState از current/rolling/latest/pre-11.11 غنی‌ترین وضعیت را انتخاب می‌کند.
 - missing keys در state واقعی با empty تکمیل می‌شوند نه DEFAULT sample.
 - saveState قبل از نوشتن rolling backup می‌گیرد؛ v20 وضعیت را debounced به server می‌فرستد و remote جدیدتر را بازیابی می‌کند.
+## تصمیم ۵۸ — نسخه ۱۱.۲۰.۳: Union recovery به‌جای winner-takes-all (2026-08-18)
+- همه snapshotها برای رکوردها union می‌شوند؛ تنظیمات layout کامل‌تر برنده است.
+- remote state با local merge می‌شود و هرگز جایگزینی کامل ندارد.
+- personMatch القاب فارسی و تطبیق جزئی نام اسنپ را پوشش می‌دهد.
 
 # END OF AI DECISION LOG
