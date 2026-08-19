@@ -52,6 +52,8 @@ test('11.20.3 baseline recovery restores layout and missing data together', () =
   const ctx = { window: {}, localStorage, console, JSON, Date, DEFAULT_INITIAL_DATA: {}, state: null };
   vm.createContext(ctx);
   vm.runInContext('const STORAGE_KEY="CRM_APP_STATE_V2";', ctx);
+  const sa=appSource.indexOf('function serializeStateForLocalStorage'), sb=appSource.indexOf('\nfunction loadState',sa);
+  vm.runInContext(appSource.slice(sa,sb),ctx);
   vm.runInContext(appSource.slice(a,b).replace(/applyGeneralSettingsToUI\(\);/, ';'), ctx);
   vm.runInContext('loadState()', ctx);
   const out = JSON.parse(store.CRM_APP_STATE_V2);
@@ -90,6 +92,14 @@ test('Snapp numeric parser and exact-row signatures prevent strange/double total
   assert.equal(sig([' ۱۴۰۵/۰۱/۰۱ ',' علی  ','1,000']),sig(['۱۴۰۵/۰۱/۰۱','علی','1,000']));
 });
 
+test('large Excel rows are stripped from localStorage metadata and delegated to IndexedDB', () => {
+  const a=appSource.indexOf('function serializeStateForLocalStorage'),b=appSource.indexOf('\nfunction loadState',a);
+  const ctx={result:null,JSON};vm.createContext(ctx);vm.runInContext(`${appSource.slice(a,b)};result=serializeStateForLocalStorage`,ctx);
+  const raw=ctx.result({snappCorporate:{rows:[[1]],topups:[[2]],headers:['x']},distributorCompanies:{daya:{id:'daya',pharmacyRows:[[3]],inventoryRows:[[4]],username:'u'}}});
+  const out=JSON.parse(raw);assert.deepEqual(out.snappCorporate.rows,[]);assert.deepEqual(out.distributorCompanies.daya.pharmacyRows,[]);assert.equal(out.distributorCompanies.daya.username,'u');
+  assert.match(v20Source,/function saveBulkVault/);assert.match(v20Source,/await saveBulkVault\(\)/);
+});
+
 test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /function rowSignature/);
   assert.match(v20Source, /D\.rows=D\.rows\.filter/);
@@ -98,6 +108,9 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /d\.inventoryRows=data/);
   assert.match(v20Source, /<Worksheet ss:Name=/, 'multi-sheet Excel exporter must remain');
   assert.match(v20Source, /function bindProductCrudV20/);
+  assert.match(v20Source, /productCode/);
+  assert.match(v20Source, /dayaDbCode=1111000\+code/);
+  assert.match(v20Source, /x\.code=15/);
   assert.match(v20Source, /window\.deleteProductCatalogItem=function/);
   assert.match(v20Source, /tab-distributor-database/);
   assert.match(v20Source, /\.data-table th,.data-table td/);

@@ -58,6 +58,13 @@ const MENU_SECTIONS_LIST = [
 // ----------------------------------------------------------------------------
 // 0. مدیریت وضعیت و حافظه (State Management & LocalStorage)
 // ----------------------------------------------------------------------------
+function serializeStateForLocalStorage(value) {
+  return JSON.stringify(value, function (key, val) {
+    if (this && this === value.snappCorporate && ["rows","topups","tripImports","topupImports"].includes(key)) return [];
+    if (this && this.id && ["daya","shafaarad","tivan","mashateb"].includes(this.id) && ["pharmacyRows","pharmacyImports","inventoryRows"].includes(key)) return [];
+    return val;
+  });
+}
 function loadState() {
   try {
     const raw0 = localStorage.getItem(STORAGE_KEY);
@@ -170,7 +177,7 @@ function loadState() {
   if (!state.customRecords) state.customRecords = {};
   if (!state.tabOrder) state.tabOrder = {};
   if (!state.manualLayouts) state.manualLayouts = {};
-  if (saved) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {} }
+  if (saved) { try { localStorage.setItem(STORAGE_KEY, serializeStateForLocalStorage(state)); } catch (e) {} }
   applyGeneralSettingsToUI();
 }
 
@@ -192,8 +199,8 @@ function saveState(triggerAutoBackup = true) {
   const previous = localStorage.getItem(STORAGE_KEY);
   if (previous) localStorage.setItem("CRM_APP_STATE_ROLLING_BACKUP", previous);
   state._lastSavedAt = Date.now();
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  if (triggerAutoBackup && state.settings && state.settings.autoBackupEnabled) {
+  localStorage.setItem(STORAGE_KEY, serializeStateForLocalStorage(state));
+  if (triggerAutoBackup && window.__CRM_BULK_READY !== false && state.settings && state.settings.autoBackupEnabled) {
     performAutoBackup();
   }
 }

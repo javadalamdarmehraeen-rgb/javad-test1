@@ -1141,3 +1141,8 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Database/file viewer controls live only in tab-distributor-database.
 - Product CRUD final capture handlers must remain in v20.
 - Snapp store dedupes existing archives with trailing-empty-insensitive rowSignature before totals.
+## Addendum — v11.21.2
+- Never put bulk Excel rows back in localStorage. Keep IndexedDB vault and lightweight server sync.
+- Import functions MUST await saveBulkVault before save.
+- Daya matching is by database column 16 to product `dayaDbCode`; formula is 1111000 + program code.
+- Deleting product cascades to targets/orders/draft and removes it from canonical Daya report.

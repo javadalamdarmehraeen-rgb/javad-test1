@@ -1204,5 +1204,14 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] گزارش ۱۹ ستون و محاسبات دایا/قیمت/درصد/unique
 - [x] خطوط کامل جدول و تست‌ها
 - [ ] نگاشت دقیق ستون‌های سه پخش دیگر پس از نمونه فایل
+## ۵۱) نسخه ۱۱.۲۱.۲
+- [x] IndexedDB bulk persistence و migration refresh
+- [x] last-date fallback و تاریخ اسلش‌دار viewer
+- [x] کد کالا 1001..1007 و formula آینده
+- [x] Daya column16 canonical matching
+- [x] delete cascade و compact layout
+- [x] 19-column corrected metrics/borders
+- [x] ۹ تست سبز
+- [ ] تأیید refresh با فایل واقعی کاربر
 
 # END OF AI TASKS

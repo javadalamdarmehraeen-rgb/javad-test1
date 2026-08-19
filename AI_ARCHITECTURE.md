@@ -1101,3 +1101,8 @@ Then change only what is requested.
 - Tests: tests/state-preservation.test.mjs and tests/app-smoke.test.mjs, Node built-ins only.
 - Distributor state: per-id URL/username, pharmacy archive/import batches, current inventory. Password is session-only.
 - Reporting: regex header schema, temporal filter, product metric maps, all-distributor aggregation, SpreadsheetML multi-sheet export.
+## معماری افزوده v11.21.2 — Bulk Vault
+- `serializeStateForLocalStorage` strips bulk rows/import batches.
+- v20 `bulkDb/bulkPut/bulkGet`, `saveBulkVault`, `initBulkVault` own Excel persistence.
+- Auto backup is gated by `__CRM_BULK_READY`; manual in-memory backup still includes hydrated bulk.
+- Product code mapping is master-data-first; Daya unknown codes are omitted until product registration.

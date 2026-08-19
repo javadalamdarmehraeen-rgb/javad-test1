@@ -1412,5 +1412,9 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - Daya explicit indices اعمال و سایر پخش‌ها header-regex باقی ماند تا sample برسد.
 - Product CRUD در final v20 capture handler تثبیت شد.
 - Snapp archives در snappStore به‌صورت پایدار dedupe می‌شوند تا جمع چندبرابر نشود.
+## تصمیم ۶۳ — نسخه ۱۱.۲۱.۲: bulk Excel in IndexedDB + code-first matching (2026-08-19)
+- علت حذف پس از refresh، quota localStorage تشخیص داده شد؛ bulk rows/imports به IDB و metadata به localStorage رفت.
+- Daya matching از name به code column 16 و productCode formula منتقل شد.
+- product delete cascade targets/orders/draft و report canonical filtering دارد.
 
 # END OF AI DECISION LOG

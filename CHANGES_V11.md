@@ -1,3 +1,14 @@
+# نسخه ۱۱.۲۱.۲
+
+1. داده‌های حجیم Excel از localStorage به IndexedDB `crmBulkData` منتقل شدند؛ metadata سبک در localStorage و bulk در IDB است، با migration/restore خودکار پس از refresh.
+2. backup تا آماده‌شدن bulk متوقف و server state فقط metadata سبک می‌گیرد؛ import سفر/شارژ/پخش قبل از save، bulk vault را await می‌کند.
+3. کد کالا قبل نام کالا اضافه؛ seed 1001..1007 و فرمول `dayaDbCode=1111000+productCode` برای 1008→1112008 آینده. ستون ۱۶ دایا معیار تطبیق canonical است.
+4. حذف کالا از products، salesTargets، orders و draft سفارش انجام و گزارش دایا کالای بدون mapping ثبت‌شده را نشان نمی‌دهد.
+5. آخرین تاریخ فایل با ستون ۱۴ دایا و fallback زمان import؛ viewer تاریخ‌ها را اسلش‌دار می‌کند.
+6. تب فروش پخش compact grid شد؛ گزارش به ۱۹ ستون با مرجوعی جایزه و موجودی ریالی پخش/داروخانه ارتقا یافت.
+7. Daya mapping و محاسبات قیمت/درصد/pharmacy unique/invoice full-return اصلاح و جدول‌ها border کامل شدند.
+8. تست IndexedDB metadata و product code اضافه؛ suite اکنون ۹/۹ سبز است.
+
 # نسخه ۱۱.۲۱.۱
 
 1. آرشیو قدیمی اسنپ با signature حذف trailing empty و ذخیره پاک‌سازی شد؛ تست عدد فارسی/ریال و dedupe سبز است.

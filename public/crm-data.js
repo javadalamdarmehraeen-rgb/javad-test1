@@ -437,7 +437,13 @@ const PERMISSION_GROUPS = {
     { key: "dist_extended_returns", label: "محاسبه مرجوعی کالا و جایزه و درصدهای مربوطه" },
     { key: "sys_product_crud_guard", label: "افزودن، ویرایش و حذف قطعی کالا در لایه نهایی" },
     { key: "sys_table_full_borders", label: "خط‌کشی کامل همه سطرها و ستون‌های جدول" },
-    { key: "snapp_sum_dedupe_repair", label: "پاک‌سازی تکرارهای قدیمی و اصلاح جمع اسنپ" }
+    { key: "snapp_sum_dedupe_repair", label: "پاک‌سازی تکرارهای قدیمی و اصلاح جمع اسنپ" },
+    { key: "sys_indexeddb_excel", label: "ذخیره پایدار فایل‌های حجیم اکسل در IndexedDB" },
+    { key: "sys_product_code", label: "کد کالا در سراسر سامانه" },
+    { key: "dist_daya_code_match", label: "تطبیق کد برنامه با ستون ۱۶ دایا دارو" },
+    { key: "dist_product_code_future", label: "نگاشت خودکار کدهای آینده ۱۰۰۸ به ۱۱۱۲۰۰۸ و بعد" },
+    { key: "sys_global_product_delete", label: "حذف کالا از کاتالوگ، تارگت، سفارش و گزارش‌های وابسته" },
+    { key: "dist_compact_layout", label: "چیدمان فشرده و کنارهم تب فروش پخش‌ها" }
   ]
 };
 
