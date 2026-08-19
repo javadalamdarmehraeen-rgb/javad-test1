@@ -16,7 +16,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.21.0" />
+  <link rel="stylesheet" href="style.css?v=11.21.1" />
 </head>
 <body>
 
@@ -73,6 +73,7 @@
       <button type="button" class="nav-item" data-target="tab-snapp-corporate" onclick="switchTab('tab-snapp-corporate')"><span>🚕 اسنپ سازمانی</span></button>
       <button type="button" class="nav-item" data-target="tab-distributor-companies" onclick="switchTab('tab-distributor-companies')"><span>🏢 اطلاعات شرکت‌ها</span></button>
       <button type="button" class="nav-item" data-target="tab-distributor-sales" onclick="switchTab('tab-distributor-sales')"><span>📦 اطلاعات فروش پخش‌ها</span></button>
+      <button type="button" class="nav-item" data-target="tab-distributor-database" onclick="switchTab('tab-distributor-database')"><span>🗄️ دیتابیس پخش‌ها</span></button>
       <button type="button" class="nav-item" data-target="tab-search-info" onclick="switchTab('tab-search-info')"><span>🔍 جستجوی اطلاعات</span></button>
       <button type="button" class="nav-item" data-target="tab-rep-routes" onclick="switchTab('tab-rep-routes')"><span>🛣️ رصد تردد</span></button>
       <button type="button" class="nav-item" data-target="tab-my-visit" onclick="switchTab('tab-my-visit')"><span>▶️ شروع/پایان ویزیت</span></button>
@@ -137,6 +138,7 @@
       <button type="button" class="side-menu-item" data-side-target="tab-snapp-corporate" onclick="switchTab('tab-snapp-corporate');closeSideMenu();"><span>اسنپ سازمانی</span><span>🚕</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-distributor-companies" onclick="switchTab('tab-distributor-companies');closeSideMenu();"><span>اطلاعات شرکت‌ها</span><span>🏢</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-distributor-sales" onclick="switchTab('tab-distributor-sales');closeSideMenu();"><span>اطلاعات فروش پخش‌ها</span><span>📦</span></button>
+      <button type="button" class="side-menu-item" data-side-target="tab-distributor-database" onclick="switchTab('tab-distributor-database');closeSideMenu();"><span>دیتابیس پخش‌ها</span><span>🗄️</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-search-info" onclick="switchTab('tab-search-info');closeSideMenu();"><span>جستجوی اطلاعات</span><span>🔍</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-rep-routes" onclick="switchTab('tab-rep-routes');closeSideMenu();"><span>رصد تردد</span><span>🛣️</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-my-visit" onclick="switchTab('tab-my-visit');closeSideMenu();"><span>شروع/پایان ویزیت</span><span>▶️</span></button>
@@ -1030,7 +1032,7 @@
     <section id="tab-distributor-sales" class="tab-pane">
       <div class="card">
         <div class="card-header"><div class="card-title"><span>📦 اطلاعات فروش پخش‌ها</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="btnBuildDistributorReport" class="btn btn-primary">🔎 تهیه گزارش</button><button type="button" id="btnExportDistributorReport" class="btn btn-primary btn-excel">📊 خروجی اکسل چندشیتی</button></div></div>
-        <div id="distributorActionGrid" class="v20-cards"></div>
+        <div id="distributorActionGrid" class="v20-cards"><div class="col-add-status">در حال آماده‌سازی ابزارهای چهار پخش…</div></div>
         <div class="form-grid" id="distributorFilterGrid" style="margin:1rem 0">
           <div class="form-group"><label class="form-label"><input type="checkbox" id="distModeYear"> گزارش سال</label><input id="distFilterYear" class="form-input" placeholder="۱۴۰۵"></div>
           <div class="form-group"><label class="form-label"><input type="checkbox" id="distModeMonth"> گزارش ماه</label><select id="distFilterMonth" class="form-select"><option value="">انتخاب ماه</option><option value="01">فروردین</option><option value="02">اردیبهشت</option><option value="03">خرداد</option><option value="04">تیر</option><option value="05">مرداد</option><option value="06">شهریور</option><option value="07">مهر</option><option value="08">آبان</option><option value="09">آذر</option><option value="10">دی</option><option value="11">بهمن</option><option value="12">اسفند</option></select></div>
@@ -1041,6 +1043,10 @@
         <div id="distributorReportSummary" class="v20-visit-metrics"></div>
       </div>
       <div id="distributorReportTables"></div>
+    </section>
+
+    <section id="tab-distributor-database" class="tab-pane">
+      <div class="card"><div class="card-header"><div class="card-title"><span>🗄️ دیتابیس پخش‌ها و ریز فایل‌ها</span></div></div><p class="col-help">دیتابیس داروخانه آرشیوی است؛ موجودی، آخرین فایل جایگزین‌شده است. تاریخ‌های بدون اسلش هنگام نمایش نرمال می‌شوند.</p><div id="distributorDatabaseGrid" class="v20-cards"></div></div>
       <div id="distributorRawViewer" class="card" hidden></div>
     </section>
 
@@ -2151,22 +2157,22 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.21.0"></script>
-  <script src="crm-app.js?v=11.21.0"></script>
-  <script src="crm-features-v9.js?v=11.21.0"></script>
-  <script src="iran-facilities.js?v=11.21.0" defer></script>
-  <script src="crm-features-v10.js?v=11.21.0"></script>
-  <script src="crm-features-v11.js?v=11.21.0"></script>
-  <script src="crm-features-v12.js?v=11.21.0"></script>
-  <script src="crm-features-v13.js?v=11.21.0"></script>
-  <script src="crm-jalali.js?v=11.21.0"></script>
-  <script src="crm-features-v14.js?v=11.21.0"></script>
-  <script src="crm-features-v15.js?v=11.21.0"></script>
-  <script src="crm-features-v16.js?v=11.21.0"></script>
-  <script src="crm-features-v17.js?v=11.21.0"></script>
-  <script src="crm-features-v18.js?v=11.21.0"></script>
-  <script src="crm-features-v19.js?v=11.21.0"></script>
-  <script src="crm-features-v20.js?v=11.21.0"></script>
+  <script src="crm-data.js?v=11.21.1"></script>
+  <script src="crm-app.js?v=11.21.1"></script>
+  <script src="crm-features-v9.js?v=11.21.1"></script>
+  <script src="iran-facilities.js?v=11.21.1" defer></script>
+  <script src="crm-features-v10.js?v=11.21.1"></script>
+  <script src="crm-features-v11.js?v=11.21.1"></script>
+  <script src="crm-features-v12.js?v=11.21.1"></script>
+  <script src="crm-features-v13.js?v=11.21.1"></script>
+  <script src="crm-jalali.js?v=11.21.1"></script>
+  <script src="crm-features-v14.js?v=11.21.1"></script>
+  <script src="crm-features-v15.js?v=11.21.1"></script>
+  <script src="crm-features-v16.js?v=11.21.1"></script>
+  <script src="crm-features-v17.js?v=11.21.1"></script>
+  <script src="crm-features-v18.js?v=11.21.1"></script>
+  <script src="crm-features-v19.js?v=11.21.1"></script>
+  <script src="crm-features-v20.js?v=11.21.1"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />

@@ -36,6 +36,7 @@ const MENU_SECTIONS_LIST = [
   { id: "tab-snapp-corporate", label: "اسنپ سازمانی", icon: "🚕" },
   { id: "tab-distributor-companies", label: "اطلاعات شرکت‌ها", icon: "🏢" },
   { id: "tab-distributor-sales", label: "اطلاعات فروش پخش‌ها", icon: "📦" },
+  { id: "tab-distributor-database", label: "دیتابیس پخش‌ها", icon: "🗄️" },
   { id: "tab-search-info", label: "جستجوی اطلاعات", icon: "🔍" },
   { id: "tab-rep-routes", label: "رصد تردد", icon: "🛣️" },
   { id: "tab-my-visit", label: "شروع/پایان ویزیت", icon: "▶️" },

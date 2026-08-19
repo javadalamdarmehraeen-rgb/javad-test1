@@ -1196,5 +1196,13 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] import داروخانه append / موجودی replace / مشاهده فایل‌ها
 - [x] فیلتر و جداول ۱۵ ستونی all+4 + multi-sheet Excel
 - [ ] دریافت URL و نمونه Excel واقعی چهار پخش برای mapping نهایی
+## ۵۰) نسخه ۱۱.۲۱.۱
+- [x] اصلاح جمع/تکرار اسنپ و مشاهده فایل‌ها
+- [x] grey کامل و disabled ماه
+- [x] CRUD نهایی کالا
+- [x] تب دیتابیس پخش‌ها و تاریخ نرمال
+- [x] گزارش ۱۹ ستون و محاسبات دایا/قیمت/درصد/unique
+- [x] خطوط کامل جدول و تست‌ها
+- [ ] نگاشت دقیق ستون‌های سه پخش دیگر پس از نمونه فایل
 
 # END OF AI TASKS

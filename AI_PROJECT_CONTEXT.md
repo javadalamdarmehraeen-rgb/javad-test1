@@ -843,3 +843,5 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.20.5 است. settings/layout از آخرین pre-11.20.4 snapshot یک‌بار restore و داده آن re-merge می‌شود. سپس markerها هر تغییر خودکار آتی را منع می‌کنند.
 ## افزونه وضعیت نسخه ۱۱.۲۱.۰
 نسخه فعال 11.21.0 است. npm test شامل ۸ تست Node و در CI gate است. دو تب distributor اضافه شده؛ state.distributorCompanies pharmacyRows را append/dedupe و inventoryRows را replace می‌کند. گزارش‌ها ۱۵ metric و Excel پنج worksheet دارند.
+## افزونه وضعیت نسخه ۱۱.۲۱.۱
+نسخه فعال 11.21.1 است. tab-distributor-database مالک viewerهاست. Daya explicit schema: date13, invoice12, qty4, dist3, ph7, gift2 (zero-based), inventory qty2. Report has 19 columns. Product CRUD final override is v20.

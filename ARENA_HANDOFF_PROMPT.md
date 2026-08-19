@@ -1136,3 +1136,8 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Distributor portal automation is not claimed; URLs were absent and cross-origin/CAPTCHA make it unsafe. Credentials passwords remain session-only.
 - Pharmacy imports append exact unique rows; inventory imports replace current rows.
 - Final column mapping remains pending real sample files from each distributor.
+## Addendum — v11.21.1
+- Distributor report now has 19 columns. Daya indices are explicit; mappings for Shafaarad/Tivan/Mashateb remain regex-based pending samples.
+- Database/file viewer controls live only in tab-distributor-database.
+- Product CRUD final capture handlers must remain in v20.
+- Snapp store dedupes existing archives with trailing-empty-insensitive rowSignature before totals.

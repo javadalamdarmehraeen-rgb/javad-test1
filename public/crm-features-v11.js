@@ -358,6 +358,7 @@
     "tab-snapp-corporate": "snapp",
     "tab-distributor-companies": "distributorCompanies",
     "tab-distributor-sales": "distributorSales",
+    "tab-distributor-database": "distributorDatabase",
     "tab-search-info": "search",
     "tab-rep-routes": "routes",
     "tab-my-visit": "visit",
@@ -2129,6 +2130,7 @@
     hideTab("tab-snapp-corporate", "sys_snapp_access");
     hideTab("tab-distributor-companies", "dist_companies_access");
     hideTab("tab-distributor-sales", "dist_sales_access");
+    hideTab("tab-distributor-database", "dist_database_access");
     hideTab("tab-users-permissions", "sys_users");
     hideTab("tab-backup", "sys_users");
     if (p.ph_percentage === false) {

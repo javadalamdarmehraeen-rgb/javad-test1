@@ -56,12 +56,12 @@
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (178927 بایت)
+### `public/crm-app.js` (179021 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 165
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `_editingProductId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `mergeStateWithoutLoss`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
 
-### `public/crm-data.js` (43352 بایت)
+### `public/crm-data.js` (44366 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 1
 
@@ -70,7 +70,7 @@
 - تعداد توابع داخلی: 22
 - نام‌های window که تعریف/بازنویسی می‌کند: `__lastHealth`, `switchTab`
 
-### `public/crm-features-v11.js` (107617 بایت)
+### `public/crm-features-v11.js` (107737 بایت)
 - نقش: v11 — تغییر رمز، ردیف واقعی، اکسل خط‌کشی، ویزیت زنده، تارگت، ستون‌ها، دسترسی ریز
 - تعداد توابع داخلی: 101
 - نام‌های window که تعریف/بازنویسی می‌کند: `FA_FIELD_LABELS`, `_actMap`, `_actMarks`, `_activeColTab`, `_colDelPatched`, `_colEditScroll`, `_editingBoxId`, `_editingColField`, `_layoutBusy`, `_visitKeepAlive`, `addWidgetToActiveTab`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `applyFullFormLayout`, `applySelectExtraOptions`, `builtinFieldValue`, `changeUserPassword`, `cleanupOrphanCustomFields`, `deleteCustomField`, `downloadCSVFile`, `extraListColumns`, `getAllMenuSections`, `getMainGrid`, `getUnifiedFieldList`, `groupIsShared`, `isColShownInList`, `paintFieldBox`, `paintRequiredStar`, `refreshColumnsDesigner`, `renderAllSystemSelects`, `renderColBoxInfoTable`, `renderColBoxList`, `renderColBtnInfoTable`, `renderExtraTabCustomFields`, `renderUserCardsList`, `switchTab`, `validateRequiredFields`, `writeFieldSize`
@@ -115,10 +115,10 @@
 - تعداد توابع داخلی: 65
 - نام‌های window که تعریف/بازنویسی می‌کند: `_v18DefaultReq`, `_v19BackupLayoutGuard`, `_v19ComboHook`, `_v19Hist`, `_v19IcObs`, `_v19ProdTableWrap`, `_v19Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `extraListColumns`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderPharmaciesList`, `switchTab`, `testServerConnectivity`
 
-### `public/crm-features-v20.js` (150441 بایت)
+### `public/crm-features-v20.js` (157776 بایت)
 - نقش: ============================================================
-- تعداد توابع داخلی: 172
-- نام‌های window که تعریف/بازنویسی می‌کند: `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFullFormLayout`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `extraListColumns`, `getUnifiedFieldList`, `mergeStateWithoutLoss`, `openRowDetailsModal`, `performAutoBackup`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`, `v20RenderProductExtras`
+- تعداد توابع داخلی: 178
+- نام‌های window که تعریف/بازنویسی می‌کند: `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFullFormLayout`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `extraListColumns`, `getUnifiedFieldList`, `mergeStateWithoutLoss`, `openRowDetailsModal`, `performAutoBackup`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`, `v20RenderProductExtras`
 
 ### `public/crm-features-v9.js` (69121 بایت)
 - نقش: ===========================================================================
@@ -140,7 +140,7 @@
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (1145 بایت)
-- نقش: const CACHE = "ttt-v11.21.0";
+- نقش: const CACHE = "ttt-v11.21.1";
 - تعداد توابع داخلی: 0
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -154,6 +154,7 @@
 - `_activeManualTab`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v12.js` ← `public/crm-features-v13.js`
 - `_editingBoxId`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v11.js` ← `public/crm-features-v12.js` ← `public/crm-features-v18.js`
 - `_editingColField`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v11.js` ← `public/crm-features-v18.js`
+- `_editingProductId`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-features-v20.js`
 - `_manSelected`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v15.js` ← `public/crm-features-v16.js`
 - `_v18DefaultReq`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v18.js` ← `public/crm-features-v19.js`
 - `activeDateInputForPicker`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-jalali.js`
@@ -245,7 +246,7 @@
 - `public/crm-features-v16.js` → 1 شناسه (مثل: `columnsDesignerHost`)
 - `public/crm-features-v18.js` → 1 شناسه (مثل: `columnsDesignerHost`)
 - `public/crm-features-v19.js` → 3 شناسه (مثل: `columnsDesignerHost`, `formProduct`, `tableProductsBody`)
-- `public/crm-features-v20.js` → 1 شناسه (مثل: `productName`)
+- `public/crm-features-v20.js` → 7 شناسه (مثل: `btnSaveProduct`, `formProduct`, `productDistPrice`, `productName`, `productPrice`, `productSavedBanner`, `productStock`)
 
 ### tab-custom-fields «➕ افزودن‌ها»
 - `public/crm-app.js` → 9 شناسه (مثل: `cfAllowAddOption`, `cfLabel`, `cfOptions`, `cfOptionsWrapper`, `cfShowInForm`, `cfShowInList`, `cfTargetEntity`, `cfType`)
@@ -262,8 +263,11 @@
 ### tab-distributor-companies «🏢 اطلاعات شرکت‌ها»
 - `public/crm-features-v20.js` → 1 شناسه (مثل: `distributorCompanyGrid`)
 
+### tab-distributor-database «🗄️ دیتابیس پخش‌ها»
+- `public/crm-features-v20.js` → 2 شناسه (مثل: `distributorDatabaseGrid`, `distributorRawViewer`)
+
 ### tab-distributor-sales «📦 اطلاعات فروش پخش‌ها»
-- `public/crm-features-v20.js` → 16 شناسه (مثل: `btnBuildDistributorReport`, `btnExportDistributorReport`, `distFilterDay`, `distFilterFrom`, `distFilterMonth`, `distFilterTo`, `distFilterYear`, `distModeDay`)
+- `public/crm-features-v20.js` → 15 شناسه (مثل: `btnBuildDistributorReport`, `btnExportDistributorReport`, `distFilterDay`, `distFilterFrom`, `distFilterMonth`, `distFilterTo`, `distFilterYear`, `distModeDay`)
 
 ### tab-doctors «👨‍⚕️ پزشکان»
 - `public/crm-app.js` → 27 شناسه (مثل: `btnDocMapSearch`, `btnDocPercentageNo`, `btnDocPercentageYes`, `btnDoctorCurrentLocation`, `btnDoctorGetAddressFromPoint`, `btnExportDoctorsCSV`, `btnSaveDoctor`, `docFileDisplay`)

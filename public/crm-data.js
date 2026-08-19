@@ -429,7 +429,15 @@ const PERMISSION_GROUPS = {
     { key: "dist_view_database", label: "مشاهده فایل‌ها و دیتابیس هر پخش" },
     { key: "dist_report_filters", label: "گزارش سال، ماه، روز و بازه پخش‌ها" },
     { key: "dist_report_tables", label: "جدول ۱۵ ستونی همه پخش‌ها و هر پخش" },
-    { key: "dist_multisheet_excel", label: "خروجی اکسل چندشیتی فارسی" }
+    { key: "dist_multisheet_excel", label: "خروجی اکسل چندشیتی فارسی" },
+    { key: "dist_database_access", label: "دسترسی به تب دیتابیس پخش‌ها" },
+    { key: "dist_database_files", label: "مشاهده دیتابیس، موجودی و ریز فایل‌های هر پخش" },
+    { key: "dist_daya_column_map", label: "نگاشت ستونی دایا دارو (تاریخ ۱۴، فاکتور ۱۳، موجودی ۳)" },
+    { key: "dist_product_name_match", label: "تطبیق نام کالاهای پخش با کالاهای ثبت‌شده برنامه" },
+    { key: "dist_extended_returns", label: "محاسبه مرجوعی کالا و جایزه و درصدهای مربوطه" },
+    { key: "sys_product_crud_guard", label: "افزودن، ویرایش و حذف قطعی کالا در لایه نهایی" },
+    { key: "sys_table_full_borders", label: "خط‌کشی کامل همه سطرها و ستون‌های جدول" },
+    { key: "snapp_sum_dedupe_repair", label: "پاک‌سازی تکرارهای قدیمی و اصلاح جمع اسنپ" }
   ]
 };
 

@@ -97,4 +97,8 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /d\.pharmacyRows=d\.pharmacyRows\.concat\(fresh\)/);
   assert.match(v20Source, /d\.inventoryRows=data/);
   assert.match(v20Source, /<Worksheet ss:Name=/, 'multi-sheet Excel exporter must remain');
+  assert.match(v20Source, /function bindProductCrudV20/);
+  assert.match(v20Source, /window\.deleteProductCatalogItem=function/);
+  assert.match(v20Source, /tab-distributor-database/);
+  assert.match(v20Source, /\.data-table th,.data-table td/);
 });

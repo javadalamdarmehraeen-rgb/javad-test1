@@ -1407,5 +1407,10 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - node:test zero-dependency suite هم unit preservation و هم HTTP app-entry/API/assets را پوشش می‌دهد؛ CI قبل build اجرا می‌کند.
 - login خودکار cross-origin پخش قابل‌اعتماد نیست؛ URL configurable + manual imports راه امن است. password فقط sessionStorage است.
 - pharmacy imports append+dedupe و inventory replace است؛ گزارش all/4 distributors و multi-sheet XML XLS ساخته می‌شود.
+## تصمیم ۶۲ — نسخه ۱۱.۲۱.۱: database tab + Daya explicit schema (2026-08-19)
+- raw database/file viewers از sales به tab-distributor-database منتقل شدند.
+- Daya explicit indices اعمال و سایر پخش‌ها header-regex باقی ماند تا sample برسد.
+- Product CRUD در final v20 capture handler تثبیت شد.
+- Snapp archives در snappStore به‌صورت پایدار dedupe می‌شوند تا جمع چندبرابر نشود.
 
 # END OF AI DECISION LOG
