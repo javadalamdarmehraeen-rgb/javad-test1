@@ -1151,3 +1151,8 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Remote state sync is POST-only. Backups are manual recovery only.
 - Empty arrays represent intentional manager deletion; never repopulate them.
 - Tests explicitly reject backup reintroduction and sample default injection.
+## Addendum — v11.21.4
+- Last distributor date means last physical non-empty row, not max/sorted date.
+- Pharmacy import remains append-only concat(fresh).
+- Snapp import uses real buttons btnImportSnappTrips/Topups and robust input handlers.
+- Never group product code or raw compact dates with thousands separators.

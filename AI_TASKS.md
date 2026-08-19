@@ -1220,5 +1220,13 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] تست authoritative current + empty arrays + no defaults
 - [x] ۹/۹ تست سبز
 - [ ] کاربر یک‌بار اطلاعات ناخواسته فعلی را اصلاح کند؛ پس از آن پایدار می‌ماند
+## ۵۳) نسخه ۱۱.۲۱.۴
+- [x] آخرین تاریخ از سطر آخر ستون ۱۴
+- [x] append-only فایل داروخانه
+- [x] grid پنج‌ستونه فیلتر پخش
+- [x] عدم group تاریخ/رمز/کد
+- [x] دکمه واقعی import سفر/شارژ
+- [x] ۱۰/۱۰ تست سبز
+- [ ] تأیید import واقعی XLSX کاربر
 
 # END OF AI TASKS

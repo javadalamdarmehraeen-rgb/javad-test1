@@ -1420,5 +1420,9 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - علت بازگشت داده قدیمی، auto merge/recovery بود؛ همه مسیرهای خودکار حذف شدند.
 - remote فقط POST است؛ backup فقط manual. empty array deletion معتبر است.
 - runtime mergeStateWithoutLoss حذف و tests بر ضد reintroduction تغییر کردند.
+## تصمیم ۶۵ — نسخه ۱۱.۲۱.۴: explicit import buttons + last physical row date (2026-08-19)
+- Snapp file labels با buttons و robust onchange جایگزین شدند.
+- distributor last date دیگر max-sort نیست؛ آخرین سطر فیزیکی معتبر برنده است.
+- product codes/date raw values از global number grouping مستثنی‌اند.
 
 # END OF AI DECISION LOG

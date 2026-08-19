@@ -849,3 +849,5 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.21.2 است. Excel bulk data در IndexedDB crmBulkData/kv:bulk-v1 است؛ local/server state سبک است. Products دارای code و dayaDbCode=1111000+code هستند. Daya code column index15 canonical source است.
 ## افزونه وضعیت نسخه ۱۱.۲۱.۳
 نسخه فعال 11.21.3 است. CRM_APP_STATE_V2 تنها مرجع خودکار است. backup/history/remote هیچ‌گاه خودکار merge یا restore نمی‌شوند. Server sync فقط POST metadata است. IndexedDB bulk current جداگانه hydrate می‌شود.
+## افزونه وضعیت نسخه ۱۱.۲۱.۴
+نسخه فعال 11.21.4 است. Snapp import از button IDs و robust input onchange استفاده می‌کند. distLastDate آخرین سطر معتبر و Daya column14 است. distributorFilterGrid در desktop 5 columns است.

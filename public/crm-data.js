@@ -446,7 +446,11 @@ const PERMISSION_GROUPS = {
     { key: "dist_compact_layout", label: "چیدمان فشرده و کنارهم تب فروش پخش‌ها" },
     { key: "sys_authoritative_current_state", label: "وضعیت فعلی تنها مرجع معتبر اطلاعات" },
     { key: "sys_no_auto_backup_merge", label: "منع ادغام خودکار پشتیبان‌های قدیمی" },
-    { key: "sys_no_remote_overwrite", label: "منع بازیابی یا بازنویسی خودکار از سرور" }
+    { key: "sys_no_remote_overwrite", label: "منع بازیابی یا بازنویسی خودکار از سرور" },
+    { key: "dist_last_row_date", label: "آخرین تاریخ داروخانه از آخرین سطر ستون تاریخ" },
+    { key: "dist_append_only_pharmacy", label: "افزودن فایل داروخانه به انتهای دیتابیس بدون جایگزینی" },
+    { key: "snapp_robust_import_buttons", label: "کلید واقعی و listener مستقل ورود فایل‌های اسنپ" },
+    { key: "sys_no_group_date_password_code", label: "منع سه‌رقمی تاریخ، رمز و کد کالا" }
   ]
 };
 

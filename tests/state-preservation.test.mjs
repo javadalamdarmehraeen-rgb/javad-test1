@@ -81,11 +81,20 @@ test('large Excel rows are stripped from localStorage metadata and delegated to 
   assert.match(v20Source,/function saveBulkVault/);assert.match(v20Source,/await saveBulkVault\(\)/);
 });
 
+test('distributor last date comes from the final non-empty row, not import time or max sort', () => {
+  const start=v20Source.indexOf('function distLastDate('),brace=v20Source.indexOf('{',start);let depth=0,end=brace;for(;end<v20Source.length;end++){if(v20Source[end]==='{')depth++;else if(v20Source[end]==='}'&&--depth===0){end++;break;}}
+  const ctx={result:null,normSnappDate:v=>String(v||''),findDistIndex:()=>0};vm.createContext(ctx);vm.runInContext(`${v20Source.slice(start,end)};result=distLastDate`,ctx);
+  assert.equal(ctx.result([['1405/02/01'],['1405/01/01']],['تاریخ'],'other'),'1405/01/01');
+  const daya=Array.from({length:14},()=>''),daya2=Array.from({length:14},()=> '');daya[13]='1405/03/01';daya2[13]='1405/02/20';assert.equal(ctx.result([daya,daya2],[],'daya'),'1405/02/20');
+});
+
 test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /function rowSignature/);
   assert.match(v20Source, /D\.rows=D\.rows\.filter/);
   assert.match(v20Source, /seen\[rowSignature\(r\)\]/);
   assert.match(v20Source, /d\.pharmacyRows=d\.pharmacyRows\.concat\(fresh\)/);
+  assert.match(v20Source, /function bindSnappImportButtons/);
+  assert.match(v20Source, /data-no-number-group/);
   assert.match(v20Source, /d\.inventoryRows=data/);
   assert.match(v20Source, /<Worksheet ss:Name=/, 'multi-sheet Excel exporter must remain');
   assert.match(v20Source, /function bindProductCrudV20/);

@@ -1,3 +1,12 @@
+# نسخه ۱۱.۲۱.۴
+
+1. عنوان آخرین فایل به «آخرین تاریخ داروخانه/موجودی» تغییر و تاریخ دقیقاً از آخرین سطر غیرخالی (دایا ستون ۱۴) خوانده می‌شود؛ fallback فقط در نبود تاریخ است.
+2. ورود فایل داروخانه append-only با concat(fresh) و dedupe باقی ماند و تست مستقیم last-row/append اضافه شد.
+3. filter grid پخش در desktop پنج‌ستونه اجباری و در عرض‌های کمتر responsive شد؛ form-groupها grid-column auto دارند.
+4. product code cell با data-no-number-group و تاریخ ۸رقمی از formatter مستثنی شد؛ input password/code نیز بدون گروه‌بندی است.
+5. labelهای import اسنپ به button واقعی تبدیل و handler مستقل click/change با status «در حال خواندن» اضافه شد.
+6. تست‌ها به ۱۰/۱۰ رسیدند.
+
 # نسخه ۱۱.۲۱.۳
 
 1. تمام بازیابی/ادغام خودکار rolling backup، latest backup، historical archive و remote GET حذف شد.

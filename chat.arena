@@ -1,6 +1,6 @@
 CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.25 | تاریخ به‌روزرسانی: 2026-08-19 (۲۸ مرداد ۱۴۰۵) | نسخه برنامه: 11.21.3
+نسخه این فایل: 1.26 | تاریخ به‌روزرسانی: 2026-08-19 (۲۸ مرداد ۱۴۰۵) | نسخه برنامه: 11.21.4
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -333,7 +333,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
 بخش ۴) تاریخچه نسخه‌ها و آخرین دوره تغییرات
 ══════════════════════════════════════════════════════════════════════════════════
 • مسیر نسخه‌ها (بازسازی از ریپو): V1 → … → V9 → V10 → V11 → V11.1 … V11.14 → V11.15
-  → V11.15.1 → V11.15.2 → V11.15.3 → V11.16.0 → V11.16.1 → V11.16.2 → V11.17.0 → V11.17.1 → V11.18.0 → V11.19.0 → V11.20.0 → V11.20.1 → V11.20.2 → V11.20.3 → V11.20.4 → V11.20.5 → V11.21.0 → V11.21.1 → V11.21.2 → V11.21.3.
+  → V11.15.1 → V11.15.2 → V11.15.3 → V11.16.0 → V11.16.1 → V11.16.2 → V11.17.0 → V11.17.1 → V11.18.0 → V11.19.0 → V11.20.0 → V11.20.1 → V11.20.2 → V11.20.3 → V11.20.4 → V11.20.5 → V11.21.0 → V11.21.1 → V11.21.2 → V11.21.3 → V11.21.4.
 • جزئیات کامل هر نسخه V9 به بعد در CHANGES_V9.md / CHANGES_V10.md / CHANGES_V11.md
   (محتوای کاملشان در بخش ۹ همین فایل هست).
 
@@ -569,18 +569,18 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     1082 بایت  .gitignore
   [متنی ]     2057 بایت  .gitlab-ci.yml
   [متنی ]    19270 بایت  AI_ARCHITECTURE.md
-  [متنی ]    43610 بایت  AI_DECISION_LOG.md
-  [متنی ]    21424 بایت  AI_PROJECT_CONTEXT.md
+  [متنی ]    43992 بایت  AI_DECISION_LOG.md
+  [متنی ]    21711 بایت  AI_PROJECT_CONTEXT.md
   [متنی ]    26521 بایت  AI_RULES.md
-  [متنی ]    30163 بایت  AI_TASKS.md
-  [متنی ]    26201 بایت  ARENA_HANDOFF_PROMPT.md
+  [متنی ]    30520 بایت  AI_TASKS.md
+  [متنی ]    26521 بایت  ARENA_HANDOFF_PROMPT.md
   [متنی ]      600 بایت  CHANGES_V10.md
-  [متنی ]    50924 بایت  CHANGES_V11.md
+  [متنی ]    51915 بایت  CHANGES_V11.md
   [متنی ]     3939 بایت  CHANGES_V9.md
   [متنی ]     1806 بایت  CLEAN_EXTRA_FILES.bat
   [متنی ]     2377 بایت  KEEP_ONLY_GITHUB.bat
   [متنی ]     6334 بایت  OFFICIAL_FILELIST.txt
-  [متنی ]    39812 بایت  PROJECT_GRAPH.md
+  [متنی ]    39814 بایت  PROJECT_GRAPH.md
   [متنی ]     2642 بایت  PUSH_FRESH_GITHUB.bat
   [متنی ]     2680 بایت  PUSH_GITHUB_CLEAN.bat
   [متنی ]     6579 بایت  RAHNAMA_GITLAB.txt
@@ -600,7 +600,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     9666 بایت  server.js
   [متنی ]     2426 بایت  sync_all.sh
   [متنی ]      738 بایت  tsconfig.json
-  [متنی ]   224489 بایت  update_chat_arena.py
+  [متنی ]   229879 بایت  update_chat_arena.py
   [متنی ]    10215 بایت  update_project_graph.py
   [متنی ]     2844 بایت  .github/workflows/deploy.yml
   [متنی ]      214 بایت  .github/workflows/keep_alive.yml
@@ -609,7 +609,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     9796 بایت  mobile/src/simAuth.ts
   [متنی ]     8066 بایت  public/cloudflare-worker.js
   [متنی ]   170115 بایت  public/crm-app.js
-  [متنی ]    45446 بایت  public/crm-data.js
+  [متنی ]    45974 بایت  public/crm-data.js
   [متنی ]    13643 بایت  public/crm-features-v10.js
   [متنی ]   107737 بایت  public/crm-features-v11.js
   [متنی ]    44613 بایت  public/crm-features-v12.js
@@ -620,10 +620,10 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]    19662 بایت  public/crm-features-v17.js
   [متنی ]    33040 بایت  public/crm-features-v18.js
   [متنی ]    60932 بایت  public/crm-features-v19.js
-  [متنی ]   162543 بایت  public/crm-features-v20.js
+  [متنی ]   163895 بایت  public/crm-features-v20.js
   [متنی ]    69121 بایت  public/crm-features-v9.js
   [متنی ]    25683 بایت  public/crm-jalali.js
-  [متنی ]   139036 بایت  public/index.html
+  [متنی ]   139028 بایت  public/index.html
   [متنی ]    11799 بایت  public/iran-facilities.js
   [متنی ]     7100 بایت  public/login.html
   [متنی ]      966 بایت  public/manifest.json
@@ -779,8 +779,8 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     8984 بایت  src/lib/tracker.ts
   [متنی ]     2276 بایت  src/lib/useLive.ts
   [متنی ]     3346 بایت  src/lib/zip.ts
-  [متنی ]     2745 بایت  tests/app-smoke.test.mjs
-  [متنی ]     6368 بایت  tests/state-preservation.test.mjs
+  [متنی ]     2790 بایت  tests/app-smoke.test.mjs
+  [متنی ]     7286 بایت  tests/state-preservation.test.mjs
   [تصویر]    23282 بایت  public/apple-touch-icon.png
   [تصویر]     4527 بایت  public/favicon.png
   [تصویر]    26208 بایت  public/icon-192.png
@@ -2468,6 +2468,80 @@ git push gitlab main
 
 
 
+──────────────────────────────── نوبت ۳۱ ────────────────────────────────
+🧑 کاربر (عیناً):
+«اسم اخرین فایل داروخانه را به آخرین تاریخ داروخانه تغییر بده و بجای تاریخ ورود فایل جدید اخرین تاریخ سطر اخر در ستون شماره 14 در دیتابیس را قرار بده  
+هر فایل داروخانه جدیدی وارد می شود جایگزین فایل قبلی نشود و اطلاعات جدید در اخرین سطر خالی به بعد جایگذاری شوند
+
+در تب اطلاعات فروش پخش ها هنوز فیلدهای سال و ماه و از تاریخ و تا تاریخ کنار یکدیگر قرار نگرفته اند و همه صفحه را بی نظم کرده  
+قرار شد تاریخ ها و رمزها و کد کالاها سه رقم سه رقم جدا نشود
+
+در تب اسنپ سازمانی فایل های سفر و موجودی اضافه نمی شوند و کلید ورود فایل های گزارش و ورود گزارش افزایش موجودی کار نمی کند»
+
+🤖 دستیار:
+نسخه **۱۱.۲۱.۴** آماده شد.
+
+## آخرین تاریخ داروخانه و موجودی
+عنوان‌ها تغییر کردند:
+- آخرین تاریخ داروخانه؛
+- آخرین تاریخ موجودی.
+
+برای دایا دارو، برنامه دیگر بزرگ‌ترین تاریخ یا زمان ورود فایل را انتخاب نمی‌کند. از انتهای دیتابیس به بالا حرکت می‌کند و اولین تاریخ معتبر موجود در **ستون ۱۴ آخرین سطر غیرخالی** را نمایش می‌دهد.
+
+برای موجودی، اگر خود فایل ستون تاریخ معتبر داشته باشد آخرین سطر آن خوانده می‌شود؛ فقط اگر فایل واقعاً تاریخ نداشته باشد، تاریخ زمان ورود فایل نمایش داده می‌شود.
+
+## فایل داروخانه append-only
+قانون ورود فایل داروخانه تثبیت شد:
+- اطلاعات قبلی جایگزین نمی‌شوند؛
+- ردیف‌های کاملاً تکراری رد می‌شوند؛
+- ردیف‌های جدید با `concat(fresh)` از آخرین سطر موجود به بعد اضافه می‌شوند؛
+- فایل موجودی همچنان طبق قانون قبلی جایگزین آخرین موجودی می‌شود.
+
+یک unit test جدید نیز بررسی می‌کند که تاریخ از آخرین سطر خوانده شود و منطق append حذف نشود.
+
+## چیدمان فیلترهای پخش
+در دسکتاپ، فیلدهای سال، ماه، روز، از تاریخ و تا تاریخ با CSS اجباری در **پنج ستون کنار یکدیگر** قرار می‌گیرند. `grid-column` قدیمی روی این فیلدها خنثی شد. در صفحه کوچک، چیدمان به‌صورت واکنش‌گرا جمع می‌شود.
+
+## جلوگیری از سه‌رقمی‌شدن تاریخ، رمز و کد
+- سلول کد کالا با `data-no-number-group` محافظت می‌شود؛
+- کدهایی مانند ۱۰۰۱ دیگر به ۱٬۰۰۱ تبدیل نمی‌شوند؛
+- تاریخ فشرده هشت‌رقمی نیز از جداکننده سه‌رقمی مستثنی شد؛
+- ورودی‌های password و number قبلاً هم توسط formatter تغییر نمی‌کردند و این تست حفظ شد.
+
+## ورود فایل‌های اسنپ
+دو label قبلی با دکمه واقعی جایگزین شدند:
+- `btnImportSnappTrips` برای سفر؛
+- `btnImportSnappTopups` برای افزایش موجودی.
+
+هر دکمه مستقیماً file picker مربوط به خودش را باز می‌کند. برای هر input یک handler مستقل و نهایی ساخته شد که:
+- قبل از خواندن، پیام «در حال خواندن فایل…» نشان می‌دهد؛
+- فایل‌ها را به parser می‌فرستد؛
+- ذخیره IndexedDB را کامل می‌کند؛
+- input را برای ورود فایل بعدی پاک می‌کند.
+
+این handler قبل از listenerهای قدیمی ثبت و آن‌ها را غیرفعال می‌کند تا import دو بار یا صفر بار اجرا نشود.
+
+## نتیجه تست
+- `npm test`: **۱۰ تست از ۱۰ تست موفق**؛
+- تست آخرین سطر ستون ۱۴: **موفق**؛
+- تست append-only فایل داروخانه: **موفق**؛
+- تست وجود دکمه‌های واقعی اسنپ: **موفق**؛
+- تست عدم سه‌رقمی کد کالا: **موفق**؛
+- build: **موفق**؛
+- سلامت سرور: **نسخه 11.21.4**.
+
+پس از نصب، برای آزمایش اسنپ یک فایل را با دکمه جدید وارد کنید. اگر خود ساختار XLSX با parser سازگار نباشد، پیام خطای دقیق نام فایل نمایش داده خواهد شد.
+
+```powershell
+git add -A
+git commit -m "v11.21.4: اصلاح تاریخ پخش و ورود فایل اسنپ"
+git pull --no-rebase origin main
+git push origin main
+git push gitlab main
+```
+
+
+
 
 ══════════════════════════════════════════════════════════════════════════════════
 بخش ۹) محتوای کامل فایل‌های پروژه — بدون هیچ سانسور یا پنهان‌کاری
@@ -3794,7 +3868,7 @@ Then change only what is requested.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_DECISION_LOG.md (43610 بایت)
+فایل: AI_DECISION_LOG.md (43992 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI DECISION LOG
@@ -5219,12 +5293,16 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - علت بازگشت داده قدیمی، auto merge/recovery بود؛ همه مسیرهای خودکار حذف شدند.
 - remote فقط POST است؛ backup فقط manual. empty array deletion معتبر است.
 - runtime mergeStateWithoutLoss حذف و tests بر ضد reintroduction تغییر کردند.
+## تصمیم ۶۵ — نسخه ۱۱.۲۱.۴: explicit import buttons + last physical row date (2026-08-19)
+- Snapp file labels با buttons و robust onchange جایگزین شدند.
+- distributor last date دیگر max-sort نیست؛ آخرین سطر فیزیکی معتبر برنده است.
+- product codes/date raw values از global number grouping مستثنی‌اند.
 
 # END OF AI DECISION LOG
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_PROJECT_CONTEXT.md (21424 بایت)
+فایل: AI_PROJECT_CONTEXT.md (21711 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI PROJECT CONTEXT
@@ -6078,6 +6156,8 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.21.2 است. Excel bulk data در IndexedDB crmBulkData/kv:bulk-v1 است؛ local/server state سبک است. Products دارای code و dayaDbCode=1111000+code هستند. Daya code column index15 canonical source است.
 ## افزونه وضعیت نسخه ۱۱.۲۱.۳
 نسخه فعال 11.21.3 است. CRM_APP_STATE_V2 تنها مرجع خودکار است. backup/history/remote هیچ‌گاه خودکار merge یا restore نمی‌شوند. Server sync فقط POST metadata است. IndexedDB bulk current جداگانه hydrate می‌شود.
+## افزونه وضعیت نسخه ۱۱.۲۱.۴
+نسخه فعال 11.21.4 است. Snapp import از button IDs و robust input onchange استفاده می‌کند. distLastDate آخرین سطر معتبر و Daya column14 است. distributorFilterGrid در desktop 5 columns است.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -7464,7 +7544,7 @@ stay empty. Unit tests must fail if old records/layout are reintroduced.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_TASKS.md (30163 بایت)
+فایل: AI_TASKS.md (30520 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI TASKS
@@ -8689,12 +8769,20 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] تست authoritative current + empty arrays + no defaults
 - [x] ۹/۹ تست سبز
 - [ ] کاربر یک‌بار اطلاعات ناخواسته فعلی را اصلاح کند؛ پس از آن پایدار می‌ماند
+## ۵۳) نسخه ۱۱.۲۱.۴
+- [x] آخرین تاریخ از سطر آخر ستون ۱۴
+- [x] append-only فایل داروخانه
+- [x] grid پنج‌ستونه فیلتر پخش
+- [x] عدم group تاریخ/رمز/کد
+- [x] دکمه واقعی import سفر/شارژ
+- [x] ۱۰/۱۰ تست سبز
+- [ ] تأیید import واقعی XLSX کاربر
 
 # END OF AI TASKS
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: ARENA_HANDOFF_PROMPT.md (26201 بایت)
+فایل: ARENA_HANDOFF_PROMPT.md (26521 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # ARENA AI MASTER HANDOFF PROMPT
@@ -9850,6 +9938,11 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Remote state sync is POST-only. Backups are manual recovery only.
 - Empty arrays represent intentional manager deletion; never repopulate them.
 - Tests explicitly reject backup reintroduction and sample default injection.
+## Addendum — v11.21.4
+- Last distributor date means last physical non-empty row, not max/sorted date.
+- Pharmacy import remains append-only concat(fresh).
+- Snapp import uses real buttons btnImportSnappTrips/Topups and robust input handlers.
+- Never group product code or raw compact dates with thousands separators.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -9869,9 +9962,18 @@ Leaflet محلی. فونت گوگل حذف شد. gzip روی JS/CSS/HTML.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: CHANGES_V11.md (50924 بایت)
+فایل: CHANGES_V11.md (51915 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
+# نسخه ۱۱.۲۱.۴
+
+1. عنوان آخرین فایل به «آخرین تاریخ داروخانه/موجودی» تغییر و تاریخ دقیقاً از آخرین سطر غیرخالی (دایا ستون ۱۴) خوانده می‌شود؛ fallback فقط در نبود تاریخ است.
+2. ورود فایل داروخانه append-only با concat(fresh) و dedupe باقی ماند و تست مستقیم last-row/append اضافه شد.
+3. filter grid پخش در desktop پنج‌ستونه اجباری و در عرض‌های کمتر responsive شد؛ form-groupها grid-column auto دارند.
+4. product code cell با data-no-number-group و تاریخ ۸رقمی از formatter مستثنی شد؛ input password/code نیز بدون گروه‌بندی است.
+5. labelهای import اسنپ به button واقعی تبدیل و handler مستقل click/change با status «در حال خواندن» اضافه شد.
+6. تست‌ها به ۱۰/۱۰ رسیدند.
+
 # نسخه ۱۱.۲۱.۳
 
 1. تمام بازیابی/ادغام خودکار rolling backup، latest backup، historical archive و remote GET حذف شد.
@@ -10713,7 +10815,7 @@ update_project_graph.py
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: PROJECT_GRAPH.md (39812 بایت)
+فایل: PROJECT_GRAPH.md (39814 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # 🕸️ گراف دانش پروژه «نماینده علمی» (PROJECT_GRAPH.md)
@@ -10779,7 +10881,7 @@ update_project_graph.py
 - تعداد توابع داخلی: 163
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `_editingProductId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
 
-### `public/crm-data.js` (45446 بایت)
+### `public/crm-data.js` (45974 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 1
 
@@ -10833,9 +10935,9 @@ update_project_graph.py
 - تعداد توابع داخلی: 65
 - نام‌های window که تعریف/بازنویسی می‌کند: `_v18DefaultReq`, `_v19BackupLayoutGuard`, `_v19ComboHook`, `_v19Hist`, `_v19IcObs`, `_v19ProdTableWrap`, `_v19Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `extraListColumns`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderPharmaciesList`, `switchTab`, `testServerConnectivity`
 
-### `public/crm-features-v20.js` (162543 بایت)
+### `public/crm-features-v20.js` (163895 بایت)
 - نقش: ============================================================
-- تعداد توابع داخلی: 185
+- تعداد توابع داخلی: 186
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFullFormLayout`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `editProductCatalogItem`, `extraListColumns`, `getUnifiedFieldList`, `openRowDetailsModal`, `performAutoBackup`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`, `v20RenderProductExtras`
 
 ### `public/crm-features-v9.js` (69121 بایت)
@@ -10858,7 +10960,7 @@ update_project_graph.py
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (1145 بایت)
-- نقش: const CACHE = "ttt-v11.21.3";
+- نقش: const CACHE = "ttt-v11.21.4";
 - تعداد توابع داخلی: 0
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -11066,7 +11168,7 @@ update_project_graph.py
 - `public/crm-jalali.js` → 7 شناسه (مثل: `jalaliCalendarPopup`, `jalaliDaysGrid`, `jalaliMonthSelect`, `jalaliNextMonth`, `jalaliPrevMonth`, `jalaliTodayBtn`, `jalaliYearSelect`)
 
 ### tab-snapp-corporate «🚕 اسنپ سازمانی»
-- `public/crm-features-v20.js` → 25 شناسه (مثل: `btnBuildSnappReport`, `btnBuildSnappTopupReport`, `btnExportSnappTopups`, `btnExportSnappView`, `btnOpenSnappCorporate`, `snappDailyStatus`, `snappFileArchiveViewer`, `snappFilterFrom`)
+- `public/crm-features-v20.js` → 27 شناسه (مثل: `btnBuildSnappReport`, `btnBuildSnappTopupReport`, `btnExportSnappTopups`, `btnExportSnappView`, `btnImportSnappTopups`, `btnImportSnappTrips`, `btnOpenSnappCorporate`, `snappDailyStatus`)
 
 ### tab-troubleshooting «🛠️ عیب‌یابی»
 - `public/crm-app.js` → 1 شناسه (مثل: `diagnosticsStatusBox`)
@@ -12178,13 +12280,13 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.21.3",
+  "version": "11.21.4",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
       "name": "namayandeelmi-javad-crm",
-      "version": "11.21.3",
+      "version": "11.21.4",
       "license": "MIT",
       "engines": {
         "node": ">=20.0.0"
@@ -12200,7 +12302,7 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.21.3",
+  "version": "11.21.4",
   "description": "سیستم جامع مدیریت و ویزیت علمی، داروخانه‌ها، پزشکان و سفارشات (CRM / PWA) هماهنگ با Render و Neon",
   "main": "server.js",
   "engines": {
@@ -12391,7 +12493,7 @@ const server = http.createServer((req, res) => {
     return send(req, res, 200, JSON.stringify({
       ok: true, status: "healthy", message: "OK",
       service: "namayandeelmi-javad-crm",
-      version: "11.21.3",
+      version: "11.21.4",
       timestamp: new Date().toISOString()
     }), "application/json; charset=utf-8");
   }
@@ -12505,7 +12607,7 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, "0.0.0.0", () => {
-  console.log("CRM v11.21.3 listening on 0.0.0.0:" + PORT);
+  console.log("CRM v11.21.4 listening on 0.0.0.0:" + PORT);
 });
 ~~~~~~~~
 
@@ -12627,7 +12729,7 @@ git status -sb
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: update_chat_arena.py (224489 بایت)
+فایل: update_chat_arena.py (229879 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~python
 #!/usr/bin/env python3
@@ -12681,7 +12783,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.25 | تاریخ به‌روزرسانی: 2026-08-19 (۲۸ مرداد ۱۴۰۵) | نسخه برنامه: 11.21.3
+نسخه این فایل: 1.26 | تاریخ به‌روزرسانی: 2026-08-19 (۲۸ مرداد ۱۴۰۵) | نسخه برنامه: 11.21.4
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -13014,7 +13116,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
 بخش ۴) تاریخچه نسخه‌ها و آخرین دوره تغییرات
 ══════════════════════════════════════════════════════════════════════════════════
 • مسیر نسخه‌ها (بازسازی از ریپو): V1 → … → V9 → V10 → V11 → V11.1 … V11.14 → V11.15
-  → V11.15.1 → V11.15.2 → V11.15.3 → V11.16.0 → V11.16.1 → V11.16.2 → V11.17.0 → V11.17.1 → V11.18.0 → V11.19.0 → V11.20.0 → V11.20.1 → V11.20.2 → V11.20.3 → V11.20.4 → V11.20.5 → V11.21.0 → V11.21.1 → V11.21.2 → V11.21.3.
+  → V11.15.1 → V11.15.2 → V11.15.3 → V11.16.0 → V11.16.1 → V11.16.2 → V11.17.0 → V11.17.1 → V11.18.0 → V11.19.0 → V11.20.0 → V11.20.1 → V11.20.2 → V11.20.3 → V11.20.4 → V11.20.5 → V11.21.0 → V11.21.1 → V11.21.2 → V11.21.3 → V11.21.4.
 • جزئیات کامل هر نسخه V9 به بعد در CHANGES_V9.md / CHANGES_V10.md / CHANGES_V11.md
   (محتوای کاملشان در بخش ۹ همین فایل هست).
 
@@ -14890,6 +14992,80 @@ IndexedDB فعلی همچنان فقط دیتابیس Excel همان دستگا�
 ```powershell
 git add -A
 git commit -m "v11.21.3: توقف کامل بازگشت خودکار اطلاعات قدیمی"
+git pull --no-rebase origin main
+git push origin main
+git push gitlab main
+```
+
+
+
+──────────────────────────────── نوبت ۳۱ ────────────────────────────────
+🧑 کاربر (عیناً):
+«اسم اخرین فایل داروخانه را به آخرین تاریخ داروخانه تغییر بده و بجای تاریخ ورود فایل جدید اخرین تاریخ سطر اخر در ستون شماره 14 در دیتابیس را قرار بده  
+هر فایل داروخانه جدیدی وارد می شود جایگزین فایل قبلی نشود و اطلاعات جدید در اخرین سطر خالی به بعد جایگذاری شوند
+
+در تب اطلاعات فروش پخش ها هنوز فیلدهای سال و ماه و از تاریخ و تا تاریخ کنار یکدیگر قرار نگرفته اند و همه صفحه را بی نظم کرده  
+قرار شد تاریخ ها و رمزها و کد کالاها سه رقم سه رقم جدا نشود
+
+در تب اسنپ سازمانی فایل های سفر و موجودی اضافه نمی شوند و کلید ورود فایل های گزارش و ورود گزارش افزایش موجودی کار نمی کند»
+
+🤖 دستیار:
+نسخه **۱۱.۲۱.۴** آماده شد.
+
+## آخرین تاریخ داروخانه و موجودی
+عنوان‌ها تغییر کردند:
+- آخرین تاریخ داروخانه؛
+- آخرین تاریخ موجودی.
+
+برای دایا دارو، برنامه دیگر بزرگ‌ترین تاریخ یا زمان ورود فایل را انتخاب نمی‌کند. از انتهای دیتابیس به بالا حرکت می‌کند و اولین تاریخ معتبر موجود در **ستون ۱۴ آخرین سطر غیرخالی** را نمایش می‌دهد.
+
+برای موجودی، اگر خود فایل ستون تاریخ معتبر داشته باشد آخرین سطر آن خوانده می‌شود؛ فقط اگر فایل واقعاً تاریخ نداشته باشد، تاریخ زمان ورود فایل نمایش داده می‌شود.
+
+## فایل داروخانه append-only
+قانون ورود فایل داروخانه تثبیت شد:
+- اطلاعات قبلی جایگزین نمی‌شوند؛
+- ردیف‌های کاملاً تکراری رد می‌شوند؛
+- ردیف‌های جدید با `concat(fresh)` از آخرین سطر موجود به بعد اضافه می‌شوند؛
+- فایل موجودی همچنان طبق قانون قبلی جایگزین آخرین موجودی می‌شود.
+
+یک unit test جدید نیز بررسی می‌کند که تاریخ از آخرین سطر خوانده شود و منطق append حذف نشود.
+
+## چیدمان فیلترهای پخش
+در دسکتاپ، فیلدهای سال، ماه، روز، از تاریخ و تا تاریخ با CSS اجباری در **پنج ستون کنار یکدیگر** قرار می‌گیرند. `grid-column` قدیمی روی این فیلدها خنثی شد. در صفحه کوچک، چیدمان به‌صورت واکنش‌گرا جمع می‌شود.
+
+## جلوگیری از سه‌رقمی‌شدن تاریخ، رمز و کد
+- سلول کد کالا با `data-no-number-group` محافظت می‌شود؛
+- کدهایی مانند ۱۰۰۱ دیگر به ۱٬۰۰۱ تبدیل نمی‌شوند؛
+- تاریخ فشرده هشت‌رقمی نیز از جداکننده سه‌رقمی مستثنی شد؛
+- ورودی‌های password و number قبلاً هم توسط formatter تغییر نمی‌کردند و این تست حفظ شد.
+
+## ورود فایل‌های اسنپ
+دو label قبلی با دکمه واقعی جایگزین شدند:
+- `btnImportSnappTrips` برای سفر؛
+- `btnImportSnappTopups` برای افزایش موجودی.
+
+هر دکمه مستقیماً file picker مربوط به خودش را باز می‌کند. برای هر input یک handler مستقل و نهایی ساخته شد که:
+- قبل از خواندن، پیام «در حال خواندن فایل…» نشان می‌دهد؛
+- فایل‌ها را به parser می‌فرستد؛
+- ذخیره IndexedDB را کامل می‌کند؛
+- input را برای ورود فایل بعدی پاک می‌کند.
+
+این handler قبل از listenerهای قدیمی ثبت و آن‌ها را غیرفعال می‌کند تا import دو بار یا صفر بار اجرا نشود.
+
+## نتیجه تست
+- `npm test`: **۱۰ تست از ۱۰ تست موفق**؛
+- تست آخرین سطر ستون ۱۴: **موفق**؛
+- تست append-only فایل داروخانه: **موفق**؛
+- تست وجود دکمه‌های واقعی اسنپ: **موفق**؛
+- تست عدم سه‌رقمی کد کالا: **موفق**؛
+- build: **موفق**؛
+- سلامت سرور: **نسخه 11.21.4**.
+
+پس از نصب، برای آزمایش اسنپ یک فایل را با دکمه جدید وارد کنید. اگر خود ساختار XLSX با parser سازگار نباشد، پیام خطای دقیق نام فایل نمایش داده خواهد شد.
+
+```powershell
+git add -A
+git commit -m "v11.21.4: اصلاح تاریخ پخش و ورود فایل اسنپ"
 git pull --no-rebase origin main
 git push origin main
 git push gitlab main
@@ -20272,7 +20448,7 @@ function deleteProductCatalogItem(id) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-data.js (45446 بایت)
+فایل: public/crm-data.js (45974 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================================
@@ -20723,7 +20899,11 @@ const PERMISSION_GROUPS = {
     { key: "dist_compact_layout", label: "چیدمان فشرده و کنارهم تب فروش پخش‌ها" },
     { key: "sys_authoritative_current_state", label: "وضعیت فعلی تنها مرجع معتبر اطلاعات" },
     { key: "sys_no_auto_backup_merge", label: "منع ادغام خودکار پشتیبان‌های قدیمی" },
-    { key: "sys_no_remote_overwrite", label: "منع بازیابی یا بازنویسی خودکار از سرور" }
+    { key: "sys_no_remote_overwrite", label: "منع بازیابی یا بازنویسی خودکار از سرور" },
+    { key: "dist_last_row_date", label: "آخرین تاریخ داروخانه از آخرین سطر ستون تاریخ" },
+    { key: "dist_append_only_pharmacy", label: "افزودن فایل داروخانه به انتهای دیتابیس بدون جایگزینی" },
+    { key: "snapp_robust_import_buttons", label: "کلید واقعی و listener مستقل ورود فایل‌های اسنپ" },
+    { key: "sys_no_group_date_password_code", label: "منع سه‌رقمی تاریخ، رمز و کد کالا" }
   ]
 };
 
@@ -29817,7 +29997,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-features-v20.js (162543 بایت)
+فایل: public/crm-features-v20.js (163895 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================
@@ -29919,7 +30099,7 @@ button.v19-gps svg{display:block}
       ".tab-pane .form-grid>.form-group{align-self:start!important;transform:none!important;transition:none!important}.tab-pane .crm-combo,.tab-pane .crm-combo-input{transform:none!important;transition:none!important}" +
       "#formOrder>.form-grid>.form-group:not(.full-width),#formPharmacy>.form-grid>.form-group:not(.full-width),#formDoctor>.form-grid>.form-group:not(.full-width){align-self:start!important}" +
       ".data-table{border-collapse:collapse!important}.data-table th,.data-table td{border:1px solid #94a3b8!important;padding:7px!important}" +
-      "#tab-distributor-sales #distributorActionGrid,#tab-distributor-database #distributorDatabaseGrid{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))!important;gap:10px!important}#tab-distributor-sales #distributorFilterGrid{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))!important;gap:10px!important}#tab-distributor-sales .v20-combo-card{padding:10px!important}#tab-distributor-sales .v20-card-tools .btn{padding:7px 9px!important;font-size:.78rem!important}" +
+      "#tab-distributor-sales #distributorActionGrid,#tab-distributor-database #distributorDatabaseGrid{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))!important;gap:10px!important}#tab-distributor-sales #distributorFilterGrid{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))!important;gap:10px!important;width:100%!important}#tab-distributor-sales #distributorFilterGrid>.form-group{grid-column:auto!important;width:auto!important;min-width:0!important;margin:0!important}#tab-distributor-sales .v20-combo-card{padding:10px!important}#tab-distributor-sales .v20-card-tools .btn{padding:7px 9px!important;font-size:.78rem!important}@media(min-width:1100px){#tab-distributor-sales #distributorFilterGrid{grid-template-columns:repeat(5,minmax(0,1fr))!important}}" +
       "@media(max-width:768px){html,body{max-width:100%!important;overflow-x:hidden!important}.app-nav{display:none!important}.btn-menu-hamburger{display:flex!important;visibility:visible!important}.header-container{padding:7px 9px!important;gap:6px!important;flex-wrap:nowrap!important}.logo-area{min-width:0!important;flex:1!important}.logo-icon{width:38px!important;height:38px!important;min-width:38px!important}.logo-text{min-width:0!important}.logo-text h1{font-size:.82rem!important;white-space:normal!important;line-height:1.35!important}.logo-text p{font-size:.65rem!important}.header-actions{gap:4px!important;flex:0 0 auto!important}.header-user-pill,.btn-header-icon,#v20VersionBadge,#v20ChpassFab{display:none!important}.btn-header-logout{padding:7px!important;font-size:.72rem!important}.main-content,.app-main,.container{width:100%!important;max-width:100%!important;padding:8px!important;margin:0!important;box-sizing:border-box!important}.tab-pane,.card{width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important}.card{padding:10px!important;margin:8px 0!important;border-radius:10px!important}.card-header{gap:8px!important;align-items:flex-start!important;flex-direction:column!important}.card-title{font-size:.95rem!important}.form-grid,.form-grid.form-grid-sized{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:10px!important;width:100%!important}.form-grid>.form-group,.form-grid.form-grid-sized>.form-group,.form-group,.full-width,.col-place-beside,.col-place-under{grid-column:1!important;width:100%!important;max-width:100%!important;min-width:0!important;margin:0!important;box-sizing:border-box!important}.form-input,.form-select,textarea,.crm-combo,.crm-combo-input,.jalali-input-wrapper{width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important}.btn,.card-header button,.card-header label.btn{max-width:100%!important;white-space:normal!important;min-height:40px!important}.table-responsive{display:block!important;width:100%!important;max-width:100%!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}.data-table{width:max-content!important;min-width:700px!important}.order-item-row{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:7px!important}.order-item-row>*{width:100%!important;max-width:100%!important}.map-container,.map-container-large{width:100%!important;height:340px!important;max-width:100%!important}.side-menu-drawer{width:min(88vw,340px)!important;max-width:88vw!important}.modal-content,.modal-card,.v20-modal-card{width:94vw!important;max-width:94vw!important;max-height:90vh!important;overflow:auto!important}.v20-visit-metrics,.stats-grid,.v20-cards{grid-template-columns:minmax(0,1fr)!important}#v20SnappActionBar{position:static!important;display:grid!important;grid-template-columns:1fr!important}#v20SnappActionBar .btn{width:100%!important;max-width:100%!important}.jalali-calendar-popup{max-width:calc(100vw - 16px)!important;left:8px!important;right:8px!important}.ph-pick-overlay,.v20-local-match{position:fixed!important;left:8px!important;right:8px!important;top:auto!important;bottom:8px!important;width:auto!important;max-width:none!important}.manual-design-canvas,.man-canvas{max-width:100%!important;overflow:auto!important}}";
     var tag = document.createElement("style");
     tag.id = "v20Style";
@@ -30159,7 +30339,7 @@ button.v19-gps svg{display:block}
       tabs += "<button type='button' class='" + (p[0] === v20AddPane ? "v20-on" : "") + "' data-pane='" + p[0] + "'>" + p[1] + "</button>";
     });
     var h = "<div class='v20-addmgr' style='border-top:2px solid #e2e8f0;padding-top:10px;'>" +
-      "<h4 style='margin:8px 0;color:#0f172a;'>🎛️ مدیر کشویی‌ها (نسخه ۱۱.۲۱.۳) — هر فیلد، زیرمجموعه‌هایش دقیقاً زیر همان فیلد است</h4>" +
+      "<h4 style='margin:8px 0;color:#0f172a;'>🎛️ مدیر کشویی‌ها (نسخه ۱۱.۲۱.۴) — هر فیلد، زیرمجموعه‌هایش دقیقاً زیر همان فیلد است</h4>" +
       "<div class='v20-tabbar'>" + tabs + "</div>" +
       "<div class='v20-card-tools' style='margin-bottom:4px'>" +
       "<label class='v20-mini'><input type='checkbox' id='v20GreyOnChk'" + (greyOn ? " checked" : "") + "> حالت طوسی زنجیره‌ای فعال باشد</label>" +
@@ -30879,7 +31059,7 @@ button.v19-gps svg{display:block}
   }
   function renderVersionBadge() {
     var b = $("v20VersionBadge"), actions = document.querySelector(".header-actions"); if (!actions) return;
-    if (!b) { b = document.createElement("span"); b.id = "v20VersionBadge"; b.className = "v20-version"; b.textContent = "نسخه ۱۱.۲۱.۳"; b.title = "نسخه دقیق برنامه نصب‌شده"; actions.insertBefore(b, actions.firstChild); }
+    if (!b) { b = document.createElement("span"); b.id = "v20VersionBadge"; b.className = "v20-version"; b.textContent = "نسخه ۱۱.۲۱.۴"; b.title = "نسخه دقیق برنامه نصب‌شده"; actions.insertBefore(b, actions.firstChild); }
     b.style.display = v20IsManager() ? "inline-block" : "none";
   }
 
@@ -31068,7 +31248,8 @@ button.v19-gps svg{display:block}
   function ensureSnappActionBar(){var pane=$("tab-snapp-corporate"),card=pane&&pane.querySelector(".card");if(!card)return;var bar=$("v20SnappActionBar");if(!bar){bar=document.createElement("div");bar.id="v20SnappActionBar";bar.style.cssText="display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:#ecfeff;border:2px solid #0891b2;border-radius:12px;padding:12px;margin-bottom:14px;position:sticky;top:6px;z-index:50";card.insertBefore(bar,card.firstChild);}['btnBuildSnappReport','btnBuildSnappTopupReport'].forEach(function(id){var b=$(id);if(b&&b.parentNode!==bar){b.classList.add('btn-sm');b.style.cssText='width:auto!important;max-width:260px!important;display:inline-flex!important';bar.appendChild(b);}});if(!$("btnViewSnappTripFiles")){var vt=document.createElement("button");vt.id="btnViewSnappTripFiles";vt.className="btn btn-outline btn-sm";vt.textContent="👁 فایل‌های سفر";vt.onclick=function(){showSnappArchives("trip");};bar.appendChild(vt);}if(!$("btnViewSnappTopupFiles")){var vu=document.createElement("button");vu.id="btnViewSnappTopupFiles";vu.className="btn btn-outline btn-sm";vu.textContent="👁 فایل‌های شارژ";vu.onclick=function(){showSnappArchives("topup");};bar.appendChild(vu);}if(!$("snappLatestDatesBar")){var st=document.createElement("div");st.id="snappLatestDatesBar";st.style.cssText="width:100%;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px;font-weight:800;color:#155e75";st.innerHTML="<span>آخرین تاریخ سفر: —</span><span>آخرین تاریخ افزایش موجودی: —</span>";bar.appendChild(st);}}
   function forceBlankSnappDates(){["snappFilterFrom","snappFilterTo","snappTopupFrom","snappTopupTo"].forEach(function(id){var e=$(id);if(!e||e.dataset.v20Blanked)return;e.dataset.v20Blanked="1";e.value="";e.addEventListener("input",function(){e.dataset.userTouched="1";});setTimeout(function(){if(e.dataset.userTouched!=="1")e.value="";},700);});}
   function bindSnappModes(){[["snappTrip","snappFilterYear","snappFilterMonth",renderSnappCorporate],["snappTopup","snappTopupYear","snappTopupMonth",renderSnappTopups]].forEach(function(cfg){var prefix=cfg[0],year=$(cfg[1]),month=$(cfg[2]),ids=[prefix+"ModeYear",prefix+"ModeMonth",prefix+"ModeFrom",prefix+"ModeTo"];function refreshMonth(){var off=!String((year||{}).value||"").trim();if(month){month.disabled=off;if(off)month.value="";month.classList.toggle("v20-grey",off);var mc=$(prefix+"ModeMonth");if(off&&mc)mc.checked=false;var g=month.closest(".form-group");if(g)g.classList.toggle("v20-grey-zone",off);}}ids.forEach(function(id){var c=$(id);if(!c||c.dataset.bound)return;c.dataset.bound="1";c.addEventListener("change",function(){var range=id===prefix+"ModeFrom"||id===prefix+"ModeTo";if(!c.checked){if(range){var a=$(prefix+"ModeFrom"),b=$(prefix+"ModeTo");if(a)a.checked=false;if(b)b.checked=false;}refreshMonth();cfg[3]();return;}if(range){ids.forEach(function(x){var e=$(x);if(e)e.checked=(x===prefix+"ModeFrom"||x===prefix+"ModeTo");});}else ids.forEach(function(x){var e=$(x);if(e&&x!==id)e.checked=false;});refreshMonth();cfg[3]();});});if(year&&!year.dataset.modeBound){year.dataset.modeBound="1";year.addEventListener("input",function(){refreshMonth();cfg[3]();});}refreshMonth();});}
-  function setupSnappCorporate(){ensureSnappActionBar();forceBlankSnappDates();bindSnappModes();var open=$("btnOpenSnappCorporate"),inp=$("snappReportFiles"),top=$("snappTopupFiles"),exp=$("btnExportSnappView"),texp=$("btnExportSnappTopups"),build=$("btnBuildSnappReport");if(open&&!open.dataset.bound){open.dataset.bound="1";open.addEventListener("click",function(){window.open("https://corporate.snapp.taxi/auth/login","_blank","noopener");});}if(inp&&!inp.dataset.bound){inp.dataset.bound="1";inp.addEventListener("change",function(){if(inp.files&&inp.files.length)importSnappFiles(Array.prototype.slice.call(inp.files));inp.value="";});}if(top&&!top.dataset.bound){top.dataset.bound="1";top.addEventListener("change",function(){if(top.files&&top.files.length)importSnappTopups(Array.prototype.slice.call(top.files));top.value="";});}if(build&&!build.dataset.bound){build.dataset.bound="1";build.addEventListener("click",function(){renderSnappCorporate();var box=$("snappSummaryCards");if(box)box.scrollIntoView({behavior:"smooth",block:"center"});v20Toast(snappFilteredRows.length?"✅ گزارش نماینده تهیه شد: "+snappFilteredRows.length.toLocaleString("fa-IR")+" سفر":"⚠️ برای این فیلتر سفری پیدا نشد؛ نام نماینده یا تاریخ را بررسی کنید.");});}if(exp&&!exp.dataset.bound){exp.dataset.bound="1";exp.addEventListener("click",function(){var D=snappStore(),idx=tripSchema(D.headers||[]),heads=["تاریخ شروع سفر","ساعت شروع سفر","تاریخ پایان سفر","ساعت پایان سفر","نام مسافر","مبدأ","مقصد","مقصد دوم","نوع سرویس","هزینه","شهر"],rows=snappFilteredRows.map(function(r){var a=splitSnappDateTime(r[idx.start]),b=splitSnappDateTime(r[idx.end]);return[a.date,a.time,b.date,b.time,r[idx.rep],r[idx.origin],r[idx.dest],r[idx.dest2],r[idx.service],r[idx.amount],r[idx.city]];});window.downloadCSVFile("snapp-corporate-report.xls",heads,rows);});}if(texp&&!texp.dataset.bound){texp.dataset.bound="1";texp.addEventListener("click",function(){var D=snappStore(),idx=topupIndexes(D.topupHeaders||[]),rows=(window._v20TopupRows||[]).map(function(r,i){var d=splitSnappDateTime(r[idx.date]);return[i+1,d.date,d.time,snappNumber(r[idx.amount])];});window.downloadCSVFile("snapp-topup-report.xls",["ردیف","تاریخ","ساعت","مبلغ شارژ"],rows);});}var topBuild=$("btnBuildSnappTopupReport");if(topBuild&&!topBuild.dataset.bound){topBuild.dataset.bound="1";topBuild.addEventListener("click",function(){renderSnappTopups();var box=$("snappTopupSummaryCards");if(box)box.scrollIntoView({behavior:"smooth",block:"center"});v20Toast((window._v20TopupRows||[]).length?"✅ گزارش افزایش موجودی تهیه شد: "+(window._v20TopupRows||[]).length.toLocaleString("fa-IR")+" ردیف":"⚠️ برای این فیلتر مبلغ شارژی پیدا نشد.");});}["snappTopupYear","snappTopupMonth","snappTopupFrom","snappTopupTo"].forEach(function(id){var el=$(id);if(el&&!el.dataset.bound){if(/From|To/.test(id))el.value="";el.dataset.bound="1";el.addEventListener("input",renderSnappTopups);el.addEventListener("change",renderSnappTopups);}});["snappFilterYear","snappFilterMonth","snappFilterRep","snappFilterFrom","snappFilterTo"].forEach(function(id){var el=$(id);if(el&&!el.dataset.bound){if(/From|To/.test(id))el.value="";el.dataset.bound="1";el.addEventListener("input",renderSnappCorporate);el.addEventListener("change",renderSnappCorporate);}});renderSnappCorporate();}
+  function bindSnappImportButtons(){var trip=$("snappReportFiles"),top=$("snappTopupFiles"),bt=$("btnImportSnappTrips"),bu=$("btnImportSnappTopups");if(bt&&trip)bt.onclick=function(){trip.click();};if(bu&&top)bu.onclick=function(){top.click();};if(trip&&!trip.dataset.robustImport){trip.dataset.robustImport="1";trip.dataset.bound="1";trip.onchange=async function(){if(!trip.files.length)return;var st=$("snappDailyStatus");if(st)st.textContent="در حال خواندن فایل سفر…";await importSnappFiles(Array.prototype.slice.call(trip.files));trip.value="";};}if(top&&!top.dataset.robustImport){top.dataset.robustImport="1";top.dataset.bound="1";top.onchange=async function(){if(!top.files.length)return;var st=$("snappDailyStatus");if(st)st.textContent="در حال خواندن فایل افزایش موجودی…";await importSnappTopups(Array.prototype.slice.call(top.files));top.value="";};}}
+  function setupSnappCorporate(){ensureSnappActionBar();forceBlankSnappDates();bindSnappModes();bindSnappImportButtons();var open=$("btnOpenSnappCorporate"),inp=$("snappReportFiles"),top=$("snappTopupFiles"),exp=$("btnExportSnappView"),texp=$("btnExportSnappTopups"),build=$("btnBuildSnappReport");if(open&&!open.dataset.bound){open.dataset.bound="1";open.addEventListener("click",function(){window.open("https://corporate.snapp.taxi/auth/login","_blank","noopener");});}if(inp&&!inp.dataset.bound){inp.dataset.bound="1";inp.addEventListener("change",function(){if(inp.files&&inp.files.length)importSnappFiles(Array.prototype.slice.call(inp.files));inp.value="";});}if(top&&!top.dataset.bound){top.dataset.bound="1";top.addEventListener("change",function(){if(top.files&&top.files.length)importSnappTopups(Array.prototype.slice.call(top.files));top.value="";});}if(build&&!build.dataset.bound){build.dataset.bound="1";build.addEventListener("click",function(){renderSnappCorporate();var box=$("snappSummaryCards");if(box)box.scrollIntoView({behavior:"smooth",block:"center"});v20Toast(snappFilteredRows.length?"✅ گزارش نماینده تهیه شد: "+snappFilteredRows.length.toLocaleString("fa-IR")+" سفر":"⚠️ برای این فیلتر سفری پیدا نشد؛ نام نماینده یا تاریخ را بررسی کنید.");});}if(exp&&!exp.dataset.bound){exp.dataset.bound="1";exp.addEventListener("click",function(){var D=snappStore(),idx=tripSchema(D.headers||[]),heads=["تاریخ شروع سفر","ساعت شروع سفر","تاریخ پایان سفر","ساعت پایان سفر","نام مسافر","مبدأ","مقصد","مقصد دوم","نوع سرویس","هزینه","شهر"],rows=snappFilteredRows.map(function(r){var a=splitSnappDateTime(r[idx.start]),b=splitSnappDateTime(r[idx.end]);return[a.date,a.time,b.date,b.time,r[idx.rep],r[idx.origin],r[idx.dest],r[idx.dest2],r[idx.service],r[idx.amount],r[idx.city]];});window.downloadCSVFile("snapp-corporate-report.xls",heads,rows);});}if(texp&&!texp.dataset.bound){texp.dataset.bound="1";texp.addEventListener("click",function(){var D=snappStore(),idx=topupIndexes(D.topupHeaders||[]),rows=(window._v20TopupRows||[]).map(function(r,i){var d=splitSnappDateTime(r[idx.date]);return[i+1,d.date,d.time,snappNumber(r[idx.amount])];});window.downloadCSVFile("snapp-topup-report.xls",["ردیف","تاریخ","ساعت","مبلغ شارژ"],rows);});}var topBuild=$("btnBuildSnappTopupReport");if(topBuild&&!topBuild.dataset.bound){topBuild.dataset.bound="1";topBuild.addEventListener("click",function(){renderSnappTopups();var box=$("snappTopupSummaryCards");if(box)box.scrollIntoView({behavior:"smooth",block:"center"});v20Toast((window._v20TopupRows||[]).length?"✅ گزارش افزایش موجودی تهیه شد: "+(window._v20TopupRows||[]).length.toLocaleString("fa-IR")+" ردیف":"⚠️ برای این فیلتر مبلغ شارژی پیدا نشد.");});}["snappTopupYear","snappTopupMonth","snappTopupFrom","snappTopupTo"].forEach(function(id){var el=$(id);if(el&&!el.dataset.bound){if(/From|To/.test(id))el.value="";el.dataset.bound="1";el.addEventListener("input",renderSnappTopups);el.addEventListener("change",renderSnappTopups);}});["snappFilterYear","snappFilterMonth","snappFilterRep","snappFilterFrom","snappFilterTo"].forEach(function(id){var el=$(id);if(el&&!el.dataset.bound){if(/From|To/.test(id))el.value="";el.dataset.bound="1";el.addEventListener("input",renderSnappCorporate);el.addEventListener("change",renderSnappCorporate);}});renderSnappCorporate();}
 
 
   /* ---------- ۲۱) همه نمایندگان + آدرس متنی موقعیت زنده ---------- */
@@ -31087,7 +31268,7 @@ button.v19-gps svg{display:block}
   function bindEmailBackup(){var old=window.performAutoBackup;if(typeof old!=="function"||old._v20email)return;var w=function(){var args=arguments;return Promise.resolve(old.apply(this,args)).then(function(localOk){var S=st(),to=((S.settings||{}).backupEmail)||"";if(!to)return localOk;return fetch("/api/backup/email",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({to:to,state:S})}).then(async function(r){var d={};try{d=await r.json();}catch(e){}if(!r.ok)throw new Error(d.message||("HTTP "+r.status));S.settings.lastBackupEmailSend=new Date().toLocaleString("fa-IR");var el=$("autoBackupHandleStatus");if(el)el.textContent="✅ پشتیبان فایل و ایمیل ارسال شد — "+S.settings.lastBackupEmailSend;return true;}).catch(function(e){var el=$("autoBackupHandleStatus");if(el)el.textContent="⚠️ فایل ذخیره شد، اما ایمیل ارسال نشد: "+e.message;return localOk;});});};w._v20email=true;window.performAutoBackup=w;}
 
   /* ---------- ۲۴) نمایش سه‌رقمی اعداد در خروجی‌های دیداری ---------- */
-  function formatVisibleNumbers(root){if(!root||!document.createTreeWalker)return;var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),nodes=[],n;while(n=w.nextNode())nodes.push(n);nodes.forEach(function(t){var p=t.parentElement;if(!p||/^(SCRIPT|STYLE|INPUT|TEXTAREA|SELECT|OPTION)$/.test(p.tagName))return;var context=String(p.textContent||"");if(/تاریخ|سال|ماه|تلفن|همراه|مختصات|عرض جغرافیایی|طول جغرافیایی|کد|پلاک/.test(context))return;var old=t.nodeValue,nw=old.replace(/[0-9۰-۹]{4,}/g,function(x,off,all){if(all[off-1]==="/"||all[off+x.length]==="/"||all[off-1]==="."||all[off+x.length]===".")return x;var raw=enDigits(x);if(/^0\d{9,}$/.test(raw))return x;var v=Number(raw);return isFinite(v)?v.toLocaleString("fa-IR"):x;});if(nw!==old)t.nodeValue=nw;});}
+  function formatVisibleNumbers(root){if(!root||!document.createTreeWalker)return;var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),nodes=[],n;while(n=w.nextNode())nodes.push(n);nodes.forEach(function(t){var p=t.parentElement;if(!p||/^(SCRIPT|STYLE|INPUT|TEXTAREA|SELECT|OPTION)$/.test(p.tagName)||p.closest('[data-no-number-group]'))return;var context=String(p.textContent||"");if(/تاریخ|سال|ماه|تلفن|همراه|مختصات|عرض جغرافیایی|طول جغرافیایی|کد|پلاک/.test(context))return;var old=t.nodeValue,nw=old.replace(/[0-9۰-۹]{4,}/g,function(x,off,all){if(all[off-1]==="/"||all[off+x.length]==="/"||all[off-1]==="."||all[off+x.length]===".")return x;var raw=enDigits(x);if(/^0\d{9,}$/.test(raw)||/^1[34]\d{6}$/.test(raw))return x;var v=Number(raw);return isFinite(v)?v.toLocaleString("fa-IR"):x;});if(nw!==old)t.nodeValue=nw;});}
   function bindNumberFormatting(){formatVisibleNumbers(document.body);if(window.MutationObserver){var timer;new MutationObserver(function(){clearTimeout(timer);timer=setTimeout(function(){formatVisibleNumbers(document.body);},80);}).observe(document.body,{childList:true,subtree:true,characterData:true});}}
 
   /* ---------- ۲۵) ماندگاری نسخه‌ای: محلی + سرور، بدون جایگزینی با نمونه ---------- */
@@ -31097,8 +31278,8 @@ button.v19-gps svg{display:block}
   var DIST_DEFS=[["daya","دایا دارو"],["shafaarad","شفاآراد"],["tivan","تیوان"],["mashateb","مشاطب"]],DIST_HEADERS=["نام کالا","فروش تعدادی","فروش ریالی به قیمت پخش","فروش ریالی به قیمت داروخانه","تعداد جایزه","ریال جایزه","درصد جایزه به فروش","تعداد مرجوعی کالا","ریال مرجوعی کالا","درصد مرجوعی به فروش","تعداد مرجوعی جایزه","ریال مرجوعی جایزه","درصد مرجوعی به جایزه","تعداد داروخانه","تعداد فاکتور","درصد فروش به‌تفکیک کالا","موجودی تعدادی","موجودی ریالی به قیمت پخش","موجودی ریالی به قیمت داروخانه"],distReportCache={};
   function distStore(){var S=st();S.distributorCompanies=S.distributorCompanies||{};DIST_DEFS.forEach(function(x){var d=S.distributorCompanies[x[0]]||(S.distributorCompanies[x[0]]={});d.id=x[0];d.name=x[1];d.url=d.url||"";d.username=d.username||"";d.pharmacyHeaders=d.pharmacyHeaders||[];d.pharmacyRows=d.pharmacyRows||[];d.pharmacyImports=d.pharmacyImports||[];d.inventoryHeaders=d.inventoryHeaders||[];d.inventoryRows=d.inventoryRows||[];});return S.distributorCompanies;}
   function renderDistributorCompanies(){var host=$("distributorCompanyGrid");if(!host)return;var ds=distStore();host.innerHTML=DIST_DEFS.map(function(x){var d=ds[x[0]],pass=sessionStorage.getItem("distPass_"+x[0])||"";return"<div class='v20-combo-card' data-dist='"+x[0]+"'><h4>🏢 "+x[1]+"</h4><div class='form-group'><label class='form-label'>آدرس پنل پخش</label><input class='form-input dist-url' value='"+esc(d.url)+"' placeholder='https://...'></div><div class='form-group'><label class='form-label'>نام کاربری</label><input class='form-input dist-user' value='"+esc(d.username)+"'></div><div class='form-group'><label class='form-label'>رمز ورود (فقط نشست جاری)</label><input type='password' class='form-input dist-pass' value='"+esc(pass)+"' autocomplete='new-password'></div><div style='display:flex;gap:7px;flex-wrap:wrap;margin-top:8px'><button type='button' class='btn btn-primary dist-save'>💾 ثبت امن اطلاعات</button><button type='button' class='btn btn-outline dist-open'>🔐 بازکردن پنل</button></div></div>";}).join("");host.onclick=function(e){var card=e.target.closest&&e.target.closest("[data-dist]");if(!card)return;var id=card.dataset.dist,d=ds[id];if(e.target.closest(".dist-save")){d.url=card.querySelector(".dist-url").value.trim();d.username=card.querySelector(".dist-user").value.trim();sessionStorage.setItem("distPass_"+id,card.querySelector(".dist-pass").value);save();v20Toast("✅ اطلاعات "+d.name+" ذخیره شد؛ رمز فقط در این نشست است.");}if(e.target.closest(".dist-open")){if(!d.url){alert("ابتدا آدرس پنل این پخش را ثبت کنید.");return;}window.open(d.url,"_blank","noopener");}};}
-  function distLastDate(rows,headers,id){var ix=id==="daya"?13:findDistIndex(headers,/تاریخ/,0),dates=(rows||[]).map(function(r){return normSnappDate(r[ix]);}).filter(function(x){return /^1[34]\d{2}\//.test(x);}).sort();return dates.pop()||"—";}
-  function renderDistributorActions(){var host=$("distributorActionGrid");if(!host)return;var ds=distStore();host.innerHTML=DIST_DEFS.map(function(x){var d=ds[x[0]];return"<div class='v20-combo-card' data-dist='"+x[0]+"'><h4>📦 "+x[1]+"</h4><div class='v20-mini'>آخرین فایل داروخانه: <b>"+esc((distLastDate(d.pharmacyRows,d.pharmacyHeaders,d.id)!=="—"?distLastDate(d.pharmacyRows,d.pharmacyHeaders,d.id):(d.pharmacyImports&&d.pharmacyImports[0]&&d.pharmacyImports[0].at?faDate(new Date(d.pharmacyImports[0].at)):"—")))+"</b></div><div class='v20-mini'>آخرین فایل موجودی: <b>"+esc((distLastDate(d.inventoryRows,d.inventoryHeaders,d.id)!=="—"?distLastDate(d.inventoryRows,d.inventoryHeaders,d.id):(d.inventoryImport&&d.inventoryImport.at?faDate(new Date(d.inventoryImport.at)):"—")))+"</b></div><div class='v20-card-tools' style='margin-top:8px'><button class='btn btn-outline dist-login'>🔐 ورود اطلاعات / پنل</button><label class='btn btn-primary btn-excel'>📊 ورود فایل داروخانه<input type='file' class='dist-ph-file' accept='.xlsx,.xls,.csv' hidden></label><label class='btn btn-primary btn-excel'>📦 ورود فایل موجودی<input type='file' class='dist-inv-file' accept='.xlsx,.xls,.csv' hidden></label></div></div>";}).join("");host.onclick=function(e){var c=e.target.closest&&e.target.closest("[data-dist]");if(!c)return;var d=ds[c.dataset.dist];if(e.target.closest(".dist-login")){if(!d.url)return alert("آدرس پنل را در تب اطلاعات شرکت‌ها ثبت کنید.");window.open(d.url,"_blank","noopener");}if(e.target.closest(".dist-view-ph"))showDistributorRaw(d,"pharmacy");if(e.target.closest(".dist-view-inv"))showDistributorRaw(d,"inventory");};Array.prototype.forEach.call(host.querySelectorAll(".dist-ph-file,.dist-inv-file"),function(inp){inp.onchange=function(){var c=inp.closest("[data-dist]"),kind=inp.classList.contains("dist-ph-file")?"pharmacy":"inventory";if(inp.files[0])importDistributorFile(c.dataset.dist,kind,inp.files[0]);inp.value="";};});}
+  function distLastDate(rows,headers,id){var ix=id==="daya"?13:findDistIndex(headers,/تاریخ/,0),list=rows||[];for(var i=list.length-1;i>=0;i--){var d=normSnappDate((list[i]||[])[ix]);if(/^1[34]\d{2}\//.test(d))return d;}return"—";}
+  function renderDistributorActions(){var host=$("distributorActionGrid");if(!host)return;var ds=distStore();host.innerHTML=DIST_DEFS.map(function(x){var d=ds[x[0]];return"<div class='v20-combo-card' data-dist='"+x[0]+"'><h4>📦 "+x[1]+"</h4><div class='v20-mini'>آخرین تاریخ داروخانه: <b>"+esc((distLastDate(d.pharmacyRows,d.pharmacyHeaders,d.id)!=="—"?distLastDate(d.pharmacyRows,d.pharmacyHeaders,d.id):(d.pharmacyImports&&d.pharmacyImports[0]&&d.pharmacyImports[0].at?faDate(new Date(d.pharmacyImports[0].at)):"—")))+"</b></div><div class='v20-mini'>آخرین تاریخ موجودی: <b>"+esc((distLastDate(d.inventoryRows,d.inventoryHeaders,d.id)!=="—"?distLastDate(d.inventoryRows,d.inventoryHeaders,d.id):(d.inventoryImport&&d.inventoryImport.at?faDate(new Date(d.inventoryImport.at)):"—")))+"</b></div><div class='v20-card-tools' style='margin-top:8px'><button class='btn btn-outline dist-login'>🔐 ورود اطلاعات / پنل</button><label class='btn btn-primary btn-excel'>📊 ورود فایل داروخانه<input type='file' class='dist-ph-file' accept='.xlsx,.xls,.csv' hidden></label><label class='btn btn-primary btn-excel'>📦 ورود فایل موجودی<input type='file' class='dist-inv-file' accept='.xlsx,.xls,.csv' hidden></label></div></div>";}).join("");host.onclick=function(e){var c=e.target.closest&&e.target.closest("[data-dist]");if(!c)return;var d=ds[c.dataset.dist];if(e.target.closest(".dist-login")){if(!d.url)return alert("آدرس پنل را در تب اطلاعات شرکت‌ها ثبت کنید.");window.open(d.url,"_blank","noopener");}if(e.target.closest(".dist-view-ph"))showDistributorRaw(d,"pharmacy");if(e.target.closest(".dist-view-inv"))showDistributorRaw(d,"inventory");};Array.prototype.forEach.call(host.querySelectorAll(".dist-ph-file,.dist-inv-file"),function(inp){inp.onchange=function(){var c=inp.closest("[data-dist]"),kind=inp.classList.contains("dist-ph-file")?"pharmacy":"inventory";if(inp.files[0])importDistributorFile(c.dataset.dist,kind,inp.files[0]);inp.value="";};});}
   function renderDistributorDatabase(){var host=$("distributorDatabaseGrid");if(!host)return;var ds=distStore();host.innerHTML=DIST_DEFS.map(function(x){var d=ds[x[0]];return"<div class='v20-combo-card' data-dist='"+x[0]+"'><h4>🗄️ "+x[1]+"</h4><div>آخرین تاریخ داروخانه: <strong>"+esc((distLastDate(d.pharmacyRows,d.pharmacyHeaders,d.id)!=="—"?distLastDate(d.pharmacyRows,d.pharmacyHeaders,d.id):(d.pharmacyImports&&d.pharmacyImports[0]&&d.pharmacyImports[0].at?faDate(new Date(d.pharmacyImports[0].at)):"—")))+"</strong></div><div>آخرین تاریخ موجودی: <strong>"+esc((distLastDate(d.inventoryRows,d.inventoryHeaders,d.id)!=="—"?distLastDate(d.inventoryRows,d.inventoryHeaders,d.id):(d.inventoryImport&&d.inventoryImport.at?faDate(new Date(d.inventoryImport.at)):"—")))+"</strong></div><div class='v20-mini'>"+(d.pharmacyRows||[]).length.toLocaleString("fa-IR")+" ردیف داروخانه / "+(d.inventoryRows||[]).length.toLocaleString("fa-IR")+" ردیف موجودی / "+(d.pharmacyImports||[]).length.toLocaleString("fa-IR")+" فایل آرشیوی</div><div class='v20-card-tools' style='margin-top:10px'><button class='btn btn-outline db-ph'>👁 دیتابیس داروخانه</button><button class='btn btn-outline db-inv'>👁 موجودی فعلی</button><button class='btn btn-outline db-files'>📁 ریز فایل‌های داروخانه</button></div></div>";}).join("");host.onclick=function(e){var c=e.target.closest&&e.target.closest("[data-dist]");if(!c)return;var d=ds[c.dataset.dist];if(e.target.closest(".db-ph")||e.target.closest(".db-files"))showDistributorRaw(d,"pharmacy");if(e.target.closest(".db-inv"))showDistributorRaw(d,"inventory");};}
   async function importDistributorFile(id,kind,file){var d=distStore()[id];try{var rows=await parseSnappFile(file),hi=findHeaderRow(rows,"trip"),headers=rows[hi]||[],data=rows.slice(hi+1).filter(function(r){return r.some(function(x){return String(x).trim();});});if(kind==="pharmacy"){var seen={};d.pharmacyRows.forEach(function(r){seen[rowSignature(r)]=1;});var fresh=data.filter(function(r){var k=rowSignature(r);if(seen[k])return false;seen[k]=1;return true;});d.pharmacyHeaders=headers.slice();d.pharmacyRows=d.pharmacyRows.concat(fresh);d.pharmacyImports.unshift({id:"imp-"+Date.now(),name:file.name,at:Date.now(),lastDate:distLastDate(fresh,headers,d.id),headers:headers.slice(),rows:fresh});v20Toast("✅ "+fresh.length.toLocaleString("fa-IR")+" ردیف جدید داروخانه به انتهای "+d.name+" اضافه شد.");}else{d.inventoryHeaders=headers.slice();d.inventoryRows=data;d.inventoryImport={name:file.name,at:Date.now(),lastDate:distLastDate(data,headers,d.id),headers:headers.slice(),rows:data};v20Toast("✅ موجودی "+d.name+" با "+data.length.toLocaleString("fa-IR")+" ردیف جایگزین شد.");}await saveBulkVault();save();renderDistributorActions();renderDistributorDatabase();renderDistributorReport();}catch(e){alert("خطا در فایل "+file.name+": "+e.message);}}
   function showDistributorRaw(d,kind){var host=$("distributorRawViewer");function paint(title,headers,rows){host.hidden=false;var archive=kind==="pharmacy"?(d.pharmacyImports||[]):[];host.innerHTML="<div class='card-header'><div class='card-title'>👁 "+esc(d.name+" — "+title)+" ("+rows.length.toLocaleString("fa-IR")+" ردیف)</div><button class='btn btn-outline raw-close'>بستن</button></div>"+(archive.length?"<div class='v20-card-tools'><button class='btn btn-outline raw-all'>همه دیتابیس</button>"+archive.map(function(x,i){return"<button class='btn btn-outline raw-batch' data-i='"+i+"'>"+esc(x.name+" — "+x.lastDate)+"</button>";}).join("")+"</div>":"")+"<div class='table-responsive'><table class='data-table'><thead><tr>"+(headers||[]).map(function(h){return"<th>"+esc(h)+"</th>";}).join("")+"</tr></thead><tbody>"+(rows||[]).slice(0,1000).map(function(r){return"<tr>"+r.map(function(v,i){var show=/تاریخ/.test(String((headers||[])[i]||""))?normSnappDate(v):v;return"<td>"+esc(show)+"</td>";}).join("")+"</tr>";}).join("")+"</tbody></table></div>";host.querySelector('.raw-close').onclick=function(){host.hidden=true;};var all=host.querySelector('.raw-all');if(all)all.onclick=function(){paint("همه دیتابیس داروخانه",d.pharmacyHeaders,d.pharmacyRows);};Array.prototype.forEach.call(host.querySelectorAll('.raw-batch'),function(b){b.onclick=function(){var x=archive[Number(b.dataset.i)];paint("فایل "+x.name,x.headers||d.pharmacyHeaders,Array.isArray(x.rows)?x.rows:[]);};});host.scrollIntoView({behavior:"smooth"});}if(kind==="pharmacy")paint("همه دیتابیس داروخانه",d.pharmacyHeaders,d.pharmacyRows);else paint("موجودی فعلی — "+((d.inventoryImport||{}).name||""),d.inventoryHeaders,d.inventoryRows);}
@@ -31132,7 +31313,7 @@ button.v19-gps svg{display:block}
 
   function resetProductV20(){window._editingProductId="";var f=$("formProduct");if(f)f.reset();var n=$("productName");if(n){n.value="";n.focus();}var b=$("productSavedBanner");if(b)b.hidden=true;}
   function saveProductV20(){var S=st(),name=String(($("productName")||{}).value||"").trim(),code=parseInt(($("productCode")||{}).value,10)||0;if(!code)return alert("کد کالا را وارد کنید.");if(!name)return alert("نام کالا را وارد کنید.");var id=window._editingProductId||"",idx=(S.products||[]).findIndex(function(p){return(id&&p.id===id)||(!id&&norm(p.name)===norm(name));}),rec=idx>=0?S.products[idx]:{id:"prod-"+Date.now()};rec.name=name;rec.code=code;rec.dayaDbCode=1111000+code;rec.distributorPrice=parseInt(($("productDistPrice")||{}).value,10)||0;rec.pharmacyPrice=parseInt(($("productPrice")||{}).value,10)||0;rec.stock=parseInt(($("productStock")||{}).value,10)||0;if(idx<0)S.products.push(rec);save();window._editingProductId="";try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}v20Toast("✅ کالا «"+name+"» "+(idx<0?"اضافه":"ویرایش")+" شد.");resetProductV20();}
-  function bindProductCrudV20(){var form=$("formProduct"),btn=$("btnSaveProduct");if(btn&&!btn.dataset.v20crud){btn.dataset.v20crud="1";btn.addEventListener("click",function(e){e.preventDefault();e.stopImmediatePropagation();saveProductV20();},true);}if(form&&!form.dataset.v20crud){form.dataset.v20crud="1";form.addEventListener("submit",function(e){e.preventDefault();e.stopImmediatePropagation();saveProductV20();},true);}var pane=$("tab-columns-products"),head=pane&&pane.querySelector("#formProduct")&&pane.querySelector("#formProduct").closest(".card").querySelector(".card-header");if(head&&!$("v20NewProduct")){var n=document.createElement("button");n.id="v20NewProduct";n.type="button";n.className="btn btn-outline btn-sm";n.textContent="➕ کالای جدید";n.onclick=resetProductV20;head.appendChild(n);}window.editProductCatalogItem=function(id){var p=(st().products||[]).filter(function(x){return String(x.id)===String(id);})[0];if(!p)return;window._editingProductId=p.id;if($("productCode"))$("productCode").value=p.code||"";if($("productName"))$("productName").value=p.name||"";if($("productDistPrice"))$("productDistPrice").value=p.distributorPrice||p.price||"";if($("productPrice"))$("productPrice").value=p.pharmacyPrice||p.price||"";if($("productStock"))$("productStock").value=p.stock||"";$("productName").scrollIntoView({behavior:"smooth",block:"center"});};function patchCodes(){var body=$("tableProductsBody"),S=st();if(!body)return;Array.prototype.forEach.call(body.children,function(tr,i){if(tr.querySelector('.v20-product-code'))return;var td=document.createElement('td');td.className='v20-product-code';td.innerHTML='<strong>'+esc(((S.products||[])[i]||{}).code||'—')+'</strong>';tr.insertBefore(td,tr.children[1]||null);});}if(typeof window.renderColumnsProductsTable==='function'&&!window.renderColumnsProductsTable._v20code){var rr=window.renderColumnsProductsTable,w=function(){var x=rr.apply(this,arguments);patchCodes();return x;};w._v20code=true;window.renderColumnsProductsTable=w;}patchCodes();var old=window.deleteProductCatalogItem;window.deleteProductCatalogItem=function(id){var S=st(),p=(S.products||[]).filter(function(x){return String(x.id)===String(id);})[0];if(!p)return;if(!confirm("کالای «"+(p.name||"")+"» حذف شود؟"))return;S.products=(S.products||[]).filter(function(x){return String(x.id)!==String(id);});S.salesTargets=(S.salesTargets||[]).filter(function(t){return norm(t.productName)!==norm(p.name);});(S.orders||[]).forEach(function(o){o.items=(o.items||[]).filter(function(i){return norm(i.name)!==norm(p.name);});});Array.prototype.forEach.call(document.querySelectorAll('.order-item-row'),function(r){var n=r.querySelector('.order-item-name');if(n&&norm(n.value)===norm(p.name))r.remove();});save();try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}v20Toast("✅ کالا حذف شد.");};}
+  function bindProductCrudV20(){var form=$("formProduct"),btn=$("btnSaveProduct");if(btn&&!btn.dataset.v20crud){btn.dataset.v20crud="1";btn.addEventListener("click",function(e){e.preventDefault();e.stopImmediatePropagation();saveProductV20();},true);}if(form&&!form.dataset.v20crud){form.dataset.v20crud="1";form.addEventListener("submit",function(e){e.preventDefault();e.stopImmediatePropagation();saveProductV20();},true);}var pane=$("tab-columns-products"),head=pane&&pane.querySelector("#formProduct")&&pane.querySelector("#formProduct").closest(".card").querySelector(".card-header");if(head&&!$("v20NewProduct")){var n=document.createElement("button");n.id="v20NewProduct";n.type="button";n.className="btn btn-outline btn-sm";n.textContent="➕ کالای جدید";n.onclick=resetProductV20;head.appendChild(n);}window.editProductCatalogItem=function(id){var p=(st().products||[]).filter(function(x){return String(x.id)===String(id);})[0];if(!p)return;window._editingProductId=p.id;if($("productCode"))$("productCode").value=p.code||"";if($("productName"))$("productName").value=p.name||"";if($("productDistPrice"))$("productDistPrice").value=p.distributorPrice||p.price||"";if($("productPrice"))$("productPrice").value=p.pharmacyPrice||p.price||"";if($("productStock"))$("productStock").value=p.stock||"";$("productName").scrollIntoView({behavior:"smooth",block:"center"});};function patchCodes(){var body=$("tableProductsBody"),S=st();if(!body)return;Array.prototype.forEach.call(body.children,function(tr,i){if(tr.querySelector('.v20-product-code'))return;var td=document.createElement('td');td.className='v20-product-code';td.setAttribute('data-no-number-group','1');td.innerHTML='<strong>'+esc(((S.products||[])[i]||{}).code||'—')+'</strong>';tr.insertBefore(td,tr.children[1]||null);});}if(typeof window.renderColumnsProductsTable==='function'&&!window.renderColumnsProductsTable._v20code){var rr=window.renderColumnsProductsTable,w=function(){var x=rr.apply(this,arguments);patchCodes();return x;};w._v20code=true;window.renderColumnsProductsTable=w;}patchCodes();var old=window.deleteProductCatalogItem;window.deleteProductCatalogItem=function(id){var S=st(),p=(S.products||[]).filter(function(x){return String(x.id)===String(id);})[0];if(!p)return;if(!confirm("کالای «"+(p.name||"")+"» حذف شود؟"))return;S.products=(S.products||[]).filter(function(x){return String(x.id)!==String(id);});S.salesTargets=(S.salesTargets||[]).filter(function(t){return norm(t.productName)!==norm(p.name);});(S.orders||[]).forEach(function(o){o.items=(o.items||[]).filter(function(i){return norm(i.name)!==norm(p.name);});});Array.prototype.forEach.call(document.querySelectorAll('.order-item-row'),function(r){var n=r.querySelector('.order-item-name');if(n&&norm(n.value)===norm(p.name))r.remove();});save();try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}v20Toast("✅ کالا حذف شد.");};}
 
   /* ---------- ۲۹) IndexedDB برای ماندگاری فایل‌های حجیم اکسل ---------- */
   function bulkDb(){return new Promise(function(res,rej){var q=indexedDB.open("crmBulkData",1);q.onupgradeneeded=function(){if(!q.result.objectStoreNames.contains("kv"))q.result.createObjectStore("kv");};q.onsuccess=function(){res(q.result);};q.onerror=function(){rej(q.error);};});}
@@ -33444,7 +33625,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/index.html (139036 بایت)
+فایل: public/index.html (139028 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~html
 <!DOCTYPE html>
@@ -33465,7 +33646,7 @@ button.v19-gps svg{display:block}
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.21.3" />
+  <link rel="stylesheet" href="style.css?v=11.21.4" />
 </head>
 <body>
 
@@ -34429,12 +34610,12 @@ button.v19-gps svg{display:block}
           <div class="card-title"><span>🚕 اسنپ سازمانی — گزارش سفرها</span></div>
           <div style="display:flex;gap:.5rem;flex-wrap:wrap">
             <button type="button" id="btnOpenSnappCorporate" class="btn btn-primary btn-sm">🔐 باز کردن پنل رسمی اسنپ</button>
-            <label class="btn btn-primary btn-sm btn-excel" for="snappReportFiles" style="cursor:pointer">📊 ورود فایل‌های گزارش</label>
+            <button type="button" id="btnImportSnappTrips" class="btn btn-primary btn-sm btn-excel">📊 ورود فایل‌های گزارش</button>
             <input id="snappReportFiles" type="file" accept=".xlsx,.xls,.csv,.txt" multiple hidden>
             <button type="button" id="btnBuildSnappReport" class="btn btn-primary btn-sm">🔎 تهیه گزارش نماینده</button>
             <button type="button" id="btnBuildSnappTopupReport" class="btn btn-primary btn-sm">🔎 تهیه گزارش افزایش موجودی</button>
             <button type="button" id="btnExportSnappView" class="btn btn-primary btn-sm btn-excel">📊 خروجی اکسل نمای فعلی</button>
-            <label class="btn btn-primary btn-sm btn-excel" for="snappTopupFiles" style="cursor:pointer">💳 ورود گزارش افزایش موجودی</label>
+            <button type="button" id="btnImportSnappTopups" class="btn btn-primary btn-sm btn-excel">💳 ورود گزارش افزایش موجودی</button>
             <input id="snappTopupFiles" type="file" accept=".xlsx,.xls,.csv,.txt" multiple hidden>
           </div>
         </div>
@@ -35611,22 +35792,22 @@ button.v19-gps svg{display:block}
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.21.3"></script>
-  <script src="crm-app.js?v=11.21.3"></script>
-  <script src="crm-features-v9.js?v=11.21.3"></script>
-  <script src="iran-facilities.js?v=11.21.3" defer></script>
-  <script src="crm-features-v10.js?v=11.21.3"></script>
-  <script src="crm-features-v11.js?v=11.21.3"></script>
-  <script src="crm-features-v12.js?v=11.21.3"></script>
-  <script src="crm-features-v13.js?v=11.21.3"></script>
-  <script src="crm-jalali.js?v=11.21.3"></script>
-  <script src="crm-features-v14.js?v=11.21.3"></script>
-  <script src="crm-features-v15.js?v=11.21.3"></script>
-  <script src="crm-features-v16.js?v=11.21.3"></script>
-  <script src="crm-features-v17.js?v=11.21.3"></script>
-  <script src="crm-features-v18.js?v=11.21.3"></script>
-  <script src="crm-features-v19.js?v=11.21.3"></script>
-  <script src="crm-features-v20.js?v=11.21.3"></script>
+  <script src="crm-data.js?v=11.21.4"></script>
+  <script src="crm-app.js?v=11.21.4"></script>
+  <script src="crm-features-v9.js?v=11.21.4"></script>
+  <script src="iran-facilities.js?v=11.21.4" defer></script>
+  <script src="crm-features-v10.js?v=11.21.4"></script>
+  <script src="crm-features-v11.js?v=11.21.4"></script>
+  <script src="crm-features-v12.js?v=11.21.4"></script>
+  <script src="crm-features-v13.js?v=11.21.4"></script>
+  <script src="crm-jalali.js?v=11.21.4"></script>
+  <script src="crm-features-v14.js?v=11.21.4"></script>
+  <script src="crm-features-v15.js?v=11.21.4"></script>
+  <script src="crm-features-v16.js?v=11.21.4"></script>
+  <script src="crm-features-v17.js?v=11.21.4"></script>
+  <script src="crm-features-v18.js?v=11.21.4"></script>
+  <script src="crm-features-v19.js?v=11.21.4"></script>
+  <script src="crm-features-v20.js?v=11.21.4"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
@@ -38652,7 +38833,7 @@ self.addEventListener("fetch", (event) => {
 فایل: public/sw.js (1145 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
-const CACHE = "ttt-v11.21.3";
+const CACHE = "ttt-v11.21.4";
 const PRECACHE = ["/", "/login", "/favicon.png", "/logo.png", "/vendor/leaflet.js", "/vendor/leaflet.css"];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(PRECACHE).catch(function () {}); }).then(function () { return self.skipWaiting(); }));
@@ -64059,7 +64240,7 @@ export function createZip(entries: ZipEntry[], modified = new Date()): Buffer {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/app-smoke.test.mjs (2745 بایت)
+فایل: tests/app-smoke.test.mjs (2790 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 import test from 'node:test';
@@ -64092,7 +64273,7 @@ test('automated app entry loads health, HTML, all scripts and critical UI', asyn
   const pageRes = await fetch(base + '/');
   assert.equal(pageRes.status, 200);
   const html = await pageRes.text();
-  for (const id of ['tab-dashboard','tab-orders','tab-snapp-corporate','tab-distributor-companies','tab-distributor-sales','tab-distributor-database','btnToggleSideMenu','snappTripModeYear','snappTopupModeYear','btnBuildDistributorReport','productCode']) {
+  for (const id of ['tab-dashboard','tab-orders','tab-snapp-corporate','tab-distributor-companies','tab-distributor-sales','tab-distributor-database','btnToggleSideMenu','snappTripModeYear','snappTopupModeYear','btnBuildDistributorReport','productCode','btnImportSnappTrips','btnImportSnappTopups']) {
     assert.match(html, new RegExp(`id=["']${id}["']`), `missing critical UI #${id}`);
   }
   const scripts = [...html.matchAll(/<script[^>]+src=["']([^"']+\.js(?:\?[^"']*)?)["']/g)].map(m => m[1]);
@@ -64117,7 +64298,7 @@ test('state API round-trip preserves unrelated sentinel data', async () => {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/state-preservation.test.mjs (6368 بایت)
+فایل: tests/state-preservation.test.mjs (7286 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 import test from 'node:test';
@@ -64203,11 +64384,20 @@ test('large Excel rows are stripped from localStorage metadata and delegated to 
   assert.match(v20Source,/function saveBulkVault/);assert.match(v20Source,/await saveBulkVault\(\)/);
 });
 
+test('distributor last date comes from the final non-empty row, not import time or max sort', () => {
+  const start=v20Source.indexOf('function distLastDate('),brace=v20Source.indexOf('{',start);let depth=0,end=brace;for(;end<v20Source.length;end++){if(v20Source[end]==='{')depth++;else if(v20Source[end]==='}'&&--depth===0){end++;break;}}
+  const ctx={result:null,normSnappDate:v=>String(v||''),findDistIndex:()=>0};vm.createContext(ctx);vm.runInContext(`${v20Source.slice(start,end)};result=distLastDate`,ctx);
+  assert.equal(ctx.result([['1405/02/01'],['1405/01/01']],['تاریخ'],'other'),'1405/01/01');
+  const daya=Array.from({length:14},()=>''),daya2=Array.from({length:14},()=> '');daya[13]='1405/03/01';daya2[13]='1405/02/20';assert.equal(ctx.result([daya,daya2],[],'daya'),'1405/02/20');
+});
+
 test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /function rowSignature/);
   assert.match(v20Source, /D\.rows=D\.rows\.filter/);
   assert.match(v20Source, /seen\[rowSignature\(r\)\]/);
   assert.match(v20Source, /d\.pharmacyRows=d\.pharmacyRows\.concat\(fresh\)/);
+  assert.match(v20Source, /function bindSnappImportButtons/);
+  assert.match(v20Source, /data-no-number-group/);
   assert.match(v20Source, /d\.inventoryRows=data/);
   assert.match(v20Source, /<Worksheet ss:Name=/, 'multi-sheet Excel exporter must remain');
   assert.match(v20Source, /function bindProductCrudV20/);
