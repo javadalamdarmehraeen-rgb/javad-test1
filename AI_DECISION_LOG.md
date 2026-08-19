@@ -1403,5 +1403,9 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - آخرین snapshot بدون marker مهاجرت 11.20.4 منبع settings/layout است؛ record data آن نیز یک‌بار re-merge می‌شود.
 - پس از marker، هیچ backup/remote قدیمی ساختار مدیر را resurrect نمی‌کند.
 - mobile/filter/date features حفظ شدند ولی روی layout بازگردانده‌شده اجرا می‌شوند.
+## تصمیم ۶۱ — نسخه ۱۱.۲۱.۰: tests gate deployment + distributor data mart (2026-08-18)
+- node:test zero-dependency suite هم unit preservation و هم HTTP app-entry/API/assets را پوشش می‌دهد؛ CI قبل build اجرا می‌کند.
+- login خودکار cross-origin پخش قابل‌اعتماد نیست؛ URL configurable + manual imports راه امن است. password فقط sessionStorage است.
+- pharmacy imports append+dedupe و inventory replace است؛ گزارش all/4 distributors و multi-sheet XML XLS ساخته می‌شود.
 
 # END OF AI DECISION LOG

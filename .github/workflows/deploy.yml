@@ -24,6 +24,8 @@ jobs:
       - run: npm ci
       - name: بررسی نحوی همه فایل‌های JavaScript
         run: find public -name '*.js' -print0 | xargs -0 -n1 node --check && node --check server.js
+      - name: تست واحد ضد‌رگرسیون و ورود خودکار به برنامه
+        run: npm test
       - run: npm run build
 
   mirror-to-gitlab:

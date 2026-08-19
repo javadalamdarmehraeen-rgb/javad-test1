@@ -34,6 +34,8 @@ const MENU_SECTIONS_LIST = [
   { id: "tab-overview-map", label: "نقشه جامع", icon: "🗺️" },
   { id: "tab-live-location", label: "موقعیت زنده", icon: "📍" },
   { id: "tab-snapp-corporate", label: "اسنپ سازمانی", icon: "🚕" },
+  { id: "tab-distributor-companies", label: "اطلاعات شرکت‌ها", icon: "🏢" },
+  { id: "tab-distributor-sales", label: "اطلاعات فروش پخش‌ها", icon: "📦" },
   { id: "tab-search-info", label: "جستجوی اطلاعات", icon: "🔍" },
   { id: "tab-rep-routes", label: "رصد تردد", icon: "🛣️" },
   { id: "tab-my-visit", label: "شروع/پایان ویزیت", icon: "▶️" },
@@ -130,6 +132,8 @@ function loadState() {
         if (!state.snappCorporate.headers && sc.headers) state.snappCorporate.headers = sc.headers;
         if (!state.snappCorporate.topupHeaders && sc.topupHeaders) state.snappCorporate.topupHeaders = sc.topupHeaders;
       });
+      state.distributorCompanies = state.distributorCompanies || {};
+      validStates.forEach(src => { Object.keys(src.distributorCompanies || {}).forEach(id => { const from=src.distributorCompanies[id]||{},to=state.distributorCompanies[id]||(state.distributorCompanies[id]={}); to.pharmacyRows=mergeArray(to.pharmacyRows,from.pharmacyRows,"distPh");to.pharmacyImports=mergeArray(to.pharmacyImports,from.pharmacyImports,"distImp");if((!to.inventoryRows||!to.inventoryRows.length)&&from.inventoryRows)to.inventoryRows=from.inventoryRows;if(!to.pharmacyHeaders&&from.pharmacyHeaders)to.pharmacyHeaders=from.pharmacyHeaders;if(!to.inventoryHeaders&&from.inventoryHeaders)to.inventoryHeaders=from.inventoryHeaders;if(!to.url&&from.url)to.url=from.url;if(!to.username&&from.username)to.username=from.username; }); });
       // برای چیدمان، کامل‌ترین نسخه موجود برنده است؛ نسخه جدید حق ندارد آن را صفر کند.
       ["formFieldMeta","formBoxes","manualLayouts","tabOrder","selectExtraOptions"].forEach(k => {
         const currentLayout = state._settingsRestoredFromV11203 ? state[k] : (currentParsed && currentParsed[k]);
@@ -177,6 +181,7 @@ window.mergeStateWithoutLoss = function(base, source) {
   arrays.forEach(k => base[k]=merge(base[k],source[k]));
   base.customFields=base.customFields||{};Object.keys(source.customFields||{}).forEach(k=>base.customFields[k]=merge(base.customFields[k],source.customFields[k]));
   base.snappCorporate=base.snappCorporate||{};const sc=source.snappCorporate||{};base.snappCorporate.rows=merge(base.snappCorporate.rows,sc.rows);base.snappCorporate.topups=merge(base.snappCorporate.topups,sc.topups);
+  base.distributorCompanies=base.distributorCompanies||{};Object.keys(source.distributorCompanies||{}).forEach(id=>{const from=source.distributorCompanies[id]||{},to=base.distributorCompanies[id]||(base.distributorCompanies[id]={});to.pharmacyRows=merge(to.pharmacyRows,from.pharmacyRows);to.pharmacyImports=merge(to.pharmacyImports,from.pharmacyImports);if((!to.inventoryRows||!to.inventoryRows.length)&&from.inventoryRows)to.inventoryRows=from.inventoryRows;if(!to.url&&from.url)to.url=from.url;if(!to.username&&from.username)to.username=from.username;});
   ["formFieldMeta","formBoxes","manualLayouts","tabOrder","selectExtraOptions"].forEach(k=>{if(JSON.stringify(base[k]||{}).length<=2&&JSON.stringify(source[k]||{}).length>2)base[k]=source[k];});
   base.userTabs=merge(base.userTabs,source.userTabs);base._lastSavedAt=Math.max(Number(base._lastSavedAt||0),Number(source._lastSavedAt||0));return base;
 };

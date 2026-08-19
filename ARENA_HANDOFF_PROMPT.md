@@ -1131,3 +1131,8 @@ ADDENDUM v11.16.1 (2026-08-16)
 ## Addendum — v11.20.5
 - Baseline settings/layout is restored once from latest snapshot lacking `_allSnapshotsMergedV11204` (the requested 11.20.3 baseline), while its records are re-merged.
 - Keep mobile/filter/date features layered on top without mutating desktop structure.
+## Addendum — v11.21.0
+- `npm test` is mandatory and CI-blocking. Keep tests zero-dependency.
+- Distributor portal automation is not claimed; URLs were absent and cross-origin/CAPTCHA make it unsafe. Credentials passwords remain session-only.
+- Pharmacy imports append exact unique rows; inventory imports replace current rows.
+- Final column mapping remains pending real sample files from each distributor.

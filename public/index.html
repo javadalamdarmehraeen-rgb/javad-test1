@@ -16,7 +16,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.20.5" />
+  <link rel="stylesheet" href="style.css?v=11.21.0" />
 </head>
 <body>
 
@@ -71,6 +71,8 @@
       <button type="button" class="nav-item" data-target="tab-overview-map" onclick="switchTab('tab-overview-map')"><span>🗺️ نقشه جامع</span></button>
       <button type="button" class="nav-item" data-target="tab-live-location" onclick="switchTab('tab-live-location')"><span>📍 موقعیت زنده</span></button>
       <button type="button" class="nav-item" data-target="tab-snapp-corporate" onclick="switchTab('tab-snapp-corporate')"><span>🚕 اسنپ سازمانی</span></button>
+      <button type="button" class="nav-item" data-target="tab-distributor-companies" onclick="switchTab('tab-distributor-companies')"><span>🏢 اطلاعات شرکت‌ها</span></button>
+      <button type="button" class="nav-item" data-target="tab-distributor-sales" onclick="switchTab('tab-distributor-sales')"><span>📦 اطلاعات فروش پخش‌ها</span></button>
       <button type="button" class="nav-item" data-target="tab-search-info" onclick="switchTab('tab-search-info')"><span>🔍 جستجوی اطلاعات</span></button>
       <button type="button" class="nav-item" data-target="tab-rep-routes" onclick="switchTab('tab-rep-routes')"><span>🛣️ رصد تردد</span></button>
       <button type="button" class="nav-item" data-target="tab-my-visit" onclick="switchTab('tab-my-visit')"><span>▶️ شروع/پایان ویزیت</span></button>
@@ -133,6 +135,8 @@
       <button type="button" class="side-menu-item" data-side-target="tab-overview-map" onclick="switchTab('tab-overview-map');closeSideMenu();"><span>نقشه جامع</span><span>🗺️</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-live-location" onclick="switchTab('tab-live-location');closeSideMenu();"><span>موقعیت زنده</span><span>📍</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-snapp-corporate" onclick="switchTab('tab-snapp-corporate');closeSideMenu();"><span>اسنپ سازمانی</span><span>🚕</span></button>
+      <button type="button" class="side-menu-item" data-side-target="tab-distributor-companies" onclick="switchTab('tab-distributor-companies');closeSideMenu();"><span>اطلاعات شرکت‌ها</span><span>🏢</span></button>
+      <button type="button" class="side-menu-item" data-side-target="tab-distributor-sales" onclick="switchTab('tab-distributor-sales');closeSideMenu();"><span>اطلاعات فروش پخش‌ها</span><span>📦</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-search-info" onclick="switchTab('tab-search-info');closeSideMenu();"><span>جستجوی اطلاعات</span><span>🔍</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-rep-routes" onclick="switchTab('tab-rep-routes');closeSideMenu();"><span>رصد تردد</span><span>🛣️</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-my-visit" onclick="switchTab('tab-my-visit');closeSideMenu();"><span>شروع/پایان ویزیت</span><span>▶️</span></button>
@@ -987,6 +991,7 @@
           <strong>ورود امن:</strong> کد امنیتی باید توسط مدیر در سایت رسمی وارد شود. نام کاربری و رمز در این برنامه، گیت‌هاب و فایل ZIP ذخیره نمی‌شود. پس از ورود، گزارش دیروز را دانلود و هر دو فایل را هم‌زمان اینجا انتخاب کنید.
         </div>
         <div id="snappDailyStatus" class="col-add-status">هنوز گزارشی وارد نشده است.</div>
+        <div id="snappFileArchiveViewer" class="card" hidden></div>
         <div class="form-grid" style="margin-top:1rem">
           <div class="form-group"><label class="form-label" for="snappFilterYear"><input type="checkbox" id="snappTripModeYear"> گزارش سال</label><input id="snappFilterYear" class="form-input" inputmode="numeric" placeholder="مثال: ۱۴۰۵"></div>
           <div class="form-group"><label class="form-label" for="snappFilterMonth"><input type="checkbox" id="snappTripModeMonth"> گزارش ماه</label><select id="snappFilterMonth" class="form-select"><option value="">همه ماه‌ها</option><option value="01">فروردین</option><option value="02">اردیبهشت</option><option value="03">خرداد</option><option value="04">تیر</option><option value="05">مرداد</option><option value="06">شهریور</option><option value="07">مهر</option><option value="08">آبان</option><option value="09">آذر</option><option value="10">دی</option><option value="11">بهمن</option><option value="12">اسفند</option></select></div>
@@ -1010,6 +1015,33 @@
         <div id="snappTopupSummaryCards" class="v20-visit-metrics"></div>
         <div class="table-responsive"><table class="data-table"><thead><tr id="snappTopupHead"><th>ردیف</th><th>تاریخ</th><th>افزایش موجودی</th></tr></thead><tbody id="snappTopupBody"></tbody></table></div>
       </div>
+    </section>
+
+    <!-- اطلاعات شرکت‌های پخش -->
+    <section id="tab-distributor-companies" class="tab-pane">
+      <div class="card">
+        <div class="card-header"><div class="card-title"><span>🏢 اطلاعات شرکت‌های پخش</span></div></div>
+        <div class="alert-banner alert-banner-warning" style="display:block;margin-bottom:1rem">آدرس پنل و نام کاربری ذخیره می‌شود. رمز عبور فقط در نشست جاری مرورگر نگهداری می‌شود و وارد Git، ZIP یا پشتیبان نمی‌شود.</div>
+        <div id="distributorCompanyGrid" class="v20-cards"></div>
+      </div>
+    </section>
+
+    <!-- اطلاعات فروش پخش‌ها -->
+    <section id="tab-distributor-sales" class="tab-pane">
+      <div class="card">
+        <div class="card-header"><div class="card-title"><span>📦 اطلاعات فروش پخش‌ها</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="btnBuildDistributorReport" class="btn btn-primary">🔎 تهیه گزارش</button><button type="button" id="btnExportDistributorReport" class="btn btn-primary btn-excel">📊 خروجی اکسل چندشیتی</button></div></div>
+        <div id="distributorActionGrid" class="v20-cards"></div>
+        <div class="form-grid" id="distributorFilterGrid" style="margin:1rem 0">
+          <div class="form-group"><label class="form-label"><input type="checkbox" id="distModeYear"> گزارش سال</label><input id="distFilterYear" class="form-input" placeholder="۱۴۰۵"></div>
+          <div class="form-group"><label class="form-label"><input type="checkbox" id="distModeMonth"> گزارش ماه</label><select id="distFilterMonth" class="form-select"><option value="">انتخاب ماه</option><option value="01">فروردین</option><option value="02">اردیبهشت</option><option value="03">خرداد</option><option value="04">تیر</option><option value="05">مرداد</option><option value="06">شهریور</option><option value="07">مهر</option><option value="08">آبان</option><option value="09">آذر</option><option value="10">دی</option><option value="11">بهمن</option><option value="12">اسفند</option></select></div>
+          <div class="form-group"><label class="form-label"><input type="checkbox" id="distModeDay"> گزارش روز</label><input id="distFilterDay" class="form-input" placeholder="روز: ۰۱"></div>
+          <div class="form-group"><label class="form-label"><input type="checkbox" id="distModeFrom"> بازه از تاریخ</label><input id="distFilterFrom" class="form-input" autocomplete="off" placeholder="۱۴۰۵/۰۱/۰۱"></div>
+          <div class="form-group"><label class="form-label"><input type="checkbox" id="distModeTo"> بازه تا تاریخ</label><input id="distFilterTo" class="form-input" autocomplete="off" placeholder="۱۴۰۵/۱۲/۲۹"></div>
+        </div>
+        <div id="distributorReportSummary" class="v20-visit-metrics"></div>
+      </div>
+      <div id="distributorReportTables"></div>
+      <div id="distributorRawViewer" class="card" hidden></div>
     </section>
 
     <!-- ======================================================================
@@ -2119,22 +2151,22 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.20.5"></script>
-  <script src="crm-app.js?v=11.20.5"></script>
-  <script src="crm-features-v9.js?v=11.20.5"></script>
-  <script src="iran-facilities.js?v=11.20.5" defer></script>
-  <script src="crm-features-v10.js?v=11.20.5"></script>
-  <script src="crm-features-v11.js?v=11.20.5"></script>
-  <script src="crm-features-v12.js?v=11.20.5"></script>
-  <script src="crm-features-v13.js?v=11.20.5"></script>
-  <script src="crm-jalali.js?v=11.20.5"></script>
-  <script src="crm-features-v14.js?v=11.20.5"></script>
-  <script src="crm-features-v15.js?v=11.20.5"></script>
-  <script src="crm-features-v16.js?v=11.20.5"></script>
-  <script src="crm-features-v17.js?v=11.20.5"></script>
-  <script src="crm-features-v18.js?v=11.20.5"></script>
-  <script src="crm-features-v19.js?v=11.20.5"></script>
-  <script src="crm-features-v20.js?v=11.20.5"></script>
+  <script src="crm-data.js?v=11.21.0"></script>
+  <script src="crm-app.js?v=11.21.0"></script>
+  <script src="crm-features-v9.js?v=11.21.0"></script>
+  <script src="iran-facilities.js?v=11.21.0" defer></script>
+  <script src="crm-features-v10.js?v=11.21.0"></script>
+  <script src="crm-features-v11.js?v=11.21.0"></script>
+  <script src="crm-features-v12.js?v=11.21.0"></script>
+  <script src="crm-features-v13.js?v=11.21.0"></script>
+  <script src="crm-jalali.js?v=11.21.0"></script>
+  <script src="crm-features-v14.js?v=11.21.0"></script>
+  <script src="crm-features-v15.js?v=11.21.0"></script>
+  <script src="crm-features-v16.js?v=11.21.0"></script>
+  <script src="crm-features-v17.js?v=11.21.0"></script>
+  <script src="crm-features-v18.js?v=11.21.0"></script>
+  <script src="crm-features-v19.js?v=11.21.0"></script>
+  <script src="crm-features-v20.js?v=11.21.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />

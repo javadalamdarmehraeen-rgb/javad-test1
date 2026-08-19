@@ -1188,5 +1188,13 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] حفظ موبایل و فیلترهای ۱۱.۲۰.۴ بدون تغییر ساختار
 - [x] اصلاح خاموشی range و قفل ماه
 - [ ] تأیید مرورگری کاربر
+## ۴۹) نسخه ۱۱.۲۱.۰
+- [x] unit regression و automated HTTP smoke + CI gate
+- [x] تست parser اعداد و dedupe اسنپ
+- [x] مشاهده آرشیو فایل‌های سفر/شارژ
+- [x] اطلاعات ۴ شرکت پخش و credential session-safe
+- [x] import داروخانه append / موجودی replace / مشاهده فایل‌ها
+- [x] فیلتر و جداول ۱۵ ستونی all+4 + multi-sheet Excel
+- [ ] دریافت URL و نمونه Excel واقعی چهار پخش برای mapping نهایی
 
 # END OF AI TASKS

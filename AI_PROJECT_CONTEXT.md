@@ -841,3 +841,5 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.20.4 است. mobile CSS در v20 زیر 768px hamburger-only است. Snapp mode checkboxها year/month/range انحصاری‌اند. historical recovery فقط یک‌بار اجرا و layout جاری حفظ می‌شود.
 ## افزونه وضعیت نسخه ۱۱.۲۰.۵
 نسخه فعال 11.20.5 است. settings/layout از آخرین pre-11.20.4 snapshot یک‌بار restore و داده آن re-merge می‌شود. سپس markerها هر تغییر خودکار آتی را منع می‌کنند.
+## افزونه وضعیت نسخه ۱۱.۲۱.۰
+نسخه فعال 11.21.0 است. npm test شامل ۸ تست Node و در CI gate است. دو تب distributor اضافه شده؛ state.distributorCompanies pharmacyRows را append/dedupe و inventoryRows را replace می‌کند. گزارش‌ها ۱۵ metric و Excel پنج worksheet دارند.

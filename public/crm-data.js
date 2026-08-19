@@ -416,6 +416,20 @@ const PERMISSION_GROUPS = {
     { key: "sys_structure_manager_only", label: "قفل تعداد و جای فیلد/کادر/کلید مگر با تغییر مدیر" },
     { key: "sys_restore_v11203_layout", label: "بازگردانی یک‌باره تنظیمات و چیدمان نسخه ۱۱.۲۰.۳" },
     { key: "sys_no_automatic_structure_mutation", label: "منع تغییر خودکار ساختار پس از بازیابی" }
+  ],
+  "ابزارهای مدیریت (نسخه ۱۱.۲۱)": [
+    { key: "sys_regression_unit_tests", label: "تست واحد ضد‌رگرسیون حفظ داده و چیدمان" },
+    { key: "sys_automated_app_test", label: "تست خودکار ورود HTTP، API و همه فایل‌های برنامه" },
+    { key: "dist_companies_access", label: "دسترسی به تب اطلاعات شرکت‌ها" },
+    { key: "dist_company_credentials", label: "ثبت آدرس پنل، نام کاربری و رمز نشست پخش" },
+    { key: "dist_sales_access", label: "دسترسی به اطلاعات فروش پخش‌ها" },
+    { key: "dist_open_panel", label: "بازکردن مستقیم پنل هر پخش" },
+    { key: "dist_import_pharmacies", label: "ورود آرشیوی فایل داروخانه هر پخش" },
+    { key: "dist_import_inventory", label: "جایگزینی فایل موجودی هر پخش" },
+    { key: "dist_view_database", label: "مشاهده فایل‌ها و دیتابیس هر پخش" },
+    { key: "dist_report_filters", label: "گزارش سال، ماه، روز و بازه پخش‌ها" },
+    { key: "dist_report_tables", label: "جدول ۱۵ ستونی همه پخش‌ها و هر پخش" },
+    { key: "dist_multisheet_excel", label: "خروجی اکسل چندشیتی فارسی" }
   ]
 };
 

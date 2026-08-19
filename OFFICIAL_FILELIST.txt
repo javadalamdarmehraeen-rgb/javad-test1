@@ -238,6 +238,8 @@ src/lib/useLive.ts
 src/lib/zip.ts
 src/proxy.ts
 sync_all.sh
+tests/app-smoke.test.mjs
+tests/state-preservation.test.mjs
 tsconfig.json
 update_chat_arena.py
 update_project_graph.py

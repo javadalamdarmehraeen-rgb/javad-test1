@@ -1356,4 +1356,13 @@ documentation, Git, logs or examples. Redact them and tell the user to rotate
 the exposed password. CAPTCHA/security-code bypass must not be implemented.
 Use manual manager login or an official provider API/service account.
 
+# 70. REGRESSION TEST + MEMORY UPDATE RULE (PERMANENT — USER-MANDATED)
+
+Every version must run `npm test` before delivery. The suite must protect existing
+records/layout/custom fields, order quantity, exact-row dedupe, critical tabs, all
+script assets and `/api/state` round-trip. GitHub Actions runs the same suite and a
+failure must block deploy with a red check. Every turn/version must still regenerate
+PROJECT_GRAPH.md before chat.arena and update CHANGES/DECISION/TASKS/CONTEXT/HANDOFF.
+New test files must be listed in OFFICIAL_FILELIST.txt.
+
 # END OF AI RULES

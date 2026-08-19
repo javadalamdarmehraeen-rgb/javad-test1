@@ -1097,3 +1097,7 @@ Then change only what is requested.
 - Header detection scans first 25 rows; trip and topup schemas are separated.
 - Share ordering: `settings.v20ShareOrder[entity][fieldId]`; rendering sorts before composing text.
 - Target report derives distributor/pharmacy unit and total prices from `state.products`.
+## معماری افزوده v11.21.0 — Tests + Distributor Data Mart
+- Tests: tests/state-preservation.test.mjs and tests/app-smoke.test.mjs, Node built-ins only.
+- Distributor state: per-id URL/username, pharmacy archive/import batches, current inventory. Password is session-only.
+- Reporting: regex header schema, temporal filter, product metric maps, all-distributor aggregation, SpreadsheetML multi-sheet export.
