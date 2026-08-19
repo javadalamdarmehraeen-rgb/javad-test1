@@ -1365,4 +1365,13 @@ failure must block deploy with a red check. Every turn/version must still regene
 PROJECT_GRAPH.md before chat.arena and update CHANGES/DECISION/TASKS/CONTEXT/HANDOFF.
 New test files must be listed in OFFICIAL_FILELIST.txt.
 
+# 71. CURRENT STATE IS AUTHORITATIVE (PERMANENT — USER-MANDATED)
+
+The current `CRM_APP_STATE_V2` is the ONLY automatic source of truth. Never
+auto-load, auto-merge, or auto-restore rolling backups, historical snapshots,
+or remote `/api/state` into it. The server may receive POST snapshots but must
+not overwrite local current state through automatic GET recovery. Backups are
+manual recovery only. Existing empty arrays mean intentional deletion and must
+stay empty. Unit tests must fail if old records/layout are reintroduced.
+
 # END OF AI RULES

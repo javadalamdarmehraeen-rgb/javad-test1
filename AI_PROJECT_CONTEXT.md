@@ -847,3 +847,5 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.21.1 است. tab-distributor-database مالک viewerهاست. Daya explicit schema: date13, invoice12, qty4, dist3, ph7, gift2 (zero-based), inventory qty2. Report has 19 columns. Product CRUD final override is v20.
 ## افزونه وضعیت نسخه ۱۱.۲۱.۲
 نسخه فعال 11.21.2 است. Excel bulk data در IndexedDB crmBulkData/kv:bulk-v1 است؛ local/server state سبک است. Products دارای code و dayaDbCode=1111000+code هستند. Daya code column index15 canonical source است.
+## افزونه وضعیت نسخه ۱۱.۲۱.۳
+نسخه فعال 11.21.3 است. CRM_APP_STATE_V2 تنها مرجع خودکار است. backup/history/remote هیچ‌گاه خودکار merge یا restore نمی‌شوند. Server sync فقط POST metadata است. IndexedDB bulk current جداگانه hydrate می‌شود.

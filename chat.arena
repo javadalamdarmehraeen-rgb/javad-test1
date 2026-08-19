@@ -1,6 +1,6 @@
 CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.24 | تاریخ به‌روزرسانی: 2026-08-19 (۲۸ مرداد ۱۴۰۵) | نسخه برنامه: 11.21.2
+نسخه این فایل: 1.25 | تاریخ به‌روزرسانی: 2026-08-19 (۲۸ مرداد ۱۴۰۵) | نسخه برنامه: 11.21.3
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -333,7 +333,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
 بخش ۴) تاریخچه نسخه‌ها و آخرین دوره تغییرات
 ══════════════════════════════════════════════════════════════════════════════════
 • مسیر نسخه‌ها (بازسازی از ریپو): V1 → … → V9 → V10 → V11 → V11.1 … V11.14 → V11.15
-  → V11.15.1 → V11.15.2 → V11.15.3 → V11.16.0 → V11.16.1 → V11.16.2 → V11.17.0 → V11.17.1 → V11.18.0 → V11.19.0 → V11.20.0 → V11.20.1 → V11.20.2 → V11.20.3 → V11.20.4 → V11.20.5 → V11.21.0 → V11.21.1 → V11.21.2.
+  → V11.15.1 → V11.15.2 → V11.15.3 → V11.16.0 → V11.16.1 → V11.16.2 → V11.17.0 → V11.17.1 → V11.18.0 → V11.19.0 → V11.20.0 → V11.20.1 → V11.20.2 → V11.20.3 → V11.20.4 → V11.20.5 → V11.21.0 → V11.21.1 → V11.21.2 → V11.21.3.
 • جزئیات کامل هر نسخه V9 به بعد در CHANGES_V9.md / CHANGES_V10.md / CHANGES_V11.md
   (محتوای کاملشان در بخش ۹ همین فایل هست).
 
@@ -569,18 +569,18 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     1082 بایت  .gitignore
   [متنی ]     2057 بایت  .gitlab-ci.yml
   [متنی ]    19270 بایت  AI_ARCHITECTURE.md
-  [متنی ]    43199 بایت  AI_DECISION_LOG.md
-  [متنی ]    21094 بایت  AI_PROJECT_CONTEXT.md
-  [متنی ]    25989 بایت  AI_RULES.md
-  [متنی ]    29769 بایت  AI_TASKS.md
-  [متنی ]    25842 بایت  ARENA_HANDOFF_PROMPT.md
+  [متنی ]    43610 بایت  AI_DECISION_LOG.md
+  [متنی ]    21424 بایت  AI_PROJECT_CONTEXT.md
+  [متنی ]    26521 بایت  AI_RULES.md
+  [متنی ]    30163 بایت  AI_TASKS.md
+  [متنی ]    26201 بایت  ARENA_HANDOFF_PROMPT.md
   [متنی ]      600 بایت  CHANGES_V10.md
-  [متنی ]    50054 بایت  CHANGES_V11.md
+  [متنی ]    50924 بایت  CHANGES_V11.md
   [متنی ]     3939 بایت  CHANGES_V9.md
   [متنی ]     1806 بایت  CLEAN_EXTRA_FILES.bat
   [متنی ]     2377 بایت  KEEP_ONLY_GITHUB.bat
   [متنی ]     6334 بایت  OFFICIAL_FILELIST.txt
-  [متنی ]    40376 بایت  PROJECT_GRAPH.md
+  [متنی ]    39812 بایت  PROJECT_GRAPH.md
   [متنی ]     2642 بایت  PUSH_FRESH_GITHUB.bat
   [متنی ]     2680 بایت  PUSH_GITHUB_CLEAN.bat
   [متنی ]     6579 بایت  RAHNAMA_GITLAB.txt
@@ -600,7 +600,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     9666 بایت  server.js
   [متنی ]     2426 بایت  sync_all.sh
   [متنی ]      738 بایت  tsconfig.json
-  [متنی ]   219934 بایت  update_chat_arena.py
+  [متنی ]   224489 بایت  update_chat_arena.py
   [متنی ]    10215 بایت  update_project_graph.py
   [متنی ]     2844 بایت  .github/workflows/deploy.yml
   [متنی ]      214 بایت  .github/workflows/keep_alive.yml
@@ -608,8 +608,8 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     9805 بایت  mobile/README.md
   [متنی ]     9796 بایت  mobile/src/simAuth.ts
   [متنی ]     8066 بایت  public/cloudflare-worker.js
-  [متنی ]   179500 بایت  public/crm-app.js
-  [متنی ]    45086 بایت  public/crm-data.js
+  [متنی ]   170115 بایت  public/crm-app.js
+  [متنی ]    45446 بایت  public/crm-data.js
   [متنی ]    13643 بایت  public/crm-features-v10.js
   [متنی ]   107737 بایت  public/crm-features-v11.js
   [متنی ]    44613 بایت  public/crm-features-v12.js
@@ -620,7 +620,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]    19662 بایت  public/crm-features-v17.js
   [متنی ]    33040 بایت  public/crm-features-v18.js
   [متنی ]    60932 بایت  public/crm-features-v19.js
-  [متنی ]   164627 بایت  public/crm-features-v20.js
+  [متنی ]   162543 بایت  public/crm-features-v20.js
   [متنی ]    69121 بایت  public/crm-features-v9.js
   [متنی ]    25683 بایت  public/crm-jalali.js
   [متنی ]   139036 بایت  public/index.html
@@ -780,7 +780,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     2276 بایت  src/lib/useLive.ts
   [متنی ]     3346 بایت  src/lib/zip.ts
   [متنی ]     2745 بایت  tests/app-smoke.test.mjs
-  [متنی ]     7068 بایت  tests/state-preservation.test.mjs
+  [متنی ]     6368 بایت  tests/state-preservation.test.mjs
   [تصویر]    23282 بایت  public/apple-touch-icon.png
   [تصویر]     4527 بایت  public/favicon.png
   [تصویر]    26208 بایت  public/icon-192.png
@@ -2402,6 +2402,72 @@ git push gitlab main
 
 
 
+──────────────────────────────── نوبت ۳۰ ────────────────────────────────
+🧑 کاربر (عیناً):
+«دوباره اطلاعات قبلی را اضافه میکنه و اطلاعات قبلی را پاک میکنه.من هر بار بایذ اطلاعات را اضافه و یا حذف کنم.واقعا خسته کننده شده اینکار.یکاری کن دیگه به هیپ عنوان این اتفاق نیفته»
+
+🤖 دستیار:
+حق با شماست. علت اصلی این مشکل، همان سیستم «بازیابی و ادغام خودکار» بود که برای محافظت از داده ساخته شده بود اما در عمل اطلاعات حذف‌شده را دوباره برمی‌گرداند و وضعیت فعلی را با backup قدیمی مخلوط می‌کرد.
+
+نسخه **۱۱.۲۱.۳** این رفتار را به‌طور کامل حذف می‌کند.
+
+## قانون جدید و قطعی
+از این نسخه:
+
+- فقط `CRM_APP_STATE_V2` فعلی مرجع معتبر برنامه است؛
+- Rolling Backup خودکار خوانده نمی‌شود؛
+- آخرین پشتیبان قدیمی خودکار خوانده نمی‌شود؛
+- آرشیوهای تاریخی خودکار ادغام نمی‌شوند؛
+- اطلاعات سرور با GET وارد برنامه نمی‌شوند؛
+- برنامه بعد از دریافت وضعیت سرور Reload نمی‌شود؛
+- آرایه خالی یعنی مدیر اطلاعات را حذف کرده و باید خالی بماند؛
+- اطلاعات نمونه فقط در نصب کاملاً تازه و بدون هیچ state قبلی ساخته می‌شوند؛
+- backupها فقط برای بازیابی دستی مدیر باقی می‌مانند.
+
+تابع runtime ادغام `mergeStateWithoutLoss` نیز کاملاً حذف شد تا هیچ کد دیگری نتواند تصادفی دوباره آن را اجرا کند.
+
+## وضعیت سرور
+سرور فقط نسخه فعلی را با `POST /api/state` دریافت می‌کند. مسیر خودکار خواندن و جایگزینی local state حذف شده است. بنابراین وضعیت قدیمی سرور دیگر نمی‌تواند اطلاعات فعلی گوشی یا کامپیوتر را تغییر دهد.
+
+## فایل‌های Excel
+IndexedDB فعلی همچنان فقط دیتابیس Excel همان دستگاه را بعد از Refresh بازمی‌گرداند. این بخش backup تاریخی را merge نمی‌کند و فقط آخرین داده فعلی IndexedDB را hydrate می‌کند.
+
+## تست ضد‌رگرسیون جدید
+تست‌ها تغییر کردند و اکنون صریحاً بررسی می‌کنند:
+
+1. backup قدیمی دارای کاربر حذف‌شده نتواند آن کاربر را برگرداند؛
+2. داروخانه، پزشک یا کالای حذف‌شده از backup قدیمی برنگردد؛
+3. ترتیب قدیمی backup جای ترتیب فعلی مدیر را نگیرد؛
+4. آرایه خالی کاربران/داروخانه‌ها/کالاها خالی بماند؛
+5. داده نمونه به state موجود تزریق نشود؛
+6. startup هیچ فیلدی اضافه نکند؛
+7. remote state فقط POST باشد و GET/reload نداشته باشد.
+
+نتیجه: **۹ تست از ۹ تست موفق**.
+
+## نکته برای وضعیت فعلی شما
+اطلاعات ناخواسته‌ای که نسخه‌های قبلی همین حالا به state فعلی اضافه کرده‌اند، باید فقط **یک بار** حذف یا اصلاح شوند. بعد از نصب ۱۱.۲۱.۳، برنامه دیگر آن‌ها را از backup یا سرور برنمی‌گرداند. از این پس هر اضافه، حذف، ویرایش و جابه‌جایی مدیر همان‌طور باقی می‌ماند.
+
+### وضعیت فنی
+- `npm test`: **۹/۹ موفق**؛
+- بررسی نحوی همه JavaScriptها: **موفق**؛
+- build: **موفق**؛
+- سلامت سرور: **نسخه 11.21.3**؛
+- auto backup merge: **حذف‌شده**؛
+- remote overwrite: **حذف‌شده**.
+
+پس از جایگزینی فایل‌ها:
+
+```powershell
+git add -A
+git commit -m "v11.21.3: توقف کامل بازگشت خودکار اطلاعات قدیمی"
+git pull --no-rebase origin main
+git push origin main
+git push gitlab main
+```
+
+
+
 
 ══════════════════════════════════════════════════════════════════════════════════
 بخش ۹) محتوای کامل فایل‌های پروژه — بدون هیچ سانسور یا پنهان‌کاری
@@ -3728,7 +3794,7 @@ Then change only what is requested.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_DECISION_LOG.md (43199 بایت)
+فایل: AI_DECISION_LOG.md (43610 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI DECISION LOG
@@ -5149,12 +5215,16 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - علت حذف پس از refresh، quota localStorage تشخیص داده شد؛ bulk rows/imports به IDB و metadata به localStorage رفت.
 - Daya matching از name به code column 16 و productCode formula منتقل شد.
 - product delete cascade targets/orders/draft و report canonical filtering دارد.
+## تصمیم ۶۴ — نسخه ۱۱.۲۱.۳: current state تنها source of truth (2026-08-19)
+- علت بازگشت داده قدیمی، auto merge/recovery بود؛ همه مسیرهای خودکار حذف شدند.
+- remote فقط POST است؛ backup فقط manual. empty array deletion معتبر است.
+- runtime mergeStateWithoutLoss حذف و tests بر ضد reintroduction تغییر کردند.
 
 # END OF AI DECISION LOG
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_PROJECT_CONTEXT.md (21094 بایت)
+فایل: AI_PROJECT_CONTEXT.md (21424 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI PROJECT CONTEXT
@@ -6006,10 +6076,12 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.21.1 است. tab-distributor-database مالک viewerهاست. Daya explicit schema: date13, invoice12, qty4, dist3, ph7, gift2 (zero-based), inventory qty2. Report has 19 columns. Product CRUD final override is v20.
 ## افزونه وضعیت نسخه ۱۱.۲۱.۲
 نسخه فعال 11.21.2 است. Excel bulk data در IndexedDB crmBulkData/kv:bulk-v1 است؛ local/server state سبک است. Products دارای code و dayaDbCode=1111000+code هستند. Daya code column index15 canonical source است.
+## افزونه وضعیت نسخه ۱۱.۲۱.۳
+نسخه فعال 11.21.3 است. CRM_APP_STATE_V2 تنها مرجع خودکار است. backup/history/remote هیچ‌گاه خودکار merge یا restore نمی‌شوند. Server sync فقط POST metadata است. IndexedDB bulk current جداگانه hydrate می‌شود.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_RULES.md (25989 بایت)
+فایل: AI_RULES.md (26521 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI RULES
@@ -7379,11 +7451,20 @@ failure must block deploy with a red check. Every turn/version must still regene
 PROJECT_GRAPH.md before chat.arena and update CHANGES/DECISION/TASKS/CONTEXT/HANDOFF.
 New test files must be listed in OFFICIAL_FILELIST.txt.
 
+# 71. CURRENT STATE IS AUTHORITATIVE (PERMANENT — USER-MANDATED)
+
+The current `CRM_APP_STATE_V2` is the ONLY automatic source of truth. Never
+auto-load, auto-merge, or auto-restore rolling backups, historical snapshots,
+or remote `/api/state` into it. The server may receive POST snapshots but must
+not overwrite local current state through automatic GET recovery. Backups are
+manual recovery only. Existing empty arrays mean intentional deletion and must
+stay empty. Unit tests must fail if old records/layout are reintroduced.
+
 # END OF AI RULES
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_TASKS.md (29769 بایت)
+فایل: AI_TASKS.md (30163 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI TASKS
@@ -8601,12 +8682,19 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] 19-column corrected metrics/borders
 - [x] ۹ تست سبز
 - [ ] تأیید refresh با فایل واقعی کاربر
+## ۵۲) نسخه ۱۱.۲۱.۳
+- [x] حذف کامل auto backup merge و historical recovery
+- [x] حذف remote GET overwrite/reload
+- [x] حذف runtime merger
+- [x] تست authoritative current + empty arrays + no defaults
+- [x] ۹/۹ تست سبز
+- [ ] کاربر یک‌بار اطلاعات ناخواسته فعلی را اصلاح کند؛ پس از آن پایدار می‌ماند
 
 # END OF AI TASKS
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: ARENA_HANDOFF_PROMPT.md (25842 بایت)
+فایل: ARENA_HANDOFF_PROMPT.md (26201 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # ARENA AI MASTER HANDOFF PROMPT
@@ -9757,6 +9845,11 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Import functions MUST await saveBulkVault before save.
 - Daya matching is by database column 16 to product `dayaDbCode`; formula is 1111000 + program code.
 - Deleting product cascades to targets/orders/draft and removes it from canonical Daya report.
+## Addendum — v11.21.3
+- Absolute rule: current CRM_APP_STATE_V2 is authoritative. Do not auto-merge any old backup or remote state.
+- Remote state sync is POST-only. Backups are manual recovery only.
+- Empty arrays represent intentional manager deletion; never repopulate them.
+- Tests explicitly reject backup reintroduction and sample default injection.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -9776,9 +9869,18 @@ Leaflet محلی. فونت گوگل حذف شد. gzip روی JS/CSS/HTML.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: CHANGES_V11.md (50054 بایت)
+فایل: CHANGES_V11.md (50924 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
+# نسخه ۱۱.۲۱.۳
+
+1. تمام بازیابی/ادغام خودکار rolling backup، latest backup، historical archive و remote GET حذف شد.
+2. `CRM_APP_STATE_V2` فعلی تنها مرجع خودکار است؛ آرایه خالی حذف عمدی محسوب و خالی می‌ماند.
+3. سرور فقط snapshot فعلی را با POST دریافت می‌کند و هرگز local را با GET/reload بازنویسی نمی‌کند.
+4. mergeStateWithoutLoss از runtime حذف شد تا تصادفی دوباره فراخوانی نشود؛ backupها فقط بازیابی دستی‌اند.
+5. unit tests بازنویسی شدند: old backup نباید user/pharmacy/doctor/product یا layout حذف‌شده را برگرداند؛ sample defaults هم نباید تزریق شوند. ۹/۹ سبز.
+6. قانون دائمی ۷۱ ثبت شد.
+
 # نسخه ۱۱.۲۱.۲
 
 1. داده‌های حجیم Excel از localStorage به IndexedDB `crmBulkData` منتقل شدند؛ metadata سبک در localStorage و bulk در IDB است، با migration/restore خودکار پس از refresh.
@@ -10611,7 +10713,7 @@ update_project_graph.py
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: PROJECT_GRAPH.md (40376 بایت)
+فایل: PROJECT_GRAPH.md (39812 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # 🕸️ گراف دانش پروژه «نماینده علمی» (PROJECT_GRAPH.md)
@@ -10672,12 +10774,12 @@ update_project_graph.py
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (179500 بایت)
+### `public/crm-app.js` (170115 بایت)
 - نقش: ============================================================================
-- تعداد توابع داخلی: 166
-- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `_editingProductId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `mergeStateWithoutLoss`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
+- تعداد توابع داخلی: 163
+- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `_editingProductId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
 
-### `public/crm-data.js` (45086 بایت)
+### `public/crm-data.js` (45446 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 1
 
@@ -10731,10 +10833,10 @@ update_project_graph.py
 - تعداد توابع داخلی: 65
 - نام‌های window که تعریف/بازنویسی می‌کند: `_v18DefaultReq`, `_v19BackupLayoutGuard`, `_v19ComboHook`, `_v19Hist`, `_v19IcObs`, `_v19ProdTableWrap`, `_v19Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `extraListColumns`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderPharmaciesList`, `switchTab`, `testServerConnectivity`
 
-### `public/crm-features-v20.js` (164627 بایت)
+### `public/crm-features-v20.js` (162543 بایت)
 - نقش: ============================================================
-- تعداد توابع داخلی: 187
-- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFullFormLayout`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `editProductCatalogItem`, `extraListColumns`, `getUnifiedFieldList`, `mergeStateWithoutLoss`, `openRowDetailsModal`, `performAutoBackup`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`, `v20RenderProductExtras`
+- تعداد توابع داخلی: 185
+- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFullFormLayout`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `editProductCatalogItem`, `extraListColumns`, `getUnifiedFieldList`, `openRowDetailsModal`, `performAutoBackup`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`, `v20RenderProductExtras`
 
 ### `public/crm-features-v9.js` (69121 بایت)
 - نقش: ===========================================================================
@@ -10756,7 +10858,7 @@ update_project_graph.py
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (1145 بایت)
-- نقش: const CACHE = "ttt-v11.21.2";
+- نقش: const CACHE = "ttt-v11.21.3";
 - تعداد توابع داخلی: 0
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -10794,7 +10896,6 @@ update_project_graph.py
 - `iconFromTabLabel`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v12.js` ← `public/crm-features-v14.js`
 - `isColShownInList`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v9.js` ← `public/crm-features-v11.js`
 - `lockManualDesigner`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v13.js` ← `public/crm-features-v16.js` ← `public/crm-features-v17.js` ← `public/crm-features-v18.js`
-- `mergeStateWithoutLoss`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-features-v20.js`
 - `performAutoBackup`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v19.js` ← `public/crm-features-v20.js`
 - `placeFieldOnTab`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v12.js` ← `public/crm-features-v13.js`
 - `refreshColumnsDesigner`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v11.js` ← `public/crm-features-v12.js` ← `public/crm-features-v14.js`
@@ -10823,12 +10924,10 @@ update_project_graph.py
 
 ## هـ) گراف حافظه مرورگر (کلید ↔ فایل‌های دست‌زننده)
 
-- `CRM_APP_STATE_BACKUP_BEFORE_11_11_0` ← localStorage: `public/crm-app.js`
-- `CRM_APP_STATE_BACKUP_LATEST` ← localStorage: `public/crm-app.js`, `public/crm-features-v15.js`, `public/crm-features-v20.js`
+- `CRM_APP_STATE_BACKUP_LATEST` ← localStorage: `public/crm-features-v15.js`
 - `CRM_APP_STATE_CORRUPT_ARCHIVE_` ← localStorage: `public/crm-app.js`
-- `CRM_APP_STATE_MERGED_RECOVERY` ← localStorage: `public/crm-app.js`
 - `CRM_APP_STATE_ROLLING_BACKUP` ← localStorage: `public/crm-app.js`
-- `CRM_APP_STATE_V2` ← localStorage: `public/crm-features-v10.js`, `public/crm-features-v15.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`
+- `CRM_APP_STATE_V2` ← localStorage: `public/crm-features-v10.js`, `public/crm-features-v15.js`, `public/crm-features-v19.js`
 - `CRM_DIAG_LOG` ← localStorage: `public/crm-features-v11.js`
 - `CRM_LAST_GPS` ← localStorage: `public/crm-features-v11.js`
 - `CRM_SOFTEN_ABS_11_11_0` ← localStorage: `public/crm-features-v15.js`
@@ -10839,8 +10938,6 @@ update_project_graph.py
 - `crmUserRole` ← sessionStorage: `public/crm-features-v10.js`, `public/crm-features-v11.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`
 - `crmUsername` ← sessionStorage: `public/crm-features-v19.js`, `public/crm-features-v20.js`
 - `distPass_` ← sessionStorage: `public/crm-features-v20.js`
-- `v20RecoveryShown` ← sessionStorage: `public/crm-features-v20.js`
-- `v20RemoteRecoveryChecked` ← sessionStorage: `public/crm-features-v20.js`
 
 ## و) گراف تب‌ها (تب ↔ فایل‌هایی که با المان‌هایش کار می‌کنند)
 
@@ -12081,13 +12178,13 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.21.2",
+  "version": "11.21.3",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
       "name": "namayandeelmi-javad-crm",
-      "version": "11.21.2",
+      "version": "11.21.3",
       "license": "MIT",
       "engines": {
         "node": ">=20.0.0"
@@ -12103,7 +12200,7 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.21.2",
+  "version": "11.21.3",
   "description": "سیستم جامع مدیریت و ویزیت علمی، داروخانه‌ها، پزشکان و سفارشات (CRM / PWA) هماهنگ با Render و Neon",
   "main": "server.js",
   "engines": {
@@ -12294,7 +12391,7 @@ const server = http.createServer((req, res) => {
     return send(req, res, 200, JSON.stringify({
       ok: true, status: "healthy", message: "OK",
       service: "namayandeelmi-javad-crm",
-      version: "11.21.2",
+      version: "11.21.3",
       timestamp: new Date().toISOString()
     }), "application/json; charset=utf-8");
   }
@@ -12408,7 +12505,7 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, "0.0.0.0", () => {
-  console.log("CRM v11.21.2 listening on 0.0.0.0:" + PORT);
+  console.log("CRM v11.21.3 listening on 0.0.0.0:" + PORT);
 });
 ~~~~~~~~
 
@@ -12530,7 +12627,7 @@ git status -sb
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: update_chat_arena.py (219934 بایت)
+فایل: update_chat_arena.py (224489 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~python
 #!/usr/bin/env python3
@@ -12584,7 +12681,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.24 | تاریخ به‌روزرسانی: 2026-08-19 (۲۸ مرداد ۱۴۰۵) | نسخه برنامه: 11.21.2
+نسخه این فایل: 1.25 | تاریخ به‌روزرسانی: 2026-08-19 (۲۸ مرداد ۱۴۰۵) | نسخه برنامه: 11.21.3
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -12917,7 +13014,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
 بخش ۴) تاریخچه نسخه‌ها و آخرین دوره تغییرات
 ══════════════════════════════════════════════════════════════════════════════════
 • مسیر نسخه‌ها (بازسازی از ریپو): V1 → … → V9 → V10 → V11 → V11.1 … V11.14 → V11.15
-  → V11.15.1 → V11.15.2 → V11.15.3 → V11.16.0 → V11.16.1 → V11.16.2 → V11.17.0 → V11.17.1 → V11.18.0 → V11.19.0 → V11.20.0 → V11.20.1 → V11.20.2 → V11.20.3 → V11.20.4 → V11.20.5 → V11.21.0 → V11.21.1 → V11.21.2.
+  → V11.15.1 → V11.15.2 → V11.15.3 → V11.16.0 → V11.16.1 → V11.16.2 → V11.17.0 → V11.17.1 → V11.18.0 → V11.19.0 → V11.20.0 → V11.20.1 → V11.20.2 → V11.20.3 → V11.20.4 → V11.20.5 → V11.21.0 → V11.21.1 → V11.21.2 → V11.21.3.
 • جزئیات کامل هر نسخه V9 به بعد در CHANGES_V9.md / CHANGES_V10.md / CHANGES_V11.md
   (محتوای کاملشان در بخش ۹ همین فایل هست).
 
@@ -14733,6 +14830,72 @@ git push gitlab main
 ```
 
 
+
+──────────────────────────────── نوبت ۳۰ ────────────────────────────────
+🧑 کاربر (عیناً):
+«دوباره اطلاعات قبلی را اضافه میکنه و اطلاعات قبلی را پاک میکنه.من هر بار بایذ اطلاعات را اضافه و یا حذف کنم.واقعا خسته کننده شده اینکار.یکاری کن دیگه به هیپ عنوان این اتفاق نیفته»
+
+🤖 دستیار:
+حق با شماست. علت اصلی این مشکل، همان سیستم «بازیابی و ادغام خودکار» بود که برای محافظت از داده ساخته شده بود اما در عمل اطلاعات حذف‌شده را دوباره برمی‌گرداند و وضعیت فعلی را با backup قدیمی مخلوط می‌کرد.
+
+نسخه **۱۱.۲۱.۳** این رفتار را به‌طور کامل حذف می‌کند.
+
+## قانون جدید و قطعی
+از این نسخه:
+
+- فقط `CRM_APP_STATE_V2` فعلی مرجع معتبر برنامه است؛
+- Rolling Backup خودکار خوانده نمی‌شود؛
+- آخرین پشتیبان قدیمی خودکار خوانده نمی‌شود؛
+- آرشیوهای تاریخی خودکار ادغام نمی‌شوند؛
+- اطلاعات سرور با GET وارد برنامه نمی‌شوند؛
+- برنامه بعد از دریافت وضعیت سرور Reload نمی‌شود؛
+- آرایه خالی یعنی مدیر اطلاعات را حذف کرده و باید خالی بماند؛
+- اطلاعات نمونه فقط در نصب کاملاً تازه و بدون هیچ state قبلی ساخته می‌شوند؛
+- backupها فقط برای بازیابی دستی مدیر باقی می‌مانند.
+
+تابع runtime ادغام `mergeStateWithoutLoss` نیز کاملاً حذف شد تا هیچ کد دیگری نتواند تصادفی دوباره آن را اجرا کند.
+
+## وضعیت سرور
+سرور فقط نسخه فعلی را با `POST /api/state` دریافت می‌کند. مسیر خودکار خواندن و جایگزینی local state حذف شده است. بنابراین وضعیت قدیمی سرور دیگر نمی‌تواند اطلاعات فعلی گوشی یا کامپیوتر را تغییر دهد.
+
+## فایل‌های Excel
+IndexedDB فعلی همچنان فقط دیتابیس Excel همان دستگاه را بعد از Refresh بازمی‌گرداند. این بخش backup تاریخی را merge نمی‌کند و فقط آخرین داده فعلی IndexedDB را hydrate می‌کند.
+
+## تست ضد‌رگرسیون جدید
+تست‌ها تغییر کردند و اکنون صریحاً بررسی می‌کنند:
+
+1. backup قدیمی دارای کاربر حذف‌شده نتواند آن کاربر را برگرداند؛
+2. داروخانه، پزشک یا کالای حذف‌شده از backup قدیمی برنگردد؛
+3. ترتیب قدیمی backup جای ترتیب فعلی مدیر را نگیرد؛
+4. آرایه خالی کاربران/داروخانه‌ها/کالاها خالی بماند؛
+5. داده نمونه به state موجود تزریق نشود؛
+6. startup هیچ فیلدی اضافه نکند؛
+7. remote state فقط POST باشد و GET/reload نداشته باشد.
+
+نتیجه: **۹ تست از ۹ تست موفق**.
+
+## نکته برای وضعیت فعلی شما
+اطلاعات ناخواسته‌ای که نسخه‌های قبلی همین حالا به state فعلی اضافه کرده‌اند، باید فقط **یک بار** حذف یا اصلاح شوند. بعد از نصب ۱۱.۲۱.۳، برنامه دیگر آن‌ها را از backup یا سرور برنمی‌گرداند. از این پس هر اضافه، حذف، ویرایش و جابه‌جایی مدیر همان‌طور باقی می‌ماند.
+
+### وضعیت فنی
+- `npm test`: **۹/۹ موفق**؛
+- بررسی نحوی همه JavaScriptها: **موفق**؛
+- build: **موفق**؛
+- سلامت سرور: **نسخه 11.21.3**؛
+- auto backup merge: **حذف‌شده**؛
+- remote overwrite: **حذف‌شده**.
+
+پس از جایگزینی فایل‌ها:
+
+```powershell
+git add -A
+git commit -m "v11.21.3: توقف کامل بازگشت خودکار اطلاعات قدیمی"
+git pull --no-rebase origin main
+git push origin main
+git push gitlab main
+```
+
+
 """
 
 FILES_INTRO = """
@@ -16070,7 +16233,7 @@ async function sendWhatsappCloud(text, to, token) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-app.js (179500 بایت)
+فایل: public/crm-app.js (170115 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================================
@@ -16141,107 +16304,23 @@ function serializeStateForLocalStorage(value) {
   });
 }
 function loadState() {
-  try {
-    const raw0 = localStorage.getItem(STORAGE_KEY);
-    if (raw0 && !localStorage.getItem("CRM_APP_STATE_BACKUP_BEFORE_11_11_0")) {
-      localStorage.setItem("CRM_APP_STATE_BACKUP_BEFORE_11_11_0", raw0);
-    }
-  } catch (eBak) {}
   const saved = localStorage.getItem(STORAGE_KEY);
   window.__CRM_HAD_SAVED_STATE = !!saved;
   if (saved) {
-    // هرگز با خطای یک نسخه، داده کاربر را با اطلاعات نمونه جایگزین نکن؛ از نسخه‌های سالم قبلی بازیابی کن.
-    const candidates = [saved, localStorage.getItem("CRM_APP_STATE_ROLLING_BACKUP"), localStorage.getItem("CRM_APP_STATE_BACKUP_LATEST"), localStorage.getItem("CRM_APP_STATE_BACKUP_BEFORE_11_11_0")].filter(Boolean);
-    for (let i=0;i<localStorage.length;i++) { const k=localStorage.key(i); if (k && /^CRM_APP_STATE_(CORRUPT_ARCHIVE_|MERGED_RECOVERY)/.test(k)) { const v=localStorage.getItem(k); if (v) candidates.push(v); } }
-    let bestScore = -1;
-    const validStates = [];
-    let currentParsed = null;
-    for (let i = 0; i < candidates.length; i++) {
-      try {
-        const parsed = JSON.parse(candidates[i]);
-        if (!parsed || typeof parsed !== "object") continue;
-        validStates.push(parsed);
-        if (i === 0) currentParsed = parsed;
-        const arrayKeys = ["pharmacies","doctors","orders","products","users","reps","salesTargets","repRoutes","leaves","notifications"];
-        let score = arrayKeys.reduce((n, k) => n + (Array.isArray(parsed[k]) ? parsed[k].length : 0), 0);
-        score += Object.keys(parsed.formFieldMeta || {}).length * 100;
-        score += Object.keys(parsed.formBoxes || {}).length * 100;
-        score += Object.keys(parsed.manualLayouts || {}).length * 100;
-        score += Object.keys(parsed.customFields || {}).reduce((n,k) => n + ((parsed.customFields[k] || []).length * 200), 0);
-        score += (((parsed.snappCorporate || {}).rows || []).length + ((parsed.snappCorporate || {}).topups || []).length) * 10;
-        if (score > bestScore) { state = parsed; bestScore = score; }
-      } catch (e) {}
-    }
-    // وضعیت جاری مبنای داده است. چیدمان نسخه ۱۱.۲۰.۳ یک‌بار از آخرین snapshot قبل از مهاجرت ۱۱.۲۰.۴ برگردانده می‌شود.
-    if (currentParsed) state = currentParsed;
-    if (state && !state._settingsRestoredFromV11203) {
-      const preMigration = validStates.filter(x => !x._allSnapshotsMergedV11204).sort((a,b) => Number(b._lastSavedAt||0)-Number(a._lastSavedAt||0))[0];
-      if (preMigration) {
-        ["settings","formFieldMeta","formBoxes","manualLayouts","tabOrder","selectExtraOptions","userTabs"].forEach(k => { if (preMigration[k] != null) state[k] = JSON.parse(JSON.stringify(preMigration[k])); });
-        state._settingsRestoreSourceFound = true;
-      }
-      state._settingsRestoredFromV11203 = true;
-    }
-    // ادغام تاریخی فقط یک‌بار انجام می‌شود؛ پس از آن حذف/تغییر مستقیم مدیر دوباره از backup قدیمی برنمی‌گردد.
-    const shouldMergeHistorical = !(currentParsed && currentParsed._allSnapshotsMergedV11204) || (state._settingsRestoreSourceFound && !state._v11203DataReMerged);
-    // ادغام بدون حذف: هر رکوردی که در هر نسخه پشتیبان هست باید باقی بماند.
-    if (state && validStates.length && shouldMergeHistorical) {
-      const mergeArray = (target, source, keyHint) => {
-        const out = Array.isArray(target) ? target.slice() : [];
-        const keyOf = (x) => {
-          if (!x || typeof x !== "object") return "v:" + String(x);
-          return String(x.id || x.username || x.phone || x.name || x.fullName || x.label || JSON.stringify(x));
-        };
-        const at = {};
-        out.forEach((x,i) => { at[keyOf(x)] = i; });
-        (Array.isArray(source) ? source : []).forEach(x => {
-          const k = keyOf(x);
-          if (at[k] == null) { at[k] = out.length; out.push(x); }
-          else if (x && typeof x === "object") out[at[k]] = { ...x, ...out[at[k]] };
-        });
-        return out;
-      };
-      const recordArrays = ["pharmacies","doctors","orders","products","users","reps","salesTargets","repRoutes","repHomes","leaves","notifications","visits","activityLog","hospitals"];
-      validStates.forEach(src => { recordArrays.forEach(k => { state[k] = mergeArray(state[k], src[k], k); }); });
-      state.customFields = state.customFields || {};
-      validStates.forEach(src => { Object.keys(src.customFields || {}).forEach(k => { state.customFields[k] = mergeArray(state.customFields[k], src.customFields[k], k); }); });
-      state.snappCorporate = state.snappCorporate || {};
-      validStates.forEach(src => {
-        const sc = src.snappCorporate || {};
-        state.snappCorporate.rows = mergeArray(state.snappCorporate.rows, sc.rows, "snappRows");
-        state.snappCorporate.topups = mergeArray(state.snappCorporate.topups, sc.topups, "snappTopups");
-        state.snappCorporate.files = mergeArray(state.snappCorporate.files, sc.files, "files");
-        state.snappCorporate.topupFiles = mergeArray(state.snappCorporate.topupFiles, sc.topupFiles, "files");
-        if (!state.snappCorporate.headers && sc.headers) state.snappCorporate.headers = sc.headers;
-        if (!state.snappCorporate.topupHeaders && sc.topupHeaders) state.snappCorporate.topupHeaders = sc.topupHeaders;
-      });
-      state.distributorCompanies = state.distributorCompanies || {};
-      validStates.forEach(src => { Object.keys(src.distributorCompanies || {}).forEach(id => { const from=src.distributorCompanies[id]||{},to=state.distributorCompanies[id]||(state.distributorCompanies[id]={}); to.pharmacyRows=mergeArray(to.pharmacyRows,from.pharmacyRows,"distPh");to.pharmacyImports=mergeArray(to.pharmacyImports,from.pharmacyImports,"distImp");if((!to.inventoryRows||!to.inventoryRows.length)&&from.inventoryRows)to.inventoryRows=from.inventoryRows;if(!to.pharmacyHeaders&&from.pharmacyHeaders)to.pharmacyHeaders=from.pharmacyHeaders;if(!to.inventoryHeaders&&from.inventoryHeaders)to.inventoryHeaders=from.inventoryHeaders;if(!to.url&&from.url)to.url=from.url;if(!to.username&&from.username)to.username=from.username; }); });
-      // برای چیدمان، کامل‌ترین نسخه موجود برنده است؛ نسخه جدید حق ندارد آن را صفر کند.
-      ["formFieldMeta","formBoxes","manualLayouts","tabOrder","selectExtraOptions"].forEach(k => {
-        const currentLayout = state._settingsRestoredFromV11203 ? state[k] : (currentParsed && currentParsed[k]);
-        if (currentLayout && JSON.stringify(currentLayout).length > 2) { state[k] = currentLayout; return; }
-        let richest = state[k] || {}, size = JSON.stringify(richest).length;
-        validStates.forEach(src => { const cand = src[k] || {}; const n = JSON.stringify(cand).length; if (n > size) { richest = cand; size = n; } });
-        state[k] = richest;
-      });
-      if (!Array.isArray(state.userTabs) || !state.userTabs.length) state.userTabs = validStates.reduce((acc,src) => mergeArray(acc, src.userTabs, "userTabs"), []);
-      state._allSnapshotsMergedV11204 = true;
-      state._v11203DataReMerged = true;
-      state._mergedRecoverySummary = { users:(state.users||[]).length, pharmacies:(state.pharmacies||[]).length, doctors:(state.doctors||[]).length, products:(state.products||[]).length, snapshots:validStates.length, at:Date.now() };
-      try { localStorage.setItem("CRM_APP_STATE_MERGED_RECOVERY", JSON.stringify(state)); } catch (e) {}
-    }
-    if (!state) {
+    try {
+      // تنها مرجع معتبر، وضعیت فعلی است. هیچ backup یا server قدیمی خودکار ادغام نمی‌شود.
+      state = JSON.parse(saved);
+      if (!state || typeof state !== "object") throw new Error("invalid current state");
+    } catch (err) {
       try { localStorage.setItem("CRM_APP_STATE_CORRUPT_ARCHIVE_" + Date.now(), saved); } catch (e) {}
-      state = { settings: {}, users: [], pharmacies: [], doctors: [], orders: [], products: [] };
+      state = { settings: {}, users: [], pharmacies: [], doctors: [], orders: [], products: [], _stateLoadError: true };
     }
-    // در وضعیت موجود، کلید مفقود با آرایه خالی تکمیل شود؛ هرگز داده نمونه وارد اطلاعات واقعی نشود.
     if (!state.customFields) state.customFields = {};
     if (!state.settings) state.settings = {};
-    ["users","activityLog","repHomes","repRoutes","leaves","notifications","salesTargets","products","hospitals","visits","pharmacies","doctors","orders","reps"].forEach(k => { if (!Array.isArray(state[k])) state[k] = []; });
+    ["users","activityLog","repHomes","repRoutes","leaves","notifications","salesTargets","products","hospitals","visits","pharmacies","doctors","orders","reps"].forEach(function(k){ if (!Array.isArray(state[k])) state[k] = []; });
     if (!state.messengers) state.messengers = { channels: {}, allowPeerMessaging: false };
-    if (!state.formFieldMeta) state.formFieldMeta = {};
   } else {
+    // اطلاعات نمونه فقط برای نصب کاملاً تازه و بدون هیچ state قبلی مجاز است.
     state = JSON.parse(JSON.stringify(DEFAULT_INITIAL_DATA));
   }
   if (!state.formFieldMeta) state.formFieldMeta = {};
@@ -16252,22 +16331,10 @@ function loadState() {
   if (!state.customRecords) state.customRecords = {};
   if (!state.tabOrder) state.tabOrder = {};
   if (!state.manualLayouts) state.manualLayouts = {};
+  state._authoritativeState = true;
   if (saved) { try { localStorage.setItem(STORAGE_KEY, serializeStateForLocalStorage(state)); } catch (e) {} }
   applyGeneralSettingsToUI();
 }
-
-window.mergeStateWithoutLoss = function(base, source) {
-  base = base && typeof base === "object" ? base : {};
-  source = source && typeof source === "object" ? source : {};
-  const arrays = ["pharmacies","doctors","orders","products","users","reps","salesTargets","repRoutes","repHomes","leaves","notifications","visits","activityLog","hospitals"];
-  const merge = (a,b) => { const out=(Array.isArray(a)?a:[]).slice(), pos={}; const key=x=>String((x&&typeof x==="object")?(x.id||x.username||x.phone||x.name||x.fullName||x.label||JSON.stringify(x)):x); out.forEach((x,i)=>pos[key(x)]=i); (Array.isArray(b)?b:[]).forEach(x=>{const k=key(x);if(pos[k]==null){pos[k]=out.length;out.push(x);}else if(x&&typeof x==="object")out[pos[k]]={...x,...out[pos[k]]};});return out; };
-  arrays.forEach(k => base[k]=merge(base[k],source[k]));
-  base.customFields=base.customFields||{};Object.keys(source.customFields||{}).forEach(k=>base.customFields[k]=merge(base.customFields[k],source.customFields[k]));
-  base.snappCorporate=base.snappCorporate||{};const sc=source.snappCorporate||{};base.snappCorporate.rows=merge(base.snappCorporate.rows,sc.rows);base.snappCorporate.topups=merge(base.snappCorporate.topups,sc.topups);
-  base.distributorCompanies=base.distributorCompanies||{};Object.keys(source.distributorCompanies||{}).forEach(id=>{const from=source.distributorCompanies[id]||{},to=base.distributorCompanies[id]||(base.distributorCompanies[id]={});to.pharmacyRows=merge(to.pharmacyRows,from.pharmacyRows);to.pharmacyImports=merge(to.pharmacyImports,from.pharmacyImports);if((!to.inventoryRows||!to.inventoryRows.length)&&from.inventoryRows)to.inventoryRows=from.inventoryRows;if(!to.url&&from.url)to.url=from.url;if(!to.username&&from.username)to.username=from.username;});
-  ["formFieldMeta","formBoxes","manualLayouts","tabOrder","selectExtraOptions"].forEach(k=>{if(JSON.stringify(base[k]||{}).length<=2&&JSON.stringify(source[k]||{}).length>2)base[k]=source[k];});
-  base.userTabs=merge(base.userTabs,source.userTabs);base._lastSavedAt=Math.max(Number(base._lastSavedAt||0),Number(source._lastSavedAt||0));return base;
-};
 
 function saveState(triggerAutoBackup = true) {
   // پیش از هر ذخیره، آخرین وضعیت سالم نگه داشته شود تا هیچ ارتقایی داده/چیدمان را نابود نکند.
@@ -20205,7 +20272,7 @@ function deleteProductCatalogItem(id) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-data.js (45086 بایت)
+فایل: public/crm-data.js (45446 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================================
@@ -20653,7 +20720,10 @@ const PERMISSION_GROUPS = {
     { key: "dist_daya_code_match", label: "تطبیق کد برنامه با ستون ۱۶ دایا دارو" },
     { key: "dist_product_code_future", label: "نگاشت خودکار کدهای آینده ۱۰۰۸ به ۱۱۱۲۰۰۸ و بعد" },
     { key: "sys_global_product_delete", label: "حذف کالا از کاتالوگ، تارگت، سفارش و گزارش‌های وابسته" },
-    { key: "dist_compact_layout", label: "چیدمان فشرده و کنارهم تب فروش پخش‌ها" }
+    { key: "dist_compact_layout", label: "چیدمان فشرده و کنارهم تب فروش پخش‌ها" },
+    { key: "sys_authoritative_current_state", label: "وضعیت فعلی تنها مرجع معتبر اطلاعات" },
+    { key: "sys_no_auto_backup_merge", label: "منع ادغام خودکار پشتیبان‌های قدیمی" },
+    { key: "sys_no_remote_overwrite", label: "منع بازیابی یا بازنویسی خودکار از سرور" }
   ]
 };
 
@@ -29747,7 +29817,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-features-v20.js (164627 بایت)
+فایل: public/crm-features-v20.js (162543 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================
@@ -30089,7 +30159,7 @@ button.v19-gps svg{display:block}
       tabs += "<button type='button' class='" + (p[0] === v20AddPane ? "v20-on" : "") + "' data-pane='" + p[0] + "'>" + p[1] + "</button>";
     });
     var h = "<div class='v20-addmgr' style='border-top:2px solid #e2e8f0;padding-top:10px;'>" +
-      "<h4 style='margin:8px 0;color:#0f172a;'>🎛️ مدیر کشویی‌ها (نسخه ۱۱.۲۱.۲) — هر فیلد، زیرمجموعه‌هایش دقیقاً زیر همان فیلد است</h4>" +
+      "<h4 style='margin:8px 0;color:#0f172a;'>🎛️ مدیر کشویی‌ها (نسخه ۱۱.۲۱.۳) — هر فیلد، زیرمجموعه‌هایش دقیقاً زیر همان فیلد است</h4>" +
       "<div class='v20-tabbar'>" + tabs + "</div>" +
       "<div class='v20-card-tools' style='margin-bottom:4px'>" +
       "<label class='v20-mini'><input type='checkbox' id='v20GreyOnChk'" + (greyOn ? " checked" : "") + "> حالت طوسی زنجیره‌ای فعال باشد</label>" +
@@ -30809,7 +30879,7 @@ button.v19-gps svg{display:block}
   }
   function renderVersionBadge() {
     var b = $("v20VersionBadge"), actions = document.querySelector(".header-actions"); if (!actions) return;
-    if (!b) { b = document.createElement("span"); b.id = "v20VersionBadge"; b.className = "v20-version"; b.textContent = "نسخه ۱۱.۲۱.۲"; b.title = "نسخه دقیق برنامه نصب‌شده"; actions.insertBefore(b, actions.firstChild); }
+    if (!b) { b = document.createElement("span"); b.id = "v20VersionBadge"; b.className = "v20-version"; b.textContent = "نسخه ۱۱.۲۱.۳"; b.title = "نسخه دقیق برنامه نصب‌شده"; actions.insertBefore(b, actions.firstChild); }
     b.style.display = v20IsManager() ? "inline-block" : "none";
   }
 
@@ -31021,12 +31091,7 @@ button.v19-gps svg{display:block}
   function bindNumberFormatting(){formatVisibleNumbers(document.body);if(window.MutationObserver){var timer;new MutationObserver(function(){clearTimeout(timer);timer=setTimeout(function(){formatVisibleNumbers(document.body);},80);}).observe(document.body,{childList:true,subtree:true,characterData:true});}}
 
   /* ---------- ۲۵) ماندگاری نسخه‌ای: محلی + سرور، بدون جایگزینی با نمونه ---------- */
-  function bindDurableServerState(){var old=window.saveState;if(typeof old!=="function"||old._v20durable)return;var timer;var w=function(){var r=old.apply(this,arguments);clearTimeout(timer);timer=setTimeout(function(){var S=st();if(!S)return;fetch("/api/state",{method:"POST",headers:{"Content-Type":"application/json"},body:(typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(S):JSON.stringify(S))}).catch(function(){});},1500);return r;};w._v20durable=true;window.saveState=w;
-    if(sessionStorage.getItem("v20RemoteRecoveryChecked")==="1")return;sessionStorage.setItem("v20RemoteRecoveryChecked","1");fetch("/api/state").then(function(r){return r.json();}).then(function(res){var remote=res&&res.data;if(!remote||typeof remote!=="object")return;var local=st()||{};if(window.__CRM_HAD_SAVED_STATE&&local._serverRecoveryMergedV11204)return;var before=JSON.stringify(local),merged=typeof window.mergeStateWithoutLoss==="function"?window.mergeStateWithoutLoss(local,remote):local;merged._serverRecoveryMergedV11204=true;var after=JSON.stringify(merged);if(!window.__CRM_HAD_SAVED_STATE||after!==before){localStorage.setItem("CRM_APP_STATE_V2",after);localStorage.setItem("CRM_APP_STATE_BACKUP_LATEST",after);location.reload();}}).catch(function(){});}
-
-  /* ---------- ۲۶) قانون سراسری تاریخ: تقویم + اسلش خودکار ---------- */
-  function bindEveryDateField(root){root=root||document;Array.prototype.forEach.call(root.querySelectorAll("input.form-input[type='text'],input.form-input:not([type])"),function(el){if(el.type==="password"||el.dataset.v20DateChecked==="1")return;el.dataset.v20DateChecked="1";var id=el.id||"",g=el.closest(".form-group"),lab=g&&g.querySelector("label"),text=(lab?lab.textContent:"")+" "+id;if(/سال|ماه|Year|Month|password|Password|رمز/.test(text))return;if(/تاریخ|Date|From|To/.test(text)&&typeof window.attachJalaliPicker==="function"){el.setAttribute("data-kind","date");window.attachJalaliPicker(el);}});}
-  function bindGlobalDateLaw(){bindEveryDateField(document);if(window.MutationObserver){var timer;new MutationObserver(function(ms){clearTimeout(timer);timer=setTimeout(function(){bindEveryDateField(document);},100);}).observe(document.body,{childList:true,subtree:true});}}
+  function bindDurableServerState(){var old=window.saveState;if(typeof old!=="function"||old._v20durable)return;var timer;var w=function(){var r=old.apply(this,arguments);clearTimeout(timer);timer=setTimeout(function(){var S=st();if(!S)return;fetch("/api/state",{method:"POST",headers:{"Content-Type":"application/json"},body:(typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(S):JSON.stringify(S))}).catch(function(){});},1500);return r;};w._v20durable=true;window.saveState=w;/* عمداً GET/merge خودکار وجود ندارد؛ سرور حق بازنویسی state فعلی را ندارد. */}
 
   /* ---------- ۲۷) شرکت‌های پخش و گزارش تجمیعی فروش/موجودی ---------- */
   var DIST_DEFS=[["daya","دایا دارو"],["shafaarad","شفاآراد"],["tivan","تیوان"],["mashateb","مشاطب"]],DIST_HEADERS=["نام کالا","فروش تعدادی","فروش ریالی به قیمت پخش","فروش ریالی به قیمت داروخانه","تعداد جایزه","ریال جایزه","درصد جایزه به فروش","تعداد مرجوعی کالا","ریال مرجوعی کالا","درصد مرجوعی به فروش","تعداد مرجوعی جایزه","ریال مرجوعی جایزه","درصد مرجوعی به جایزه","تعداد داروخانه","تعداد فاکتور","درصد فروش به‌تفکیک کالا","موجودی تعدادی","موجودی ریالی به قیمت پخش","موجودی ریالی به قیمت داروخانه"],distReportCache={};
@@ -31188,7 +31253,6 @@ button.v19-gps svg{display:block}
     try { bindNumberFormatting(); } catch (e) {}
     try { bindGlobalDateLaw(); } catch (e) {}
     try { bindDurableServerState(); } catch (e) {}
-    try { var rs=st()&&st()._mergedRecoverySummary;if(rs&&sessionStorage.getItem("v20RecoveryShown")!=="1"){sessionStorage.setItem("v20RecoveryShown","1");v20Toast((st()._settingsRestoreSourceFound?"✅ تنظیمات ۱۱.۲۰.۳ بازگردانی شد — ":"✅ بازیابی ادغامی — ")+rs.users+" کاربر، "+rs.pharmacies+" داروخانه، "+rs.doctors+" پزشک، "+rs.products+" کالا");} } catch(e){}
     try { wrapNewestTables(); } catch (e) {}
     // هیچ فیلد/کادر/کلیدی در شروع نسخه خودکار کم یا زیاد نشود؛ تغییر ساختار فقط با اقدام مدیر.
     // اعمال اولیه موتورها روی تب فعال
@@ -33401,7 +33465,7 @@ button.v19-gps svg{display:block}
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.21.2" />
+  <link rel="stylesheet" href="style.css?v=11.21.3" />
 </head>
 <body>
 
@@ -35547,22 +35611,22 @@ button.v19-gps svg{display:block}
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.21.2"></script>
-  <script src="crm-app.js?v=11.21.2"></script>
-  <script src="crm-features-v9.js?v=11.21.2"></script>
-  <script src="iran-facilities.js?v=11.21.2" defer></script>
-  <script src="crm-features-v10.js?v=11.21.2"></script>
-  <script src="crm-features-v11.js?v=11.21.2"></script>
-  <script src="crm-features-v12.js?v=11.21.2"></script>
-  <script src="crm-features-v13.js?v=11.21.2"></script>
-  <script src="crm-jalali.js?v=11.21.2"></script>
-  <script src="crm-features-v14.js?v=11.21.2"></script>
-  <script src="crm-features-v15.js?v=11.21.2"></script>
-  <script src="crm-features-v16.js?v=11.21.2"></script>
-  <script src="crm-features-v17.js?v=11.21.2"></script>
-  <script src="crm-features-v18.js?v=11.21.2"></script>
-  <script src="crm-features-v19.js?v=11.21.2"></script>
-  <script src="crm-features-v20.js?v=11.21.2"></script>
+  <script src="crm-data.js?v=11.21.3"></script>
+  <script src="crm-app.js?v=11.21.3"></script>
+  <script src="crm-features-v9.js?v=11.21.3"></script>
+  <script src="iran-facilities.js?v=11.21.3" defer></script>
+  <script src="crm-features-v10.js?v=11.21.3"></script>
+  <script src="crm-features-v11.js?v=11.21.3"></script>
+  <script src="crm-features-v12.js?v=11.21.3"></script>
+  <script src="crm-features-v13.js?v=11.21.3"></script>
+  <script src="crm-jalali.js?v=11.21.3"></script>
+  <script src="crm-features-v14.js?v=11.21.3"></script>
+  <script src="crm-features-v15.js?v=11.21.3"></script>
+  <script src="crm-features-v16.js?v=11.21.3"></script>
+  <script src="crm-features-v17.js?v=11.21.3"></script>
+  <script src="crm-features-v18.js?v=11.21.3"></script>
+  <script src="crm-features-v19.js?v=11.21.3"></script>
+  <script src="crm-features-v20.js?v=11.21.3"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
@@ -38588,7 +38652,7 @@ self.addEventListener("fetch", (event) => {
 فایل: public/sw.js (1145 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
-const CACHE = "ttt-v11.21.2";
+const CACHE = "ttt-v11.21.3";
 const PRECACHE = ["/", "/login", "/favicon.png", "/logo.png", "/vendor/leaflet.js", "/vendor/leaflet.css"];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(PRECACHE).catch(function () {}); }).then(function () { return self.skipWaiting(); }));
@@ -64053,7 +64117,7 @@ test('state API round-trip preserves unrelated sentinel data', async () => {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/state-preservation.test.mjs (7068 بایت)
+فایل: tests/state-preservation.test.mjs (6368 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 import test from 'node:test';
@@ -64065,62 +64129,39 @@ const appSource = fs.readFileSync(new URL('../public/crm-app.js', import.meta.ur
 const v9Source = fs.readFileSync(new URL('../public/crm-features-v9.js', import.meta.url), 'utf8');
 const v20Source = fs.readFileSync(new URL('../public/crm-features-v20.js', import.meta.url), 'utf8');
 
-function merger() {
-  const a = appSource.indexOf('window.mergeStateWithoutLoss');
-  const b = appSource.indexOf('\nfunction saveState', a);
-  assert.ok(a >= 0 && b > a, 'mergeStateWithoutLoss must exist');
-  const ctx = { window: {}, JSON };
-  vm.createContext(ctx);
-  vm.runInContext(appSource.slice(a, b), ctx);
-  return ctx.window.mergeStateWithoutLoss;
-}
-
-test('new code cannot delete unrelated existing records or current layout', () => {
-  const merge = merger();
-  const current = {
-    users: [{ id: 'u-faezeh', fullName: 'خانم فائزه مغانی' }],
-    pharmacies: [{ id: 'ph-old', name: 'داروخانه قدیمی' }],
-    doctors: [{ id: 'doc-old', name: 'پزشک قدیمی' }],
-    products: [{ id: 'prod-old', name: 'کالای قدیمی' }],
-    formFieldMeta: { order: { pharmacyName: { order: 7 } } },
-    customFields: { pharmacy: [{ id: 'cf-old', label: 'کد قدیمی' }] }
-  };
-  const incoming = {
-    users: [{ id: 'u-new', fullName: 'کاربر جدید' }],
-    pharmacies: [], doctors: [], products: [],
-    formFieldMeta: { order: { pharmacyName: { order: 1 }, city: { order: 2 } } },
-    customFields: { pharmacy: [{ id: 'cf-new', label: 'فیلد جدید' }] }
-  };
-  const out = merge(structuredClone(current), incoming);
-  assert.equal(out.users.length, 2);
-  assert.equal(out.pharmacies[0].name, 'داروخانه قدیمی');
-  assert.equal(out.doctors[0].name, 'پزشک قدیمی');
-  assert.equal(out.products[0].name, 'کالای قدیمی');
-  assert.equal(out.formFieldMeta.order.pharmacyName.order, 7, 'current manager layout must win');
-  assert.deepEqual(out.customFields.pharmacy.map(x => x.id).sort(), ['cf-new', 'cf-old']);
-});
-
-test('11.20.3 baseline recovery restores layout and missing data together', () => {
+function loadWithCurrent(current, backup) {
   const a = appSource.indexOf('function loadState()');
-  const b = appSource.indexOf('\nwindow.mergeStateWithoutLoss', a);
-  const current = { _allSnapshotsMergedV11204: true, settings: { tag: 'broken' }, formFieldMeta: { bad: 1 }, users: [], pharmacies: [], doctors: [], products: [] };
-  const baseline = { _lastSavedAt: 100, settings: { tag: '11.20.3' }, formFieldMeta: { good: 1 }, users: [{ id: 'f', fullName: 'خانم فائزه مغانی' }], pharmacies: [{ id: 'p' }], doctors: [{ id: 'd' }], products: [{ id: 'x' }] };
-  const store = { CRM_APP_STATE_V2: JSON.stringify(current), CRM_APP_STATE_ROLLING_BACKUP: JSON.stringify(baseline) };
+  const b = appSource.indexOf('\nfunction saveState', a);
+  const store = { CRM_APP_STATE_V2: JSON.stringify(current), CRM_APP_STATE_ROLLING_BACKUP: JSON.stringify(backup) };
   const localStorage = { getItem: k => store[k] || null, setItem: (k,v) => { store[k] = v; }, key: i => Object.keys(store)[i], get length() { return Object.keys(store).length; } };
-  const ctx = { window: {}, localStorage, console, JSON, Date, DEFAULT_INITIAL_DATA: {}, state: null };
+  const ctx = { window: {}, localStorage, console, JSON, Date, DEFAULT_INITIAL_DATA: { users:[{id:'sample'}] }, state: null };
   vm.createContext(ctx);
   vm.runInContext('const STORAGE_KEY="CRM_APP_STATE_V2";', ctx);
   const sa=appSource.indexOf('function serializeStateForLocalStorage'), sb=appSource.indexOf('\nfunction loadState',sa);
   vm.runInContext(appSource.slice(sa,sb),ctx);
   vm.runInContext(appSource.slice(a,b).replace(/applyGeneralSettingsToUI\(\);/, ';'), ctx);
   vm.runInContext('loadState()', ctx);
-  const out = JSON.parse(store.CRM_APP_STATE_V2);
-  assert.equal(out.settings.tag, '11.20.3');
-  assert.equal(out.formFieldMeta.good, 1);
-  assert.equal(out.users[0].fullName, 'خانم فائزه مغانی');
-  assert.equal(out.pharmacies.length, 1);
-  assert.equal(out.doctors.length, 1);
-  assert.equal(out.products.length, 1);
+  return JSON.parse(store.CRM_APP_STATE_V2);
+}
+
+test('current state is authoritative and old backup cannot re-add deleted data', () => {
+  const la=appSource.indexOf('function loadState()'),lb=appSource.indexOf('\nfunction saveState',la),loadBody=appSource.slice(la,lb);
+  assert.doesNotMatch(loadBody,/CRM_APP_STATE_ROLLING_BACKUP|CRM_APP_STATE_BACKUP_LATEST|MERGED_RECOVERY/);
+  const current = { settings:{tag:'current'}, users:[{id:'new'}], pharmacies:[], doctors:[], products:[], orders:[], formFieldMeta:{order:{field:{order:9}}} };
+  const old = { settings:{tag:'old'}, users:[{id:'deleted-user'}], pharmacies:[{id:'deleted-ph'}], doctors:[{id:'deleted-doc'}], products:[{id:'deleted-product'}], formFieldMeta:{order:{field:{order:1}}} };
+  const out=loadWithCurrent(current,old);
+  assert.equal(out.settings.tag,'current');
+  assert.deepEqual(out.users.map(x=>x.id),['new']);
+  assert.equal(out.pharmacies.length,0);
+  assert.equal(out.doctors.length,0);
+  assert.equal(out.products.length,0);
+  assert.equal(out.formFieldMeta.order.field.order,9);
+});
+
+test('existing empty arrays stay empty and sample defaults are never injected', () => {
+  const out=loadWithCurrent({settings:{},users:[],pharmacies:[],doctors:[],products:[],orders:[]},{users:[{id:'old'}]});
+  assert.deepEqual(out.users,[]);assert.deepEqual(out.pharmacies,[]);assert.deepEqual(out.products,[]);
+  assert.equal(out._authoritativeState,true);
 });
 
 test('active order collector never converts blank quantity to one', () => {
@@ -64128,10 +64169,14 @@ test('active order collector never converts blank quantity to one', () => {
   assert.match(v9Source, /if \(qty <= 0\) continue/);
 });
 
-test('startup cannot auto-add mirrored fields or mutate structure', () => {
+test('startup cannot auto-add mirrored fields, old backups, or remote state', () => {
   const initStart = v20Source.indexOf('function init()');
   const initBody = v20Source.slice(initStart, v20Source.indexOf('if (document.readyState', initStart));
   assert.doesNotMatch(initBody, /mirrorPharmacyFieldsToOrder\(true\)/);
+  assert.doesNotMatch(initBody, /mergeStateWithoutLoss/);
+  const d0=v20Source.indexOf('function bindDurableServerState'),d1=v20Source.indexOf('/* ---------- ۲۷)',d0),durable=v20Source.slice(d0,d1);
+  assert.doesNotMatch(durable,/res&&res\.data|location\.reload|method:\s*["']GET/);
+  assert.match(durable,/method:\s*["']POST/);
 });
 
 test('Snapp numeric parser and exact-row signatures prevent strange/double totals', () => {

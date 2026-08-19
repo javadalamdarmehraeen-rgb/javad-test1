@@ -1416,5 +1416,9 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - علت حذف پس از refresh، quota localStorage تشخیص داده شد؛ bulk rows/imports به IDB و metadata به localStorage رفت.
 - Daya matching از name به code column 16 و productCode formula منتقل شد.
 - product delete cascade targets/orders/draft و report canonical filtering دارد.
+## تصمیم ۶۴ — نسخه ۱۱.۲۱.۳: current state تنها source of truth (2026-08-19)
+- علت بازگشت داده قدیمی، auto merge/recovery بود؛ همه مسیرهای خودکار حذف شدند.
+- remote فقط POST است؛ backup فقط manual. empty array deletion معتبر است.
+- runtime mergeStateWithoutLoss حذف و tests بر ضد reintroduction تغییر کردند.
 
 # END OF AI DECISION LOG

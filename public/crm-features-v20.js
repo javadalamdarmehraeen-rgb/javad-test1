@@ -337,7 +337,7 @@
       tabs += "<button type='button' class='" + (p[0] === v20AddPane ? "v20-on" : "") + "' data-pane='" + p[0] + "'>" + p[1] + "</button>";
     });
     var h = "<div class='v20-addmgr' style='border-top:2px solid #e2e8f0;padding-top:10px;'>" +
-      "<h4 style='margin:8px 0;color:#0f172a;'>🎛️ مدیر کشویی‌ها (نسخه ۱۱.۲۱.۲) — هر فیلد، زیرمجموعه‌هایش دقیقاً زیر همان فیلد است</h4>" +
+      "<h4 style='margin:8px 0;color:#0f172a;'>🎛️ مدیر کشویی‌ها (نسخه ۱۱.۲۱.۳) — هر فیلد، زیرمجموعه‌هایش دقیقاً زیر همان فیلد است</h4>" +
       "<div class='v20-tabbar'>" + tabs + "</div>" +
       "<div class='v20-card-tools' style='margin-bottom:4px'>" +
       "<label class='v20-mini'><input type='checkbox' id='v20GreyOnChk'" + (greyOn ? " checked" : "") + "> حالت طوسی زنجیره‌ای فعال باشد</label>" +
@@ -1057,7 +1057,7 @@
   }
   function renderVersionBadge() {
     var b = $("v20VersionBadge"), actions = document.querySelector(".header-actions"); if (!actions) return;
-    if (!b) { b = document.createElement("span"); b.id = "v20VersionBadge"; b.className = "v20-version"; b.textContent = "نسخه ۱۱.۲۱.۲"; b.title = "نسخه دقیق برنامه نصب‌شده"; actions.insertBefore(b, actions.firstChild); }
+    if (!b) { b = document.createElement("span"); b.id = "v20VersionBadge"; b.className = "v20-version"; b.textContent = "نسخه ۱۱.۲۱.۳"; b.title = "نسخه دقیق برنامه نصب‌شده"; actions.insertBefore(b, actions.firstChild); }
     b.style.display = v20IsManager() ? "inline-block" : "none";
   }
 
@@ -1269,12 +1269,7 @@
   function bindNumberFormatting(){formatVisibleNumbers(document.body);if(window.MutationObserver){var timer;new MutationObserver(function(){clearTimeout(timer);timer=setTimeout(function(){formatVisibleNumbers(document.body);},80);}).observe(document.body,{childList:true,subtree:true,characterData:true});}}
 
   /* ---------- ۲۵) ماندگاری نسخه‌ای: محلی + سرور، بدون جایگزینی با نمونه ---------- */
-  function bindDurableServerState(){var old=window.saveState;if(typeof old!=="function"||old._v20durable)return;var timer;var w=function(){var r=old.apply(this,arguments);clearTimeout(timer);timer=setTimeout(function(){var S=st();if(!S)return;fetch("/api/state",{method:"POST",headers:{"Content-Type":"application/json"},body:(typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(S):JSON.stringify(S))}).catch(function(){});},1500);return r;};w._v20durable=true;window.saveState=w;
-    if(sessionStorage.getItem("v20RemoteRecoveryChecked")==="1")return;sessionStorage.setItem("v20RemoteRecoveryChecked","1");fetch("/api/state").then(function(r){return r.json();}).then(function(res){var remote=res&&res.data;if(!remote||typeof remote!=="object")return;var local=st()||{};if(window.__CRM_HAD_SAVED_STATE&&local._serverRecoveryMergedV11204)return;var before=JSON.stringify(local),merged=typeof window.mergeStateWithoutLoss==="function"?window.mergeStateWithoutLoss(local,remote):local;merged._serverRecoveryMergedV11204=true;var after=JSON.stringify(merged);if(!window.__CRM_HAD_SAVED_STATE||after!==before){localStorage.setItem("CRM_APP_STATE_V2",after);localStorage.setItem("CRM_APP_STATE_BACKUP_LATEST",after);location.reload();}}).catch(function(){});}
-
-  /* ---------- ۲۶) قانون سراسری تاریخ: تقویم + اسلش خودکار ---------- */
-  function bindEveryDateField(root){root=root||document;Array.prototype.forEach.call(root.querySelectorAll("input.form-input[type='text'],input.form-input:not([type])"),function(el){if(el.type==="password"||el.dataset.v20DateChecked==="1")return;el.dataset.v20DateChecked="1";var id=el.id||"",g=el.closest(".form-group"),lab=g&&g.querySelector("label"),text=(lab?lab.textContent:"")+" "+id;if(/سال|ماه|Year|Month|password|Password|رمز/.test(text))return;if(/تاریخ|Date|From|To/.test(text)&&typeof window.attachJalaliPicker==="function"){el.setAttribute("data-kind","date");window.attachJalaliPicker(el);}});}
-  function bindGlobalDateLaw(){bindEveryDateField(document);if(window.MutationObserver){var timer;new MutationObserver(function(ms){clearTimeout(timer);timer=setTimeout(function(){bindEveryDateField(document);},100);}).observe(document.body,{childList:true,subtree:true});}}
+  function bindDurableServerState(){var old=window.saveState;if(typeof old!=="function"||old._v20durable)return;var timer;var w=function(){var r=old.apply(this,arguments);clearTimeout(timer);timer=setTimeout(function(){var S=st();if(!S)return;fetch("/api/state",{method:"POST",headers:{"Content-Type":"application/json"},body:(typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(S):JSON.stringify(S))}).catch(function(){});},1500);return r;};w._v20durable=true;window.saveState=w;/* عمداً GET/merge خودکار وجود ندارد؛ سرور حق بازنویسی state فعلی را ندارد. */}
 
   /* ---------- ۲۷) شرکت‌های پخش و گزارش تجمیعی فروش/موجودی ---------- */
   var DIST_DEFS=[["daya","دایا دارو"],["shafaarad","شفاآراد"],["tivan","تیوان"],["mashateb","مشاطب"]],DIST_HEADERS=["نام کالا","فروش تعدادی","فروش ریالی به قیمت پخش","فروش ریالی به قیمت داروخانه","تعداد جایزه","ریال جایزه","درصد جایزه به فروش","تعداد مرجوعی کالا","ریال مرجوعی کالا","درصد مرجوعی به فروش","تعداد مرجوعی جایزه","ریال مرجوعی جایزه","درصد مرجوعی به جایزه","تعداد داروخانه","تعداد فاکتور","درصد فروش به‌تفکیک کالا","موجودی تعدادی","موجودی ریالی به قیمت پخش","موجودی ریالی به قیمت داروخانه"],distReportCache={};
@@ -1436,7 +1431,6 @@
     try { bindNumberFormatting(); } catch (e) {}
     try { bindGlobalDateLaw(); } catch (e) {}
     try { bindDurableServerState(); } catch (e) {}
-    try { var rs=st()&&st()._mergedRecoverySummary;if(rs&&sessionStorage.getItem("v20RecoveryShown")!=="1"){sessionStorage.setItem("v20RecoveryShown","1");v20Toast((st()._settingsRestoreSourceFound?"✅ تنظیمات ۱۱.۲۰.۳ بازگردانی شد — ":"✅ بازیابی ادغامی — ")+rs.users+" کاربر، "+rs.pharmacies+" داروخانه، "+rs.doctors+" پزشک، "+rs.products+" کالا");} } catch(e){}
     try { wrapNewestTables(); } catch (e) {}
     // هیچ فیلد/کادر/کلیدی در شروع نسخه خودکار کم یا زیاد نشود؛ تغییر ساختار فقط با اقدام مدیر.
     // اعمال اولیه موتورها روی تب فعال

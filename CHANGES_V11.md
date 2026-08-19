@@ -1,3 +1,12 @@
+# نسخه ۱۱.۲۱.۳
+
+1. تمام بازیابی/ادغام خودکار rolling backup، latest backup، historical archive و remote GET حذف شد.
+2. `CRM_APP_STATE_V2` فعلی تنها مرجع خودکار است؛ آرایه خالی حذف عمدی محسوب و خالی می‌ماند.
+3. سرور فقط snapshot فعلی را با POST دریافت می‌کند و هرگز local را با GET/reload بازنویسی نمی‌کند.
+4. mergeStateWithoutLoss از runtime حذف شد تا تصادفی دوباره فراخوانی نشود؛ backupها فقط بازیابی دستی‌اند.
+5. unit tests بازنویسی شدند: old backup نباید user/pharmacy/doctor/product یا layout حذف‌شده را برگرداند؛ sample defaults هم نباید تزریق شوند. ۹/۹ سبز.
+6. قانون دائمی ۷۱ ثبت شد.
+
 # نسخه ۱۱.۲۱.۲
 
 1. داده‌های حجیم Excel از localStorage به IndexedDB `crmBulkData` منتقل شدند؛ metadata سبک در localStorage و bulk در IDB است، با migration/restore خودکار پس از refresh.

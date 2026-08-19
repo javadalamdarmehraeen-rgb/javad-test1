@@ -56,12 +56,12 @@
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (179500 بایت)
+### `public/crm-app.js` (170115 بایت)
 - نقش: ============================================================================
-- تعداد توابع داخلی: 166
-- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `_editingProductId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `mergeStateWithoutLoss`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
+- تعداد توابع داخلی: 163
+- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `_editingProductId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
 
-### `public/crm-data.js` (45086 بایت)
+### `public/crm-data.js` (45446 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 1
 
@@ -115,10 +115,10 @@
 - تعداد توابع داخلی: 65
 - نام‌های window که تعریف/بازنویسی می‌کند: `_v18DefaultReq`, `_v19BackupLayoutGuard`, `_v19ComboHook`, `_v19Hist`, `_v19IcObs`, `_v19ProdTableWrap`, `_v19Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `extraListColumns`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderPharmaciesList`, `switchTab`, `testServerConnectivity`
 
-### `public/crm-features-v20.js` (164627 بایت)
+### `public/crm-features-v20.js` (162543 بایت)
 - نقش: ============================================================
-- تعداد توابع داخلی: 187
-- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFullFormLayout`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `editProductCatalogItem`, `extraListColumns`, `getUnifiedFieldList`, `mergeStateWithoutLoss`, `openRowDetailsModal`, `performAutoBackup`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`, `v20RenderProductExtras`
+- تعداد توابع داخلی: 185
+- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFullFormLayout`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `editProductCatalogItem`, `extraListColumns`, `getUnifiedFieldList`, `openRowDetailsModal`, `performAutoBackup`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`, `v20RenderProductExtras`
 
 ### `public/crm-features-v9.js` (69121 بایت)
 - نقش: ===========================================================================
@@ -140,7 +140,7 @@
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (1145 بایت)
-- نقش: const CACHE = "ttt-v11.21.2";
+- نقش: const CACHE = "ttt-v11.21.3";
 - تعداد توابع داخلی: 0
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -178,7 +178,6 @@
 - `iconFromTabLabel`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v12.js` ← `public/crm-features-v14.js`
 - `isColShownInList`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v9.js` ← `public/crm-features-v11.js`
 - `lockManualDesigner`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v13.js` ← `public/crm-features-v16.js` ← `public/crm-features-v17.js` ← `public/crm-features-v18.js`
-- `mergeStateWithoutLoss`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-features-v20.js`
 - `performAutoBackup`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v19.js` ← `public/crm-features-v20.js`
 - `placeFieldOnTab`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v12.js` ← `public/crm-features-v13.js`
 - `refreshColumnsDesigner`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v11.js` ← `public/crm-features-v12.js` ← `public/crm-features-v14.js`
@@ -207,12 +206,10 @@
 
 ## هـ) گراف حافظه مرورگر (کلید ↔ فایل‌های دست‌زننده)
 
-- `CRM_APP_STATE_BACKUP_BEFORE_11_11_0` ← localStorage: `public/crm-app.js`
-- `CRM_APP_STATE_BACKUP_LATEST` ← localStorage: `public/crm-app.js`, `public/crm-features-v15.js`, `public/crm-features-v20.js`
+- `CRM_APP_STATE_BACKUP_LATEST` ← localStorage: `public/crm-features-v15.js`
 - `CRM_APP_STATE_CORRUPT_ARCHIVE_` ← localStorage: `public/crm-app.js`
-- `CRM_APP_STATE_MERGED_RECOVERY` ← localStorage: `public/crm-app.js`
 - `CRM_APP_STATE_ROLLING_BACKUP` ← localStorage: `public/crm-app.js`
-- `CRM_APP_STATE_V2` ← localStorage: `public/crm-features-v10.js`, `public/crm-features-v15.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`
+- `CRM_APP_STATE_V2` ← localStorage: `public/crm-features-v10.js`, `public/crm-features-v15.js`, `public/crm-features-v19.js`
 - `CRM_DIAG_LOG` ← localStorage: `public/crm-features-v11.js`
 - `CRM_LAST_GPS` ← localStorage: `public/crm-features-v11.js`
 - `CRM_SOFTEN_ABS_11_11_0` ← localStorage: `public/crm-features-v15.js`
@@ -223,8 +220,6 @@
 - `crmUserRole` ← sessionStorage: `public/crm-features-v10.js`, `public/crm-features-v11.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`
 - `crmUsername` ← sessionStorage: `public/crm-features-v19.js`, `public/crm-features-v20.js`
 - `distPass_` ← sessionStorage: `public/crm-features-v20.js`
-- `v20RecoveryShown` ← sessionStorage: `public/crm-features-v20.js`
-- `v20RemoteRecoveryChecked` ← sessionStorage: `public/crm-features-v20.js`
 
 ## و) گراف تب‌ها (تب ↔ فایل‌هایی که با المان‌هایش کار می‌کنند)
 

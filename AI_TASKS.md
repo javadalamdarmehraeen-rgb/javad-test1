@@ -1213,5 +1213,12 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] 19-column corrected metrics/borders
 - [x] ۹ تست سبز
 - [ ] تأیید refresh با فایل واقعی کاربر
+## ۵۲) نسخه ۱۱.۲۱.۳
+- [x] حذف کامل auto backup merge و historical recovery
+- [x] حذف remote GET overwrite/reload
+- [x] حذف runtime merger
+- [x] تست authoritative current + empty arrays + no defaults
+- [x] ۹/۹ تست سبز
+- [ ] کاربر یک‌بار اطلاعات ناخواسته فعلی را اصلاح کند؛ پس از آن پایدار می‌ماند
 
 # END OF AI TASKS

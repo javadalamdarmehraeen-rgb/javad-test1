@@ -7,62 +7,39 @@ const appSource = fs.readFileSync(new URL('../public/crm-app.js', import.meta.ur
 const v9Source = fs.readFileSync(new URL('../public/crm-features-v9.js', import.meta.url), 'utf8');
 const v20Source = fs.readFileSync(new URL('../public/crm-features-v20.js', import.meta.url), 'utf8');
 
-function merger() {
-  const a = appSource.indexOf('window.mergeStateWithoutLoss');
-  const b = appSource.indexOf('\nfunction saveState', a);
-  assert.ok(a >= 0 && b > a, 'mergeStateWithoutLoss must exist');
-  const ctx = { window: {}, JSON };
-  vm.createContext(ctx);
-  vm.runInContext(appSource.slice(a, b), ctx);
-  return ctx.window.mergeStateWithoutLoss;
-}
-
-test('new code cannot delete unrelated existing records or current layout', () => {
-  const merge = merger();
-  const current = {
-    users: [{ id: 'u-faezeh', fullName: 'خانم فائزه مغانی' }],
-    pharmacies: [{ id: 'ph-old', name: 'داروخانه قدیمی' }],
-    doctors: [{ id: 'doc-old', name: 'پزشک قدیمی' }],
-    products: [{ id: 'prod-old', name: 'کالای قدیمی' }],
-    formFieldMeta: { order: { pharmacyName: { order: 7 } } },
-    customFields: { pharmacy: [{ id: 'cf-old', label: 'کد قدیمی' }] }
-  };
-  const incoming = {
-    users: [{ id: 'u-new', fullName: 'کاربر جدید' }],
-    pharmacies: [], doctors: [], products: [],
-    formFieldMeta: { order: { pharmacyName: { order: 1 }, city: { order: 2 } } },
-    customFields: { pharmacy: [{ id: 'cf-new', label: 'فیلد جدید' }] }
-  };
-  const out = merge(structuredClone(current), incoming);
-  assert.equal(out.users.length, 2);
-  assert.equal(out.pharmacies[0].name, 'داروخانه قدیمی');
-  assert.equal(out.doctors[0].name, 'پزشک قدیمی');
-  assert.equal(out.products[0].name, 'کالای قدیمی');
-  assert.equal(out.formFieldMeta.order.pharmacyName.order, 7, 'current manager layout must win');
-  assert.deepEqual(out.customFields.pharmacy.map(x => x.id).sort(), ['cf-new', 'cf-old']);
-});
-
-test('11.20.3 baseline recovery restores layout and missing data together', () => {
+function loadWithCurrent(current, backup) {
   const a = appSource.indexOf('function loadState()');
-  const b = appSource.indexOf('\nwindow.mergeStateWithoutLoss', a);
-  const current = { _allSnapshotsMergedV11204: true, settings: { tag: 'broken' }, formFieldMeta: { bad: 1 }, users: [], pharmacies: [], doctors: [], products: [] };
-  const baseline = { _lastSavedAt: 100, settings: { tag: '11.20.3' }, formFieldMeta: { good: 1 }, users: [{ id: 'f', fullName: 'خانم فائزه مغانی' }], pharmacies: [{ id: 'p' }], doctors: [{ id: 'd' }], products: [{ id: 'x' }] };
-  const store = { CRM_APP_STATE_V2: JSON.stringify(current), CRM_APP_STATE_ROLLING_BACKUP: JSON.stringify(baseline) };
+  const b = appSource.indexOf('\nfunction saveState', a);
+  const store = { CRM_APP_STATE_V2: JSON.stringify(current), CRM_APP_STATE_ROLLING_BACKUP: JSON.stringify(backup) };
   const localStorage = { getItem: k => store[k] || null, setItem: (k,v) => { store[k] = v; }, key: i => Object.keys(store)[i], get length() { return Object.keys(store).length; } };
-  const ctx = { window: {}, localStorage, console, JSON, Date, DEFAULT_INITIAL_DATA: {}, state: null };
+  const ctx = { window: {}, localStorage, console, JSON, Date, DEFAULT_INITIAL_DATA: { users:[{id:'sample'}] }, state: null };
   vm.createContext(ctx);
   vm.runInContext('const STORAGE_KEY="CRM_APP_STATE_V2";', ctx);
   const sa=appSource.indexOf('function serializeStateForLocalStorage'), sb=appSource.indexOf('\nfunction loadState',sa);
   vm.runInContext(appSource.slice(sa,sb),ctx);
   vm.runInContext(appSource.slice(a,b).replace(/applyGeneralSettingsToUI\(\);/, ';'), ctx);
   vm.runInContext('loadState()', ctx);
-  const out = JSON.parse(store.CRM_APP_STATE_V2);
-  assert.equal(out.settings.tag, '11.20.3');
-  assert.equal(out.formFieldMeta.good, 1);
-  assert.equal(out.users[0].fullName, 'خانم فائزه مغانی');
-  assert.equal(out.pharmacies.length, 1);
-  assert.equal(out.doctors.length, 1);
-  assert.equal(out.products.length, 1);
+  return JSON.parse(store.CRM_APP_STATE_V2);
+}
+
+test('current state is authoritative and old backup cannot re-add deleted data', () => {
+  const la=appSource.indexOf('function loadState()'),lb=appSource.indexOf('\nfunction saveState',la),loadBody=appSource.slice(la,lb);
+  assert.doesNotMatch(loadBody,/CRM_APP_STATE_ROLLING_BACKUP|CRM_APP_STATE_BACKUP_LATEST|MERGED_RECOVERY/);
+  const current = { settings:{tag:'current'}, users:[{id:'new'}], pharmacies:[], doctors:[], products:[], orders:[], formFieldMeta:{order:{field:{order:9}}} };
+  const old = { settings:{tag:'old'}, users:[{id:'deleted-user'}], pharmacies:[{id:'deleted-ph'}], doctors:[{id:'deleted-doc'}], products:[{id:'deleted-product'}], formFieldMeta:{order:{field:{order:1}}} };
+  const out=loadWithCurrent(current,old);
+  assert.equal(out.settings.tag,'current');
+  assert.deepEqual(out.users.map(x=>x.id),['new']);
+  assert.equal(out.pharmacies.length,0);
+  assert.equal(out.doctors.length,0);
+  assert.equal(out.products.length,0);
+  assert.equal(out.formFieldMeta.order.field.order,9);
+});
+
+test('existing empty arrays stay empty and sample defaults are never injected', () => {
+  const out=loadWithCurrent({settings:{},users:[],pharmacies:[],doctors:[],products:[],orders:[]},{users:[{id:'old'}]});
+  assert.deepEqual(out.users,[]);assert.deepEqual(out.pharmacies,[]);assert.deepEqual(out.products,[]);
+  assert.equal(out._authoritativeState,true);
 });
 
 test('active order collector never converts blank quantity to one', () => {
@@ -70,10 +47,14 @@ test('active order collector never converts blank quantity to one', () => {
   assert.match(v9Source, /if \(qty <= 0\) continue/);
 });
 
-test('startup cannot auto-add mirrored fields or mutate structure', () => {
+test('startup cannot auto-add mirrored fields, old backups, or remote state', () => {
   const initStart = v20Source.indexOf('function init()');
   const initBody = v20Source.slice(initStart, v20Source.indexOf('if (document.readyState', initStart));
   assert.doesNotMatch(initBody, /mirrorPharmacyFieldsToOrder\(true\)/);
+  assert.doesNotMatch(initBody, /mergeStateWithoutLoss/);
+  const d0=v20Source.indexOf('function bindDurableServerState'),d1=v20Source.indexOf('/* ---------- ۲۷)',d0),durable=v20Source.slice(d0,d1);
+  assert.doesNotMatch(durable,/res&&res\.data|location\.reload|method:\s*["']GET/);
+  assert.match(durable,/method:\s*["']POST/);
 });
 
 test('Snapp numeric parser and exact-row signatures prevent strange/double totals', () => {

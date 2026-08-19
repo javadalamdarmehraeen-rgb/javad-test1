@@ -443,7 +443,10 @@ const PERMISSION_GROUPS = {
     { key: "dist_daya_code_match", label: "تطبیق کد برنامه با ستون ۱۶ دایا دارو" },
     { key: "dist_product_code_future", label: "نگاشت خودکار کدهای آینده ۱۰۰۸ به ۱۱۱۲۰۰۸ و بعد" },
     { key: "sys_global_product_delete", label: "حذف کالا از کاتالوگ، تارگت، سفارش و گزارش‌های وابسته" },
-    { key: "dist_compact_layout", label: "چیدمان فشرده و کنارهم تب فروش پخش‌ها" }
+    { key: "dist_compact_layout", label: "چیدمان فشرده و کنارهم تب فروش پخش‌ها" },
+    { key: "sys_authoritative_current_state", label: "وضعیت فعلی تنها مرجع معتبر اطلاعات" },
+    { key: "sys_no_auto_backup_merge", label: "منع ادغام خودکار پشتیبان‌های قدیمی" },
+    { key: "sys_no_remote_overwrite", label: "منع بازیابی یا بازنویسی خودکار از سرور" }
   ]
 };
 

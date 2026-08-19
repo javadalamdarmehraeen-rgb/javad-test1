@@ -1146,3 +1146,8 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Import functions MUST await saveBulkVault before save.
 - Daya matching is by database column 16 to product `dayaDbCode`; formula is 1111000 + program code.
 - Deleting product cascades to targets/orders/draft and removes it from canonical Daya report.
+## Addendum — v11.21.3
+- Absolute rule: current CRM_APP_STATE_V2 is authoritative. Do not auto-merge any old backup or remote state.
+- Remote state sync is POST-only. Backups are manual recovery only.
+- Empty arrays represent intentional manager deletion; never repopulate them.
+- Tests explicitly reject backup reintroduction and sample default injection.
