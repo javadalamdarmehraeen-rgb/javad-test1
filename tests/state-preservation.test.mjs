@@ -5,6 +5,7 @@ import vm from 'node:vm';
 
 const appSource = fs.readFileSync(new URL('../public/crm-app.js', import.meta.url), 'utf8');
 const v9Source = fs.readFileSync(new URL('../public/crm-features-v9.js', import.meta.url), 'utf8');
+const v11Source = fs.readFileSync(new URL('../public/crm-features-v11.js', import.meta.url), 'utf8');
 const v20Source = fs.readFileSync(new URL('../public/crm-features-v20.js', import.meta.url), 'utf8');
 const serverSource = fs.readFileSync(new URL('../server.js', import.meta.url), 'utf8');
 const gitignoreSource = fs.readFileSync(new URL('../.gitignore', import.meta.url), 'utf8');
@@ -56,7 +57,7 @@ test('active order collector never converts blank quantity to one', () => {
   assert.match(v9Source, /if \(qty <= 0\) continue/);
   assert.match(v9Source, /maximumAge:0|maximumAge: 0/);
   assert.match(v9Source, /watchPosition/);
-  assert.match(v9Source, /accuracy<=15/);
+  assert.match(v9Source, /accuracy<=10/);
   assert.match(v9Source, /toFixed\(6\)/);
 });
 
@@ -172,7 +173,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /<Worksheet ss:Name=/, 'multi-sheet Excel exporter must remain');
   assert.match(v20Source, /NumberFormat ss:Format=\"#,##0\"/);
   assert.match(v20Source, /PercentText/);
-  assert.match(v20Source, /#D1D5DB/);
+  assert.match(v20Source, /#87CEEB/);
   assert.match(v20Source, /TotalNumber/);
   assert.match(v20Source, /#DC2626/);
   assert.match(v20Source, /ss:Position=\"Top\"/);

@@ -1467,3 +1467,9 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - Order inputs intercepted in capture phase; atomic reorder avoids destructive layout rebuild.
 
 # END OF AI DECISION LOG
+## تصمیم ۷۶ — نسخه ۱۱.۲۴.۰: سبک‌سازی محدود، اعمال لحظه‌ای و قانون بصری سراسری (2026-08-21)
+- MutationObserver اعداد فقط addedNodes را پردازش می‌کند و دیگر کل body را با هر تغییر نمی‌خواند.
+- refresh پس از save فقط وقتی ذخیره ناشی از اقدام اخیر کاربر است و فقط نمای فعال را render می‌کند؛ GPS رندر سراسری ایجاد نمی‌کند.
+- spacerهای دو موتور freeze پنهان شدند؛ همه headerها sky-blue/black هستند.
+- Default SpreadsheetML بدون border است و فقط style سلول‌های واقعی border دارد.
+- GPS ثابت: high accuracy، دو نمونه، هدف <=10m، بهترین نقطه تا 30s؛ آدرس Iran-first بدون postcode.

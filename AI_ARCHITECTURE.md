@@ -1111,3 +1111,8 @@ Then change only what is requested.
 - Browser current state remains authoritative; user-data is a separate server snapshot.
 - Permissions: real checkbox tree + saved level templates.
 - Atomic ordering writes sequential metadata and directly moves DOM without full layout rebuild.
+## معماری افزوده v11.24.0 — Performance / immediate view
+- Number formatter observes child additions only and processes bounded batches; characterData/full-body rescans are forbidden.
+- `bindInstantUiRefresh` refreshes only the active mapped renderer after a recent user action; background GPS saves do not trigger view rendering.
+- Heavy feature boot is guarded and has one delayed retry rather than multiple startup retries.
+- SpreadsheetML Default style has no borders; populated cell styles own borders.

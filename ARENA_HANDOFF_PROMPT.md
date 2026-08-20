@@ -1200,3 +1200,9 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Permission preset UI intentionally has only level select + save-template button.
 - User edits use userEditId and update existing record/auth map.
 - Form/list order changes must stay atomic and must not call applyFullFormLayout.
+## افزونه تحویل نسخه ۱۱.۲۴.۰
+- Performance: do not restore whole-body characterData number observer or product-settings-on-every-save wrapper.
+- Immediate updates use recent-user-action + active-view rendering; never globally rerender on GPS save.
+- Global headers are `#87CEEB`/black in UI and Excel; frozen spacer rows stay hidden.
+- Excel blank/default cells must remain borderless; only emitted cells are bordered.
+- GPS rule is fixed: watch high accuracy, at least 2 samples, target <=10m, best result by 30s; Iran-first detailed address, no postcode.

@@ -1384,3 +1384,12 @@ flags and never calls destructive full-layout rebuilds. Permission templates and
 edits must be explicitly saved by the manager.
 
 # END OF AI RULES
+# 73. PERFORMANCE + HEADER + GPS STABILITY RULE (PERMANENT)
+
+Never rescan/re-render the entire DOM after every mutation or save. Incremental observers
+must process only changed nodes, and background GPS saves must not trigger view rendering.
+All program and Excel headers are sky blue `#87CEEB` with black text. Frozen-table spacer
+rows remain hidden. Excel borders belong only to emitted/non-empty cells; the default blank
+cell style has no border. Current-location acquisition uses high accuracy, at least two
+samples, a <=10m target, and retains the best fix for up to 30 seconds. Address output stays
+Iran-first, includes available fine-grained parts, and excludes postcode.

@@ -240,11 +240,13 @@
       addr.state,
       addr.county,
       addr.municipality,
-      addr.city || addr.town || addr.village,
+      addr.city || addr.town || addr.village || addr.hamlet,
       addr.city_district,
-      addr.suburb || addr.neighbourhood,
+      addr.suburb,
+      addr.neighbourhood || addr.residential || addr.locality,
       addr.quarter,
-      addr.road || addr.pedestrian || addr.street,
+      addr.road || addr.pedestrian || addr.street || addr.footway,
+      addr.building || addr.amenity || addr.shop,
       addr.house_number ? ("پلاک: " + addr.house_number) : ""
     ].filter(Boolean);
     const uniq = [];
@@ -344,10 +346,11 @@
   function getCurrentPositionSafe() {
     return new Promise(function (resolve) {
       if (!navigator.geolocation) { resolve({ error: true, message: "GPS این دستگاه در دسترس نیست." }); return; }
-      var best=null,done=false,watch=null;
+      var best=null,done=false,watch=null,samples=0;
       function finish(result){if(done)return;done=true;if(watch!=null)try{navigator.geolocation.clearWatch(watch);}catch(e){}clearTimeout(timer);resolve(result);}
-      var timer=setTimeout(function(){if(best)finish(best);else finish({error:true,message:"موقعیت دقیق دریافت نشد؛ GPS را روشن و دوباره تلاش کنید."});},20000);
-      watch=navigator.geolocation.watchPosition(function(pos){var cur={lat:pos.coords.latitude,lng:pos.coords.longitude,accuracy:Number(pos.coords.accuracy)||9999,fallback:false};if(!best||cur.accuracy<best.accuracy)best=cur;if(cur.accuracy<=15)finish(cur);},function(err){if(err&&err.code===1)finish({error:true,message:"اجازه GPS داده نشده است."});},{enableHighAccuracy:true,timeout:20000,maximumAge:0});
+      // قانون ثابت GPS: تا ۳۰ ثانیه بهترین نقطه را نگه می‌داریم و با اولین نقطه کم‌دقت متوقف نمی‌شویم.
+      var timer=setTimeout(function(){if(best)finish(best);else finish({error:true,message:"موقعیت دقیق دریافت نشد؛ GPS را روشن و دوباره تلاش کنید."});},30000);
+      watch=navigator.geolocation.watchPosition(function(pos){samples++;var cur={lat:pos.coords.latitude,lng:pos.coords.longitude,accuracy:Number(pos.coords.accuracy)||9999,fallback:false};if(!best||cur.accuracy<best.accuracy)best=cur;if(samples>=2&&cur.accuracy<=10)finish(cur);},function(err){if(err&&err.code===1)finish({error:true,message:"اجازه GPS داده نشده است."});},{enableHighAccuracy:true,timeout:30000,maximumAge:0});
     });
   }
 

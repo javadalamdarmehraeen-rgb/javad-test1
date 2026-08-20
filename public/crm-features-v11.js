@@ -150,11 +150,12 @@
     var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"></head><body>';
     html += '<table border="1" cellspacing="0" cellpadding="4" style="border-collapse:collapse;border:1px solid #000">';
     html += "<tr>" + headers.map(function (h) {
-      return '<th style="border:1px solid #000;background:#0d9488;color:#fff">' + esc(h) + "</th>";
+      return '<th style="border:1px solid #000;background:#87CEEB;color:#000;font-weight:bold">' + esc(h) + "</th>";
     }).join("") + "</tr>";
     rows.forEach(function (r) {
       html += "<tr>" + r.map(function (c) {
-        return '<td style="border:1px solid #000">' + esc(c) + "</td>";
+        var filled = c !== null && c !== undefined && String(c).trim() !== "";
+        return '<td' + (filled ? ' style="border:1px solid #000"' : '') + '>' + esc(c) + "</td>";
       }).join("") + "</tr>";
     });
     html += "</table></body></html>";

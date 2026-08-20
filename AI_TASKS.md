@@ -1309,3 +1309,12 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [ ] persistent disk setup on Render for user-data file
 
 # END OF AI TASKS
+## ۶۴) نسخه ۱۱.۲۴.۰
+- [x] حذف full-body number rescans و رندرهای تکراری شروع
+- [x] اعمال لحظه‌ای ثبت کاربر در نمای فعال
+- [x] حذف فاصله سرستون تا داده
+- [x] header آبی آسمانی/مشکی در UI و Excel
+- [x] خط‌کشی فقط سلول واقعی Excel
+- [x] GPS ثابت <=10m / 30s و آدرس کامل‌تر
+- [x] ۲۴/۲۴ تست ضد‌رگرسیون
+- [ ] تأیید روانی و GPS روی موبایل واقعی کاربر

@@ -871,3 +871,5 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.22.3 است. Shafa code mapping is code-first including 1005→1391911006 and 1006→1391911005. Table headers gray/black. Excel totals red. Fixed grid/list observers defend against late legacy mutations.
 ## افزونه وضعیت نسخه ۱۱.۲۳.۰
 نسخه فعال 11.23.0 است. Runtime server snapshot path is gitignored user-data.json. Permission templates live settings.permissionLevelTemplates. User edit is update with userEditId. safeOrderFields controls atomic form/list order.
+## افزونه وضعیت نسخه ۱۱.۲۴.۰
+نسخه فعال 11.24.0 است. قالب‌بندی عدد incremental است و رندر تنظیمات کالا از saveهای عمومی/GPS جدا شد. ثبت کاربر نمای فعال را فوری refresh می‌کند. سرستون UI/Excel آبی آسمانی با متن مشکی است؛ spacer فریز مخفی است. SpreadsheetML Default بدون border است. GPS بهترین نقطه را تا 30 ثانیه با هدف <=10m انتخاب می‌کند و اجزای ریز آدرس را نگه می‌دارد.
