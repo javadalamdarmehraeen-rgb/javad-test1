@@ -245,8 +245,7 @@
       addr.suburb || addr.neighbourhood,
       addr.quarter,
       addr.road || addr.pedestrian || addr.street,
-      addr.house_number ? ("پلاک: " + addr.house_number) : "",
-      addr.postcode ? ("کد پستی: " + addr.postcode) : ""
+      addr.house_number ? ("پلاک: " + addr.house_number) : ""
     ].filter(Boolean);
     const uniq = [];
     parts.forEach(function (p) { if (uniq.indexOf(p) === -1) uniq.push(p); });
@@ -344,15 +343,11 @@
 
   function getCurrentPositionSafe() {
     return new Promise(function (resolve) {
-      if (!navigator.geolocation) {
-        resolve({ error: true, message: "GPS این دستگاه در دسترس نیست." });
-        return;
-      }
-      navigator.geolocation.getCurrentPosition(
-        function (pos) { resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude, fallback: false }); },
-        function (err) { resolve({ error: true, message: err && err.code === 1 ? "اجازه GPS داده نشده است." : "موقعیت دقیق دریافت نشد؛ دوباره تلاش کنید." }); },
-        { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }
-      );
+      if (!navigator.geolocation) { resolve({ error: true, message: "GPS این دستگاه در دسترس نیست." }); return; }
+      var best=null,done=false,watch=null;
+      function finish(result){if(done)return;done=true;if(watch!=null)try{navigator.geolocation.clearWatch(watch);}catch(e){}clearTimeout(timer);resolve(result);}
+      var timer=setTimeout(function(){if(best)finish(best);else finish({error:true,message:"موقعیت دقیق دریافت نشد؛ GPS را روشن و دوباره تلاش کنید."});},20000);
+      watch=navigator.geolocation.watchPosition(function(pos){var cur={lat:pos.coords.latitude,lng:pos.coords.longitude,accuracy:Number(pos.coords.accuracy)||9999,fallback:false};if(!best||cur.accuracy<best.accuracy)best=cur;if(cur.accuracy<=15)finish(cur);},function(err){if(err&&err.code===1)finish({error:true,message:"اجازه GPS داده نشده است."});},{enableHighAccuracy:true,timeout:20000,maximumAge:0});
     });
   }
 

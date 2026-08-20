@@ -479,7 +479,13 @@ const PERMISSION_GROUPS = {
     { key: "sys_address_rtl_order", label: "ترتیب فارسی آدرس از ایران تا پلاک و کد پستی" },
     { key: "sys_dom_order_lock", label: "قفل مستقل ترتیب واقعی فرم‌ها بین Refresh" },
     { key: "dist_shafaarad_exact_formula", label: "نگاشت قطعی ستون‌های شفاآراد" },
-    { key: "dist_shafaarad_inventory_total", label: "ستون دائمی جمع تعداد موجودی شفاآراد" }
+    { key: "dist_shafaarad_inventory_total", label: "ستون دائمی جمع تعداد موجودی شفاآراد" },
+    { key: "dist_shafaarad_code_match", label: "تطبیق کدهای کالاهای شفاآراد با master products" },
+    { key: "sys_black_sticky_headers", label: "سرستون طوسی با نوشته مشکی و فریز سراسری" },
+    { key: "sys_excel_gray_red_total", label: "Excel سرستون طوسی و جمع کل قرمز" },
+    { key: "sys_fixed_grid_observer", label: "قفل زنده فیلترهای پخش در یک سطر" },
+    { key: "sys_precise_address_no_postcode", label: "آدرس کامل بدون کد پستی و GPS دقیق" },
+    { key: "sys_list_order_observer", label: "اعمال زنده ترتیب ستون‌های لیست" }
   ]
 };
 

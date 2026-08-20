@@ -1190,3 +1190,8 @@ ADDENDUM v11.16.1 (2026-08-16)
 - DOM order lock captures beforeunload and manager edits; restore after every layout engine.
 - Shafaarad inventory column10 is always recalculated as col6+col8.
 - Shafaarad sales uses col8, returns col10, customer col4, invoice col6, date col7; rials derive master prices.
+## Addendum — v11.22.3
+- Preserve exact Shafaarad code map, notably swapped woman/man DB suffixes.
+- Program table headers are gray with black text. Workbook total row red and percentages string values.
+- Fixed-grid and list-order MutationObservers are required against delayed legacy renders.
+- Postcode is intentionally excluded; GPS uses watchPosition best accuracy <=15m and no fake fallback.

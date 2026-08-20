@@ -48,7 +48,9 @@ test('existing empty arrays stay empty and sample defaults are never injected', 
 test('active order collector never converts blank quantity to one', () => {
   assert.doesNotMatch(v9Source, /count:\s*parseInt\(countEl[^\n]+\|\|\s*1/);
   assert.match(v9Source, /if \(qty <= 0\) continue/);
-  assert.match(v9Source, /maximumAge: 0/);
+  assert.match(v9Source, /maximumAge:0|maximumAge: 0/);
+  assert.match(v9Source, /watchPosition/);
+  assert.match(v9Source, /accuracy<=15/);
   assert.match(v9Source, /toFixed\(6\)/);
 });
 
@@ -62,9 +64,9 @@ test('startup cannot auto-add mirrored fields, old backups, or remote state', ()
   assert.match(durable,/method:\s*["']POST/);
 });
 
-test('Persian address order starts with Iran and labels postal code', () => {
+test('Persian address order starts with Iran and removes postal code', () => {
   const start=v9Source.indexOf('function formatNominatim('),brace=v9Source.indexOf('{',start);let depth=0,end=brace;for(;end<v9Source.length;end++){if(v9Source[end]==='{')depth++;else if(v9Source[end]==='}'&&--depth===0){end++;break;}}
-  const ctx={result:null,Number};vm.createContext(ctx);vm.runInContext(`${v9Source.slice(start,end)};result=formatNominatim`,ctx);const out=ctx.result({address:{country:'ایران',state:'استان تهران',county:'شهرستان تهران',municipality:'بخش مرکزی',city:'تهران',city_district:'منطقه ۱۴',road:'دهم فروردین',house_number:'12',postcode:'17658-33316'}},35,51);assert.ok(out.startsWith('ایران، استان تهران'));assert.match(out,/پلاک: 12/);assert.match(out,/کد پستی: 17658-33316/);
+  const ctx={result:null,Number};vm.createContext(ctx);vm.runInContext(`${v9Source.slice(start,end)};result=formatNominatim`,ctx);const out=ctx.result({address:{country:'ایران',state:'استان تهران',county:'شهرستان تهران',municipality:'بخش مرکزی',city:'تهران',city_district:'منطقه ۱۴',road:'دهم فروردین',house_number:'12',postcode:'17658-33316'}},35,51);assert.ok(out.startsWith('ایران، استان تهران'));assert.match(out,/پلاک: 12/);assert.doesNotMatch(out,/17658-33316|کد پستی/);
 });
 
 test('global numeric display converts Persian digits to Latin without changing passwords/codes', () => {
@@ -128,6 +130,8 @@ test('Shafaarad mappings and derived inventory column 10 are permanent', () => {
   const ctx={result:null,normalizeStoredRow:r=>Array.isArray(r)?r.slice():Object.values(r||{}),snappNumber:v=>Number(v)||0,findDistIndex:()=>-1,norm:v=>String(v||'').replace(/\s+/g,'')};vm.createContext(ctx);vm.runInContext(`${extract('ensureShafaInventoryDerived')};${extract('distSchema')};result={ensureShafaInventoryDerived,distSchema}`,ctx);
   const d={id:'shafaarad',inventoryHeaders:['نام مرکز','کالا','نام کالا','فروش عددی','فروش ریالی','موجودی عددی','موجودی ریالی','تعداد بین راهی','ریال بین راهی'],inventoryRows:[['مرکز','کد','کالا',0,0,12,0,5,0]]};ctx.result.ensureShafaInventoryDerived(d);assert.equal(d.inventoryHeaders[9],'جمع تعداد موجودی');assert.equal(d.inventoryRows[0][9],17);
   const s=ctx.result.distSchema([], 'shafaarad');assert.equal(s.date,6);assert.equal(s.invoice,5);assert.equal(s.qty,7);assert.equal(s.retQty,9);assert.equal(s.pharmacy,3);
+  assert.match(v20Source,/1001:1391902001/);assert.match(v20Source,/1005:1391911006/);assert.match(v20Source,/1006:1391911005/);assert.match(v20Source,/shafaDbCode/);
+  const c2={result:null,SHAFA_CODE_MAP:{1005:1391911006,1006:1391911005},st:()=>({products:[{code:1005,name:'سافت ژل امگا وومن',shafaDbCode:1391911006},{code:1006,name:'سافت ژل امگا من',shafaDbCode:1391911005}]}),norm:v=>String(v||'').replace(/\s+/g,'')};vm.createContext(c2);vm.runInContext(`${extract('canonicalProduct')};result=canonicalProduct`,c2);assert.equal(c2.result('نام خام','1391911006','shafaarad'),'سافت ژل امگا وومن');assert.equal(c2.result('نام خام','1391911005','shafaarad'),'سافت ژل امگا من');
 });
 
 test('Daya calculations follow declared quantity, price, gift and return formulas', () => {
@@ -162,14 +166,19 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /<Worksheet ss:Name=/, 'multi-sheet Excel exporter must remain');
   assert.match(v20Source, /NumberFormat ss:Format=\"#,##0\"/);
   assert.match(v20Source, /PercentText/);
+  assert.match(v20Source, /#D1D5DB/);
+  assert.match(v20Source, /TotalNumber/);
+  assert.match(v20Source, /#DC2626/);
   assert.match(v20Source, /ss:Position=\"Top\"/);
   assert.match(v20Source, /\.data-table thead th\{position:sticky!important/);
   assert.match(v20Source, /function bindAddressFieldGuard/);
-  assert.match(v9Source, /کد پستی:/);
+  assert.doesNotMatch(v9Source, /کد پستی:/);
   assert.doesNotMatch(v9Source, /String\(data\.display_name\)\.length > compact\.length/);
   assert.match(v20Source, /function bindDomOrderLock/);
   assert.match(v20Source, /CRM_DOM_FIELD_ORDER_LOCK_V1/);
   assert.match(v20Source, /getUnifiedFieldList\(paneId\)/);
+  assert.match(v20Source, /tablePharmaciesHeader/);
+  assert.match(v20Source, /function bindListOrderObserver/);
   assert.match(v20Source, /function bindProductCrudV20/);
   assert.match(v20Source, /productCode/);
   assert.match(v20Source, /dayaDbCode=1111000\+code/);

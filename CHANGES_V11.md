@@ -1,3 +1,12 @@
+# نسخه ۱۱.۲۲.۳
+
+1. Shafaarad code map اضافه: 1001→1391902001، 1002→1391911002، 1003→1391911003، 1004→1391911004، 1005→1391911006، 1006→1391911005، 1007→1391911007.
+2. canonicalProduct برای Shafa code-first شد؛ inventory header «کالا» به‌عنوان code fallback شناخته می‌شود.
+3. program table sticky headers gray/black؛ Excel Header #D1D5DB black، Total row red، percent text، number #,##0، borders.
+4. fixed grid MutationObserver اضافه و list order exact table IDs/body observer/paneId/fuzzy/reliable rewrap شد.
+5. address Iran-first کامل‌تر، postcode حذف؛ GPS watch best accuracy <=15m، opacity disabled، no fake.
+6. test Shafa swapped woman/man codes، address no postcode، Excel styles، list observer. 17/17 سبز.
+
 # نسخه ۱۱.۲۲.۲
 
 1. آدرس reverse geocode فارسی از ایران→استان→شهرستان→بخش→شهر→منطقه→محله→خیابان→پلاک→کد پستی مرتب شد؛ display_name معکوس دیگر override نمی‌کند.

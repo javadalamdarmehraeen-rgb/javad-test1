@@ -1455,5 +1455,10 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - Nominatim display_name reversed output no longer overrides ordered Persian address; postcode explicitly labeled.
 - DOM core form group order has independent local lock captured before unload/manager edits and restored after all layout engines.
 - Shafaarad inventory computed column10 is derived every import/hydrate and immutable from source replacement.
+## تصمیم ۷۴ — نسخه ۱۱.۲۲.۳: Shafa code-first; gray/black headers; live layout/list guards (2026-08-20)
+- Shafa 1005/1006 database suffixes are intentionally swapped and unit-tested.
+- Program headers gray/black; workbook totals red and percentages strings.
+- Mutation observers protect fixed filters and list order after old render/layout layers.
+- GPS uses best watch accuracy; postcode removed.
 
 # END OF AI DECISION LOG

@@ -1290,5 +1290,13 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] فرمول ریالی/درصد شفاآراد
 - [x] ۱۶/۱۶ tests
 - [ ] تأیید فایل واقعی شفاآراد
+## ۶۲) نسخه ۱۱.۲۲.۳
+- [x] mapping هفت کد شفاآراد
+- [x] header طوسی/مشکی برنامه و Excel
+- [x] total red/percent text/grouping/borders Excel
+- [x] fixed-grid observer و list-order observer
+- [x] address no postcode + best GPS + dim button
+- [x] ۱۷/۱۷ tests
+- [ ] تأیید UI واقعی کاربر
 
 # END OF AI TASKS
