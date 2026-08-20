@@ -1116,3 +1116,13 @@ Then change only what is requested.
 - `bindInstantUiRefresh` refreshes only the active mapped renderer after a recent user action; background GPS saves do not trigger view rendering.
 - Heavy feature boot is guarded and has one delayed retry rather than multiple startup retries.
 - SpreadsheetML Default style has no borders; populated cell styles own borders.
+## معماری افزوده v11.24.1 — Canonical distributor products / dynamic badge
+- Daya and Shafaarad report rows must resolve to a canonical `state.products` item; blank/unmatched/«نامشخص» rows return null.
+- Correct Shafa mapping is a migration source: `ensureProductCodes` replaces stale per-product `shafaDbCode`.
+- The visible version badge parses the active `crm-features-v20.js?v=` value, avoiding hardcoded display drift.
+## معماری افزوده v11.25.0 — Order-to-invoice reconciliation
+- `buildInvoiceStatusGroups`: distributor pharmacy rows → invoice groups indexed by Jalali absolute day.
+- `buildInvoiceStatusMatches`: each order checks only seven day buckets and then fuzzy pharmacy + strict location conditions.
+- `invoiceStatusDetailRows`: canonical product union with order/invoice quantity, gift and signed deltas.
+- `invoiceStatusBaseCache`: heavy reconciliation once per tab entry/import; interactive filters reuse it.
+- UI: `tab-distributor-invoice-status`, single-row gray-chain filters, live search, result table and dynamic detail modal.

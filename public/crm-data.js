@@ -491,6 +491,14 @@ const PERMISSION_GROUPS = {
     { key: "usr_tab_permission_checkboxes", label: "چک‌باکس تب و زیرمجموعه‌های دسترسی" },
     { key: "sys_separate_user_data_file", label: "فایل جداگانه user-data.json خارج از Git" },
     { key: "sys_atomic_form_list_order", label: "ترتیب اتمی فرم و لیست بدون ناپدیدشدن فیلد" }
+  ],
+  "وضعیت فاکتور پخش‌ها (نسخه ۱۱.۲۵)": [
+    { key: "dist_invoice_status_access", label: "دسترسی به تب وضعیت فاکتور پخش‌ها" },
+    { key: "dist_invoice_status_filters", label: "فیلتر نماینده، سال، ماه و بازه تاریخ" },
+    { key: "dist_invoice_status_search", label: "جستجوی لحظه‌ای داروخانه" },
+    { key: "dist_invoice_status_match", label: "تطبیق نام و استان و شهر و منطقه داروخانه" },
+    { key: "dist_invoice_status_date_window", label: "تطبیق تاریخ فاکتور در بازه سه روز قبل و بعد سفارش" },
+    { key: "dist_invoice_status_details", label: "مشاهده جزئیات تعداد و جایزه سفارش و فاکتور" }
   ]
 };
 

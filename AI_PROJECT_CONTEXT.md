@@ -873,3 +873,9 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.23.0 است. Runtime server snapshot path is gitignored user-data.json. Permission templates live settings.permissionLevelTemplates. User edit is update with userEditId. safeOrderFields controls atomic form/list order.
 ## افزونه وضعیت نسخه ۱۱.۲۴.۰
 نسخه فعال 11.24.0 است. قالب‌بندی عدد incremental است و رندر تنظیمات کالا از saveهای عمومی/GPS جدا شد. ثبت کاربر نمای فعال را فوری refresh می‌کند. سرستون UI/Excel آبی آسمانی با متن مشکی است؛ spacer فریز مخفی است. SpreadsheetML Default بدون border است. GPS بهترین نقطه را تا 30 ثانیه با هدف <=10m انتخاب می‌کند و اجزای ریز آدرس را نگه می‌دارد.
+## افزونه وضعیت نسخه ۱۱.۲۴.۱
+نسخه فعال 11.24.1 است. Shafa map اصلاحی: 1001→1391911001، 1002→1391911002، 1003→1391911003، 1004→1391911004، 1005→1391911006، 1006→1391911005، 1007→1391902006. ensureProductCodes مقادیر قدیمی را جایگزین می‌کند. Daya/Shafa unknown rows حذف می‌شوند. badge نسخه از query فایل v20 خوانده می‌شود.
+## قانون تحویل نوبت ۴۴
+در پایان هر چت، فایل ZIP کامل آخرین نسخه باید با present_file کنار صفحه نمایش داده شود و دستورات آماده PowerShell نیز در پاسخ نوشته شود.
+## افزونه وضعیت نسخه ۱۱.۲۵.۰
+نسخه فعال 11.25.0 است. تب tab-distributor-invoice-status سفارش‌ها را با گروه فاکتورهای pharmacyRows چهار پخش تطبیق می‌دهد. شرط‌ها: نام fuzzy token/substring، استان، شهر، منطقه و invoice day در order day ±3. جزئیات بر اساس canonical product، qty و gift را تجمیع می‌کند. نتیجه پایه در invoiceStatusBaseCache نگه داشته می‌شود و فیلترهای نماینده/سال/ماه/بازه/search روی cache کار می‌کنند.

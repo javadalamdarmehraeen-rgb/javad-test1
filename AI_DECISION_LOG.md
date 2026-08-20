@@ -1473,3 +1473,14 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - spacerهای دو موتور freeze پنهان شدند؛ همه headerها sky-blue/black هستند.
 - Default SpreadsheetML بدون border است و فقط style سلول‌های واقعی border دارد.
 - GPS ثابت: high accuracy، دو نمونه، هدف <=10m، بهترین نقطه تا 30s؛ آدرس Iran-first بدون postcode.
+## تصمیم ۷۷ — نسخه ۱۱.۲۴.۱: نگاشت اصلاحی شفاآراد و نسخه پویا (2026-08-21)
+- Shafa exact map is now 1001→1391911001, 1002→1391911002, 1003→1391911003, 1004→1391911004, 1005→1391911006, 1006→1391911005, 1007→1391902006.
+- ensureProductCodes overwrites stale shafaDbCode values in current catalog without touching other user data.
+- Daya/Shafa unmatched or «نامشخص» rows are omitted, never invented as a report product.
+- Header badge derives version from active v20 script query and is updated on every render.
+## تصمیم ۷۸ — نسخه ۱۱.۲۵.۰: تطبیق سفارش با فاکتور پخش (2026-08-21)
+- Invoice groups are pre-indexed by exact Jalali day and scanned only for orderDay-3..orderDay+3.
+- Pharmacy name matching accepts meaningful shared/contained tokens while province, city and district must also resolve from columns or row text.
+- Only matched invoices appear; unmatched orders are intentionally absent.
+- Invoice details aggregate rows by canonical master product and compare ordered/invoiced quantity and gift with signed differences.
+- Base matches are cached per tab entry so live text filtering does not rescan IndexedDB-sized rows.

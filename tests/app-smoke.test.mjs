@@ -28,7 +28,7 @@ test('automated app entry loads health, HTML, all scripts and critical UI', asyn
   const pageRes = await fetch(base + '/');
   assert.equal(pageRes.status, 200);
   const html = await pageRes.text();
-  for (const id of ['tab-dashboard','tab-orders','tab-snapp-corporate','tab-distributor-companies','tab-distributor-sales','tab-distributor-database','btnToggleSideMenu','snappTripModeYear','snappTopupModeYear','btnBuildDistributorReport','productCode','btnImportSnappTrips','btnImportSnappTopups']) {
+  for (const id of ['tab-dashboard','tab-orders','tab-snapp-corporate','tab-distributor-companies','tab-distributor-sales','tab-distributor-database','btnToggleSideMenu','snappTripModeYear','snappTopupModeYear','btnBuildDistributorReport','tab-distributor-invoice-status','invoiceStatusBody','invoiceStatusSearch','productCode','btnImportSnappTrips','btnImportSnappTopups']) {
     assert.match(html, new RegExp(`id=["']${id}["']`), `missing critical UI #${id}`);
   }
   const scripts = [...html.matchAll(/<script[^>]+src=["']([^"']+\.js(?:\?[^"']*)?)["']/g)].map(m => m[1]);

@@ -1206,3 +1206,16 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Global headers are `#87CEEB`/black in UI and Excel; frozen spacer rows stay hidden.
 - Excel blank/default cells must remain borderless; only emitted cells are bordered.
 - GPS rule is fixed: watch high accuracy, at least 2 samples, target <=10m, best result by 30s; Iran-first detailed address, no postcode.
+## افزونه تحویل نسخه ۱۱.۲۴.۱
+- Preserve corrected exact Shafa map: 1001=1391911001; 1002=1391911002; 1003=1391911003; 1004=1391911004; 1005=1391911006; 1006=1391911005; 1007=1391902006.
+- Never let unmatched/blank/«نامشخص» Daya or Shafa rows become report products.
+- Version badge must remain dynamic from v20 script query; do not hardcode an old number.
+## افزونه تحویل نوبت ۴۴
+- User requires the latest ZIP to be presented in the side file viewer in every chat.
+- Every response must include copy-ready PowerShell sync commands (prefer `SYNC_ALL.bat`; also show explicit Git commands when useful).
+## افزونه تحویل نسخه ۱۱.۲۵.۰
+- Preserve invoice-status matching: order date ±3 inclusive, fuzzy pharmacy name plus province/city/district.
+- Never show unmatched orders in this table.
+- Detail rows compare order qty/gift with invoice qty/gift by canonical product.
+- Keep invoiceStatusBaseCache so live search never rescans all distributor rows per keystroke.
+- New permission keys begin `dist_invoice_status_` and must stay in permission UI.

@@ -1393,3 +1393,30 @@ rows remain hidden. Excel borders belong only to emitted/non-empty cells; the de
 cell style has no border. Current-location acquisition uses high accuracy, at least two
 samples, a <=10m target, and retains the best fix for up to 30 seconds. Address output stays
 Iran-first, includes available fine-grained parts, and excludes postcode.
+
+# 74. SHAFA CODE + CANONICAL DISTRIBUTOR ROW RULE (PERMANENT)
+
+The exact Shafaarad map is: 1001=1391911001, 1002=1391911002,
+1003=1391911003, 1004=1391911004, 1005=1391911006,
+1006=1391911005, 1007=1391902006. Stale saved product mappings must migrate
+to these values. Daya/Shafa rows that do not resolve to a real catalog product,
+or resolve as blank/«نامشخص», must be omitted from reports. The visible version
+badge must derive from the currently loaded versioned script rather than a stale
+hardcoded label.
+
+# 75. EVERY-CHAT DELIVERY FORMAT (PERMANENT — USER-MANDATED)
+
+At the end of every chat response, present the latest complete ZIP in the file viewer
+(side panel) and include copy-ready PowerShell commands for syncing the user's local
+project. When GitLab is configured, commands must include both GitHub (`origin`) and
+GitLab (`gitlab`); missing GitLab remote may be skipped gracefully by `SYNC_ALL.bat`.
+
+# 76. ORDER-TO-DISTRIBUTOR-INVOICE MATCH RULE (PERMANENT)
+
+The invoice-status tab may show an order only when a distributor pharmacy invoice
+is dated within ±3 inclusive Jalali days of the order and the pharmacy matches by
+a meaningful partial/shared name plus province, city, and district (from mapped
+columns or row text). Details must aggregate canonical products and show ordered
+quantity/gift, invoiced quantity/gift, and signed differences. Live search must
+filter a cached reconciliation result and must not rescan all bulk rows per keypress.
+Every capability remains permission-controlled via `dist_invoice_status_*`.
