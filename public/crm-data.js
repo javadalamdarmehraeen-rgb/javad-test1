@@ -485,7 +485,12 @@ const PERMISSION_GROUPS = {
     { key: "sys_excel_gray_red_total", label: "Excel سرستون طوسی و جمع کل قرمز" },
     { key: "sys_fixed_grid_observer", label: "قفل زنده فیلترهای پخش در یک سطر" },
     { key: "sys_precise_address_no_postcode", label: "آدرس کامل بدون کد پستی و GPS دقیق" },
-    { key: "sys_list_order_observer", label: "اعمال زنده ترتیب ستون‌های لیست" }
+    { key: "sys_list_order_observer", label: "اعمال زنده ترتیب ستون‌های لیست" },
+    { key: "usr_edit_save", label: "ویرایش و ذخیره واقعی اطلاعات کاربر" },
+    { key: "usr_permission_templates", label: "ذخیره الگوی سه سطح دسترسی" },
+    { key: "usr_tab_permission_checkboxes", label: "چک‌باکس تب و زیرمجموعه‌های دسترسی" },
+    { key: "sys_separate_user_data_file", label: "فایل جداگانه user-data.json خارج از Git" },
+    { key: "sys_atomic_form_list_order", label: "ترتیب اتمی فرم و لیست بدون ناپدیدشدن فیلد" }
   ]
 };
 

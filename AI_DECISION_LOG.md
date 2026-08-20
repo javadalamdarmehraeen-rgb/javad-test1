@@ -1460,5 +1460,10 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - Program headers gray/black; workbook totals red and percentages strings.
 - Mutation observers protect fixed filters and list order after old render/layout layers.
 - GPS uses best watch accuracy; postcode removed.
+## تصمیم ۷۵ — نسخه ۱۱.۲۳.۰: user-data isolation, permission templates, atomic order (2026-08-20)
+- Runtime state file is user-data.json, gitignored and migrated from legacy server-db.
+- User edit now update-not-duplicate and syncs CRM_USERS_AUTH.
+- Permission templates are saved from real checkbox tree; create role applies template.
+- Order inputs intercepted in capture phase; atomic reorder avoids destructive layout rebuild.
 
 # END OF AI DECISION LOG

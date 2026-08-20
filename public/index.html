@@ -16,7 +16,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.22.3" />
+  <link rel="stylesheet" href="style.css?v=11.23.0" />
 </head>
 <body>
 
@@ -1634,6 +1634,7 @@
           <h4 style="margin-bottom: 1rem; color: #1e293b; font-size: 1.1rem;">ایجاد کاربر جدید</h4>
 
           <form id="formCreateUser" onsubmit="return false;">
+            <input type="hidden" id="userEditId" value="" />
             <div class="form-grid">
               <div class="form-group full-width">
                 <label class="form-label">نام و نام خانوادگی *</label>
@@ -1655,7 +1656,7 @@
                 <label class="form-label">نقش</label>
                 <select id="newRole" class="form-select dropdown-auto-clear">
                   <option value="نماینده علمی">نماینده علمی</option>
-                  <option value="مدیر سیستم">مدیر سیستم</option>
+                  <option value="کارشناس فروش">کارشناس فروش</option>
                   <option value="سرپرست">سرپرست</option>
                 </select>
               </div>
@@ -1688,7 +1689,7 @@
                 <input type="checkbox" id="newForcePhoneLogin" checked style="width: 20px; height: 20px; accent-color: #0d9488;" />
                 <span>ورود با شماره همراه اجباری باشد</span>
               </label>
-              <button type="submit" class="btn btn-primary" style="background: #0d9488; font-size: 1rem; padding: 0.75rem 2rem;">
+              <button type="submit" id="btnSaveUserInfo" class="btn btn-primary" style="background: #0d9488; font-size: 1rem; padding: 0.75rem 2rem;">
                 <span>➕ ایجاد کاربر</span>
               </button>
             </div>
@@ -2162,22 +2163,22 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.22.3"></script>
-  <script src="crm-app.js?v=11.22.3"></script>
-  <script src="crm-features-v9.js?v=11.22.3"></script>
-  <script src="iran-facilities.js?v=11.22.3" defer></script>
-  <script src="crm-features-v10.js?v=11.22.3"></script>
-  <script src="crm-features-v11.js?v=11.22.3"></script>
-  <script src="crm-features-v12.js?v=11.22.3"></script>
-  <script src="crm-features-v13.js?v=11.22.3"></script>
-  <script src="crm-jalali.js?v=11.22.3"></script>
-  <script src="crm-features-v14.js?v=11.22.3"></script>
-  <script src="crm-features-v15.js?v=11.22.3"></script>
-  <script src="crm-features-v16.js?v=11.22.3"></script>
-  <script src="crm-features-v17.js?v=11.22.3"></script>
-  <script src="crm-features-v18.js?v=11.22.3"></script>
-  <script src="crm-features-v19.js?v=11.22.3"></script>
-  <script src="crm-features-v20.js?v=11.22.3"></script>
+  <script src="crm-data.js?v=11.23.0"></script>
+  <script src="crm-app.js?v=11.23.0"></script>
+  <script src="crm-features-v9.js?v=11.23.0"></script>
+  <script src="iran-facilities.js?v=11.23.0" defer></script>
+  <script src="crm-features-v10.js?v=11.23.0"></script>
+  <script src="crm-features-v11.js?v=11.23.0"></script>
+  <script src="crm-features-v12.js?v=11.23.0"></script>
+  <script src="crm-features-v13.js?v=11.23.0"></script>
+  <script src="crm-jalali.js?v=11.23.0"></script>
+  <script src="crm-features-v14.js?v=11.23.0"></script>
+  <script src="crm-features-v15.js?v=11.23.0"></script>
+  <script src="crm-features-v16.js?v=11.23.0"></script>
+  <script src="crm-features-v17.js?v=11.23.0"></script>
+  <script src="crm-features-v18.js?v=11.23.0"></script>
+  <script src="crm-features-v19.js?v=11.23.0"></script>
+  <script src="crm-features-v20.js?v=11.23.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />

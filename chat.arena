@@ -1,6 +1,6 @@
 CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.35 | تاریخ به‌روزرسانی: 2026-08-20 (۲۹ مرداد ۱۴۰۵) | نسخه برنامه: 11.22.3
+نسخه این فایل: 1.36 | تاریخ به‌روزرسانی: 2026-08-20 (۲۹ مرداد ۱۴۰۵) | نسخه برنامه: 11.23.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -333,7 +333,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
 بخش ۴) تاریخچه نسخه‌ها و آخرین دوره تغییرات
 ══════════════════════════════════════════════════════════════════════════════════
 • مسیر نسخه‌ها (بازسازی از ریپو): V1 → … → V9 → V10 → V11 → V11.1 … V11.14 → V11.15
-  → V11.15.1 → V11.15.2 → V11.15.3 → V11.16.0 → V11.16.1 → V11.16.2 → V11.17.0 → V11.17.1 → V11.18.0 → V11.19.0 → V11.20.0 → V11.20.1 → V11.20.2 → V11.20.3 → V11.20.4 → V11.20.5 → V11.21.0 → V11.21.1 → V11.21.2 → V11.21.3 → V11.21.4 → V11.21.5 → V11.21.6 → V11.21.7 → V11.21.8 → V11.21.9 → V11.22.0 → V11.22.1 → V11.22.2 → V11.22.3.
+  → V11.15.1 → V11.15.2 → V11.15.3 → V11.16.0 → V11.16.1 → V11.16.2 → V11.17.0 → V11.17.1 → V11.18.0 → V11.19.0 → V11.20.0 → V11.20.1 → V11.20.2 → V11.20.3 → V11.20.4 → V11.20.5 → V11.21.0 → V11.21.1 → V11.21.2 → V11.21.3 → V11.21.4 → V11.21.5 → V11.21.6 → V11.21.7 → V11.21.8 → V11.21.9 → V11.22.0 → V11.22.1 → V11.22.2 → V11.22.3 → V11.23.0.
 • جزئیات کامل هر نسخه V9 به بعد در CHANGES_V9.md / CHANGES_V10.md / CHANGES_V11.md
   (محتوای کاملشان در بخش ۹ همین فایل هست).
 
@@ -566,21 +566,21 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
 
   [متنی ]      891 بایت  .env.ndcohub.example
   [متنی ]      849 بایت  .gitattributes
-  [متنی ]     1082 بایت  .gitignore
+  [متنی ]     1097 بایت  .gitignore
   [متنی ]     2057 بایت  .gitlab-ci.yml
-  [متنی ]    19270 بایت  AI_ARCHITECTURE.md
-  [متنی ]    47550 بایت  AI_DECISION_LOG.md
-  [متنی ]    24296 بایت  AI_PROJECT_CONTEXT.md
-  [متنی ]    26521 بایت  AI_RULES.md
-  [متنی ]    33706 بایت  AI_TASKS.md
-  [متنی ]    29490 بایت  ARENA_HANDOFF_PROMPT.md
+  [متنی ]    19664 بایت  AI_ARCHITECTURE.md
+  [متنی ]    47998 بایت  AI_DECISION_LOG.md
+  [متنی ]    24585 بایت  AI_PROJECT_CONTEXT.md
+  [متنی ]    27042 بایت  AI_RULES.md
+  [متنی ]    34085 بایت  AI_TASKS.md
+  [متنی ]    29831 بایت  ARENA_HANDOFF_PROMPT.md
   [متنی ]      600 بایت  CHANGES_V10.md
-  [متنی ]    59287 بایت  CHANGES_V11.md
+  [متنی ]    60062 بایت  CHANGES_V11.md
   [متنی ]     3939 بایت  CHANGES_V9.md
   [متنی ]     1806 بایت  CLEAN_EXTRA_FILES.bat
   [متنی ]     2377 بایت  KEEP_ONLY_GITHUB.bat
   [متنی ]     6334 بایت  OFFICIAL_FILELIST.txt
-  [متنی ]    39659 بایت  PROJECT_GRAPH.md
+  [متنی ]    39656 بایت  PROJECT_GRAPH.md
   [متنی ]     2642 بایت  PUSH_FRESH_GITHUB.bat
   [متنی ]     2680 بایت  PUSH_GITHUB_CLEAN.bat
   [متنی ]     6579 بایت  RAHNAMA_GITLAB.txt
@@ -597,10 +597,10 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]      844 بایت  package.json
   [متنی ]      108 بایت  postcss.config.mjs
   [متنی ]     1347 بایت  render.yaml
-  [متنی ]     9666 بایت  server.js
+  [متنی ]     9884 بایت  server.js
   [متنی ]     2426 بایت  sync_all.sh
   [متنی ]      738 بایت  tsconfig.json
-  [متنی ]   277861 بایت  update_chat_arena.py
+  [متنی ]   284319 بایت  update_chat_arena.py
   [متنی ]    10215 بایت  update_project_graph.py
   [متنی ]     2844 بایت  .github/workflows/deploy.yml
   [متنی ]      214 بایت  .github/workflows/keep_alive.yml
@@ -608,8 +608,8 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     9805 بایت  mobile/README.md
   [متنی ]     9796 بایت  mobile/src/simAuth.ts
   [متنی ]     8066 بایت  public/cloudflare-worker.js
-  [متنی ]   170235 بایت  public/crm-app.js
-  [متنی ]    50314 بایت  public/crm-data.js
+  [متنی ]   173061 بایت  public/crm-app.js
+  [متنی ]    50877 بایت  public/crm-data.js
   [متنی ]    13643 بایت  public/crm-features-v10.js
   [متنی ]   107737 بایت  public/crm-features-v11.js
   [متنی ]    44613 بایت  public/crm-features-v12.js
@@ -620,10 +620,10 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]    19662 بایت  public/crm-features-v17.js
   [متنی ]    33040 بایت  public/crm-features-v18.js
   [متنی ]    60932 بایت  public/crm-features-v19.js
-  [متنی ]   180840 بایت  public/crm-features-v20.js
+  [متنی ]   184646 بایت  public/crm-features-v20.js
   [متنی ]    70229 بایت  public/crm-features-v9.js
   [متنی ]    25683 بایت  public/crm-jalali.js
-  [متنی ]   139106 بایت  public/index.html
+  [متنی ]   139196 بایت  public/index.html
   [متنی ]    11799 بایت  public/iran-facilities.js
   [متنی ]     7100 بایت  public/login.html
   [متنی ]      966 بایت  public/manifest.json
@@ -779,8 +779,8 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     8984 بایت  src/lib/tracker.ts
   [متنی ]     2276 بایت  src/lib/useLive.ts
   [متنی ]     3346 بایت  src/lib/zip.ts
-  [متنی ]     2790 بایت  tests/app-smoke.test.mjs
-  [متنی ]    17901 بایت  tests/state-preservation.test.mjs
+  [متنی ]     2832 بایت  tests/app-smoke.test.mjs
+  [متنی ]    19079 بایت  tests/state-preservation.test.mjs
   [تصویر]    23282 بایت  public/apple-touch-icon.png
   [تصویر]     4527 بایت  public/favicon.png
   [تصویر]    26208 بایت  public/icon-192.png
@@ -3363,6 +3363,115 @@ git push gitlab main
 
 
 
+──────────────────────────────── نوبت ۴۱ ────────────────────────────────
+🧑 کاربر (خلاصه وفادار همراه همه کدها و درخواست‌ها):
+«کاربر کدهای شفاآراد را تعیین کرد: 1001→1391902001، 1002→1391911002، 1003→1391911003، 1004→1391911004، 1005 وومن→1391911006، 1006 من→1391911005، 1007→1391911007. همچنین خواست ویرایش کاربر کلید ذخیره داشته باشد؛ preset فقط dropdown اول و کلید ذخیره سطح داشته باشد؛ ایجاد کاربر dropdown نماینده/کارشناس فروش/سرپرست داشته باشد؛ هر تب و زیرمجوز checkbox واقعی داشته باشد؛ داده مدیر در فایل جدا از کد باشد؛ و تغییر شماره ترتیب فرم/لیست واقعاً اعمال شود و فیلدها ناپدید نشوند.»
+
+🤖 دستیار:
+نسخه **۱۱.۲۳.۰** آماده شد.
+
+## کدهای شفاآراد
+نگاشت دقیق ثبت و تست شد:
+
+```text
+1001 → 1391902001
+1002 → 1391911002
+1003 → 1391911003
+1004 → 1391911004
+1005 → 1391911006  امگا وومن
+1006 → 1391911005  امگا من
+1007 → 1391911007
+```
+
+برنامه علاوه بر ستون تشخیص‌داده‌شده، کل ردیف را برای کد شناخته‌شده اسکن می‌کند. کدهای Excel با شکل اعشاری یا علمی مثل `1.391902001E9` نیز به عدد صحیح نرمال می‌شوند. Unit Test تطبیق امگا ۳، وومن و من را تأیید کرد.
+
+## ویرایش و ذخیره کاربر
+فیلد مخفی `userEditId` و کلید `btnSaveUserInfo` اضافه شد.
+
+هنگام ویرایش:
+- اطلاعات همان کاربر در فرم قرار می‌گیرد؛
+- checkboxهای مجوز طبق همان کاربر تنظیم می‌شوند؛
+- متن کلید به «ذخیره اطلاعات کاربر» تغییر می‌کند؛
+- Submit همان رکورد را update می‌کند و کاربر تکراری نمی‌سازد؛
+- پس از ذخیره، `CRM_USERS_AUTH` نیز با نام، رمز، تلفن و نقش جدید هماهنگ می‌شود.
+
+## سطوح دسترسی آماده
+در کادر سطوح آماده:
+- dropdown اول سطح حفظ شد؛
+- dropdown انتخاب کاربر حذف شد؛
+- کلید «اعمال سطح روی کاربر» حذف شد؛
+- کلید جدید **ذخیره سطح دسترسی** اضافه شد.
+
+مدیر سطح نماینده علمی، کارشناس فروش یا سرپرست را انتخاب می‌کند، تیک‌ها را تنظیم می‌کند و همان مجموعه در `settings.permissionLevelTemplates` ذخیره می‌شود.
+
+## ایجاد کاربر و نقش
+فیلد نقش در ایجاد کاربر فقط این گزینه‌ها را دارد:
+- نماینده علمی؛
+- کارشناس فروش؛
+- سرپرست.
+
+با انتخاب هر نقش، الگوی ذخیره‌شده همان سطح روی checkboxهای مجوز بارگذاری می‌شود و هنگام ایجاد کاربر ذخیره می‌شود.
+
+## checkbox تب‌ها و زیرمجوزها
+هر گروه دسترسی به شکل fieldset مستقل با checkbox اصلی نمایش داده می‌شود. زیرمجموعه‌های هر تب نیز checkbox واقعی دارند.
+
+- تیک گروه: همه زیرمجوزهای همان بخش؛
+- برداشتن تیک گروه: همه زیرمجوزها غیرمجاز؛
+- هر زیرمجوز مستقلاً قابل تغییر است؛
+- تیک یعنی مجاز؛ بدون تیک یعنی غیرمجاز.
+
+عنوان‌های اصلی به نام تب‌های داروخانه، پزشک، سفارش، داشبورد، مرخصی، گزارش و مدیریت نمایش داده می‌شوند.
+
+## فایل جداگانه اطلاعات مدیر
+سرور اکنون snapshot runtime را در فایل زیر ذخیره می‌کند:
+
+```text
+user-data.json
+```
+
+این فایل:
+- در `.gitignore` است؛
+- وارد GitHub/GitLab نمی‌شود؛
+- داخل ZIP برنامه قرار نمی‌گیرد؛
+- فقط با تغییرات مدیر و POST وضعیت برنامه به‌روز می‌شود؛
+- اگر `server-db.json` قدیمی وجود داشته باشد، یک‌بار به فایل جدید منتقل می‌شود.
+
+نکته: برای ماندگاری این فایل روی Render بین Deployها، باید Persistent Disk تنظیم شود. اطلاعات مرورگر همچنان در localStorage/IndexedDB مستقل از Git نگهداری می‌شود.
+
+## ترتیب اتمی فرم و لیست
+موتور جدید `safeOrderFields` اضافه شد:
+- تغییر ورودی شماره ترتیب در capture phase گرفته می‌شود؛
+- handler مخرب قدیمی اجرا نمی‌شود؛
+- فیلد جابه‌جا و همه شماره‌ها ۱،۲،۳… بازشماری می‌شوند؛
+- فقط `order` یا `listOrder` نوشته می‌شود؛
+- تیک نمایش، hidden، deleted و سایر تنظیمات دست‌نخورده می‌مانند؛
+- برای فرم، DOM مستقیم جابه‌جا می‌شود؛
+- برای لیست، جدول مربوطه render و reorder می‌شود؛
+- `applyFullFormLayout` مخرب در این مسیر فراخوانی نمی‌شود؛
+- دکمه‌های بالا/پایین نیز از همین موتور استفاده می‌کنند.
+
+بنابراین تغییر ترتیب دیگر نباید فیلدهای بعدی را ناپدید کند.
+
+## نتیجه تست
+- `npm test`: **۱۸ تست از ۱۸ تست موفق**؛
+- mapping کدهای شفاآراد و scientific code: موفق؛
+- user-data جدا و gitignored: موفق؛
+- نبود dropdown/user apply قدیمی در preset: موفق؛
+- وجود ذخیره سطح و userEditId: موفق؛
+- ترتیب اتمی بدون full layout: موفق؛
+- build: موفق؛
+- سلامت سرور: **نسخه 11.23.0**.
+
+```powershell
+git add -A
+git commit -m "v11.23.0: دسترسی واقعی، فایل جداگانه داده و ترتیب اتمی"
+git pull --no-rebase origin main
+git push origin main
+git push gitlab main
+```
+
+
+
 
 ══════════════════════════════════════════════════════════════════════════════════
 بخش ۹) محتوای کامل فایل‌های پروژه — بدون هیچ سانسور یا پنهان‌کاری
@@ -3438,7 +3547,7 @@ BACKUP_FROM_EMAIL=CRM Backup <backup@YOUR_VERIFIED_DOMAIN>
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: .gitignore (1082 بایت)
+فایل: .gitignore (1097 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~text
 # dependencies
@@ -3484,6 +3593,7 @@ node_modules/
 
 # داده زمان اجرا و خروجی‌های لوکال
 server-db.json
+user-data.json
 *.zip
 .arena/
 
@@ -3575,7 +3685,7 @@ sync-after-deploy:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_ARCHITECTURE.md (19270 بایت)
+فایل: AI_ARCHITECTURE.md (19664 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI ARCHITECTURE
@@ -4686,10 +4796,15 @@ Then change only what is requested.
 - v20 `bulkDb/bulkPut/bulkGet`, `saveBulkVault`, `initBulkVault` own Excel persistence.
 - Auto backup is gated by `__CRM_BULK_READY`; manual in-memory backup still includes hydrated bulk.
 - Product code mapping is master-data-first; Daya unknown codes are omitted until product registration.
+## معماری افزوده v11.23.0 — User data isolation
+- server.js API state path: user-data.json; legacy server-db copied once; both ignored.
+- Browser current state remains authoritative; user-data is a separate server snapshot.
+- Permissions: real checkbox tree + saved level templates.
+- Atomic ordering writes sequential metadata and directly moves DOM without full layout rebuild.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_DECISION_LOG.md (47550 بایت)
+فایل: AI_DECISION_LOG.md (47998 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI DECISION LOG
@@ -6154,12 +6269,17 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - Program headers gray/black; workbook totals red and percentages strings.
 - Mutation observers protect fixed filters and list order after old render/layout layers.
 - GPS uses best watch accuracy; postcode removed.
+## تصمیم ۷۵ — نسخه ۱۱.۲۳.۰: user-data isolation, permission templates, atomic order (2026-08-20)
+- Runtime state file is user-data.json, gitignored and migrated from legacy server-db.
+- User edit now update-not-duplicate and syncs CRM_USERS_AUTH.
+- Permission templates are saved from real checkbox tree; create role applies template.
+- Order inputs intercepted in capture phase; atomic reorder avoids destructive layout rebuild.
 
 # END OF AI DECISION LOG
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_PROJECT_CONTEXT.md (24296 بایت)
+فایل: AI_PROJECT_CONTEXT.md (24585 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI PROJECT CONTEXT
@@ -7033,10 +7153,12 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.22.2 است. Address ordering is country-first with postcode label. CRM_DOM_FIELD_ORDER_LOCK_V1 preserves actual core form order. Shafaarad exact zero-based map: date6 invoice5 qty7 ret9 customer3; inventory derived qty index9 = index5+index7.
 ## افزونه وضعیت نسخه ۱۱.۲۲.۳
 نسخه فعال 11.22.3 است. Shafa code mapping is code-first including 1005→1391911006 and 1006→1391911005. Table headers gray/black. Excel totals red. Fixed grid/list observers defend against late legacy mutations.
+## افزونه وضعیت نسخه ۱۱.۲۳.۰
+نسخه فعال 11.23.0 است. Runtime server snapshot path is gitignored user-data.json. Permission templates live settings.permissionLevelTemplates. User edit is update with userEditId. safeOrderFields controls atomic form/list order.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_RULES.md (26521 بایت)
+فایل: AI_RULES.md (27042 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI RULES
@@ -8415,11 +8537,20 @@ not overwrite local current state through automatic GET recovery. Backups are
 manual recovery only. Existing empty arrays mean intentional deletion and must
 stay empty. Unit tests must fail if old records/layout are reintroduced.
 
+# 72. USER DATA FILE + ATOMIC ORDER RULE (PERMANENT)
+
+Runtime manager data is stored separately in git-ignored `user-data.json` and
+current browser storage; application ZIP/Git changes must never include or overwrite
+it. A persistent Render disk is required for server-file survival across deployments.
+Form/list order changes must use atomic reorder logic that preserves all visibility
+flags and never calls destructive full-layout rebuilds. Permission templates and user
+edits must be explicitly saved by the manager.
+
 # END OF AI RULES
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_TASKS.md (33706 بایت)
+فایل: AI_TASKS.md (34085 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI TASKS
@@ -9722,12 +9853,21 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] address no postcode + best GPS + dim button
 - [x] ۱۷/۱۷ tests
 - [ ] تأیید UI واقعی کاربر
+## ۶۳) نسخه ۱۱.۲۳.۰
+- [x] code-first شفاآراد و scientific scan
+- [x] save real user edit/auth sync
+- [x] real tab/sub permission checkboxes
+- [x] save permission templates + role dropdown apply
+- [x] separate gitignored user-data.json
+- [x] atomic form/list order no disappearance
+- [x] ۱۸/۱۸ tests
+- [ ] persistent disk setup on Render for user-data file
 
 # END OF AI TASKS
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: ARENA_HANDOFF_PROMPT.md (29490 بایت)
+فایل: ARENA_HANDOFF_PROMPT.md (29831 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # ARENA AI MASTER HANDOFF PROMPT
@@ -10927,6 +11067,11 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Program table headers are gray with black text. Workbook total row red and percentages string values.
 - Fixed-grid and list-order MutationObservers are required against delayed legacy renders.
 - Postcode is intentionally excluded; GPS uses watchPosition best accuracy <=15m and no fake fallback.
+## Addendum — v11.23.0
+- Never track/package user-data.json. Render needs persistent disk for file survival.
+- Permission preset UI intentionally has only level select + save-template button.
+- User edits use userEditId and update existing record/auth map.
+- Form/list order changes must stay atomic and must not call applyFullFormLayout.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -10946,9 +11091,18 @@ Leaflet محلی. فونت گوگل حذف شد. gzip روی JS/CSS/HTML.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: CHANGES_V11.md (59287 بایت)
+فایل: CHANGES_V11.md (60062 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
+# نسخه ۱۱.۲۳.۰
+
+1. Shafaarad code-first map 1001..1007 ثبت؛ 1005→1391911006 و 1006→1391911005 تست شد؛ scientific code normalization/row scan فعال.
+2. کاربران: userEditId و Save Info واقعی، auth sync، role dropdown rep/sales/supervisor، permission checklist real checkbox per group/item.
+3. Preset bar فقط first level select + Save Level؛ user/apply controls حذف؛ templates در settings و create-role auto apply.
+4. server state file از server-db.json به gitignored user-data.json مهاجرت؛ Git/ZIP آن را لمس نمی‌کنند.
+5. safeOrderFields اتمی برای form/list، capture intercept order inputs/buttons، بدون applyFullFormLayout و بدون تغییر visibility.
+6. tests 18/18 سبز.
+
 # نسخه ۱۱.۲۲.۳
 
 1. Shafaarad code map اضافه: 1001→1391902001، 1002→1391911002، 1003→1391911003، 1004→1391911004، 1005→1391911006، 1006→1391911005، 1007→1391911007.
@@ -11876,7 +12030,7 @@ update_project_graph.py
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: PROJECT_GRAPH.md (39659 بایت)
+فایل: PROJECT_GRAPH.md (39656 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # 🕸️ گراف دانش پروژه «نماینده علمی» (PROJECT_GRAPH.md)
@@ -11908,7 +12062,7 @@ update_project_graph.py
 
 ## ب) کارت فایل‌ها (نقش + توابع + نام‌های window که می‌سازد)
 
-### `server.js` (9666 بایت)
+### `server.js` (9884 بایت)
 - نقش: سرور سبک Node.js برای Render — ورود جدا، gzip، health، ژئوکد، محدودیت نرخ
 - تعداد توابع داخلی: 4
 - endpointهای سرور: `/api/backup`, `/api/backup/email`, `/api/state`, `/api/state`
@@ -11937,12 +12091,12 @@ update_project_graph.py
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (170235 بایت)
+### `public/crm-app.js` (173061 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 164
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `_editingProductId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
 
-### `public/crm-data.js` (50314 بایت)
+### `public/crm-data.js` (50877 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 1
 
@@ -11996,9 +12150,9 @@ update_project_graph.py
 - تعداد توابع داخلی: 65
 - نام‌های window که تعریف/بازنویسی می‌کند: `_v18DefaultReq`, `_v19BackupLayoutGuard`, `_v19ComboHook`, `_v19Hist`, `_v19IcObs`, `_v19ProdTableWrap`, `_v19Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `extraListColumns`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderPharmaciesList`, `switchTab`, `testServerConnectivity`
 
-### `public/crm-features-v20.js` (180840 بایت)
+### `public/crm-features-v20.js` (184646 بایت)
 - نقش: ============================================================
-- تعداد توابع داخلی: 207
+- تعداد توابع داخلی: 216
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFullFormLayout`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `editProductCatalogItem`, `extraListColumns`, `getUnifiedFieldList`, `openRowDetailsModal`, `performAutoBackup`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`, `v20RenderProductExtras`, `v20SetupSnappCorporate`
 
 ### `public/crm-features-v9.js` (70229 بایت)
@@ -12021,7 +12175,7 @@ update_project_graph.py
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (1145 بایت)
-- نقش: const CACHE = "ttt-v11.22.3";
+- نقش: const CACHE = "ttt-v11.23.0";
 - تعداد توابع داخلی: 0
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -12091,7 +12245,7 @@ update_project_graph.py
 - `CRM_APP_STATE_V2` ← localStorage: `public/crm-features-v10.js`, `public/crm-features-v19.js`
 - `CRM_DIAG_LOG` ← localStorage: `public/crm-features-v11.js`
 - `CRM_LAST_GPS` ← localStorage: `public/crm-features-v11.js`
-- `CRM_USERS_AUTH` ← localStorage: `public/crm-features-v11.js`, `public/crm-features-v20.js`
+- `CRM_USERS_AUTH` ← localStorage: `public/crm-app.js`, `public/crm-features-v11.js`, `public/crm-features-v20.js`
 - `crmLoggedIn` ← sessionStorage: `public/crm-app.js`, `public/crm-features-v10.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`
 - `crmUserId` ← sessionStorage: `public/crm-features-v9.js`
 - `crmUserName` ← sessionStorage: `public/crm-features-v10.js`, `public/crm-features-v11.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`
@@ -12235,7 +12389,8 @@ update_project_graph.py
 - `public/crm-features-v19.js` → 2 شناسه (مثل: `diagnosticsStatusBox`, `diagnosticsVisual`)
 
 ### tab-users-permissions «👤 کاربران و دسترسی»
-- `public/crm-app.js` → 14 شناسه (مثل: `btnExportUsersCSV`, `btnPermSelectAll`, `btnPermSelectNone`, `btnToggleShowAllPasswords`, `formCreateUser`, `newFullName`, `newPassword`, `newPhone`)
+- `public/crm-app.js` → 16 شناسه (مثل: `btnExportUsersCSV`, `btnPermSelectAll`, `btnPermSelectNone`, `btnSaveUserInfo`, `btnToggleShowAllPasswords`, `formCreateUser`, `newFullName`, `newPassword`)
+- `public/crm-features-v20.js` → 1 شناسه (مثل: `newRole`)
 
 ## ز) نام‌های تابع تکراری در چند فایل (نقاط حساس بازنویسی)
 
@@ -12274,8 +12429,7 @@ update_project_graph.py
 - `take` ← `public/crm-features-v13.js`, `public/crm-features-v18.js`
 - `tgt` ← `public/crm-app.js`, `public/crm-features-v9.js`
 - `type` ← `public/crm-features-v14.js`, `public/crm-features-v15.js`
-- `u` ← `public/crm-features-v11.js`, `public/crm-features-v20.js`
-- `users` ← `public/crm-app.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`
+- `users` ← `public/crm-app.js`, `public/crm-features-v9.js`
 - `ut` ← `public/crm-features-v11.js`, `public/crm-features-v12.js`, `public/crm-features-v13.js`, `public/crm-features-v14.js`, `public/crm-features-v18.js`, `public/crm-features-v19.js`
 - `v` ← `public/crm-features-v12.js`, `public/crm-features-v16.js`, `public/crm-features-v17.js`, `public/crm-jalali.js`
 - `val` ← `public/crm-app.js`, `public/crm-features-v9.js`
@@ -13339,13 +13493,13 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.22.3",
+  "version": "11.23.0",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
       "name": "namayandeelmi-javad-crm",
-      "version": "11.22.3",
+      "version": "11.23.0",
       "license": "MIT",
       "engines": {
         "node": ">=20.0.0"
@@ -13361,7 +13515,7 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.22.3",
+  "version": "11.23.0",
   "description": "سیستم جامع مدیریت و ویزیت علمی، داروخانه‌ها، پزشکان و سفارشات (CRM / PWA) هماهنگ با Render و Neon",
   "main": "server.js",
   "engines": {
@@ -13456,7 +13610,7 @@ services:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: server.js (9666 بایت)
+فایل: server.js (9884 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // سرور سبک Node.js برای Render — ورود جدا، gzip، health، ژئوکد، محدودیت نرخ
@@ -13467,7 +13621,11 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const SERVER_DATA_PATH = path.join(__dirname, "server-db.json");
+const SERVER_DATA_PATH = path.join(__dirname, "user-data.json");
+const LEGACY_DATA_PATH = path.join(__dirname, "server-db.json");
+if (!fs.existsSync(SERVER_DATA_PATH) && fs.existsSync(LEGACY_DATA_PATH)) {
+  try { fs.copyFileSync(LEGACY_DATA_PATH, SERVER_DATA_PATH); } catch (e) {}
+}
 const PUBLIC_DIR = path.join(__dirname, "public");
 
 const MIME = {
@@ -13552,7 +13710,7 @@ const server = http.createServer((req, res) => {
     return send(req, res, 200, JSON.stringify({
       ok: true, status: "healthy", message: "OK",
       service: "namayandeelmi-javad-crm",
-      version: "11.22.3",
+      version: "11.23.0",
       timestamp: new Date().toISOString()
     }), "application/json; charset=utf-8");
   }
@@ -13666,7 +13824,7 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, "0.0.0.0", () => {
-  console.log("CRM v11.22.3 listening on 0.0.0.0:" + PORT);
+  console.log("CRM v11.23.0 listening on 0.0.0.0:" + PORT);
 });
 ~~~~~~~~
 
@@ -13788,7 +13946,7 @@ git status -sb
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: update_chat_arena.py (277861 بایت)
+فایل: update_chat_arena.py (284319 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~python
 #!/usr/bin/env python3
@@ -13842,7 +14000,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.35 | تاریخ به‌روزرسانی: 2026-08-20 (۲۹ مرداد ۱۴۰۵) | نسخه برنامه: 11.22.3
+نسخه این فایل: 1.36 | تاریخ به‌روزرسانی: 2026-08-20 (۲۹ مرداد ۱۴۰۵) | نسخه برنامه: 11.23.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -14175,7 +14333,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
 بخش ۴) تاریخچه نسخه‌ها و آخرین دوره تغییرات
 ══════════════════════════════════════════════════════════════════════════════════
 • مسیر نسخه‌ها (بازسازی از ریپو): V1 → … → V9 → V10 → V11 → V11.1 … V11.14 → V11.15
-  → V11.15.1 → V11.15.2 → V11.15.3 → V11.16.0 → V11.16.1 → V11.16.2 → V11.17.0 → V11.17.1 → V11.18.0 → V11.19.0 → V11.20.0 → V11.20.1 → V11.20.2 → V11.20.3 → V11.20.4 → V11.20.5 → V11.21.0 → V11.21.1 → V11.21.2 → V11.21.3 → V11.21.4 → V11.21.5 → V11.21.6 → V11.21.7 → V11.21.8 → V11.21.9 → V11.22.0 → V11.22.1 → V11.22.2 → V11.22.3.
+  → V11.15.1 → V11.15.2 → V11.15.3 → V11.16.0 → V11.16.1 → V11.16.2 → V11.17.0 → V11.17.1 → V11.18.0 → V11.19.0 → V11.20.0 → V11.20.1 → V11.20.2 → V11.20.3 → V11.20.4 → V11.20.5 → V11.21.0 → V11.21.1 → V11.21.2 → V11.21.3 → V11.21.4 → V11.21.5 → V11.21.6 → V11.21.7 → V11.21.8 → V11.21.9 → V11.22.0 → V11.22.1 → V11.22.2 → V11.22.3 → V11.23.0.
 • جزئیات کامل هر نسخه V9 به بعد در CHANGES_V9.md / CHANGES_V10.md / CHANGES_V11.md
   (محتوای کاملشان در بخش ۹ همین فایل هست).
 
@@ -16952,6 +17110,115 @@ git push gitlab main
 ```
 
 
+
+──────────────────────────────── نوبت ۴۱ ────────────────────────────────
+🧑 کاربر (خلاصه وفادار همراه همه کدها و درخواست‌ها):
+«کاربر کدهای شفاآراد را تعیین کرد: 1001→1391902001، 1002→1391911002، 1003→1391911003، 1004→1391911004، 1005 وومن→1391911006، 1006 من→1391911005، 1007→1391911007. همچنین خواست ویرایش کاربر کلید ذخیره داشته باشد؛ preset فقط dropdown اول و کلید ذخیره سطح داشته باشد؛ ایجاد کاربر dropdown نماینده/کارشناس فروش/سرپرست داشته باشد؛ هر تب و زیرمجوز checkbox واقعی داشته باشد؛ داده مدیر در فایل جدا از کد باشد؛ و تغییر شماره ترتیب فرم/لیست واقعاً اعمال شود و فیلدها ناپدید نشوند.»
+
+🤖 دستیار:
+نسخه **۱۱.۲۳.۰** آماده شد.
+
+## کدهای شفاآراد
+نگاشت دقیق ثبت و تست شد:
+
+```text
+1001 → 1391902001
+1002 → 1391911002
+1003 → 1391911003
+1004 → 1391911004
+1005 → 1391911006  امگا وومن
+1006 → 1391911005  امگا من
+1007 → 1391911007
+```
+
+برنامه علاوه بر ستون تشخیص‌داده‌شده، کل ردیف را برای کد شناخته‌شده اسکن می‌کند. کدهای Excel با شکل اعشاری یا علمی مثل `1.391902001E9` نیز به عدد صحیح نرمال می‌شوند. Unit Test تطبیق امگا ۳، وومن و من را تأیید کرد.
+
+## ویرایش و ذخیره کاربر
+فیلد مخفی `userEditId` و کلید `btnSaveUserInfo` اضافه شد.
+
+هنگام ویرایش:
+- اطلاعات همان کاربر در فرم قرار می‌گیرد؛
+- checkboxهای مجوز طبق همان کاربر تنظیم می‌شوند؛
+- متن کلید به «ذخیره اطلاعات کاربر» تغییر می‌کند؛
+- Submit همان رکورد را update می‌کند و کاربر تکراری نمی‌سازد؛
+- پس از ذخیره، `CRM_USERS_AUTH` نیز با نام، رمز، تلفن و نقش جدید هماهنگ می‌شود.
+
+## سطوح دسترسی آماده
+در کادر سطوح آماده:
+- dropdown اول سطح حفظ شد؛
+- dropdown انتخاب کاربر حذف شد؛
+- کلید «اعمال سطح روی کاربر» حذف شد؛
+- کلید جدید **ذخیره سطح دسترسی** اضافه شد.
+
+مدیر سطح نماینده علمی، کارشناس فروش یا سرپرست را انتخاب می‌کند، تیک‌ها را تنظیم می‌کند و همان مجموعه در `settings.permissionLevelTemplates` ذخیره می‌شود.
+
+## ایجاد کاربر و نقش
+فیلد نقش در ایجاد کاربر فقط این گزینه‌ها را دارد:
+- نماینده علمی؛
+- کارشناس فروش؛
+- سرپرست.
+
+با انتخاب هر نقش، الگوی ذخیره‌شده همان سطح روی checkboxهای مجوز بارگذاری می‌شود و هنگام ایجاد کاربر ذخیره می‌شود.
+
+## checkbox تب‌ها و زیرمجوزها
+هر گروه دسترسی به شکل fieldset مستقل با checkbox اصلی نمایش داده می‌شود. زیرمجموعه‌های هر تب نیز checkbox واقعی دارند.
+
+- تیک گروه: همه زیرمجوزهای همان بخش؛
+- برداشتن تیک گروه: همه زیرمجوزها غیرمجاز؛
+- هر زیرمجوز مستقلاً قابل تغییر است؛
+- تیک یعنی مجاز؛ بدون تیک یعنی غیرمجاز.
+
+عنوان‌های اصلی به نام تب‌های داروخانه، پزشک، سفارش، داشبورد، مرخصی، گزارش و مدیریت نمایش داده می‌شوند.
+
+## فایل جداگانه اطلاعات مدیر
+سرور اکنون snapshot runtime را در فایل زیر ذخیره می‌کند:
+
+```text
+user-data.json
+```
+
+این فایل:
+- در `.gitignore` است؛
+- وارد GitHub/GitLab نمی‌شود؛
+- داخل ZIP برنامه قرار نمی‌گیرد؛
+- فقط با تغییرات مدیر و POST وضعیت برنامه به‌روز می‌شود؛
+- اگر `server-db.json` قدیمی وجود داشته باشد، یک‌بار به فایل جدید منتقل می‌شود.
+
+نکته: برای ماندگاری این فایل روی Render بین Deployها، باید Persistent Disk تنظیم شود. اطلاعات مرورگر همچنان در localStorage/IndexedDB مستقل از Git نگهداری می‌شود.
+
+## ترتیب اتمی فرم و لیست
+موتور جدید `safeOrderFields` اضافه شد:
+- تغییر ورودی شماره ترتیب در capture phase گرفته می‌شود؛
+- handler مخرب قدیمی اجرا نمی‌شود؛
+- فیلد جابه‌جا و همه شماره‌ها ۱،۲،۳… بازشماری می‌شوند؛
+- فقط `order` یا `listOrder` نوشته می‌شود؛
+- تیک نمایش، hidden، deleted و سایر تنظیمات دست‌نخورده می‌مانند؛
+- برای فرم، DOM مستقیم جابه‌جا می‌شود؛
+- برای لیست، جدول مربوطه render و reorder می‌شود؛
+- `applyFullFormLayout` مخرب در این مسیر فراخوانی نمی‌شود؛
+- دکمه‌های بالا/پایین نیز از همین موتور استفاده می‌کنند.
+
+بنابراین تغییر ترتیب دیگر نباید فیلدهای بعدی را ناپدید کند.
+
+## نتیجه تست
+- `npm test`: **۱۸ تست از ۱۸ تست موفق**؛
+- mapping کدهای شفاآراد و scientific code: موفق؛
+- user-data جدا و gitignored: موفق؛
+- نبود dropdown/user apply قدیمی در preset: موفق؛
+- وجود ذخیره سطح و userEditId: موفق؛
+- ترتیب اتمی بدون full layout: موفق؛
+- build: موفق؛
+- سلامت سرور: **نسخه 11.23.0**.
+
+```powershell
+git add -A
+git commit -m "v11.23.0: دسترسی واقعی، فایل جداگانه داده و ترتیب اتمی"
+git pull --no-rebase origin main
+git push origin main
+git push gitlab main
+```
+
+
 """
 
 FILES_INTRO = """
@@ -18289,7 +18556,7 @@ async function sendWhatsappCloud(text, to, token) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-app.js (170235 بایت)
+فایل: public/crm-app.js (173061 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================================
@@ -19807,6 +20074,7 @@ function setupUsersAndPermissionsTab() {
       document.querySelectorAll(".permission-tag-chk").forEach(el => {
         el.classList.remove("unchecked");
         el.dataset.checked = "true";
+        const cb = el.querySelector("input[type=checkbox]"); if (cb) cb.checked = true;
       });
       updatePermCountBadge();
     });
@@ -19817,6 +20085,7 @@ function setupUsersAndPermissionsTab() {
       document.querySelectorAll(".permission-tag-chk").forEach(el => {
         el.classList.add("unchecked");
         el.dataset.checked = "false";
+        const cb = el.querySelector("input[type=checkbox]"); if (cb) cb.checked = false;
       });
       updatePermCountBadge();
     });
@@ -19851,25 +20120,32 @@ function setupUsersAndPermissionsTab() {
         permsObj[el.dataset.key] = el.dataset.checked === "true";
       });
 
+      const editId = document.getElementById("userEditId").value;
+      const current = editId ? state.users.find(u => u.id === editId) : null;
       const newUser = {
-        id: "u-" + Date.now(),
+        ...(current || {}),
+        id: editId || ("u-" + Date.now()),
         fullName,
         username,
         password,
         phone,
         role,
         simControl,
-        phoneLock: "آزاد - اولین ورود، گوشی را قفل می‌کند",
-        lastLogin: new Date().toLocaleDateString("fa-IR") + " - " + new Date().toLocaleTimeString("fa-IR"),
+        phoneLock: current ? current.phoneLock : "آزاد - اولین ورود، گوشی را قفل می‌کند",
+        lastLogin: current ? current.lastLogin : (new Date().toLocaleDateString("fa-IR") + " - " + new Date().toLocaleTimeString("fa-IR")),
         permissions: permsObj
       };
 
-      state.users.push(newUser);
+      if (current) state.users[state.users.indexOf(current)] = newUser;
+      else state.users.push(newUser);
       saveState();
+      try { const auth={};state.users.forEach(u=>{auth[u.username]={password:u.password,phone:u.phone,name:u.fullName,role:u.role,id:u.id};});localStorage.setItem("CRM_USERS_AUTH",JSON.stringify(auth)); } catch(e) {}
       formCreate.reset();
+      document.getElementById("userEditId").value = "";
+      const saveBtn = document.getElementById("btnSaveUserInfo"); if (saveBtn) saveBtn.innerHTML = "<span>➕ ایجاد کاربر</span>";
       renderUserCardsList();
       updateNavBadges();
-      alert(`✅ کاربر جدید «${fullName}» با موفقیت ساخته شد.`);
+      alert(current ? `✅ اطلاعات «${fullName}» ذخیره شد.` : `✅ کاربر جدید «${fullName}» با موفقیت ساخته شد.`);
     });
   }
 }
@@ -19878,40 +20154,32 @@ function renderPermissionGroupsChecklist() {
   const container = document.getElementById("permissionGroupsContainer");
   if (!container) return;
   container.innerHTML = "";
-
-  Object.entries(PERMISSION_GROUPS).forEach(([groupName, items]) => {
-    const grpDiv = document.createElement("div");
-    grpDiv.innerHTML = `<div class="permission-group-title">${groupName}</div>`;
-
-    const tagsDiv = document.createElement("div");
-    tagsDiv.style.display = "flex";
-    tagsDiv.style.flexWrap = "wrap";
-    tagsDiv.style.gap = "0.5rem";
-
+  const tabNames = {"داشبورد":"📊 تب داشبورد","ثبت اطلاعات داروخانه":"🏥 تب داروخانه‌ها","ثبت اطلاعات پزشک":"👨‍⚕️ تب پزشکان","ثبت سفارشات داروخانه":"📦 تب سفارشات","عملیات میدانی":"📍 تب‌های موقعیت و ویزیت","اداری و منابع انسانی":"📝 تب مرخصی‌ها","گزارش‌ها":"📈 تب گزارش‌ها","مدیریت سامانه":"⚙️ تب‌های مدیریتی"};
+  Object.entries(PERMISSION_GROUPS).forEach(([groupName, items], gi) => {
+    const shownGroupName = tabNames[groupName] || groupName;
+    const grp = document.createElement("fieldset");
+    grp.className = "permission-tab-group";
+    grp.style.cssText = "border:1px solid #cbd5e1;border-radius:10px;padding:10px;margin:0 0 10px";
+    const legend = document.createElement("legend");
+    legend.innerHTML = `<label style="display:flex;gap:7px;align-items:center;font-weight:800"><input type="checkbox" class="perm-group-master" checked> ${shownGroupName}</label>`;
+    grp.appendChild(legend);
+    const body = document.createElement("div");
+    body.style.cssText = "display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:7px";
     items.forEach(item => {
-      const tag = document.createElement("div");
+      const tag = document.createElement("label");
       tag.className = "permission-tag-chk";
       tag.dataset.key = item.key;
       tag.dataset.checked = "true";
-      tag.innerHTML = `<span>✓ ${item.label}</span>`;
-      tag.onclick = () => {
-        const isChk = tag.dataset.checked === "true";
-        if (isChk) {
-          tag.dataset.checked = "false";
-          tag.classList.add("unchecked");
-        } else {
-          tag.dataset.checked = "true";
-          tag.classList.remove("unchecked");
-        }
-        updatePermCountBadge();
-      };
-      tagsDiv.appendChild(tag);
+      tag.style.cssText = "display:flex;gap:7px;align-items:center;border:1px solid #e2e8f0;border-radius:8px;padding:7px;background:#f8fafc;cursor:pointer";
+      tag.innerHTML = `<input type="checkbox" checked> <span>${item.label}</span>`;
+      const cb = tag.querySelector("input");
+      cb.onchange = () => { tag.dataset.checked = cb.checked ? "true" : "false"; tag.classList.toggle("unchecked", !cb.checked); updatePermCountBadge(); };
+      body.appendChild(tag);
     });
-
-    grpDiv.appendChild(tagsDiv);
-    container.appendChild(grpDiv);
+    const master = legend.querySelector("input");
+    master.onchange = () => { body.querySelectorAll(".permission-tag-chk").forEach(tag => { const cb=tag.querySelector("input");cb.checked=master.checked;tag.dataset.checked=master.checked?"true":"false";tag.classList.toggle("unchecked",!master.checked); });updatePermCountBadge(); };
+    grp.appendChild(body); container.appendChild(grp);
   });
-
   updatePermCountBadge();
 }
 
@@ -19992,12 +20260,21 @@ function editUserCard(id) {
   const u = state.users.find(x => x.id === id);
   if (!u) return;
   alert(`ویرایش تنظیمات دسترسی برای «${u.fullName}» در پنجره ایجاد کاربر فعال شد.`);
+  document.getElementById("userEditId").value = u.id;
   document.getElementById("newFullName").value = u.fullName;
   document.getElementById("newUsername").value = u.username;
   document.getElementById("newPassword").value = u.password;
   document.getElementById("newPhone").value = u.phone || "";
   document.getElementById("newRole").value = u.role;
   document.getElementById("newSimControl").value = u.simControl;
+  document.querySelectorAll(".permission-tag-chk").forEach(el => {
+    const on = !u.permissions || u.permissions[el.dataset.key] !== false;
+    el.dataset.checked = on ? "true" : "false";
+    el.classList.toggle("unchecked", !on);
+    const cb = el.querySelector("input[type=checkbox]"); if (cb) cb.checked = on;
+  });
+  updatePermCountBadge();
+  const saveBtn = document.getElementById("btnSaveUserInfo"); if (saveBtn) saveBtn.innerHTML = "<span>💾 ذخیره اطلاعات کاربر</span>";
   document.getElementById("tab-users-permissions").scrollIntoView({ behavior: "smooth" });
 }
 
@@ -22330,7 +22607,7 @@ function deleteProductCatalogItem(id) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-data.js (50314 بایت)
+فایل: public/crm-data.js (50877 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================================
@@ -22820,7 +23097,12 @@ const PERMISSION_GROUPS = {
     { key: "sys_excel_gray_red_total", label: "Excel سرستون طوسی و جمع کل قرمز" },
     { key: "sys_fixed_grid_observer", label: "قفل زنده فیلترهای پخش در یک سطر" },
     { key: "sys_precise_address_no_postcode", label: "آدرس کامل بدون کد پستی و GPS دقیق" },
-    { key: "sys_list_order_observer", label: "اعمال زنده ترتیب ستون‌های لیست" }
+    { key: "sys_list_order_observer", label: "اعمال زنده ترتیب ستون‌های لیست" },
+    { key: "usr_edit_save", label: "ویرایش و ذخیره واقعی اطلاعات کاربر" },
+    { key: "usr_permission_templates", label: "ذخیره الگوی سه سطح دسترسی" },
+    { key: "usr_tab_permission_checkboxes", label: "چک‌باکس تب و زیرمجموعه‌های دسترسی" },
+    { key: "sys_separate_user_data_file", label: "فایل جداگانه user-data.json خارج از Git" },
+    { key: "sys_atomic_form_list_order", label: "ترتیب اتمی فرم و لیست بدون ناپدیدشدن فیلد" }
   ]
 };
 
@@ -31895,7 +32177,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-features-v20.js (180840 بایت)
+فایل: public/crm-features-v20.js (184646 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================
@@ -32238,7 +32520,7 @@ button.v19-gps svg{display:block}
       tabs += "<button type='button' class='" + (p[0] === v20AddPane ? "v20-on" : "") + "' data-pane='" + p[0] + "'>" + p[1] + "</button>";
     });
     var h = "<div class='v20-addmgr' style='border-top:2px solid #e2e8f0;padding-top:10px;'>" +
-      "<h4 style='margin:8px 0;color:#0f172a;'>🎛️ مدیر کشویی‌ها (نسخه ۱۱.۲۲.۳) — هر فیلد، زیرمجموعه‌هایش دقیقاً زیر همان فیلد است</h4>" +
+      "<h4 style='margin:8px 0;color:#0f172a;'>🎛️ مدیر کشویی‌ها (نسخه ۱۱.۲۳.۰) — هر فیلد، زیرمجموعه‌هایش دقیقاً زیر همان فیلد است</h4>" +
       "<div class='v20-tabbar'>" + tabs + "</div>" +
       "<div class='v20-card-tools' style='margin-bottom:4px'>" +
       "<label class='v20-mini'><input type='checkbox' id='v20GreyOnChk'" + (greyOn ? " checked" : "") + "> حالت طوسی زنجیره‌ای فعال باشد</label>" +
@@ -32773,48 +33055,14 @@ button.v19-gps svg{display:block}
       off: ["sys_users", "sys_manual_design", "sys_copy_tabs", "sys_restore", "ord_formula"]
     }
   ];
+  function defaultPresetPermissions(pid){var preset=ROLE_PRESETS.filter(function(p){return p.id===pid;})[0],perms=typeof getDefaultPermissionsObject==="function"?getDefaultPermissionsObject(false):{};if(!preset)return perms;if(preset.on==="ALL_EXCEPT"){perms=typeof getDefaultPermissionsObject==="function"?getDefaultPermissionsObject(true):{};(preset.off||[]).forEach(function(k){perms[k]=false;});}else(preset.on||[]).forEach(function(k){perms[k]=true;});return perms;}
+  function checklistPermissions(){var p={};document.querySelectorAll(".permission-tag-chk").forEach(function(el){p[el.dataset.key]=el.dataset.checked==="true";});return p;}
+  function applyPermissionsToChecklist(perms){document.querySelectorAll(".permission-tag-chk").forEach(function(el){var on=!perms||perms[el.dataset.key]!==false;el.dataset.checked=on?"true":"false";el.classList.toggle("unchecked",!on);var cb=el.querySelector("input[type=checkbox]");if(cb)cb.checked=on;});try{if(typeof updatePermCountBadge==="function")updatePermCountBadge();}catch(e){}}
+  function permissionTemplate(pid){var S=st();S.settings=S.settings||{};S.settings.permissionLevelTemplates=S.settings.permissionLevelTemplates||{};return S.settings.permissionLevelTemplates[pid]||defaultPresetPermissions(pid);}
+  function bindRoleTemplateSelect(){var role=$("newRole");if(!role||role.dataset.templateBound)return;role.dataset.templateBound="1";role.addEventListener("change",function(){var map={"نماینده علمی":"rep","کارشناس فروش":"sales","سرپرست":"supervisor"};applyPermissionsToChecklist(permissionTemplate(map[role.value]||"rep"));});}
   function renderPresetBar() {
-    var pane = $("tab-users-permissions");
-    if (!pane || $("v20PresetBar")) return;
-    var S = st(); if (!S) return;
-    var card = pane.querySelector(".card") || pane;
-    var bar = document.createElement("div");
-    bar.id = "v20PresetBar";
-    bar.style.cssText = "border:1px solid #c7d2fe;background:#eef2ff;border-radius:12px;padding:12px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;";
-    var opts = ROLE_PRESETS.map(function (p) { return "<option value='" + p.id + "'>" + p.label + "</option>"; }).join("");
-    var users = (S.users || []).map(function (u) { return "<option value='" + esc(u.id) + "'>" + esc(u.fullName || u.username) + " (" + esc(u.username) + ")</option>"; }).join("");
-    bar.innerHTML =
-      "<strong>🎚️ سطوح دسترسی آماده:</strong>" +
-      "<select id='v20PresetSel' class='form-select' style='min-width:150px'>" + opts + "</select>" +
-      "<select id='v20PresetUser' class='form-select' style='min-width:190px'>" + users + "</select>" +
-      "<button type='button' id='v20PresetApply' style='background:#4f46e5;color:#fff;border:none;border-radius:9px;padding:8px 16px;cursor:pointer;font-weight:700;'>اعمال سطح روی کاربر</button>" +
-      "<span class='v20-mini'>با این کار همه تیک‌های دسترسی کاربر یکجا بر اساس سطح انتخابی تنظیم می‌شود؛ بعداً هم می‌توانید تیک‌ها را دستی عوض کنید.</span>";
-    card.insertBefore(bar, card.firstChild);
-    bar.querySelector("#v20PresetApply").addEventListener("click", function () {
-      var pid = bar.querySelector("#v20PresetSel").value;
-      var uid = bar.querySelector("#v20PresetUser").value;
-      var S2 = st(); if (!S2) return;
-      var u = (S2.users || []).filter(function (x) { return String(x.id) === String(uid); })[0];
-      var preset = ROLE_PRESETS.filter(function (p) { return p.id === pid; })[0];
-      if (!u || !preset) return;
-      if (u.username === "admin") { alert("سطح مدیر اصلی (admin) قابل تغییر نیست."); return; }
-      if (typeof getDefaultPermissionsObject !== "function") { alert("موتور دسترسی‌ها در دسترس نیست."); return; }
-      var perms;
-      if (preset.on === "ALL_EXCEPT") {
-        perms = getDefaultPermissionsObject(true);
-        (preset.off || []).forEach(function (k) { perms[k] = false; });
-      } else {
-        perms = getDefaultPermissionsObject(false);
-        preset.on.forEach(function (k) { perms[k] = true; });
-      }
-      u.permissions = perms;
-      u.role = preset.label;
-      u.preset = preset.label;
-      save();
-      if (typeof renderUserCardsList === "function") { try { renderUserCardsList(); } catch (e) {} }
-      alert("✅ سطح «" + preset.label + "» روی «" + (u.fullName || u.username) + "» اعمال شد.");
-    });
-  }
+    var pane=$("tab-users-permissions");if(!pane)return;var old=$("v20PresetBar");if(old)old.remove();var S=st();if(!S)return;var card=pane.querySelector(".card")||pane,bar=document.createElement("div");bar.id="v20PresetBar";bar.style.cssText="border:1px solid #c7d2fe;background:#eef2ff;border-radius:12px;padding:12px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;";var opts=ROLE_PRESETS.map(function(p){return"<option value='"+p.id+"'>"+p.label+"</option>";}).join("");bar.innerHTML="<strong>🎚️ سطوح دسترسی آماده:</strong><select id='v20PresetSel' class='form-select' style='min-width:180px'>"+opts+"</select><button type='button' id='v20PresetSave' class='btn btn-primary'>💾 ذخیره سطح دسترسی</button><span class='v20-mini'>تیک‌های فعلی پایین صفحه به‌عنوان الگوی این سطح ذخیره می‌شوند.</span>";card.insertBefore(bar,card.firstChild);bar.querySelector("#v20PresetSel").onchange=function(){applyPermissionsToChecklist(permissionTemplate(this.value));};bar.querySelector("#v20PresetSave").onclick=function(){var pid=bar.querySelector("#v20PresetSel").value;S.settings=S.settings||{};S.settings.permissionLevelTemplates=S.settings.permissionLevelTemplates||{};S.settings.permissionLevelTemplates[pid]=checklistPermissions();save();v20Toast("✅ سطح دسترسی ذخیره شد.");};bindRoleTemplateSelect();}
+
 
   /* ---------- ۷-ب) همگام‌سازی «جای فیلدها» داروخانه → سفارشات ---------- */
   var ORDER_TO_PH_CORE = { PharmacyName: "Name" };
@@ -32963,7 +33211,7 @@ button.v19-gps svg{display:block}
   }
   function renderVersionBadge() {
     var b = $("v20VersionBadge"), actions = document.querySelector(".header-actions"); if (!actions) return;
-    if (!b) { b = document.createElement("span"); b.id = "v20VersionBadge"; b.className = "v20-version"; b.textContent = "نسخه ۱۱.۲۲.۳"; b.title = "نسخه دقیق برنامه نصب‌شده"; actions.insertBefore(b, actions.firstChild); }
+    if (!b) { b = document.createElement("span"); b.id = "v20VersionBadge"; b.className = "v20-version"; b.textContent = "نسخه ۱۱.۲۳.۰"; b.title = "نسخه دقیق برنامه نصب‌شده"; actions.insertBefore(b, actions.firstChild); }
     b.style.display = v20IsManager() ? "inline-block" : "none";
   }
 
@@ -33199,11 +33447,13 @@ button.v19-gps svg{display:block}
   function invSchema(h,id){var code=findDistExact(h,"کد کالا"),product=findDistExact(h,"نام کالا"),qty=findDistExact(h,"موجودی");if(id==="shafaarad"&&code<0)code=findDistExact(h,"کالا");return{code:code>=0?code:findDistIndex(h,/کد.*کالا|کد.*محصول/,-1),product:product>=0?product:findDistIndex(h,/نام.*(کالا|محصول)/,0),qty:id==="shafaarad"?(findDistExact(h,"جمع تعداد موجودی")>=0?findDistExact(h,"جمع تعداد موجودی"):9):(qty>=0?qty:(id==="daya"?2:findDistIndex(h,/موجودی.*تعداد|تعداد.*موجودی/,1))),rial:findDistIndex(h,/موجودی.*ریال|ریال.*موجودی/,-1)};}
   function distFilter(){var mode=$("distModeDay").checked?"day":$("distModeMonth").checked?"month":$("distModeYear").checked?"year":($("distModeFrom").checked||$("distModeTo").checked)?"range":"all";return{mode:mode,year:enDigits($("distFilterYear").value),month:enDigits($("distFilterMonth").value),day:enDigits($("distFilterDay").value).padStart(2,"0"),from:normSnappDate($("distFilterFrom").value),to:normSnappDate($("distFilterTo").value)};}
   function distDatePass(v,f){var d=slashOnlyPersianDate(v);if(f.mode==="year")return!f.year||d.slice(0,4)===f.year;if(f.mode==="month")return(!f.year||d.slice(0,4)===f.year)&&(!f.month||d.slice(5,7)===f.month);if(f.mode==="day")return(!f.year||d.slice(0,4)===f.year)&&(!f.month||d.slice(5,7)===f.month)&&(!f.day||d.slice(8,10)===f.day);if(f.mode==="range")return(!f.from||d>=f.from)&&(!f.to||d<=f.to);return true;}
-  function canonicalProduct(raw,dbCode,distId){var name=String(raw||"").trim(),n=norm(name),code=String(dbCode==null?"":dbCode).replace(/\.0+$/,"").trim(),p=((st().products)||[]).filter(function(x){if(distId==="daya"&&code&&String(x.dayaDbCode||((x.code)?1111000+Number(x.code):""))===code)return true;if(distId==="shafaarad"&&code&&String(x.shafaDbCode||SHAFA_CODE_MAP[x.code]||"")===code)return true;var q=norm(x.name);return q===n||(q.length>=4&&n.indexOf(q)>=0)||(n.length>=4&&q.indexOf(n)>=0);})[0];if(p)return p.name;return ((distId==="daya"||distId==="shafaarad")&&code)?null:(name||"نامشخص");}
+  function normalizeDbCode(v){var s=enDigits(String(v==null?"":v)).replace(/[,٬\s]/g,"").trim(),n=Number(s);return isFinite(n)&&n>0?String(Math.trunc(n)):s.replace(/\.0+$/,"");}
+  function findKnownCodeInRow(row,distId){var known={};((st().products)||[]).forEach(function(p){var c=distId==="daya"?(p.dayaDbCode||(p.code?1111000+Number(p.code):"")):(p.shafaDbCode||SHAFA_CODE_MAP[p.code]||"");if(c)known[String(c)]=1;});var r=normalizeStoredRow(row);for(var i=0;i<r.length;i++){var c=normalizeDbCode(r[i]);if(known[c])return c;}return"";}
+  function canonicalProduct(raw,dbCode,distId){var name=String(raw||"").trim(),n=norm(name),code=normalizeDbCode(dbCode),p=((st().products)||[]).filter(function(x){if(distId==="daya"&&code&&String(x.dayaDbCode||((x.code)?1111000+Number(x.code):""))===code)return true;if(distId==="shafaarad"&&code&&String(x.shafaDbCode||SHAFA_CODE_MAP[x.code]||"")===code)return true;var q=norm(x.name);return q===n||(q.length>=4&&n.indexOf(q)>=0)||(n.length>=4&&q.indexOf(n)>=0);})[0];if(p)return p.name;return ((distId==="daya"||distId==="shafaarad")&&code)?null:(name||"نامشخص");}
   function productPrice(name,key){var p=((st().products)||[]).filter(function(x){return norm(x.name)===norm(name);})[0]||{};return Number(key==="dist"?(p.distributorPrice||p.distPrice||p.price||0):(p.pharmacyPrice||p.price||0));}
   function emptyMetric(){return{qty:0,dist:0,ph:0,giftQty:0,giftRial:0,retQty:0,retRial:0,retGiftQty:0,retGiftRial:0,pharmacies:{},invoices:{},invQty:0,invDist:0,invPh:0};}
   function calculateDayaAmounts(qty,gift,ret,retGift,distPrice,pharmacyPrice){return{dist:qty*distPrice,ph:qty*pharmacyPrice,giftRial:gift*distPrice,retRial:ret*distPrice,retGiftRial:retGift*distPrice,giftPct:qty?gift/qty*100:0,retPct:qty?ret/qty*100:0,retGiftPct:ret?retGift/ret*100:0};}
-  function distributorMetrics(d){var f=distFilter(),sc=distSchema(d.pharmacyHeaders,d.id),is=invSchema(d.inventoryHeaders,d.id),map={};(d.pharmacyRows||[]).forEach(function(raw){var r=normalizeStoredRow(raw);if(!distDatePass(r[sc.date],f))return;var n=canonicalProduct(r[sc.product],sc.code>=0?r[sc.code]:"",d.id);if(!n)return;var m=map[n]||(map[n]=emptyMetric()),qty=snappNumber(r[sc.qty]),gift=snappNumber(r[sc.giftQty]),ret=snappNumber(r[sc.retQty]),retGift=snappNumber(r[sc.retGiftQty]),dp=productPrice(n,"dist"),pp=productPrice(n,"ph");m.qty+=qty;m.giftQty+=gift;m.retQty+=ret;m.retGiftQty+=retGift;if(d.id==="daya"||d.id==="shafaarad"){var da=calculateDayaAmounts(qty,gift,ret,retGift,dp,pp);m.dist+=da.dist;m.ph+=da.ph;m.giftRial+=da.giftRial;m.retRial+=da.retRial;m.retGiftRial+=da.retGiftRial;}else{var dr=sc.dist>=0?snappNumber(r[sc.dist]):0,pr=sc.ph>=0?snappNumber(r[sc.ph]):0,gr=sc.giftRial>=0?snappNumber(r[sc.giftRial]):0,rr=sc.retRial>=0?snappNumber(r[sc.retRial]):0,rgr=sc.retGiftRial>=0?snappNumber(r[sc.retGiftRial]):0;m.dist+=dr||qty*dp;m.ph+=pr||qty*pp||qty*dp;m.giftRial+=gr||gift*dp;m.retRial+=rr||ret*dp;m.retGiftRial+=rgr||retGift*dp;}if(qty>0){var pk=d.id==="daya"?norm(r[21]):(d.id==="shafaarad"?norm(r[3]):[sc.pharmacy,sc.province,sc.city,sc.district,sc.address].map(function(i){return i>=0?norm(r[i]):"";}).join("|"));if(pk&&pk.replace(/\|/g,""))m.pharmacies[pk]=1;if(sc.invoice>=0&&r[sc.invoice]&&!(ret&&ret===qty))m.invoices[String(r[sc.invoice])]=1;}});(d.inventoryRows||[]).forEach(function(raw){var r=normalizeStoredRow(raw),n=canonicalProduct(r[is.product],is.code>=0?r[is.code]:"",d.id);if(!n)return;var m=map[n]||(map[n]=emptyMetric()),q=snappNumber(r[is.qty]);m.invQty+=q;m.invDist+=q*productPrice(n,"dist");m.invPh+=q*productPrice(n,"ph");});((st().products)||[]).forEach(function(p){var n=p.name||"";if(n&&!map[n])map[n]=emptyMetric();});return map;}
+  function distributorMetrics(d){var f=distFilter(),sc=distSchema(d.pharmacyHeaders,d.id),is=invSchema(d.inventoryHeaders,d.id),map={};(d.pharmacyRows||[]).forEach(function(raw){var r=normalizeStoredRow(raw);if(!distDatePass(r[sc.date],f))return;var dbCode=(d.id==="daya"||d.id==="shafaarad")?findKnownCodeInRow(r,d.id):(sc.code>=0?r[sc.code]:"");var n=canonicalProduct(r[sc.product],dbCode,d.id);if(!n)return;var m=map[n]||(map[n]=emptyMetric()),qty=snappNumber(r[sc.qty]),gift=snappNumber(r[sc.giftQty]),ret=snappNumber(r[sc.retQty]),retGift=snappNumber(r[sc.retGiftQty]),dp=productPrice(n,"dist"),pp=productPrice(n,"ph");m.qty+=qty;m.giftQty+=gift;m.retQty+=ret;m.retGiftQty+=retGift;if(d.id==="daya"||d.id==="shafaarad"){var da=calculateDayaAmounts(qty,gift,ret,retGift,dp,pp);m.dist+=da.dist;m.ph+=da.ph;m.giftRial+=da.giftRial;m.retRial+=da.retRial;m.retGiftRial+=da.retGiftRial;}else{var dr=sc.dist>=0?snappNumber(r[sc.dist]):0,pr=sc.ph>=0?snappNumber(r[sc.ph]):0,gr=sc.giftRial>=0?snappNumber(r[sc.giftRial]):0,rr=sc.retRial>=0?snappNumber(r[sc.retRial]):0,rgr=sc.retGiftRial>=0?snappNumber(r[sc.retGiftRial]):0;m.dist+=dr||qty*dp;m.ph+=pr||qty*pp||qty*dp;m.giftRial+=gr||gift*dp;m.retRial+=rr||ret*dp;m.retGiftRial+=rgr||retGift*dp;}if(qty>0){var pk=d.id==="daya"?norm(r[21]):(d.id==="shafaarad"?norm(r[3]):[sc.pharmacy,sc.province,sc.city,sc.district,sc.address].map(function(i){return i>=0?norm(r[i]):"";}).join("|"));if(pk&&pk.replace(/\|/g,""))m.pharmacies[pk]=1;if(sc.invoice>=0&&r[sc.invoice]&&!(ret&&ret===qty))m.invoices[String(r[sc.invoice])]=1;}});(d.inventoryRows||[]).forEach(function(raw){var r=normalizeStoredRow(raw),dbCode=(d.id==="daya"||d.id==="shafaarad")?findKnownCodeInRow(r,d.id):(is.code>=0?r[is.code]:""),n=canonicalProduct(r[is.product],dbCode,d.id);if(!n)return;var m=map[n]||(map[n]=emptyMetric()),q=snappNumber(r[is.qty]);m.invQty+=q;m.invDist+=q*productPrice(n,"dist");m.invPh+=q*productPrice(n,"ph");});((st().products)||[]).forEach(function(p){var n=p.name||"";if(n&&!map[n])map[n]=emptyMetric();});return map;}
   function mergeMetricMaps(target,src){Object.keys(src).forEach(function(n){var a=target[n]||(target[n]=emptyMetric()),b=src[n];["qty","dist","ph","giftQty","giftRial","retQty","retRial","retGiftQty","retGiftRial","invQty","invDist","invPh"].forEach(function(k){a[k]+=b[k]||0;});Object.assign(a.pharmacies,b.pharmacies);Object.assign(a.invoices,b.invoices);});return target;}
 
   function metricRows(map){var totalSales=Object.values(map).reduce(function(s,m){return s+m.qty;},0),allPh={},allInv={};Object.keys(map).forEach(function(n){Object.assign(allPh,map[n].pharmacies);Object.assign(allInv,map[n].invoices);});var order={};((st().products)||[]).forEach(function(p,i){order[norm(p.name)]=i;});var rows=Object.keys(map).sort(function(a,b){var ai=order[norm(a)],bi=order[norm(b)];if(ai==null)ai=999999;if(bi==null)bi=999999;return ai-bi||String(a).localeCompare(String(b),'fa');}).map(function(n){var m=map[n],giftPct=m.qty?m.giftQty/m.qty*100:0,retPct=m.qty?m.retQty/m.qty*100:0,retGiftPct=m.retQty?m.retGiftQty/m.retQty*100:0,share=totalSales?m.qty/totalSales*100:0;return[n,m.qty,m.dist,m.ph,m.giftQty,m.giftRial,giftPct,m.retQty,m.retRial,retPct,m.retGiftQty,m.retGiftRial,retGiftPct,Object.keys(m.pharmacies).length,Object.keys(m.invoices).length,share,m.invQty,m.invDist,m.invPh];});rows._uniquePharmacies=Object.keys(allPh).length;rows._uniqueInvoices=Object.keys(allInv).length;return rows;}
@@ -33255,6 +33505,12 @@ button.v19-gps svg{display:block}
   function captureDomFieldOrder(){var out={};DOM_FORMS.forEach(function(fid){var grid=mainFormGrid($(fid));if(!grid)return;out[fid]=Array.prototype.filter.call(grid.children,function(g){return g.classList&&g.classList.contains("form-group");}).map(groupAnchor).filter(Boolean);});try{localStorage.setItem(DOM_ORDER_KEY,JSON.stringify(out));}catch(e){}}
   function restoreDomFieldOrder(){var data={};try{data=JSON.parse(localStorage.getItem(DOM_ORDER_KEY)||"{}");}catch(e){}DOM_FORMS.forEach(function(fid){var grid=mainFormGrid($(fid)),seq=data[fid];if(!grid||!Array.isArray(seq)||!seq.length)return;var groups={};Array.prototype.forEach.call(grid.children,function(g){var id=groupAnchor(g);if(id)groups[id]=g;});seq.forEach(function(id){if(groups[id])grid.appendChild(groups[id]);});});}
   function bindDomOrderLock(){window.addEventListener("beforeunload",captureDomFieldOrder);document.addEventListener("change",function(e){if(e.target&&e.target.closest&&e.target.closest("#columnsDesignerHost,#manualDesignCanvas"))setTimeout(captureDomFieldOrder,250);},true);setTimeout(function(){restoreDomFieldOrder();captureDomFieldOrder();},2600);}
+
+  /* ---------- ۳۳) ترتیب اتمی فرم و لیست بدون ناپدیدشدن فیلد ---------- */
+  function orderEntityKey(tabId){return tabId==="tab-pharmacies"?"pharmacy":tabId==="tab-doctors"?"doctor":tabId==="tab-orders"?"order":tabId==="tab-columns-products"?"products":String(tabId||"").replace(/^tab-/,"");}
+  function writeSafeOrder(tabId,id,flag,value){var S=st(),key=orderEntityKey(tabId),arr=((S.customFields||{})[key]||[]),f=arr.filter(function(x){return x&&x.id===id;})[0];if(f)f[flag]=value;else{S.formFieldMeta=S.formFieldMeta||{};S.formFieldMeta[key]=S.formFieldMeta[key]||{};S.formFieldMeta[key][id]=S.formFieldMeta[key][id]||{};S.formFieldMeta[key][id][flag]=value;}}
+  function safeOrderFields(tabId,id,rowNum,isList){var fields=(typeof window.getUnifiedFieldList==="function"?window.getUnifiedFieldList(tabId):[]).filter(function(f){return f&&f.id&&!f.deleted;}),flag=isList?"listOrder":"order";fields.sort(function(a,b){return(Number(a[flag])||Number(a.order)||999)-(Number(b[flag])||Number(b.order)||999);});var ids=fields.map(function(f){return f.id;}),from=ids.indexOf(id);if(from<0)return;rowNum=Math.max(1,Math.min(ids.length,parseInt(rowNum,10)||1));ids.splice(from,1);ids.splice(rowNum-1,0,id);ids.forEach(function(fid,i){writeSafeOrder(tabId,fid,flag,i+1);});saveState(false);if(isList){var target=LIST_TARGETS.filter(function(t){return t[1]===tabId;})[0];if(target){try{var fn=window[target[0]];if(typeof fn==="function")fn();}catch(e){}setTimeout(function(){v20ReorderListColumns(target[1],target[2],target[3],target[4]);},30);}}else{var moved=$(id),grid=moved&&moved.closest(".form-grid");if(grid)ids.forEach(function(fid){var el=$(fid),g=el&&el.closest(".form-group");if(g&&g.parentNode===grid)grid.appendChild(g);});captureDomFieldOrder();}document.querySelectorAll(isList?".col-listorder-input":".col-order-input").forEach(function(inp){var i=ids.indexOf(inp.dataset.fid);if(i>=0)inp.value=i+1;});v20Toast("✅ ترتیب "+(isList?"لیست":"فرم")+" ذخیره و اعمال شد.");}
+  function bindSafeOrderControls(){if(document.body.dataset.safeOrderBound)return;document.body.dataset.safeOrderBound="1";document.addEventListener("change",function(e){var t=e.target;if(!t||!t.classList)return;var list=t.classList.contains("col-listorder-input"),form=t.classList.contains("col-order-input");if(!list&&!form)return;e.stopImmediatePropagation();safeOrderFields(window._activeColTab||"tab-pharmacies",t.dataset.fid,t.value,list);},true);document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".col-move-up,.col-move-down");if(!b)return;e.preventDefault();e.stopImmediatePropagation();var id=b.dataset.fid,field=(window.getUnifiedFieldList(window._activeColTab)||[]).filter(function(f){return f.id===id;})[0],cur=Number(field&&field.order)||1;safeOrderFields(window._activeColTab,id,cur+(b.classList.contains("col-move-up")?-1:1),false);},true);}
 
   /* ---------- هُوک رفتن به تب‌ها ---------- */
   var v20LastTab = (document.querySelector(".tab-pane.active") || {}).id || "";
@@ -33365,7 +33621,7 @@ button.v19-gps svg{display:block}
     try { bindNumberFormatting(); } catch (e) {}
     try { bindGlobalDateLaw(); } catch (e) {}
     try { bindAddressFieldGuard(); } catch (e) {}
-    try { bindDomOrderLock(); } catch (e) {}
+    try { bindDomOrderLock(); bindSafeOrderControls(); } catch (e) {}
     try { bindDurableServerState(); } catch (e) {}
     try { wrapNewestTables(); } catch (e) {}
     // اجرای دوباره امن پس از تکمیل loadState؛ در اجرای خیلی زود state هنوز null بود و کلیدهای اسنپ/پخش bind نمی‌شدند.
@@ -33385,7 +33641,7 @@ button.v19-gps svg{display:block}
   function reliableFeatureBoot(){try{setupSnappCorporate();applySnappVisibility();renderDistributorCompanies();setupDistributorSales();renderDistributorDatabase();bindProductCrudV20();bindProductLabelFix();bindAddressFieldGuard();wrapListRenderers();bindListOrderObserver();restoreDomFieldOrder();}catch(e){try{console.error("reliable feature boot",e);}catch(x){}}}
   window.v20SetupSnappCorporate=reliableFeatureBoot;
   // اتصال هم‌زمان دکمه‌های فایل، مستقل از زمان loadState؛ عملیات واقعی هنگام انتخاب فایل state را می‌خواند.
-  try{bindSnappImportButtons();bindProductCrudV20();}catch(e){}
+  try{bindSnappImportButtons();bindProductCrudV20();bindSafeOrderControls();}catch(e){}
   document.addEventListener("click",function(e){var n=e.target&&e.target.closest&&e.target.closest('[data-target],[data-side-target]');if(!n)return;var id=n.getAttribute('data-target')||n.getAttribute('data-side-target');if(id==='tab-snapp-corporate'||id==='tab-distributor-sales'||id==='tab-distributor-database'||id==='tab-columns-products')setTimeout(reliableFeatureBoot,0);},true);
   window.addEventListener("load",function(){setTimeout(reliableFeatureBoot,300);setTimeout(reliableFeatureBoot,1800);});
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { setTimeout(init, 60);setTimeout(reliableFeatureBoot,500); });
@@ -35571,7 +35827,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/index.html (139106 بایت)
+فایل: public/index.html (139196 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~html
 <!DOCTYPE html>
@@ -35592,7 +35848,7 @@ button.v19-gps svg{display:block}
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.22.3" />
+  <link rel="stylesheet" href="style.css?v=11.23.0" />
 </head>
 <body>
 
@@ -37210,6 +37466,7 @@ button.v19-gps svg{display:block}
           <h4 style="margin-bottom: 1rem; color: #1e293b; font-size: 1.1rem;">ایجاد کاربر جدید</h4>
 
           <form id="formCreateUser" onsubmit="return false;">
+            <input type="hidden" id="userEditId" value="" />
             <div class="form-grid">
               <div class="form-group full-width">
                 <label class="form-label">نام و نام خانوادگی *</label>
@@ -37231,7 +37488,7 @@ button.v19-gps svg{display:block}
                 <label class="form-label">نقش</label>
                 <select id="newRole" class="form-select dropdown-auto-clear">
                   <option value="نماینده علمی">نماینده علمی</option>
-                  <option value="مدیر سیستم">مدیر سیستم</option>
+                  <option value="کارشناس فروش">کارشناس فروش</option>
                   <option value="سرپرست">سرپرست</option>
                 </select>
               </div>
@@ -37264,7 +37521,7 @@ button.v19-gps svg{display:block}
                 <input type="checkbox" id="newForcePhoneLogin" checked style="width: 20px; height: 20px; accent-color: #0d9488;" />
                 <span>ورود با شماره همراه اجباری باشد</span>
               </label>
-              <button type="submit" class="btn btn-primary" style="background: #0d9488; font-size: 1rem; padding: 0.75rem 2rem;">
+              <button type="submit" id="btnSaveUserInfo" class="btn btn-primary" style="background: #0d9488; font-size: 1rem; padding: 0.75rem 2rem;">
                 <span>➕ ایجاد کاربر</span>
               </button>
             </div>
@@ -37738,22 +37995,22 @@ button.v19-gps svg{display:block}
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.22.3"></script>
-  <script src="crm-app.js?v=11.22.3"></script>
-  <script src="crm-features-v9.js?v=11.22.3"></script>
-  <script src="iran-facilities.js?v=11.22.3" defer></script>
-  <script src="crm-features-v10.js?v=11.22.3"></script>
-  <script src="crm-features-v11.js?v=11.22.3"></script>
-  <script src="crm-features-v12.js?v=11.22.3"></script>
-  <script src="crm-features-v13.js?v=11.22.3"></script>
-  <script src="crm-jalali.js?v=11.22.3"></script>
-  <script src="crm-features-v14.js?v=11.22.3"></script>
-  <script src="crm-features-v15.js?v=11.22.3"></script>
-  <script src="crm-features-v16.js?v=11.22.3"></script>
-  <script src="crm-features-v17.js?v=11.22.3"></script>
-  <script src="crm-features-v18.js?v=11.22.3"></script>
-  <script src="crm-features-v19.js?v=11.22.3"></script>
-  <script src="crm-features-v20.js?v=11.22.3"></script>
+  <script src="crm-data.js?v=11.23.0"></script>
+  <script src="crm-app.js?v=11.23.0"></script>
+  <script src="crm-features-v9.js?v=11.23.0"></script>
+  <script src="iran-facilities.js?v=11.23.0" defer></script>
+  <script src="crm-features-v10.js?v=11.23.0"></script>
+  <script src="crm-features-v11.js?v=11.23.0"></script>
+  <script src="crm-features-v12.js?v=11.23.0"></script>
+  <script src="crm-features-v13.js?v=11.23.0"></script>
+  <script src="crm-jalali.js?v=11.23.0"></script>
+  <script src="crm-features-v14.js?v=11.23.0"></script>
+  <script src="crm-features-v15.js?v=11.23.0"></script>
+  <script src="crm-features-v16.js?v=11.23.0"></script>
+  <script src="crm-features-v17.js?v=11.23.0"></script>
+  <script src="crm-features-v18.js?v=11.23.0"></script>
+  <script src="crm-features-v19.js?v=11.23.0"></script>
+  <script src="crm-features-v20.js?v=11.23.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
@@ -40779,7 +41036,7 @@ self.addEventListener("fetch", (event) => {
 فایل: public/sw.js (1145 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
-const CACHE = "ttt-v11.22.3";
+const CACHE = "ttt-v11.23.0";
 const PRECACHE = ["/", "/login", "/favicon.png", "/logo.png", "/vendor/leaflet.js", "/vendor/leaflet.css"];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(PRECACHE).catch(function () {}); }).then(function () { return self.skipWaiting(); }));
@@ -66186,7 +66443,7 @@ export function createZip(entries: ZipEntry[], modified = new Date()): Buffer {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/app-smoke.test.mjs (2790 بایت)
+فایل: tests/app-smoke.test.mjs (2832 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 import test from 'node:test';
@@ -66206,7 +66463,7 @@ test.before(async () => {
   });
 });
 
-test.after(() => { if (server && !server.killed) server.kill('SIGTERM'); try { rmSync('server-db.json', { force:true }); } catch {} });
+test.after(() => { if (server && !server.killed) server.kill('SIGTERM'); try { rmSync('server-db.json', { force:true }); rmSync('user-data.json', { force:true }); } catch {} });
 
 test('automated app entry loads health, HTML, all scripts and critical UI', async () => {
   const base = `http://127.0.0.1:${port}`;
@@ -66244,7 +66501,7 @@ test('state API round-trip preserves unrelated sentinel data', async () => {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/state-preservation.test.mjs (17901 بایت)
+فایل: tests/state-preservation.test.mjs (19079 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 import test from 'node:test';
@@ -66255,6 +66512,8 @@ import vm from 'node:vm';
 const appSource = fs.readFileSync(new URL('../public/crm-app.js', import.meta.url), 'utf8');
 const v9Source = fs.readFileSync(new URL('../public/crm-features-v9.js', import.meta.url), 'utf8');
 const v20Source = fs.readFileSync(new URL('../public/crm-features-v20.js', import.meta.url), 'utf8');
+const serverSource = fs.readFileSync(new URL('../server.js', import.meta.url), 'utf8');
+const gitignoreSource = fs.readFileSync(new URL('../.gitignore', import.meta.url), 'utf8');
 
 function loadWithCurrent(current, backup) {
   const a = appSource.indexOf('function loadState()');
@@ -66292,6 +66551,10 @@ test('existing empty arrays stay empty and sample defaults are never injected', 
   const out=loadWithCurrent({settings:{},users:[],pharmacies:[],doctors:[],products:[],orders:[]},{users:[{id:'old'}]});
   assert.deepEqual(out.users,[]);assert.deepEqual(out.pharmacies,[]);assert.deepEqual(out.products,[]);
   assert.equal(out._authoritativeState,true);
+});
+
+test('manager runtime data uses separate git-ignored user-data file', () => {
+  assert.match(serverSource,/user-data\.json/);assert.match(serverSource,/LEGACY_DATA_PATH/);assert.match(gitignoreSource,/user-data\.json/);
 });
 
 test('active order collector never converts blank quantity to one', () => {
@@ -66380,7 +66643,7 @@ test('Shafaarad mappings and derived inventory column 10 are permanent', () => {
   const d={id:'shafaarad',inventoryHeaders:['نام مرکز','کالا','نام کالا','فروش عددی','فروش ریالی','موجودی عددی','موجودی ریالی','تعداد بین راهی','ریال بین راهی'],inventoryRows:[['مرکز','کد','کالا',0,0,12,0,5,0]]};ctx.result.ensureShafaInventoryDerived(d);assert.equal(d.inventoryHeaders[9],'جمع تعداد موجودی');assert.equal(d.inventoryRows[0][9],17);
   const s=ctx.result.distSchema([], 'shafaarad');assert.equal(s.date,6);assert.equal(s.invoice,5);assert.equal(s.qty,7);assert.equal(s.retQty,9);assert.equal(s.pharmacy,3);
   assert.match(v20Source,/1001:1391902001/);assert.match(v20Source,/1005:1391911006/);assert.match(v20Source,/1006:1391911005/);assert.match(v20Source,/shafaDbCode/);
-  const c2={result:null,SHAFA_CODE_MAP:{1005:1391911006,1006:1391911005},st:()=>({products:[{code:1005,name:'سافت ژل امگا وومن',shafaDbCode:1391911006},{code:1006,name:'سافت ژل امگا من',shafaDbCode:1391911005}]}),norm:v=>String(v||'').replace(/\s+/g,'')};vm.createContext(c2);vm.runInContext(`${extract('canonicalProduct')};result=canonicalProduct`,c2);assert.equal(c2.result('نام خام','1391911006','shafaarad'),'سافت ژل امگا وومن');assert.equal(c2.result('نام خام','1391911005','shafaarad'),'سافت ژل امگا من');
+  const c2={result:null,SHAFA_CODE_MAP:{1005:1391911006,1006:1391911005},st:()=>({products:[{code:1001,name:'سافت ژل امگا 3',shafaDbCode:1391902001},{code:1005,name:'سافت ژل امگا وومن',shafaDbCode:1391911006},{code:1006,name:'سافت ژل امگا من',shafaDbCode:1391911005}]}),norm:v=>String(v||'').replace(/\s+/g,'')};vm.createContext(c2);c2.enDigits=v=>String(v);vm.runInContext(`${extract('normalizeDbCode')};${extract('canonicalProduct')};result=canonicalProduct`,c2);assert.equal(c2.result('نام خام','1391911006','shafaarad'),'سافت ژل امگا وومن');assert.equal(c2.result('نام خام','1391911005','shafaarad'),'سافت ژل امگا من');assert.equal(c2.result('نام خام','1.391902001E9','shafaarad'),'سافت ژل امگا 3');
 });
 
 test('Daya calculations follow declared quantity, price, gift and return formulas', () => {
@@ -66405,7 +66668,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /seen\[rowSignature\(r\)\]/);
   assert.match(v20Source, /d\.pharmacyRows=d\.pharmacyRows\.concat\(fresh\)/);
   assert.match(v20Source, /function bindSnappImportButtons/);
-  assert.match(v20Source, /try\{bindSnappImportButtons\(\);bindProductCrudV20\(\);\}/, 'critical buttons must bind synchronously');
+  assert.match(v20Source, /try\{bindSnappImportButtons\(\);bindProductCrudV20\(\);bindSafeOrderControls\(\);\}/, 'critical buttons must bind synchronously');
   assert.match(v20Source, /contenteditable='true'/);
   assert.match(v20Source, /arc-save/);
   assert.match(v20Source, /raw-save/);
@@ -66428,6 +66691,14 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /getUnifiedFieldList\(paneId\)/);
   assert.match(v20Source, /tablePharmaciesHeader/);
   assert.match(v20Source, /function bindListOrderObserver/);
+  assert.match(v20Source, /function bindSafeOrderControls/);
+  assert.match(v20Source, /function safeOrderFields/);
+  assert.doesNotMatch(v20Source.slice(v20Source.indexOf('function safeOrderFields'),v20Source.indexOf('function bindSafeOrderControls')),/applyFullFormLayout/);
+  assert.match(v20Source, /v20PresetSave/);
+  assert.doesNotMatch(v20Source, /v20PresetUser|v20PresetApply/);
+  assert.match(v20Source, /permissionLevelTemplates/);
+  assert.match(appSource, /userEditId/);
+  assert.match(appSource, /btnSaveUserInfo/);
   assert.match(v20Source, /function bindProductCrudV20/);
   assert.match(v20Source, /productCode/);
   assert.match(v20Source, /dayaDbCode=1111000\+code/);

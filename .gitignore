@@ -41,6 +41,7 @@ node_modules/
 
 # داده زمان اجرا و خروجی‌های لوکال
 server-db.json
+user-data.json
 *.zip
 .arena/
 

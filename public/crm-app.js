@@ -1513,6 +1513,7 @@ function setupUsersAndPermissionsTab() {
       document.querySelectorAll(".permission-tag-chk").forEach(el => {
         el.classList.remove("unchecked");
         el.dataset.checked = "true";
+        const cb = el.querySelector("input[type=checkbox]"); if (cb) cb.checked = true;
       });
       updatePermCountBadge();
     });
@@ -1523,6 +1524,7 @@ function setupUsersAndPermissionsTab() {
       document.querySelectorAll(".permission-tag-chk").forEach(el => {
         el.classList.add("unchecked");
         el.dataset.checked = "false";
+        const cb = el.querySelector("input[type=checkbox]"); if (cb) cb.checked = false;
       });
       updatePermCountBadge();
     });
@@ -1557,25 +1559,32 @@ function setupUsersAndPermissionsTab() {
         permsObj[el.dataset.key] = el.dataset.checked === "true";
       });
 
+      const editId = document.getElementById("userEditId").value;
+      const current = editId ? state.users.find(u => u.id === editId) : null;
       const newUser = {
-        id: "u-" + Date.now(),
+        ...(current || {}),
+        id: editId || ("u-" + Date.now()),
         fullName,
         username,
         password,
         phone,
         role,
         simControl,
-        phoneLock: "آزاد - اولین ورود، گوشی را قفل می‌کند",
-        lastLogin: new Date().toLocaleDateString("fa-IR") + " - " + new Date().toLocaleTimeString("fa-IR"),
+        phoneLock: current ? current.phoneLock : "آزاد - اولین ورود، گوشی را قفل می‌کند",
+        lastLogin: current ? current.lastLogin : (new Date().toLocaleDateString("fa-IR") + " - " + new Date().toLocaleTimeString("fa-IR")),
         permissions: permsObj
       };
 
-      state.users.push(newUser);
+      if (current) state.users[state.users.indexOf(current)] = newUser;
+      else state.users.push(newUser);
       saveState();
+      try { const auth={};state.users.forEach(u=>{auth[u.username]={password:u.password,phone:u.phone,name:u.fullName,role:u.role,id:u.id};});localStorage.setItem("CRM_USERS_AUTH",JSON.stringify(auth)); } catch(e) {}
       formCreate.reset();
+      document.getElementById("userEditId").value = "";
+      const saveBtn = document.getElementById("btnSaveUserInfo"); if (saveBtn) saveBtn.innerHTML = "<span>➕ ایجاد کاربر</span>";
       renderUserCardsList();
       updateNavBadges();
-      alert(`✅ کاربر جدید «${fullName}» با موفقیت ساخته شد.`);
+      alert(current ? `✅ اطلاعات «${fullName}» ذخیره شد.` : `✅ کاربر جدید «${fullName}» با موفقیت ساخته شد.`);
     });
   }
 }
@@ -1584,40 +1593,32 @@ function renderPermissionGroupsChecklist() {
   const container = document.getElementById("permissionGroupsContainer");
   if (!container) return;
   container.innerHTML = "";
-
-  Object.entries(PERMISSION_GROUPS).forEach(([groupName, items]) => {
-    const grpDiv = document.createElement("div");
-    grpDiv.innerHTML = `<div class="permission-group-title">${groupName}</div>`;
-
-    const tagsDiv = document.createElement("div");
-    tagsDiv.style.display = "flex";
-    tagsDiv.style.flexWrap = "wrap";
-    tagsDiv.style.gap = "0.5rem";
-
+  const tabNames = {"داشبورد":"📊 تب داشبورد","ثبت اطلاعات داروخانه":"🏥 تب داروخانه‌ها","ثبت اطلاعات پزشک":"👨‍⚕️ تب پزشکان","ثبت سفارشات داروخانه":"📦 تب سفارشات","عملیات میدانی":"📍 تب‌های موقعیت و ویزیت","اداری و منابع انسانی":"📝 تب مرخصی‌ها","گزارش‌ها":"📈 تب گزارش‌ها","مدیریت سامانه":"⚙️ تب‌های مدیریتی"};
+  Object.entries(PERMISSION_GROUPS).forEach(([groupName, items], gi) => {
+    const shownGroupName = tabNames[groupName] || groupName;
+    const grp = document.createElement("fieldset");
+    grp.className = "permission-tab-group";
+    grp.style.cssText = "border:1px solid #cbd5e1;border-radius:10px;padding:10px;margin:0 0 10px";
+    const legend = document.createElement("legend");
+    legend.innerHTML = `<label style="display:flex;gap:7px;align-items:center;font-weight:800"><input type="checkbox" class="perm-group-master" checked> ${shownGroupName}</label>`;
+    grp.appendChild(legend);
+    const body = document.createElement("div");
+    body.style.cssText = "display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:7px";
     items.forEach(item => {
-      const tag = document.createElement("div");
+      const tag = document.createElement("label");
       tag.className = "permission-tag-chk";
       tag.dataset.key = item.key;
       tag.dataset.checked = "true";
-      tag.innerHTML = `<span>✓ ${item.label}</span>`;
-      tag.onclick = () => {
-        const isChk = tag.dataset.checked === "true";
-        if (isChk) {
-          tag.dataset.checked = "false";
-          tag.classList.add("unchecked");
-        } else {
-          tag.dataset.checked = "true";
-          tag.classList.remove("unchecked");
-        }
-        updatePermCountBadge();
-      };
-      tagsDiv.appendChild(tag);
+      tag.style.cssText = "display:flex;gap:7px;align-items:center;border:1px solid #e2e8f0;border-radius:8px;padding:7px;background:#f8fafc;cursor:pointer";
+      tag.innerHTML = `<input type="checkbox" checked> <span>${item.label}</span>`;
+      const cb = tag.querySelector("input");
+      cb.onchange = () => { tag.dataset.checked = cb.checked ? "true" : "false"; tag.classList.toggle("unchecked", !cb.checked); updatePermCountBadge(); };
+      body.appendChild(tag);
     });
-
-    grpDiv.appendChild(tagsDiv);
-    container.appendChild(grpDiv);
+    const master = legend.querySelector("input");
+    master.onchange = () => { body.querySelectorAll(".permission-tag-chk").forEach(tag => { const cb=tag.querySelector("input");cb.checked=master.checked;tag.dataset.checked=master.checked?"true":"false";tag.classList.toggle("unchecked",!master.checked); });updatePermCountBadge(); };
+    grp.appendChild(body); container.appendChild(grp);
   });
-
   updatePermCountBadge();
 }
 
@@ -1698,12 +1699,21 @@ function editUserCard(id) {
   const u = state.users.find(x => x.id === id);
   if (!u) return;
   alert(`ویرایش تنظیمات دسترسی برای «${u.fullName}» در پنجره ایجاد کاربر فعال شد.`);
+  document.getElementById("userEditId").value = u.id;
   document.getElementById("newFullName").value = u.fullName;
   document.getElementById("newUsername").value = u.username;
   document.getElementById("newPassword").value = u.password;
   document.getElementById("newPhone").value = u.phone || "";
   document.getElementById("newRole").value = u.role;
   document.getElementById("newSimControl").value = u.simControl;
+  document.querySelectorAll(".permission-tag-chk").forEach(el => {
+    const on = !u.permissions || u.permissions[el.dataset.key] !== false;
+    el.dataset.checked = on ? "true" : "false";
+    el.classList.toggle("unchecked", !on);
+    const cb = el.querySelector("input[type=checkbox]"); if (cb) cb.checked = on;
+  });
+  updatePermCountBadge();
+  const saveBtn = document.getElementById("btnSaveUserInfo"); if (saveBtn) saveBtn.innerHTML = "<span>💾 ذخیره اطلاعات کاربر</span>";
   document.getElementById("tab-users-permissions").scrollIntoView({ behavior: "smooth" });
 }
 

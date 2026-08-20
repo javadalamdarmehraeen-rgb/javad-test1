@@ -338,7 +338,7 @@
       tabs += "<button type='button' class='" + (p[0] === v20AddPane ? "v20-on" : "") + "' data-pane='" + p[0] + "'>" + p[1] + "</button>";
     });
     var h = "<div class='v20-addmgr' style='border-top:2px solid #e2e8f0;padding-top:10px;'>" +
-      "<h4 style='margin:8px 0;color:#0f172a;'>🎛️ مدیر کشویی‌ها (نسخه ۱۱.۲۲.۳) — هر فیلد، زیرمجموعه‌هایش دقیقاً زیر همان فیلد است</h4>" +
+      "<h4 style='margin:8px 0;color:#0f172a;'>🎛️ مدیر کشویی‌ها (نسخه ۱۱.۲۳.۰) — هر فیلد، زیرمجموعه‌هایش دقیقاً زیر همان فیلد است</h4>" +
       "<div class='v20-tabbar'>" + tabs + "</div>" +
       "<div class='v20-card-tools' style='margin-bottom:4px'>" +
       "<label class='v20-mini'><input type='checkbox' id='v20GreyOnChk'" + (greyOn ? " checked" : "") + "> حالت طوسی زنجیره‌ای فعال باشد</label>" +
@@ -873,48 +873,14 @@
       off: ["sys_users", "sys_manual_design", "sys_copy_tabs", "sys_restore", "ord_formula"]
     }
   ];
+  function defaultPresetPermissions(pid){var preset=ROLE_PRESETS.filter(function(p){return p.id===pid;})[0],perms=typeof getDefaultPermissionsObject==="function"?getDefaultPermissionsObject(false):{};if(!preset)return perms;if(preset.on==="ALL_EXCEPT"){perms=typeof getDefaultPermissionsObject==="function"?getDefaultPermissionsObject(true):{};(preset.off||[]).forEach(function(k){perms[k]=false;});}else(preset.on||[]).forEach(function(k){perms[k]=true;});return perms;}
+  function checklistPermissions(){var p={};document.querySelectorAll(".permission-tag-chk").forEach(function(el){p[el.dataset.key]=el.dataset.checked==="true";});return p;}
+  function applyPermissionsToChecklist(perms){document.querySelectorAll(".permission-tag-chk").forEach(function(el){var on=!perms||perms[el.dataset.key]!==false;el.dataset.checked=on?"true":"false";el.classList.toggle("unchecked",!on);var cb=el.querySelector("input[type=checkbox]");if(cb)cb.checked=on;});try{if(typeof updatePermCountBadge==="function")updatePermCountBadge();}catch(e){}}
+  function permissionTemplate(pid){var S=st();S.settings=S.settings||{};S.settings.permissionLevelTemplates=S.settings.permissionLevelTemplates||{};return S.settings.permissionLevelTemplates[pid]||defaultPresetPermissions(pid);}
+  function bindRoleTemplateSelect(){var role=$("newRole");if(!role||role.dataset.templateBound)return;role.dataset.templateBound="1";role.addEventListener("change",function(){var map={"نماینده علمی":"rep","کارشناس فروش":"sales","سرپرست":"supervisor"};applyPermissionsToChecklist(permissionTemplate(map[role.value]||"rep"));});}
   function renderPresetBar() {
-    var pane = $("tab-users-permissions");
-    if (!pane || $("v20PresetBar")) return;
-    var S = st(); if (!S) return;
-    var card = pane.querySelector(".card") || pane;
-    var bar = document.createElement("div");
-    bar.id = "v20PresetBar";
-    bar.style.cssText = "border:1px solid #c7d2fe;background:#eef2ff;border-radius:12px;padding:12px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;";
-    var opts = ROLE_PRESETS.map(function (p) { return "<option value='" + p.id + "'>" + p.label + "</option>"; }).join("");
-    var users = (S.users || []).map(function (u) { return "<option value='" + esc(u.id) + "'>" + esc(u.fullName || u.username) + " (" + esc(u.username) + ")</option>"; }).join("");
-    bar.innerHTML =
-      "<strong>🎚️ سطوح دسترسی آماده:</strong>" +
-      "<select id='v20PresetSel' class='form-select' style='min-width:150px'>" + opts + "</select>" +
-      "<select id='v20PresetUser' class='form-select' style='min-width:190px'>" + users + "</select>" +
-      "<button type='button' id='v20PresetApply' style='background:#4f46e5;color:#fff;border:none;border-radius:9px;padding:8px 16px;cursor:pointer;font-weight:700;'>اعمال سطح روی کاربر</button>" +
-      "<span class='v20-mini'>با این کار همه تیک‌های دسترسی کاربر یکجا بر اساس سطح انتخابی تنظیم می‌شود؛ بعداً هم می‌توانید تیک‌ها را دستی عوض کنید.</span>";
-    card.insertBefore(bar, card.firstChild);
-    bar.querySelector("#v20PresetApply").addEventListener("click", function () {
-      var pid = bar.querySelector("#v20PresetSel").value;
-      var uid = bar.querySelector("#v20PresetUser").value;
-      var S2 = st(); if (!S2) return;
-      var u = (S2.users || []).filter(function (x) { return String(x.id) === String(uid); })[0];
-      var preset = ROLE_PRESETS.filter(function (p) { return p.id === pid; })[0];
-      if (!u || !preset) return;
-      if (u.username === "admin") { alert("سطح مدیر اصلی (admin) قابل تغییر نیست."); return; }
-      if (typeof getDefaultPermissionsObject !== "function") { alert("موتور دسترسی‌ها در دسترس نیست."); return; }
-      var perms;
-      if (preset.on === "ALL_EXCEPT") {
-        perms = getDefaultPermissionsObject(true);
-        (preset.off || []).forEach(function (k) { perms[k] = false; });
-      } else {
-        perms = getDefaultPermissionsObject(false);
-        preset.on.forEach(function (k) { perms[k] = true; });
-      }
-      u.permissions = perms;
-      u.role = preset.label;
-      u.preset = preset.label;
-      save();
-      if (typeof renderUserCardsList === "function") { try { renderUserCardsList(); } catch (e) {} }
-      alert("✅ سطح «" + preset.label + "» روی «" + (u.fullName || u.username) + "» اعمال شد.");
-    });
-  }
+    var pane=$("tab-users-permissions");if(!pane)return;var old=$("v20PresetBar");if(old)old.remove();var S=st();if(!S)return;var card=pane.querySelector(".card")||pane,bar=document.createElement("div");bar.id="v20PresetBar";bar.style.cssText="border:1px solid #c7d2fe;background:#eef2ff;border-radius:12px;padding:12px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;";var opts=ROLE_PRESETS.map(function(p){return"<option value='"+p.id+"'>"+p.label+"</option>";}).join("");bar.innerHTML="<strong>🎚️ سطوح دسترسی آماده:</strong><select id='v20PresetSel' class='form-select' style='min-width:180px'>"+opts+"</select><button type='button' id='v20PresetSave' class='btn btn-primary'>💾 ذخیره سطح دسترسی</button><span class='v20-mini'>تیک‌های فعلی پایین صفحه به‌عنوان الگوی این سطح ذخیره می‌شوند.</span>";card.insertBefore(bar,card.firstChild);bar.querySelector("#v20PresetSel").onchange=function(){applyPermissionsToChecklist(permissionTemplate(this.value));};bar.querySelector("#v20PresetSave").onclick=function(){var pid=bar.querySelector("#v20PresetSel").value;S.settings=S.settings||{};S.settings.permissionLevelTemplates=S.settings.permissionLevelTemplates||{};S.settings.permissionLevelTemplates[pid]=checklistPermissions();save();v20Toast("✅ سطح دسترسی ذخیره شد.");};bindRoleTemplateSelect();}
+
 
   /* ---------- ۷-ب) همگام‌سازی «جای فیلدها» داروخانه → سفارشات ---------- */
   var ORDER_TO_PH_CORE = { PharmacyName: "Name" };
@@ -1063,7 +1029,7 @@
   }
   function renderVersionBadge() {
     var b = $("v20VersionBadge"), actions = document.querySelector(".header-actions"); if (!actions) return;
-    if (!b) { b = document.createElement("span"); b.id = "v20VersionBadge"; b.className = "v20-version"; b.textContent = "نسخه ۱۱.۲۲.۳"; b.title = "نسخه دقیق برنامه نصب‌شده"; actions.insertBefore(b, actions.firstChild); }
+    if (!b) { b = document.createElement("span"); b.id = "v20VersionBadge"; b.className = "v20-version"; b.textContent = "نسخه ۱۱.۲۳.۰"; b.title = "نسخه دقیق برنامه نصب‌شده"; actions.insertBefore(b, actions.firstChild); }
     b.style.display = v20IsManager() ? "inline-block" : "none";
   }
 
@@ -1299,11 +1265,13 @@
   function invSchema(h,id){var code=findDistExact(h,"کد کالا"),product=findDistExact(h,"نام کالا"),qty=findDistExact(h,"موجودی");if(id==="shafaarad"&&code<0)code=findDistExact(h,"کالا");return{code:code>=0?code:findDistIndex(h,/کد.*کالا|کد.*محصول/,-1),product:product>=0?product:findDistIndex(h,/نام.*(کالا|محصول)/,0),qty:id==="shafaarad"?(findDistExact(h,"جمع تعداد موجودی")>=0?findDistExact(h,"جمع تعداد موجودی"):9):(qty>=0?qty:(id==="daya"?2:findDistIndex(h,/موجودی.*تعداد|تعداد.*موجودی/,1))),rial:findDistIndex(h,/موجودی.*ریال|ریال.*موجودی/,-1)};}
   function distFilter(){var mode=$("distModeDay").checked?"day":$("distModeMonth").checked?"month":$("distModeYear").checked?"year":($("distModeFrom").checked||$("distModeTo").checked)?"range":"all";return{mode:mode,year:enDigits($("distFilterYear").value),month:enDigits($("distFilterMonth").value),day:enDigits($("distFilterDay").value).padStart(2,"0"),from:normSnappDate($("distFilterFrom").value),to:normSnappDate($("distFilterTo").value)};}
   function distDatePass(v,f){var d=slashOnlyPersianDate(v);if(f.mode==="year")return!f.year||d.slice(0,4)===f.year;if(f.mode==="month")return(!f.year||d.slice(0,4)===f.year)&&(!f.month||d.slice(5,7)===f.month);if(f.mode==="day")return(!f.year||d.slice(0,4)===f.year)&&(!f.month||d.slice(5,7)===f.month)&&(!f.day||d.slice(8,10)===f.day);if(f.mode==="range")return(!f.from||d>=f.from)&&(!f.to||d<=f.to);return true;}
-  function canonicalProduct(raw,dbCode,distId){var name=String(raw||"").trim(),n=norm(name),code=String(dbCode==null?"":dbCode).replace(/\.0+$/,"").trim(),p=((st().products)||[]).filter(function(x){if(distId==="daya"&&code&&String(x.dayaDbCode||((x.code)?1111000+Number(x.code):""))===code)return true;if(distId==="shafaarad"&&code&&String(x.shafaDbCode||SHAFA_CODE_MAP[x.code]||"")===code)return true;var q=norm(x.name);return q===n||(q.length>=4&&n.indexOf(q)>=0)||(n.length>=4&&q.indexOf(n)>=0);})[0];if(p)return p.name;return ((distId==="daya"||distId==="shafaarad")&&code)?null:(name||"نامشخص");}
+  function normalizeDbCode(v){var s=enDigits(String(v==null?"":v)).replace(/[,٬\s]/g,"").trim(),n=Number(s);return isFinite(n)&&n>0?String(Math.trunc(n)):s.replace(/\.0+$/,"");}
+  function findKnownCodeInRow(row,distId){var known={};((st().products)||[]).forEach(function(p){var c=distId==="daya"?(p.dayaDbCode||(p.code?1111000+Number(p.code):"")):(p.shafaDbCode||SHAFA_CODE_MAP[p.code]||"");if(c)known[String(c)]=1;});var r=normalizeStoredRow(row);for(var i=0;i<r.length;i++){var c=normalizeDbCode(r[i]);if(known[c])return c;}return"";}
+  function canonicalProduct(raw,dbCode,distId){var name=String(raw||"").trim(),n=norm(name),code=normalizeDbCode(dbCode),p=((st().products)||[]).filter(function(x){if(distId==="daya"&&code&&String(x.dayaDbCode||((x.code)?1111000+Number(x.code):""))===code)return true;if(distId==="shafaarad"&&code&&String(x.shafaDbCode||SHAFA_CODE_MAP[x.code]||"")===code)return true;var q=norm(x.name);return q===n||(q.length>=4&&n.indexOf(q)>=0)||(n.length>=4&&q.indexOf(n)>=0);})[0];if(p)return p.name;return ((distId==="daya"||distId==="shafaarad")&&code)?null:(name||"نامشخص");}
   function productPrice(name,key){var p=((st().products)||[]).filter(function(x){return norm(x.name)===norm(name);})[0]||{};return Number(key==="dist"?(p.distributorPrice||p.distPrice||p.price||0):(p.pharmacyPrice||p.price||0));}
   function emptyMetric(){return{qty:0,dist:0,ph:0,giftQty:0,giftRial:0,retQty:0,retRial:0,retGiftQty:0,retGiftRial:0,pharmacies:{},invoices:{},invQty:0,invDist:0,invPh:0};}
   function calculateDayaAmounts(qty,gift,ret,retGift,distPrice,pharmacyPrice){return{dist:qty*distPrice,ph:qty*pharmacyPrice,giftRial:gift*distPrice,retRial:ret*distPrice,retGiftRial:retGift*distPrice,giftPct:qty?gift/qty*100:0,retPct:qty?ret/qty*100:0,retGiftPct:ret?retGift/ret*100:0};}
-  function distributorMetrics(d){var f=distFilter(),sc=distSchema(d.pharmacyHeaders,d.id),is=invSchema(d.inventoryHeaders,d.id),map={};(d.pharmacyRows||[]).forEach(function(raw){var r=normalizeStoredRow(raw);if(!distDatePass(r[sc.date],f))return;var n=canonicalProduct(r[sc.product],sc.code>=0?r[sc.code]:"",d.id);if(!n)return;var m=map[n]||(map[n]=emptyMetric()),qty=snappNumber(r[sc.qty]),gift=snappNumber(r[sc.giftQty]),ret=snappNumber(r[sc.retQty]),retGift=snappNumber(r[sc.retGiftQty]),dp=productPrice(n,"dist"),pp=productPrice(n,"ph");m.qty+=qty;m.giftQty+=gift;m.retQty+=ret;m.retGiftQty+=retGift;if(d.id==="daya"||d.id==="shafaarad"){var da=calculateDayaAmounts(qty,gift,ret,retGift,dp,pp);m.dist+=da.dist;m.ph+=da.ph;m.giftRial+=da.giftRial;m.retRial+=da.retRial;m.retGiftRial+=da.retGiftRial;}else{var dr=sc.dist>=0?snappNumber(r[sc.dist]):0,pr=sc.ph>=0?snappNumber(r[sc.ph]):0,gr=sc.giftRial>=0?snappNumber(r[sc.giftRial]):0,rr=sc.retRial>=0?snappNumber(r[sc.retRial]):0,rgr=sc.retGiftRial>=0?snappNumber(r[sc.retGiftRial]):0;m.dist+=dr||qty*dp;m.ph+=pr||qty*pp||qty*dp;m.giftRial+=gr||gift*dp;m.retRial+=rr||ret*dp;m.retGiftRial+=rgr||retGift*dp;}if(qty>0){var pk=d.id==="daya"?norm(r[21]):(d.id==="shafaarad"?norm(r[3]):[sc.pharmacy,sc.province,sc.city,sc.district,sc.address].map(function(i){return i>=0?norm(r[i]):"";}).join("|"));if(pk&&pk.replace(/\|/g,""))m.pharmacies[pk]=1;if(sc.invoice>=0&&r[sc.invoice]&&!(ret&&ret===qty))m.invoices[String(r[sc.invoice])]=1;}});(d.inventoryRows||[]).forEach(function(raw){var r=normalizeStoredRow(raw),n=canonicalProduct(r[is.product],is.code>=0?r[is.code]:"",d.id);if(!n)return;var m=map[n]||(map[n]=emptyMetric()),q=snappNumber(r[is.qty]);m.invQty+=q;m.invDist+=q*productPrice(n,"dist");m.invPh+=q*productPrice(n,"ph");});((st().products)||[]).forEach(function(p){var n=p.name||"";if(n&&!map[n])map[n]=emptyMetric();});return map;}
+  function distributorMetrics(d){var f=distFilter(),sc=distSchema(d.pharmacyHeaders,d.id),is=invSchema(d.inventoryHeaders,d.id),map={};(d.pharmacyRows||[]).forEach(function(raw){var r=normalizeStoredRow(raw);if(!distDatePass(r[sc.date],f))return;var dbCode=(d.id==="daya"||d.id==="shafaarad")?findKnownCodeInRow(r,d.id):(sc.code>=0?r[sc.code]:"");var n=canonicalProduct(r[sc.product],dbCode,d.id);if(!n)return;var m=map[n]||(map[n]=emptyMetric()),qty=snappNumber(r[sc.qty]),gift=snappNumber(r[sc.giftQty]),ret=snappNumber(r[sc.retQty]),retGift=snappNumber(r[sc.retGiftQty]),dp=productPrice(n,"dist"),pp=productPrice(n,"ph");m.qty+=qty;m.giftQty+=gift;m.retQty+=ret;m.retGiftQty+=retGift;if(d.id==="daya"||d.id==="shafaarad"){var da=calculateDayaAmounts(qty,gift,ret,retGift,dp,pp);m.dist+=da.dist;m.ph+=da.ph;m.giftRial+=da.giftRial;m.retRial+=da.retRial;m.retGiftRial+=da.retGiftRial;}else{var dr=sc.dist>=0?snappNumber(r[sc.dist]):0,pr=sc.ph>=0?snappNumber(r[sc.ph]):0,gr=sc.giftRial>=0?snappNumber(r[sc.giftRial]):0,rr=sc.retRial>=0?snappNumber(r[sc.retRial]):0,rgr=sc.retGiftRial>=0?snappNumber(r[sc.retGiftRial]):0;m.dist+=dr||qty*dp;m.ph+=pr||qty*pp||qty*dp;m.giftRial+=gr||gift*dp;m.retRial+=rr||ret*dp;m.retGiftRial+=rgr||retGift*dp;}if(qty>0){var pk=d.id==="daya"?norm(r[21]):(d.id==="shafaarad"?norm(r[3]):[sc.pharmacy,sc.province,sc.city,sc.district,sc.address].map(function(i){return i>=0?norm(r[i]):"";}).join("|"));if(pk&&pk.replace(/\|/g,""))m.pharmacies[pk]=1;if(sc.invoice>=0&&r[sc.invoice]&&!(ret&&ret===qty))m.invoices[String(r[sc.invoice])]=1;}});(d.inventoryRows||[]).forEach(function(raw){var r=normalizeStoredRow(raw),dbCode=(d.id==="daya"||d.id==="shafaarad")?findKnownCodeInRow(r,d.id):(is.code>=0?r[is.code]:""),n=canonicalProduct(r[is.product],dbCode,d.id);if(!n)return;var m=map[n]||(map[n]=emptyMetric()),q=snappNumber(r[is.qty]);m.invQty+=q;m.invDist+=q*productPrice(n,"dist");m.invPh+=q*productPrice(n,"ph");});((st().products)||[]).forEach(function(p){var n=p.name||"";if(n&&!map[n])map[n]=emptyMetric();});return map;}
   function mergeMetricMaps(target,src){Object.keys(src).forEach(function(n){var a=target[n]||(target[n]=emptyMetric()),b=src[n];["qty","dist","ph","giftQty","giftRial","retQty","retRial","retGiftQty","retGiftRial","invQty","invDist","invPh"].forEach(function(k){a[k]+=b[k]||0;});Object.assign(a.pharmacies,b.pharmacies);Object.assign(a.invoices,b.invoices);});return target;}
 
   function metricRows(map){var totalSales=Object.values(map).reduce(function(s,m){return s+m.qty;},0),allPh={},allInv={};Object.keys(map).forEach(function(n){Object.assign(allPh,map[n].pharmacies);Object.assign(allInv,map[n].invoices);});var order={};((st().products)||[]).forEach(function(p,i){order[norm(p.name)]=i;});var rows=Object.keys(map).sort(function(a,b){var ai=order[norm(a)],bi=order[norm(b)];if(ai==null)ai=999999;if(bi==null)bi=999999;return ai-bi||String(a).localeCompare(String(b),'fa');}).map(function(n){var m=map[n],giftPct=m.qty?m.giftQty/m.qty*100:0,retPct=m.qty?m.retQty/m.qty*100:0,retGiftPct=m.retQty?m.retGiftQty/m.retQty*100:0,share=totalSales?m.qty/totalSales*100:0;return[n,m.qty,m.dist,m.ph,m.giftQty,m.giftRial,giftPct,m.retQty,m.retRial,retPct,m.retGiftQty,m.retGiftRial,retGiftPct,Object.keys(m.pharmacies).length,Object.keys(m.invoices).length,share,m.invQty,m.invDist,m.invPh];});rows._uniquePharmacies=Object.keys(allPh).length;rows._uniqueInvoices=Object.keys(allInv).length;return rows;}
@@ -1355,6 +1323,12 @@
   function captureDomFieldOrder(){var out={};DOM_FORMS.forEach(function(fid){var grid=mainFormGrid($(fid));if(!grid)return;out[fid]=Array.prototype.filter.call(grid.children,function(g){return g.classList&&g.classList.contains("form-group");}).map(groupAnchor).filter(Boolean);});try{localStorage.setItem(DOM_ORDER_KEY,JSON.stringify(out));}catch(e){}}
   function restoreDomFieldOrder(){var data={};try{data=JSON.parse(localStorage.getItem(DOM_ORDER_KEY)||"{}");}catch(e){}DOM_FORMS.forEach(function(fid){var grid=mainFormGrid($(fid)),seq=data[fid];if(!grid||!Array.isArray(seq)||!seq.length)return;var groups={};Array.prototype.forEach.call(grid.children,function(g){var id=groupAnchor(g);if(id)groups[id]=g;});seq.forEach(function(id){if(groups[id])grid.appendChild(groups[id]);});});}
   function bindDomOrderLock(){window.addEventListener("beforeunload",captureDomFieldOrder);document.addEventListener("change",function(e){if(e.target&&e.target.closest&&e.target.closest("#columnsDesignerHost,#manualDesignCanvas"))setTimeout(captureDomFieldOrder,250);},true);setTimeout(function(){restoreDomFieldOrder();captureDomFieldOrder();},2600);}
+
+  /* ---------- ۳۳) ترتیب اتمی فرم و لیست بدون ناپدیدشدن فیلد ---------- */
+  function orderEntityKey(tabId){return tabId==="tab-pharmacies"?"pharmacy":tabId==="tab-doctors"?"doctor":tabId==="tab-orders"?"order":tabId==="tab-columns-products"?"products":String(tabId||"").replace(/^tab-/,"");}
+  function writeSafeOrder(tabId,id,flag,value){var S=st(),key=orderEntityKey(tabId),arr=((S.customFields||{})[key]||[]),f=arr.filter(function(x){return x&&x.id===id;})[0];if(f)f[flag]=value;else{S.formFieldMeta=S.formFieldMeta||{};S.formFieldMeta[key]=S.formFieldMeta[key]||{};S.formFieldMeta[key][id]=S.formFieldMeta[key][id]||{};S.formFieldMeta[key][id][flag]=value;}}
+  function safeOrderFields(tabId,id,rowNum,isList){var fields=(typeof window.getUnifiedFieldList==="function"?window.getUnifiedFieldList(tabId):[]).filter(function(f){return f&&f.id&&!f.deleted;}),flag=isList?"listOrder":"order";fields.sort(function(a,b){return(Number(a[flag])||Number(a.order)||999)-(Number(b[flag])||Number(b.order)||999);});var ids=fields.map(function(f){return f.id;}),from=ids.indexOf(id);if(from<0)return;rowNum=Math.max(1,Math.min(ids.length,parseInt(rowNum,10)||1));ids.splice(from,1);ids.splice(rowNum-1,0,id);ids.forEach(function(fid,i){writeSafeOrder(tabId,fid,flag,i+1);});saveState(false);if(isList){var target=LIST_TARGETS.filter(function(t){return t[1]===tabId;})[0];if(target){try{var fn=window[target[0]];if(typeof fn==="function")fn();}catch(e){}setTimeout(function(){v20ReorderListColumns(target[1],target[2],target[3],target[4]);},30);}}else{var moved=$(id),grid=moved&&moved.closest(".form-grid");if(grid)ids.forEach(function(fid){var el=$(fid),g=el&&el.closest(".form-group");if(g&&g.parentNode===grid)grid.appendChild(g);});captureDomFieldOrder();}document.querySelectorAll(isList?".col-listorder-input":".col-order-input").forEach(function(inp){var i=ids.indexOf(inp.dataset.fid);if(i>=0)inp.value=i+1;});v20Toast("✅ ترتیب "+(isList?"لیست":"فرم")+" ذخیره و اعمال شد.");}
+  function bindSafeOrderControls(){if(document.body.dataset.safeOrderBound)return;document.body.dataset.safeOrderBound="1";document.addEventListener("change",function(e){var t=e.target;if(!t||!t.classList)return;var list=t.classList.contains("col-listorder-input"),form=t.classList.contains("col-order-input");if(!list&&!form)return;e.stopImmediatePropagation();safeOrderFields(window._activeColTab||"tab-pharmacies",t.dataset.fid,t.value,list);},true);document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".col-move-up,.col-move-down");if(!b)return;e.preventDefault();e.stopImmediatePropagation();var id=b.dataset.fid,field=(window.getUnifiedFieldList(window._activeColTab)||[]).filter(function(f){return f.id===id;})[0],cur=Number(field&&field.order)||1;safeOrderFields(window._activeColTab,id,cur+(b.classList.contains("col-move-up")?-1:1),false);},true);}
 
   /* ---------- هُوک رفتن به تب‌ها ---------- */
   var v20LastTab = (document.querySelector(".tab-pane.active") || {}).id || "";
@@ -1465,7 +1439,7 @@
     try { bindNumberFormatting(); } catch (e) {}
     try { bindGlobalDateLaw(); } catch (e) {}
     try { bindAddressFieldGuard(); } catch (e) {}
-    try { bindDomOrderLock(); } catch (e) {}
+    try { bindDomOrderLock(); bindSafeOrderControls(); } catch (e) {}
     try { bindDurableServerState(); } catch (e) {}
     try { wrapNewestTables(); } catch (e) {}
     // اجرای دوباره امن پس از تکمیل loadState؛ در اجرای خیلی زود state هنوز null بود و کلیدهای اسنپ/پخش bind نمی‌شدند.
@@ -1485,7 +1459,7 @@
   function reliableFeatureBoot(){try{setupSnappCorporate();applySnappVisibility();renderDistributorCompanies();setupDistributorSales();renderDistributorDatabase();bindProductCrudV20();bindProductLabelFix();bindAddressFieldGuard();wrapListRenderers();bindListOrderObserver();restoreDomFieldOrder();}catch(e){try{console.error("reliable feature boot",e);}catch(x){}}}
   window.v20SetupSnappCorporate=reliableFeatureBoot;
   // اتصال هم‌زمان دکمه‌های فایل، مستقل از زمان loadState؛ عملیات واقعی هنگام انتخاب فایل state را می‌خواند.
-  try{bindSnappImportButtons();bindProductCrudV20();}catch(e){}
+  try{bindSnappImportButtons();bindProductCrudV20();bindSafeOrderControls();}catch(e){}
   document.addEventListener("click",function(e){var n=e.target&&e.target.closest&&e.target.closest('[data-target],[data-side-target]');if(!n)return;var id=n.getAttribute('data-target')||n.getAttribute('data-side-target');if(id==='tab-snapp-corporate'||id==='tab-distributor-sales'||id==='tab-distributor-database'||id==='tab-columns-products')setTimeout(reliableFeatureBoot,0);},true);
   window.addEventListener("load",function(){setTimeout(reliableFeatureBoot,300);setTimeout(reliableFeatureBoot,1800);});
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { setTimeout(init, 60);setTimeout(reliableFeatureBoot,500); });

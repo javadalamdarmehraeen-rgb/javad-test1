@@ -6,6 +6,8 @@ import vm from 'node:vm';
 const appSource = fs.readFileSync(new URL('../public/crm-app.js', import.meta.url), 'utf8');
 const v9Source = fs.readFileSync(new URL('../public/crm-features-v9.js', import.meta.url), 'utf8');
 const v20Source = fs.readFileSync(new URL('../public/crm-features-v20.js', import.meta.url), 'utf8');
+const serverSource = fs.readFileSync(new URL('../server.js', import.meta.url), 'utf8');
+const gitignoreSource = fs.readFileSync(new URL('../.gitignore', import.meta.url), 'utf8');
 
 function loadWithCurrent(current, backup) {
   const a = appSource.indexOf('function loadState()');
@@ -43,6 +45,10 @@ test('existing empty arrays stay empty and sample defaults are never injected', 
   const out=loadWithCurrent({settings:{},users:[],pharmacies:[],doctors:[],products:[],orders:[]},{users:[{id:'old'}]});
   assert.deepEqual(out.users,[]);assert.deepEqual(out.pharmacies,[]);assert.deepEqual(out.products,[]);
   assert.equal(out._authoritativeState,true);
+});
+
+test('manager runtime data uses separate git-ignored user-data file', () => {
+  assert.match(serverSource,/user-data\.json/);assert.match(serverSource,/LEGACY_DATA_PATH/);assert.match(gitignoreSource,/user-data\.json/);
 });
 
 test('active order collector never converts blank quantity to one', () => {
@@ -131,7 +137,7 @@ test('Shafaarad mappings and derived inventory column 10 are permanent', () => {
   const d={id:'shafaarad',inventoryHeaders:['نام مرکز','کالا','نام کالا','فروش عددی','فروش ریالی','موجودی عددی','موجودی ریالی','تعداد بین راهی','ریال بین راهی'],inventoryRows:[['مرکز','کد','کالا',0,0,12,0,5,0]]};ctx.result.ensureShafaInventoryDerived(d);assert.equal(d.inventoryHeaders[9],'جمع تعداد موجودی');assert.equal(d.inventoryRows[0][9],17);
   const s=ctx.result.distSchema([], 'shafaarad');assert.equal(s.date,6);assert.equal(s.invoice,5);assert.equal(s.qty,7);assert.equal(s.retQty,9);assert.equal(s.pharmacy,3);
   assert.match(v20Source,/1001:1391902001/);assert.match(v20Source,/1005:1391911006/);assert.match(v20Source,/1006:1391911005/);assert.match(v20Source,/shafaDbCode/);
-  const c2={result:null,SHAFA_CODE_MAP:{1005:1391911006,1006:1391911005},st:()=>({products:[{code:1005,name:'سافت ژل امگا وومن',shafaDbCode:1391911006},{code:1006,name:'سافت ژل امگا من',shafaDbCode:1391911005}]}),norm:v=>String(v||'').replace(/\s+/g,'')};vm.createContext(c2);vm.runInContext(`${extract('canonicalProduct')};result=canonicalProduct`,c2);assert.equal(c2.result('نام خام','1391911006','shafaarad'),'سافت ژل امگا وومن');assert.equal(c2.result('نام خام','1391911005','shafaarad'),'سافت ژل امگا من');
+  const c2={result:null,SHAFA_CODE_MAP:{1005:1391911006,1006:1391911005},st:()=>({products:[{code:1001,name:'سافت ژل امگا 3',shafaDbCode:1391902001},{code:1005,name:'سافت ژل امگا وومن',shafaDbCode:1391911006},{code:1006,name:'سافت ژل امگا من',shafaDbCode:1391911005}]}),norm:v=>String(v||'').replace(/\s+/g,'')};vm.createContext(c2);c2.enDigits=v=>String(v);vm.runInContext(`${extract('normalizeDbCode')};${extract('canonicalProduct')};result=canonicalProduct`,c2);assert.equal(c2.result('نام خام','1391911006','shafaarad'),'سافت ژل امگا وومن');assert.equal(c2.result('نام خام','1391911005','shafaarad'),'سافت ژل امگا من');assert.equal(c2.result('نام خام','1.391902001E9','shafaarad'),'سافت ژل امگا 3');
 });
 
 test('Daya calculations follow declared quantity, price, gift and return formulas', () => {
@@ -156,7 +162,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /seen\[rowSignature\(r\)\]/);
   assert.match(v20Source, /d\.pharmacyRows=d\.pharmacyRows\.concat\(fresh\)/);
   assert.match(v20Source, /function bindSnappImportButtons/);
-  assert.match(v20Source, /try\{bindSnappImportButtons\(\);bindProductCrudV20\(\);\}/, 'critical buttons must bind synchronously');
+  assert.match(v20Source, /try\{bindSnappImportButtons\(\);bindProductCrudV20\(\);bindSafeOrderControls\(\);\}/, 'critical buttons must bind synchronously');
   assert.match(v20Source, /contenteditable='true'/);
   assert.match(v20Source, /arc-save/);
   assert.match(v20Source, /raw-save/);
@@ -179,6 +185,14 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /getUnifiedFieldList\(paneId\)/);
   assert.match(v20Source, /tablePharmaciesHeader/);
   assert.match(v20Source, /function bindListOrderObserver/);
+  assert.match(v20Source, /function bindSafeOrderControls/);
+  assert.match(v20Source, /function safeOrderFields/);
+  assert.doesNotMatch(v20Source.slice(v20Source.indexOf('function safeOrderFields'),v20Source.indexOf('function bindSafeOrderControls')),/applyFullFormLayout/);
+  assert.match(v20Source, /v20PresetSave/);
+  assert.doesNotMatch(v20Source, /v20PresetUser|v20PresetApply/);
+  assert.match(v20Source, /permissionLevelTemplates/);
+  assert.match(appSource, /userEditId/);
+  assert.match(appSource, /btnSaveUserInfo/);
   assert.match(v20Source, /function bindProductCrudV20/);
   assert.match(v20Source, /productCode/);
   assert.match(v20Source, /dayaDbCode=1111000\+code/);

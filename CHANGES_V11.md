@@ -1,3 +1,12 @@
+# نسخه ۱۱.۲۳.۰
+
+1. Shafaarad code-first map 1001..1007 ثبت؛ 1005→1391911006 و 1006→1391911005 تست شد؛ scientific code normalization/row scan فعال.
+2. کاربران: userEditId و Save Info واقعی، auth sync، role dropdown rep/sales/supervisor، permission checklist real checkbox per group/item.
+3. Preset bar فقط first level select + Save Level؛ user/apply controls حذف؛ templates در settings و create-role auto apply.
+4. server state file از server-db.json به gitignored user-data.json مهاجرت؛ Git/ZIP آن را لمس نمی‌کنند.
+5. safeOrderFields اتمی برای form/list، capture intercept order inputs/buttons، بدون applyFullFormLayout و بدون تغییر visibility.
+6. tests 18/18 سبز.
+
 # نسخه ۱۱.۲۲.۳
 
 1. Shafaarad code map اضافه: 1001→1391902001، 1002→1391911002، 1003→1391911003، 1004→1391911004، 1005→1391911006، 1006→1391911005، 1007→1391911007.

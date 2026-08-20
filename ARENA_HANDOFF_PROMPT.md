@@ -1195,3 +1195,8 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Program table headers are gray with black text. Workbook total row red and percentages string values.
 - Fixed-grid and list-order MutationObservers are required against delayed legacy renders.
 - Postcode is intentionally excluded; GPS uses watchPosition best accuracy <=15m and no fake fallback.
+## Addendum — v11.23.0
+- Never track/package user-data.json. Render needs persistent disk for file survival.
+- Permission preset UI intentionally has only level select + save-template button.
+- User edits use userEditId and update existing record/auth map.
+- Form/list order changes must stay atomic and must not call applyFullFormLayout.

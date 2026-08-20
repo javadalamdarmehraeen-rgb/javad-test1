@@ -1374,4 +1374,13 @@ not overwrite local current state through automatic GET recovery. Backups are
 manual recovery only. Existing empty arrays mean intentional deletion and must
 stay empty. Unit tests must fail if old records/layout are reintroduced.
 
+# 72. USER DATA FILE + ATOMIC ORDER RULE (PERMANENT)
+
+Runtime manager data is stored separately in git-ignored `user-data.json` and
+current browser storage; application ZIP/Git changes must never include or overwrite
+it. A persistent Render disk is required for server-file survival across deployments.
+Form/list order changes must use atomic reorder logic that preserves all visibility
+flags and never calls destructive full-layout rebuilds. Permission templates and user
+edits must be explicitly saved by the manager.
+
 # END OF AI RULES

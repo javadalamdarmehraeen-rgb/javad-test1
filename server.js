@@ -6,7 +6,11 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const SERVER_DATA_PATH = path.join(__dirname, "server-db.json");
+const SERVER_DATA_PATH = path.join(__dirname, "user-data.json");
+const LEGACY_DATA_PATH = path.join(__dirname, "server-db.json");
+if (!fs.existsSync(SERVER_DATA_PATH) && fs.existsSync(LEGACY_DATA_PATH)) {
+  try { fs.copyFileSync(LEGACY_DATA_PATH, SERVER_DATA_PATH); } catch (e) {}
+}
 const PUBLIC_DIR = path.join(__dirname, "public");
 
 const MIME = {
@@ -91,7 +95,7 @@ const server = http.createServer((req, res) => {
     return send(req, res, 200, JSON.stringify({
       ok: true, status: "healthy", message: "OK",
       service: "namayandeelmi-javad-crm",
-      version: "11.22.3",
+      version: "11.23.0",
       timestamp: new Date().toISOString()
     }), "application/json; charset=utf-8");
   }
@@ -205,5 +209,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, "0.0.0.0", () => {
-  console.log("CRM v11.22.3 listening on 0.0.0.0:" + PORT);
+  console.log("CRM v11.23.0 listening on 0.0.0.0:" + PORT);
 });

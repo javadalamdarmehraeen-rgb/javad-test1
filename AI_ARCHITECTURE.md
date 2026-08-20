@@ -1106,3 +1106,8 @@ Then change only what is requested.
 - v20 `bulkDb/bulkPut/bulkGet`, `saveBulkVault`, `initBulkVault` own Excel persistence.
 - Auto backup is gated by `__CRM_BULK_READY`; manual in-memory backup still includes hydrated bulk.
 - Product code mapping is master-data-first; Daya unknown codes are omitted until product registration.
+## معماری افزوده v11.23.0 — User data isolation
+- server.js API state path: user-data.json; legacy server-db copied once; both ignored.
+- Browser current state remains authoritative; user-data is a separate server snapshot.
+- Permissions: real checkbox tree + saved level templates.
+- Atomic ordering writes sequential metadata and directly moves DOM without full layout rebuild.

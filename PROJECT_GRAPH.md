@@ -27,7 +27,7 @@
 
 ## ب) کارت فایل‌ها (نقش + توابع + نام‌های window که می‌سازد)
 
-### `server.js` (9666 بایت)
+### `server.js` (9884 بایت)
 - نقش: سرور سبک Node.js برای Render — ورود جدا، gzip، health، ژئوکد، محدودیت نرخ
 - تعداد توابع داخلی: 4
 - endpointهای سرور: `/api/backup`, `/api/backup/email`, `/api/state`, `/api/state`
@@ -56,12 +56,12 @@
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (170235 بایت)
+### `public/crm-app.js` (173061 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 164
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `_editingProductId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
 
-### `public/crm-data.js` (50314 بایت)
+### `public/crm-data.js` (50877 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 1
 
@@ -115,9 +115,9 @@
 - تعداد توابع داخلی: 65
 - نام‌های window که تعریف/بازنویسی می‌کند: `_v18DefaultReq`, `_v19BackupLayoutGuard`, `_v19ComboHook`, `_v19Hist`, `_v19IcObs`, `_v19ProdTableWrap`, `_v19Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `extraListColumns`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderPharmaciesList`, `switchTab`, `testServerConnectivity`
 
-### `public/crm-features-v20.js` (180840 بایت)
+### `public/crm-features-v20.js` (184646 بایت)
 - نقش: ============================================================
-- تعداد توابع داخلی: 207
+- تعداد توابع داخلی: 216
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFullFormLayout`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `editProductCatalogItem`, `extraListColumns`, `getUnifiedFieldList`, `openRowDetailsModal`, `performAutoBackup`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`, `v20RenderProductExtras`, `v20SetupSnappCorporate`
 
 ### `public/crm-features-v9.js` (70229 بایت)
@@ -140,7 +140,7 @@
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (1145 بایت)
-- نقش: const CACHE = "ttt-v11.22.3";
+- نقش: const CACHE = "ttt-v11.23.0";
 - تعداد توابع داخلی: 0
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -210,7 +210,7 @@
 - `CRM_APP_STATE_V2` ← localStorage: `public/crm-features-v10.js`, `public/crm-features-v19.js`
 - `CRM_DIAG_LOG` ← localStorage: `public/crm-features-v11.js`
 - `CRM_LAST_GPS` ← localStorage: `public/crm-features-v11.js`
-- `CRM_USERS_AUTH` ← localStorage: `public/crm-features-v11.js`, `public/crm-features-v20.js`
+- `CRM_USERS_AUTH` ← localStorage: `public/crm-app.js`, `public/crm-features-v11.js`, `public/crm-features-v20.js`
 - `crmLoggedIn` ← sessionStorage: `public/crm-app.js`, `public/crm-features-v10.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`
 - `crmUserId` ← sessionStorage: `public/crm-features-v9.js`
 - `crmUserName` ← sessionStorage: `public/crm-features-v10.js`, `public/crm-features-v11.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`
@@ -354,7 +354,8 @@
 - `public/crm-features-v19.js` → 2 شناسه (مثل: `diagnosticsStatusBox`, `diagnosticsVisual`)
 
 ### tab-users-permissions «👤 کاربران و دسترسی»
-- `public/crm-app.js` → 14 شناسه (مثل: `btnExportUsersCSV`, `btnPermSelectAll`, `btnPermSelectNone`, `btnToggleShowAllPasswords`, `formCreateUser`, `newFullName`, `newPassword`, `newPhone`)
+- `public/crm-app.js` → 16 شناسه (مثل: `btnExportUsersCSV`, `btnPermSelectAll`, `btnPermSelectNone`, `btnSaveUserInfo`, `btnToggleShowAllPasswords`, `formCreateUser`, `newFullName`, `newPassword`)
+- `public/crm-features-v20.js` → 1 شناسه (مثل: `newRole`)
 
 ## ز) نام‌های تابع تکراری در چند فایل (نقاط حساس بازنویسی)
 
@@ -393,8 +394,7 @@
 - `take` ← `public/crm-features-v13.js`, `public/crm-features-v18.js`
 - `tgt` ← `public/crm-app.js`, `public/crm-features-v9.js`
 - `type` ← `public/crm-features-v14.js`, `public/crm-features-v15.js`
-- `u` ← `public/crm-features-v11.js`, `public/crm-features-v20.js`
-- `users` ← `public/crm-app.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`
+- `users` ← `public/crm-app.js`, `public/crm-features-v9.js`
 - `ut` ← `public/crm-features-v11.js`, `public/crm-features-v12.js`, `public/crm-features-v13.js`, `public/crm-features-v14.js`, `public/crm-features-v18.js`, `public/crm-features-v19.js`
 - `v` ← `public/crm-features-v12.js`, `public/crm-features-v16.js`, `public/crm-features-v17.js`, `public/crm-jalali.js`
 - `val` ← `public/crm-app.js`, `public/crm-features-v9.js`

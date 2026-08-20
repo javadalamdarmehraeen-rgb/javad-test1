@@ -869,3 +869,5 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.22.2 است. Address ordering is country-first with postcode label. CRM_DOM_FIELD_ORDER_LOCK_V1 preserves actual core form order. Shafaarad exact zero-based map: date6 invoice5 qty7 ret9 customer3; inventory derived qty index9 = index5+index7.
 ## افزونه وضعیت نسخه ۱۱.۲۲.۳
 نسخه فعال 11.22.3 است. Shafa code mapping is code-first including 1005→1391911006 and 1006→1391911005. Table headers gray/black. Excel totals red. Fixed grid/list observers defend against late legacy mutations.
+## افزونه وضعیت نسخه ۱۱.۲۳.۰
+نسخه فعال 11.23.0 است. Runtime server snapshot path is gitignored user-data.json. Permission templates live settings.permissionLevelTemplates. User edit is update with userEditId. safeOrderFields controls atomic form/list order.

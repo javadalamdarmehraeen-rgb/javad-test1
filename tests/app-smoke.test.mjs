@@ -15,7 +15,7 @@ test.before(async () => {
   });
 });
 
-test.after(() => { if (server && !server.killed) server.kill('SIGTERM'); try { rmSync('server-db.json', { force:true }); } catch {} });
+test.after(() => { if (server && !server.killed) server.kill('SIGTERM'); try { rmSync('server-db.json', { force:true }); rmSync('user-data.json', { force:true }); } catch {} });
 
 test('automated app entry loads health, HTML, all scripts and critical UI', async () => {
   const base = `http://127.0.0.1:${port}`;

@@ -1298,5 +1298,14 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] address no postcode + best GPS + dim button
 - [x] ۱۷/۱۷ tests
 - [ ] تأیید UI واقعی کاربر
+## ۶۳) نسخه ۱۱.۲۳.۰
+- [x] code-first شفاآراد و scientific scan
+- [x] save real user edit/auth sync
+- [x] real tab/sub permission checkboxes
+- [x] save permission templates + role dropdown apply
+- [x] separate gitignored user-data.json
+- [x] atomic form/list order no disappearance
+- [x] ۱۸/۱۸ tests
+- [ ] persistent disk setup on Render for user-data file
 
 # END OF AI TASKS
