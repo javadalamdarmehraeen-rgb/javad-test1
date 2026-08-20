@@ -85,9 +85,11 @@ test('large Excel rows are stripped from localStorage metadata and delegated to 
 
 test('distributor last date comes from the final non-empty row, not import time or max sort', () => {
   const start=v20Source.indexOf('function distLastDate('),brace=v20Source.indexOf('{',start);let depth=0,end=brace;for(;end<v20Source.length;end++){if(v20Source[end]==='{')depth++;else if(v20Source[end]==='}'&&--depth===0){end++;break;}}
-  const ctx={result:null,normSnappDate:v=>String(v||''),findDistIndex:()=>0,normalizeStoredRow:r=>Array.isArray(r)?r:Object.values(r||{})};vm.createContext(ctx);vm.runInContext(`${v20Source.slice(start,end)};result=distLastDate`,ctx);
-  assert.equal(ctx.result([['1405/02/01'],['1405/01/01']],['تاریخ'],'other'),'1405/01/01');
-  const daya=Array.from({length:14},()=>''),daya2=Array.from({length:14},()=> '');daya[13]='1405/03/01';daya2[13]='1405/02/20';assert.equal(ctx.result([daya,daya2],[],'daya'),'1405/02/20');
+  const ds=v20Source.indexOf('function slashOnlyPersianDate('),db=v20Source.indexOf('{',ds);let dd=0,de=db;for(;de<v20Source.length;de++){if(v20Source[de]==='{')dd++;else if(v20Source[de]==='}'&&--dd===0){de++;break;}}
+  const ctx={result:null,enDigits:v=>String(v).replace(/[۰-۹]/g,c=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(c)),findDistIndex:()=>0,normalizeStoredRow:r=>Array.isArray(r)?r:Object.values(r||{})};vm.createContext(ctx);vm.runInContext(`${v20Source.slice(ds,de)};${v20Source.slice(start,end)};result={date:slashOnlyPersianDate,last:distLastDate}`,ctx);
+  assert.equal(ctx.result.date('14050819'),'1405/08/19');assert.equal(ctx.result.date('1405/08/19'),'1405/08/19');assert.equal(ctx.result.date('39694'),'39694');
+  assert.equal(ctx.result.last([['1405/02/01'],['1405/01/01']],['تاریخ'],'other'),'1405/01/01');
+  const daya=Array.from({length:14},()=>''),daya2=Array.from({length:14},()=> '');daya[13]='1405/03/01';daya2[13]='1405/02/20';assert.equal(ctx.result.last([daya,daya2],[],'daya'),'1405/02/20');
 });
 
 test('Snapp and distributor imports keep exact-row dedupe guards', () => {
@@ -111,5 +113,6 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /window\.deleteProductCatalogItem=function/);
   assert.match(v20Source, /tab-distributor-database/);
   assert.match(v20Source, /function fixProductInfoLabels/);
+  assert.match(v20Source, /distributorFilterGrid\{display:flex!important;flex-flow:row nowrap!important/);
   assert.match(v20Source, /\.data-table th,.data-table td/);
 });

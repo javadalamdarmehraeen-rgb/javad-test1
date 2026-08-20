@@ -1164,3 +1164,6 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Never assume imported/historical row is Array. Always normalizeStoredRow before map/join/indexing.
 - Console regression was exact `rowSignature (r||[]).map is not a function`; unit and DOM tests now cover object/cells rows.
 - Editable viewers save to batch/master rows then await IndexedDB vault.
+## Addendum — v11.21.7
+- Distributor dates MUST use slashOnlyPersianDate, never normSnappDate. 39694 must remain 39694; 14050819 becomes 1405/08/19.
+- Desktop distributor filters are forced flex row nowrap.

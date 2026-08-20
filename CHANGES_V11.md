@@ -1,3 +1,10 @@
+# نسخه ۱۱.۲۱.۷
+
+1. تبدیل تاریخ دیتابیس پخش از normSnappDate به slashOnlyPersianDate تغییر کرد: فقط ۸ رقم شمسی اسلش می‌گیرد؛ 39694 و هر مقدار دیگر دست‌نخورده می‌ماند.
+2. distLastDate و distDatePass و viewer پخش همگی slash-only شدند؛ تبدیل Excel serial/Gregorian فقط برای اسنپ باقی ماند.
+3. فیلترهای پخش در desktop >=769 با flex row nowrap و min-width 180 در یک سطر اجباری شدند؛ اسکرول داخلی در کمبود عرض.
+4. unit test دقیق 14050819→1405/08/19، 1405/08/19 unchanged و 39694 unchanged اضافه شد. ۱۰/۱۰ سبز.
+
 # نسخه ۱۱.۲۱.۶
 
 1. خطای runtime گزارش‌شده `rowSignature: (r||[]).map is not a function` رفع شد؛ normalizeStoredRow از Array/Object numeric/cells/row/data/JSON string پشتیبانی می‌کند.

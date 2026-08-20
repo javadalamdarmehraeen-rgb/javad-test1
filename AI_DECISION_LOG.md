@@ -1432,5 +1432,8 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - console trace proved non-array historical rows stopped reliableFeatureBoot. normalizeStoredRow now fronts signatures/header/date/render.
 - DOM test seeded object/cells legacy rows and verified imports/actions with zero errors.
 - DB viewers now edit and persist master rows, not only presentation.
+## تصمیم ۶۸ — نسخه ۱۱.۲۱.۷: distributor dates are slash-only, never calendar-converted (2026-08-20)
+- normSnappDate برای پخش ممنوع؛ slashOnlyPersianDate فقط compact Jalali 8-digit را format می‌کند.
+- filter grid desktop flex nowrap است تا saved grid styles نتوانند زیرهم کنند.
 
 # END OF AI DECISION LOG

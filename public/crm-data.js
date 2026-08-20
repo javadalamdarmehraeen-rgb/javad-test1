@@ -455,7 +455,9 @@ const PERMISSION_GROUPS = {
     { key: "sys_editable_excel_database", label: "ویرایش سلولی دیتابیس‌های اکسل و ذخیره مستقیم" },
     { key: "sys_product_label_titles", label: "نمایش عنوان واقعی لیبل در اطلاعات فرم کالا" },
     { key: "snapp_legacy_row_migration", label: "تبدیل ردیف‌های قدیمی object/string به آرایه استاندارد" },
-    { key: "sys_runtime_console_guard", label: "جلوگیری از توقف امکانات بعدی با داده قدیمی ناسازگار" }
+    { key: "sys_runtime_console_guard", label: "جلوگیری از توقف امکانات بعدی با داده قدیمی ناسازگار" },
+    { key: "dist_slash_only_date", label: "افزودن اسلش بدون تبدیل مقدار تاریخ دیتابیس پخش" },
+    { key: "dist_filter_single_line", label: "قرارگیری اجباری فیلترهای پخش در یک سطر دسکتاپ" }
   ]
 };
 

@@ -1244,5 +1244,12 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] label واقعی product info
 - [x] ۱۰/۱۰ tests + DOM zero error
 - [ ] تأیید فایل واقعی کاربر
+## ۵۶) نسخه ۱۱.۲۱.۷
+- [x] عدم تبدیل 39694 و مقادیر غیرشمسی
+- [x] فقط افزودن اسلش به 14050819
+- [x] last date/filter/viewer پخش slash-only
+- [x] flex nowrap یک‌سطر فیلترها
+- [x] ۱۰/۱۰ تست سبز
+- [ ] تأیید دیتابیس واقعی کاربر
 
 # END OF AI TASKS

@@ -855,3 +855,5 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.21.5 است. reliableFeatureBoot و synchronous handlers race قبل loadState را رفع می‌کنند. raw DB viewers contenteditable و saveBulkVault-backed هستند. DOM runtime test با jsdom اتصال import handlers و distributor render را تأیید کرد.
 ## افزونه وضعیت نسخه ۱۱.۲۱.۶
 نسخه فعال 11.21.6 است. normalizeStoredRow migration برای legacy Snapp rows اجباری است و قبل rowSignature/header/date اجرا می‌شود. DOM test با object/cells rows صفر runtime error داد.
+## افزونه وضعیت نسخه ۱۱.۲۱.۷
+نسخه فعال 11.21.7 است. تاریخ پخش فقط slashOnlyPersianDate است و Excel serial را تبدیل نمی‌کند. distributorFilterGrid در desktop >=769 flex nowrap است.
