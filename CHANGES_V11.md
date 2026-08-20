@@ -1,3 +1,12 @@
+# نسخه ۱۱.۲۱.۶
+
+1. خطای runtime گزارش‌شده `rowSignature: (r||[]).map is not a function` رفع شد؛ normalizeStoredRow از Array/Object numeric/cells/row/data/JSON string پشتیبانی می‌کند.
+2. snappStore همه legacy rows را پیش از filter/render به آرایه استاندارد migrate می‌کند؛ findHeaderRow و distLastDate نیز normalize می‌کنند.
+3. unit test object row/cells و DOM runtime با state قدیمی واقعی اجرا شد: ۴ handler فعال، card render، snapp rows حفظ، صفر error.
+4. setupهای اسنپ/پخش/کالا synchronous + reliable retry باقی و خطای قدیمی دیگر زنجیره را متوقف نمی‌کند.
+5. viewerهای DB contenteditable و ذخیره batch→master→IndexedDB شدند.
+6. عنوان product info از label DOM/dictionary تثبیت شد.
+
 # نسخه ۱۱.۲۱.۵
 
 1. تست واقعی DOM با jsdom اجرا و ریشه عدم اجرای امکانات پیدا شد: setup اولیه قبل از loadState کامل اجرا می‌شد و خطاها داخل try/catch پنهان بودند.

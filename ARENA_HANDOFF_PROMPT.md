@@ -1160,3 +1160,7 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Syntax/HTTP tests alone missed an early-init race. Keep synchronous bindSnappImportButtons/bindProductCrudV20 and reliableFeatureBoot on load/tab click.
 - Raw Snapp/distributor DB viewers are editable spreadsheets; saving must sync batch rows to master rows then await saveBulkVault.
 - Product info title cells must be fixed from actual labels by fixProductInfoLabels.
+## Addendum — v11.21.6
+- Never assume imported/historical row is Array. Always normalizeStoredRow before map/join/indexing.
+- Console regression was exact `rowSignature (r||[]).map is not a function`; unit and DOM tests now cover object/cells rows.
+- Editable viewers save to batch/master rows then await IndexedDB vault.

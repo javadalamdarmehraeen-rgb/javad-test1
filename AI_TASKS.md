@@ -1236,5 +1236,13 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] label واقعی اطلاعات فرم کالا
 - [x] ۱۰/۱۰ unit/smoke + DOM بدون خطا
 - [ ] تأیید فایل واقعی XLSX کاربر
+## ۵۵) نسخه ۱۱.۲۱.۶
+- [x] رفع exact TypeError rowSignature.map
+- [x] migration Object/cells/row/data/string → Array
+- [x] DOM test با legacy state و ۴ handler
+- [x] editable spreadsheet save master+IDB
+- [x] label واقعی product info
+- [x] ۱۰/۱۰ tests + DOM zero error
+- [ ] تأیید فایل واقعی کاربر
 
 # END OF AI TASKS

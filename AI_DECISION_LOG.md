@@ -1428,5 +1428,9 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - jsdom نشان داد v20 declarations load ولی init features قبل از state آماده bind نمی‌شدند؛ syntax tests کافی نبودند.
 - critical import/product handlers synchronous و reliableFeatureBoot روی load/tab click شد.
 - raw Excel viewers editable شدند و save به master rows + IndexedDB می‌نویسد.
+## تصمیم ۶۷ — نسخه ۱۱.۲۱.۶: legacy row migration fixes reported runtime crash (2026-08-20)
+- console trace proved non-array historical rows stopped reliableFeatureBoot. normalizeStoredRow now fronts signatures/header/date/render.
+- DOM test seeded object/cells legacy rows and verified imports/actions with zero errors.
+- DB viewers now edit and persist master rows, not only presentation.
 
 # END OF AI DECISION LOG

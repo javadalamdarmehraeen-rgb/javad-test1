@@ -1,6 +1,6 @@
 CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.27 | تاریخ به‌روزرسانی: 2026-08-20 (۲۹ مرداد ۱۴۰۵) | نسخه برنامه: 11.21.5
+نسخه این فایل: 1.28 | تاریخ به‌روزرسانی: 2026-08-20 (۲۹ مرداد ۱۴۰۵) | نسخه برنامه: 11.21.6
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -333,7 +333,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
 بخش ۴) تاریخچه نسخه‌ها و آخرین دوره تغییرات
 ══════════════════════════════════════════════════════════════════════════════════
 • مسیر نسخه‌ها (بازسازی از ریپو): V1 → … → V9 → V10 → V11 → V11.1 … V11.14 → V11.15
-  → V11.15.1 → V11.15.2 → V11.15.3 → V11.16.0 → V11.16.1 → V11.16.2 → V11.17.0 → V11.17.1 → V11.18.0 → V11.19.0 → V11.20.0 → V11.20.1 → V11.20.2 → V11.20.3 → V11.20.4 → V11.20.5 → V11.21.0 → V11.21.1 → V11.21.2 → V11.21.3 → V11.21.4 → V11.21.5.
+  → V11.15.1 → V11.15.2 → V11.15.3 → V11.16.0 → V11.16.1 → V11.16.2 → V11.17.0 → V11.17.1 → V11.18.0 → V11.19.0 → V11.20.0 → V11.20.1 → V11.20.2 → V11.20.3 → V11.20.4 → V11.20.5 → V11.21.0 → V11.21.1 → V11.21.2 → V11.21.3 → V11.21.4 → V11.21.5 → V11.21.6.
 • جزئیات کامل هر نسخه V9 به بعد در CHANGES_V9.md / CHANGES_V10.md / CHANGES_V11.md
   (محتوای کاملشان در بخش ۹ همین فایل هست).
 
@@ -569,13 +569,13 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     1082 بایت  .gitignore
   [متنی ]     2057 بایت  .gitlab-ci.yml
   [متنی ]    19270 بایت  AI_ARCHITECTURE.md
-  [متنی ]    44439 بایت  AI_DECISION_LOG.md
-  [متنی ]    22057 بایت  AI_PROJECT_CONTEXT.md
+  [متنی ]    44847 بایت  AI_DECISION_LOG.md
+  [متنی ]    22336 بایت  AI_PROJECT_CONTEXT.md
   [متنی ]    26521 بایت  AI_RULES.md
-  [متنی ]    30908 بایت  AI_TASKS.md
-  [متنی ]    26917 بایت  ARENA_HANDOFF_PROMPT.md
+  [متنی ]    31253 بایت  AI_TASKS.md
+  [متنی ]    27241 بایت  ARENA_HANDOFF_PROMPT.md
   [متنی ]      600 بایت  CHANGES_V10.md
-  [متنی ]    52840 بایت  CHANGES_V11.md
+  [متنی ]    53732 بایت  CHANGES_V11.md
   [متنی ]     3939 بایت  CHANGES_V9.md
   [متنی ]     1806 بایت  CLEAN_EXTRA_FILES.bat
   [متنی ]     2377 بایت  KEEP_ONLY_GITHUB.bat
@@ -600,7 +600,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     9666 بایت  server.js
   [متنی ]     2426 بایت  sync_all.sh
   [متنی ]      738 بایت  tsconfig.json
-  [متنی ]   236295 بایت  update_chat_arena.py
+  [متنی ]   241118 بایت  update_chat_arena.py
   [متنی ]    10215 بایت  update_project_graph.py
   [متنی ]     2844 بایت  .github/workflows/deploy.yml
   [متنی ]      214 بایت  .github/workflows/keep_alive.yml
@@ -609,7 +609,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     9796 بایت  mobile/src/simAuth.ts
   [متنی ]     8066 بایت  public/cloudflare-worker.js
   [متنی ]   170115 بایت  public/crm-app.js
-  [متنی ]    46374 بایت  public/crm-data.js
+  [متنی ]    46663 بایت  public/crm-data.js
   [متنی ]    13643 بایت  public/crm-features-v10.js
   [متنی ]   107737 بایت  public/crm-features-v11.js
   [متنی ]    44613 بایت  public/crm-features-v12.js
@@ -620,7 +620,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]    19662 بایت  public/crm-features-v17.js
   [متنی ]    33040 بایت  public/crm-features-v18.js
   [متنی ]    60932 بایت  public/crm-features-v19.js
-  [متنی ]   168226 بایت  public/crm-features-v20.js
+  [متنی ]   169230 بایت  public/crm-features-v20.js
   [متنی ]    69121 بایت  public/crm-features-v9.js
   [متنی ]    25683 بایت  public/crm-jalali.js
   [متنی ]   139028 بایت  public/index.html
@@ -780,7 +780,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     2276 بایت  src/lib/useLive.ts
   [متنی ]     3346 بایت  src/lib/zip.ts
   [متنی ]     2790 بایت  tests/app-smoke.test.mjs
-  [متنی ]     7668 بایت  tests/state-preservation.test.mjs
+  [متنی ]     7930 بایت  tests/state-preservation.test.mjs
   [تصویر]    23282 بایت  public/apple-touch-icon.png
   [تصویر]     4527 بایت  public/favicon.png
   [تصویر]    26208 بایت  public/icon-192.png
@@ -2624,6 +2624,91 @@ git push gitlab main
 
 
 
+──────────────────────────────── نوبت ۳۳ ────────────────────────────────
+🧑 کاربر (خلاصه همراه خطای کامل کلیدی کنسول):
+«کاربر اعلام کرد اصلاحات نسخه ۱۱.۲۱.۵ نیز اجرا نشده‌اند: آخرین تاریخ ستون ۱۴، append فایل داروخانه، چیدمان یک‌سطر فیلترها، import اسنپ و ویرایش/ذخیره دیتابیس. کنسول خطای تکراری زیر را نشان داد:
+TypeError: (r || []).map is not a function at rowSignature، سپس snappStore → renderSnappCorporate → setupSnappCorporate → reliableFeatureBoot. همین خطا هنگام مشاهده فایل و importSnappFiles نیز رخ می‌داد. کاربر همچنین خواست عنوان جدول اطلاعات فرم کالا نام label باشد نه مقدار داخل فیلد.»
+
+🤖 دستیار:
+نسخه **۱۱.۲۱.۶** آماده شد. گزارش کنسول شما ریشه واقعی مشکل را مشخص کرد.
+
+## علت اصلی
+برخی ردیف‌های قدیمی اسنپ به‌جای آرایه، با یکی از این ساختارها ذخیره شده بودند:
+- object با کلیدهای عددی؛
+- `{ cells: [...] }`؛
+- `{ row: [...] }`؛
+- `{ data: [...] }`؛
+- رشته JSON.
+
+تابع قدیمی `rowSignature` مستقیم `.map()` اجرا می‌کرد و با اولین ردیف object متوقف می‌شد. چون این خطا در ابتدای `setupSnappCorporate` بود، تمام امکانات بعدی نیز اجرا نمی‌شدند؛ به همین دلیل نسخه ۵ ظاهراً هیچ اصلاحی اعمال نکرد.
+
+## اصلاح ردیف‌های قدیمی
+تابع `normalizeStoredRow` اضافه شد و قبل از هر map/join/indexing اجرا می‌شود. همه ساختارهای قدیمی به آرایه استاندارد تبدیل می‌شوند و هیچ ردیفی صرفاً به‌دلیل شکل قدیمی حذف نمی‌شود.
+
+این تبدیل در مسیرهای زیر اعمال شد:
+- `snappStore`؛
+- `rowSignature`؛
+- تشخیص سرستون؛
+- آخرین تاریخ ستون ۱۴؛
+- نمایش و ویرایش دیتابیس؛
+- جمع سفر و شارژ؛
+- import فایل جدید.
+
+## تست دقیق همان خطای کنسول
+یک state آزمایشی با این داده‌ها ساخته شد:
+
+```js
+rows: [{0: '1405/05/29 10:00', 1: '...', 7: '1000'}]
+topups: [{cells: ['1405/05/29 09:00', '500']}]
+```
+
+سپس برنامه داخل DOM واقعی اجرا شد. نتیجه:
+- دکمه ورود سفر: function؛
+- دکمه ورود شارژ: function؛
+- onchange سفر: function؛
+- onchange شارژ: function؛
+- کارت پخش و عنوان آخرین تاریخ: نمایش داده شد؛
+- ردیف قدیمی اسنپ: حفظ شد؛
+- خطای runtime: صفر.
+
+## آخرین تاریخ و Append
+پس از رفع crash، کد مربوط به آخرین تاریخ اکنون اجرا می‌شود:
+- دایا: آخرین سطر فیزیکی غیرخالی ستون ۱۴؛
+- عنوان: آخرین تاریخ داروخانه؛
+- داده قبلی داروخانه حفظ؛
+- fresh rows به انتهای دیتابیس اضافه می‌شوند.
+
+## فیلترهای پخش
+در دسکتاپ، پنج فیلد با قانون اجباری پنج‌ستونه در یک سطر هستند. این CSS قبلاً وجود داشت اما به‌دلیل توقف زنجیره setup، کل بخش آماده نمی‌شد.
+
+## ویرایش مستقیم دیتابیس
+دیتابیس اسنپ و پخش اکنون spreadsheet داخلی است:
+- سلول‌ها قابل ویرایش؛
+- کلید ذخیره تغییرات؛
+- تغییر batch با master rows هماهنگ؛
+- IndexedDB ذخیره؛
+- گزارش‌ها دوباره محاسبه می‌شوند.
+
+## عنوان اطلاعات فرم کالا
+تابع `fixProductInfoLabels` عنوان ستون را از label واقعی DOM یا واژه‌نامه کد/نام/قیمت/موجودی می‌گیرد. MutationObserver بعد از هر render آن را دوباره کنترل می‌کند.
+
+## نتایج آزمون
+- unit/smoke: **۱۰ از ۱۰ موفق**؛
+- تست جدید object row و cells row: **موفق**؛
+- تست DOM با state قدیمی: **موفق و بدون خطا**؛
+- build: **موفق**؛
+- سلامت سرور: **نسخه 11.21.6**.
+
+```powershell
+git add -A
+git commit -m "v11.21.6: رفع خطای ردیف قدیمی و اجرای واقعی امکانات"
+git pull --no-rebase origin main
+git push origin main
+git push gitlab main
+```
+
+
+
 
 ══════════════════════════════════════════════════════════════════════════════════
 بخش ۹) محتوای کامل فایل‌های پروژه — بدون هیچ سانسور یا پنهان‌کاری
@@ -3950,7 +4035,7 @@ Then change only what is requested.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_DECISION_LOG.md (44439 بایت)
+فایل: AI_DECISION_LOG.md (44847 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI DECISION LOG
@@ -5383,12 +5468,16 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - jsdom نشان داد v20 declarations load ولی init features قبل از state آماده bind نمی‌شدند؛ syntax tests کافی نبودند.
 - critical import/product handlers synchronous و reliableFeatureBoot روی load/tab click شد.
 - raw Excel viewers editable شدند و save به master rows + IndexedDB می‌نویسد.
+## تصمیم ۶۷ — نسخه ۱۱.۲۱.۶: legacy row migration fixes reported runtime crash (2026-08-20)
+- console trace proved non-array historical rows stopped reliableFeatureBoot. normalizeStoredRow now fronts signatures/header/date/render.
+- DOM test seeded object/cells legacy rows and verified imports/actions with zero errors.
+- DB viewers now edit and persist master rows, not only presentation.
 
 # END OF AI DECISION LOG
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_PROJECT_CONTEXT.md (22057 بایت)
+فایل: AI_PROJECT_CONTEXT.md (22336 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI PROJECT CONTEXT
@@ -6246,6 +6335,8 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.21.4 است. Snapp import از button IDs و robust input onchange استفاده می‌کند. distLastDate آخرین سطر معتبر و Daya column14 است. distributorFilterGrid در desktop 5 columns است.
 ## افزونه وضعیت نسخه ۱۱.۲۱.۵
 نسخه فعال 11.21.5 است. reliableFeatureBoot و synchronous handlers race قبل loadState را رفع می‌کنند. raw DB viewers contenteditable و saveBulkVault-backed هستند. DOM runtime test با jsdom اتصال import handlers و distributor render را تأیید کرد.
+## افزونه وضعیت نسخه ۱۱.۲۱.۶
+نسخه فعال 11.21.6 است. normalizeStoredRow migration برای legacy Snapp rows اجباری است و قبل rowSignature/header/date اجرا می‌شود. DOM test با object/cells rows صفر runtime error داد.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -7632,7 +7723,7 @@ stay empty. Unit tests must fail if old records/layout are reintroduced.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_TASKS.md (30908 بایت)
+فایل: AI_TASKS.md (31253 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI TASKS
@@ -8873,12 +8964,20 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] label واقعی اطلاعات فرم کالا
 - [x] ۱۰/۱۰ unit/smoke + DOM بدون خطا
 - [ ] تأیید فایل واقعی XLSX کاربر
+## ۵۵) نسخه ۱۱.۲۱.۶
+- [x] رفع exact TypeError rowSignature.map
+- [x] migration Object/cells/row/data/string → Array
+- [x] DOM test با legacy state و ۴ handler
+- [x] editable spreadsheet save master+IDB
+- [x] label واقعی product info
+- [x] ۱۰/۱۰ tests + DOM zero error
+- [ ] تأیید فایل واقعی کاربر
 
 # END OF AI TASKS
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: ARENA_HANDOFF_PROMPT.md (26917 بایت)
+فایل: ARENA_HANDOFF_PROMPT.md (27241 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # ARENA AI MASTER HANDOFF PROMPT
@@ -10043,6 +10142,10 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Syntax/HTTP tests alone missed an early-init race. Keep synchronous bindSnappImportButtons/bindProductCrudV20 and reliableFeatureBoot on load/tab click.
 - Raw Snapp/distributor DB viewers are editable spreadsheets; saving must sync batch rows to master rows then await saveBulkVault.
 - Product info title cells must be fixed from actual labels by fixProductInfoLabels.
+## Addendum — v11.21.6
+- Never assume imported/historical row is Array. Always normalizeStoredRow before map/join/indexing.
+- Console regression was exact `rowSignature (r||[]).map is not a function`; unit and DOM tests now cover object/cells rows.
+- Editable viewers save to batch/master rows then await IndexedDB vault.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -10062,9 +10165,18 @@ Leaflet محلی. فونت گوگل حذف شد. gzip روی JS/CSS/HTML.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: CHANGES_V11.md (52840 بایت)
+فایل: CHANGES_V11.md (53732 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
+# نسخه ۱۱.۲۱.۶
+
+1. خطای runtime گزارش‌شده `rowSignature: (r||[]).map is not a function` رفع شد؛ normalizeStoredRow از Array/Object numeric/cells/row/data/JSON string پشتیبانی می‌کند.
+2. snappStore همه legacy rows را پیش از filter/render به آرایه استاندارد migrate می‌کند؛ findHeaderRow و distLastDate نیز normalize می‌کنند.
+3. unit test object row/cells و DOM runtime با state قدیمی واقعی اجرا شد: ۴ handler فعال، card render، snapp rows حفظ، صفر error.
+4. setupهای اسنپ/پخش/کالا synchronous + reliable retry باقی و خطای قدیمی دیگر زنجیره را متوقف نمی‌کند.
+5. viewerهای DB contenteditable و ذخیره batch→master→IndexedDB شدند.
+6. عنوان product info از label DOM/dictionary تثبیت شد.
+
 # نسخه ۱۱.۲۱.۵
 
 1. تست واقعی DOM با jsdom اجرا و ریشه عدم اجرای امکانات پیدا شد: setup اولیه قبل از loadState کامل اجرا می‌شد و خطاها داخل try/catch پنهان بودند.
@@ -10990,7 +11102,7 @@ update_project_graph.py
 - تعداد توابع داخلی: 163
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `_editingProductId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
 
-### `public/crm-data.js` (46374 بایت)
+### `public/crm-data.js` (46663 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 1
 
@@ -11044,9 +11156,9 @@ update_project_graph.py
 - تعداد توابع داخلی: 65
 - نام‌های window که تعریف/بازنویسی می‌کند: `_v18DefaultReq`, `_v19BackupLayoutGuard`, `_v19ComboHook`, `_v19Hist`, `_v19IcObs`, `_v19ProdTableWrap`, `_v19Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `extraListColumns`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderPharmaciesList`, `switchTab`, `testServerConnectivity`
 
-### `public/crm-features-v20.js` (168226 بایت)
+### `public/crm-features-v20.js` (169230 بایت)
 - نقش: ============================================================
-- تعداد توابع داخلی: 189
+- تعداد توابع داخلی: 190
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFullFormLayout`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `editProductCatalogItem`, `extraListColumns`, `getUnifiedFieldList`, `openRowDetailsModal`, `performAutoBackup`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`, `v20RenderProductExtras`, `v20SetupSnappCorporate`
 
 ### `public/crm-features-v9.js` (69121 بایت)
@@ -11069,7 +11181,7 @@ update_project_graph.py
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (1145 بایت)
-- نقش: const CACHE = "ttt-v11.21.5";
+- نقش: const CACHE = "ttt-v11.21.6";
 - تعداد توابع داخلی: 0
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -12389,13 +12501,13 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.21.5",
+  "version": "11.21.6",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
       "name": "namayandeelmi-javad-crm",
-      "version": "11.21.5",
+      "version": "11.21.6",
       "license": "MIT",
       "engines": {
         "node": ">=20.0.0"
@@ -12411,7 +12523,7 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.21.5",
+  "version": "11.21.6",
   "description": "سیستم جامع مدیریت و ویزیت علمی، داروخانه‌ها، پزشکان و سفارشات (CRM / PWA) هماهنگ با Render و Neon",
   "main": "server.js",
   "engines": {
@@ -12602,7 +12714,7 @@ const server = http.createServer((req, res) => {
     return send(req, res, 200, JSON.stringify({
       ok: true, status: "healthy", message: "OK",
       service: "namayandeelmi-javad-crm",
-      version: "11.21.5",
+      version: "11.21.6",
       timestamp: new Date().toISOString()
     }), "application/json; charset=utf-8");
   }
@@ -12716,7 +12828,7 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, "0.0.0.0", () => {
-  console.log("CRM v11.21.5 listening on 0.0.0.0:" + PORT);
+  console.log("CRM v11.21.6 listening on 0.0.0.0:" + PORT);
 });
 ~~~~~~~~
 
@@ -12838,7 +12950,7 @@ git status -sb
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: update_chat_arena.py (236295 بایت)
+فایل: update_chat_arena.py (241118 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~python
 #!/usr/bin/env python3
@@ -12892,7 +13004,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.27 | تاریخ به‌روزرسانی: 2026-08-20 (۲۹ مرداد ۱۴۰۵) | نسخه برنامه: 11.21.5
+نسخه این فایل: 1.28 | تاریخ به‌روزرسانی: 2026-08-20 (۲۹ مرداد ۱۴۰۵) | نسخه برنامه: 11.21.6
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -13225,7 +13337,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
 بخش ۴) تاریخچه نسخه‌ها و آخرین دوره تغییرات
 ══════════════════════════════════════════════════════════════════════════════════
 • مسیر نسخه‌ها (بازسازی از ریپو): V1 → … → V9 → V10 → V11 → V11.1 … V11.14 → V11.15
-  → V11.15.1 → V11.15.2 → V11.15.3 → V11.16.0 → V11.16.1 → V11.16.2 → V11.17.0 → V11.17.1 → V11.18.0 → V11.19.0 → V11.20.0 → V11.20.1 → V11.20.2 → V11.20.3 → V11.20.4 → V11.20.5 → V11.21.0 → V11.21.1 → V11.21.2 → V11.21.3 → V11.21.4 → V11.21.5.
+  → V11.15.1 → V11.15.2 → V11.15.3 → V11.16.0 → V11.16.1 → V11.16.2 → V11.17.0 → V11.17.1 → V11.18.0 → V11.19.0 → V11.20.0 → V11.20.1 → V11.20.2 → V11.20.3 → V11.20.4 → V11.20.5 → V11.21.0 → V11.21.1 → V11.21.2 → V11.21.3 → V11.21.4 → V11.21.5 → V11.21.6.
 • جزئیات کامل هر نسخه V9 به بعد در CHANGES_V9.md / CHANGES_V10.md / CHANGES_V11.md
   (محتوای کاملشان در بخش ۹ همین فایل هست).
 
@@ -15257,6 +15369,91 @@ MutationObserver نیز بعد از هر render مجدد عنوان‌ها را 
 ```powershell
 git add -A
 git commit -m "v11.21.5: رفع اجرای دکمه‌ها و ویرایش دیتابیس اکسل"
+git pull --no-rebase origin main
+git push origin main
+git push gitlab main
+```
+
+
+
+──────────────────────────────── نوبت ۳۳ ────────────────────────────────
+🧑 کاربر (خلاصه همراه خطای کامل کلیدی کنسول):
+«کاربر اعلام کرد اصلاحات نسخه ۱۱.۲۱.۵ نیز اجرا نشده‌اند: آخرین تاریخ ستون ۱۴، append فایل داروخانه، چیدمان یک‌سطر فیلترها، import اسنپ و ویرایش/ذخیره دیتابیس. کنسول خطای تکراری زیر را نشان داد:
+TypeError: (r || []).map is not a function at rowSignature، سپس snappStore → renderSnappCorporate → setupSnappCorporate → reliableFeatureBoot. همین خطا هنگام مشاهده فایل و importSnappFiles نیز رخ می‌داد. کاربر همچنین خواست عنوان جدول اطلاعات فرم کالا نام label باشد نه مقدار داخل فیلد.»
+
+🤖 دستیار:
+نسخه **۱۱.۲۱.۶** آماده شد. گزارش کنسول شما ریشه واقعی مشکل را مشخص کرد.
+
+## علت اصلی
+برخی ردیف‌های قدیمی اسنپ به‌جای آرایه، با یکی از این ساختارها ذخیره شده بودند:
+- object با کلیدهای عددی؛
+- `{ cells: [...] }`؛
+- `{ row: [...] }`؛
+- `{ data: [...] }`؛
+- رشته JSON.
+
+تابع قدیمی `rowSignature` مستقیم `.map()` اجرا می‌کرد و با اولین ردیف object متوقف می‌شد. چون این خطا در ابتدای `setupSnappCorporate` بود، تمام امکانات بعدی نیز اجرا نمی‌شدند؛ به همین دلیل نسخه ۵ ظاهراً هیچ اصلاحی اعمال نکرد.
+
+## اصلاح ردیف‌های قدیمی
+تابع `normalizeStoredRow` اضافه شد و قبل از هر map/join/indexing اجرا می‌شود. همه ساختارهای قدیمی به آرایه استاندارد تبدیل می‌شوند و هیچ ردیفی صرفاً به‌دلیل شکل قدیمی حذف نمی‌شود.
+
+این تبدیل در مسیرهای زیر اعمال شد:
+- `snappStore`؛
+- `rowSignature`؛
+- تشخیص سرستون؛
+- آخرین تاریخ ستون ۱۴؛
+- نمایش و ویرایش دیتابیس؛
+- جمع سفر و شارژ؛
+- import فایل جدید.
+
+## تست دقیق همان خطای کنسول
+یک state آزمایشی با این داده‌ها ساخته شد:
+
+```js
+rows: [{0: '1405/05/29 10:00', 1: '...', 7: '1000'}]
+topups: [{cells: ['1405/05/29 09:00', '500']}]
+```
+
+سپس برنامه داخل DOM واقعی اجرا شد. نتیجه:
+- دکمه ورود سفر: function؛
+- دکمه ورود شارژ: function؛
+- onchange سفر: function؛
+- onchange شارژ: function؛
+- کارت پخش و عنوان آخرین تاریخ: نمایش داده شد؛
+- ردیف قدیمی اسنپ: حفظ شد؛
+- خطای runtime: صفر.
+
+## آخرین تاریخ و Append
+پس از رفع crash، کد مربوط به آخرین تاریخ اکنون اجرا می‌شود:
+- دایا: آخرین سطر فیزیکی غیرخالی ستون ۱۴؛
+- عنوان: آخرین تاریخ داروخانه؛
+- داده قبلی داروخانه حفظ؛
+- fresh rows به انتهای دیتابیس اضافه می‌شوند.
+
+## فیلترهای پخش
+در دسکتاپ، پنج فیلد با قانون اجباری پنج‌ستونه در یک سطر هستند. این CSS قبلاً وجود داشت اما به‌دلیل توقف زنجیره setup، کل بخش آماده نمی‌شد.
+
+## ویرایش مستقیم دیتابیس
+دیتابیس اسنپ و پخش اکنون spreadsheet داخلی است:
+- سلول‌ها قابل ویرایش؛
+- کلید ذخیره تغییرات؛
+- تغییر batch با master rows هماهنگ؛
+- IndexedDB ذخیره؛
+- گزارش‌ها دوباره محاسبه می‌شوند.
+
+## عنوان اطلاعات فرم کالا
+تابع `fixProductInfoLabels` عنوان ستون را از label واقعی DOM یا واژه‌نامه کد/نام/قیمت/موجودی می‌گیرد. MutationObserver بعد از هر render آن را دوباره کنترل می‌کند.
+
+## نتایج آزمون
+- unit/smoke: **۱۰ از ۱۰ موفق**؛
+- تست جدید object row و cells row: **موفق**؛
+- تست DOM با state قدیمی: **موفق و بدون خطا**؛
+- build: **موفق**؛
+- سلامت سرور: **نسخه 11.21.6**.
+
+```powershell
+git add -A
+git commit -m "v11.21.6: رفع خطای ردیف قدیمی و اجرای واقعی امکانات"
 git pull --no-rebase origin main
 git push origin main
 git push gitlab main
@@ -20639,7 +20836,7 @@ function deleteProductCatalogItem(id) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-data.js (46374 بایت)
+فایل: public/crm-data.js (46663 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================================
@@ -21097,7 +21294,9 @@ const PERMISSION_GROUPS = {
     { key: "sys_no_group_date_password_code", label: "منع سه‌رقمی تاریخ، رمز و کد کالا" },
     { key: "sys_reliable_delayed_boot", label: "اتصال مطمئن امکانات پس از تکمیل بارگذاری state" },
     { key: "sys_editable_excel_database", label: "ویرایش سلولی دیتابیس‌های اکسل و ذخیره مستقیم" },
-    { key: "sys_product_label_titles", label: "نمایش عنوان واقعی لیبل در اطلاعات فرم کالا" }
+    { key: "sys_product_label_titles", label: "نمایش عنوان واقعی لیبل در اطلاعات فرم کالا" },
+    { key: "snapp_legacy_row_migration", label: "تبدیل ردیف‌های قدیمی object/string به آرایه استاندارد" },
+    { key: "sys_runtime_console_guard", label: "جلوگیری از توقف امکانات بعدی با داده قدیمی ناسازگار" }
   ]
 };
 
@@ -30191,7 +30390,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-features-v20.js (168226 بایت)
+فایل: public/crm-features-v20.js (169230 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================
@@ -30533,7 +30732,7 @@ button.v19-gps svg{display:block}
       tabs += "<button type='button' class='" + (p[0] === v20AddPane ? "v20-on" : "") + "' data-pane='" + p[0] + "'>" + p[1] + "</button>";
     });
     var h = "<div class='v20-addmgr' style='border-top:2px solid #e2e8f0;padding-top:10px;'>" +
-      "<h4 style='margin:8px 0;color:#0f172a;'>🎛️ مدیر کشویی‌ها (نسخه ۱۱.۲۱.۵) — هر فیلد، زیرمجموعه‌هایش دقیقاً زیر همان فیلد است</h4>" +
+      "<h4 style='margin:8px 0;color:#0f172a;'>🎛️ مدیر کشویی‌ها (نسخه ۱۱.۲۱.۶) — هر فیلد، زیرمجموعه‌هایش دقیقاً زیر همان فیلد است</h4>" +
       "<div class='v20-tabbar'>" + tabs + "</div>" +
       "<div class='v20-card-tools' style='margin-bottom:4px'>" +
       "<label class='v20-mini'><input type='checkbox' id='v20GreyOnChk'" + (greyOn ? " checked" : "") + "> حالت طوسی زنجیره‌ای فعال باشد</label>" +
@@ -31253,7 +31452,7 @@ button.v19-gps svg{display:block}
   }
   function renderVersionBadge() {
     var b = $("v20VersionBadge"), actions = document.querySelector(".header-actions"); if (!actions) return;
-    if (!b) { b = document.createElement("span"); b.id = "v20VersionBadge"; b.className = "v20-version"; b.textContent = "نسخه ۱۱.۲۱.۵"; b.title = "نسخه دقیق برنامه نصب‌شده"; actions.insertBefore(b, actions.firstChild); }
+    if (!b) { b = document.createElement("span"); b.id = "v20VersionBadge"; b.className = "v20-version"; b.textContent = "نسخه ۱۱.۲۱.۶"; b.title = "نسخه دقیق برنامه نصب‌شده"; actions.insertBefore(b, actions.firstChild); }
     b.style.display = v20IsManager() ? "inline-block" : "none";
   }
 
@@ -31418,13 +31617,13 @@ button.v19-gps svg{display:block}
   async function unzipEntry(buf,name){var a=new Uint8Array(buf),e=-1;for(var i=a.length-22;i>=Math.max(0,a.length-65558);i--){if(u32(a,i)===0x06054b50){e=i;break;}}if(e<0)throw Error("ساختار ZIP اکسل پیدا نشد");var count=u16(a,e+10),pos=u32(a,e+16),dec=new TextDecoder("utf-8");for(var n=0;n<count;n++){if(u32(a,pos)!==0x02014b50)break;var method=u16(a,pos+10),size=u32(a,pos+20),nl=u16(a,pos+28),xl=u16(a,pos+30),cl=u16(a,pos+32),local=u32(a,pos+42),fn=dec.decode(a.slice(pos+46,pos+46+nl));if(fn===name){var lnl=u16(a,local+26),lxl=u16(a,local+28),data=a.slice(local+30+lnl+lxl,local+30+lnl+lxl+size);if(method===0)return dec.decode(data);if(method!==8||typeof DecompressionStream==="undefined")throw Error("مرورگر امکان بازکردن این فایل XLSX را ندارد");var stream=new Blob([data]).stream().pipeThrough(new DecompressionStream("deflate-raw"));return dec.decode(await new Response(stream).arrayBuffer());}pos+=46+nl+xl+cl;}return"";}
   async function parseXlsx(file){var buf=await file.arrayBuffer(),ssxml=await unzipEntry(buf,"xl/sharedStrings.xml"),sheet=await unzipEntry(buf,"xl/worksheets/sheet1.xml");if(!sheet)throw Error("برگه اول اکسل پیدا نشد");var xp=new DOMParser(),shared=[];if(ssxml){var sd=xp.parseFromString(ssxml,"text/xml");Array.prototype.forEach.call(sd.querySelectorAll("si"),function(si){shared.push(Array.prototype.map.call(si.querySelectorAll("t"),function(t){return t.textContent;}).join(""));});}var doc=xp.parseFromString(sheet,"text/xml"),out=[];Array.prototype.forEach.call(doc.querySelectorAll("sheetData row"),function(r){var row=[];Array.prototype.forEach.call(r.querySelectorAll("c"),function(c){var ref=c.getAttribute("r")||"A1",letters=(ref.match(/[A-Z]+/)||["A"])[0],idx=0;for(var j=0;j<letters.length;j++)idx=idx*26+letters.charCodeAt(j)-64;idx--;var type=c.getAttribute("t"),v=(c.querySelector("v")||{}).textContent||"";if(type==="s")v=shared[Number(v)]||"";else if(type==="inlineStr")v=Array.prototype.map.call(c.querySelectorAll("t"),function(t){return t.textContent;}).join("");row[idx]=v;});out.push(row.map(function(x){return x==null?"":x;}));});return out;}
   async function parseSnappFile(file){var ext=(file.name.split(".").pop()||"").toLowerCase();if(ext==="xlsx")return parseXlsx(file);var text=await file.text();if(ext==="xls"&&text.indexOf("<table")>=0){var doc=new DOMParser().parseFromString(text,"text/html");return Array.prototype.map.call(doc.querySelectorAll("tr"),function(tr){return Array.prototype.map.call(tr.querySelectorAll("th,td"),function(td){return td.textContent.trim();});});}return parseDelimited(text);}
-  function snappStore(){var S=st();S.snappCorporate=S.snappCorporate||{};var D=S.snappCorporate;D.headers=D.headers||[];D.rows=D.rows||[];D.files=D.files||[];D.topupHeaders=D.topupHeaders||[];D.topups=D.topups||[];D.topupFiles=D.topupFiles||[];D.tripImports=D.tripImports||[];D.topupImports=D.topupImports||[];var oldCount=D.rows.length+D.topups.length,seen={};D.rows=D.rows.filter(function(r){var k=rowSignature(r);if(seen[k])return false;seen[k]=1;return true;});seen={};D.topups=D.topups.filter(function(r){var k=rowSignature(r);if(seen[k])return false;seen[k]=1;return true;});if(D.rows.length+D.topups.length<oldCount)setTimeout(function(){try{saveState(false);}catch(e){}},0);return D;}
+  function snappStore(){var S=st();S.snappCorporate=S.snappCorporate||{};var D=S.snappCorporate;D.headers=D.headers||[];D.rows=D.rows||[];D.files=D.files||[];D.topupHeaders=D.topupHeaders||[];D.topups=D.topups||[];D.topupFiles=D.topupFiles||[];D.tripImports=Array.isArray(D.tripImports)?D.tripImports:[];D.topupImports=Array.isArray(D.topupImports)?D.topupImports:[];D.rows=(Array.isArray(D.rows)?D.rows:Object.values(D.rows||{})).map(normalizeStoredRow).filter(function(r){return r.length;});D.topups=(Array.isArray(D.topups)?D.topups:Object.values(D.topups||{})).map(normalizeStoredRow).filter(function(r){return r.length;});var oldCount=D.rows.length+D.topups.length,seen={};D.rows=D.rows.filter(function(r){var k=rowSignature(r);if(seen[k])return false;seen[k]=1;return true;});seen={};D.topups=D.topups.filter(function(r){var k=rowSignature(r);if(seen[k])return false;seen[k]=1;return true;});if(D.rows.length+D.topups.length<oldCount)setTimeout(function(){try{saveState(false);}catch(e){}},0);return D;}
   function snappIndexes(headers){function find(re,fb){for(var i=0;i<headers.length;i++)if(re.test(String(headers[i])))return i;return fb;}return{date:find(/تاریخ.*(سفر|درخواست|انجام)|تاریخ/,0),rep:find(/نماینده|مسافر|کارمند|درخواست.?کننده|نام و نام خانوادگی/,1),amount:find(/مبلغ.*(کل|پرداخت)|هزینه|کرایه|قیمت/,23)};}
   function normPerson(v){return norm(String(v||"").replace(/(^|[\s،,])(سرکار\s*خانم|جناب\s*آقای?|آقای?|اقای?|آقا|اقا|خانم)(?=\s|$)/g," "));}
   function personMatch(a,b){a=normPerson(a);b=normPerson(b);return !!a&&!!b&&(a===b||(a.length>=4&&b.indexOf(a)>=0)||(b.length>=4&&a.indexOf(b)>=0));}
   function splitSnappDateTime(v){var s=enDigits(v).trim(),m=s.match(/(1[34]\d{2}[\/\-]\d{1,2}[\/\-]\d{1,2})\s*(.*)/);return{date:m?normSnappDate(m[1]):normSnappDate(s),time:m?(m[2]||"—"):"—"};}
   function tripSchema(h){function ix(name,fb){for(var i=0;i<h.length;i++)if(norm(h[i])===norm(name))return i;return fb;}return{start:ix("تاریخ و ساعت شروع سفر",0),end:ix("تاریخ و ساعت پایان سفر",1),rep:ix("نام مسافر",2),origin:ix("مبدأ",3),dest:ix("مقصد",4),dest2:ix("مقصد دوم",5),service:ix("نوع سرویس",6),amount:ix("هزینه",7),city:ix("شهر",8)};}
-  function findHeaderRow(rows,type){var best=0,score=-1;for(var i=0;i<Math.min(rows.length,25);i++){var r=rows[i]||[],txt=r.join(" "),non=r.filter(function(x){return String(x).trim();}).length,s=non+(type==="topup"&&/تاریخ/.test(txt)&&/افزایش.*موجودی/.test(txt)?100:0)+(type==="trip"&&/تاریخ|مبلغ|سفر|مسافر/.test(txt)?20:0);if(s>score){score=s;best=i;}}return best;}
+  function findHeaderRow(rows,type){var best=0,score=-1;for(var i=0;i<Math.min(rows.length,25);i++){var r=normalizeStoredRow(rows[i]),txt=r.join(" "),non=r.filter(function(x){return String(x).trim();}).length,s=non+(type==="topup"&&/تاریخ/.test(txt)&&/افزایش.*موجودی/.test(txt)?100:0)+(type==="trip"&&/تاریخ|مبلغ|سفر|مسافر/.test(txt)?20:0);if(s>score){score=s;best=i;}}return best;}
   function repairSnappHeaders(D){if((!D.headers.length||D.headers.every(function(x,i){return !x||/^ستون\s*\d+/.test(String(x));}))&&D.rows.length){var hi=findHeaderRow(D.rows,"trip"),cand=D.rows[hi];if(cand&&cand.filter(Boolean).length>2){D.headers=cand.slice();D.rows.splice(hi,1);}}}
   function temporalMode(prefix){if($(prefix+"ModeMonth")&&$(prefix+"ModeMonth").checked)return"month";if($(prefix+"ModeYear")&&$(prefix+"ModeYear").checked)return"year";if(($(prefix+"ModeFrom")&&$(prefix+"ModeFrom").checked)||($(prefix+"ModeTo")&&$(prefix+"ModeTo").checked))return"range";return"all";}
   function snappFilters(){return{mode:temporalMode("snappTrip"),year:enDigits(($("snappFilterYear")||{}).value||""),month:enDigits(($("snappFilterMonth")||{}).value||""),rep:String(($("snappFilterRep")||{}).value||""),from:normSnappDate(($("snappFilterFrom")||{}).value||""),to:normSnappDate(($("snappFilterTo")||{}).value||"")};}
@@ -31432,7 +31631,8 @@ button.v19-gps svg{display:block}
   function updateSnappLatestDates(D){var bar=$("snappLatestDatesBar");if(!bar)return;var ti=tripSchema(D.headers||[]),ui=topupIndexes(D.topupHeaders||[]),trip=(D.rows||[]).map(function(r){return splitSnappDateTime(r[ti.start]).date;}).filter(Boolean).sort().pop()||"—",top=(D.topups||[]).map(function(r){return splitSnappDateTime(r[ui.date]).date;}).filter(Boolean).sort().pop()||"—";bar.innerHTML="<span>📅 آخرین تاریخ فایل سفر: "+esc(trip)+"</span><span>💳 آخرین تاریخ فایل افزایش موجودی: "+esc(top)+"</span>";}
   function renderSnappCorporate(){var D=snappStore();repairSnappHeaders(D);var h=D.headers||[],idx=tripSchema(h),f=snappFilters(),repSel=$("snappFilterRep"),cur=repSel?repSel.value:"",users=((st().users)||[]).filter(function(u){return u&&u.fullName&&!/مدیر سیستم/.test(u.fullName)&&u.username!=="admin";});if(repSel){repSel.innerHTML="<option value=''>همه نمایندگان</option>"+users.map(function(u){return"<option value='"+esc(u.fullName)+"'>"+esc(u.fullName)+"</option>";}).join("");repSel.value=cur;}
     snappFilteredRows=(D.rows||[]).filter(function(r){var dt=splitSnappDateTime(r[idx.start]);return datePass(dt.date,f)&&(!f.rep||personMatch(r[idx.rep],f.rep));});var total=snappFilteredRows.reduce(function(sum,r){return sum+snappNumber(r[idx.amount]);},0),by={};snappFilteredRows.forEach(function(r){var raw=String(r[idx.rep]||"نامشخص"),matched=users.filter(function(u){return personMatch(u.fullName,raw);})[0],n=matched?matched.fullName:raw;by[n]=by[n]||{n:0,sum:0};by[n].n++;by[n].sum+=snappNumber(r[idx.amount]);});var cards=$("snappSummaryCards");if(cards)cards.innerHTML=[["تعداد سفر",snappFilteredRows.length.toLocaleString("fa-IR")],["جمع کل",total.toLocaleString("fa-IR")+" ریال"],["تعداد نمایندگان",Object.keys(by).length.toLocaleString("fa-IR")],["آخرین ورود",D.lastImport||"—"]].map(function(x){return"<div class='v20-metric'>"+x[0]+"<b>"+x[1]+"</b></div>";}).join("");var rb=$("snappRepSummaryBody");if(rb)rb.innerHTML=Object.keys(by).sort().map(function(n,i){return"<tr><td>"+(i+1)+"</td><td><strong>"+esc(n)+"</strong></td><td>"+by[n].n.toLocaleString("fa-IR")+"</td><td>"+by[n].sum.toLocaleString("fa-IR")+" ریال</td></tr>";}).join("")||"<tr><td colspan='4'>داده‌ای در این بازه نیست.</td></tr>";var heads=["تاریخ شروع سفر","ساعت شروع سفر","تاریخ پایان سفر","ساعت پایان سفر","نام مسافر","مبدأ","مقصد","مقصد دوم","نوع سرویس","هزینه","شهر"],hh=$("snappReportHead");if(hh)hh.innerHTML=heads.map(function(x){return"<th>"+x+"</th>";}).join("");var body=$("snappReportBody");if(body)body.innerHTML=snappFilteredRows.slice(0,2000).map(function(r){var stt=splitSnappDateTime(r[idx.start]),endt=splitSnappDateTime(r[idx.end]),vals=[stt.date,stt.time,endt.date,endt.time,r[idx.rep],r[idx.origin],r[idx.dest],r[idx.dest2],r[idx.service],r[idx.amount],r[idx.city]];return"<tr>"+vals.map(function(v){return"<td>"+esc(v||"")+"</td>";}).join("")+"</tr>";}).join("")||"<tr><td colspan='11'>فایلی وارد نشده یا نتیجه‌ای نیست.</td></tr>";var status=$("snappDailyStatus");if(status)status.textContent=D.rows.length?(D.rows.length.toLocaleString("fa-IR")+" ردیف سفر یکتا، دائمی و داخل پشتیبان ذخیره شده است."):"گزارشی وارد نشده است.";updateSnappLatestDates(D);renderSnappTopups();}
-  function rowSignature(r){var a=(r||[]).map(function(x){return enDigits(String(x==null?"":x)).replace(/\s+/g," ").trim();});while(a.length&&a[a.length-1]==="")a.pop();return a.join("¦");}
+  function normalizeStoredRow(r){if(Array.isArray(r))return r.slice();if(r==null)return[];if(typeof r==="object"){if(Array.isArray(r.cells))return r.cells.slice();if(Array.isArray(r.row))return r.row.slice();if(Array.isArray(r.data))return r.data.slice();var keys=Object.keys(r),numeric=keys.filter(function(k){return /^\d+$/.test(k);}).sort(function(a,b){return Number(a)-Number(b);});if(numeric.length)return numeric.map(function(k){return r[k];});return Object.values(r).filter(function(v){return typeof v!=="object";});}if(typeof r==="string"){try{var p=JSON.parse(r);if(Array.isArray(p))return p;}catch(e){}return[r];}return[String(r)];}
+  function rowSignature(r){var a=normalizeStoredRow(r).map(function(x){return enDigits(String(x==null?"":x)).replace(/\s+/g," ").trim();});while(a.length&&a[a.length-1]==="")a.pop();return a.join("¦");}
   async function importSnappFiles(files){var D=snappStore(),all=[],names=[];for(var i=0;i<files.length;i++){try{var rows=await parseSnappFile(files[i]);if(rows.length){var hi=findHeaderRow(rows,"trip"),head=rows[hi]||[];if(!D.headers.length||D.headers.filter(Boolean).length<3)D.headers=head.slice();all=all.concat(rows.slice(hi+1));names.push(files[i].name);}}catch(e){alert("خطا در فایل «"+files[i].name+"»: "+e.message);}}var seen={},fresh=[];(D.rows||[]).forEach(function(r){seen[rowSignature(r)]=true;});all.forEach(function(r){while(r.length<24)r.push("");var k=rowSignature(r);if(!seen[k]&&r.some(function(x){return String(x).trim();})){seen[k]=true;fresh.push(r);}});if(fresh.length)D.tripImports.unshift({id:"trip-"+Date.now(),name:names.join(" + "),at:Date.now(),headers:D.headers.slice(),rows:fresh});D.rows=fresh.concat(D.rows||[]);D.files=(names.concat(D.files||[])).slice(0,200);D.lastImport=new Date().toLocaleString("fa-IR",{timeZone:"Asia/Tehran"});await saveBulkVault();save();renderSnappCorporate();v20Toast("✅ "+fresh.length.toLocaleString("fa-IR")+" ردیف جدید بالای آرشیو دائمی سفرها اضافه شد.");}
   function topupIndexes(h){var di=0,ai=1;h.forEach(function(x,i){if(/تاریخ/.test(String(x)))di=i;if(/بستانکار|افزایش.*موجودی|مبلغ.*شارژ/.test(String(x)))ai=i;});return{date:di,amount:ai};}
   function snappTopupFilters(){return{mode:temporalMode("snappTopup"),year:enDigits(($("snappTopupYear")||{}).value||""),month:enDigits(($("snappTopupMonth")||{}).value||""),from:normSnappDate(($("snappTopupFrom")||{}).value||""),to:normSnappDate(($("snappTopupTo")||{}).value||"")};}
@@ -31472,7 +31672,7 @@ button.v19-gps svg{display:block}
   var DIST_DEFS=[["daya","دایا دارو"],["shafaarad","شفاآراد"],["tivan","تیوان"],["mashateb","مشاطب"]],DIST_HEADERS=["نام کالا","فروش تعدادی","فروش ریالی به قیمت پخش","فروش ریالی به قیمت داروخانه","تعداد جایزه","ریال جایزه","درصد جایزه به فروش","تعداد مرجوعی کالا","ریال مرجوعی کالا","درصد مرجوعی به فروش","تعداد مرجوعی جایزه","ریال مرجوعی جایزه","درصد مرجوعی به جایزه","تعداد داروخانه","تعداد فاکتور","درصد فروش به‌تفکیک کالا","موجودی تعدادی","موجودی ریالی به قیمت پخش","موجودی ریالی به قیمت داروخانه"],distReportCache={};
   function distStore(){var S=st();S.distributorCompanies=S.distributorCompanies||{};DIST_DEFS.forEach(function(x){var d=S.distributorCompanies[x[0]]||(S.distributorCompanies[x[0]]={});d.id=x[0];d.name=x[1];d.url=d.url||"";d.username=d.username||"";d.pharmacyHeaders=d.pharmacyHeaders||[];d.pharmacyRows=d.pharmacyRows||[];d.pharmacyImports=d.pharmacyImports||[];d.inventoryHeaders=d.inventoryHeaders||[];d.inventoryRows=d.inventoryRows||[];});return S.distributorCompanies;}
   function renderDistributorCompanies(){var host=$("distributorCompanyGrid");if(!host)return;var ds=distStore();host.innerHTML=DIST_DEFS.map(function(x){var d=ds[x[0]],pass=sessionStorage.getItem("distPass_"+x[0])||"";return"<div class='v20-combo-card' data-dist='"+x[0]+"'><h4>🏢 "+x[1]+"</h4><div class='form-group'><label class='form-label'>آدرس پنل پخش</label><input class='form-input dist-url' value='"+esc(d.url)+"' placeholder='https://...'></div><div class='form-group'><label class='form-label'>نام کاربری</label><input class='form-input dist-user' value='"+esc(d.username)+"'></div><div class='form-group'><label class='form-label'>رمز ورود (فقط نشست جاری)</label><input type='password' class='form-input dist-pass' value='"+esc(pass)+"' autocomplete='new-password'></div><div style='display:flex;gap:7px;flex-wrap:wrap;margin-top:8px'><button type='button' class='btn btn-primary dist-save'>💾 ثبت امن اطلاعات</button><button type='button' class='btn btn-outline dist-open'>🔐 بازکردن پنل</button></div></div>";}).join("");host.onclick=function(e){var card=e.target.closest&&e.target.closest("[data-dist]");if(!card)return;var id=card.dataset.dist,d=ds[id];if(e.target.closest(".dist-save")){d.url=card.querySelector(".dist-url").value.trim();d.username=card.querySelector(".dist-user").value.trim();sessionStorage.setItem("distPass_"+id,card.querySelector(".dist-pass").value);save();v20Toast("✅ اطلاعات "+d.name+" ذخیره شد؛ رمز فقط در این نشست است.");}if(e.target.closest(".dist-open")){if(!d.url){alert("ابتدا آدرس پنل این پخش را ثبت کنید.");return;}window.open(d.url,"_blank","noopener");}};}
-  function distLastDate(rows,headers,id){var ix=id==="daya"?13:findDistIndex(headers,/تاریخ/,0),list=rows||[];for(var i=list.length-1;i>=0;i--){var d=normSnappDate((list[i]||[])[ix]);if(/^1[34]\d{2}\//.test(d))return d;}return"—";}
+  function distLastDate(rows,headers,id){var ix=id==="daya"?13:findDistIndex(headers,/تاریخ/,0),list=rows||[];for(var i=list.length-1;i>=0;i--){var d=normSnappDate(normalizeStoredRow(list[i])[ix]);if(/^1[34]\d{2}\//.test(d))return d;}return"—";}
   function renderDistributorActions(){var host=$("distributorActionGrid");if(!host)return;var ds=distStore();host.innerHTML=DIST_DEFS.map(function(x){var d=ds[x[0]];return"<div class='v20-combo-card' data-dist='"+x[0]+"'><h4>📦 "+x[1]+"</h4><div class='v20-mini'>آخرین تاریخ داروخانه: <b>"+esc((distLastDate(d.pharmacyRows,d.pharmacyHeaders,d.id)!=="—"?distLastDate(d.pharmacyRows,d.pharmacyHeaders,d.id):(d.pharmacyImports&&d.pharmacyImports[0]&&d.pharmacyImports[0].at?faDate(new Date(d.pharmacyImports[0].at)):"—")))+"</b></div><div class='v20-mini'>آخرین تاریخ موجودی: <b>"+esc((distLastDate(d.inventoryRows,d.inventoryHeaders,d.id)!=="—"?distLastDate(d.inventoryRows,d.inventoryHeaders,d.id):(d.inventoryImport&&d.inventoryImport.at?faDate(new Date(d.inventoryImport.at)):"—")))+"</b></div><div class='v20-card-tools' style='margin-top:8px'><button class='btn btn-outline dist-login'>🔐 ورود اطلاعات / پنل</button><label class='btn btn-primary btn-excel'>📊 ورود فایل داروخانه<input type='file' class='dist-ph-file' accept='.xlsx,.xls,.csv' hidden></label><label class='btn btn-primary btn-excel'>📦 ورود فایل موجودی<input type='file' class='dist-inv-file' accept='.xlsx,.xls,.csv' hidden></label></div></div>";}).join("");host.onclick=function(e){var c=e.target.closest&&e.target.closest("[data-dist]");if(!c)return;var d=ds[c.dataset.dist];if(e.target.closest(".dist-login")){if(!d.url)return alert("آدرس پنل را در تب اطلاعات شرکت‌ها ثبت کنید.");window.open(d.url,"_blank","noopener");}if(e.target.closest(".dist-view-ph"))showDistributorRaw(d,"pharmacy");if(e.target.closest(".dist-view-inv"))showDistributorRaw(d,"inventory");};Array.prototype.forEach.call(host.querySelectorAll(".dist-ph-file,.dist-inv-file"),function(inp){inp.onchange=function(){var c=inp.closest("[data-dist]"),kind=inp.classList.contains("dist-ph-file")?"pharmacy":"inventory";if(inp.files[0])importDistributorFile(c.dataset.dist,kind,inp.files[0]);inp.value="";};});}
   function renderDistributorDatabase(){var host=$("distributorDatabaseGrid");if(!host)return;var ds=distStore();host.innerHTML=DIST_DEFS.map(function(x){var d=ds[x[0]];return"<div class='v20-combo-card' data-dist='"+x[0]+"'><h4>🗄️ "+x[1]+"</h4><div>آخرین تاریخ داروخانه: <strong>"+esc((distLastDate(d.pharmacyRows,d.pharmacyHeaders,d.id)!=="—"?distLastDate(d.pharmacyRows,d.pharmacyHeaders,d.id):(d.pharmacyImports&&d.pharmacyImports[0]&&d.pharmacyImports[0].at?faDate(new Date(d.pharmacyImports[0].at)):"—")))+"</strong></div><div>آخرین تاریخ موجودی: <strong>"+esc((distLastDate(d.inventoryRows,d.inventoryHeaders,d.id)!=="—"?distLastDate(d.inventoryRows,d.inventoryHeaders,d.id):(d.inventoryImport&&d.inventoryImport.at?faDate(new Date(d.inventoryImport.at)):"—")))+"</strong></div><div class='v20-mini'>"+(d.pharmacyRows||[]).length.toLocaleString("fa-IR")+" ردیف داروخانه / "+(d.inventoryRows||[]).length.toLocaleString("fa-IR")+" ردیف موجودی / "+(d.pharmacyImports||[]).length.toLocaleString("fa-IR")+" فایل آرشیوی</div><div class='v20-card-tools' style='margin-top:10px'><button class='btn btn-outline db-ph'>👁 دیتابیس داروخانه</button><button class='btn btn-outline db-inv'>👁 موجودی فعلی</button><button class='btn btn-outline db-files'>📁 ریز فایل‌های داروخانه</button></div></div>";}).join("");host.onclick=function(e){var c=e.target.closest&&e.target.closest("[data-dist]");if(!c)return;var d=ds[c.dataset.dist];if(e.target.closest(".db-ph")||e.target.closest(".db-files"))showDistributorRaw(d,"pharmacy");if(e.target.closest(".db-inv"))showDistributorRaw(d,"inventory");};}
   async function importDistributorFile(id,kind,file){var d=distStore()[id];try{var rows=await parseSnappFile(file),hi=findHeaderRow(rows,"trip"),headers=rows[hi]||[],data=rows.slice(hi+1).filter(function(r){return r.some(function(x){return String(x).trim();});});if(kind==="pharmacy"){var seen={};d.pharmacyRows.forEach(function(r){seen[rowSignature(r)]=1;});var fresh=data.filter(function(r){var k=rowSignature(r);if(seen[k])return false;seen[k]=1;return true;});d.pharmacyHeaders=headers.slice();d.pharmacyRows=d.pharmacyRows.concat(fresh);d.pharmacyImports.unshift({id:"imp-"+Date.now(),name:file.name,at:Date.now(),lastDate:distLastDate(fresh,headers,d.id),headers:headers.slice(),rows:fresh});v20Toast("✅ "+fresh.length.toLocaleString("fa-IR")+" ردیف جدید داروخانه به انتهای "+d.name+" اضافه شد.");}else{d.inventoryHeaders=headers.slice();d.inventoryRows=data;d.inventoryImport={name:file.name,at:Date.now(),lastDate:distLastDate(data,headers,d.id),headers:headers.slice(),rows:data};v20Toast("✅ موجودی "+d.name+" با "+data.length.toLocaleString("fa-IR")+" ردیف جایگزین شد.");}await saveBulkVault();save();renderDistributorActions();renderDistributorDatabase();renderDistributorReport();}catch(e){alert("خطا در فایل "+file.name+": "+e.message);}}
@@ -33852,7 +34052,7 @@ button.v19-gps svg{display:block}
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.21.5" />
+  <link rel="stylesheet" href="style.css?v=11.21.6" />
 </head>
 <body>
 
@@ -35998,22 +36198,22 @@ button.v19-gps svg{display:block}
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.21.5"></script>
-  <script src="crm-app.js?v=11.21.5"></script>
-  <script src="crm-features-v9.js?v=11.21.5"></script>
-  <script src="iran-facilities.js?v=11.21.5" defer></script>
-  <script src="crm-features-v10.js?v=11.21.5"></script>
-  <script src="crm-features-v11.js?v=11.21.5"></script>
-  <script src="crm-features-v12.js?v=11.21.5"></script>
-  <script src="crm-features-v13.js?v=11.21.5"></script>
-  <script src="crm-jalali.js?v=11.21.5"></script>
-  <script src="crm-features-v14.js?v=11.21.5"></script>
-  <script src="crm-features-v15.js?v=11.21.5"></script>
-  <script src="crm-features-v16.js?v=11.21.5"></script>
-  <script src="crm-features-v17.js?v=11.21.5"></script>
-  <script src="crm-features-v18.js?v=11.21.5"></script>
-  <script src="crm-features-v19.js?v=11.21.5"></script>
-  <script src="crm-features-v20.js?v=11.21.5"></script>
+  <script src="crm-data.js?v=11.21.6"></script>
+  <script src="crm-app.js?v=11.21.6"></script>
+  <script src="crm-features-v9.js?v=11.21.6"></script>
+  <script src="iran-facilities.js?v=11.21.6" defer></script>
+  <script src="crm-features-v10.js?v=11.21.6"></script>
+  <script src="crm-features-v11.js?v=11.21.6"></script>
+  <script src="crm-features-v12.js?v=11.21.6"></script>
+  <script src="crm-features-v13.js?v=11.21.6"></script>
+  <script src="crm-jalali.js?v=11.21.6"></script>
+  <script src="crm-features-v14.js?v=11.21.6"></script>
+  <script src="crm-features-v15.js?v=11.21.6"></script>
+  <script src="crm-features-v16.js?v=11.21.6"></script>
+  <script src="crm-features-v17.js?v=11.21.6"></script>
+  <script src="crm-features-v18.js?v=11.21.6"></script>
+  <script src="crm-features-v19.js?v=11.21.6"></script>
+  <script src="crm-features-v20.js?v=11.21.6"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
@@ -39039,7 +39239,7 @@ self.addEventListener("fetch", (event) => {
 فایل: public/sw.js (1145 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
-const CACHE = "ttt-v11.21.5";
+const CACHE = "ttt-v11.21.6";
 const PRECACHE = ["/", "/login", "/favicon.png", "/logo.png", "/vendor/leaflet.js", "/vendor/leaflet.css"];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(PRECACHE).catch(function () {}); }).then(function () { return self.skipWaiting(); }));
@@ -64504,7 +64704,7 @@ test('state API round-trip preserves unrelated sentinel data', async () => {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/state-preservation.test.mjs (7668 بایت)
+فایل: tests/state-preservation.test.mjs (7930 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 import test from 'node:test';
@@ -64578,8 +64778,10 @@ test('Snapp numeric parser and exact-row signatures prevent strange/double total
   vm.createContext(ctx);
   vm.runInContext(`${extract('snappNumber')}; result=snappNumber`,ctx); const num=ctx.result;
   assert.equal(num('۱٬۲۳۴ ریال'),1234); assert.equal(num(''),0); assert.equal(num('0'),0);
-  vm.runInContext(`${extract('rowSignature')}; result=rowSignature`,ctx); const sig=ctx.result;
+  vm.runInContext(`${extract('normalizeStoredRow')};${extract('rowSignature')}; result=rowSignature`,ctx); const sig=ctx.result;
   assert.equal(sig([' ۱۴۰۵/۰۱/۰۱ ',' علی  ','1,000']),sig(['۱۴۰۵/۰۱/۰۱','علی','1,000']));
+  assert.equal(sig({0:'1405/01/01',1:'علی',2:'1000'}),sig(['1405/01/01','علی','1000']));
+  assert.doesNotThrow(()=>sig({cells:['1405/01/01','علی','1000']}));
 });
 
 test('large Excel rows are stripped from localStorage metadata and delegated to IndexedDB', () => {
@@ -64592,7 +64794,7 @@ test('large Excel rows are stripped from localStorage metadata and delegated to 
 
 test('distributor last date comes from the final non-empty row, not import time or max sort', () => {
   const start=v20Source.indexOf('function distLastDate('),brace=v20Source.indexOf('{',start);let depth=0,end=brace;for(;end<v20Source.length;end++){if(v20Source[end]==='{')depth++;else if(v20Source[end]==='}'&&--depth===0){end++;break;}}
-  const ctx={result:null,normSnappDate:v=>String(v||''),findDistIndex:()=>0};vm.createContext(ctx);vm.runInContext(`${v20Source.slice(start,end)};result=distLastDate`,ctx);
+  const ctx={result:null,normSnappDate:v=>String(v||''),findDistIndex:()=>0,normalizeStoredRow:r=>Array.isArray(r)?r:Object.values(r||{})};vm.createContext(ctx);vm.runInContext(`${v20Source.slice(start,end)};result=distLastDate`,ctx);
   assert.equal(ctx.result([['1405/02/01'],['1405/01/01']],['تاریخ'],'other'),'1405/01/01');
   const daya=Array.from({length:14},()=>''),daya2=Array.from({length:14},()=> '');daya[13]='1405/03/01';daya2[13]='1405/02/20';assert.equal(ctx.result([daya,daya2],[],'daya'),'1405/02/20');
 });

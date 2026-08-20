@@ -69,8 +69,10 @@ test('Snapp numeric parser and exact-row signatures prevent strange/double total
   vm.createContext(ctx);
   vm.runInContext(`${extract('snappNumber')}; result=snappNumber`,ctx); const num=ctx.result;
   assert.equal(num('۱٬۲۳۴ ریال'),1234); assert.equal(num(''),0); assert.equal(num('0'),0);
-  vm.runInContext(`${extract('rowSignature')}; result=rowSignature`,ctx); const sig=ctx.result;
+  vm.runInContext(`${extract('normalizeStoredRow')};${extract('rowSignature')}; result=rowSignature`,ctx); const sig=ctx.result;
   assert.equal(sig([' ۱۴۰۵/۰۱/۰۱ ',' علی  ','1,000']),sig(['۱۴۰۵/۰۱/۰۱','علی','1,000']));
+  assert.equal(sig({0:'1405/01/01',1:'علی',2:'1000'}),sig(['1405/01/01','علی','1000']));
+  assert.doesNotThrow(()=>sig({cells:['1405/01/01','علی','1000']}));
 });
 
 test('large Excel rows are stripped from localStorage metadata and delegated to IndexedDB', () => {
@@ -83,7 +85,7 @@ test('large Excel rows are stripped from localStorage metadata and delegated to 
 
 test('distributor last date comes from the final non-empty row, not import time or max sort', () => {
   const start=v20Source.indexOf('function distLastDate('),brace=v20Source.indexOf('{',start);let depth=0,end=brace;for(;end<v20Source.length;end++){if(v20Source[end]==='{')depth++;else if(v20Source[end]==='}'&&--depth===0){end++;break;}}
-  const ctx={result:null,normSnappDate:v=>String(v||''),findDistIndex:()=>0};vm.createContext(ctx);vm.runInContext(`${v20Source.slice(start,end)};result=distLastDate`,ctx);
+  const ctx={result:null,normSnappDate:v=>String(v||''),findDistIndex:()=>0,normalizeStoredRow:r=>Array.isArray(r)?r:Object.values(r||{})};vm.createContext(ctx);vm.runInContext(`${v20Source.slice(start,end)};result=distLastDate`,ctx);
   assert.equal(ctx.result([['1405/02/01'],['1405/01/01']],['تاریخ'],'other'),'1405/01/01');
   const daya=Array.from({length:14},()=>''),daya2=Array.from({length:14},()=> '');daya[13]='1405/03/01';daya2[13]='1405/02/20';assert.equal(ctx.result([daya,daya2],[],'daya'),'1405/02/20');
 });

@@ -853,3 +853,5 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.21.4 است. Snapp import از button IDs و robust input onchange استفاده می‌کند. distLastDate آخرین سطر معتبر و Daya column14 است. distributorFilterGrid در desktop 5 columns است.
 ## افزونه وضعیت نسخه ۱۱.۲۱.۵
 نسخه فعال 11.21.5 است. reliableFeatureBoot و synchronous handlers race قبل loadState را رفع می‌کنند. raw DB viewers contenteditable و saveBulkVault-backed هستند. DOM runtime test با jsdom اتصال import handlers و distributor render را تأیید کرد.
+## افزونه وضعیت نسخه ۱۱.۲۱.۶
+نسخه فعال 11.21.6 است. normalizeStoredRow migration برای legacy Snapp rows اجباری است و قبل rowSignature/header/date اجرا می‌شود. DOM test با object/cells rows صفر runtime error داد.
