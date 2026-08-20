@@ -102,6 +102,14 @@ test('Daya inventory headers auto-align by one cell without shifting data', () =
   assert.deepEqual(Array.from(ctx.result('daya','pharmacy',['','کد کالا'],[['1112001']])),['','کد کالا']);
 });
 
+test('Daya real inventory sample maps code, product and quantity to correct cells', () => {
+  function extract(name){const start=v20Source.indexOf(`function ${name}(`),brace=v20Source.indexOf('{',start);let depth=0,end=brace;for(;end<v20Source.length;end++){if(v20Source[end]==='{')depth++;else if(v20Source[end]==='}'&&--depth===0){end++;break;}}return v20Source.slice(start,end);}
+  const ctx={result:null,norm:v=>String(v||'').replace(/\s+/g,'').toLowerCase()};vm.createContext(ctx);vm.runInContext(`${extract('findDistIndex')};${extract('findDistExact')};${extract('invSchema')};result=invSchema`,ctx);
+  const headers=['کالای در راه','موجودی ریالی','موجودی','نام شعبه','شماره بچ','تاریخ انقضا','نام کالا','کد کالا','عنوان','ردیف'];
+  const row=['0','34974720','6','تهران غرب','OM5-08404-007','20271106','امگا 5 سافت ژل','1112002','مهر آیین نو طعم','1'];
+  const schema=ctx.result(headers,'daya');assert.equal(schema.qty,2);assert.equal(schema.product,6);assert.equal(schema.code,7);assert.equal(row[schema.qty],'6');assert.equal(row[schema.code],'1112002');
+});
+
 test('Daya calculations follow declared quantity, price, gift and return formulas', () => {
   const start=v20Source.indexOf('function calculateDayaAmounts('),brace=v20Source.indexOf('{',start);let depth=0,end=brace;for(;end<v20Source.length;end++){if(v20Source[end]==='{')depth++;else if(v20Source[end]==='}'&&--depth===0){end++;break;}}
   const ctx={result:null};vm.createContext(ctx);vm.runInContext(`${v20Source.slice(start,end)};result=calculateDayaAmounts`,ctx);const x=ctx.result(100,20,10,2,500,700);

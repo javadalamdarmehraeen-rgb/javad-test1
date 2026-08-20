@@ -1,3 +1,10 @@
+# نسخه ۱۱.۲۲.۰
+
+1. schema واقعی موجودی دایا از نمونه کاربر ثبت شد: [کالای در راه، موجودی ریالی، موجودی، شعبه، بچ، انقضا، نام کالا، کد کالا، عنوان، ردیف].
+2. invSchema exact-header-first شد تا «کالای در راه» دیگر به‌اشتباه نام کالا نشود؛ موجودی exact index2، نام exact index6، کد exact index7 در نمونه.
+3. unit test واقعی ردیف 1112002/qty6 اضافه و سبز شد؛ total rows بدون code نادیده گرفته می‌شوند و شعب کد یکسان جمع می‌شوند.
+4. suite 14/14 سبز.
+
 # نسخه ۱۱.۲۱.۹
 
 1. header alignment خودکار فایل موجودی دایا اضافه: leading one-cell offset با first-nonempty/length تشخیص و فقط header shift می‌شود، data دست‌نخورده.

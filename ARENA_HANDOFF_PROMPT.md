@@ -1176,3 +1176,6 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Inventory alignment shifts headers only, never data rows.
 - Do not re-enable automatic local rolling/latest/pre-version backups; quota caused current-state loss.
 - Report and all workbook sheets must follow state.products order exactly.
+## Addendum — v11.22.0
+- Daya inventory schema must prefer exact headers. Never use broad کالا regex before exact نام کالا; it matches کالای در راه.
+- Regression fixture: row code 1112002 has quantity 6 at index2, product at index6, code at index7.

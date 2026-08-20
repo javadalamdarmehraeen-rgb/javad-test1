@@ -1443,5 +1443,8 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - Daya inventory headers only shift, rows never shift.
 - Obsolete automatic local backups removed/no-op because they consumed quota and caused current changes to vanish after refresh.
 - Report ordering is master state.products; workbook follows same rows.
+## تصمیم ۷۱ — نسخه ۱۱.۲۲.۰: real Daya inventory schema exact headers (2026-08-20)
+- broad /کالا/ regex matched «کالای در راه»؛ exact نام کالا/کد کالا/موجودی now wins.
+- real sample 1112002 quantity6 is a regression fixture.
 
 # END OF AI DECISION LOG

@@ -1266,5 +1266,12 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] شیت‌های period metadata + 19 columns + total
 - [x] ۱۳/۱۳ tests و DOM 5 fields row
 - [ ] تأیید نمونه واقعی موجودی دایا
+## ۵۹) نسخه ۱۱.۲۲.۰
+- [x] schema واقعی موجودی دایا
+- [x] exact header matching name/code/inventory
+- [x] جلوگیری از match کالای در راه
+- [x] fixture 1112002 qty6
+- [x] ۱۴/۱۴ تست سبز
+- [ ] تأیید مجموع واقعی همه شعب در مرورگر کاربر
 
 # END OF AI TASKS

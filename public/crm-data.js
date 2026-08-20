@@ -466,7 +466,9 @@ const PERMISSION_GROUPS = {
     { key: "dist_inventory_header_alignment", label: "هم‌ترازی خودکار سرستون موجودی دایا با داده" },
     { key: "dist_product_master_order", label: "ترتیب کالاهای گزارش مطابق تب ستون‌ها و کالاها" },
     { key: "dist_excel_period_layout", label: "خروجی شیت‌های سال/ماه/بازه با ترتیب ثابت کالا" },
-    { key: "sys_local_quota_cleanup", label: "پاک‌سازی backupهای منسوخ برای جلوگیری از حذف پس از Refresh" }
+    { key: "sys_local_quota_cleanup", label: "پاک‌سازی backupهای منسوخ برای جلوگیری از حذف پس از Refresh" },
+    { key: "dist_daya_real_inventory_schema", label: "نگاشت واقعی موجودی دایا: موجودی ۳، نام ۷، کد ۸" },
+    { key: "dist_inventory_branch_sum", label: "جمع موجودی شعب بر اساس کد کالای یکسان" }
   ]
 };
 
