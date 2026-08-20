@@ -92,6 +92,22 @@ test('distributor last date comes from the final non-empty row, not import time 
   const daya=Array.from({length:14},()=>''),daya2=Array.from({length:14},()=> '');daya[13]='1405/03/01';daya2[13]='1405/02/20';assert.equal(ctx.result.last([daya,daya2],[],'daya'),'1405/02/20');
 });
 
+test('Daya calculations follow declared quantity, price, gift and return formulas', () => {
+  const start=v20Source.indexOf('function calculateDayaAmounts('),brace=v20Source.indexOf('{',start);let depth=0,end=brace;for(;end<v20Source.length;end++){if(v20Source[end]==='{')depth++;else if(v20Source[end]==='}'&&--depth===0){end++;break;}}
+  const ctx={result:null};vm.createContext(ctx);vm.runInContext(`${v20Source.slice(start,end)};result=calculateDayaAmounts`,ctx);const x=ctx.result(100,20,10,2,500,700);
+  assert.deepEqual(JSON.parse(JSON.stringify(x)),{dist:50000,ph:70000,giftRial:10000,retRial:5000,retGiftRial:1000,giftPct:20,retPct:10,retGiftPct:20});
+  assert.match(v20Source,/x\.date=13;x\.invoice=12;x\.code=15;x\.qty=4;x\.giftQty=3;x\.retQty=7;x\.retGiftQty=6;x\.pharmacy=21/);
+  assert.match(v20Source,/retGiftPct=m\.retQty\?m\.retGiftQty\/m\.retQty\*100/);
+});
+
+test('Daya total counts unique customers and invoices across all products', () => {
+  function extract(name){const start=v20Source.indexOf(`function ${name}(`),brace=v20Source.indexOf('{',start);let depth=0,end=brace;for(;end<v20Source.length;end++){if(v20Source[end]==='{')depth++;else if(v20Source[end]==='}'&&--depth===0){end++;break;}}return v20Source.slice(start,end);}
+  const ctx={result:null,Object,Number};vm.createContext(ctx);vm.runInContext(`${extract('metricRows')};${extract('totalMetricRow')};result={metricRows,totalMetricRow}`,ctx);
+  const base=()=>({qty:10,dist:100,ph:120,giftQty:1,giftRial:10,retQty:2,retRial:20,retGiftQty:1,retGiftRial:10,pharmacies:{},invoices:{},invQty:3,invDist:30,invPh:36});
+  const a=base(),b=base();a.pharmacies={p1:1,p2:1};b.pharmacies={p1:1,p3:1};a.invoices={f1:1,f2:1};b.invoices={f2:1,f3:1};const rows=ctx.result.metricRows({A:a,B:b}),total=ctx.result.totalMetricRow(rows);
+  assert.equal(rows[0][13],2);assert.equal(rows[1][13],2);assert.equal(total[13],3);assert.equal(total[14],3);assert.equal(total[15],100);
+});
+
 test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /function rowSignature/);
   assert.match(v20Source, /D\.rows=D\.rows\.filter/);
@@ -114,5 +130,9 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /tab-distributor-database/);
   assert.match(v20Source, /function fixProductInfoLabels/);
   assert.match(v20Source, /distributorFilterGrid\{display:flex!important;flex-flow:row nowrap!important/);
+  assert.match(v20Source, /rows\._uniquePharmacies/);
+  assert.match(v20Source, /rows\._uniqueInvoices/);
+  assert.match(v20Source, /function restoreFixedFilterGrids/);
+  assert.match(v20Source, /distributorFilterGrid/);
   assert.match(v20Source, /\.data-table th,.data-table td/);
 });

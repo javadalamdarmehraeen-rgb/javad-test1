@@ -1,3 +1,12 @@
+# نسخه ۱۱.۲۱.۸
+
+1. Daya schema قطعی شد: sales=col5, gift=col4, returnProduct=col8, returnGift=col7, customer=col22, invoice=col13, date=col14, code=col16, inventory=col3.
+2. همه ریال‌های دایا فقط quantity × master product price هستند؛ فایل ریال نادیده گرفته می‌شود. درصد gift/sales، return/sales، returnGift/returnProduct اصلاح شد.
+3. per-product customer/invoice sets و total global union sets اضافه شد؛ جمع کل دیگر sum ساده per-product counts نیست.
+4. customer فقط row با qty>0؛ invoice unique per product و full-return row حذف می‌شود.
+5. fixed filter groups از cfHost به distributorFilterGrid اصلی بازگردانده و flex nowrap شد. DOM test: display flex, row nowrap, 5 children, correct parent, zero errors.
+6. unit tests به ۱۲/۱۲ رسید: formula و global unique totals افزوده شد.
+
 # نسخه ۱۱.۲۱.۷
 
 1. تبدیل تاریخ دیتابیس پخش از normSnappDate به slashOnlyPersianDate تغییر کرد: فقط ۸ رقم شمسی اسلش می‌گیرد؛ 39694 و هر مقدار دیگر دست‌نخورده می‌ماند.

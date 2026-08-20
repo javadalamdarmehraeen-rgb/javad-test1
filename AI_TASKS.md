@@ -1251,5 +1251,13 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] flex nowrap یک‌سطر فیلترها
 - [x] ۱۰/۱۰ تست سبز
 - [ ] تأیید دیتابیس واقعی کاربر
+## ۵۷) نسخه ۱۱.۲۱.۸
+- [x] schema قطعی ۵/۴/۸/۷/۲۲/۱۳/۱۴/۱۶/موجودی۳
+- [x] همه ریال‌ها از master price
+- [x] درصدهای سه‌گانه صحیح
+- [x] customer/invoice unique per product و global
+- [x] DOM واقعی: ۵ فیلد در flex row nowrap
+- [x] ۱۲/۱۲ تست سبز
+- [ ] تأیید اعداد فایل واقعی کاربر
 
 # END OF AI TASKS

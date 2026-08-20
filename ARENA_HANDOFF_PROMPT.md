@@ -1167,3 +1167,8 @@ ADDENDUM v11.16.1 (2026-08-16)
 ## Addendum — v11.21.7
 - Distributor dates MUST use slashOnlyPersianDate, never normSnappDate. 39694 must remain 39694; 14050819 becomes 1405/08/19.
 - Desktop distributor filters are forced flex row nowrap.
+## Addendum — v11.21.8
+- Daya exact map is mandatory. Never use file rial columns for Daya.
+- retGift percentage denominator is return-product quantity.
+- Total pharmacies/invoices are global set unions, not sums of per-product counts.
+- Layout engine moves fixed filters into cfHost; restoreFixedFilterGrids must return exactly 5 groups to distributorFilterGrid.

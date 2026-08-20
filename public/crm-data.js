@@ -457,7 +457,12 @@ const PERMISSION_GROUPS = {
     { key: "snapp_legacy_row_migration", label: "تبدیل ردیف‌های قدیمی object/string به آرایه استاندارد" },
     { key: "sys_runtime_console_guard", label: "جلوگیری از توقف امکانات بعدی با داده قدیمی ناسازگار" },
     { key: "dist_slash_only_date", label: "افزودن اسلش بدون تبدیل مقدار تاریخ دیتابیس پخش" },
-    { key: "dist_filter_single_line", label: "قرارگیری اجباری فیلترهای پخش در یک سطر دسکتاپ" }
+    { key: "dist_filter_single_line", label: "قرارگیری اجباری فیلترهای پخش در یک سطر" },
+    { key: "dist_daya_exact_formula", label: "فرمول قطعی دایا بر اساس ستون‌های ۵،۴،۸،۷،۲۲،۱۳" },
+    { key: "dist_unique_total_customer_invoice", label: "جمع کل یکتای داروخانه و شماره فاکتور" },
+    { key: "dist_daya_column_22_customer", label: "شمارش مشتری یکتا از ستون ۲۲ دایا" },
+    { key: "dist_daya_column_13_invoice", label: "شمارش فاکتور یکتا از ستون ۱۳ دایا" },
+    { key: "dist_fixed_filter_grid_restore", label: "بازگردانی فیلترهای پخش به سطر ثابت پس از layout engine" }
   ]
 };
 

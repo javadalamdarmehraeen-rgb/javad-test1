@@ -1435,5 +1435,9 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 ## تصمیم ۶۸ — نسخه ۱۱.۲۱.۷: distributor dates are slash-only, never calendar-converted (2026-08-20)
 - normSnappDate برای پخش ممنوع؛ slashOnlyPersianDate فقط compact Jalali 8-digit را format می‌کند.
 - filter grid desktop flex nowrap است تا saved grid styles نتوانند زیرهم کنند.
+## تصمیم ۶۹ — نسخه ۱۱.۲۱.۸: Daya exact quantities and global unique sets (2026-08-20)
+- Daya ignores file rial columns; all monetary metrics derive quantity × master prices.
+- customer/invoice totals use global set union, not sum of product row counts.
+- DOM test proved layout engine had moved filters to cfHost; restoreFixedFilterGrids moves them back.
 
 # END OF AI DECISION LOG

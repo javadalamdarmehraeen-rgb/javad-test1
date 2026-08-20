@@ -857,3 +857,5 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.21.6 است. normalizeStoredRow migration برای legacy Snapp rows اجباری است و قبل rowSignature/header/date اجرا می‌شود. DOM test با object/cells rows صفر runtime error داد.
 ## افزونه وضعیت نسخه ۱۱.۲۱.۷
 نسخه فعال 11.21.7 است. تاریخ پخش فقط slashOnlyPersianDate است و Excel serial را تبدیل نمی‌کند. distributorFilterGrid در desktop >=769 flex nowrap است.
+## افزونه وضعیت نسخه ۱۱.۲۱.۸
+نسخه فعال 11.21.8 است. Daya exact zero-based map: qty4 gift3 ret7 retGift6 customer21 invoice12 date13 code15 inventoryQty2. All Daya rials derive master prices. metricRows carries global unique set counts for totals.
