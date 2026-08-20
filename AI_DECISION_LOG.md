@@ -1446,5 +1446,10 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 ## تصمیم ۷۱ — نسخه ۱۱.۲۲.۰: real Daya inventory schema exact headers (2026-08-20)
 - broad /کالا/ regex matched «کالای در راه»؛ exact نام کالا/کد کالا/موجودی now wins.
 - real sample 1112002 quantity6 is a regression fixture.
+## تصمیم ۷۲ — نسخه ۱۱.۲۲.۱: Latin digits, sticky tables, safe location, effective list order (2026-08-20)
+- final DOM formatter Latinizes every digit; grouping is en-US except code/date/phone.
+- Excel percent cells are strings with %, number cells have #,##0 and all cells borders.
+- list reorder bug was getUnifiedFieldList(key) instead of paneId plus strict matched>=2.
+- address fields textarea+guard; GPS fake fallback removed.
 
 # END OF AI DECISION LOG

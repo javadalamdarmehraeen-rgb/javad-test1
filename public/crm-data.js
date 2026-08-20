@@ -468,7 +468,14 @@ const PERMISSION_GROUPS = {
     { key: "dist_excel_period_layout", label: "خروجی شیت‌های سال/ماه/بازه با ترتیب ثابت کالا" },
     { key: "sys_local_quota_cleanup", label: "پاک‌سازی backupهای منسوخ برای جلوگیری از حذف پس از Refresh" },
     { key: "dist_daya_real_inventory_schema", label: "نگاشت واقعی موجودی دایا: موجودی ۳، نام ۷، کد ۸" },
-    { key: "dist_inventory_branch_sum", label: "جمع موجودی شعب بر اساس کد کالای یکسان" }
+    { key: "dist_inventory_branch_sum", label: "جمع موجودی شعب بر اساس کد کالای یکسان" },
+    { key: "sys_all_numbers_latin", label: "نمایش همه اعداد برنامه با ارقام لاتین" },
+    { key: "sys_global_sticky_headers", label: "فریز سراسری سرستون جدول‌ها" },
+    { key: "sys_excel_borders_number_format", label: "خط‌کشی و فرمت سه‌رقمی Excel با درصد متنی" },
+    { key: "sys_address_persistence", label: "حفظ آدرس کامل هنگام کلیک روی فیلد" },
+    { key: "sys_high_accuracy_gps", label: "GPS با دقت بالا و منع موقعیت تستی" },
+    { key: "sys_list_order_effective", label: "اعمال واقعی ترتیب ستون‌های لیست" },
+    { key: "sys_product_info_no_shake", label: "جلوگیری از لرزش پنل اطلاعات کالا" }
   ]
 };
 

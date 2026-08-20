@@ -863,3 +863,5 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.21.9 است. alignDistributorHeaders fixes Daya inventory one-cell header offset without shifting data. Obsolete local backups are removed/no-op. metricRows follows state.products order and workbook mirrors it.
 ## افزونه وضعیت نسخه ۱۱.۲۲.۰
 نسخه فعال 11.22.0 است. Daya inventory exact headers: موجودی, نام کالا, کد کالا. User sample order maps qty2/product6/code7. Generic کالا regex no longer matches کالای در راه first.
+## افزونه وضعیت نسخه ۱۱.۲۲.۱
+نسخه فعال 11.22.1 است. Global DOM numbers are Latin. Excel has bordered styles, Number grouping and PercentText. All data headers sticky. Address textareas guarded; GPS no fake fallback. List order uses getUnifiedFieldList(paneId).

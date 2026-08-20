@@ -1,3 +1,13 @@
+# نسخه ۱۱.۲۲.۱
+
+1. همه digits دیداری و input غیرpassword به Latin تبدیل می‌شوند؛ grouping en-US است، تاریخ/کد/تلفن بدون grouping ولی Latin.
+2. Excel SpreadsheetML styles اضافه: border چهارطرفه، Header، Number #,##0 و PercentText با % رشته‌ای.
+3. sticky thead سراسری + max-height/overflow table-responsive برای freeze سرستون.
+4. لرزش Product Info با شرط تغییر واقعی textContent رفع شد.
+5. address inputs به textarea تبدیل، click/focus guard و reverse display_name کامل‌تر؛ GPS precision 6 decimals, maxAge0, timeout20s, بدون fake location.
+6. list ordering getUnifiedFieldList(paneId)، fuzzy label match، matched>=1 و reliable rewrap اصلاح شد.
+7. suite 15/15 سبز.
+
 # نسخه ۱۱.۲۲.۰
 
 1. schema واقعی موجودی دایا از نمونه کاربر ثبت شد: [کالای در راه، موجودی ریالی، موجودی، شعبه، بچ، انقضا، نام کالا، کد کالا، عنوان، ردیف].

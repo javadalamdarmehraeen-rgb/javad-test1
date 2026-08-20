@@ -214,7 +214,7 @@
       const data = await fetchJson(url);
       if (data && data.display_name) return formatNominatim(data, lat, lng);
     } catch (e2) { /* ignore */ }
-    return "موقعیت ثبت‌شده (" + Number(lat).toFixed(5) + ", " + Number(lng).toFixed(5) + ")";
+    return "موقعیت ثبت‌شده (" + Number(lat).toFixed(6) + ", " + Number(lng).toFixed(6) + ")";
   }
 
   async function geoSearch(query, limit) {
@@ -245,8 +245,11 @@
     ].filter(Boolean);
     const uniq = [];
     parts.forEach(function (p) { if (uniq.indexOf(p) === -1) uniq.push(p); });
-    if (uniq.length) return uniq.join("، ");
-    return data.display_name || ("موقعیت " + Number(lat).toFixed(5) + ", " + Number(lng).toFixed(5));
+    var compact = uniq.join("، ");
+    // display_name معمولاً پلاک/کوچه/محله کامل‌تری دارد؛ اگر کامل‌تر است همان استفاده شود.
+    if (data.display_name && String(data.display_name).length > compact.length) return data.display_name;
+    if (compact) return compact;
+    return data.display_name || ("موقعیت " + Number(lat).toFixed(6) + ", " + Number(lng).toFixed(6));
   }
 
   function renderSuggestBox(box, items, onPick) {
@@ -310,8 +313,8 @@
   }
 
   function applyPharmacyLocation(lat, lng, address, nameText) {
-    setVal("pharmacyLat", Number(lat).toFixed(5));
-    setVal("pharmacyLng", Number(lng).toFixed(5));
+    setVal("pharmacyLat", Number(lat).toFixed(6));
+    setVal("pharmacyLng", Number(lng).toFixed(6));
     if (address) {
       setVal("phMapSearchInput", address);
       setVal("pharmacyAddress", address);
@@ -323,8 +326,8 @@
   }
 
   function applyDoctorLocation(lat, lng, address, nameText) {
-    setVal("doctorLat", Number(lat).toFixed(5));
-    setVal("doctorLng", Number(lng).toFixed(5));
+    setVal("doctorLat", Number(lat).toFixed(6));
+    setVal("doctorLng", Number(lng).toFixed(6));
     if (address) {
       setVal("docMapSearchInput", address);
       setVal("doctorAddress", address);
@@ -338,13 +341,13 @@
   function getCurrentPositionSafe() {
     return new Promise(function (resolve) {
       if (!navigator.geolocation) {
-        resolve({ lat: 35.7595, lng: 51.4250, fallback: true });
+        resolve({ error: true, message: "GPS این دستگاه در دسترس نیست." });
         return;
       }
       navigator.geolocation.getCurrentPosition(
         function (pos) { resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude, fallback: false }); },
-        function () { resolve({ lat: 35.7595, lng: 51.4250, fallback: true }); },
-        { enableHighAccuracy: true, timeout: 8000, maximumAge: 15000 }
+        function (err) { resolve({ error: true, message: err && err.code === 1 ? "اجازه GPS داده نشده است." : "موقعیت دقیق دریافت نشد؛ دوباره تلاش کنید." }); },
+        { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }
       );
     });
   }
@@ -362,6 +365,7 @@
         btnPhCur.disabled = true;
         try {
           const pos = await getCurrentPositionSafe();
+          if (pos.error) { safeAlert(pos.message || "موقعیت دقیق دریافت نشد."); return; }
           const addr = await geoReverse(pos.lat, pos.lng);
           applyPharmacyLocation(pos.lat, pos.lng, addr, val("pharmacyName") || "موقعیت فعلی داروخانه");
           safeAlert(pos.fallback
@@ -391,6 +395,7 @@
         btnDocCur.disabled = true;
         try {
           const pos = await getCurrentPositionSafe();
+          if (pos.error) { safeAlert(pos.message || "موقعیت دقیق دریافت نشد."); return; }
           const addr = await geoReverse(pos.lat, pos.lng);
           applyDoctorLocation(pos.lat, pos.lng, addr, val("doctorName") || "موقعیت فعلی مطب");
           safeAlert("موقعیت فعلی روی نقشه آمد و آدرس در فیلد لوکیشن مطب نوشته شد:\n" + addr);
@@ -1124,6 +1129,7 @@
     if (btn) {
       btn.addEventListener("click", async function () {
         const pos = await getCurrentPositionSafe();
+        if (pos.error) { safeAlert(pos.message || "موقعیت دقیق دریافت نشد."); return; }
         const addr = await geoReverse(pos.lat, pos.lng);
         setVal("repHomeAddressInput", addr);
         const name = val("repHomeSelect") || currentRepName();

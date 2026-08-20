@@ -1179,3 +1179,9 @@ ADDENDUM v11.16.1 (2026-08-16)
 ## Addendum — v11.22.0
 - Daya inventory schema must prefer exact headers. Never use broad کالا regex before exact نام کالا; it matches کالای در راه.
 - Regression fixture: row code 1112002 has quantity 6 at index2, product at index6, code at index7.
+## Addendum — v11.22.1
+- All visible digits must be Latin; codes/dates/phones stay ungrouped.
+- SpreadsheetML percentage columns are String with `%`, not numeric.
+- Sticky headers and full cell borders are global.
+- List reorder must use paneId and reliable rewrap.
+- Never restore fake GPS coordinates; preserve full address on click.

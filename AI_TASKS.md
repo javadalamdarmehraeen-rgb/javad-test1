@@ -1273,5 +1273,14 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] fixture 1112002 qty6
 - [x] ۱۴/۱۴ تست سبز
 - [ ] تأیید مجموع واقعی همه شعب در مرورگر کاربر
+## ۶۰) نسخه ۱۱.۲۲.۱
+- [x] همه اعداد Latin
+- [x] Excel border/grouping/percent text
+- [x] sticky headers global
+- [x] no-shake product info
+- [x] address guard/full reverse/high accuracy GPS
+- [x] list ordering paneId/fuzzy/rewrap
+- [x] ۱۵/۱۵ tests
+- [ ] تأیید مرورگری کاربر
 
 # END OF AI TASKS

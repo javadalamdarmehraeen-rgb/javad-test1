@@ -48,6 +48,8 @@ test('existing empty arrays stay empty and sample defaults are never injected', 
 test('active order collector never converts blank quantity to one', () => {
   assert.doesNotMatch(v9Source, /count:\s*parseInt\(countEl[^\n]+\|\|\s*1/);
   assert.match(v9Source, /if \(qty <= 0\) continue/);
+  assert.match(v9Source, /maximumAge: 0/);
+  assert.match(v9Source, /toFixed\(6\)/);
 });
 
 test('startup cannot auto-add mirrored fields, old backups, or remote state', () => {
@@ -58,6 +60,12 @@ test('startup cannot auto-add mirrored fields, old backups, or remote state', ()
   const d0=v20Source.indexOf('function bindDurableServerState'),d1=v20Source.indexOf('/* ---------- ۲۷)',d0),durable=v20Source.slice(d0,d1);
   assert.doesNotMatch(durable,/res&&res\.data|location\.reload|method:\s*["']GET/);
   assert.match(durable,/method:\s*["']POST/);
+});
+
+test('global numeric display converts Persian digits to Latin without changing passwords/codes', () => {
+  const start=v20Source.indexOf('function latinizeDigits('),brace=v20Source.indexOf('{',start);let depth=0,end=brace;for(;end<v20Source.length;end++){if(v20Source[end]==='{')depth++;else if(v20Source[end]==='}'&&--depth===0){end++;break;}}
+  const ctx={result:null,enDigits:v=>String(v).replace(/[۰-۹]/g,c=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(c))};vm.createContext(ctx);vm.runInContext(`${v20Source.slice(start,end)};result=latinizeDigits`,ctx);assert.equal(ctx.result('۱۴۰۵/۰۸/۱۹'),'1405/08/19');assert.equal(ctx.result('۱٬۲۳۴٫۵'),'1,234.5');
+  assert.match(v20Source,/el\.type===\"password\"/);assert.match(v20Source,/data-no-number-group/);
 });
 
 test('Snapp numeric parser and exact-row signatures prevent strange/double totals', () => {
@@ -140,6 +148,12 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /data-no-number-group/);
   assert.match(v20Source, /d\.inventoryRows=data/);
   assert.match(v20Source, /<Worksheet ss:Name=/, 'multi-sheet Excel exporter must remain');
+  assert.match(v20Source, /NumberFormat ss:Format=\"#,##0\"/);
+  assert.match(v20Source, /PercentText/);
+  assert.match(v20Source, /ss:Position=\"Top\"/);
+  assert.match(v20Source, /\.data-table thead th\{position:sticky!important/);
+  assert.match(v20Source, /function bindAddressFieldGuard/);
+  assert.match(v20Source, /getUnifiedFieldList\(paneId\)/);
   assert.match(v20Source, /function bindProductCrudV20/);
   assert.match(v20Source, /productCode/);
   assert.match(v20Source, /dayaDbCode=1111000\+code/);
