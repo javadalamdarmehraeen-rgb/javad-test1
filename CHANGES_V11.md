@@ -1,3 +1,12 @@
+# نسخه ۱۱.۲۱.۵
+
+1. تست واقعی DOM با jsdom اجرا و ریشه عدم اجرای امکانات پیدا شد: setup اولیه قبل از loadState کامل اجرا می‌شد و خطاها داخل try/catch پنهان بودند.
+2. bind دکمه‌های import و CRUD کالا synchronous شد؛ reliableFeatureBoot روی click تب و load retry اجرا می‌شود. DOM test اتصال ۴ handler و render کارت پخش را تأیید کرد.
+3. viewer دیتابیس اسنپ/پخش contenteditable و دارای ذخیره مستقیم IndexedDB/state/report شد؛ batch edit به master rows هم sync می‌شود.
+4. distLastDate آخرین سطر فیزیکی ستون ۱۴، append pharmacy و label آخرین تاریخ حفظ شدند.
+5. product info title با label واقعی DOM/dictionary اصلاح شد.
+6. تست‌ها ۱۰/۱۰ + DOM runtime test بدون error.
+
 # نسخه ۱۱.۲۱.۴
 
 1. عنوان آخرین فایل به «آخرین تاریخ داروخانه/موجودی» تغییر و تاریخ دقیقاً از آخرین سطر غیرخالی (دایا ستون ۱۴) خوانده می‌شود؛ fallback فقط در نبود تاریخ است.

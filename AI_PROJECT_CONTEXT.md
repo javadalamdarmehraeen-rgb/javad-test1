@@ -851,3 +851,5 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.21.3 است. CRM_APP_STATE_V2 تنها مرجع خودکار است. backup/history/remote هیچ‌گاه خودکار merge یا restore نمی‌شوند. Server sync فقط POST metadata است. IndexedDB bulk current جداگانه hydrate می‌شود.
 ## افزونه وضعیت نسخه ۱۱.۲۱.۴
 نسخه فعال 11.21.4 است. Snapp import از button IDs و robust input onchange استفاده می‌کند. distLastDate آخرین سطر معتبر و Daya column14 است. distributorFilterGrid در desktop 5 columns است.
+## افزونه وضعیت نسخه ۱۱.۲۱.۵
+نسخه فعال 11.21.5 است. reliableFeatureBoot و synchronous handlers race قبل loadState را رفع می‌کنند. raw DB viewers contenteditable و saveBulkVault-backed هستند. DOM runtime test با jsdom اتصال import handlers و distributor render را تأیید کرد.

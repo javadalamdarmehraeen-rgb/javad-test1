@@ -1228,5 +1228,13 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] دکمه واقعی import سفر/شارژ
 - [x] ۱۰/۱۰ تست سبز
 - [ ] تأیید import واقعی XLSX کاربر
+## ۵۴) نسخه ۱۱.۲۱.۵
+- [x] تست واقعی DOM runtime
+- [x] رفع early-init race اسنپ/پخش/کالا
+- [x] ویرایش سلولی و ذخیره دیتابیس اکسل
+- [x] sync batch edit با master database
+- [x] label واقعی اطلاعات فرم کالا
+- [x] ۱۰/۱۰ unit/smoke + DOM بدون خطا
+- [ ] تأیید فایل واقعی XLSX کاربر
 
 # END OF AI TASKS

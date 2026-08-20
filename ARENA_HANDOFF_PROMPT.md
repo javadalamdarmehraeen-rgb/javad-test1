@@ -1156,3 +1156,7 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Pharmacy import remains append-only concat(fresh).
 - Snapp import uses real buttons btnImportSnappTrips/Topups and robust input handlers.
 - Never group product code or raw compact dates with thousands separators.
+## Addendum — v11.21.5
+- Syntax/HTTP tests alone missed an early-init race. Keep synchronous bindSnappImportButtons/bindProductCrudV20 and reliableFeatureBoot on load/tab click.
+- Raw Snapp/distributor DB viewers are editable spreadsheets; saving must sync batch rows to master rows then await saveBulkVault.
+- Product info title cells must be fixed from actual labels by fixProductInfoLabels.

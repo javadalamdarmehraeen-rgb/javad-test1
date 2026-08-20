@@ -94,6 +94,11 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /seen\[rowSignature\(r\)\]/);
   assert.match(v20Source, /d\.pharmacyRows=d\.pharmacyRows\.concat\(fresh\)/);
   assert.match(v20Source, /function bindSnappImportButtons/);
+  assert.match(v20Source, /try\{bindSnappImportButtons\(\);bindProductCrudV20\(\);\}/, 'critical buttons must bind synchronously');
+  assert.match(v20Source, /contenteditable='true'/);
+  assert.match(v20Source, /arc-save/);
+  assert.match(v20Source, /raw-save/);
+  assert.match(v20Source, /function reliableFeatureBoot/);
   assert.match(v20Source, /data-no-number-group/);
   assert.match(v20Source, /d\.inventoryRows=data/);
   assert.match(v20Source, /<Worksheet ss:Name=/, 'multi-sheet Excel exporter must remain');
@@ -103,5 +108,6 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /x\.code=15/);
   assert.match(v20Source, /window\.deleteProductCatalogItem=function/);
   assert.match(v20Source, /tab-distributor-database/);
+  assert.match(v20Source, /function fixProductInfoLabels/);
   assert.match(v20Source, /\.data-table th,.data-table td/);
 });

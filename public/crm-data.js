@@ -450,7 +450,10 @@ const PERMISSION_GROUPS = {
     { key: "dist_last_row_date", label: "آخرین تاریخ داروخانه از آخرین سطر ستون تاریخ" },
     { key: "dist_append_only_pharmacy", label: "افزودن فایل داروخانه به انتهای دیتابیس بدون جایگزینی" },
     { key: "snapp_robust_import_buttons", label: "کلید واقعی و listener مستقل ورود فایل‌های اسنپ" },
-    { key: "sys_no_group_date_password_code", label: "منع سه‌رقمی تاریخ، رمز و کد کالا" }
+    { key: "sys_no_group_date_password_code", label: "منع سه‌رقمی تاریخ، رمز و کد کالا" },
+    { key: "sys_reliable_delayed_boot", label: "اتصال مطمئن امکانات پس از تکمیل بارگذاری state" },
+    { key: "sys_editable_excel_database", label: "ویرایش سلولی دیتابیس‌های اکسل و ذخیره مستقیم" },
+    { key: "sys_product_label_titles", label: "نمایش عنوان واقعی لیبل در اطلاعات فرم کالا" }
   ]
 };
 

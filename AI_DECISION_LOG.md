@@ -1424,5 +1424,9 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - Snapp file labels با buttons و robust onchange جایگزین شدند.
 - distributor last date دیگر max-sort نیست؛ آخرین سطر فیزیکی معتبر برنده است.
 - product codes/date raw values از global number grouping مستثنی‌اند.
+## تصمیم ۶۶ — نسخه ۱۱.۲۱.۵: runtime DOM test found early-init race (2026-08-19)
+- jsdom نشان داد v20 declarations load ولی init features قبل از state آماده bind نمی‌شدند؛ syntax tests کافی نبودند.
+- critical import/product handlers synchronous و reliableFeatureBoot روی load/tab click شد.
+- raw Excel viewers editable شدند و save به master rows + IndexedDB می‌نویسد.
 
 # END OF AI DECISION LOG
