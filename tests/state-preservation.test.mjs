@@ -34,6 +34,9 @@ test('current state is authoritative and old backup cannot re-add deleted data',
   assert.equal(out.doctors.length,0);
   assert.equal(out.products.length,0);
   assert.equal(out.formFieldMeta.order.field.order,9);
+  const sa=appSource.indexOf('function saveState'),sb=appSource.indexOf('\nfunction applyGeneralSettingsToUI',sa),saveBody=appSource.slice(sa,sb);
+  assert.doesNotMatch(saveBody,/CRM_APP_STATE_ROLLING_BACKUP/);
+  assert.match(appSource,/function cleanupObsoleteAutoBackups/);
 });
 
 test('existing empty arrays stay empty and sample defaults are never injected', () => {
@@ -92,6 +95,13 @@ test('distributor last date comes from the final non-empty row, not import time 
   const daya=Array.from({length:14},()=>''),daya2=Array.from({length:14},()=> '');daya[13]='1405/03/01';daya2[13]='1405/02/20';assert.equal(ctx.result.last([daya,daya2],[],'daya'),'1405/02/20');
 });
 
+test('Daya inventory headers auto-align by one cell without shifting data', () => {
+  const start=v20Source.indexOf('function alignDistributorHeaders('),brace=v20Source.indexOf('{',start);let depth=0,end=brace;for(;end<v20Source.length;end++){if(v20Source[end]==='{')depth++;else if(v20Source[end]==='}'&&--depth===0){end++;break;}}
+  const ctx={result:null,normalizeStoredRow:r=>Array.isArray(r)?r:Object.values(r||{})};vm.createContext(ctx);vm.runInContext(`${v20Source.slice(start,end)};result=alignDistributorHeaders`,ctx);
+  assert.deepEqual(Array.from(ctx.result('daya','inventory',['','کد کالا','موجودی'],[['1112001','10']])),['کد کالا','موجودی']);
+  assert.deepEqual(Array.from(ctx.result('daya','pharmacy',['','کد کالا'],[['1112001']])),['','کد کالا']);
+});
+
 test('Daya calculations follow declared quantity, price, gift and return formulas', () => {
   const start=v20Source.indexOf('function calculateDayaAmounts('),brace=v20Source.indexOf('{',start);let depth=0,end=brace;for(;end<v20Source.length;end++){if(v20Source[end]==='{')depth++;else if(v20Source[end]==='}'&&--depth===0){end++;break;}}
   const ctx={result:null};vm.createContext(ctx);vm.runInContext(`${v20Source.slice(start,end)};result=calculateDayaAmounts`,ctx);const x=ctx.result(100,20,10,2,500,700);
@@ -102,10 +112,10 @@ test('Daya calculations follow declared quantity, price, gift and return formula
 
 test('Daya total counts unique customers and invoices across all products', () => {
   function extract(name){const start=v20Source.indexOf(`function ${name}(`),brace=v20Source.indexOf('{',start);let depth=0,end=brace;for(;end<v20Source.length;end++){if(v20Source[end]==='{')depth++;else if(v20Source[end]==='}'&&--depth===0){end++;break;}}return v20Source.slice(start,end);}
-  const ctx={result:null,Object,Number};vm.createContext(ctx);vm.runInContext(`${extract('metricRows')};${extract('totalMetricRow')};result={metricRows,totalMetricRow}`,ctx);
+  const ctx={result:null,Object,Number,st:()=>({products:[{name:'A'},{name:'B'}]}),norm:v=>String(v).toLowerCase()};vm.createContext(ctx);vm.runInContext(`${extract('metricRows')};${extract('totalMetricRow')};result={metricRows,totalMetricRow}`,ctx);
   const base=()=>({qty:10,dist:100,ph:120,giftQty:1,giftRial:10,retQty:2,retRial:20,retGiftQty:1,retGiftRial:10,pharmacies:{},invoices:{},invQty:3,invDist:30,invPh:36});
-  const a=base(),b=base();a.pharmacies={p1:1,p2:1};b.pharmacies={p1:1,p3:1};a.invoices={f1:1,f2:1};b.invoices={f2:1,f3:1};const rows=ctx.result.metricRows({A:a,B:b}),total=ctx.result.totalMetricRow(rows);
-  assert.equal(rows[0][13],2);assert.equal(rows[1][13],2);assert.equal(total[13],3);assert.equal(total[14],3);assert.equal(total[15],100);
+  const a=base(),b=base();a.pharmacies={p1:1,p2:1};b.pharmacies={p1:1,p3:1};a.invoices={f1:1,f2:1};b.invoices={f2:1,f3:1};const rows=ctx.result.metricRows({B:b,A:a}),total=ctx.result.totalMetricRow(rows);
+  assert.deepEqual([rows[0][0],rows[1][0]],['A','B']);assert.equal(rows[0][13],2);assert.equal(rows[1][13],2);assert.equal(total[13],3);assert.equal(total[14],3);assert.equal(total[15],100);
 });
 
 test('Snapp and distributor imports keep exact-row dedupe guards', () => {
@@ -132,6 +142,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /distributorFilterGrid\{display:flex!important;flex-flow:row nowrap!important/);
   assert.match(v20Source, /rows\._uniquePharmacies/);
   assert.match(v20Source, /rows\._uniqueInvoices/);
+  assert.match(v20Source, /order\[norm\(p\.name\)\]=i/);
   assert.match(v20Source, /function restoreFixedFilterGrids/);
   assert.match(v20Source, /distributorFilterGrid/);
   assert.match(v20Source, /\.data-table th,.data-table td/);

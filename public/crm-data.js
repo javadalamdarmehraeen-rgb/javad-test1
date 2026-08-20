@@ -462,7 +462,11 @@ const PERMISSION_GROUPS = {
     { key: "dist_unique_total_customer_invoice", label: "جمع کل یکتای داروخانه و شماره فاکتور" },
     { key: "dist_daya_column_22_customer", label: "شمارش مشتری یکتا از ستون ۲۲ دایا" },
     { key: "dist_daya_column_13_invoice", label: "شمارش فاکتور یکتا از ستون ۱۳ دایا" },
-    { key: "dist_fixed_filter_grid_restore", label: "بازگردانی فیلترهای پخش به سطر ثابت پس از layout engine" }
+    { key: "dist_fixed_filter_grid_restore", label: "بازگردانی فیلترهای پخش به سطر ثابت پس از layout engine" },
+    { key: "dist_inventory_header_alignment", label: "هم‌ترازی خودکار سرستون موجودی دایا با داده" },
+    { key: "dist_product_master_order", label: "ترتیب کالاهای گزارش مطابق تب ستون‌ها و کالاها" },
+    { key: "dist_excel_period_layout", label: "خروجی شیت‌های سال/ماه/بازه با ترتیب ثابت کالا" },
+    { key: "sys_local_quota_cleanup", label: "پاک‌سازی backupهای منسوخ برای جلوگیری از حذف پس از Refresh" }
   ]
 };
 

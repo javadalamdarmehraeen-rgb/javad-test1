@@ -65,6 +65,9 @@ function serializeStateForLocalStorage(value) {
     return val;
   });
 }
+function cleanupObsoleteAutoBackups() {
+  ["CRM_APP_STATE_ROLLING_BACKUP","CRM_APP_STATE_BACKUP_LATEST","CRM_APP_STATE_BACKUP_BEFORE_11_11_0","CRM_APP_STATE_MERGED_RECOVERY"].forEach(function(k){ try { localStorage.removeItem(k); } catch(e) {} });
+}
 function loadState() {
   const saved = localStorage.getItem(STORAGE_KEY);
   window.__CRM_HAD_SAVED_STATE = !!saved;
@@ -73,6 +76,7 @@ function loadState() {
       // تنها مرجع معتبر، وضعیت فعلی است. هیچ backup یا server قدیمی خودکار ادغام نمی‌شود.
       state = JSON.parse(saved);
       if (!state || typeof state !== "object") throw new Error("invalid current state");
+      cleanupObsoleteAutoBackups();
     } catch (err) {
       try { localStorage.setItem("CRM_APP_STATE_CORRUPT_ARCHIVE_" + Date.now(), saved); } catch (e) {}
       state = { settings: {}, users: [], pharmacies: [], doctors: [], orders: [], products: [], _stateLoadError: true };
@@ -99,9 +103,7 @@ function loadState() {
 }
 
 function saveState(triggerAutoBackup = true) {
-  // پیش از هر ذخیره، آخرین وضعیت سالم نگه داشته شود تا هیچ ارتقایی داده/چیدمان را نابود نکند.
-  const previous = localStorage.getItem(STORAGE_KEY);
-  if (previous) localStorage.setItem("CRM_APP_STATE_ROLLING_BACKUP", previous);
+  // وضعیت جاری مستقیماً ذخیره می‌شود؛ هیچ rolling backup خودکاری ساخته نمی‌شود.
   state._lastSavedAt = Date.now();
   localStorage.setItem(STORAGE_KEY, serializeStateForLocalStorage(state));
   if (triggerAutoBackup && window.__CRM_BULK_READY !== false && state.settings && state.settings.autoBackupEnabled) {

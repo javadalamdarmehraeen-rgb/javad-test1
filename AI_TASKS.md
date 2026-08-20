@@ -1259,5 +1259,12 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] DOM واقعی: ۵ فیلد در flex row nowrap
 - [x] ۱۲/۱۲ تست سبز
 - [ ] تأیید اعداد فایل واقعی کاربر
+## ۵۸) نسخه ۱۱.۲۱.۹
+- [x] هم‌ترازی یک‌سلولی سرستون موجودی دایا
+- [x] حذف backupهای خودکار حجیم و rolling save
+- [x] ترتیب گزارش/اکسل مطابق master products
+- [x] شیت‌های period metadata + 19 columns + total
+- [x] ۱۳/۱۳ tests و DOM 5 fields row
+- [ ] تأیید نمونه واقعی موجودی دایا
 
 # END OF AI TASKS

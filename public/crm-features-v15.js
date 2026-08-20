@@ -12,33 +12,14 @@
   function $(id) { return document.getElementById(id); }
 
   function backupUserStateOnce() {
-    try {
-      var raw = localStorage.getItem("CRM_APP_STATE_V2");
-      if (!raw) return;
-      if (!localStorage.getItem(BACKUP_KEY)) localStorage.setItem(BACKUP_KEY, raw);
-      localStorage.setItem("CRM_APP_STATE_BACKUP_LATEST", raw);
-    } catch (e) {}
+    // v11.21.9: backupهای خودکار محلی منسوخ‌اند؛ وضعیت جاری تنها مرجع است.
+    return;
   }
 
 
   function softenBrokenAbsLayouts() {
-    try {
-      if (localStorage.getItem("CRM_SOFTEN_ABS_11_11_0") === "1") return;
-    } catch (e) {}
-    if (!window.state || !state.manualLayouts) return;
-    var changed = false;
-    ["tab-pharmacies", "tab-doctors", "tab-orders"].forEach(function (tabId) {
-      var items = state.manualLayouts[tabId] && state.manualLayouts[tabId].items;
-      if (!items) return;
-      Object.keys(items).forEach(function (id) {
-        if (items[id] && items[id].abs) {
-          items[id].abs = false;
-          changed = true;
-        }
-      });
-    });
-    try { localStorage.setItem("CRM_SOFTEN_ABS_11_11_0", "1"); } catch (e) {}
-    if (changed && typeof saveState === "function") saveState(false);
+    // v11.21.9: هیچ layout ذخیره‌شده‌ای بدون اقدام مدیر تغییر نکند.
+    return;
   }
 
   function restoreProtectedCards() {

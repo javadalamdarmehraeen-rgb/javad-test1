@@ -1,3 +1,11 @@
+# نسخه ۱۱.۲۱.۹
+
+1. header alignment خودکار فایل موجودی دایا اضافه: leading one-cell offset با first-nonempty/length تشخیص و فقط header shift می‌شود، data دست‌نخورده.
+2. backupهای منسوخ localStorage در load پاک و rolling save v15/app no-op شد تا quota مانع ذخیره current metadata نشود.
+3. ترتیب metricRows از state.products است، نه alphabetic Object.keys.
+4. SpreadsheetML پنج شیت، period metadata و ۱۹ ستون/rows ordered/master/total تثبیت شد.
+5. test alignment inventory + product order اضافه؛ suite ۱۳/۱۳. DOM filter actual flex row nowrap, 5 children, correct parent, zero errors.
+
 # نسخه ۱۱.۲۱.۸
 
 1. Daya schema قطعی شد: sales=col5, gift=col4, returnProduct=col8, returnGift=col7, customer=col22, invoice=col13, date=col14, code=col16, inventory=col3.

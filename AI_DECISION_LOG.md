@@ -1439,5 +1439,9 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - Daya ignores file rial columns; all monetary metrics derive quantity × master prices.
 - customer/invoice totals use global set union, not sum of product row counts.
 - DOM test proved layout engine had moved filters to cfHost; restoreFixedFilterGrids moves them back.
+## تصمیم ۷۰ — نسخه ۱۱.۲۱.۹: align inventory headers; current metadata quota cleanup (2026-08-20)
+- Daya inventory headers only shift, rows never shift.
+- Obsolete automatic local backups removed/no-op because they consumed quota and caused current changes to vanish after refresh.
+- Report ordering is master state.products; workbook follows same rows.
 
 # END OF AI DECISION LOG

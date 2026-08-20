@@ -56,12 +56,12 @@
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (170115 بایت)
+### `public/crm-app.js` (170235 بایت)
 - نقش: ============================================================================
-- تعداد توابع داخلی: 163
+- تعداد توابع داخلی: 164
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `_editingProductId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
 
-### `public/crm-data.js` (47557 بایت)
+### `public/crm-data.js` (48113 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 1
 
@@ -90,7 +90,7 @@
 - تعداد توابع داخلی: 42
 - نام‌های window که تعریف/بازنویسی می‌کند: `_activeAddTab`, `_v14SavePatch`, `_v14Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `editUserTab`, `getAllMenuSections`, `iconFromTabLabel`, `refreshColumnsDesigner`, `setupAllFormSubmitHandlers`, `switchTab`
 
-### `public/crm-features-v15.js` (23717 بایت)
+### `public/crm-features-v15.js` (23014 بایت)
 - نقش: v15 — سایز واقعی فیلد، فریز سرستون+اسکرول افقی زیر آن، ذخیره افزودن، حفظ تنظیمات، طراح دستی بدون خراب کردن فرم/لیست
 - تعداد توابع داخلی: 29
 - نام‌های window که تعریف/بازنویسی می‌کند: `_manSelected`, `_v15Paint`, `_v15Sw`, `applyFullFormLayout`, `fieldKeyForTab`, `renderAddTabGrid`, `renderAddTabPanel`, `switchTab`, `writeFieldSize`
@@ -115,9 +115,9 @@
 - تعداد توابع داخلی: 65
 - نام‌های window که تعریف/بازنویسی می‌کند: `_v18DefaultReq`, `_v19BackupLayoutGuard`, `_v19ComboHook`, `_v19Hist`, `_v19IcObs`, `_v19ProdTableWrap`, `_v19Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `extraListColumns`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderPharmaciesList`, `switchTab`, `testServerConnectivity`
 
-### `public/crm-features-v20.js` (171760 بایت)
+### `public/crm-features-v20.js` (172560 بایت)
 - نقش: ============================================================
-- تعداد توابع داخلی: 193
+- تعداد توابع داخلی: 194
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFullFormLayout`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `editProductCatalogItem`, `extraListColumns`, `getUnifiedFieldList`, `openRowDetailsModal`, `performAutoBackup`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`, `v20RenderProductExtras`, `v20SetupSnappCorporate`
 
 ### `public/crm-features-v9.js` (69121 بایت)
@@ -140,7 +140,7 @@
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (1145 بایت)
-- نقش: const CACHE = "ttt-v11.21.8";
+- نقش: const CACHE = "ttt-v11.21.9";
 - تعداد توابع داخلی: 0
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -206,13 +206,10 @@
 
 ## هـ) گراف حافظه مرورگر (کلید ↔ فایل‌های دست‌زننده)
 
-- `CRM_APP_STATE_BACKUP_LATEST` ← localStorage: `public/crm-features-v15.js`
 - `CRM_APP_STATE_CORRUPT_ARCHIVE_` ← localStorage: `public/crm-app.js`
-- `CRM_APP_STATE_ROLLING_BACKUP` ← localStorage: `public/crm-app.js`
-- `CRM_APP_STATE_V2` ← localStorage: `public/crm-features-v10.js`, `public/crm-features-v15.js`, `public/crm-features-v19.js`
+- `CRM_APP_STATE_V2` ← localStorage: `public/crm-features-v10.js`, `public/crm-features-v19.js`
 - `CRM_DIAG_LOG` ← localStorage: `public/crm-features-v11.js`
 - `CRM_LAST_GPS` ← localStorage: `public/crm-features-v11.js`
-- `CRM_SOFTEN_ABS_11_11_0` ← localStorage: `public/crm-features-v15.js`
 - `CRM_USERS_AUTH` ← localStorage: `public/crm-features-v11.js`, `public/crm-features-v20.js`
 - `crmLoggedIn` ← sessionStorage: `public/crm-app.js`, `public/crm-features-v10.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`
 - `crmUserId` ← sessionStorage: `public/crm-features-v9.js`

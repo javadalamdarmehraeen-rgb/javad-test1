@@ -1172,3 +1172,7 @@ ADDENDUM v11.16.1 (2026-08-16)
 - retGift percentage denominator is return-product quantity.
 - Total pharmacies/invoices are global set unions, not sums of per-product counts.
 - Layout engine moves fixed filters into cfHost; restoreFixedFilterGrids must return exactly 5 groups to distributorFilterGrid.
+## Addendum — v11.21.9
+- Inventory alignment shifts headers only, never data rows.
+- Do not re-enable automatic local rolling/latest/pre-version backups; quota caused current-state loss.
+- Report and all workbook sheets must follow state.products order exactly.
