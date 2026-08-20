@@ -865,3 +865,5 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.22.0 است. Daya inventory exact headers: موجودی, نام کالا, کد کالا. User sample order maps qty2/product6/code7. Generic کالا regex no longer matches کالای در راه first.
 ## افزونه وضعیت نسخه ۱۱.۲۲.۱
 نسخه فعال 11.22.1 است. Global DOM numbers are Latin. Excel has bordered styles, Number grouping and PercentText. All data headers sticky. Address textareas guarded; GPS no fake fallback. List order uses getUnifiedFieldList(paneId).
+## افزونه وضعیت نسخه ۱۱.۲۲.۲
+نسخه فعال 11.22.2 است. Address ordering is country-first with postcode label. CRM_DOM_FIELD_ORDER_LOCK_V1 preserves actual core form order. Shafaarad exact zero-based map: date6 invoice5 qty7 ret9 customer3; inventory derived qty index9 = index5+index7.

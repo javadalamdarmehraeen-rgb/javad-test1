@@ -1,3 +1,12 @@
+# نسخه ۱۱.۲۲.۲
+
+1. آدرس reverse geocode فارسی از ایران→استان→شهرستان→بخش→شهر→منطقه→محله→خیابان→پلاک→کد پستی مرتب شد؛ display_name معکوس دیگر override نمی‌کند.
+2. DOM field order lock مستقل اضافه: beforeunload capture، manager change capture، restore بعد layout engine/reliable boot.
+3. Shafaarad schema قطعی: date7, sales8, return10, customer4, invoice6؛ monetary quantities×master prices؛ gift fields zero.
+4. ستون دائمی inventory index10 «جمع تعداد موجودی» = index6 + index8، در هر import/restore بازسازی و در report qty استفاده می‌شود.
+5. textarea address guard، GPS six decimals/maxAge0/no fake حفظ.
+6. tests 16/16 با fixture Shafa و address order.
+
 # نسخه ۱۱.۲۲.۱
 
 1. همه digits دیداری و input غیرpassword به Latin تبدیل می‌شوند؛ grouping en-US است، تاریخ/کد/تلفن بدون grouping ولی Latin.

@@ -1451,5 +1451,9 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - Excel percent cells are strings with %, number cells have #,##0 and all cells borders.
 - list reorder bug was getUnifiedFieldList(key) instead of paneId plus strict matched>=2.
 - address fields textarea+guard; GPS fake fallback removed.
+## تصمیم ۷۳ — نسخه ۱۱.۲۲.۲: Persian address order + DOM order lock + Shafaarad schema (2026-08-20)
+- Nominatim display_name reversed output no longer overrides ordered Persian address; postcode explicitly labeled.
+- DOM core form group order has independent local lock captured before unload/manager edits and restored after all layout engines.
+- Shafaarad inventory computed column10 is derived every import/hydrate and immutable from source replacement.
 
 # END OF AI DECISION LOG

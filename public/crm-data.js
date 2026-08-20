@@ -475,7 +475,11 @@ const PERMISSION_GROUPS = {
     { key: "sys_address_persistence", label: "حفظ آدرس کامل هنگام کلیک روی فیلد" },
     { key: "sys_high_accuracy_gps", label: "GPS با دقت بالا و منع موقعیت تستی" },
     { key: "sys_list_order_effective", label: "اعمال واقعی ترتیب ستون‌های لیست" },
-    { key: "sys_product_info_no_shake", label: "جلوگیری از لرزش پنل اطلاعات کالا" }
+    { key: "sys_product_info_no_shake", label: "جلوگیری از لرزش پنل اطلاعات کالا" },
+    { key: "sys_address_rtl_order", label: "ترتیب فارسی آدرس از ایران تا پلاک و کد پستی" },
+    { key: "sys_dom_order_lock", label: "قفل مستقل ترتیب واقعی فرم‌ها بین Refresh" },
+    { key: "dist_shafaarad_exact_formula", label: "نگاشت قطعی ستون‌های شفاآراد" },
+    { key: "dist_shafaarad_inventory_total", label: "ستون دائمی جمع تعداد موجودی شفاآراد" }
   ]
 };
 

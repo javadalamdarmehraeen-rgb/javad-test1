@@ -1185,3 +1185,8 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Sticky headers and full cell borders are global.
 - List reorder must use paneId and reliable rewrap.
 - Never restore fake GPS coordinates; preserve full address on click.
+## Addendum — v11.22.2
+- Address output must be Iran-first and postal code labeled; never replace with reversed display_name.
+- DOM order lock captures beforeunload and manager edits; restore after every layout engine.
+- Shafaarad inventory column10 is always recalculated as col6+col8.
+- Shafaarad sales uses col8, returns col10, customer col4, invoice col6, date col7; rials derive master prices.

@@ -62,6 +62,11 @@ test('startup cannot auto-add mirrored fields, old backups, or remote state', ()
   assert.match(durable,/method:\s*["']POST/);
 });
 
+test('Persian address order starts with Iran and labels postal code', () => {
+  const start=v9Source.indexOf('function formatNominatim('),brace=v9Source.indexOf('{',start);let depth=0,end=brace;for(;end<v9Source.length;end++){if(v9Source[end]==='{')depth++;else if(v9Source[end]==='}'&&--depth===0){end++;break;}}
+  const ctx={result:null,Number};vm.createContext(ctx);vm.runInContext(`${v9Source.slice(start,end)};result=formatNominatim`,ctx);const out=ctx.result({address:{country:'ایران',state:'استان تهران',county:'شهرستان تهران',municipality:'بخش مرکزی',city:'تهران',city_district:'منطقه ۱۴',road:'دهم فروردین',house_number:'12',postcode:'17658-33316'}},35,51);assert.ok(out.startsWith('ایران، استان تهران'));assert.match(out,/پلاک: 12/);assert.match(out,/کد پستی: 17658-33316/);
+});
+
 test('global numeric display converts Persian digits to Latin without changing passwords/codes', () => {
   const start=v20Source.indexOf('function latinizeDigits('),brace=v20Source.indexOf('{',start);let depth=0,end=brace;for(;end<v20Source.length;end++){if(v20Source[end]==='{')depth++;else if(v20Source[end]==='}'&&--depth===0){end++;break;}}
   const ctx={result:null,enDigits:v=>String(v).replace(/[۰-۹]/g,c=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(c))};vm.createContext(ctx);vm.runInContext(`${v20Source.slice(start,end)};result=latinizeDigits`,ctx);assert.equal(ctx.result('۱۴۰۵/۰۸/۱۹'),'1405/08/19');assert.equal(ctx.result('۱٬۲۳۴٫۵'),'1,234.5');
@@ -118,6 +123,13 @@ test('Daya real inventory sample maps code, product and quantity to correct cell
   const schema=ctx.result(headers,'daya');assert.equal(schema.qty,2);assert.equal(schema.product,6);assert.equal(schema.code,7);assert.equal(row[schema.qty],'6');assert.equal(row[schema.code],'1112002');
 });
 
+test('Shafaarad mappings and derived inventory column 10 are permanent', () => {
+  function extract(name){const start=v20Source.indexOf(`function ${name}(`),brace=v20Source.indexOf('{',start);let depth=0,end=brace;for(;end<v20Source.length;end++){if(v20Source[end]==='{')depth++;else if(v20Source[end]==='}'&&--depth===0){end++;break;}}return v20Source.slice(start,end);}
+  const ctx={result:null,normalizeStoredRow:r=>Array.isArray(r)?r.slice():Object.values(r||{}),snappNumber:v=>Number(v)||0,findDistIndex:()=>-1,norm:v=>String(v||'').replace(/\s+/g,'')};vm.createContext(ctx);vm.runInContext(`${extract('ensureShafaInventoryDerived')};${extract('distSchema')};result={ensureShafaInventoryDerived,distSchema}`,ctx);
+  const d={id:'shafaarad',inventoryHeaders:['نام مرکز','کالا','نام کالا','فروش عددی','فروش ریالی','موجودی عددی','موجودی ریالی','تعداد بین راهی','ریال بین راهی'],inventoryRows:[['مرکز','کد','کالا',0,0,12,0,5,0]]};ctx.result.ensureShafaInventoryDerived(d);assert.equal(d.inventoryHeaders[9],'جمع تعداد موجودی');assert.equal(d.inventoryRows[0][9],17);
+  const s=ctx.result.distSchema([], 'shafaarad');assert.equal(s.date,6);assert.equal(s.invoice,5);assert.equal(s.qty,7);assert.equal(s.retQty,9);assert.equal(s.pharmacy,3);
+});
+
 test('Daya calculations follow declared quantity, price, gift and return formulas', () => {
   const start=v20Source.indexOf('function calculateDayaAmounts('),brace=v20Source.indexOf('{',start);let depth=0,end=brace;for(;end<v20Source.length;end++){if(v20Source[end]==='{')depth++;else if(v20Source[end]==='}'&&--depth===0){end++;break;}}
   const ctx={result:null};vm.createContext(ctx);vm.runInContext(`${v20Source.slice(start,end)};result=calculateDayaAmounts`,ctx);const x=ctx.result(100,20,10,2,500,700);
@@ -153,6 +165,10 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /ss:Position=\"Top\"/);
   assert.match(v20Source, /\.data-table thead th\{position:sticky!important/);
   assert.match(v20Source, /function bindAddressFieldGuard/);
+  assert.match(v9Source, /کد پستی:/);
+  assert.doesNotMatch(v9Source, /String\(data\.display_name\)\.length > compact\.length/);
+  assert.match(v20Source, /function bindDomOrderLock/);
+  assert.match(v20Source, /CRM_DOM_FIELD_ORDER_LOCK_V1/);
   assert.match(v20Source, /getUnifiedFieldList\(paneId\)/);
   assert.match(v20Source, /function bindProductCrudV20/);
   assert.match(v20Source, /productCode/);

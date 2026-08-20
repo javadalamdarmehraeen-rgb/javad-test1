@@ -1282,5 +1282,13 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] list ordering paneId/fuzzy/rewrap
 - [x] ۱۵/۱۵ tests
 - [ ] تأیید مرورگری کاربر
+## ۶۱) نسخه ۱۱.۲۲.۲
+- [x] آدرس ایران-first و کد پستی label
+- [x] قفل DOM ترتیب فرم‌ها بین refresh
+- [x] schema داروخانه شفاآراد 8/10/4/6/date7
+- [x] ستون10 موجودی = ستون6+8
+- [x] فرمول ریالی/درصد شفاآراد
+- [x] ۱۶/۱۶ tests
+- [ ] تأیید فایل واقعی شفاآراد
 
 # END OF AI TASKS

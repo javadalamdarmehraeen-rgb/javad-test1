@@ -236,18 +236,22 @@
   function formatNominatim(data, lat, lng) {
     const addr = data.address || {};
     const parts = [
-      addr.country,
+      addr.country || "ایران",
       addr.state,
-      addr.city || addr.town || addr.village || addr.county,
-      addr.suburb || addr.neighbourhood || addr.city_district,
+      addr.county,
+      addr.municipality,
+      addr.city || addr.town || addr.village,
+      addr.city_district,
+      addr.suburb || addr.neighbourhood,
+      addr.quarter,
       addr.road || addr.pedestrian || addr.street,
-      addr.house_number
+      addr.house_number ? ("پلاک: " + addr.house_number) : "",
+      addr.postcode ? ("کد پستی: " + addr.postcode) : ""
     ].filter(Boolean);
     const uniq = [];
     parts.forEach(function (p) { if (uniq.indexOf(p) === -1) uniq.push(p); });
     var compact = uniq.join("، ");
-    // display_name معمولاً پلاک/کوچه/محله کامل‌تری دارد؛ اگر کامل‌تر است همان استفاده شود.
-    if (data.display_name && String(data.display_name).length > compact.length) return data.display_name;
+    // ترتیب فارسی همیشه از کشور به جزئیات است؛ display_name معکوس جایگزین نشود.
     if (compact) return compact;
     return data.display_name || ("موقعیت " + Number(lat).toFixed(6) + ", " + Number(lng).toFixed(6));
   }
