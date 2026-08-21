@@ -1584,3 +1584,12 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - هر handoff باید تفاوت source-tested، local-committed، branch-pushed، PR-created، main-merged، CI, GitLab, Render و production health را جدا بنویسد.
 - خطای مجوز GitHub بخشی از context دائمی است تا مدل بعدی push ناموفق را با deploy موفق اشتباه نگیرد.
 - README قدیمی Next.js نباید reviewer را منحرف کند؛ runtime فعلی Node/public در بالای README تصریح شد.
+
+## تصمیم ۹۳ — نوبت ۶۱: انتشار 11.38.0 تأییدشده، مخزن javad-test1 و قانون همگام‌سازی آرشیو (2026-08-22)
+- مخزن فعال این چت‌ها `javadalamdarmehraeen-rgb/javad-test1` است و production فعال کاربر `https://javad-test1.onrender.com`؛ سرویس قدیمی `namayandeelmi-javad.onrender.com` دیگر مرجع health نیست و هنوز 11.20.0 است.
+- push شاخه Arena وقتی مجاز است که کامیت‌های push حاوی تغییر `.github/workflows/*` نباشند؛ خطای 403 قبلی مخصوص کامیت‌های حاوی workflow بود، نه کل اتصال.
+- PR با صفر تفاوت نسبت به main قابل ساخت نیست («No commits between»)؛ اگر نوک شاخه == نوک main باشد، سورس از قبل merged است و ادعای PR معلق غلط است.
+- تولید «موفق» در steps ورک‌فلوی deploy بدون لاگ خام معتبر نیست؛ تنها منبع حقیقت انتشار `/api/health` خود production است که این بار 11.38.0 را دو بار مستقل برگرداند و redirect زنده `/login?build=11.38.0&__crm_reload=...` موتور cache rescue را در عمل اثبات کرد.
+- ممیزی ۲۰ چت اخیر (نوبت ۴۱–۶۰ = نسخه 11.23.0 تا 11.38.0) با ۲۲ نشانگر کد + 58/58 تست نشان داد هیچ پرامپت معلق‌ای در کد نمانده؛ نسخه برنامه بدون تغییر کد واقعی bump نمی‌شود.
+- قانون دائمی جدید (قانون ۹۱ AI_RULES): در هر چت همه ۱۵ فایل آرشیوی به‌روز شوند، graph/chat با اسکریپت‌های خودشان بازسازی شوند و ZIP طبق قانون ۶۴ کنار صفحه بیاید.
+- GitLab mirror تنها حلقه تأییدنشده باقی مانده است (remote و لاگ خام از sandbox در دسترس نیست).

@@ -19,11 +19,19 @@ Namayande Elmi
 
 Repository:
 
-https://github.com/javadalamdarmehraeen-rgb/namayandeelmi-javad
+https://github.com/javadalamdarmehraeen-rgb/namayandeelmi-javad (مخزن نوبت‌های ۵۹–۶۰)
 
-Production:
+مخزن فعال از نوبت ۶۱:
 
-https://namayandeelmi-javad.onrender.com
+https://github.com/javadalamdarmehraeen-rgb/javad-test1
+
+Production فعال (اعلام کاربر، نوبت ۶۱):
+
+https://javad-test1.onrender.com — نسخه 11.38.0 تأییدشده در 2026-08-21T21:24Z
+
+سرویس قدیمی (دیگر مرجع نیست):
+
+https://namayandeelmi-javad.onrender.com — هنوز 11.20.0
 
 Current project version reported by package.json:
 
@@ -914,3 +922,6 @@ Commit محلی `2c4fe0b` روی شاخه ثابت Arena ساخته شد. Push �
 
 ## نقطه شروع چت بعدی — نوبت ۶۰
 مرجع عملیاتی جدید `GITHUB_REVIEW_HANDOFF.md` است. هوش مصنوعی بعدی باید اول PROJECT_GRAPH و سپس این فایل را بخواند. آخرین commit محلی پیش از مستندسازی `4984d17` است؛ GitHub remote فقط main دارد، push/PR هنوز به‌علت permission انجام نشده، GitLab remote نیست و production در آخرین بررسی 11.20.0 است. نسخه سورس 11.38.0 و 57 تست موفق‌اند. نخستین اقدام پس از reconnect GitHub باید push همان شاخه ثابت، PR به main، check/merge و سپس production health باشد.
+
+## نقطه شروع چت بعدی — نوبت ۶۱ (2026-08-22)
+انتشار `11.38.0` تأییدشده است: مخزن فعال `javadalamdarmehraeen-rgb/javad-test1`، شاخه جلسه `arena/01a0262d-javad-test1` push شد، main خودش `f541301` یعنی سورس کامل 11.38.0 است (PR لازم نبود؛ صفر تفاوت)، workflow checks موفق‌اند و production فعال کاربر `https://javad-test1.onrender.com` دو بار مستقل نسخه `11.38.0` را سرو کرد؛ `/panel` redirect زنده `/login?build=11.38.0&__crm_reload=...` را نشان داد که اثبات عملی موتور cache rescue است. سرویس قدیمی `namayandeelmi-javad.onrender.com` هنوز `11.20.0` است و مرجع نیست. ممیزی ۲۰ چت اخیر (نوبت ۴۱–۶۰) با ۲۲ نشانگر کد + ۵۸/۵۸ تست نشان داد هیچ پرامپت معلق کدی نمانده؛ نسخه برنامه بدون تغییر واقعی bump نمی‌شود. قانون دائمی ۹۱: در هر چت همه ۱۵ فایل آرشیوی به‌روز شوند و ZIP کنار صفحه بیاید. تنها حلقه باز: تأیید مستقل GitLab mirror.
