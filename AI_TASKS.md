@@ -1395,3 +1395,17 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] ۴۳/۴۳ تست شامل API bulk round-trip
 - [ ] تنظیم Persistent Disk واقعی Render و CRM_DATA_DIR توسط کاربر
 - [ ] تأیید Android/iOS و universal links روی گوشی واقعی
+## ۷۲) نسخه ۱۱.۳۱.۰
+- [x] پاک‌سازی cache/SW قدیمی پیش از نمایش build جدید بدون حذف داده
+- [x] no-store سرور، CDN و SW برای HTML/JS/CSS
+- [x] حذف flash صفحه مدیر با crm-booting
+- [x] grid موبایل اقلام سفارش و کلید حذف 40px
+- [x] کوچک‌سازی کلید پاک‌کردن فرم
+- [x] همبرگری landscape و drawer داخل صفحه
+- [x] Android intent نشان و بلد + universal iOS/web
+- [x] بازسازی reps از users و حذف نام کاربران حذف‌شده
+- [x] selector فقط خود نماینده مگر مجوز all-reps
+- [x] فیلدهای استان/شهر/مناطق فعالیت و نمایش کنار نام
+- [x] حذف کاربر همراه auth/reps/selectors
+- [x] ۴۴/۴۴ تست
+- [ ] تأیید کش، Android/iOS، همبرگری و intent روی دستگاه واقعی

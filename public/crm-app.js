@@ -1647,7 +1647,7 @@ function renderUserCardsList() {
     card.innerHTML = `
       <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 0.75rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
         <div>
-          <span style="font-weight: 800; font-size: 1.05rem; color: #0f172a;">${index + 1}. ${user.fullName}</span>
+          <span style="font-weight: 800; font-size: 1.05rem; color: #0f172a;">${index + 1}. ${user.fullName}${user.activityRouteLabel ? ` (${user.activityRouteLabel})` : ""}</span>
           <span class="status-badge" style="background:#eff6ff;color:#1e40af;margin-right:0.5rem;">${user.role}</span>
         </div>
         <div style="font-size: 0.78rem; color: #64748b;">آخرین ورود: ${user.lastLogin || "-"}</div>
@@ -2953,7 +2953,7 @@ function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.30.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.31.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -2997,12 +2997,18 @@ function setupNavigationAppsModal() {
     const lat = Number(activeNavCoords.lat).toFixed(6);
     const lng = Number(activeNavCoords.lng).toFixed(6);
     const name = encodeURIComponent(activeNavCoords.name || "مقصد");
-    const urls = {
+    const web = {
       neshan: `https://nshn.ir/maps?destination=${lat},${lng}&type=drive&name=${name}`,
       balad: `https://balad.ir/directions/driving?destination=${lng}%2C${lat}`,
       google: `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=driving&dir_action=navigate`,
       waze: `https://waze.com/ul?ll=${lat},${lng}&navigate=yes`
     };
+    const android = /Android/i.test(navigator.userAgent);
+    const urls = Object.assign({}, web);
+    if (android) {
+      urls.neshan = `intent://nshn.ir/maps?destination=${lat},${lng}&type=drive&name=${name}#Intent;scheme=https;package=org.rajman.neshan.traffic.tehran.navigator;S.browser_fallback_url=${encodeURIComponent(web.neshan)};end`;
+      urls.balad = `intent://balad.ir/directions/driving?destination=${lng}%2C${lat}#Intent;scheme=https;package=ir.balad;S.browser_fallback_url=${encodeURIComponent(web.balad)};end`;
+    }
     closeModalNavigationApps();
     window.location.assign(urls[provider]);
   };

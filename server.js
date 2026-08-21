@@ -83,10 +83,13 @@ function sendFile(req, res, filePath, maxAge) {
     const ext = path.extname(filePath).toLowerCase();
     const type = MIME[ext] || "application/octet-stream";
     const extra = {
-      "Cache-Control": maxAge
-        ? ("public, max-age=" + maxAge)
-        : "no-cache, no-store, must-revalidate"
+      "Cache-Control": maxAge ? ("public, max-age=" + maxAge) : "no-store, no-cache, must-revalidate, max-age=0",
+      "Pragma": maxAge ? "" : "no-cache",
+      "Expires": maxAge ? undefined : "0",
+      "CDN-Cache-Control": maxAge ? ("public, max-age=" + maxAge) : "no-store",
+      "Surrogate-Control": maxAge ? ("max-age=" + maxAge) : "no-store"
     };
+    Object.keys(extra).forEach((k) => { if (extra[k] === undefined || extra[k] === "") delete extra[k]; });
     send(req, res, 200, buf, type, extra);
   });
 }
@@ -106,7 +109,7 @@ const server = http.createServer((req, res) => {
     return send(req, res, 200, JSON.stringify({
       ok: true, status: "healthy", message: "OK",
       service: "namayandeelmi-javad-crm",
-      version: "11.30.0",
+      version: "11.31.0",
       timestamp: new Date().toISOString()
     }), "application/json; charset=utf-8");
   }
@@ -236,5 +239,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, "0.0.0.0", () => {
-  console.log("CRM v11.30.0 listening on 0.0.0.0:" + PORT);
+  console.log("CRM v11.31.0 listening on 0.0.0.0:" + PORT);
 });

@@ -49,7 +49,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.46 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.30.0
+نسخه این فایل: 1.47 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.31.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -3338,6 +3338,13 @@ git push gitlab main
 🤖 دستیار:
 نسخه **۱۱.۳۰.۰** ساخته شد. invoice tab اکنون pinned است و deny فقط notice داخل تب می‌دهد، هرگز nav را حذف نمی‌کند؛ V1130 ترمیم تازه دارد. CSS تا 950px portrait/landscape، wrap کلیدها و فرم/لیست 50/50 دارد. نشان/بلد/Google/Waze از universal directions URL واقعی استفاده می‌کنند. حریم نماینده repId/repName strict و all-reps صریح است؛ ownerless نشت نمی‌کند. origin کاملاً خالی فقط یک‌بار از `/api/state` bootstrap می‌شود و state موجود هرگز overwrite نمی‌شود. Bulk Excel به `/api/bulk` و user-bulk-data.json روی CRM_DATA_DIR یا /var/data mirror/hydrate می‌شود. ۴۳ تست شامل bulk API موفق؛ Persistent Disk و گوشی واقعی در انتظار تأیید کاربر است.
 
+──────────────────────────────── نوبت ۵۲ ────────────────────────────────
+🧑 کاربر (خلاصه وفادار):
+«کش قدیمی Windows/Android/iOS اول پاک و بعد نسخه جدید باز شود. تب وضعیت فاکتور هنوز flash/hide دارد. موبایل هنوز overflow دارد؛ در سفارش پاک‌کردن خیلی بزرگ، کالا در portrait نامشخص و hamburger در landscape نامشخص است. مسیریاب مقصد را route نمی‌کند و نصب‌شده را download می‌گوید. نماینده همه داده/نام‌ها را می‌بیند؛ کاربران حذف‌شده در reps مانده و جدیدها نیستند. مدیر باید استان/شهر/مناطق فعالیت هر نماینده را تعریف و کنار نام ببیند. کاربران غیرمدیر در ورود/رفرش لحظه‌ای صفحه مدیر را نبینند. داده واقعی با هر لینک دائمی بماند.»
+
+🤖 دستیار:
+نسخه **۱۱.۳۱.۰** ساخته شد. Head build gate فقط CacheStorage/SW قدیمی را پیش از render پاک و با query یک‌بار reload می‌کند؛ داده محلی هرگز پاک نمی‌شود. body تا central permission مخفی و admin flash حذف است. Server/SW no-store assets دارند. invoice shell pinned باقی است. Mobile order grid سه‌ردیفی با action 40px، clear max130px، hamburger 44px و landscape drawer دارد. Android نشان/بلد package intent و iOS/web universal directions دارند. users مرجع واحد reps شده؛ حذف/افزودن و selector self-only همگام است. مدیر province/city/district route را ذخیره و کنار نام می‌بیند. Cross-link state/bulk از نسخه قبل حفظ است. ۴۴ تست موفق؛ دستگاه واقعی و Persistent Disk در انتظار تأیید است.
+
 """
 
 FILES_INTRO = """
@@ -3374,7 +3381,7 @@ def build():
         out.append("~~~~~~~~" + lang)
         out.append(content.rstrip("\n"))
         out.append("~~~~~~~~")
-    out.append("\n\n— پایان chat.arena نسخه ۱.۴۶ (نسخه برنامه 11.30.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
+    out.append("\n\n— پایان chat.arena نسخه ۱.۴۷ (نسخه برنامه 11.31.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
     with open(OUT, "w", encoding="utf-8") as f:
         f.write("\n".join(out))
     print("chat.arena written:", os.path.getsize(OUT), "bytes,", len(text_files), "text files embedded,", len(bin_files), "binary files listed")

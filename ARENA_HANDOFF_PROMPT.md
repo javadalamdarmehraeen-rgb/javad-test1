@@ -1254,3 +1254,11 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Scientific reps may only see repId/exact repName-owned records unless explicit all-reps permission; ownerless data must not leak.
 - Current local state still wins. Remote GET is allowed only when the browser origin has no CRM_APP_STATE_V2 at all.
 - Preserve `/api/bulk`, user-bulk-data.json gitignore/ZIP exclusion, 64MB limit, server hydrate and persistent disk directory support.
+## افزونه تحویل نسخه ۱۱.۳۱.۰
+- Never clear LocalStorage/IndexedDB for cache updates. Build gate may delete only CacheStorage and old service-worker registrations.
+- Keep body hidden until final permissions to prevent manager-page flash.
+- Preserve no-store server/SW asset path and single reload per CRM_ASSET_BUILD.
+- Mobile order row/delete/clear/hamburger landscape rules are permanent.
+- Android Neshan/Balad intents must retain package and destination; iOS/web universal directions remain.
+- Users are the sole representative roster source. Deleted users vanish, new users appear, normal rep selectors show self only unless explicit all-reps.
+- Preserve activity route fields and labels.

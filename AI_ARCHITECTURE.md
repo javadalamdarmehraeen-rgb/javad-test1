@@ -1162,3 +1162,10 @@ Then change only what is requested.
 - Empty-origin bootstrap gate blocks saves, GETs `/api/state`, validates meaningful state, persists locally, then reloads. Existing local state bypasses GET entirely.
 - Bulk vault mirrors `captureBulkState()` to `/api/bulk`; server stores up to 64MB in `user-bulk-data.json`; local-miss hydrate tries server and writes IndexedDB.
 - Runtime data directory: `CRM_DATA_DIR`, else existing `/var/data`, else repository runtime directory. Persistent disk remains operational requirement.
+## معماری افزوده v11.31.0 — Build cache gate / derived representative roster
+- Head gate compares `CRM_ASSET_BUILD`; on mismatch hides body, deletes CacheStorage, unregisters SW, preserves all data stores, and reloads once with build query.
+- Server nonvendor assets return no-store plus CDN/Surrogate no-store; SW navigation/JS/CSS fetch requests use cache:no-store.
+- App shell visibility is released by final permission engine, not initial HTML, preventing role flash.
+- Representative roster projection: users → reps keyed by userId, preserving previous live coordinates/status; selectors derive from active reps and current permissions.
+- User activity route schema: activityProvince, activityCity, activityDistricts, activityRouteLabel.
+- Mobile order item grid has deterministic three rows and compact 40px actions.

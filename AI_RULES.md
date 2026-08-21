@@ -1481,3 +1481,16 @@ and never remotely overwritten. Only a completely empty new browser origin may b
 once from the same backend. Bulk Excel data must mirror through `/api/bulk` and persistent
 runtime storage; user-data and user-bulk-data remain excluded from Git/ZIP. Persistent disk
 configuration is required for server-side survival across deploys.
+
+# 82. CACHE-SAFE BOOT + USER-DERIVED REPS + MOBILE ORDER RULE (PERMANENT)
+
+A new build must clear old asset caches and old SW registrations before showing UI, but
+must never clear or mutate LocalStorage/IndexedDB user data. Server and SW must bypass
+stale HTML/JS/CSS caches. The shell remains hidden until final session permissions apply,
+so nonmanager users never flash the manager page. Mobile order items have deterministic
+visible fields and compact action buttons in both orientations; hamburger remains visible.
+Android map providers use package-specific direction intents and iOS/web use universal
+direction links. `state.users` is the only roster source: deleted users disappear, new users
+appear, and a normal representative selector contains only that user unless explicit
+all-reps permission. Manager-defined province/city/district activity route is stored on the
+user and displayed beside their name.

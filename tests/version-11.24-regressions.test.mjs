@@ -161,7 +161,7 @@ test('final user editor always has save, exact roles and stable one-dropdown pre
   assert.match(v20,/permissionLevelTemplates\[pid\]=checklistPermissions\(\)/);
   assert.match(v20,/#tab-users-permissions \.permission-tag-chk,#tab-users-permissions \.permission-tag-chk:hover\{transition:none!important;transform:none!important/);
   const state={users:[{id:'u1',fullName:'قدیم',username:'old',password:'1',permissions:{}}]},els={userEditId:{value:'u1'},newFullName:{value:'جدید'},newUsername:{value:'new'},newPassword:{value:'2'},newPhone:{value:'0912'},newRole:{value:'سرپرست'},newSimControl:{value:'بدون بررسی'},formCreateUser:{reset(){}},btnSaveUserInfo:{innerHTML:'',style:{}}};
-  const ctx={state,result:null,st:()=>state,$:id=>els[id]||null,checklistPermissions:()=>({ph_access:true}),save:()=>{},syncUsersAuthV27:()=>{},applyCentralPermissions:()=>{},window:{renderUserCardsList:()=>{},updateNavBadges:()=>{}},v20Toast:()=>{},alert:()=>{}};vm.createContext(ctx);vm.runInContext(`${extract('saveUserV27')};saveUserV27();result=state.users`,ctx);assert.equal(ctx.result.length,1);assert.equal(ctx.result[0].fullName,'جدید');assert.equal(ctx.result[0].role,'سرپرست');assert.equal(ctx.result[0].permissions.ph_access,true);
+  const ctx={state,result:null,st:()=>state,$:id=>els[id]||null,checklistPermissions:()=>({ph_access:true}),save:()=>{},syncUsersAuthV27:()=>{},syncRepsFromUsers:()=>{},applyCentralPermissions:()=>{},window:{renderUserCardsList:()=>{},updateNavBadges:()=>{}},v20Toast:()=>{},alert:()=>{}};vm.createContext(ctx);vm.runInContext(`${extract('saveUserV27')};saveUserV27();result=state.users`,ctx);assert.equal(ctx.result.length,1);assert.equal(ctx.result[0].fullName,'جدید');assert.equal(ctx.result[0].role,'سرپرست');assert.equal(ctx.result[0].permissions.ph_access,true);
 });
 
 test('central permission engine covers every tab, sub-controls and dynamically rendered nodes', () => {
@@ -199,6 +199,8 @@ test('navigation links request real driving directions and universal installed-a
   assert.match(app,/google\.com\/maps\/dir\/\?api=1&destination=\$\{lat\},\$\{lng\}.*dir_action=navigate/);
   assert.match(app,/waze\.com\/ul\?ll=\$\{lat\},\$\{lng\}&navigate=yes/);
   assert.match(app,/window\.location\.assign\(urls\[provider\]\)/);
+  assert.match(app,/package=org\.rajman\.neshan\.traffic\.tehran\.navigator/);
+  assert.match(app,/package=ir\.balad/);
   assert.doesNotMatch(app,/neshan\.org\/maps\/@/);
 });
 
@@ -209,6 +211,10 @@ test('scientific representative data is strictly owner-scoped unless all-reps pe
   assert.match(v9,/canSeeAll\("ord_all_reps"\)\?list:list\.filter\(ownedByCurrent\)/);
   assert.doesNotMatch(v9,/return !p\.repName \|\| p\.repName === currentRepName\(\)/);
   assert.match(v9,/repId: currentRepId\(\)/);assert.match(v9,/repId: userIdForRep/);
+  assert.match(v20,/function syncRepsFromUsers/);assert.match(v20,/S\.users\|\|\[\]/);assert.match(v20,/S\.reps=reps/);
+  assert.match(v20,/function syncRepresentativeSelectors/);assert.match(v20,/reps\.filter\(function\(r\)\{return u&&String\(r\.id\)===String\(u\.id\)/);
+  for(const id of ['newActivityProvince','newActivityCity','newActivityDistricts']) assert.ok(html.includes(`id="${id}"`),`missing activity route ${id}`);
+  assert.match(app,/user\.activityRouteLabel/);
 });
 
 test('empty new origin safely bootstraps shared state and bulk data without overwriting existing local state', () => {
@@ -225,8 +231,21 @@ test('distributor Excel writes Persian month name while keeping all digits Latin
   assert.match(v20,/Date\.prototype\[name\]=function\(\)/);
 });
 
+test('new build clears only old asset caches before revealing app and prevents manager-screen flash', () => {
+  assert.match(html,/var BUILD="11\.31\.0",key="CRM_ASSET_BUILD"/);
+  assert.match(html,/document\.documentElement\.classList\.add\("crm-booting"\)/);
+  assert.match(html,/caches\.keys\(\).*caches\.delete/);
+  assert.match(html,/navigator\.serviceWorker\.getRegistrations\(\).*unregister/);
+  assert.match(html,/location\.replace\(u\.toString\(\)\)/);
+  assert.match(v20,/document\.documentElement\.classList\.remove\("crm-booting"\)/);
+  assert.match(server,/no-store, no-cache, must-revalidate, max-age=0/);
+  assert.match(server,/CDN-Cache-Control/);
+  assert.match(sw,/cache:"no-store"/);
+  assert.match(sw,/purgeOldCaches/);
+});
+
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.30\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.31\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);

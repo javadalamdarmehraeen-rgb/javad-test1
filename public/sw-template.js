@@ -144,6 +144,7 @@ async function flushQueue() {
 self.addEventListener("message", (e) => {
   if (e.data === "flush") e.waitUntil(flushQueue());
   if (e.data === "skipWaiting") self.skipWaiting();
+  if (e.data === "purgeOldCaches") e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== SHELL && k !== DATA).map((k) => caches.delete(k)))));
   if (e.data === "queue-count")
     e.waitUntil(
       queueAll().then(async (q) => {

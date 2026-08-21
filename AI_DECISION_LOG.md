@@ -1519,3 +1519,10 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - Representative privacy is ownership-first (repId, then exact repName); ownerless records are invisible to normal reps; all-reps requires explicit permission.
 - Existing local state remains authoritative. The sole remote-GET exception is a completely empty browser origin, which may bootstrap from the same backend without merging/overwriting.
 - Bulk IndexedDB data is mirrored to `/api/bulk` (64MB) for same-backend custom-link continuity; runtime files use persistent disk directory when available.
+## تصمیم ۸۴ — نسخه ۱۱.۳۱.۰: cache-before-render، mobile order grid، native intents و user-derived reps (2026-08-21)
+- New-build boot is head-first and data-safe: hide shell, delete CacheStorage registrations/assets only, never localStorage/IndexedDB, then one query-version reload.
+- Server and SW both bypass stale HTML/JS/CSS caches; UI reveals only after central permissions, eliminating manager flash.
+- Mobile order row uses explicit grid areas and compact action buttons; hamburger/drawer have explicit landscape stacking.
+- Android navigation uses package intents (`org.rajman.neshan.traffic.tehran.navigator`, `ir.balad`) with directions fallback; iOS keeps universal links.
+- `state.users` is authoritative for representative roster. Reps are derived by user ID, preserving live metadata; deleted users cannot survive in rep selectors.
+- Activity route fields live on user record and are displayed in cards/selectors.
