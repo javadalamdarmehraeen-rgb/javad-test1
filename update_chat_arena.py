@@ -49,7 +49,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.52 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.36.0
+نسخه این فایل: 1.53 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.37.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -3380,6 +3380,13 @@ git push gitlab main
 🤖 دستیار:
 نسخه **۱۱.۳۶.۰** ساخته شد. علت جابه‌جایی runtime مشخص شد: orderCustomFieldsContainer داخلش input نداشت و groupAnchor آن را از sequence حذف می‌کرد؛ fallback به id خود group و reset تراکنشی metadata/DOM ترتیب را ثابت کرد. پیام جایگذاری hidden/aria/display-important و idempotent شد. setupRepresentativeRoutes در boot/tab/reliable اجرا و runtime نماینده و ۳۱ استان را تأیید کرد. label مستقیم بدون for خوانده و metadata فنی builtin رد شد. renderActivityLogV36 کاربران حذف‌شده را کنار می‌گذارد و غیرمدیر را حتی با all-reps به self محدود می‌کند. ۵۵ تست و runtime واقعی بدون خطا تأیید شد.
 
+──────────────────────────────── نوبت ۵۸ ────────────────────────────────
+🧑 کاربر (خلاصه وفادار):
+«اول اطلاعات و تنظیمات قبلی را حفظ کن و تغییرات را مویرگی انجام بده. مشکلات سفارش/پیام/route/label/activity هنوز هست؛ انتخاب نام داروخانه از لیست کار نمی‌کند و کاربران قدیمی برمی‌گردند. منزل نماینده فقط خودش و مدیر همه را ببیند. مرخصی از ساعت/تا ساعت جدا شود. گیرنده اعلان نماینده تایپی نباشد و فلش همه کشویی‌ها کار کند.»
+
+🤖 دستیار:
+نسخه **۱۱.۳۷.۰** با preserve-first ساخته شد. قبل تغییر state/bulk/manifest خصوصی ثبت شد. Existing state دست‌نخورده و fresh install بدون sample reps شد. حذف کاربر tombstone دارد. کارت داروخانه delegated و با یک کلیک fill می‌شود. Route fields manager-pinned و label guard نهایی فارسی است. Rep homes جدول و marker نقشه manager-all-active/rep-self هستند. Leave fromTime/toTime جدا و legacy-compatible است. Recipient plain select و combo caret delegated شد. Runtime با sentinel مدیر/نماینده همه بندها را true و errors=[] ثبت کرد؛ ۵۶ تست موفق.
+
 """
 
 FILES_INTRO = """
@@ -3416,7 +3423,7 @@ def build():
         out.append("~~~~~~~~" + lang)
         out.append(content.rstrip("\n"))
         out.append("~~~~~~~~")
-    out.append("\n\n— پایان chat.arena نسخه ۱.۵۲ (نسخه برنامه 11.36.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
+    out.append("\n\n— پایان chat.arena نسخه ۱.۵۳ (نسخه برنامه 11.37.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
     with open(OUT, "w", encoding="utf-8") as f:
         f.write("\n".join(out))
     print("chat.arena written:", os.path.getsize(OUT), "bytes,", len(text_files), "text files embedded,", len(bin_files), "binary files listed")

@@ -1561,3 +1561,12 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - کنترل‌های route فقط وجود HTML کافی ندارند؛ setup باید در boot و tab activation واقعاً اجرا و با تعداد option در runtime آزموده شود.
 - شناسه فنی builtin هرگز label دیداری نیست؛ label مستقیم DOM و registry فارسی بر metadata فنی قدیمی اولویت دارد.
 - فعالیت لحظه‌ای از مجوز all-reps نماینده مستثناست: مدیر فعالیت کاربران فعال را می‌بیند، نماینده فقط خودش؛ تاریخچه canonical دست‌نخورده می‌ماند.
+
+## تصمیم ۹۰ — نسخه ۱۱.۳۷.۰: حفاظت پیش از تغییر و final delegated controls (2026-08-21)
+- هر تغییر آینده ابتدا backup خواندنی/manifest و آزمون sentinel می‌خواهد؛ state موجود هرگز وارد پاک‌سازی fresh-install نمی‌شود.
+- داده نمونه نمایندگان منبع بازگشت کاربران حذف‌شده در origin تازه بود؛ fresh install اکنون blank business state + manager-only است، بدون اثر بر state موجود.
+- حذف کاربر یک رویداد durable است و tombstone دارد؛ تاریخچه رکوردها حفظ ولی roster/selector/render از کاربر حذف‌شده پاک می‌شود.
+- کنترل‌های dynamic باید delegated final handler داشته باشند؛ bind محلی هنگام ساخت هر نسل کافی نیست.
+- حریم خصوصی نقشه به اندازه جدول مهم است؛ visible projection باید هم rows و هم map layers را کنترل کند.
+- گیرنده پیام یک reference select است نه searchable/free-typing combo.
+- Route manager controls system-owned هستند و metadata stale اجازه پنهان‌کردن آن‌ها را ندارد؛ metadata کاربر بازنویسی نمی‌شود.

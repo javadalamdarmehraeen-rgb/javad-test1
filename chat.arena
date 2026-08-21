@@ -1,6 +1,6 @@
 CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.52 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.36.0
+نسخه این فایل: 1.53 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.37.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -568,20 +568,20 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]      849 بایت  .gitattributes
   [متنی ]     1157 بایت  .gitignore
   [متنی ]     2057 بایت  .gitlab-ci.yml
-  [متنی ]     4784 بایت  AI_ACCEPTANCE_CHECKLIST.md
-  [متنی ]    30226 بایت  AI_ARCHITECTURE.md
-  [متنی ]    60730 بایت  AI_DECISION_LOG.md
-  [متنی ]    33746 بایت  AI_PROJECT_CONTEXT.md
-  [متنی ]    38511 بایت  AI_RULES.md
-  [متنی ]    44151 بایت  AI_TASKS.md
-  [متنی ]    38849 بایت  ARENA_HANDOFF_PROMPT.md
+  [متنی ]     8457 بایت  AI_ACCEPTANCE_CHECKLIST.md
+  [متنی ]    31142 بایت  AI_ARCHITECTURE.md
+  [متنی ]    62060 بایت  AI_DECISION_LOG.md
+  [متنی ]    34477 بایت  AI_PROJECT_CONTEXT.md
+  [متنی ]    39340 بایت  AI_RULES.md
+  [متنی ]    44961 بایت  AI_TASKS.md
+  [متنی ]    39669 بایت  ARENA_HANDOFF_PROMPT.md
   [متنی ]      600 بایت  CHANGES_V10.md
-  [متنی ]    88608 بایت  CHANGES_V11.md
+  [متنی ]    91763 بایت  CHANGES_V11.md
   [متنی ]     3939 بایت  CHANGES_V9.md
   [متنی ]     1806 بایت  CLEAN_EXTRA_FILES.bat
   [متنی ]     2377 بایت  KEEP_ONLY_GITHUB.bat
   [متنی ]     6402 بایت  OFFICIAL_FILELIST.txt
-  [متنی ]    41973 بایت  PROJECT_GRAPH.md
+  [متنی ]    42031 بایت  PROJECT_GRAPH.md
   [متنی ]     2642 بایت  PUSH_FRESH_GITHUB.bat
   [متنی ]     2680 بایت  PUSH_GITHUB_CLEAN.bat
   [متنی ]     6579 بایت  RAHNAMA_GITLAB.txt
@@ -601,7 +601,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]    21078 بایت  server.js
   [متنی ]     2426 بایت  sync_all.sh
   [متنی ]      738 بایت  tsconfig.json
-  [متنی ]   312309 بایت  update_chat_arena.py
+  [متنی ]   313855 بایت  update_chat_arena.py
   [متنی ]    10215 بایت  update_project_graph.py
   [متنی ]     2844 بایت  .github/workflows/deploy.yml
   [متنی ]      214 بایت  .github/workflows/keep_alive.yml
@@ -609,10 +609,10 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     9805 بایت  mobile/README.md
   [متنی ]     9796 بایت  mobile/src/simAuth.ts
   [متنی ]     8066 بایت  public/cloudflare-worker.js
-  [متنی ]   174554 بایت  public/crm-app.js
+  [متنی ]   175967 بایت  public/crm-app.js
   [متنی ]    63461 بایت  public/crm-data.js
   [متنی ]    13643 بایت  public/crm-features-v10.js
-  [متنی ]   109408 بایت  public/crm-features-v11.js
+  [متنی ]   109491 بایت  public/crm-features-v11.js
   [متنی ]    44613 بایت  public/crm-features-v12.js
   [متنی ]    32088 بایت  public/crm-features-v13.js
   [متنی ]    34125 بایت  public/crm-features-v14.js
@@ -621,10 +621,10 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]    19662 بایت  public/crm-features-v17.js
   [متنی ]    33040 بایت  public/crm-features-v18.js
   [متنی ]    61295 بایت  public/crm-features-v19.js
-  [متنی ]   270343 بایت  public/crm-features-v20.js
-  [متنی ]    71826 بایت  public/crm-features-v9.js
+  [متنی ]   278928 بایت  public/crm-features-v20.js
+  [متنی ]    72007 بایت  public/crm-features-v9.js
   [متنی ]    25683 بایت  public/crm-jalali.js
-  [متنی ]   145458 بایت  public/index.html
+  [متنی ]   145357 بایت  public/index.html
   [متنی ]    11799 بایت  public/iran-facilities.js
   [متنی ]     7100 بایت  public/login.html
   [متنی ]      966 بایت  public/manifest.json
@@ -782,7 +782,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     3346 بایت  src/lib/zip.ts
   [متنی ]     4928 بایت  tests/app-smoke.test.mjs
   [متنی ]    19996 بایت  tests/state-preservation.test.mjs
-  [متنی ]    32576 بایت  tests/version-11.24-regressions.test.mjs
+  [متنی ]    34182 بایت  tests/version-11.24-regressions.test.mjs
   [تصویر]    23282 بایت  public/apple-touch-icon.png
   [تصویر]     4527 بایت  public/favicon.png
   [تصویر]    26208 بایت  public/icon-192.png
@@ -3585,6 +3585,13 @@ git push gitlab main
 🤖 دستیار:
 نسخه **۱۱.۳۶.۰** ساخته شد. علت جابه‌جایی runtime مشخص شد: orderCustomFieldsContainer داخلش input نداشت و groupAnchor آن را از sequence حذف می‌کرد؛ fallback به id خود group و reset تراکنشی metadata/DOM ترتیب را ثابت کرد. پیام جایگذاری hidden/aria/display-important و idempotent شد. setupRepresentativeRoutes در boot/tab/reliable اجرا و runtime نماینده و ۳۱ استان را تأیید کرد. label مستقیم بدون for خوانده و metadata فنی builtin رد شد. renderActivityLogV36 کاربران حذف‌شده را کنار می‌گذارد و غیرمدیر را حتی با all-reps به self محدود می‌کند. ۵۵ تست و runtime واقعی بدون خطا تأیید شد.
 
+──────────────────────────────── نوبت ۵۸ ────────────────────────────────
+🧑 کاربر (خلاصه وفادار):
+«اول اطلاعات و تنظیمات قبلی را حفظ کن و تغییرات را مویرگی انجام بده. مشکلات سفارش/پیام/route/label/activity هنوز هست؛ انتخاب نام داروخانه از لیست کار نمی‌کند و کاربران قدیمی برمی‌گردند. منزل نماینده فقط خودش و مدیر همه را ببیند. مرخصی از ساعت/تا ساعت جدا شود. گیرنده اعلان نماینده تایپی نباشد و فلش همه کشویی‌ها کار کند.»
+
+🤖 دستیار:
+نسخه **۱۱.۳۷.۰** با preserve-first ساخته شد. قبل تغییر state/bulk/manifest خصوصی ثبت شد. Existing state دست‌نخورده و fresh install بدون sample reps شد. حذف کاربر tombstone دارد. کارت داروخانه delegated و با یک کلیک fill می‌شود. Route fields manager-pinned و label guard نهایی فارسی است. Rep homes جدول و marker نقشه manager-all-active/rep-self هستند. Leave fromTime/toTime جدا و legacy-compatible است. Recipient plain select و combo caret delegated شد. Runtime با sentinel مدیر/نماینده همه بندها را true و errors=[] ثبت کرد؛ ۵۶ تست موفق.
+
 
 
 ══════════════════════════════════════════════════════════════════════════════════
@@ -3802,7 +3809,7 @@ sync-after-deploy:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_ACCEPTANCE_CHECKLIST.md (4784 بایت)
+فایل: AI_ACCEPTANCE_CHECKLIST.md (8457 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI_ACCEPTANCE_CHECKLIST — چک‌لیست اجباری تحویل واقعی
@@ -3837,10 +3844,24 @@ sync-after-deploy:
 - [x] عنوان فیلدها: شناسه‌های فنی مانند `leaveRepSelect` در هیچ فهرست دیداری جای عنوان فارسی ظاهر نشوند — تأییدشده؛ metadata آزمایشی فنی به «نماینده علمی» تبدیل شد.
 - [x] فعالیت لحظه‌ای: رکورد کاربران حذف‌شده نمایش داده نشود و نماینده فقط فعالیت خودش را ببیند — تأییدشده؛ مدیر فقط دو کاربر فعال و نماینده فقط رکورد خودش را دید.
 - [x] آزمون نهایی: test، build، syntax، HTTP، runtime واقعی و ZIP نسخه جدید — تأییدشده: ۵۵/۵۵ تست، build موفق، syntax بیست فایل، health/HTML/assets/push موفق؛ ZIP نهایی پس از بازسازی آرشیو ساخته و جداگانه بررسی شد.
+
+## نوبت ۵۸ — نسخه 11.37.0
+- [x] حفاظت مقدماتی داده: پیش از تغییر کد، state/bulk خواندنی نسخه 11.36.0 و manifest هش در `.arena/runtime-backups` ثبت شد؛ هیچ runtime data file محلی برای بازنویسی وجود نداشت — تأییدشده.
+- [x] حفظ تمام state، customFields، formFieldMeta، layout، users و داده‌های Excel در ارتقا — تأییدشده با sentinel عمیق، order/meta/leave قدیمی و ۵۶ تست round-trip؛ state موجود مسیر پاک‌سازی نصب تازه را اجرا نمی‌کند.
+- [x] سفارشات: ترتیب مطابق تنظیم ذخیره‌شده مدیر ثابت بماند و پاک‌کردن فقط مقدارها را پاک کند — تأییدشده؛ قفل و reset تراکنشی نسخه قبل حفظ و sentinel metadata در runtime یکسان ماند.
+- [x] سفارشات: انتخاب داروخانه از فهرست با یک کلیک واقعاً رکورد را انتخاب و جایگذاری کند؛ پیام قبلی پس از جایگذاری پنهان بماند — تأییدشده با کلیک واقعی روی `.ph-pick-card`، matchedId/address و notice hidden.
+- [x] تارگت: کادر مسیر مدیر و همه فیلدهای نماینده/استان/شهر/منطقه حتی در برابر metadata قدیمی نمایان و فعال باشند — تأییدشده با metadata مخفی آزمایشی، ۴ فیلد visible، ۳ نماینده و ۳۱ استان.
+- [x] عنوان‌ها: هیچ شناسه فنی builtin مانند `leaveRepSelect` در UI/طراح نمایش داده نشود — تأییدشده؛ wrapper نهایی عنوان «نماینده علمی» برگرداند.
+- [x] کاربران حذف‌شده: در نصب تازه بازنگردند؛ حذف با tombstone پایدار شود و در selector/activity پنهان بمانند — تأییدشده؛ ghost موجود در state با tombstone از users/reps حذف و در اعلان/خانه دیده نشد؛ fresh install نمونه‌های قدیمی را نمی‌سازد و دو identity نمونه شناخته‌شده جواد/نیلا یک‌بار به tombstone مهاجرت می‌شوند.
+- [x] منزل نمایندگان: مدیر همه منزل‌های کاربران فعال و نماینده فقط منزل خودش را در جدول و نقشه ببیند — تأییدشده در runtime مدیر/نماینده؛ لایه‌های غیرمجاز نقشه نیز پاک و فقط visible rows رسم می‌شوند.
+- [x] مرخصی ساعتی: «از ساعت» و «تا ساعت» دو فیلد مستقل با حفظ سازگاری رکوردهای قبلی باشند — تأییدشده؛ 09:00 و 12:00 جدا ذخیره و رکورد قدیمی sentinel حفظ شد.
+- [x] اعلان نماینده: گیرنده plain select بدون تایپ/افزودن گزینه باشد — تأییدشده؛ بدون `.crm-combo-input`، placeholder خالی و فقط کاربران فعال.
+- [x] فلش تمام کشویی‌های قابل جستجو با کلیک مستقیم فهرست را باز/بسته کند — تأییدشده با کلیک واقعی caret و بازشدن list.
+- [x] آزمون مدیر و نماینده، test/build/syntax/HTTP/runtime و ZIP نهایی — تأییدشده: runtime واقعی همه خروجی‌ها true و errors=[]، تست ۵۶/۵۶، build، syntax همه JS، diff check، health/assets/push نسخه 11.37.0؛ ZIP نهایی پاک‌سازی و از داخل بررسی شد.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_ARCHITECTURE.md (30226 بایت)
+فایل: AI_ARCHITECTURE.md (31142 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI ARCHITECTURE
@@ -5048,10 +5069,18 @@ Then change only what is requested.
 - Route manager setup is lifecycle-bound to initial boot, target-tab activation and reliable delayed boot.
 - Builtin label resolution priority is Persian DOM label/registry over stale technical metadata.
 - Activity history remains canonical in state, while visible projection requires an active user and is manager-active/all or representative-self-only.
+
+## معماری افزوده v11.37.0 — Durable deletion / map privacy / delegated dynamic UI
+- Upgrade boundary: existing local state is read as-is and validated by sentinel; fresh-install cleanup is isolated behind absence of CRM_APP_STATE_V2.
+- Deleted-user tombstones are settings-owned durable identities (id/username/fullName); roster/auth projections enforce them without deleting canonical historical business records.
+- Dynamic order pharmacy cards and combo carets use one capture-phase delegated final handler, independent of which legacy renderer rebuilt DOM.
+- Representative-home privacy projects the same visible set into both table and Leaflet layers; old non-tile layers are removed before repaint.
+- Reference recipient select is explicitly excluded from searchable/free-entry combo transformation.
+- Hourly leave schema adds fromTime/toTime while retaining legacy combined-hours compatibility.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_DECISION_LOG.md (60730 بایت)
+فایل: AI_DECISION_LOG.md (62060 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI DECISION LOG
@@ -6617,10 +6646,19 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - کنترل‌های route فقط وجود HTML کافی ندارند؛ setup باید در boot و tab activation واقعاً اجرا و با تعداد option در runtime آزموده شود.
 - شناسه فنی builtin هرگز label دیداری نیست؛ label مستقیم DOM و registry فارسی بر metadata فنی قدیمی اولویت دارد.
 - فعالیت لحظه‌ای از مجوز all-reps نماینده مستثناست: مدیر فعالیت کاربران فعال را می‌بیند، نماینده فقط خودش؛ تاریخچه canonical دست‌نخورده می‌ماند.
+
+## تصمیم ۹۰ — نسخه ۱۱.۳۷.۰: حفاظت پیش از تغییر و final delegated controls (2026-08-21)
+- هر تغییر آینده ابتدا backup خواندنی/manifest و آزمون sentinel می‌خواهد؛ state موجود هرگز وارد پاک‌سازی fresh-install نمی‌شود.
+- داده نمونه نمایندگان منبع بازگشت کاربران حذف‌شده در origin تازه بود؛ fresh install اکنون blank business state + manager-only است، بدون اثر بر state موجود.
+- حذف کاربر یک رویداد durable است و tombstone دارد؛ تاریخچه رکوردها حفظ ولی roster/selector/render از کاربر حذف‌شده پاک می‌شود.
+- کنترل‌های dynamic باید delegated final handler داشته باشند؛ bind محلی هنگام ساخت هر نسل کافی نیست.
+- حریم خصوصی نقشه به اندازه جدول مهم است؛ visible projection باید هم rows و هم map layers را کنترل کند.
+- گیرنده پیام یک reference select است نه searchable/free-typing combo.
+- Route manager controls system-owned هستند و metadata stale اجازه پنهان‌کردن آن‌ها را ندارد؛ metadata کاربر بازنویسی نمی‌شود.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_PROJECT_CONTEXT.md (33746 بایت)
+فایل: AI_PROJECT_CONTEXT.md (34477 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI PROJECT CONTEXT
@@ -7527,10 +7565,13 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 
 ## افزونه وضعیت نسخه ۱۱.۳۶.۰
 نسخه فعال 11.36.0 است. فرم سفارش reset-safe است: sequence همه form-groupها با fallback به id خود group و تنظیمات order موقتاً snapshot/restore می‌شوند؛ custom host دیگر به ابتدا نمی‌پرد. Duplicate notice پس از fill با hidden/aria/display-important و observer idempotent مخفی می‌ماند. setupRepresentativeRoutes در boot/tab/reliable اجرا می‌شود. Builtin technical labels با label مستقیم فارسی جایگزین می‌شوند. renderActivityLogV36 فقط کاربران فعال و برای نماینده فقط self را نمایش می‌دهد، بدون حذف تاریخچه canonical.
+
+## افزونه وضعیت نسخه ۱۱.۳۷.۰
+نسخه فعال 11.37.0 است. پیش از تغییر backup خصوصی state/bulk ثبت شد. Existing CRM_APP_STATE_V2 بدون پاک‌سازی authoritative است؛ فقط fresh origin از business sample users/data خالی می‌شود. User delete tombstone durable دارد و دو identity نمونه قدیمی u-2/Taheri و u-3/nila یک‌بار به tombstone مهاجرت می‌شوند. Order pharmacy cards delegated-select هستند. Route controls manager-pinned، builtin labels Persian-projected، rep homes table+map strict active/self privacy، leave fromTime/toTime مستقل، notification recipient plain select و combo caret delegated است.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_RULES.md (38511 بایت)
+فایل: AI_RULES.md (39340 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI RULES
@@ -9079,10 +9120,14 @@ action and audible sound always follows OS/browser settings; never falsely guara
 # 87. ORDER RESET / PERSIAN LABEL / ACTIVITY SELF-ONLY RULE (PERMANENT)
 
 Clearing or starting a new order may clear values only; it must never alter field layout metadata or DOM order. Layout anchors must include group IDs for containers without descendant controls. Automatic observers may restore an approved in-memory/explicit-manager order but must never persist a startup snapshot. After pharmacy auto-fill, duplicate notices remain idempotently hidden until the name truly changes. Builtin technical identifiers must never be shown as field labels; Persian DOM/registry titles win over stale metadata. Route controls must be initialized on target-tab activation, not merely exist in HTML. Activity logs retain canonical history but render only active-user rows; normal representatives always see only their own activity regardless of stale all-reps permissions.
+
+# 88. PRESERVE-FIRST / DURABLE DELETE / MAP PRIVACY RULE (PERMANENT)
+
+Before source changes, record readable state/bulk hashes or explicitly confirm absence; never claim a backup of browser/production data unavailable to the sandbox. Existing CRM_APP_STATE_V2 is authoritative and must not pass through fresh-install cleanup. Fresh installs must not recreate historical sample representatives. User deletion records a tombstone and removes the identity from roster/auth/selectors while canonical history stays stored but invisible. Privacy applies equally to tables and map layers. Dynamic pick cards and dropdown arrows require final delegated handlers. Notification recipient is a fixed reference select, never a free-typing/add-option combo. New schemas such as leave fromTime/toTime must preserve legacy records and fields.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_TASKS.md (44151 بایت)
+فایل: AI_TASKS.md (44961 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI TASKS
@@ -10560,10 +10605,25 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] فعالیت نماینده فقط self حتی با مجوز قدیمی all-reps
 - [x] ۵۵/۵۵ تست + runtime مرورگرمانند هدفمند
 - [ ] تأیید نهایی ظاهر و رفتار با داده واقعی کاربر پس از استقرار
+
+## ۷۸) نسخه ۱۱.۳۷.۰
+- [x] backup خصوصی و manifest پیش از تغییر
+- [x] حفظ state/meta/order/leave با sentinel runtime
+- [x] fresh install بدون کاربران نمونه قدیمی
+- [x] tombstone پایدار حذف کاربر
+- [x] انتخاب delegated کارت داروخانه سفارش
+- [x] pin فیلدهای route مدیر در تارگت
+- [x] guard سراسری label فارسی builtin
+- [x] privacy جدول و نقشه منزل مدیر/نماینده
+- [x] دو فیلد مستقل از ساعت/تا ساعت
+- [x] گیرنده اعلان plain select
+- [x] فلش کشویی delegated و قابل کلیک
+- [x] ۵۶/۵۶ تست + runtime مدیر/نماینده صفر خطا
+- [ ] تأیید روی داده واقعی کاربر پس از استقرار
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: ARENA_HANDOFF_PROMPT.md (38849 بایت)
+فایل: ARENA_HANDOFF_PROMPT.md (39669 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # ARENA AI MASTER HANDOFF PROMPT
@@ -11865,6 +11925,15 @@ ADDENDUM v11.16.1 (2026-08-16)
 - setupRepresentativeRoutes must run in boot, reliable boot and every target-tab activation.
 - Builtin technical IDs such as leaveRepSelect must never appear as visible labels; Persian DOM labels override stale technical metadata.
 - Activity rendering keeps canonical history but excludes removed users and is strictly self-only for every nonmanager account.
+
+## افزونه تحویل نسخه ۱۱.۳۷.۰
+- Always preserve-first: hash/read backup before code; never overwrite existing state, bulk, customFields or layout metadata.
+- Fresh install is manager-only blank business state; do not restore old sample representatives.
+- Preserve deletedUserTombstones enforcement and never delete canonical history merely to hide removed users.
+- Order pharmacy cards and combo carets rely on final delegated handlers; keep them across rerenders.
+- Route manager controls are pinned visible only for managers without mutating stored field metadata.
+- Rep-home privacy must filter both table and Leaflet markers: manager all active, representative self only.
+- Keep hourly leave fromTime/toTime plus legacy hours, plain notification recipient select and Persian builtin label guard.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -11884,7 +11953,7 @@ Leaflet محلی. فونت گوگل حذف شد. gzip روی JS/CSS/HTML.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: CHANGES_V11.md (88608 بایت)
+فایل: CHANGES_V11.md (91763 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # نسخه ۱۱.۲۳.۰
@@ -12507,6 +12576,20 @@ CLEAN_EXTRA_FILES.bat و بعد PUSH_GITHUB_CLEAN.bat را اجرا کن.
 6. اسکنر عنوان فیلد، label مستقیم هر form-group را حتی بدون attribute `for` می‌خواند. عنوان فنی ذخیره‌شده مانند `leaveRepSelect` برای builtinها رد و عنوان فارسی DOM/registry جایگزین می‌شود.
 7. فعالیت لحظه‌ای renderer نهایی اختصاصی دارد: مدیر فقط فعالیت کاربران فعال را می‌بیند و نماینده حتی با مجوز قدیمی all-reps فقط فعالیت خودش را می‌بیند؛ داده تاریخی حذف نمی‌شود.
 8. تست مرورگرمانند واقعی تأیید کرد: route rep=3/province=31، عنوان مرخصی «نماینده علمی»، پیام جایگذاری مخفی، تنظیمات و ترتیب سفارش پس از پاک‌کردن ثابت، کاربران حذف‌شده نامرئی و نماینده self-only است.
+
+# نسخه ۱۱.۳۷.۰
+
+1. قبل از تغییر، خروجی خواندنی state/bulk نسخه 11.36.0 و manifest هش در backup خصوصی `.arena` ثبت شد. مسیر ارتقا برای state موجود هیچ پاک‌سازی، merge یا default injection ندارد.
+2. نصب کاملاً تازه دیگر کاربران و داده‌های نماینده نمونه قدیمی را ایجاد نمی‌کند؛ فقط مدیر اولیه باقی می‌ماند. این قانون فقط وقتی `CRM_APP_STATE_V2` اصلاً وجود ندارد اجرا می‌شود و داده فعلی کاربران را لمس نمی‌کند.
+3. حذف کاربر tombstone شامل id/username/fullName ثبت می‌کند؛ tombstone در boot مانع برگشت کاربر از state قدیمی می‌شود و auth/reps/selectors تازه می‌شوند. دو هویت نمونه شناخته‌شده `u-2/Taheri/جواد علمدار` و `u-3/nila/خانم نیلا محرمی` که مدیر قبلاً حذف کرده، یک‌بار به tombstone مهاجرت می‌شوند تا از state نمونه قدیمی هم برنگردند.
+4. انتخاب داروخانه سفارش handler نهایی delegated دارد؛ هر کارت تازه‌ساخته‌شده با یک کلیک matchedId و همه اطلاعات را جایگذاری و پیام duplicate را پنهان می‌کند.
+5. فیلدهای تعریف مسیر برای مدیر system-pinned شدند تا metadata قدیمی hidden نتواند نماینده/استان/شهر/منطقه و ذخیره را پنهان کند؛ state metadata تغییر داده نمی‌شود.
+6. محافظ نهایی عنوان builtin هر شناسه فنی انگلیسی را در خروجی `getUnifiedFieldList` با label فارسی DOM/registry جایگزین می‌کند، بدون بازنویسی metadata ذخیره‌شده.
+7. منزل نمایندگان renderer نهایی دارد: مدیر منزل همه کاربران فعال و نماینده فقط منزل خود را در جدول و لایه‌های نقشه می‌بیند؛ markerهای غیرمجاز از نقشه حذف می‌شوند. رکورد جدید repId ذخیره می‌کند.
+8. مرخصی ساعتی به دو فیلد مستقل time «از ساعت» و «تا ساعت» تبدیل شد؛ fromTime/toTime جدا ذخیره و رشته legacy hours برای سازگاری حفظ می‌شود.
+9. گیرنده اعلان plain select شد (`data-nocombo=1`)، input تایپی/افزودن گزینه حذف و placeholder + کاربران فعال ساخته می‌شود.
+10. فلش کشویی‌های جستجویی z-index/pointer area قطعی و delegated capture handler دارد؛ کلیک فلش مستقیماً فهرست را باز/بسته می‌کند.
+11. Runtime واقعی با manager/representative و sentinel نتیجه داد: preserved=true، route 4 fields/31 provinces، picker selected/filled/hidden، times=true، arrow=true، notification plain، manager homes all-active، rep home/activity self-only، ghost removed، errors=[].
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -12981,7 +13064,7 @@ update_project_graph.py
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: PROJECT_GRAPH.md (41973 بایت)
+فایل: PROJECT_GRAPH.md (42031 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # 🕸️ گراف دانش پروژه «نماینده علمی» (PROJECT_GRAPH.md)
@@ -13042,7 +13125,7 @@ update_project_graph.py
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (174554 بایت)
+### `public/crm-app.js` (175967 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 169
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
@@ -13056,7 +13139,7 @@ update_project_graph.py
 - تعداد توابع داخلی: 22
 - نام‌های window که تعریف/بازنویسی می‌کند: `__lastHealth`, `switchTab`
 
-### `public/crm-features-v11.js` (109408 بایت)
+### `public/crm-features-v11.js` (109491 بایت)
 - نقش: v11 — تغییر رمز، ردیف واقعی، اکسل خط‌کشی، ویزیت زنده، تارگت، ستون‌ها، دسترسی ریز
 - تعداد توابع داخلی: 101
 - نام‌های window که تعریف/بازنویسی می‌کند: `FA_FIELD_LABELS`, `_actMap`, `_actMarks`, `_activeColTab`, `_colDelPatched`, `_colEditScroll`, `_editingBoxId`, `_editingColField`, `_layoutBusy`, `_visitKeepAlive`, `addWidgetToActiveTab`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `applyFullFormLayout`, `applySelectExtraOptions`, `builtinFieldValue`, `changeUserPassword`, `cleanupOrphanCustomFields`, `deleteCustomField`, `downloadCSVFile`, `extraListColumns`, `getAllMenuSections`, `getMainGrid`, `getUnifiedFieldList`, `groupIsShared`, `isColShownInList`, `paintFieldBox`, `paintRequiredStar`, `refreshColumnsDesigner`, `renderAllSystemSelects`, `renderColBoxInfoTable`, `renderColBoxList`, `renderColBtnInfoTable`, `renderExtraTabCustomFields`, `renderUserCardsList`, `switchTab`, `validateRequiredFields`, `writeFieldSize`
@@ -13101,14 +13184,14 @@ update_project_graph.py
 - تعداد توابع داخلی: 65
 - نام‌های window که تعریف/بازنویسی می‌کند: `_v18DefaultReq`, `_v19BackupLayoutGuard`, `_v19ComboHook`, `_v19Hist`, `_v19IcObs`, `_v19ProdTableWrap`, `_v19Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `extraListColumns`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderPharmaciesList`, `switchTab`, `testServerConnectivity`
 
-### `public/crm-features-v20.js` (270343 بایت)
+### `public/crm-features-v20.js` (278928 بایت)
 - نقش: ============================================================
-- تعداد توابع داخلی: 304
-- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFieldPermissions`, `applyFullFormLayout`, `applyUserRolePermissions`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `deleteUserCard`, `editProductCatalogItem`, `editUserCard`, `extraListColumns`, `getUnifiedFieldList`, `open`, `openRowDetailsModal`, `performAutoBackup`, `renderActivityLogTable`, `renderActivityMapAndChart`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLeavesTable`, `renderLiveLocationTab`, `renderMonthlyReportsTable`, `renderNotificationsTable`, `renderRepHomesTable`, `renderRepRoutesTable`, `renderUserCardsList`, `reverseGeocodeCoordinates`
+- تعداد توابع داخلی: 316
+- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFieldPermissions`, `applyFullFormLayout`, `applyUserRolePermissions`, `attachJalaliPicker`, `builtinFieldValue`, `createCustomMarker`, `deleteCustomField`, `deleteProductCatalogItem`, `deleteRepHome`, `deleteUserCard`, `editProductCatalogItem`, `editRepHome`, `editUserCard`, `extraListColumns`, `getUnifiedFieldList`, `open`, `openRowDetailsModal`, `performAutoBackup`, `renderActivityLogTable`, `renderActivityMapAndChart`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLeavesTable`, `renderLiveLocationTab`, `renderMonthlyReportsTable`, `renderNotificationsTable`, `renderRepHomesTable`
 
-### `public/crm-features-v9.js` (71826 بایت)
+### `public/crm-features-v9.js` (72007 بایت)
 - نقش: ===========================================================================
-- تعداد توابع داخلی: 103
+- تعداد توابع داخلی: 104
 - نام‌های window که تعریف/بازنویسی می‌کند: `builtinFieldValue`, `downloadCSVFile`, `getOrderItemsFromUI`, `isColShownInList`, `renderDoctorsList`, `renderLiveLocationTab`, `renderOrdersList`, `renderPharmaciesList`, `setupLiveLocationTab`, `setupRepsTab`, `switchTab`, `validateRequiredFields`
 
 ### `public/crm-jalali.js` (25683 بایت)
@@ -13126,7 +13209,7 @@ update_project_graph.py
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (2462 بایت)
-- نقش: const CACHE = "ttt-v11.36.0";
+- نقش: const CACHE = "ttt-v11.37.0";
 - تعداد توابع داخلی: 0
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -13269,7 +13352,7 @@ update_project_graph.py
 - `public/crm-features-v9.js` → 3 شناسه (مثل: `btnInstallAndroid`, `btnInstallIos`, `btnInstallWindows`)
 
 ### tab-leaves «📝 مرخصی‌ها»
-- `public/crm-app.js` → 10 شناسه (مثل: `btnExportLeavesCSV`, `formLeaveRequest`, `leaveFromDate`, `leaveHoursGroup`, `leaveHoursInput`, `leaveReasonInput`, `leaveRepSelect`, `leaveToDate`)
+- `public/crm-app.js` → 12 شناسه (مثل: `btnExportLeavesCSV`, `formLeaveRequest`, `leaveFromDate`, `leaveFromTime`, `leaveHoursGroup`, `leaveHoursInput`, `leaveReasonInput`, `leaveRepSelect`)
 
 ### tab-live-location «📍 موقعیت زنده»
 - `public/crm-app.js` → 1 شناسه (مثل: `map-live-reps`)
@@ -13325,6 +13408,7 @@ update_project_graph.py
 
 ### tab-rep-homes «🏠 منزل نمایندگان»
 - `public/crm-app.js` → 3 شناسه (مثل: `repHomeAddressInput`, `repHomeSelect`, `tableRepHomesBody`)
+- `public/crm-features-v20.js` → 1 شناسه (مثل: `tableRepHomesBody`)
 - `public/crm-features-v9.js` → 2 شناسه (مثل: `btnRepHomeCurrentLocation`, `repHomeSelect`)
 
 ### tab-rep-routes «🛣️ رصد تردد»
@@ -14457,13 +14541,13 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.36.0",
+  "version": "11.37.0",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
       "name": "namayandeelmi-javad-crm",
-      "version": "11.36.0",
+      "version": "11.37.0",
       "license": "MIT",
       "engines": {
         "node": ">=20.0.0"
@@ -14479,7 +14563,7 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.36.0",
+  "version": "11.37.0",
   "description": "سیستم جامع مدیریت و ویزیت علمی، داروخانه‌ها، پزشکان و سفارشات (CRM / PWA) هماهنگ با Render و Neon",
   "main": "server.js",
   "engines": {
@@ -14746,7 +14830,7 @@ const server = http.createServer((req, res) => {
     return send(req, res, 200, JSON.stringify({
       ok: true, status: "healthy", message: "OK",
       service: "namayandeelmi-javad-crm",
-      version: "11.36.0",
+      version: "11.37.0",
       timestamp: new Date().toISOString()
     }), "application/json; charset=utf-8");
   }
@@ -14890,7 +14974,7 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, "0.0.0.0", () => {
-  console.log("CRM v11.36.0 listening on 0.0.0.0:" + PORT);
+  console.log("CRM v11.37.0 listening on 0.0.0.0:" + PORT);
 });
 ~~~~~~~~
 
@@ -15012,7 +15096,7 @@ git status -sb
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: update_chat_arena.py (312309 بایت)
+فایل: update_chat_arena.py (313855 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~python
 #!/usr/bin/env python3
@@ -15066,7 +15150,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.52 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.36.0
+نسخه این فایل: 1.53 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.37.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -18397,6 +18481,13 @@ git push gitlab main
 🤖 دستیار:
 نسخه **۱۱.۳۶.۰** ساخته شد. علت جابه‌جایی runtime مشخص شد: orderCustomFieldsContainer داخلش input نداشت و groupAnchor آن را از sequence حذف می‌کرد؛ fallback به id خود group و reset تراکنشی metadata/DOM ترتیب را ثابت کرد. پیام جایگذاری hidden/aria/display-important و idempotent شد. setupRepresentativeRoutes در boot/tab/reliable اجرا و runtime نماینده و ۳۱ استان را تأیید کرد. label مستقیم بدون for خوانده و metadata فنی builtin رد شد. renderActivityLogV36 کاربران حذف‌شده را کنار می‌گذارد و غیرمدیر را حتی با all-reps به self محدود می‌کند. ۵۵ تست و runtime واقعی بدون خطا تأیید شد.
 
+──────────────────────────────── نوبت ۵۸ ────────────────────────────────
+🧑 کاربر (خلاصه وفادار):
+«اول اطلاعات و تنظیمات قبلی را حفظ کن و تغییرات را مویرگی انجام بده. مشکلات سفارش/پیام/route/label/activity هنوز هست؛ انتخاب نام داروخانه از لیست کار نمی‌کند و کاربران قدیمی برمی‌گردند. منزل نماینده فقط خودش و مدیر همه را ببیند. مرخصی از ساعت/تا ساعت جدا شود. گیرنده اعلان نماینده تایپی نباشد و فلش همه کشویی‌ها کار کند.»
+
+🤖 دستیار:
+نسخه **۱۱.۳۷.۰** با preserve-first ساخته شد. قبل تغییر state/bulk/manifest خصوصی ثبت شد. Existing state دست‌نخورده و fresh install بدون sample reps شد. حذف کاربر tombstone دارد. کارت داروخانه delegated و با یک کلیک fill می‌شود. Route fields manager-pinned و label guard نهایی فارسی است. Rep homes جدول و marker نقشه manager-all-active/rep-self هستند. Leave fromTime/toTime جدا و legacy-compatible است. Recipient plain select و combo caret delegated شد. Runtime با sentinel مدیر/نماینده همه بندها را true و errors=[] ثبت کرد؛ ۵۶ تست موفق.
+
 """
 
 FILES_INTRO = """
@@ -18433,7 +18524,7 @@ def build():
         out.append("~~~~~~~~" + lang)
         out.append(content.rstrip("\n"))
         out.append("~~~~~~~~")
-    out.append("\n\n— پایان chat.arena نسخه ۱.۵۲ (نسخه برنامه 11.36.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
+    out.append("\n\n— پایان chat.arena نسخه ۱.۵۳ (نسخه برنامه 11.37.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
     with open(OUT, "w", encoding="utf-8") as f:
         f.write("\n".join(out))
     print("chat.arena written:", os.path.getsize(OUT), "bytes,", len(text_files), "text files embedded,", len(bin_files), "binary files listed")
@@ -19734,7 +19825,7 @@ async function sendWhatsappCloud(text, to, token) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-app.js (174554 بایت)
+فایل: public/crm-app.js (175967 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================================
@@ -19826,8 +19917,12 @@ function loadState() {
     ["users","activityLog","repHomes","repRoutes","leaves","notifications","salesTargets","products","hospitals","visits","pharmacies","doctors","orders","reps"].forEach(function(k){ if (!Array.isArray(state[k])) state[k] = []; });
     if (!state.messengers) state.messengers = { channels: {}, allowPeerMessaging: false };
   } else {
-    // اطلاعات نمونه فقط برای نصب کاملاً تازه و بدون هیچ state قبلی مجاز است.
+    // نصب کاملاً تازه باید خالی باشد؛ داده و کاربران نمونه قدیمی نباید پس از حذف مدیر دوباره ظاهر شوند.
+    // این مسیر فقط وقتی CRM_APP_STATE_V2 اصلاً وجود ندارد اجرا می‌شود و هرگز state واقعی موجود را تغییر نمی‌دهد.
     state = JSON.parse(JSON.stringify(DEFAULT_INITIAL_DATA));
+    state.users = (state.users || []).filter(function (u) { return u && (u.username === "admin" || /مدیر سیستم/.test(String(u.role || u.fullName || ""))); });
+    ["pharmacies","doctors","orders","reps","activityLog","repHomes","repRoutes","leaves","notifications","salesTargets","visits","hospitals"].forEach(function (k) { state[k] = []; });
+    state._freshInstallClean = true;
   }
   if (!state.formFieldMeta) state.formFieldMeta = {};
   if (!state.customFields) state.customFields = {};
@@ -21598,11 +21693,20 @@ function setupLeavesModule() {
       const leaveType = typeSel.value;
       const fromDate = document.getElementById("leaveFromDate").value.trim();
       const toDate = document.getElementById("leaveToDate").value.trim();
-      const hours = document.getElementById("leaveHoursInput") ? document.getElementById("leaveHoursInput").value.trim() : "";
+      const fromTime = document.getElementById("leaveFromTime") ? document.getElementById("leaveFromTime").value.trim() : "";
+      const toTime = document.getElementById("leaveToTime") ? document.getElementById("leaveToTime").value.trim() : "";
+      const isHourly = leaveType.includes("ساعتی");
+      const hours = fromTime || toTime ? `از ${fromTime || "—"} تا ${toTime || "—"}` : "";
+      const legacyHours = document.getElementById("leaveHoursInput");
+      if (legacyHours) legacyHours.value = hours;
       const reason = document.getElementById("leaveReasonInput").value.trim();
 
       if (!repName || !fromDate || !toDate || !reason) {
         alert("لطفاً نماینده، تاریخ شروع، پایان و دلیل مرخصی را وارد کنید.");
+        return;
+      }
+      if (isHourly && (!fromTime || !toTime)) {
+        alert("برای مرخصی ساعتی، فیلدهای «از ساعت» و «تا ساعت» را کامل کنید.");
         return;
       }
 
@@ -21611,6 +21715,9 @@ function setupLeavesModule() {
         repName,
         fromDate,
         toDate,
+        fromTime,
+        toTime,
+        leaveType,
         reason: `${leaveType}${hours ? ` (${hours})` : ""} - ${reason}`,
         supervisorStatus: "در انتظار",
         adminStatus: "در انتظار",
@@ -21644,9 +21751,9 @@ function renderLeavesTable() {
 
     tr.innerHTML = `
       <td><strong style="color:#0f172a;">${lv.repName}</strong></td>
-      <td>${lv.reason}</td>
-      <td>${lv.fromDate}</td>
-      <td>${lv.toDate}</td>
+      <td>${lv.leaveType || String(lv.reason || "").split(" - ")[0] || "—"}</td>
+      <td>${lv.fromDate}${lv.fromTime ? ` — ${lv.fromTime}` : ""}</td>
+      <td>${lv.toDate}${lv.toTime ? ` — ${lv.toTime}` : ""}</td>
       <td>${lv.reason}</td>
       <td>${supBadge}</td>
       <td>${admBadge}</td>
@@ -22705,7 +22812,7 @@ function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.36.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.37.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -25037,7 +25144,7 @@ const DEFAULT_INITIAL_DATA = {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-features-v11.js (109408 بایت)
+فایل: public/crm-features-v11.js (109491 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // v11 — تغییر رمز، ردیف واقعی، اکسل خط‌کشی، ویزیت زنده، تارگت، ستون‌ها، دسترسی ریز
@@ -25608,7 +25715,9 @@ const DEFAULT_INITIAL_DATA = {
       leaveTypeSelect: "نوع مرخصی یا مأموریت",
       leaveFromDate: "از تاریخ",
       leaveToDate: "تا تاریخ",
-      leaveHoursInput: "ساعت مرخصی",
+      leaveHoursInput: "بازه ساعت مرخصی",
+      leaveFromTime: "از ساعت",
+      leaveToTime: "تا ساعت",
       leaveReasonInput: "علت درخواست",
       routeManagerRep: "نماینده علمی",
       routeManagerProvince: "استان مسیر",
@@ -33501,7 +33610,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-features-v20.js (270343 بایت)
+فایل: public/crm-features-v20.js (278928 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================
@@ -33606,7 +33715,7 @@ button.v19-gps svg{display:block}
       "#tab-snapp-corporate .form-grid,#tab-search-info .form-grid,#tab-rep-homes .form-grid,#tab-leaves .form-grid{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))!important;gap:14px!important;align-items:start}#tab-snapp-corporate .form-group,#tab-search-info .form-group,#tab-rep-homes .form-group,#tab-leaves .form-group{width:auto!important;max-width:100%!important;min-width:0!important}" +
       "#formCustomField #cfTargetEntity{display:none!important}#formCustomField #cfTargetEntity~*{display:none!important}#formCustomField .form-group:has(#cfTargetEntity){display:none!important}" +
       ".v35-fixed-rep{appearance:none!important;-webkit-appearance:none!important;background-image:none!important;pointer-events:none!important;color:#0f172a!important;font-weight:800!important;opacity:1!important}" +
-      ".tab-pane .form-grid>.form-group{align-self:start!important;transform:none!important;transition:none!important}.tab-pane .crm-combo,.tab-pane .crm-combo-input{transform:none!important;transition:none!important}" +
+      ".tab-pane .form-grid>.form-group{align-self:start!important;transform:none!important;transition:none!important}.tab-pane .crm-combo,.tab-pane .crm-combo-input{transform:none!important;transition:none!important}.crm-combo-caret{z-index:5!important;pointer-events:auto!important;min-width:30px!important;min-height:30px!important;display:grid!important;place-items:center!important}" +
       "#formOrder>.form-grid>.form-group:not(.full-width),#formPharmacy>.form-grid>.form-group:not(.full-width),#formDoctor>.form-grid>.form-group:not(.full-width){align-self:start!important}" +
       ".table-responsive{max-height:72vh;overflow:auto!important;position:relative!important}.data-table{border-collapse:collapse!important;border-spacing:0!important}.data-table th,.data-table td{border:1px solid #94a3b8!important;padding:7px!important}.data-table thead th{position:sticky!important;top:0!important;z-index:25!important;background:#87CEEB!important;color:#000!important;box-shadow:none!important}.tbl-freeze-head{background:#87CEEB!important;border-bottom:0!important}.tbl-freeze-head th{background:#87CEEB!important;color:#000!important}.tbl-freeze-xbar,.tbl-x-row{display:none!important}" +
       "#tab-distributor-sales #distributorActionGrid,#tab-distributor-database #distributorDatabaseGrid{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))!important;gap:10px!important}#invoiceStatusFilterGrid{display:flex!important;flex-flow:row nowrap!important;align-items:flex-start!important;gap:10px!important;overflow-x:auto!important;padding-bottom:6px!important;width:100%!important}#invoiceStatusFilterGrid>.form-group{flex:1 0 180px!important;min-width:0!important;margin:0!important}#invoiceStatusFilterGrid input:disabled,#invoiceStatusFilterGrid select:disabled{background:#e5e7eb!important;color:#6b7280!important;border-color:#cbd5e1!important;cursor:not-allowed!important}#tab-distributor-sales #distributorFilterGrid{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))!important;gap:10px!important;width:100%!important}#tab-distributor-sales #distributorFilterGrid>.form-group{grid-column:auto!important;width:auto!important;min-width:0!important;margin:0!important}#tab-distributor-sales .v20-combo-card{padding:10px!important}#tab-distributor-sales .v20-card-tools .btn{padding:7px 9px!important;font-size:.78rem!important}#tab-distributor-sales #distributorFilterGrid{display:flex!important;flex-flow:row nowrap!important;align-items:flex-start!important;overflow-x:auto!important;padding-bottom:6px!important}#tab-distributor-sales #distributorFilterGrid>.form-group{flex:1 0 180px!important;max-width:none!important}" +
@@ -34432,7 +34541,7 @@ button.v19-gps svg{display:block}
     var pane=$("tab-users-permissions");if(!pane)return;["v20PresetUser","v20PresetApply"].forEach(function(id){var x=$(id);if(x)x.remove();});var old=$("v20PresetBar");if(old){bindRoleTemplateSelect();return;}var S=st();if(!S)return;var card=pane.querySelector(".card")||pane,bar=document.createElement("div");bar.id="v20PresetBar";bar.style.cssText="border:1px solid #c7d2fe;background:#eef2ff;border-radius:12px;padding:12px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;min-height:58px;box-sizing:border-box;";var opts=ROLE_PRESETS.map(function(p){return"<option value='"+p.id+"'>"+p.label+"</option>";}).join("");bar.innerHTML="<strong>🎚️ سطوح دسترسی آماده:</strong><select id='v20PresetSel' class='form-select' style='min-width:180px'>"+opts+"</select><button type='button' id='v20PresetSave' class='btn btn-primary'>💾 ذخیره سطح دسترسی</button><span class='v20-mini'>تیک‌های فعلی پایین صفحه برای همین سطح ذخیره می‌شوند.</span>";card.insertBefore(bar,card.firstChild);bar.querySelector("#v20PresetSel").onchange=function(){applyPermissionsToChecklist(permissionTemplate(this.value));syncPermissionMasters();};bar.querySelector("#v20PresetSave").onclick=function(){var pid=bar.querySelector("#v20PresetSel").value;S.settings=S.settings||{};S.settings.permissionLevelTemplates=S.settings.permissionLevelTemplates||{};S.settings.permissionLevelTemplates[pid]=checklistPermissions();save();v20Toast("✅ سطح دسترسی «"+this.parentNode.querySelector("#v20PresetSel").selectedOptions[0].textContent+"» ذخیره شد.");};bindRoleTemplateSelect();}
   function syncUsersAuthV27(){try{var auth={};(st().users||[]).forEach(function(u){auth[u.username]={password:u.password,phone:u.phone,name:u.fullName,role:u.role,id:u.id};});localStorage.setItem("CRM_USERS_AUTH",JSON.stringify(auth));}catch(e){}}
   function saveUserV27(){var S=st(),form=$("formCreateUser"),id=String(($("userEditId")||{}).value||""),full=String(($("newFullName")||{}).value||"").trim(),user=String(($("newUsername")||{}).value||"").trim(),pass=String(($("newPassword")||{}).value||"").trim(),phone=String(($("newPhone")||{}).value||"").trim(),role=String(($("newRole")||{}).value||"نماینده علمی"),sim=String(($("newSimControl")||{}).value||"");if(!full||!user||!pass)return alert("نام، نام کاربری و رمز عبور را کامل کنید.");var duplicate=(S.users||[]).some(function(u){return u.username===user&&String(u.id)!==id;});if(duplicate)return alert("این نام کاربری قبلاً ثبت شده است.");var current=id&&(S.users||[]).filter(function(u){return String(u.id)===id;})[0],rec=current||{id:"u-"+Date.now(),phoneLock:"آزاد - اولین ورود، گوشی را قفل می‌کند",lastLogin:""};rec.fullName=full;rec.username=user;rec.password=pass;rec.phone=phone;rec.role=role;rec.simControl=sim;rec.permissions=checklistPermissions();if(!current)S.users.push(rec);save();syncUsersAuthV27();syncRepsFromUsers();applyCentralPermissions();if(form)form.reset();if($("userEditId"))$("userEditId").value="";var btn=$("btnSaveUserInfo");if(btn){btn.innerHTML="<span>➕ ایجاد کاربر</span>";btn.style.display="inline-flex";}try{if(typeof window.renderUserCardsList==="function")window.renderUserCardsList();if(typeof window.updateNavBadges==="function")window.updateNavBadges();}catch(e){}v20Toast(current?"✅ اطلاعات کاربر ذخیره شد.":"✅ کاربر جدید ایجاد شد.");}
-  function bindUserCrudV27(){var form=$("formCreateUser"),btn=$("btnSaveUserInfo"),role=$("newRole");if(role){var cur=role.value;role.innerHTML="<option value='سرپرست'>سرپرست</option><option value='نماینده علمی'>نماینده علمی</option><option value='کارشناس فروش'>کارشناس فروش</option>";if(["سرپرست","نماینده علمی","کارشناس فروش"].indexOf(cur)>=0)role.value=cur;}if(btn){btn.style.display="inline-flex";btn.hidden=false;if(!btn.dataset.v27user){btn.dataset.v27user="1";btn.addEventListener("click",function(e){e.preventDefault();e.stopImmediatePropagation();saveUserV27();},true);}}if(form&&!form.dataset.v27user){form.dataset.v27user="1";form.addEventListener("submit",function(e){e.preventDefault();e.stopImmediatePropagation();saveUserV27();},true);}window.editUserCard=function(id){var u=(st().users||[]).filter(function(x){return String(x.id)===String(id);})[0];if(!u)return;if($("userEditId"))$("userEditId").value=u.id;[["newFullName","fullName"],["newUsername","username"],["newPassword","password"],["newPhone","phone"],["newRole","role"],["newSimControl","simControl"]].forEach(function(p){if($(p[0]))$(p[0]).value=u[p[1]]||"";});applyPermissionsToChecklist(u.permissions||{});syncPermissionMasters();var b=$("btnSaveUserInfo");if(b){b.innerHTML="<span>💾 ذخیره اطلاعات کاربر</span>";b.style.display="inline-flex";b.scrollIntoView({behavior:"smooth",block:"center"});}};window.deleteUserCard=function(id){if(!confirm("آیا از حذف این کاربر اطمینان دارید؟"))return;var S=st();S.users=(S.users||[]).filter(function(u){return String(u.id)!==String(id);});save();syncUsersAuthV27();syncRepsFromUsers();syncRepresentativeSelectors();try{if(typeof window.renderUserCardsList==="function")window.renderUserCardsList();if(typeof window.updateNavBadges==="function")window.updateNavBadges();if(typeof window.renderActivityLogTable==="function")window.renderActivityLogTable();if(typeof window.renderActivityMapAndChart==="function")window.renderActivityMapAndChart();}catch(e){}v20Toast("✅ کاربر و نام او از فهرست نمایندگان و فعالیت‌های دیداری حذف شد.");};syncPermissionMasters();}
+  function bindUserCrudV27(){var form=$("formCreateUser"),btn=$("btnSaveUserInfo"),role=$("newRole");if(role){var cur=role.value;role.innerHTML="<option value='سرپرست'>سرپرست</option><option value='نماینده علمی'>نماینده علمی</option><option value='کارشناس فروش'>کارشناس فروش</option>";if(["سرپرست","نماینده علمی","کارشناس فروش"].indexOf(cur)>=0)role.value=cur;}if(btn){btn.style.display="inline-flex";btn.hidden=false;if(!btn.dataset.v27user){btn.dataset.v27user="1";btn.addEventListener("click",function(e){e.preventDefault();e.stopImmediatePropagation();saveUserV27();},true);}}if(form&&!form.dataset.v27user){form.dataset.v27user="1";form.addEventListener("submit",function(e){e.preventDefault();e.stopImmediatePropagation();saveUserV27();},true);}window.editUserCard=function(id){var u=(st().users||[]).filter(function(x){return String(x.id)===String(id);})[0];if(!u)return;if($("userEditId"))$("userEditId").value=u.id;[["newFullName","fullName"],["newUsername","username"],["newPassword","password"],["newPhone","phone"],["newRole","role"],["newSimControl","simControl"]].forEach(function(p){if($(p[0]))$(p[0]).value=u[p[1]]||"";});applyPermissionsToChecklist(u.permissions||{});syncPermissionMasters();var b=$("btnSaveUserInfo");if(b){b.innerHTML="<span>💾 ذخیره اطلاعات کاربر</span>";b.style.display="inline-flex";b.scrollIntoView({behavior:"smooth",block:"center"});}};window.deleteUserCard=function(id){if(!confirm("آیا از حذف این کاربر اطمینان دارید؟"))return;var S=st(),removed=(S.users||[]).filter(function(u){return String(u.id)===String(id);})[0];S.settings=S.settings||{};S.settings.deletedUserTombstones=S.settings.deletedUserTombstones||[];if(removed&&!S.settings.deletedUserTombstones.some(function(t){return String(t.id)===String(removed.id)||t.username===removed.username;}))S.settings.deletedUserTombstones.push({id:removed.id,username:removed.username,fullName:removed.fullName,deletedAt:Date.now()});S.users=(S.users||[]).filter(function(u){return String(u.id)!==String(id);});save();syncUsersAuthV27();syncRepsFromUsers();syncRepresentativeSelectors();try{if(typeof window.renderUserCardsList==="function")window.renderUserCardsList();if(typeof window.updateNavBadges==="function")window.updateNavBadges();if(typeof window.renderActivityLogTable==="function")window.renderActivityLogTable();if(typeof window.renderActivityMapAndChart==="function")window.renderActivityMapAndChart();}catch(e){}v20Toast("✅ کاربر و نام او از فهرست نمایندگان و فعالیت‌های دیداری حذف شد.");};syncPermissionMasters();}
 
 
   /* ---------- ۷-ب) همگام‌سازی «جای فیلدها» داروخانه → سفارشات ---------- */
@@ -34599,7 +34708,7 @@ button.v19-gps svg{display:block}
   function syncRepresentativeSelectors(){var S=st(),u=v20CurrentUser(),manager=v20IsManager(),perms=(u&&u.permissions)||{},reps=S&&S.reps||[];var keyById={orderRepName:"ord_all_reps",tgtRepSelect:"target_all_reps",leaveRepSelect:"hr_all_leaves",routeRepFilterSelect:"fld_all_routes",repHomeSelect:"fld_all_homes",liveRepSearchSelect:"live_all_reps",snappFilterRep:"sys_snapp_access",invoiceStatusRep:"dist_invoice_status_filters"};document.querySelectorAll("select[id]").forEach(function(sel){if(globalFieldKey(sel)!=="نمایندهعلمی"&&keyById[sel.id]==null)return;var allowAll=manager||perms[keyById[sel.id]]===true,list=allowAll?reps:reps.filter(function(r){return u&&String(r.id)===String(u.id);}),useId=sel.id==="liveRepSearchSelect"||sel.id==="routeManagerRep",placeholder=allowAll?"همه نمایندگان":"نماینده واردشده",desired=(allowAll?[["",placeholder]]:[]).concat(list.map(function(r){return[useId?r.id:r.name,r.name+(r.region?" ("+r.region+")":"")];})),sig=JSON.stringify(desired),actual=JSON.stringify(Array.prototype.map.call(sel.options,function(o){return[o.value,o.textContent];}));if(sig===actual){sel.disabled=!allowAll;sel.classList.toggle("v35-fixed-rep",!allowAll);return;}var cur=sel.value;sel.innerHTML="";desired.forEach(function(x){var o=document.createElement("option");o.value=x[0];o.textContent=x[1];sel.appendChild(o);});if(desired.some(function(x){return x[0]===cur;}))sel.value=cur;else if(!allowAll&&desired.length)sel.value=desired[0][0];sel.disabled=!allowAll;sel.classList.toggle("v35-fixed-rep",!allowAll);});}
   function runtimeVersion(){
     var s=document.querySelector('script[src*="crm-features-v20.js"]'),src=s&&s.getAttribute('src')||"",m=src.match(/[?&]v=([^&]+)/);
-    return m?decodeURIComponent(m[1]):"11.36.0";
+    return m?decodeURIComponent(m[1]):"11.37.0";
   }
   function renderVersionBadge() {
     var b = $("v20VersionBadge"), actions = document.querySelector(".header-actions"); if (!actions) return;
@@ -34830,8 +34939,22 @@ button.v19-gps svg{display:block}
   function renderNotificationsV35(){var body=$("tableNotificationsBody");if(!body)return;var rows=visibleNotificationsV35(),u=v20CurrentUser(),manager=v20IsManager(),name=(u&&u.fullName)||sessionStorage.getItem("crmUserName")||"";body.innerHTML=rows.map(function(n){var canDelete=manager||n.sender===name;return"<tr data-notification='"+esc(n.id)+"'><td>"+esc(n.date||"—")+"</td><td><strong>"+esc(n.title||"")+"</strong></td><td>"+esc(n.message||"")+"</td><td>"+esc((n.sender||"—")+" → "+(n.recipient||"عمومی"))+"</td><td>"+(n.isRead?"خوانده‌شد":"<button class='btn btn-outline btn-sm v35-read'>✓ خواندن</button>")+"</td><td><button class='btn btn-primary btn-sm v35-reply'>↩ پاسخ</button> <button class='btn btn-outline btn-sm v35-history'>🕘 تاریخچه</button> "+(canDelete?"<button class='btn btn-danger btn-sm v35-delete'>🗑️</button>":"")+"</td></tr>";}).join("")||"<tr><td colspan='6'>پیامی برای این کاربر وجود ندارد.</td></tr>";Array.prototype.forEach.call(body.querySelectorAll("tr[data-notification]"),function(tr){var id=tr.dataset.notification,n=(st().notifications||[]).filter(function(x){return String(x.id)===String(id);})[0];var r=tr.querySelector(".v35-read");if(r)r.onclick=function(){n.isRead=true;save();renderNotificationsV35();};var reply=tr.querySelector(".v35-reply");if(reply)reply.onclick=function(){replyNotificationV35(id);};var hist=tr.querySelector(".v35-history");if(hist)hist.onclick=function(){showNotificationThreadV35(id);};var del=tr.querySelector(".v35-delete");if(del)del.onclick=function(){if(confirm("این پیام حذف شود؟")){st().notifications=(st().notifications||[]).filter(function(x){return String(x.id)!==String(id);});save();renderNotificationsV35();}};});}
   function replyNotificationV35(id){var S=st(),parent=(S.notifications||[]).filter(function(n){return String(n.id)===String(id);})[0];if(!parent)return;var text=prompt("متن پاسخ:");if(!text||!String(text).trim())return;var me=v20CurrentUser(),sender=(me&&me.fullName)||sessionStorage.getItem("crmUserName")||"کاربر",recipient=parent.sender===sender?parent.recipient:parent.sender,nt={id:"not-"+Date.now(),threadId:parent.threadId||parent.id,parentId:parent.id,date:new Date().toLocaleString("fa-IR"),title:/^پاسخ:/.test(parent.title||"")?parent.title:"پاسخ: "+(parent.title||"پیام"),message:String(text).trim(),sender:sender,recipient:recipient,isRead:false};S.notifications=S.notifications||[];S.notifications.unshift(nt);save();sendPushForNotification(nt);renderNotificationsV35();try{playNotificationBeep();}catch(e){}v20Toast("✅ پاسخ ارسال و در تاریخچه ثبت شد.");}
   function showNotificationThreadV35(id){var S=st(),base=(S.notifications||[]).filter(function(n){return String(n.id)===String(id);})[0];if(!base)return;var thread=base.threadId||base.id,items=(S.notifications||[]).filter(function(n){return(n.threadId||n.id)===thread;}).slice().reverse(),old=$("v35ThreadModal");if(old)old.remove();var modal=document.createElement("div");modal.id="v35ThreadModal";modal.className="v20-modal";modal.innerHTML="<div class='v20-modal-card' style='width:min(720px,94vw);max-height:85vh;overflow:auto'><h3>تاریخچه پیام</h3>"+items.map(function(n){return"<div style='border:1px solid #cbd5e1;border-radius:9px;padding:10px;margin:7px 0'><b>"+esc(n.sender||"—")+" → "+esc(n.recipient||"—")+"</b><div>"+esc(n.message||"")+"</div><small>"+esc(n.date||"")+"</small></div>";}).join("")+"<button class='btn btn-outline v35-close'>بستن</button></div>";document.body.appendChild(modal);modal.querySelector(".v35-close").onclick=function(){modal.remove();};}
-  function syncNotificationRecipients(){var sel=$("msgRecipientSelect");if(!sel)return;var u=v20CurrentUser(),manager=v20IsManager(),perms=(u&&u.permissions)||{},users=(st().users||[]).filter(function(x){return x&&x.fullName&&(!u||String(x.id)!==String(u.id));}),cur=sel.value,opts=[];if(manager||perms.notify_all_users===true)opts.push(["همه کاربران (اعلان عمومی)","همه کاربران (اعلان عمومی)"]);users.forEach(function(x){opts.push([x.fullName,x.fullName+" ("+(x.role||"کاربر")+")"]);});var actual=Array.prototype.map.call(sel.options,function(o){return[o.value,o.textContent];});if(JSON.stringify(actual)===JSON.stringify(opts))return;sel.innerHTML="";opts.forEach(function(x){var o=document.createElement("option");o.value=x[0];o.textContent=x[1];sel.appendChild(o);});if(opts.some(function(x){return x[0]===cur;}))sel.value=cur;}
+  function syncNotificationRecipients(){var sel=$("msgRecipientSelect");if(!sel)return;var u=v20CurrentUser(),manager=v20IsManager(),perms=(u&&u.permissions)||{},users=(st().users||[]).filter(function(x){return x&&x.fullName&&(!u||String(x.id)!==String(u.id));}),cur=sel.value,opts=[["","انتخاب گیرنده..."]];if(manager||perms.notify_all_users===true)opts.push(["همه کاربران (اعلان عمومی)","همه کاربران (اعلان عمومی)"]);users.forEach(function(x){opts.push([x.fullName,x.fullName+" ("+(x.role||"کاربر")+")"]);});var actual=Array.prototype.map.call(sel.options,function(o){return[o.value,o.textContent];});if(JSON.stringify(actual)===JSON.stringify(opts))return;sel.innerHTML="";opts.forEach(function(x){var o=document.createElement("option");o.value=x[0];o.textContent=x[1];sel.appendChild(o);});if(opts.some(function(x){return x[0]===cur;}))sel.value=cur;}
   function setupNotificationCenterV35(){var pane=$("tab-notifications"),form=$("formSendMessage");if(!pane||!form)return;syncNotificationRecipients();var header=pane.querySelector(".card-header");if(header&&!$("btnEnableDeviceNotifications")){var b=document.createElement("button");b.id="btnEnableDeviceNotifications";b.type="button";b.className="btn btn-primary btn-sm";b.textContent="🔔 فعال‌سازی اعلان صدادار دستگاه";b.onclick=enableDeviceNotifications;header.appendChild(b);}if(!form.dataset.v35bound){form.dataset.v35bound="1";form.addEventListener("submit",function(e){e.preventDefault();e.stopImmediatePropagation();var recipient=String(($("msgRecipientSelect")||{}).value||""),title=String(($("msgTitleInput")||{}).value||"").trim(),message=String(($("msgBodyInput")||{}).value||"").trim();if(!recipient||!title||!message)return alert("گیرنده، عنوان و متن پیام را کامل کنید.");var me=v20CurrentUser(),sender=(me&&me.fullName)||sessionStorage.getItem("crmUserName")||"کاربر",id="not-"+Date.now(),nt={id:id,threadId:id,date:new Date().toLocaleString("fa-IR"),title:title,message:message,sender:sender,recipient:recipient,isRead:false};st().notifications=st().notifications||[];st().notifications.unshift(nt);save();sendPushForNotification(nt);form.reset();syncNotificationRecipients();renderNotificationsV35();try{playNotificationBeep();}catch(x){}v20Toast("✅ پیام ارسال و تاریخچه آن ثبت شد.");},true);}window.renderNotificationsTable=renderNotificationsV35;renderNotificationsV35();if("Notification" in window&&Notification.permission==="granted")enableDeviceNotifications();}
+
+  /* ---------- ۳۷) حفاظت نهایی داده/انتخابگر/خانه/کشویی ---------- */
+  function enforceDeletedUserTombstonesV37(){var S=st();if(!S)return;S.settings=S.settings||{};S.settings.deletedUserTombstones=S.settings.deletedUserTombstones||[];if(!S.settings.v37LegacyRemovedUsersMigrated){[{id:"u-2",username:"Taheri",fullName:"جواد علمدار"},{id:"u-3",username:"nila",fullName:"خانم نیلا محرمی"}].forEach(function(legacy){var found=(S.users||[]).some(function(u){return String(u.id)===legacy.id&&u.username===legacy.username&&u.fullName===legacy.fullName;});if(found&&!S.settings.deletedUserTombstones.some(function(t){return String(t.id)===legacy.id;}))S.settings.deletedUserTombstones.push({id:legacy.id,username:legacy.username,fullName:legacy.fullName,deletedAt:Date.now(),reason:"legacy-sample-removed-by-manager"});});S.settings.v37LegacyRemovedUsersMigrated=true;}var tomb=S.settings.deletedUserTombstones||[];if(!tomb.length)return;var ids={},names={},users={};tomb.forEach(function(t){if(t.id)ids[String(t.id)]=1;if(t.fullName)names[norm(t.fullName)]=1;if(t.username)users[String(t.username)]=1;});var before=(S.users||[]).length;S.users=(S.users||[]).filter(function(u){return u&&!ids[String(u.id)]&&!names[norm(u.fullName)]&&!users[String(u.username)];});if(S.users.length!==before){syncUsersAuthV27();syncRepsFromUsers();try{saveState(false);}catch(e){}}}
+  function installPersianBuiltinLabelGuardV37(){var old=window.getUnifiedFieldList;if(typeof old!=="function"||old._v37fa)return;var w=function(tabId){var list=old.apply(this,arguments)||[];list.forEach(function(f){if(!f||!f.builtin||!/^[A-Za-z][A-Za-z0-9_-]*$/.test(String(f.label||"").trim()))return;var el=$(f.id),lab=el&&document.querySelector('label[for="'+f.id+'"]');if(!lab&&el){var g=el.closest(".form-group");lab=g&&g.querySelector(".form-label,label");}var text=lab&&String(lab.textContent||"").replace(/\s+/g," ").trim(),mapped=(window.FA_FIELD_LABELS||{})[f.id];f.label=(mapped||(!/^[A-Za-z][A-Za-z0-9_-]*$/.test(text||"")&&text)||"فیلد برنامه");});return list;};w._v37fa=true;window.getUnifiedFieldList=w;}
+  function pinRepresentativeRouteFieldsV37(){var card=$("representativeRoutesCard");if(!card||!v20IsManager())return;card.style.setProperty("display","block","important");["routeManagerRep","routeManagerProvince","routeManagerCity","routeManagerDistrict","btnSaveRepresentativeRoute"].forEach(function(id){var el=$(id),g=el&&el.closest(".form-group");if(g){g.classList.remove("col-hide-form");g.removeAttribute("data-col-hidden");g.style.setProperty("display","block","important");}if(el){el.hidden=false;el.style.removeProperty("visibility");}});}
+  function unwrapPlainSelectV37(sel){if(!sel)return;sel.dataset.nocombo="1";var wrap=sel.closest&&sel.closest(".crm-combo");if(wrap){wrap.parentNode.insertBefore(sel,wrap);wrap.remove();}sel.classList.remove("crm-combo-src");sel.removeAttribute("tabindex");["position","opacity","pointer-events","width","height"].forEach(function(p){sel.style.removeProperty(p);});}
+  function setupPlainRecipientV37(){var sel=$("msgRecipientSelect");if(!sel)return;unwrapPlainSelectV37(sel);sel.setAttribute("aria-label","گیرنده پیام");}
+  function bindComboCaretFixV37(){if(document.documentElement.dataset.v37caret)return;document.documentElement.dataset.v37caret="1";document.addEventListener("click",function(e){var caret=e.target&&e.target.closest&&e.target.closest(".crm-combo-caret");if(!caret)return;e.preventDefault();e.stopImmediatePropagation();var wrap=caret.closest(".crm-combo"),list=wrap&&wrap.querySelector(".crm-combo-list"),inp=wrap&&wrap.querySelector(".crm-combo-input");if(!list||!inp)return;if(!list.hidden){list.hidden=true;return;}inp.focus();if(list.hidden)inp.dispatchEvent(new Event("click",{bubbles:false}));},true);}
+  function selectOrderPharmacyCardV37(card){var S=st(),id=card&&card.getAttribute("data-pid"),rec=((S&&S.pharmacies)||[]).filter(function(p){return String(p.id)===String(id);})[0];if(!rec)return false;v20SetValue("orderPharmacyName",rec.name||"");v20SetValue("orderPharmacyMatchedId",rec.id||"");var inp=$("orderPharmacyName");if(inp)inp.dataset.v20PlacedName=rec.name||"";v20FillOrderPharmacy();hidePlacedOrderNotices();return true;}
+  function bindOrderPharmacyCardV37(){if(document.documentElement.dataset.v37phcards)return;document.documentElement.dataset.v37phcards="1";document.addEventListener("click",function(e){var card=e.target&&e.target.closest&&e.target.closest("#orderPharmacyPickBox .ph-pick-card");if(!card)return;e.preventDefault();e.stopImmediatePropagation();selectOrderPharmacyCardV37(card);},true);}
+  function visibleRepHomesV37(){var S=st(),u=v20CurrentUser(),manager=v20IsManager(),activeNames={},activeIds={};((S&&S.users)||[]).forEach(function(x){if(x&&x.id)activeIds[String(x.id)]=1;if(x&&x.fullName)activeNames[norm(x.fullName)]=1;});var rows=((S&&S.repHomes)||[]).filter(function(h){var id=String(h&&h.repId||h&&h.userId||""),name=norm(h&&h.repName||"");return(id&&activeIds[id])||(!id&&activeNames[name]);});if(manager)return rows;return rows.filter(function(h){return u&&((h.repId&&String(h.repId)===String(u.id))||(h.userId&&String(h.userId)===String(u.id))||norm(h.repName||"")===norm(u.fullName||""));});}
+  function paintRepHomesMapV37(rows){var map=window._mapRepHomes;if(!map||typeof L==="undefined")return;try{map.eachLayer(function(layer){if(!(layer instanceof L.TileLayer))map.removeLayer(layer);});var pts=[];(rows||[]).forEach(function(h){if(!h.lat||!h.lng)return;var marker=typeof window.createCustomMarker==="function"?window.createCustomMarker(h.lat,h.lng,"rep","منزل "+(h.repName||"نماینده"),map):L.marker([h.lat,h.lng]).bindTooltip("منزل "+(h.repName||"نماینده")).addTo(map);pts.push([h.lat,h.lng]);});if(pts.length===1)map.setView(pts[0],16);else if(pts.length>1)map.fitBounds(pts,{padding:[40,40]});}catch(e){}}
+  function renderRepHomesV37(){var body=$("tableRepHomesBody");if(!body)return;var rows=visibleRepHomesV37(),manager=v20IsManager();body.innerHTML=rows.map(function(h){var ops="<button class='btn btn-outline btn-sm v37-home-show' data-id='"+esc(h.id)+"'>📍 نمایش</button> <button class='btn btn-outline btn-sm v37-home-edit' data-id='"+esc(h.id)+"'>✏️ ویرایش</button> <button class='btn btn-danger btn-sm v37-home-delete' data-id='"+esc(h.id)+"'>🗑️ حذف</button>";return"<tr><td><strong>"+esc(h.repName||"—")+"</strong></td><td>"+esc(h.address||"—")+"</td><td style='direction:ltr'>"+esc((h.lat||"—")+", "+(h.lng||"—"))+"</td><td>"+ops+"</td></tr>";}).join("")||"<tr><td colspan='4'>لوکیشن منزلی برای این حساب ثبت نشده است.</td></tr>";Array.prototype.forEach.call(body.querySelectorAll(".v37-home-show"),function(b){b.onclick=function(){var h=rows.filter(function(x){return String(x.id)===String(b.dataset.id);})[0];if(h&&window._mapRepHomes&&h.lat&&h.lng)window._mapRepHomes.setView([h.lat,h.lng],16);};});Array.prototype.forEach.call(body.querySelectorAll(".v37-home-edit"),function(b){b.onclick=function(){if(typeof window.editRepHome==="function")window.editRepHome(b.dataset.id);};});Array.prototype.forEach.call(body.querySelectorAll(".v37-home-delete"),function(b){b.onclick=function(){if(typeof window.deleteRepHome==="function")window.deleteRepHome(b.dataset.id);};});setTimeout(function(){paintRepHomesMapV37(rows);},50);}
+  function setupV37FinalGuards(){enforceDeletedUserTombstonesV37();installPersianBuiltinLabelGuardV37();setupPlainRecipientV37();bindComboCaretFixV37();bindOrderPharmacyCardV37();pinRepresentativeRouteFieldsV37();window.renderRepHomesTable=renderRepHomesV37;renderRepHomesV37();}
 
   function privacyList(list,permissionKey){var S=st(),u=v20CurrentUser(),manager=v20IsManager(),perms=(u&&u.permissions)||{},activeNames={},activeIds={};((S&&S.users)||[]).forEach(function(x){if(x&&x.fullName)activeNames[norm(x.fullName)]=1;if(x&&x.id)activeIds[String(x.id)]=1;});var clean=(list||[]).filter(function(r){var n=String(r&&r.repName||r&&r.name||""),id=String(r&&r.repId||r&&r.userId||"");return(!n&&!id)||/مدیر سیستم/.test(n)||(id&&activeIds[id])||activeNames[norm(n)];});if(manager||perms[permissionKey]===true)return clean.slice();return clean.filter(function(r){return u&&((r.repId&&String(r.repId)===String(u.id))||(r.userId&&String(r.userId)===String(u.id))||norm(r.repName||r.name||"")===norm(u.fullName||""));});}
   function visibleActivityRowsV36(){var S=st(),u=v20CurrentUser(),manager=v20IsManager(),activeNames={},activeIds={};((S&&S.users)||[]).forEach(function(x){if(!x)return;if(x.id)activeIds[String(x.id)]=1;if(x.fullName)activeNames[norm(x.fullName)]=1;});var rows=((S&&S.activityLog)||[]).filter(function(r){var id=String(r&&r.repId||r&&r.userId||""),name=norm(r&&r.repName||r&&r.name||"");return(id&&activeIds[id])||(!id&&name&&activeNames[name]);});if(manager)return rows.slice();return rows.filter(function(r){return u&&((r.repId&&String(r.repId)===String(u.id))||(r.userId&&String(r.userId)===String(u.id))||norm(r.repName||r.name||"")===norm(u.fullName||""));});}
@@ -35074,7 +35197,7 @@ button.v19-gps svg{display:block}
     applySnappVisibility();
     applyCentralPermissions();
     v20ApplyGreyChains();
-    if (id === "tab-orders") { v20ApplyOrderLock(); bindOrderItemRuntime(); setTimeout(function(){v20PlaceMatchNearInput();applyOrderItemRoleControls();if(typeof window.updateOrderTotalAmountDisplay==="function")window.updateOrderTotalAmountDisplay();},60); }
+    if (id === "tab-orders") { v20ApplyOrderLock(); bindOrderItemRuntime(); bindOrderPharmacyCardV37(); setTimeout(function(){v20PlaceMatchNearInput();applyOrderItemRoleControls();restoreDomFieldOrder();if(typeof window.updateOrderTotalAmountDisplay==="function")window.updateOrderTotalAmountDisplay();},60); }
     if (id === "tab-custom-fields") setTimeout(window.v20RenderComboManager, 60);
     if (id === "tab-columns-products") setTimeout(function(){ renderProductExtras(); applyProductSettings(); bindProductCrudV20(); bindProductLabelFix(); }, 80);
     if (id === "tab-users-permissions") setTimeout(function(){renderPresetBar();bindUserCrudV27();syncPermissionMasters();},60);
@@ -35089,10 +35212,10 @@ button.v19-gps svg{display:block}
     if (id === "tab-rep-routes") setTimeout(function(){if(typeof window.renderRepRoutesTable==="function")window.renderRepRoutesTable();renderV20Routes();},80);
     if (id === "tab-activity-log") setTimeout(function(){if(typeof window.renderActivityLogTable==="function")window.renderActivityLogTable();},80);
     if (id === "tab-leaves") setTimeout(function(){if(typeof window.renderLeavesTable==="function")window.renderLeavesTable();},80);
-    if (id === "tab-rep-homes") setTimeout(function(){if(typeof window.renderRepHomesTable==="function")window.renderRepHomesTable();},80);
+    if (id === "tab-rep-homes") setTimeout(function(){window.renderRepHomesTable=renderRepHomesV37;renderRepHomesV37();},80);
     if (id === "tab-monthly-reports") setTimeout(function(){if(typeof window.renderMonthlyReportsTable==="function")window.renderMonthlyReportsTable();},80);
-    if (id === "tab-notifications") setTimeout(setupNotificationCenterV35,80);
-    if (id === "tab-sales-targets") setTimeout(function(){setupRepresentativeRoutes();setupTargetPlannerV34();},120);
+    if (id === "tab-notifications") setTimeout(function(){setupNotificationCenterV35();setupPlainRecipientV37();},80);
+    if (id === "tab-sales-targets") setTimeout(function(){setupRepresentativeRoutes();pinRepresentativeRouteFieldsV37();setupTargetPlannerV34();setTimeout(pinRepresentativeRouteFieldsV37,180);},120);
     if (id === "tab-troubleshooting") setTimeout(renderSecurityStatus, 60);
     setTimeout(function(){try{applyGlobalFieldOptions($(id)||document);restoreConfiguredFieldVisibility($(id));restoreDomFieldOrder();applyCentralPermissions();}catch(e){}},180);
   }
@@ -35188,7 +35311,7 @@ button.v19-gps svg{display:block}
     try { bindAddressFieldGuard(); } catch (e) {}
     try { bindDomOrderLock(); bindSafeOrderControls(); bindPrivacyRenderers(); } catch (e) {}
     try { bindDurableServerState(); bindInstantUiRefresh(); } catch (e) {}
-    try { wrapNewestTables(); } catch (e) {}
+    try { wrapNewestTables(); setupV37FinalGuards(); } catch (e) {}
     // اجرای دوباره امن پس از تکمیل loadState؛ در اجرای خیلی زود state هنوز null بود و کلیدهای اسنپ/پخش bind نمی‌شدند.
     // فقط یک تلاش تأخیری کافی است؛ تکرار چندباره همین رندرها عامل مکث محسوس شروع برنامه بود.
     setTimeout(reliableFeatureBoot,700);
@@ -35204,7 +35327,7 @@ button.v19-gps svg{display:block}
       } catch (e) {}
     }, 250);
   }
-  function reliableFeatureBoot(){try{setupSnappCorporate();applySnappVisibility();applyCentralPermissions();renderDistributorCompanies();setupDistributorSales();renderDistributorDatabase();if($("tab-distributor-invoice-status")&&$("tab-distributor-invoice-status").classList.contains("active"))setupInvoiceStatus();if($("tab-sales-targets")&&$("tab-sales-targets").classList.contains("active"))setupRepresentativeRoutes();bindOrderLocalMatch();bindOrderResetProof();bindOrderFormPositionLock();bindProductCrudV20();bindProductLabelFix();bindAddressFieldGuard();bindUserCrudV27();wrapListRenderers();bindListOrderObserver();restoreDomFieldOrder();}catch(e){try{console.error("reliable feature boot",e);}catch(x){}}}
+  function reliableFeatureBoot(){try{setupSnappCorporate();applySnappVisibility();applyCentralPermissions();renderDistributorCompanies();setupDistributorSales();renderDistributorDatabase();if($("tab-distributor-invoice-status")&&$("tab-distributor-invoice-status").classList.contains("active"))setupInvoiceStatus();if($("tab-sales-targets")&&$("tab-sales-targets").classList.contains("active")){setupRepresentativeRoutes();pinRepresentativeRouteFieldsV37();}setupV37FinalGuards();bindOrderLocalMatch();bindOrderResetProof();bindOrderFormPositionLock();bindProductCrudV20();bindProductLabelFix();bindAddressFieldGuard();bindUserCrudV27();wrapListRenderers();bindListOrderObserver();restoreDomFieldOrder();}catch(e){try{console.error("reliable feature boot",e);}catch(x){}}}
   window.v20SetupSnappCorporate=reliableFeatureBoot;
   // اتصال هم‌زمان دکمه‌های فایل، مستقل از زمان loadState؛ عملیات واقعی هنگام انتخاب فایل state را می‌خواند.
   try{installLatinNumberLaw();installSafeBrowserGuards();bindOriginSaveGate();bindManagerLayoutIntent();wrapFormLayoutMirror();wrapAllLegacyLayouts();bindSnappImportButtons();bindProductCrudV20();bindSafeOrderControls();}catch(e){}
@@ -35216,7 +35339,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-features-v9.js (71826 بایت)
+فایل: public/crm-features-v9.js (72007 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ===========================================================================
@@ -36349,7 +36472,8 @@ button.v19-gps svg{display:block}
         const name = val("repHomeSelect") || currentRepName();
         if (!state.repHomes) state.repHomes = [];
         const idx = state.repHomes.findIndex(function (h) { return h.repName === name; });
-        const rec = { id: "home-" + Date.now(), repName: name, address: addr, lat: pos.lat, lng: pos.lng };
+        const owner = ((state && state.users) || []).find(function (u) { return u && u.fullName === name; });
+        const rec = { id: "home-" + Date.now(), repId: owner ? owner.id : (sessionStorage.getItem("crmUserId") || ""), repName: name, address: addr, lat: pos.lat, lng: pos.lng };
         if (idx === -1) state.repHomes.push(rec);
         else state.repHomes[idx] = Object.assign({}, state.repHomes[idx], rec);
         saveState();
@@ -37390,7 +37514,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/index.html (145458 بایت)
+فایل: public/index.html (145357 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~html
 <!DOCTYPE html>
@@ -37402,7 +37526,7 @@ button.v19-gps svg{display:block}
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.36.0",key="CRM_ASSET_BUILD";document.documentElement.classList.add("crm-booting");
+      var BUILD="11.37.0",key="CRM_ASSET_BUILD";document.documentElement.classList.add("crm-booting");
       if(sessionStorage.getItem("crmLoggedIn")!=="1"){location.replace("/login?build="+BUILD);return;}
       var old="";try{old=localStorage.getItem(key)||"";}catch(e){}
       if(old!==BUILD){
@@ -37427,7 +37551,7 @@ button.v19-gps svg{display:block}
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.36.0" />
+  <link rel="stylesheet" href="style.css?v=11.37.0" />
 </head>
 <body>
 
@@ -38624,9 +38748,18 @@ button.v19-gps svg{display:block}
               <label class="form-label">تا تاریخ *</label>
               <input type="text" id="leaveToDate" class="form-input" placeholder="1405/05/23" required />
             </div>
-            <div class="form-group" id="leaveHoursGroup" style="display: none;">
-              <label class="form-label">ساعت مرخصی (از ساعت - تا ساعت)</label>
-              <input type="text" id="leaveHoursInput" class="form-input" placeholder="مثال: از ۰۹:۰۰ تا ۱۲:۰۰" />
+            <div class="form-group full-width" id="leaveHoursGroup" style="display: none;">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label" for="leaveFromTime">از ساعت</label>
+                  <input type="time" id="leaveFromTime" class="form-input" step="60" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="leaveToTime">تا ساعت</label>
+                  <input type="time" id="leaveToTime" class="form-input" step="60" />
+                </div>
+              </div>
+              <input type="hidden" id="leaveHoursInput" value="" />
             </div>
             <div class="form-group full-width">
               <label class="form-label">توضیحات و دلیل مرخصی *</label>
@@ -38647,7 +38780,7 @@ button.v19-gps svg{display:block}
                 <th>نام نماینده علمی</th>
                 <th>نوع مرخصی</th>
                 <th>از تاریخ / ساعت</th>
-                <th>تا تاریخ</th>
+                <th>تا تاریخ / ساعت</th>
                 <th>دلیل</th>
                 <th>تایید سرپرست</th>
                 <th>تایید مدیر کل</th>
@@ -38679,12 +38812,8 @@ button.v19-gps svg{display:block}
           <div class="form-grid">
             <div class="form-group">
               <label class="form-label">گیرنده پیام *</label>
-              <select id="msgRecipientSelect" class="form-select dropdown-auto-clear" required>
-                <option value="همه کاربران (اعلان عمومی)">همه کاربران (اعلان عمومی)</option>
-                <option value="مدیر سیستم">مدیر سیستم (Admin)</option>
-                <option value="جواد علمدار">جواد علمدار (نماینده علمی)</option>
-                <option value="خانم نیلا محرمی">خانم نیلا محرمی (نماینده علمی)</option>
-                <option value="آقای داوود عقبایی">آقای داوود عقبایی (سرپرست)</option>
+              <select id="msgRecipientSelect" class="form-select dropdown-auto-clear" data-nocombo="1" required>
+                <option value="">انتخاب گیرنده...</option>
               </select>
             </div>
             <div class="form-group">
@@ -39604,22 +39733,22 @@ button.v19-gps svg{display:block}
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.36.0"></script>
-  <script src="crm-app.js?v=11.36.0"></script>
-  <script src="crm-features-v9.js?v=11.36.0"></script>
-  <script src="iran-facilities.js?v=11.36.0" defer></script>
-  <script src="crm-features-v10.js?v=11.36.0"></script>
-  <script src="crm-features-v11.js?v=11.36.0"></script>
-  <script src="crm-features-v12.js?v=11.36.0"></script>
-  <script src="crm-features-v13.js?v=11.36.0"></script>
-  <script src="crm-jalali.js?v=11.36.0"></script>
-  <script src="crm-features-v14.js?v=11.36.0"></script>
-  <script src="crm-features-v15.js?v=11.36.0"></script>
-  <script src="crm-features-v16.js?v=11.36.0"></script>
-  <script src="crm-features-v17.js?v=11.36.0"></script>
-  <script src="crm-features-v18.js?v=11.36.0"></script>
-  <script src="crm-features-v19.js?v=11.36.0"></script>
-  <script src="crm-features-v20.js?v=11.36.0"></script>
+  <script src="crm-data.js?v=11.37.0"></script>
+  <script src="crm-app.js?v=11.37.0"></script>
+  <script src="crm-features-v9.js?v=11.37.0"></script>
+  <script src="iran-facilities.js?v=11.37.0" defer></script>
+  <script src="crm-features-v10.js?v=11.37.0"></script>
+  <script src="crm-features-v11.js?v=11.37.0"></script>
+  <script src="crm-features-v12.js?v=11.37.0"></script>
+  <script src="crm-features-v13.js?v=11.37.0"></script>
+  <script src="crm-jalali.js?v=11.37.0"></script>
+  <script src="crm-features-v14.js?v=11.37.0"></script>
+  <script src="crm-features-v15.js?v=11.37.0"></script>
+  <script src="crm-features-v16.js?v=11.37.0"></script>
+  <script src="crm-features-v17.js?v=11.37.0"></script>
+  <script src="crm-features-v18.js?v=11.37.0"></script>
+  <script src="crm-features-v19.js?v=11.37.0"></script>
+  <script src="crm-features-v20.js?v=11.37.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
@@ -42653,7 +42782,7 @@ self.addEventListener("fetch", (event) => {
 فایل: public/sw.js (2462 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
-const CACHE = "ttt-v11.36.0";
+const CACHE = "ttt-v11.37.0";
 const PRECACHE = ["/", "/login", "/favicon.png", "/logo.png", "/vendor/leaflet.js", "/vendor/leaflet.css"];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(PRECACHE).catch(function () {}); }).then(function () { return self.skipWaiting(); }));
@@ -68377,7 +68506,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/version-11.24-regressions.test.mjs (32576 بایت)
+فایل: tests/version-11.24-regressions.test.mjs (34182 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 import test from 'node:test';
@@ -68643,7 +68772,7 @@ test('target tab has multi-route manager and fixed product target planner with c
   for(const id of ['representativeRoutesCard','routeManagerRep','routeManagerProvince','routeManagerCity','routeManagerDistrict','btnSaveRepresentativeRoute']) assert.ok(html.includes(`id="${id}"`));
   for(const fn of ['setupRepresentativeRoutes','routeGeoValues','setupTargetPlannerV34','paintTargetPlanRows','renderTargetReportsV34','targetReportTable']) assert.match(v20,new RegExp(`function ${fn}\\(`));
   assert.match(v20,/bindTargetsV20\(\); setupRepresentativeRoutes\(\); setupTargetPlannerV34\(\)/);
-  assert.match(v20,/tab-sales-targets[\s\S]{0,100}setupRepresentativeRoutes\(\);setupTargetPlannerV34\(\)/);
+  assert.match(v20,/tab-sales-targets[\s\S]{0,180}setupRepresentativeRoutes\(\);pinRepresentativeRouteFieldsV37\(\);setupTargetPlannerV34\(\)/);
   assert.match(v20,/activityProvinces=routeSelected/);assert.match(v20,/activityCities=routeSelected/);assert.match(v20,/activityDistrictList=routeSelected/);
   assert.match(v20,/n\*dp/);assert.match(v20,/n\*hp/);assert.match(v20,/محقق‌شده/);assert.match(v20,/مانده تارگت/);
   assert.match(v20,/جمع همه تارگت نمایندگان به تفکیک کالا/);assert.match(v20,/تارگت‌های /);
@@ -68659,6 +68788,21 @@ test('order reset preserves field settings, placed notice stays hidden, and tech
   assert.match(v11,/var directLab/);assert.match(v11,/شناسه فنی هرگز نباید/);
   assert.match(v11,/leaveRepSelect: "نماینده علمی"/);
   assert.match(v11,/String\(meta\[b\.id\]\.label\)\.trim\(\) !== b\.id/);
+});
+
+test('v37 keeps existing data while fixing picker, homes, deletion, times, recipient and dropdown arrows', () => {
+  assert.match(app,/if \(saved\)[\s\S]*state = JSON\.parse\(saved\)/);
+  assert.match(app,/state\._freshInstallClean = true/);
+  assert.match(app,/state\.users = \(state\.users \|\| \[\]\)\.filter/);
+  for(const fn of ['enforceDeletedUserTombstonesV37','installPersianBuiltinLabelGuardV37','pinRepresentativeRouteFieldsV37','setupPlainRecipientV37','bindComboCaretFixV37','bindOrderPharmacyCardV37','visibleRepHomesV37','paintRepHomesMapV37','renderRepHomesV37']) assert.match(v20,new RegExp(`function ${fn}\\(`));
+  assert.match(v20,/deletedUserTombstones/);assert.match(v20,/settings\.deletedUserTombstones\.push/);
+  assert.match(v20,/id:"u-2",username:"Taheri",fullName:"جواد علمدار"/);assert.match(v20,/id:"u-3",username:"nila",fullName:"خانم نیلا محرمی"/);
+  assert.match(v20,/#orderPharmacyPickBox \.ph-pick-card/);assert.match(v20,/selectOrderPharmacyCardV37\(card\)/);
+  assert.match(v20,/window\.renderRepHomesTable=renderRepHomesV37/);assert.match(v20,/layer instanceof L\.TileLayer/);
+  assert.match(html,/id="leaveFromTime"/);assert.match(html,/id="leaveToTime"/);assert.match(app,/fromTime,/);assert.match(app,/toTime,/);
+  assert.match(html,/id="msgRecipientSelect"[^>]*data-nocombo="1"/);assert.doesNotMatch(html,/option value="جواد علمدار"/);
+  assert.match(v20,/\.crm-combo-caret\{z-index:5!important;pointer-events:auto!important/);
+  assert.match(v20,/e\.target\.closest\("\.crm-combo-caret"\)/);
 });
 
 test('leave markup, home edit/delete and protected reference fields follow final rules', () => {
@@ -68706,7 +68850,7 @@ test('placed pharmacy notice guard is loop-safe and home representative stays re
 });
 
 test('new build clears only old asset caches before revealing app and prevents manager-screen flash', () => {
-  assert.match(html,/var BUILD="11\.36\.0",key="CRM_ASSET_BUILD"/);
+  assert.match(html,/var BUILD="11\.37\.0",key="CRM_ASSET_BUILD"/);
   assert.match(html,/document\.documentElement\.classList\.add\("crm-booting"\)/);
   assert.match(html,/caches\.keys\(\).*caches\.delete/);
   assert.match(html,/navigator\.serviceWorker\.getRegistrations\(\).*unregister/);
@@ -68730,7 +68874,7 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.36\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.37\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
@@ -68752,4 +68896,4 @@ test('GPS quality rule remains stable and full address parts stay Iran-first wit
 ~~~~~~~~
 
 
-— پایان chat.arena نسخه ۱.۵۲ (نسخه برنامه 11.36.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —
+— پایان chat.arena نسخه ۱.۵۳ (نسخه برنامه 11.37.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —

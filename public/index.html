@@ -7,7 +7,7 @@
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.36.0",key="CRM_ASSET_BUILD";document.documentElement.classList.add("crm-booting");
+      var BUILD="11.37.0",key="CRM_ASSET_BUILD";document.documentElement.classList.add("crm-booting");
       if(sessionStorage.getItem("crmLoggedIn")!=="1"){location.replace("/login?build="+BUILD);return;}
       var old="";try{old=localStorage.getItem(key)||"";}catch(e){}
       if(old!==BUILD){
@@ -32,7 +32,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.36.0" />
+  <link rel="stylesheet" href="style.css?v=11.37.0" />
 </head>
 <body>
 
@@ -1229,9 +1229,18 @@
               <label class="form-label">تا تاریخ *</label>
               <input type="text" id="leaveToDate" class="form-input" placeholder="1405/05/23" required />
             </div>
-            <div class="form-group" id="leaveHoursGroup" style="display: none;">
-              <label class="form-label">ساعت مرخصی (از ساعت - تا ساعت)</label>
-              <input type="text" id="leaveHoursInput" class="form-input" placeholder="مثال: از ۰۹:۰۰ تا ۱۲:۰۰" />
+            <div class="form-group full-width" id="leaveHoursGroup" style="display: none;">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label" for="leaveFromTime">از ساعت</label>
+                  <input type="time" id="leaveFromTime" class="form-input" step="60" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="leaveToTime">تا ساعت</label>
+                  <input type="time" id="leaveToTime" class="form-input" step="60" />
+                </div>
+              </div>
+              <input type="hidden" id="leaveHoursInput" value="" />
             </div>
             <div class="form-group full-width">
               <label class="form-label">توضیحات و دلیل مرخصی *</label>
@@ -1252,7 +1261,7 @@
                 <th>نام نماینده علمی</th>
                 <th>نوع مرخصی</th>
                 <th>از تاریخ / ساعت</th>
-                <th>تا تاریخ</th>
+                <th>تا تاریخ / ساعت</th>
                 <th>دلیل</th>
                 <th>تایید سرپرست</th>
                 <th>تایید مدیر کل</th>
@@ -1284,12 +1293,8 @@
           <div class="form-grid">
             <div class="form-group">
               <label class="form-label">گیرنده پیام *</label>
-              <select id="msgRecipientSelect" class="form-select dropdown-auto-clear" required>
-                <option value="همه کاربران (اعلان عمومی)">همه کاربران (اعلان عمومی)</option>
-                <option value="مدیر سیستم">مدیر سیستم (Admin)</option>
-                <option value="جواد علمدار">جواد علمدار (نماینده علمی)</option>
-                <option value="خانم نیلا محرمی">خانم نیلا محرمی (نماینده علمی)</option>
-                <option value="آقای داوود عقبایی">آقای داوود عقبایی (سرپرست)</option>
+              <select id="msgRecipientSelect" class="form-select dropdown-auto-clear" data-nocombo="1" required>
+                <option value="">انتخاب گیرنده...</option>
               </select>
             </div>
             <div class="form-group">
@@ -2209,22 +2214,22 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.36.0"></script>
-  <script src="crm-app.js?v=11.36.0"></script>
-  <script src="crm-features-v9.js?v=11.36.0"></script>
-  <script src="iran-facilities.js?v=11.36.0" defer></script>
-  <script src="crm-features-v10.js?v=11.36.0"></script>
-  <script src="crm-features-v11.js?v=11.36.0"></script>
-  <script src="crm-features-v12.js?v=11.36.0"></script>
-  <script src="crm-features-v13.js?v=11.36.0"></script>
-  <script src="crm-jalali.js?v=11.36.0"></script>
-  <script src="crm-features-v14.js?v=11.36.0"></script>
-  <script src="crm-features-v15.js?v=11.36.0"></script>
-  <script src="crm-features-v16.js?v=11.36.0"></script>
-  <script src="crm-features-v17.js?v=11.36.0"></script>
-  <script src="crm-features-v18.js?v=11.36.0"></script>
-  <script src="crm-features-v19.js?v=11.36.0"></script>
-  <script src="crm-features-v20.js?v=11.36.0"></script>
+  <script src="crm-data.js?v=11.37.0"></script>
+  <script src="crm-app.js?v=11.37.0"></script>
+  <script src="crm-features-v9.js?v=11.37.0"></script>
+  <script src="iran-facilities.js?v=11.37.0" defer></script>
+  <script src="crm-features-v10.js?v=11.37.0"></script>
+  <script src="crm-features-v11.js?v=11.37.0"></script>
+  <script src="crm-features-v12.js?v=11.37.0"></script>
+  <script src="crm-features-v13.js?v=11.37.0"></script>
+  <script src="crm-jalali.js?v=11.37.0"></script>
+  <script src="crm-features-v14.js?v=11.37.0"></script>
+  <script src="crm-features-v15.js?v=11.37.0"></script>
+  <script src="crm-features-v16.js?v=11.37.0"></script>
+  <script src="crm-features-v17.js?v=11.37.0"></script>
+  <script src="crm-features-v18.js?v=11.37.0"></script>
+  <script src="crm-features-v19.js?v=11.37.0"></script>
+  <script src="crm-features-v20.js?v=11.37.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />

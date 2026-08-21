@@ -1297,3 +1297,12 @@ ADDENDUM v11.16.1 (2026-08-16)
 - setupRepresentativeRoutes must run in boot, reliable boot and every target-tab activation.
 - Builtin technical IDs such as leaveRepSelect must never appear as visible labels; Persian DOM labels override stale technical metadata.
 - Activity rendering keeps canonical history but excludes removed users and is strictly self-only for every nonmanager account.
+
+## افزونه تحویل نسخه ۱۱.۳۷.۰
+- Always preserve-first: hash/read backup before code; never overwrite existing state, bulk, customFields or layout metadata.
+- Fresh install is manager-only blank business state; do not restore old sample representatives.
+- Preserve deletedUserTombstones enforcement and never delete canonical history merely to hide removed users.
+- Order pharmacy cards and combo carets rely on final delegated handlers; keep them across rerenders.
+- Route manager controls are pinned visible only for managers without mutating stored field metadata.
+- Rep-home privacy must filter both table and Leaflet markers: manager all active, representative self only.
+- Keep hourly leave fromTime/toTime plus legacy hours, plain notification recipient select and Persian builtin label guard.

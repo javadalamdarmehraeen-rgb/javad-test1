@@ -1128,7 +1128,8 @@
         const name = val("repHomeSelect") || currentRepName();
         if (!state.repHomes) state.repHomes = [];
         const idx = state.repHomes.findIndex(function (h) { return h.repName === name; });
-        const rec = { id: "home-" + Date.now(), repName: name, address: addr, lat: pos.lat, lng: pos.lng };
+        const owner = ((state && state.users) || []).find(function (u) { return u && u.fullName === name; });
+        const rec = { id: "home-" + Date.now(), repId: owner ? owner.id : (sessionStorage.getItem("crmUserId") || ""), repName: name, address: addr, lat: pos.lat, lng: pos.lng };
         if (idx === -1) state.repHomes.push(rec);
         else state.repHomes[idx] = Object.assign({}, state.repHomes[idx], rec);
         saveState();

@@ -1473,3 +1473,18 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] فعالیت نماینده فقط self حتی با مجوز قدیمی all-reps
 - [x] ۵۵/۵۵ تست + runtime مرورگرمانند هدفمند
 - [ ] تأیید نهایی ظاهر و رفتار با داده واقعی کاربر پس از استقرار
+
+## ۷۸) نسخه ۱۱.۳۷.۰
+- [x] backup خصوصی و manifest پیش از تغییر
+- [x] حفظ state/meta/order/leave با sentinel runtime
+- [x] fresh install بدون کاربران نمونه قدیمی
+- [x] tombstone پایدار حذف کاربر
+- [x] انتخاب delegated کارت داروخانه سفارش
+- [x] pin فیلدهای route مدیر در تارگت
+- [x] guard سراسری label فارسی builtin
+- [x] privacy جدول و نقشه منزل مدیر/نماینده
+- [x] دو فیلد مستقل از ساعت/تا ساعت
+- [x] گیرنده اعلان plain select
+- [x] فلش کشویی delegated و قابل کلیک
+- [x] ۵۶/۵۶ تست + runtime مدیر/نماینده صفر خطا
+- [ ] تأیید روی داده واقعی کاربر پس از استقرار

@@ -87,8 +87,12 @@ function loadState() {
     ["users","activityLog","repHomes","repRoutes","leaves","notifications","salesTargets","products","hospitals","visits","pharmacies","doctors","orders","reps"].forEach(function(k){ if (!Array.isArray(state[k])) state[k] = []; });
     if (!state.messengers) state.messengers = { channels: {}, allowPeerMessaging: false };
   } else {
-    // اطلاعات نمونه فقط برای نصب کاملاً تازه و بدون هیچ state قبلی مجاز است.
+    // نصب کاملاً تازه باید خالی باشد؛ داده و کاربران نمونه قدیمی نباید پس از حذف مدیر دوباره ظاهر شوند.
+    // این مسیر فقط وقتی CRM_APP_STATE_V2 اصلاً وجود ندارد اجرا می‌شود و هرگز state واقعی موجود را تغییر نمی‌دهد.
     state = JSON.parse(JSON.stringify(DEFAULT_INITIAL_DATA));
+    state.users = (state.users || []).filter(function (u) { return u && (u.username === "admin" || /مدیر سیستم/.test(String(u.role || u.fullName || ""))); });
+    ["pharmacies","doctors","orders","reps","activityLog","repHomes","repRoutes","leaves","notifications","salesTargets","visits","hospitals"].forEach(function (k) { state[k] = []; });
+    state._freshInstallClean = true;
   }
   if (!state.formFieldMeta) state.formFieldMeta = {};
   if (!state.customFields) state.customFields = {};
@@ -1859,11 +1863,20 @@ function setupLeavesModule() {
       const leaveType = typeSel.value;
       const fromDate = document.getElementById("leaveFromDate").value.trim();
       const toDate = document.getElementById("leaveToDate").value.trim();
-      const hours = document.getElementById("leaveHoursInput") ? document.getElementById("leaveHoursInput").value.trim() : "";
+      const fromTime = document.getElementById("leaveFromTime") ? document.getElementById("leaveFromTime").value.trim() : "";
+      const toTime = document.getElementById("leaveToTime") ? document.getElementById("leaveToTime").value.trim() : "";
+      const isHourly = leaveType.includes("ساعتی");
+      const hours = fromTime || toTime ? `از ${fromTime || "—"} تا ${toTime || "—"}` : "";
+      const legacyHours = document.getElementById("leaveHoursInput");
+      if (legacyHours) legacyHours.value = hours;
       const reason = document.getElementById("leaveReasonInput").value.trim();
 
       if (!repName || !fromDate || !toDate || !reason) {
         alert("لطفاً نماینده، تاریخ شروع، پایان و دلیل مرخصی را وارد کنید.");
+        return;
+      }
+      if (isHourly && (!fromTime || !toTime)) {
+        alert("برای مرخصی ساعتی، فیلدهای «از ساعت» و «تا ساعت» را کامل کنید.");
         return;
       }
 
@@ -1872,6 +1885,9 @@ function setupLeavesModule() {
         repName,
         fromDate,
         toDate,
+        fromTime,
+        toTime,
+        leaveType,
         reason: `${leaveType}${hours ? ` (${hours})` : ""} - ${reason}`,
         supervisorStatus: "در انتظار",
         adminStatus: "در انتظار",
@@ -1905,9 +1921,9 @@ function renderLeavesTable() {
 
     tr.innerHTML = `
       <td><strong style="color:#0f172a;">${lv.repName}</strong></td>
-      <td>${lv.reason}</td>
-      <td>${lv.fromDate}</td>
-      <td>${lv.toDate}</td>
+      <td>${lv.leaveType || String(lv.reason || "").split(" - ")[0] || "—"}</td>
+      <td>${lv.fromDate}${lv.fromTime ? ` — ${lv.fromTime}` : ""}</td>
+      <td>${lv.toDate}${lv.toTime ? ` — ${lv.toTime}` : ""}</td>
       <td>${lv.reason}</td>
       <td>${supBadge}</td>
       <td>${admBadge}</td>
@@ -2966,7 +2982,7 @@ function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.36.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.37.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;

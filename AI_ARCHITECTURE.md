@@ -1203,3 +1203,11 @@ Then change only what is requested.
 - Route manager setup is lifecycle-bound to initial boot, target-tab activation and reliable delayed boot.
 - Builtin label resolution priority is Persian DOM label/registry over stale technical metadata.
 - Activity history remains canonical in state, while visible projection requires an active user and is manager-active/all or representative-self-only.
+
+## معماری افزوده v11.37.0 — Durable deletion / map privacy / delegated dynamic UI
+- Upgrade boundary: existing local state is read as-is and validated by sentinel; fresh-install cleanup is isolated behind absence of CRM_APP_STATE_V2.
+- Deleted-user tombstones are settings-owned durable identities (id/username/fullName); roster/auth projections enforce them without deleting canonical historical business records.
+- Dynamic order pharmacy cards and combo carets use one capture-phase delegated final handler, independent of which legacy renderer rebuilt DOM.
+- Representative-home privacy projects the same visible set into both table and Leaflet layers; old non-tile layers are removed before repaint.
+- Reference recipient select is explicitly excluded from searchable/free-entry combo transformation.
+- Hourly leave schema adds fromTime/toTime while retaining legacy combined-hours compatibility.

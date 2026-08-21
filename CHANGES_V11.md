@@ -618,3 +618,17 @@ CLEAN_EXTRA_FILES.bat و بعد PUSH_GITHUB_CLEAN.bat را اجرا کن.
 6. اسکنر عنوان فیلد، label مستقیم هر form-group را حتی بدون attribute `for` می‌خواند. عنوان فنی ذخیره‌شده مانند `leaveRepSelect` برای builtinها رد و عنوان فارسی DOM/registry جایگزین می‌شود.
 7. فعالیت لحظه‌ای renderer نهایی اختصاصی دارد: مدیر فقط فعالیت کاربران فعال را می‌بیند و نماینده حتی با مجوز قدیمی all-reps فقط فعالیت خودش را می‌بیند؛ داده تاریخی حذف نمی‌شود.
 8. تست مرورگرمانند واقعی تأیید کرد: route rep=3/province=31، عنوان مرخصی «نماینده علمی»، پیام جایگذاری مخفی، تنظیمات و ترتیب سفارش پس از پاک‌کردن ثابت، کاربران حذف‌شده نامرئی و نماینده self-only است.
+
+# نسخه ۱۱.۳۷.۰
+
+1. قبل از تغییر، خروجی خواندنی state/bulk نسخه 11.36.0 و manifest هش در backup خصوصی `.arena` ثبت شد. مسیر ارتقا برای state موجود هیچ پاک‌سازی، merge یا default injection ندارد.
+2. نصب کاملاً تازه دیگر کاربران و داده‌های نماینده نمونه قدیمی را ایجاد نمی‌کند؛ فقط مدیر اولیه باقی می‌ماند. این قانون فقط وقتی `CRM_APP_STATE_V2` اصلاً وجود ندارد اجرا می‌شود و داده فعلی کاربران را لمس نمی‌کند.
+3. حذف کاربر tombstone شامل id/username/fullName ثبت می‌کند؛ tombstone در boot مانع برگشت کاربر از state قدیمی می‌شود و auth/reps/selectors تازه می‌شوند. دو هویت نمونه شناخته‌شده `u-2/Taheri/جواد علمدار` و `u-3/nila/خانم نیلا محرمی` که مدیر قبلاً حذف کرده، یک‌بار به tombstone مهاجرت می‌شوند تا از state نمونه قدیمی هم برنگردند.
+4. انتخاب داروخانه سفارش handler نهایی delegated دارد؛ هر کارت تازه‌ساخته‌شده با یک کلیک matchedId و همه اطلاعات را جایگذاری و پیام duplicate را پنهان می‌کند.
+5. فیلدهای تعریف مسیر برای مدیر system-pinned شدند تا metadata قدیمی hidden نتواند نماینده/استان/شهر/منطقه و ذخیره را پنهان کند؛ state metadata تغییر داده نمی‌شود.
+6. محافظ نهایی عنوان builtin هر شناسه فنی انگلیسی را در خروجی `getUnifiedFieldList` با label فارسی DOM/registry جایگزین می‌کند، بدون بازنویسی metadata ذخیره‌شده.
+7. منزل نمایندگان renderer نهایی دارد: مدیر منزل همه کاربران فعال و نماینده فقط منزل خود را در جدول و لایه‌های نقشه می‌بیند؛ markerهای غیرمجاز از نقشه حذف می‌شوند. رکورد جدید repId ذخیره می‌کند.
+8. مرخصی ساعتی به دو فیلد مستقل time «از ساعت» و «تا ساعت» تبدیل شد؛ fromTime/toTime جدا ذخیره و رشته legacy hours برای سازگاری حفظ می‌شود.
+9. گیرنده اعلان plain select شد (`data-nocombo=1`)، input تایپی/افزودن گزینه حذف و placeholder + کاربران فعال ساخته می‌شود.
+10. فلش کشویی‌های جستجویی z-index/pointer area قطعی و delegated capture handler دارد؛ کلیک فلش مستقیماً فهرست را باز/بسته می‌کند.
+11. Runtime واقعی با manager/representative و sentinel نتیجه داد: preserved=true، route 4 fields/31 provinces، picker selected/filled/hidden، times=true، arrow=true، notification plain، manager homes all-active، rep home/activity self-only، ghost removed، errors=[].

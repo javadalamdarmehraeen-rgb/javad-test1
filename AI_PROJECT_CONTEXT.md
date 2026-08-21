@@ -902,3 +902,6 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 
 ## افزونه وضعیت نسخه ۱۱.۳۶.۰
 نسخه فعال 11.36.0 است. فرم سفارش reset-safe است: sequence همه form-groupها با fallback به id خود group و تنظیمات order موقتاً snapshot/restore می‌شوند؛ custom host دیگر به ابتدا نمی‌پرد. Duplicate notice پس از fill با hidden/aria/display-important و observer idempotent مخفی می‌ماند. setupRepresentativeRoutes در boot/tab/reliable اجرا می‌شود. Builtin technical labels با label مستقیم فارسی جایگزین می‌شوند. renderActivityLogV36 فقط کاربران فعال و برای نماینده فقط self را نمایش می‌دهد، بدون حذف تاریخچه canonical.
+
+## افزونه وضعیت نسخه ۱۱.۳۷.۰
+نسخه فعال 11.37.0 است. پیش از تغییر backup خصوصی state/bulk ثبت شد. Existing CRM_APP_STATE_V2 بدون پاک‌سازی authoritative است؛ فقط fresh origin از business sample users/data خالی می‌شود. User delete tombstone durable دارد و دو identity نمونه قدیمی u-2/Taheri و u-3/nila یک‌بار به tombstone مهاجرت می‌شوند. Order pharmacy cards delegated-select هستند. Route controls manager-pinned، builtin labels Persian-projected، rep homes table+map strict active/self privacy، leave fromTime/toTime مستقل، notification recipient plain select و combo caret delegated است.

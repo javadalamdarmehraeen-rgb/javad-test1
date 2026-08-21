@@ -261,7 +261,7 @@ test('target tab has multi-route manager and fixed product target planner with c
   for(const id of ['representativeRoutesCard','routeManagerRep','routeManagerProvince','routeManagerCity','routeManagerDistrict','btnSaveRepresentativeRoute']) assert.ok(html.includes(`id="${id}"`));
   for(const fn of ['setupRepresentativeRoutes','routeGeoValues','setupTargetPlannerV34','paintTargetPlanRows','renderTargetReportsV34','targetReportTable']) assert.match(v20,new RegExp(`function ${fn}\\(`));
   assert.match(v20,/bindTargetsV20\(\); setupRepresentativeRoutes\(\); setupTargetPlannerV34\(\)/);
-  assert.match(v20,/tab-sales-targets[\s\S]{0,100}setupRepresentativeRoutes\(\);setupTargetPlannerV34\(\)/);
+  assert.match(v20,/tab-sales-targets[\s\S]{0,180}setupRepresentativeRoutes\(\);pinRepresentativeRouteFieldsV37\(\);setupTargetPlannerV34\(\)/);
   assert.match(v20,/activityProvinces=routeSelected/);assert.match(v20,/activityCities=routeSelected/);assert.match(v20,/activityDistrictList=routeSelected/);
   assert.match(v20,/n\*dp/);assert.match(v20,/n\*hp/);assert.match(v20,/محقق‌شده/);assert.match(v20,/مانده تارگت/);
   assert.match(v20,/جمع همه تارگت نمایندگان به تفکیک کالا/);assert.match(v20,/تارگت‌های /);
@@ -277,6 +277,21 @@ test('order reset preserves field settings, placed notice stays hidden, and tech
   assert.match(v11,/var directLab/);assert.match(v11,/شناسه فنی هرگز نباید/);
   assert.match(v11,/leaveRepSelect: "نماینده علمی"/);
   assert.match(v11,/String\(meta\[b\.id\]\.label\)\.trim\(\) !== b\.id/);
+});
+
+test('v37 keeps existing data while fixing picker, homes, deletion, times, recipient and dropdown arrows', () => {
+  assert.match(app,/if \(saved\)[\s\S]*state = JSON\.parse\(saved\)/);
+  assert.match(app,/state\._freshInstallClean = true/);
+  assert.match(app,/state\.users = \(state\.users \|\| \[\]\)\.filter/);
+  for(const fn of ['enforceDeletedUserTombstonesV37','installPersianBuiltinLabelGuardV37','pinRepresentativeRouteFieldsV37','setupPlainRecipientV37','bindComboCaretFixV37','bindOrderPharmacyCardV37','visibleRepHomesV37','paintRepHomesMapV37','renderRepHomesV37']) assert.match(v20,new RegExp(`function ${fn}\\(`));
+  assert.match(v20,/deletedUserTombstones/);assert.match(v20,/settings\.deletedUserTombstones\.push/);
+  assert.match(v20,/id:"u-2",username:"Taheri",fullName:"جواد علمدار"/);assert.match(v20,/id:"u-3",username:"nila",fullName:"خانم نیلا محرمی"/);
+  assert.match(v20,/#orderPharmacyPickBox \.ph-pick-card/);assert.match(v20,/selectOrderPharmacyCardV37\(card\)/);
+  assert.match(v20,/window\.renderRepHomesTable=renderRepHomesV37/);assert.match(v20,/layer instanceof L\.TileLayer/);
+  assert.match(html,/id="leaveFromTime"/);assert.match(html,/id="leaveToTime"/);assert.match(app,/fromTime,/);assert.match(app,/toTime,/);
+  assert.match(html,/id="msgRecipientSelect"[^>]*data-nocombo="1"/);assert.doesNotMatch(html,/option value="جواد علمدار"/);
+  assert.match(v20,/\.crm-combo-caret\{z-index:5!important;pointer-events:auto!important/);
+  assert.match(v20,/e\.target\.closest\("\.crm-combo-caret"\)/);
 });
 
 test('leave markup, home edit/delete and protected reference fields follow final rules', () => {
@@ -324,7 +339,7 @@ test('placed pharmacy notice guard is loop-safe and home representative stays re
 });
 
 test('new build clears only old asset caches before revealing app and prevents manager-screen flash', () => {
-  assert.match(html,/var BUILD="11\.36\.0",key="CRM_ASSET_BUILD"/);
+  assert.match(html,/var BUILD="11\.37\.0",key="CRM_ASSET_BUILD"/);
   assert.match(html,/document\.documentElement\.classList\.add\("crm-booting"\)/);
   assert.match(html,/caches\.keys\(\).*caches\.delete/);
   assert.match(html,/navigator\.serviceWorker\.getRegistrations\(\).*unregister/);
@@ -348,7 +363,7 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.36\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.37\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
