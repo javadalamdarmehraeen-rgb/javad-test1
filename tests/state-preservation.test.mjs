@@ -163,7 +163,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /seen\[rowSignature\(r\)\]/);
   assert.match(v20Source, /d\.pharmacyRows=d\.pharmacyRows\.concat\(fresh\)/);
   assert.match(v20Source, /function bindSnappImportButtons/);
-  assert.match(v20Source, /try\{installLatinNumberLaw\(\);bindOriginSaveGate\(\);bindManagerLayoutIntent\(\);wrapFormLayoutMirror\(\);wrapAllLegacyLayouts\(\);bindSnappImportButtons\(\);bindProductCrudV20\(\);bindSafeOrderControls\(\);\}/, 'Latin-number law, critical buttons and all startup layout guards must bind synchronously');
+  assert.match(v20Source, /try\{installLatinNumberLaw\(\);installSafeBrowserGuards\(\);bindOriginSaveGate\(\);bindManagerLayoutIntent\(\);wrapFormLayoutMirror\(\);wrapAllLegacyLayouts\(\);bindSnappImportButtons\(\);bindProductCrudV20\(\);bindSafeOrderControls\(\);\}/, 'Latin-number law, critical buttons and all startup layout guards must bind synchronously');
   assert.match(v20Source, /contenteditable='true'/);
   assert.match(v20Source, /arc-save/);
   assert.match(v20Source, /raw-save/);

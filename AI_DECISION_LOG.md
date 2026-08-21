@@ -1526,3 +1526,11 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - Android navigation uses package intents (`org.rajman.neshan.traffic.tehran.navigator`, `ir.balad`) with directions fallback; iOS keeps universal links.
 - `state.users` is authoritative for representative roster. Reps are derived by user ID, preserving live metadata; deleted users cannot survive in rep selectors.
 - Activity route fields live on user record and are displayed in cards/selectors.
+## تصمیم ۸۵ — نسخه ۱۱.۳۲.۰: Browser/OS sandbox hardening و atomic safe data writes (2026-08-21)
+- Legacy inline architecture requires CSP unsafe-inline, but all other CSP boundaries are strict: self default, no object/frame/media/base escape, self form/worker/manifest and HTTPS-only upgrade.
+- Permissions Policy denies all unnecessary hardware APIs; geolocation self is the only required sensor.
+- CORS wildcard is removed. State-changing same-origin requests require X-CRM-Request plus fetch-site/origin checks.
+- All server JSON passes recursive anti-prototype sanitization and atomic mode-0600 writes.
+- Client guards block executable/oversized uploads, unsafe protocols, opener access, dangerous drops and HTML control characters.
+- Excel formula injection and distributor non-HTTPS URLs are rejected/sanitized.
+- No web app can promise absolute OS safety, but browser sandbox and explicit permission boundaries are now maximally constrained without breaking required GPS/files/navigation.

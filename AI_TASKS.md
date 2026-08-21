@@ -1409,3 +1409,18 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] حذف کاربر همراه auth/reps/selectors
 - [x] ۴۴/۴۴ تست
 - [ ] تأیید کش، Android/iOS، همبرگری و intent روی دستگاه واقعی
+## ۷۳) نسخه ۱۱.۳۲.۰
+- [x] CSP/Permissions Policy/HSTS/security headers
+- [x] مسدودسازی camera/mic/USB/Bluetooth/serial/HID/payment/sensors
+- [x] حذف CORS wildcard
+- [x] same-origin POST + X-CRM-Request
+- [x] recursive JSON sanitizer ضد prototype pollution
+- [x] atomic write + mode 0600 + safe read
+- [x] file executable/type/32MB guard
+- [x] unsafe URL/window opener/link/drop guard
+- [x] input control/HTML character guard
+- [x] Excel formula injection guard
+- [x] HTTPS-only distributor panel URL
+- [x] پنل وضعیت امنیت در عیب‌یابی
+- [x] ۴۵/۴۵ تست
+- [ ] ممیزی نفوذ مستقل و HTTPS/Render production headers توسط متخصص بیرونی

@@ -28,6 +28,9 @@ test('automated app entry loads health, HTML, all scripts and critical UI', asyn
   const pageRes = await fetch(base + '/');
   assert.equal(pageRes.status, 200);
   assert.match(pageRes.headers.get('cache-control') || '', /no-store/);
+  assert.match(pageRes.headers.get('content-security-policy') || '', /object-src 'none'/);
+  assert.match(pageRes.headers.get('permissions-policy') || '', /camera=\(\).*microphone=\(\)/);
+  assert.equal(pageRes.headers.get('access-control-allow-origin'), null);
   const html = await pageRes.text();
   for (const id of ['tab-dashboard','tab-orders','tab-snapp-corporate','tab-distributor-companies','tab-distributor-sales','tab-distributor-database','btnToggleSideMenu','snappTripModeYear','snappTopupModeYear','btnBuildDistributorReport','tab-distributor-invoice-status','invoiceStatusBody','invoiceStatusSearch','productCode','btnImportSnappTrips','btnImportSnappTopups']) {
     assert.match(html, new RegExp(`id=["']${id}["']`), `missing critical UI #${id}`);
@@ -44,7 +47,9 @@ test('automated app entry loads health, HTML, all scripts and critical UI', asyn
 test('state API round-trip preserves unrelated sentinel data', async () => {
   const base = `http://127.0.0.1:${port}`;
   const sentinel = { _lastSavedAt: 42, users: [{ id:'sentinel-user', fullName:'اطلاعات قدیمی' }], formFieldMeta: { order: { sentinel: { order: 99 } } } };
-  const post = await fetch(base + '/api/state', { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify(sentinel) });
+  const rejected = await fetch(base + '/api/state', { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify(sentinel) });
+  assert.equal(rejected.status, 403);
+  const post = await fetch(base + '/api/state', { method:'POST', headers:{'content-type':'application/json','x-crm-request':'1'}, body:JSON.stringify(sentinel) });
   assert.equal(post.status, 200);
   const get = await fetch(base + '/api/state');
   const body = await get.json();
@@ -55,7 +60,7 @@ test('state API round-trip preserves unrelated sentinel data', async () => {
 test('bulk API round-trip preserves imported Excel vault for a new program link', async () => {
   const base = `http://127.0.0.1:${port}`;
   const bulk = { savedAt: 7, snapp: { rows:[['trip-sentinel']], topups:[], tripImports:[], topupImports:[] }, distributors: { daya: { pharmacyRows:[['invoice-sentinel']], pharmacyImports:[], inventoryRows:[] } } };
-  const post = await fetch(base + '/api/bulk', { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify(bulk) });
+  const post = await fetch(base + '/api/bulk', { method:'POST', headers:{'content-type':'application/json','x-crm-request':'1'}, body:JSON.stringify(bulk) });
   assert.equal(post.status, 200);
   const get = await fetch(base + '/api/bulk');
   assert.equal(get.status, 200);

@@ -1494,3 +1494,15 @@ direction links. `state.users` is the only roster source: deleted users disappea
 appear, and a normal representative selector contains only that user unless explicit
 all-reps permission. Manager-defined province/city/district activity route is stored on the
 user and displayed beside their name.
+
+# 83. DEVICE-SAFE DEFENSE-IN-DEPTH RULE (PERMANENT)
+
+The app runs only inside the browser sandbox and must never request or use camera,
+microphone, USB, serial, HID, Bluetooth, payment, screen capture, or motion sensors.
+Only self geolocation may be requested after explicit user action. Preserve CSP, HSTS,
+nosniff, strict referrer, COOP/CORP and no wildcard CORS. Every state-changing CRM API
+request must be same-origin and carry X-CRM-Request. All inbound JSON is recursively
+sanitized and atomically written mode 0600. Executable/script/installer files, unsafe URL
+schemes, opener access, dangerous drops, oversized files and spreadsheet formulas are
+blocked. Never claim absolute OS security; report verified defense layers and recommend
+independent penetration testing for production assurance.

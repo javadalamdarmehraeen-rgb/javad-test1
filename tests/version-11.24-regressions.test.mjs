@@ -227,12 +227,12 @@ test('empty new origin safely bootstraps shared state and bulk data without over
 
 test('distributor Excel writes Persian month name while keeping all digits Latin', () => {
   const ctx={result:null,enDigits:v=>String(v),distFilter:()=>({mode:'month',year:'1405',month:'05'})};vm.createContext(ctx);vm.runInContext(`${extract('jalaliMonthName')};${extract('periodRows')};result=periodRows()`,ctx);assert.deepEqual(JSON.parse(JSON.stringify(ctx.result)),[['سال','1405'],['ماه','مرداد']]);
-  assert.match(v20,/installLatinNumberLaw\(\);bindOriginSaveGate\(\);bindManagerLayoutIntent/);
+  assert.match(v20,/installLatinNumberLaw\(\);installSafeBrowserGuards\(\);bindOriginSaveGate\(\);bindManagerLayoutIntent/);
   assert.match(v20,/Date\.prototype\[name\]=function\(\)/);
 });
 
 test('new build clears only old asset caches before revealing app and prevents manager-screen flash', () => {
-  assert.match(html,/var BUILD="11\.31\.0",key="CRM_ASSET_BUILD"/);
+  assert.match(html,/var BUILD="11\.32\.0",key="CRM_ASSET_BUILD"/);
   assert.match(html,/document\.documentElement\.classList\.add\("crm-booting"\)/);
   assert.match(html,/caches\.keys\(\).*caches\.delete/);
   assert.match(html,/navigator\.serviceWorker\.getRegistrations\(\).*unregister/);
@@ -244,8 +244,19 @@ test('new build clears only old asset caches before revealing app and prevents m
   assert.match(sw,/purgeOldCaches/);
 });
 
+test('security hardening blocks dangerous device APIs, cross-origin writes, executables and formula injection', () => {
+  assert.match(server,/Content-Security-Policy/);assert.match(server,/object-src 'none'/);assert.match(server,/Permissions-Policy/);
+  for(const denied of ['camera=()','microphone=()','usb=()','serial=()','hid=()','bluetooth=()','payment=()']) assert.ok(server.includes(denied),`missing ${denied}`);
+  assert.doesNotMatch(server,/Access-Control-Allow-Origin.*\*/);
+  assert.match(server,/function trustedWriteRequest/);assert.match(server,/x-crm-request/);assert.match(server,/untrusted write request/);
+  assert.match(server,/function sanitizeJsonValue/);assert.match(server,/__proto__/);assert.match(server,/function writeJsonAtomic/);assert.match(server,/mode: 0o600/);
+  assert.match(v20,/function installSafeBrowserGuards/);assert.match(v20,/exe\|msi\|apk\|bat\|cmd/);assert.match(v20,/32\*1024\*1024/);assert.match(v20,/javascript\|data\|file\|vbscript/);
+  assert.match(v20,/noopener,noreferrer/);assert.match(v20,/function renderSecurityStatus/);
+  assert.match(v11,/\^\[=\+@\]/);
+});
+
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.31\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.32\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);

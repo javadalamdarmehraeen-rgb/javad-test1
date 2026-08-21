@@ -1169,3 +1169,10 @@ Then change only what is requested.
 - Representative roster projection: users → reps keyed by userId, preserving previous live coordinates/status; selectors derive from active reps and current permissions.
 - User activity route schema: activityProvince, activityCity, activityDistricts, activityRouteLabel.
 - Mobile order item grid has deterministic three rows and compact 40px actions.
+## معماری افزوده v11.32.0 — Defense in depth
+- Transport/browser headers: CSP, Permissions Policy, HSTS, nosniff, strict referrer, COOP allow-popups, CORP same-origin, no DNS prefetch/cross-domain policies.
+- Write trust boundary: same-origin/site fetch metadata + matching Origin + `X-CRM-Request: 1`; no wildcard CORS.
+- Persistence boundary: recursive null-prototype JSON sanitization, max depth/strings/key length, forbidden prototype keys, atomic temp rename and mode 0600.
+- Client boundary: allowed upload extension whitelist, executable blacklist, 32MB cap, unsafe protocol guard, noopener/noreferrer, drag/drop guard, text control stripping.
+- Export boundary: spreadsheet formula-prefix neutralization.
+- Device boundary: only self geolocation allowed; all unnecessary device APIs denied by Permissions Policy.

@@ -1262,3 +1262,11 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Android Neshan/Balad intents must retain package and destination; iOS/web universal directions remain.
 - Users are the sole representative roster source. Deleted users vanish, new users appear, normal rep selectors show self only unless explicit all-reps.
 - Preserve activity route fields and labels.
+## افزونه تحویل نسخه ۱۱.۳۲.۰
+- Preserve all security headers and never restore wildcard CORS.
+- Every relative POST to CRM API must include X-CRM-Request and pass same-origin fetch metadata.
+- Never write raw parsed JSON; always sanitize and atomic-write mode 0600.
+- Preserve browser file/protocol/opener/drop/text guards and 32MB limit.
+- Keep formula-injection neutralization and HTTPS-only distributor URL.
+- Do not loosen hardware Permissions Policy except geolocation self unless user explicitly requires a capability.
+- Be honest: this is defense-in-depth inside browser sandbox, not an absolute guarantee against every OS/browser vulnerability.

@@ -27,9 +27,9 @@
 
 ## ب) کارت فایل‌ها (نقش + توابع + نام‌های window که می‌سازد)
 
-### `server.js` (12127 بایت)
+### `server.js` (15186 بایت)
 - نقش: سرور سبک Node.js برای Render — ورود جدا، gzip، health، ژئوکد، محدودیت نرخ
-- تعداد توابع داخلی: 4
+- تعداد توابع داخلی: 8
 - endpointهای سرور: `/api/backup`, `/api/backup/email`, `/api/bulk`, `/api/bulk`, `/api/state`, `/api/state`
 
 ### `scripts/build-sw.mjs` (2656 بایت)
@@ -61,7 +61,7 @@
 - تعداد توابع داخلی: 166
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `__CRM_SW_READY`, `_editingProductId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
 
-### `public/crm-data.js` (62791 بایت)
+### `public/crm-data.js` (63101 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 1
 
@@ -70,7 +70,7 @@
 - تعداد توابع داخلی: 22
 - نام‌های window که تعریف/بازنویسی می‌کند: `__lastHealth`, `switchTab`
 
-### `public/crm-features-v11.js` (107859 بایت)
+### `public/crm-features-v11.js` (107944 بایت)
 - نقش: v11 — تغییر رمز، ردیف واقعی، اکسل خط‌کشی، ویزیت زنده، تارگت، ستون‌ها، دسترسی ریز
 - تعداد توابع داخلی: 101
 - نام‌های window که تعریف/بازنویسی می‌کند: `FA_FIELD_LABELS`, `_actMap`, `_actMarks`, `_activeColTab`, `_colDelPatched`, `_colEditScroll`, `_editingBoxId`, `_editingColField`, `_layoutBusy`, `_visitKeepAlive`, `addWidgetToActiveTab`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `applyFullFormLayout`, `applySelectExtraOptions`, `builtinFieldValue`, `changeUserPassword`, `cleanupOrphanCustomFields`, `deleteCustomField`, `downloadCSVFile`, `extraListColumns`, `getAllMenuSections`, `getMainGrid`, `getUnifiedFieldList`, `groupIsShared`, `isColShownInList`, `paintFieldBox`, `paintRequiredStar`, `refreshColumnsDesigner`, `renderAllSystemSelects`, `renderColBoxInfoTable`, `renderColBoxList`, `renderColBtnInfoTable`, `renderExtraTabCustomFields`, `renderUserCardsList`, `switchTab`, `validateRequiredFields`, `writeFieldSize`
@@ -115,10 +115,10 @@
 - تعداد توابع داخلی: 65
 - نام‌های window که تعریف/بازنویسی می‌کند: `_v18DefaultReq`, `_v19BackupLayoutGuard`, `_v19ComboHook`, `_v19Hist`, `_v19IcObs`, `_v19ProdTableWrap`, `_v19Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `extraListColumns`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderPharmaciesList`, `switchTab`, `testServerConnectivity`
 
-### `public/crm-features-v20.js` (232311 بایت)
+### `public/crm-features-v20.js` (236331 بایت)
 - نقش: ============================================================
-- تعداد توابع داخلی: 267
-- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFieldPermissions`, `applyFullFormLayout`, `applyUserRolePermissions`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `deleteUserCard`, `editProductCatalogItem`, `editUserCard`, `extraListColumns`, `getUnifiedFieldList`, `openRowDetailsModal`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `renderUserCardsList`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `updateNavBadges`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`, `v20RenderProductExtras`, `v20SetupSnappCorporate`
+- تعداد توابع داخلی: 269
+- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFieldPermissions`, `applyFullFormLayout`, `applyUserRolePermissions`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `deleteUserCard`, `editProductCatalogItem`, `editUserCard`, `extraListColumns`, `getUnifiedFieldList`, `open`, `openRowDetailsModal`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `renderUserCardsList`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `updateNavBadges`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`
 
 ### `public/crm-features-v9.js` (71826 بایت)
 - نقش: ===========================================================================
@@ -140,7 +140,7 @@
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (1588 بایت)
-- نقش: const CACHE = "ttt-v11.31.0";
+- نقش: const CACHE = "ttt-v11.32.0";
 - تعداد توابع داخلی: 0
 
 ### `public/vendor/leaflet.js` (147552 بایت)

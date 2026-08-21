@@ -1,6 +1,6 @@
 CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.47 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.31.0
+نسخه این فایل: 1.48 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.32.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -568,19 +568,19 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]      849 بایت  .gitattributes
   [متنی ]     1117 بایت  .gitignore
   [متنی ]     2057 بایت  .gitlab-ci.yml
-  [متنی ]    26386 بایت  AI_ARCHITECTURE.md
-  [متنی ]    55804 بایت  AI_DECISION_LOG.md
-  [متنی ]    30457 بایت  AI_PROJECT_CONTEXT.md
-  [متنی ]    34429 بایت  AI_RULES.md
-  [متنی ]    40173 بایت  AI_TASKS.md
-  [متنی ]    35599 بایت  ARENA_HANDOFF_PROMPT.md
+  [متنی ]    27221 بایت  AI_ARCHITECTURE.md
+  [متنی ]    56819 بایت  AI_DECISION_LOG.md
+  [متنی ]    31111 بایت  AI_PROJECT_CONTEXT.md
+  [متنی ]    35232 بایت  AI_RULES.md
+  [متنی ]    40884 بایت  AI_TASKS.md
+  [متنی ]    36272 بایت  ARENA_HANDOFF_PROMPT.md
   [متنی ]      600 بایت  CHANGES_V10.md
-  [متنی ]    76793 بایت  CHANGES_V11.md
+  [متنی ]    79402 بایت  CHANGES_V11.md
   [متنی ]     3939 بایت  CHANGES_V9.md
   [متنی ]     1806 بایت  CLEAN_EXTRA_FILES.bat
   [متنی ]     2377 بایت  KEEP_ONLY_GITHUB.bat
   [متنی ]     6375 بایت  OFFICIAL_FILELIST.txt
-  [متنی ]    41213 بایت  PROJECT_GRAPH.md
+  [متنی ]    41198 بایت  PROJECT_GRAPH.md
   [متنی ]     2642 بایت  PUSH_FRESH_GITHUB.bat
   [متنی ]     2680 بایت  PUSH_GITHUB_CLEAN.bat
   [متنی ]     6579 بایت  RAHNAMA_GITLAB.txt
@@ -597,10 +597,10 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]      844 بایت  package.json
   [متنی ]      108 بایت  postcss.config.mjs
   [متنی ]     1347 بایت  render.yaml
-  [متنی ]    12127 بایت  server.js
+  [متنی ]    15186 بایت  server.js
   [متنی ]     2426 بایت  sync_all.sh
   [متنی ]      738 بایت  tsconfig.json
-  [متنی ]   304147 بایت  update_chat_arena.py
+  [متنی ]   305604 بایت  update_chat_arena.py
   [متنی ]    10215 بایت  update_project_graph.py
   [متنی ]     2844 بایت  .github/workflows/deploy.yml
   [متنی ]      214 بایت  .github/workflows/keep_alive.yml
@@ -609,9 +609,9 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     9796 بایت  mobile/src/simAuth.ts
   [متنی ]     8066 بایت  public/cloudflare-worker.js
   [متنی ]   173675 بایت  public/crm-app.js
-  [متنی ]    62791 بایت  public/crm-data.js
+  [متنی ]    63101 بایت  public/crm-data.js
   [متنی ]    13643 بایت  public/crm-features-v10.js
-  [متنی ]   107859 بایت  public/crm-features-v11.js
+  [متنی ]   107944 بایت  public/crm-features-v11.js
   [متنی ]    44613 بایت  public/crm-features-v12.js
   [متنی ]    32088 بایت  public/crm-features-v13.js
   [متنی ]    34125 بایت  public/crm-features-v14.js
@@ -620,7 +620,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]    19662 بایت  public/crm-features-v17.js
   [متنی ]    33040 بایت  public/crm-features-v18.js
   [متنی ]    61016 بایت  public/crm-features-v19.js
-  [متنی ]   232311 بایت  public/crm-features-v20.js
+  [متنی ]   236331 بایت  public/crm-features-v20.js
   [متنی ]    71826 بایت  public/crm-features-v9.js
   [متنی ]    25683 بایت  public/crm-jalali.js
   [متنی ]   144802 بایت  public/index.html
@@ -779,9 +779,9 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     8984 بایت  src/lib/tracker.ts
   [متنی ]     2276 بایت  src/lib/useLive.ts
   [متنی ]     3346 بایت  src/lib/zip.ts
-  [متنی ]     3816 بایت  tests/app-smoke.test.mjs
-  [متنی ]    19967 بایت  tests/state-preservation.test.mjs
-  [متنی ]    23620 بایت  tests/version-11.24-regressions.test.mjs
+  [متنی ]     4304 بایت  tests/app-smoke.test.mjs
+  [متنی ]    19996 بایت  tests/state-preservation.test.mjs
+  [متنی ]    24763 بایت  tests/version-11.24-regressions.test.mjs
   [تصویر]    23282 بایت  public/apple-touch-icon.png
   [تصویر]     4527 بایت  public/favicon.png
   [تصویر]    26208 بایت  public/icon-192.png
@@ -3549,6 +3549,13 @@ git push gitlab main
 🤖 دستیار:
 نسخه **۱۱.۳۱.۰** ساخته شد. Head build gate فقط CacheStorage/SW قدیمی را پیش از render پاک و با query یک‌بار reload می‌کند؛ داده محلی هرگز پاک نمی‌شود. body تا central permission مخفی و admin flash حذف است. Server/SW no-store assets دارند. invoice shell pinned باقی است. Mobile order grid سه‌ردیفی با action 40px، clear max130px، hamburger 44px و landscape drawer دارد. Android نشان/بلد package intent و iOS/web universal directions دارند. users مرجع واحد reps شده؛ حذف/افزودن و selector self-only همگام است. مدیر province/city/district route را ذخیره و کنار نام می‌بیند. Cross-link state/bulk از نسخه قبل حفظ است. ۴۴ تست موفق؛ دستگاه واقعی و Persistent Disk در انتظار تأیید است.
 
+──────────────────────────────── نوبت ۵۳ ────────────────────────────────
+🧑 کاربر:
+«می‌خوام برنامه را از نظر امنیتی فوق‌العاده بالا ببری تا به سیستم‌عامل و بقیه اطلاعات ویندوز، Android یا iOS آسیب نزند و در کار سیستم یا گوشی خلل ایجاد نکند.»
+
+🤖 دستیار:
+نسخه **۱۱.۳۲.۰** با دفاع چندلایه ساخته شد: CSP/HSTS/nosniff/strict referrer/COOP/CORP و Permissions Policy که همه device APIها جز geolocation self را می‌بندد؛ wildcard CORS حذف و POSTها same-origin + X-CRM-Request شدند. JSON ضد prototype pollution sanitize و atomic mode0600 write می‌شود. Browser guard فایل اجرایی/installer/script و بیش از 32MB، unsafe protocols، opener، خطر drag/drop و control/HTML chars را می‌بندد. Excel formula injection و URL غیر-HTTPS پخش مسدود است. کادر وضعیت امنیت در عیب‌یابی افزوده شد. ۴۵ تست موفق. با صداقت: هیچ وب‌اپی تضمین مطلق علیه نقص مرورگر/OS نمی‌دهد؛ این لایه‌های تأییدشده باید با HTTPS، Persistent Disk و ممیزی نفوذ مستقل تکمیل شوند.
+
 
 
 ══════════════════════════════════════════════════════════════════════════════════
@@ -3764,7 +3771,7 @@ sync-after-deploy:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_ARCHITECTURE.md (26386 بایت)
+فایل: AI_ARCHITECTURE.md (27221 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI ARCHITECTURE
@@ -4938,10 +4945,17 @@ Then change only what is requested.
 - Representative roster projection: users → reps keyed by userId, preserving previous live coordinates/status; selectors derive from active reps and current permissions.
 - User activity route schema: activityProvince, activityCity, activityDistricts, activityRouteLabel.
 - Mobile order item grid has deterministic three rows and compact 40px actions.
+## معماری افزوده v11.32.0 — Defense in depth
+- Transport/browser headers: CSP, Permissions Policy, HSTS, nosniff, strict referrer, COOP allow-popups, CORP same-origin, no DNS prefetch/cross-domain policies.
+- Write trust boundary: same-origin/site fetch metadata + matching Origin + `X-CRM-Request: 1`; no wildcard CORS.
+- Persistence boundary: recursive null-prototype JSON sanitization, max depth/strings/key length, forbidden prototype keys, atomic temp rename and mode 0600.
+- Client boundary: allowed upload extension whitelist, executable blacklist, 32MB cap, unsafe protocol guard, noopener/noreferrer, drag/drop guard, text control stripping.
+- Export boundary: spreadsheet formula-prefix neutralization.
+- Device boundary: only self geolocation allowed; all unnecessary device APIs denied by Permissions Policy.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_DECISION_LOG.md (55804 بایت)
+فایل: AI_DECISION_LOG.md (56819 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI DECISION LOG
@@ -6472,10 +6486,18 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - Android navigation uses package intents (`org.rajman.neshan.traffic.tehran.navigator`, `ir.balad`) with directions fallback; iOS keeps universal links.
 - `state.users` is authoritative for representative roster. Reps are derived by user ID, preserving live metadata; deleted users cannot survive in rep selectors.
 - Activity route fields live on user record and are displayed in cards/selectors.
+## تصمیم ۸۵ — نسخه ۱۱.۳۲.۰: Browser/OS sandbox hardening و atomic safe data writes (2026-08-21)
+- Legacy inline architecture requires CSP unsafe-inline, but all other CSP boundaries are strict: self default, no object/frame/media/base escape, self form/worker/manifest and HTTPS-only upgrade.
+- Permissions Policy denies all unnecessary hardware APIs; geolocation self is the only required sensor.
+- CORS wildcard is removed. State-changing same-origin requests require X-CRM-Request plus fetch-site/origin checks.
+- All server JSON passes recursive anti-prototype sanitization and atomic mode-0600 writes.
+- Client guards block executable/oversized uploads, unsafe protocols, opener access, dangerous drops and HTML control characters.
+- Excel formula injection and distributor non-HTTPS URLs are rejected/sanitized.
+- No web app can promise absolute OS safety, but browser sandbox and explicit permission boundaries are now maximally constrained without breaking required GPS/files/navigation.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_PROJECT_CONTEXT.md (30457 بایت)
+فایل: AI_PROJECT_CONTEXT.md (31111 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI PROJECT CONTEXT
@@ -7371,10 +7393,12 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.30.0 است. invoice tab pinned است؛ deny فقط card را با notice جایگزین می‌کند و V1130 migration دارد. Mobile CSS تا 950px و landscape دو ستونه است. route URLها: nshn.ir/maps destination lat,lng؛ Balad directions destination lng,lat؛ Google dir؛ Waze navigate. v9 privacy با repId/repName و explicit all-reps است. origin خالی از `/api/state` bootstrap می‌شود و existing local هرگز overwrite نمی‌شود. bulk data با `/api/bulk` و user-bulk-data.json روی CRM_DATA_DIR یا /var/data mirror می‌شود.
 ## افزونه وضعیت نسخه ۱۱.۳۱.۰
 نسخه فعال 11.31.0 است. Head boot با CRM_ASSET_BUILD قبل از render cache storage و SW قدیمی را پاک و یک‌بار query reload می‌کند، بدون دست‌زدن به CRM data. crm-booting تا applyCentralPermissions مانع admin flash است. Server/SW no-store assets دارند. Mobile order row چهارستونه و delete 40px، clear max130px، hamburger 44px است. Android intents package-specific هستند. syncRepsFromUsers کاربران را مرجع roster می‌کند؛ syncRepresentativeSelectors privacy-aware است. User fields activityProvince/city/districts/routeLabel اضافه شده‌اند.
+## افزونه وضعیت نسخه ۱۱.۳۲.۰
+نسخه فعال 11.32.0 است. Server headers شامل CSP، Permissions-Policy، HSTS، nosniff، COOP/CORP و no wildcard CORS است. POST API به trustedWriteRequest و X-CRM-Request نیاز دارد. sanitizeJsonValue/writeJsonAtomic/readJsonSafe از pollution/corruption محافظت می‌کنند و files mode0600 هستند. installSafeBrowserGuards پروتکل، upload type/32MB، executable/drop/opener و text controls را محدود می‌کند. Excel generic export formula-safe و distributor URL HTTPS-only است. Security status card در troubleshooting وجود دارد.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_RULES.md (34429 بایت)
+فایل: AI_RULES.md (35232 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI RULES
@@ -8873,10 +8897,22 @@ direction links. `state.users` is the only roster source: deleted users disappea
 appear, and a normal representative selector contains only that user unless explicit
 all-reps permission. Manager-defined province/city/district activity route is stored on the
 user and displayed beside their name.
+
+# 83. DEVICE-SAFE DEFENSE-IN-DEPTH RULE (PERMANENT)
+
+The app runs only inside the browser sandbox and must never request or use camera,
+microphone, USB, serial, HID, Bluetooth, payment, screen capture, or motion sensors.
+Only self geolocation may be requested after explicit user action. Preserve CSP, HSTS,
+nosniff, strict referrer, COOP/CORP and no wildcard CORS. Every state-changing CRM API
+request must be same-origin and carry X-CRM-Request. All inbound JSON is recursively
+sanitized and atomically written mode 0600. Executable/script/installer files, unsafe URL
+schemes, opener access, dangerous drops, oversized files and spreadsheet formulas are
+blocked. Never claim absolute OS security; report verified defense layers and recommend
+independent penetration testing for production assurance.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_TASKS.md (40173 بایت)
+فایل: AI_TASKS.md (40884 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI TASKS
@@ -10290,10 +10326,25 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] حذف کاربر همراه auth/reps/selectors
 - [x] ۴۴/۴۴ تست
 - [ ] تأیید کش، Android/iOS، همبرگری و intent روی دستگاه واقعی
+## ۷۳) نسخه ۱۱.۳۲.۰
+- [x] CSP/Permissions Policy/HSTS/security headers
+- [x] مسدودسازی camera/mic/USB/Bluetooth/serial/HID/payment/sensors
+- [x] حذف CORS wildcard
+- [x] same-origin POST + X-CRM-Request
+- [x] recursive JSON sanitizer ضد prototype pollution
+- [x] atomic write + mode 0600 + safe read
+- [x] file executable/type/32MB guard
+- [x] unsafe URL/window opener/link/drop guard
+- [x] input control/HTML character guard
+- [x] Excel formula injection guard
+- [x] HTTPS-only distributor panel URL
+- [x] پنل وضعیت امنیت در عیب‌یابی
+- [x] ۴۵/۴۵ تست
+- [ ] ممیزی نفوذ مستقل و HTTPS/Render production headers توسط متخصص بیرونی
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: ARENA_HANDOFF_PROMPT.md (35599 بایت)
+فایل: ARENA_HANDOFF_PROMPT.md (36272 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # ARENA AI MASTER HANDOFF PROMPT
@@ -11560,6 +11611,14 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Android Neshan/Balad intents must retain package and destination; iOS/web universal directions remain.
 - Users are the sole representative roster source. Deleted users vanish, new users appear, normal rep selectors show self only unless explicit all-reps.
 - Preserve activity route fields and labels.
+## افزونه تحویل نسخه ۱۱.۳۲.۰
+- Preserve all security headers and never restore wildcard CORS.
+- Every relative POST to CRM API must include X-CRM-Request and pass same-origin fetch metadata.
+- Never write raw parsed JSON; always sanitize and atomic-write mode 0600.
+- Preserve browser file/protocol/opener/drop/text guards and 32MB limit.
+- Keep formula-injection neutralization and HTTPS-only distributor URL.
+- Do not loosen hardware Permissions Policy except geolocation self unless user explicitly requires a capability.
+- Be honest: this is defense-in-depth inside browser sandbox, not an absolute guarantee against every OS/browser vulnerability.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -11579,7 +11638,7 @@ Leaflet محلی. فونت گوگل حذف شد. gzip روی JS/CSS/HTML.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: CHANGES_V11.md (76793 بایت)
+فایل: CHANGES_V11.md (79402 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # نسخه ۱۱.۲۳.۰
@@ -12141,6 +12200,20 @@ CLEAN_EXTRA_FILES.bat و بعد PUSH_GITHUB_CLEAN.bat را اجرا کن.
 8. `state.reps` از `state.users` بازسازی می‌شود؛ کاربران حذف‌شده فوراً حذف و کاربران جدید اضافه می‌شوند. selectorهای نماینده برای کاربر عادی فقط خود او و برای مدیر/مجوز all-reps فهرست فعال را نشان می‌دهند.
 9. مدیر در فرم کاربر استان، شهر و مناطق مسیر فعالیت را تعریف می‌کند؛ مسیر کنار نام کاربر/نماینده مانند «تهران (مناطق 1، 2، 3)» نمایش و در selectorها نیز دیده می‌شود.
 10. حذف کاربر در لایه نهایی، auth، reps و همه selectorهای نماینده را همان لحظه همگام می‌کند.
+
+# نسخه ۱۱.۳۲.۰
+
+1. هدرهای امنیتی سراسری اضافه شد: Content-Security-Policy، Permissions-Policy، HSTS، nosniff، strict referrer، same-origin opener/resource، ممنوعیت cross-domain policy و DNS prefetch.
+2. دسترسی‌های حساس سیستم/گوشی از سمت مرورگر مسدود شدند: دوربین، میکروفون، USB، Serial، HID، Bluetooth، Payment، ضبط صفحه، شتاب‌سنج، ژیروسکوپ و مغناطیس‌سنج. فقط geolocation همان origin با اجازه مستقیم کاربر مجاز است.
+3. CORS wildcard کاملاً حذف شد. درخواست POST به API فقط با Origin/Sec-Fetch معتبر و هدر `X-CRM-Request: 1` پذیرفته می‌شود؛ درخواست cross-site یا بدون هدر 403 می‌گیرد.
+4. JSON ورودی state/bulk/email عمقی پاک‌سازی می‌شود: prototype/constructor pollution، عمق بیش از ۴۰، مقادیر غیرمتناهی، control characters و کلیدهای بسیار بلند رد/پاک می‌شوند.
+5. نوشتن `user-data.json` و `user-bulk-data.json` اتمی (temporary+rename) و با مجوز فایل 0600 است تا خرابی نیمه‌نوشتن و دسترسی سیستم کاهش یابد؛ خواندن فایل خراب، سرور را crash نمی‌کند.
+6. محافظ مرورگر فقط پروتکل http/https را برای window.open می‌پذیرد و `noopener,noreferrer` اجباری است؛ javascript/data/file/vbscript link مسدود می‌شود.
+7. فایل‌های اجرایی/نصبی/اسکریپتی مثل exe, msi, apk, bat, cmd, ps1, vbs, js, jar, sh, dmg, pkg, app, iso, dll و فایل بیش از ۳۲MB پیش از پردازش مسدود می‌شوند. فقط داده/تصویر مجاز پذیرفته می‌شود.
+8. ورودی متنی از تگ‌های `< >` و کنترل‌کاراکترهای خطرناک پاک می‌شود؛ لینک پنجره جدید rel امن می‌گیرد؛ drag/drop فایل خطرناک متوقف می‌شود.
+9. Excel HTML در برابر Formula Injection محافظت شد؛ مقادیر آغازشونده با `=`, `+`, `@` یا منفی غیرعددی به متن امن تبدیل می‌شوند.
+10. URL پنل شرکت پخش فقط HTTPS معتبر است؛ نام کاربری از تگ HTML پاک می‌شود.
+11. کادر «وضعیت حفاظت دستگاه و داده» به عیب‌یابی اضافه شد و شش ریزمجوز امنیتی در دسترسی‌ها ثبت شدند.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -12614,7 +12687,7 @@ update_project_graph.py
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: PROJECT_GRAPH.md (41213 بایت)
+فایل: PROJECT_GRAPH.md (41198 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # 🕸️ گراف دانش پروژه «نماینده علمی» (PROJECT_GRAPH.md)
@@ -12646,9 +12719,9 @@ update_project_graph.py
 
 ## ب) کارت فایل‌ها (نقش + توابع + نام‌های window که می‌سازد)
 
-### `server.js` (12127 بایت)
+### `server.js` (15186 بایت)
 - نقش: سرور سبک Node.js برای Render — ورود جدا، gzip، health، ژئوکد، محدودیت نرخ
-- تعداد توابع داخلی: 4
+- تعداد توابع داخلی: 8
 - endpointهای سرور: `/api/backup`, `/api/backup/email`, `/api/bulk`, `/api/bulk`, `/api/state`, `/api/state`
 
 ### `scripts/build-sw.mjs` (2656 بایت)
@@ -12680,7 +12753,7 @@ update_project_graph.py
 - تعداد توابع داخلی: 166
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `__CRM_SW_READY`, `_editingProductId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
 
-### `public/crm-data.js` (62791 بایت)
+### `public/crm-data.js` (63101 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 1
 
@@ -12689,7 +12762,7 @@ update_project_graph.py
 - تعداد توابع داخلی: 22
 - نام‌های window که تعریف/بازنویسی می‌کند: `__lastHealth`, `switchTab`
 
-### `public/crm-features-v11.js` (107859 بایت)
+### `public/crm-features-v11.js` (107944 بایت)
 - نقش: v11 — تغییر رمز، ردیف واقعی، اکسل خط‌کشی، ویزیت زنده، تارگت، ستون‌ها، دسترسی ریز
 - تعداد توابع داخلی: 101
 - نام‌های window که تعریف/بازنویسی می‌کند: `FA_FIELD_LABELS`, `_actMap`, `_actMarks`, `_activeColTab`, `_colDelPatched`, `_colEditScroll`, `_editingBoxId`, `_editingColField`, `_layoutBusy`, `_visitKeepAlive`, `addWidgetToActiveTab`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `applyFullFormLayout`, `applySelectExtraOptions`, `builtinFieldValue`, `changeUserPassword`, `cleanupOrphanCustomFields`, `deleteCustomField`, `downloadCSVFile`, `extraListColumns`, `getAllMenuSections`, `getMainGrid`, `getUnifiedFieldList`, `groupIsShared`, `isColShownInList`, `paintFieldBox`, `paintRequiredStar`, `refreshColumnsDesigner`, `renderAllSystemSelects`, `renderColBoxInfoTable`, `renderColBoxList`, `renderColBtnInfoTable`, `renderExtraTabCustomFields`, `renderUserCardsList`, `switchTab`, `validateRequiredFields`, `writeFieldSize`
@@ -12734,10 +12807,10 @@ update_project_graph.py
 - تعداد توابع داخلی: 65
 - نام‌های window که تعریف/بازنویسی می‌کند: `_v18DefaultReq`, `_v19BackupLayoutGuard`, `_v19ComboHook`, `_v19Hist`, `_v19IcObs`, `_v19ProdTableWrap`, `_v19Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `extraListColumns`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderPharmaciesList`, `switchTab`, `testServerConnectivity`
 
-### `public/crm-features-v20.js` (232311 بایت)
+### `public/crm-features-v20.js` (236331 بایت)
 - نقش: ============================================================
-- تعداد توابع داخلی: 267
-- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFieldPermissions`, `applyFullFormLayout`, `applyUserRolePermissions`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `deleteUserCard`, `editProductCatalogItem`, `editUserCard`, `extraListColumns`, `getUnifiedFieldList`, `openRowDetailsModal`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `renderUserCardsList`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `updateNavBadges`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`, `v20RenderProductExtras`, `v20SetupSnappCorporate`
+- تعداد توابع داخلی: 269
+- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFieldPermissions`, `applyFullFormLayout`, `applyUserRolePermissions`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `deleteUserCard`, `editProductCatalogItem`, `editUserCard`, `extraListColumns`, `getUnifiedFieldList`, `open`, `openRowDetailsModal`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `renderUserCardsList`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `updateNavBadges`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`
 
 ### `public/crm-features-v9.js` (71826 بایت)
 - نقش: ===========================================================================
@@ -12759,7 +12832,7 @@ update_project_graph.py
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (1588 بایت)
-- نقش: const CACHE = "ttt-v11.31.0";
+- نقش: const CACHE = "ttt-v11.32.0";
 - تعداد توابع داخلی: 0
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -14085,13 +14158,13 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.31.0",
+  "version": "11.32.0",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
       "name": "namayandeelmi-javad-crm",
-      "version": "11.31.0",
+      "version": "11.32.0",
       "license": "MIT",
       "engines": {
         "node": ">=20.0.0"
@@ -14107,7 +14180,7 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.31.0",
+  "version": "11.32.0",
   "description": "سیستم جامع مدیریت و ویزیت علمی، داروخانه‌ها، پزشکان و سفارشات (CRM / PWA) هماهنگ با Render و Neon",
   "main": "server.js",
   "engines": {
@@ -14202,7 +14275,7 @@ services:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: server.js (12127 بایت)
+فایل: server.js (15186 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // سرور سبک Node.js برای Render — ورود جدا، gzip، health، ژئوکد، محدودیت نرخ
@@ -14257,16 +14330,54 @@ function rateLimited(ip) {
   loginHits.set(ip, rec);
   return rec.n > 30;
 }
+function trustedWriteRequest(req) {
+  const site = String(req.headers["sec-fetch-site"] || "");
+  const origin = String(req.headers.origin || "");
+  const host = String(req.headers.host || "");
+  if (site && !["same-origin", "same-site", "none"].includes(site)) return false;
+  if (origin) { try { if (new URL(origin).host !== host) return false; } catch (e) { return false; } }
+  return String(req.headers["x-crm-request"] || "") === "1";
+}
+function sanitizeJsonValue(value, depth = 0) {
+  if (depth > 40) throw new Error("JSON nesting too deep");
+  if (value === null || typeof value === "boolean") return value;
+  if (typeof value === "number") return Number.isFinite(value) ? value : 0;
+  if (typeof value === "string") return value.slice(0, 2 * 1024 * 1024).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "");
+  if (Array.isArray(value)) return value.map((v) => sanitizeJsonValue(v, depth + 1));
+  if (typeof value === "object") {
+    const out = Object.create(null);
+    Object.keys(value).forEach((k) => {
+      if (k === "__proto__" || k === "prototype" || k === "constructor") return;
+      out[k.slice(0, 256)] = sanitizeJsonValue(value[k], depth + 1);
+    });
+    return out;
+  }
+  return null;
+}
+function writeJsonAtomic(filePath, data) {
+  const temp = filePath + ".tmp-" + process.pid;
+  fs.writeFileSync(temp, JSON.stringify(data), { encoding: "utf8", mode: 0o600 });
+  fs.renameSync(temp, filePath);
+  try { fs.chmodSync(filePath, 0o600); } catch (e) {}
+}
+function readJsonSafe(filePath) {
+  try { return sanitizeJsonValue(JSON.parse(fs.readFileSync(filePath, "utf8"))); } catch (e) { return null; }
+}
 
 function send(req, res, status, content, contentType, extra) {
   const headers = Object.assign({
     "Content-Type": contentType || "text/plain; charset=utf-8",
     "X-Content-Type-Options": "nosniff",
-    "Referrer-Policy": "same-origin",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
     "X-Frame-Options": "SAMEORIGIN",
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization"
+    "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https:; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests",
+    "Permissions-Policy": "geolocation=(self), camera=(), microphone=(), payment=(), usb=(), serial=(), hid=(), bluetooth=(), display-capture=(), accelerometer=(), gyroscope=(), magnetometer=(), autoplay=(), encrypted-media=(), picture-in-picture=()",
+    "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Cross-Origin-Resource-Policy": "same-origin",
+    "X-Permitted-Cross-Domain-Policies": "none",
+    "X-DNS-Prefetch-Control": "off",
+    "Origin-Agent-Cluster": "?1"
   }, extra || {});
   const accept = String(req.headers["accept-encoding"] || "");
   const compressible = /text|javascript|json|svg|csv/.test(contentType || "");
@@ -14308,15 +14419,18 @@ const server = http.createServer((req, res) => {
   const ip = (req.headers["x-forwarded-for"] || req.socket.remoteAddress || "0").toString().split(",")[0].trim();
 
   if (req.method === "OPTIONS") {
-    res.writeHead(204, { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "GET, POST, OPTIONS", "Access-Control-Allow-Headers": "Content-Type" });
+    res.writeHead(204, { "Allow": "GET, POST, HEAD, OPTIONS", "Cache-Control": "no-store" });
     return res.end();
+  }
+  if (req.method === "POST" && pathname.startsWith("/api/") && !trustedWriteRequest(req)) {
+    return send(req, res, 403, JSON.stringify({ status: "error", message: "untrusted write request" }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
   }
 
   if (pathname === "/ping" || pathname === "/api/health" || pathname === "/api/ping" || pathname === "/healthz") {
     return send(req, res, 200, JSON.stringify({
       ok: true, status: "healthy", message: "OK",
       service: "namayandeelmi-javad-crm",
-      version: "11.31.0",
+      version: "11.32.0",
       timestamp: new Date().toISOString()
     }), "application/json; charset=utf-8");
   }
@@ -14351,7 +14465,7 @@ const server = http.createServer((req, res) => {
     req.on("data", (c) => { body += c; if (body.length > 8 * 1024 * 1024) req.destroy(); });
     req.on("end", async () => {
       try {
-        const data = JSON.parse(body), to = String(data.to || "").trim();
+        const data = sanitizeJsonValue(JSON.parse(body)), to = String(data.to || "").trim();
         if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(to)) throw new Error("ایمیل مقصد معتبر نیست");
         const backup = JSON.stringify(data.state || {}, null, 2);
         const up = await fetch("https://api.resend.com/emails", { method: "POST", headers: { "Authorization": "Bearer " + apiKey, "Content-Type": "application/json" }, body: JSON.stringify({ from, to: [to], subject: "پشتیبان خودکار CRM — " + new Date().toLocaleDateString("fa-IR"), html: "<p dir='rtl'>نسخه پشتیبان خودکار سامانه پیوست است.</p>", attachments: [{ filename: "crm-backup-latest.json", content: Buffer.from(backup).toString("base64") }] }) });
@@ -14365,7 +14479,9 @@ const server = http.createServer((req, res) => {
 
   if (pathname === "/api/bulk" && req.method === "GET") {
     if (!fs.existsSync(USER_BULK_PATH)) return send(req, res, 200, JSON.stringify({ status: "empty" }), "application/json; charset=utf-8");
-    return send(req, res, 200, JSON.stringify({ status: "success", data: JSON.parse(fs.readFileSync(USER_BULK_PATH, "utf8")) }), "application/json; charset=utf-8");
+    const data = readJsonSafe(USER_BULK_PATH);
+    if (!data) return send(req, res, 503, JSON.stringify({ status: "error", message: "bulk data unavailable" }), "application/json; charset=utf-8");
+    return send(req, res, 200, JSON.stringify({ status: "success", data }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
   }
 
   if (pathname === "/api/bulk" && req.method === "POST") {
@@ -14373,7 +14489,7 @@ const server = http.createServer((req, res) => {
     let body = "";
     req.on("data", (c) => { body += c; if (body.length > 64 * 1024 * 1024) req.destroy(); });
     req.on("end", () => {
-      try { const data = JSON.parse(body); fs.writeFileSync(USER_BULK_PATH, JSON.stringify(data), "utf8"); send(req, res, 200, JSON.stringify({ status: "success" }), "application/json; charset=utf-8"); }
+      try { const data = sanitizeJsonValue(JSON.parse(body)); writeJsonAtomic(USER_BULK_PATH, data); send(req, res, 200, JSON.stringify({ status: "success" }), "application/json; charset=utf-8", { "Cache-Control": "no-store" }); }
       catch (err) { send(req, res, 400, JSON.stringify({ status: "error", message: err.message }), "application/json; charset=utf-8"); }
     });
     return;
@@ -14381,7 +14497,9 @@ const server = http.createServer((req, res) => {
 
   if (pathname === "/api/state" && req.method === "GET") {
     if (fs.existsSync(SERVER_DATA_PATH)) {
-      return send(req, res, 200, JSON.stringify({ status: "success", data: JSON.parse(fs.readFileSync(SERVER_DATA_PATH, "utf8")) }), "application/json; charset=utf-8");
+      const data = readJsonSafe(SERVER_DATA_PATH);
+      if (!data) return send(req, res, 503, JSON.stringify({ status: "error", message: "state data unavailable" }), "application/json; charset=utf-8");
+      return send(req, res, 200, JSON.stringify({ status: "success", data }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
     }
     return send(req, res, 200, JSON.stringify({ status: "empty" }), "application/json; charset=utf-8");
   }
@@ -14394,9 +14512,9 @@ const server = http.createServer((req, res) => {
     req.on("data", (c) => { body += c; if (body.length > 8 * 1024 * 1024) req.destroy(); });
     req.on("end", () => {
       try {
-        const data = JSON.parse(body);
-        fs.writeFileSync(SERVER_DATA_PATH, JSON.stringify(data), "utf8");
-        send(req, res, 200, JSON.stringify({ status: "success" }), "application/json; charset=utf-8");
+        const data = sanitizeJsonValue(JSON.parse(body));
+        writeJsonAtomic(SERVER_DATA_PATH, data);
+        send(req, res, 200, JSON.stringify({ status: "success" }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
       } catch (err) {
         send(req, res, 400, JSON.stringify({ status: "error", message: err.message }), "application/json; charset=utf-8");
       }
@@ -14446,7 +14564,7 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, "0.0.0.0", () => {
-  console.log("CRM v11.31.0 listening on 0.0.0.0:" + PORT);
+  console.log("CRM v11.32.0 listening on 0.0.0.0:" + PORT);
 });
 ~~~~~~~~
 
@@ -14568,7 +14686,7 @@ git status -sb
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: update_chat_arena.py (304147 بایت)
+فایل: update_chat_arena.py (305604 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~python
 #!/usr/bin/env python3
@@ -14622,7 +14740,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.47 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.31.0
+نسخه این فایل: 1.48 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.32.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -17918,6 +18036,13 @@ git push gitlab main
 🤖 دستیار:
 نسخه **۱۱.۳۱.۰** ساخته شد. Head build gate فقط CacheStorage/SW قدیمی را پیش از render پاک و با query یک‌بار reload می‌کند؛ داده محلی هرگز پاک نمی‌شود. body تا central permission مخفی و admin flash حذف است. Server/SW no-store assets دارند. invoice shell pinned باقی است. Mobile order grid سه‌ردیفی با action 40px، clear max130px، hamburger 44px و landscape drawer دارد. Android نشان/بلد package intent و iOS/web universal directions دارند. users مرجع واحد reps شده؛ حذف/افزودن و selector self-only همگام است. مدیر province/city/district route را ذخیره و کنار نام می‌بیند. Cross-link state/bulk از نسخه قبل حفظ است. ۴۴ تست موفق؛ دستگاه واقعی و Persistent Disk در انتظار تأیید است.
 
+──────────────────────────────── نوبت ۵۳ ────────────────────────────────
+🧑 کاربر:
+«می‌خوام برنامه را از نظر امنیتی فوق‌العاده بالا ببری تا به سیستم‌عامل و بقیه اطلاعات ویندوز، Android یا iOS آسیب نزند و در کار سیستم یا گوشی خلل ایجاد نکند.»
+
+🤖 دستیار:
+نسخه **۱۱.۳۲.۰** با دفاع چندلایه ساخته شد: CSP/HSTS/nosniff/strict referrer/COOP/CORP و Permissions Policy که همه device APIها جز geolocation self را می‌بندد؛ wildcard CORS حذف و POSTها same-origin + X-CRM-Request شدند. JSON ضد prototype pollution sanitize و atomic mode0600 write می‌شود. Browser guard فایل اجرایی/installer/script و بیش از 32MB، unsafe protocols، opener، خطر drag/drop و control/HTML chars را می‌بندد. Excel formula injection و URL غیر-HTTPS پخش مسدود است. کادر وضعیت امنیت در عیب‌یابی افزوده شد. ۴۵ تست موفق. با صداقت: هیچ وب‌اپی تضمین مطلق علیه نقص مرورگر/OS نمی‌دهد؛ این لایه‌های تأییدشده باید با HTTPS، Persistent Disk و ممیزی نفوذ مستقل تکمیل شوند.
+
 """
 
 FILES_INTRO = """
@@ -17954,7 +18079,7 @@ def build():
         out.append("~~~~~~~~" + lang)
         out.append(content.rstrip("\n"))
         out.append("~~~~~~~~")
-    out.append("\n\n— پایان chat.arena نسخه ۱.۴۷ (نسخه برنامه 11.31.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
+    out.append("\n\n— پایان chat.arena نسخه ۱.۴۸ (نسخه برنامه 11.32.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
     with open(OUT, "w", encoding="utf-8") as f:
         f.write("\n".join(out))
     print("chat.arena written:", os.path.getsize(OUT), "bytes,", len(text_files), "text files embedded,", len(bin_files), "binary files listed")
@@ -22213,7 +22338,7 @@ function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.31.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.32.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -23310,7 +23435,7 @@ function deleteProductCatalogItem(id) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-data.js (62791 بایت)
+فایل: public/crm-data.js (63101 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================================
@@ -23909,7 +24034,7 @@ PERMISSION_GROUPS = {
     { key: "sys_install", label: "مشاهده راهنمای نصب" }, { key: "sys_auto_pwa_control", label: "فعال‌سازی PWA" }, { key: "sys_mobile_all_orientations", label: "نمای کامل موبایل در حالت افقی و عمودی" }, { key: "sys_cross_link_state", label: "بازیابی امن اطلاعات در لینک جدید برنامه" }
   ],
   "عیب‌یابی": [
-    { key: "sys_diag", label: "مشاهده عیب‌یابی" }, { key: "sys_runtime_console_guard", label: "مشاهده وضعیت اجرای برنامه" }, { key: "sys_automated_app_test", label: "اجرای بررسی خودکار" }
+    { key: "sys_diag", label: "مشاهده عیب‌یابی" }, { key: "sys_runtime_console_guard", label: "مشاهده وضعیت اجرای برنامه" }, { key: "sys_automated_app_test", label: "اجرای بررسی خودکار" }, { key: "sys_security_headers", label: "محافظت امنیتی مرورگر و سیستم‌عامل" }, { key: "sys_safe_file_guard", label: "مسدودسازی فایل اجرایی و فایل حجیم" }, { key: "sys_safe_navigation", label: "مسدودسازی لینک و پروتکل خطرناک" }
   ]
 };
 
@@ -24545,7 +24670,7 @@ const DEFAULT_INITIAL_DATA = {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-features-v11.js (107859 بایت)
+فایل: public/crm-features-v11.js (107944 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // v11 — تغییر رمز، ردیف واقعی، اکسل خط‌کشی، ویزیت زنده، تارگت، ستون‌ها، دسترسی ریز
@@ -24694,8 +24819,9 @@ const DEFAULT_INITIAL_DATA = {
 
   function downloadExcelBordered(filename, headers, rows) {
     var esc = function (v) {
-      return String(v == null ? "" : v)
-        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      var text=String(v == null ? "" : v);
+      if (/^[=+@]/.test(text) || (/^-[^0-9]/.test(text))) text="'"+text;
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     };
     var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"></head><body>';
     html += '<table border="1" cellspacing="0" cellpadding="4" style="border-collapse:collapse;border:1px solid #000">';
@@ -32985,7 +33111,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-features-v20.js (232311 بایت)
+فایل: public/crm-features-v20.js (236331 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================
@@ -33024,6 +33150,7 @@ button.v19-gps svg{display:block}
   }
   function st() { return window.state || null; }
   function installLatinNumberLaw(){if(window.__CRM_LATIN_NUMBER_LAW)return;window.__CRM_LATIN_NUMBER_LAW=true;var digits=function(v){var fa="۰۱۲۳۴۵۶۷۸۹",ar="٠١٢٣٤٥٦٧٨٩";return String(v).replace(/[۰-۹]/g,function(c){return fa.indexOf(c);}).replace(/[٠-٩]/g,function(c){return ar.indexOf(c);}).replace(/٬/g,",").replace(/٫/g,".");};var numberOld=Number.prototype.toLocaleString;Number.prototype.toLocaleString=function(locale,opts){if(typeof locale==="string"&&/^fa(?:-|$)/i.test(locale))locale="en-US";return digits(numberOld.call(this,locale,opts));};["toLocaleString","toLocaleDateString","toLocaleTimeString"].forEach(function(name){var old=Date.prototype[name];Date.prototype[name]=function(){return digits(old.apply(this,arguments));};});}
+  function installSafeBrowserGuards(){if(window.__CRM_SAFE_BROWSER_GUARDS)return;window.__CRM_SAFE_BROWSER_GUARDS=true;var oldOpen=window.open;window.open=function(url,target,features){try{var u=new URL(String(url||""),location.href);if(u.protocol!=="https:"&&u.protocol!=="http:"){console.warn("blocked unsafe navigation protocol",u.protocol);return null;}features=(features?features+",":"")+"noopener,noreferrer";return oldOpen.call(window,u.href,target||"_blank",features);}catch(e){return null;}};var allowed=/\.(?:xlsx?|csv|txt|json|png|jpe?g|webp)$/i,blocked=/\.(?:exe|msi|apk|bat|cmd|com|scr|ps1|vbs|js|jar|sh|dmg|pkg|app|iso|dll)$/i,max=32*1024*1024;document.addEventListener("input",function(e){var el=e.target;if(!el||!(el.matches&&el.matches("input:not([type=password]),textarea")))return;var clean=String(el.value||"").replace(/[<>\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,"");if(clean!==el.value)el.value=clean;},true);document.addEventListener("change",function(e){var input=e.target;if(!input||input.type!=="file"||!input.files)return;for(var i=0;i<input.files.length;i++){var f=input.files[i],name=String(f.name||"");if(f.size>max||blocked.test(name)||!allowed.test(name)){e.preventDefault();e.stopImmediatePropagation();input.value="";alert("این فایل برای امنیت دستگاه پذیرفته نشد. فقط فایل‌های داده/تصویر مجاز و حداکثر 32MB قابل ورود هستند.");return;}}},true);document.addEventListener("click",function(e){var a=e.target&&e.target.closest&&e.target.closest("a[href]");if(!a)return;var href=String(a.getAttribute("href")||"").trim();if(/^\s*(?:javascript|data|file|vbscript):/i.test(href)){e.preventDefault();e.stopImmediatePropagation();return;}if(a.target==="_blank")a.rel="noopener noreferrer";},true);document.addEventListener("dragover",function(e){if(e.dataTransfer&&e.dataTransfer.types&&Array.prototype.indexOf.call(e.dataTransfer.types,"Files")>=0)e.preventDefault();},true);document.addEventListener("drop",function(e){var files=e.dataTransfer&&e.dataTransfer.files;if(!files||!files.length)return;for(var i=0;i<files.length;i++)if(blocked.test(String(files[i].name||""))||files[i].size>max){e.preventDefault();e.stopImmediatePropagation();alert("فایل اجرایی یا بیش‌ازحد بزرگ برای حفاظت دستگاه مسدود شد.");return;}},true);}
   function save() { try { if (typeof saveState === "function") saveState(); } catch (e) {} }
   window.__CRM_BULK_READY = !window.indexedDB;
   function log(m) { try { console.log("[v20]", m); } catch (e) {} }
@@ -34071,7 +34198,7 @@ button.v19-gps svg{display:block}
   function syncRepresentativeSelectors(){var S=st(),u=v20CurrentUser(),manager=v20IsManager(),perms=(u&&u.permissions)||{},reps=S&&S.reps||[];var keyById={orderRepName:"ord_all_reps",tgtRepSelect:"target_all_reps",leaveRepSelect:"hr_all_leaves",routeRepFilterSelect:"fld_all_routes",repHomeSelect:"fld_all_homes",liveRepSearchSelect:"live_all_reps",snappFilterRep:"sys_snapp_access",invoiceStatusRep:"dist_invoice_status_filters"};document.querySelectorAll("select[id]").forEach(function(sel){if(globalFieldKey(sel)!=="نمایندهعلمی"&&keyById[sel.id]==null)return;var allowAll=manager||perms[keyById[sel.id]]===true,list=allowAll?reps:reps.filter(function(r){return u&&String(r.id)===String(u.id);}),useId=sel.id==="liveRepSearchSelect",placeholder=allowAll?"همه نمایندگان":"نماینده واردشده",desired=(allowAll?[["",placeholder]]:[]).concat(list.map(function(r){return[useId?r.id:r.name,r.name+(r.region?" ("+r.region+")":"")];})),sig=JSON.stringify(desired),actual=JSON.stringify(Array.prototype.map.call(sel.options,function(o){return[o.value,o.textContent];}));if(sig===actual)return;var cur=sel.value;sel.innerHTML="";desired.forEach(function(x){var o=document.createElement("option");o.value=x[0];o.textContent=x[1];sel.appendChild(o);});if(desired.some(function(x){return x[0]===cur;}))sel.value=cur;else if(!allowAll&&desired.length)sel.value=desired[0][0];});}
   function runtimeVersion(){
     var s=document.querySelector('script[src*="crm-features-v20.js"]'),src=s&&s.getAttribute('src')||"",m=src.match(/[?&]v=([^&]+)/);
-    return m?decodeURIComponent(m[1]):"11.31.0";
+    return m?decodeURIComponent(m[1]):"11.32.0";
   }
   function renderVersionBadge() {
     var b = $("v20VersionBadge"), actions = document.querySelector(".header-actions"); if (!actions) return;
@@ -34287,13 +34414,15 @@ button.v19-gps svg{display:block}
   function applyCentralPermissions(){var logged=sessionStorage.getItem("crmLoggedIn")==="1",u=v20CurrentUser(),manager=v20IsManager(),perms=(u&&u.permissions)||{};if(!logged)manager=true;Object.keys(TAB_PERMISSION_MAP).forEach(function(id){var pinned=id==="tab-distributor-invoice-status",allow=pinned||permissionAllowed(perms,TAB_PERMISSION_MAP[id],manager);document.querySelectorAll('[data-target="'+id+'"],[data-side-target="'+id+'"]').forEach(function(n){setPermissionNodeVisible(n,allow);});var pane=$(id);if(pane){if(allow){pane.style.removeProperty("display");delete pane.dataset.permissionHidden;}else{pane.style.setProperty("display","none","important");pane.dataset.permissionHidden="1";}}});var invoice=$("tab-distributor-invoice-status"),invoiceAllowed=permissionAllowed(perms,"dist_invoice_status_access",manager);if(invoice){var card=invoice.querySelector(":scope > .card"),notice=$("invoiceStatusAccessNotice");if(!notice){notice=document.createElement("div");notice.id="invoiceStatusAccessNotice";notice.className="card";notice.style.cssText="border:2px solid #f59e0b;background:#fffbeb;color:#92400e;font-weight:800";notice.textContent="این تب برای حساب شما قابل مشاهده است، اما دسترسی اطلاعات آن توسط مدیر غیرفعال شده است.";invoice.insertBefore(notice,invoice.firstChild);}notice.style.display=invoiceAllowed?"none":"block";if(card)card.style.display=invoiceAllowed?"":"none";}Object.keys(FEATURE_PERMISSION_MAP).forEach(function(key){var allow=permissionAllowed(perms,key,manager);FEATURE_PERMISSION_MAP[key].forEach(function(sel){document.querySelectorAll(sel).forEach(function(n){setPermissionNodeVisible(n,allow);});});});var active=document.querySelector(".tab-pane.active");if(active&&active.id!=="tab-distributor-invoice-status"&&!permissionAllowed(perms,TAB_PERMISSION_MAP[active.id],manager)&&active.id!=="tab-dashboard"){try{window.switchTab("tab-dashboard");}catch(e){}}syncRepresentativeSelectors();document.documentElement.classList.remove("crm-booting");}
   function bindCentralPermissions(){if(document.body.dataset.centralPermissions)return;document.body.dataset.centralPermissions="1";window.applyUserRolePermissions=applyCentralPermissions;window.applyFieldPermissions=applyCentralPermissions;var t;new MutationObserver(function(records){var relevant=records.some(function(r){return(r.addedNodes||[]).length;});if(relevant){clearTimeout(t);t=setTimeout(applyCentralPermissions,80);}}).observe(document.body,{childList:true,subtree:true});window.addEventListener("focus",applyCentralPermissions);setTimeout(applyCentralPermissions,0);}
 
+  function renderSecurityStatus(){var pane=$("tab-troubleshooting");if(!pane)return;var box=$("v32SecurityStatus");if(!box){box=document.createElement("div");box.id="v32SecurityStatus";box.className="card";pane.insertBefore(box,pane.firstChild);}var https=location.protocol==="https:"||/^(localhost|127\.0\.0\.1)$/.test(location.hostname);box.innerHTML="<div class='card-header'><div class='card-title'>🛡️ وضعیت حفاظت دستگاه و داده</div></div><div class='v20-visit-metrics'><div class='v20-metric'>ارتباط امن HTTPS<b>"+(https?"فعال":"فقط محیط محلی")+"</b></div><div class='v20-metric'>دسترسی دوربین و میکروفون<b>مسدود</b></div><div class='v20-metric'>فایل اجرایی و بیش از 32MB<b>مسدود</b></div><div class='v20-metric'>لینک خطرناک و پنجره بدون حفاظت<b>مسدود</b></div></div><p class='col-help'>این وب‌اپ داخل محیط ایزوله مرورگر اجرا می‌شود، فرمان سیستم‌عامل اجرا نمی‌کند و فقط موقعیت مکانی را پس از اجازه مستقیم شما می‌خواند.</p>";}
+
   /* ---------- ۲۲) تارگت کامل: تعداد، ریال پخش/داروخانه و جمع نمایندگان ---------- */
   function targetMoney(t){var p=((st().products||[]).filter(function(x){return x.name===t.productName||x.id===t.productId;})[0])||{},n=Number(t.targetCount||0),dp=Number(p.distributorPrice||p.distPrice||p.price||0),hp=Number(p.pharmacyPrice||p.price||0);return{count:n,distPrice:dp,phPrice:hp,distTotal:n*dp,phTotal:n*hp};}
   function renderTargetsV20(){var S=st(),body=$("tableSalesTargetsBody");if(!S||!body)return;var table=body.closest("table"),head=table&&table.querySelector("thead tr"),list=(S.salesTargets||[]).slice().reverse(),by={},grand={count:0,dist:0,ph:0};if(head)head.innerHTML="<th>ردیف</th><th>نام نماینده</th><th>کالا</th><th>تعداد کالا</th><th>ریال واحد پخش</th><th>ریال واحد داروخانه</th><th>جمع ریال پخش</th><th>جمع ریال داروخانه</th><th>ماه/سال</th><th>عملیات</th>";body.innerHTML=list.map(function(t,i){var m=targetMoney(t),n=t.repName||"نامشخص";by[n]=by[n]||{count:0,dist:0,ph:0};by[n].count+=m.count;by[n].dist+=m.distTotal;by[n].ph+=m.phTotal;grand.count+=m.count;grand.dist+=m.distTotal;grand.ph+=m.phTotal;return"<tr><td>"+(i+1)+"</td><td><strong>"+esc(n)+"</strong></td><td>"+esc(t.productName||"—")+"</td><td>"+m.count.toLocaleString("fa-IR")+"</td><td>"+m.distPrice.toLocaleString("fa-IR")+"</td><td>"+m.phPrice.toLocaleString("fa-IR")+"</td><td><strong>"+m.distTotal.toLocaleString("fa-IR")+"</strong></td><td><strong>"+m.phTotal.toLocaleString("fa-IR")+"</strong></td><td>"+esc(t.month||"—")+"</td><td><button type='button' class='btn btn-danger btn-sm v20-target-del' data-id='"+esc(t.id)+"'>🗑️ حذف</button></td></tr>";}).join("")||"<tr><td colspan='10'>تارگتی ثبت نشده است.</td></tr>";var box=$("tgtSummaryBox");if(box)box.innerHTML="<div class='v20-visit-metrics'><div class='v20-metric'>جمع تعداد همه نمایندگان<b>"+grand.count.toLocaleString("fa-IR")+"</b></div><div class='v20-metric'>جمع کل ریال پخش<b>"+grand.dist.toLocaleString("fa-IR")+"</b></div><div class='v20-metric'>جمع کل ریال داروخانه<b>"+grand.ph.toLocaleString("fa-IR")+"</b></div><div class='v20-metric'>تعداد نمایندگان<b>"+Object.keys(by).length.toLocaleString("fa-IR")+"</b></div></div><div class='table-responsive'><table class='data-table'><thead><tr><th>ردیف</th><th>نماینده</th><th>جمع تعداد</th><th>جمع ریال پخش</th><th>جمع ریال داروخانه</th></tr></thead><tbody>"+Object.keys(by).sort().map(function(n,i){return"<tr><td>"+(i+1)+"</td><td><strong>"+esc(n)+"</strong></td><td>"+by[n].count.toLocaleString("fa-IR")+"</td><td>"+by[n].dist.toLocaleString("fa-IR")+"</td><td>"+by[n].ph.toLocaleString("fa-IR")+"</td></tr>";}).join("")+"</tbody></table></div>";Array.prototype.forEach.call(body.querySelectorAll(".v20-target-del"),function(b){b.addEventListener("click",function(){if(!confirm("این تارگت حذف شود؟"))return;S.salesTargets=(S.salesTargets||[]).filter(function(t){return String(t.id)!==String(b.getAttribute("data-id"));});save();renderTargetsV20();});});}
   function bindTargetsV20(){var f=$("formSalesTarget");if(f&&!f.dataset.v20target){f.dataset.v20target="1";f.addEventListener("submit",function(){setTimeout(renderTargetsV20,180);});}renderTargetsV20();}
 
   /* ---------- ۲۳) ارسال واقعی پشتیبان به ایمیل از مسیر امن سرور ---------- */
-  function bindEmailBackup(){var old=window.performAutoBackup;if(typeof old!=="function"||old._v20email)return;var w=function(){var args=arguments;return Promise.resolve(old.apply(this,args)).then(function(localOk){var S=st(),to=((S.settings||{}).backupEmail)||"";if(!to)return localOk;return fetch("/api/backup/email",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({to:to,state:S})}).then(async function(r){var d={};try{d=await r.json();}catch(e){}if(!r.ok)throw new Error(d.message||("HTTP "+r.status));S.settings.lastBackupEmailSend=new Date().toLocaleString("fa-IR");var el=$("autoBackupHandleStatus");if(el)el.textContent="✅ پشتیبان فایل و ایمیل ارسال شد — "+S.settings.lastBackupEmailSend;return true;}).catch(function(e){var el=$("autoBackupHandleStatus");if(el)el.textContent="⚠️ فایل ذخیره شد، اما ایمیل ارسال نشد: "+e.message;return localOk;});});};w._v20email=true;window.performAutoBackup=w;}
+  function bindEmailBackup(){var old=window.performAutoBackup;if(typeof old!=="function"||old._v20email)return;var w=function(){var args=arguments;return Promise.resolve(old.apply(this,args)).then(function(localOk){var S=st(),to=((S.settings||{}).backupEmail)||"";if(!to)return localOk;return fetch("/api/backup/email",{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1"},body:JSON.stringify({to:to,state:S})}).then(async function(r){var d={};try{d=await r.json();}catch(e){}if(!r.ok)throw new Error(d.message||("HTTP "+r.status));S.settings.lastBackupEmailSend=new Date().toLocaleString("fa-IR");var el=$("autoBackupHandleStatus");if(el)el.textContent="✅ پشتیبان فایل و ایمیل ارسال شد — "+S.settings.lastBackupEmailSend;return true;}).catch(function(e){var el=$("autoBackupHandleStatus");if(el)el.textContent="⚠️ فایل ذخیره شد، اما ایمیل ارسال نشد: "+e.message;return localOk;});});};w._v20email=true;window.performAutoBackup=w;}
 
   /* ---------- ۲۴) نمایش سه‌رقمی اعداد در خروجی‌های دیداری ---------- */
   function latinizeDigits(v){return enDigits(v).replace(/٬/g,",").replace(/٫/g,".");}
@@ -34319,7 +34448,7 @@ button.v19-gps svg{display:block}
   }
 
   /* ---------- ۲۵) ماندگاری نسخه‌ای: محلی + سرور، بدون جایگزینی با نمونه ---------- */
-  function bindDurableServerState(){var old=window.saveState;if(typeof old!=="function"||old._v20durable)return;var timer;var w=function(){var r=old.apply(this,arguments);clearTimeout(timer);timer=setTimeout(function(){var S=st();if(!S)return;fetch("/api/state",{method:"POST",headers:{"Content-Type":"application/json"},body:(typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(S):JSON.stringify(S))}).catch(function(){});},1500);return r;};w._v20durable=true;window.saveState=w;/* عمداً GET/merge خودکار وجود ندارد؛ سرور حق بازنویسی state فعلی را ندارد. */}
+  function bindDurableServerState(){var old=window.saveState;if(typeof old!=="function"||old._v20durable)return;var timer;var w=function(){var r=old.apply(this,arguments);clearTimeout(timer);timer=setTimeout(function(){var S=st();if(!S)return;fetch("/api/state",{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1"},body:(typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(S):JSON.stringify(S))}).catch(function(){});},1500);return r;};w._v20durable=true;window.saveState=w;/* عمداً GET/merge خودکار وجود ندارد؛ سرور حق بازنویسی state فعلی را ندارد. */}
 
   /* اعمال همان‌لحظه ثبت‌های کاربر، بدون رندر سراسری و بدون درگیرکردن ذخیره‌های GPS */
   function refreshActiveView(){
@@ -34347,7 +34476,7 @@ button.v19-gps svg{display:block}
   var DIST_DEFS=[["daya","دایا دارو"],["shafaarad","شفاآراد"],["tivan","تیوان"],["mashateb","مشاطب"]],DIST_HEADERS=["نام کالا","فروش تعدادی","فروش ریالی به قیمت پخش","فروش ریالی به قیمت داروخانه","تعداد جایزه","ریال جایزه","درصد جایزه به فروش","تعداد مرجوعی کالا","ریال مرجوعی کالا","درصد مرجوعی به فروش","تعداد مرجوعی جایزه","ریال مرجوعی جایزه","درصد مرجوعی به جایزه","تعداد داروخانه","تعداد فاکتور","درصد فروش به‌تفکیک کالا","موجودی تعدادی","موجودی ریالی به قیمت پخش","موجودی ریالی به قیمت داروخانه"],distReportCache={};
   function ensureShafaInventoryDerived(d){if(!d||d.id!=="shafaarad")return;d.inventoryHeaders=Array.isArray(d.inventoryHeaders)?d.inventoryHeaders.slice():[];while(d.inventoryHeaders.length<10)d.inventoryHeaders.push("");d.inventoryHeaders[9]="جمع تعداد موجودی";d.inventoryRows=(Array.isArray(d.inventoryRows)?d.inventoryRows:[]).map(function(raw){var r=normalizeStoredRow(raw);while(r.length<10)r.push("");r[9]=snappNumber(r[5])+snappNumber(r[7]);return r;});}
   function distStore(){var S=st();S.distributorCompanies=S.distributorCompanies||{};DIST_DEFS.forEach(function(x){var d=S.distributorCompanies[x[0]]||(S.distributorCompanies[x[0]]={});d.id=x[0];d.name=x[1];d.url=d.url||"";d.username=d.username||"";d.pharmacyHeaders=d.pharmacyHeaders||[];d.pharmacyRows=d.pharmacyRows||[];d.pharmacyImports=d.pharmacyImports||[];d.inventoryHeaders=d.inventoryHeaders||[];d.inventoryRows=d.inventoryRows||[];ensureShafaInventoryDerived(d);});return S.distributorCompanies;}
-  function renderDistributorCompanies(){var host=$("distributorCompanyGrid");if(!host)return;var ds=distStore();host.innerHTML=DIST_DEFS.map(function(x){var d=ds[x[0]],pass=sessionStorage.getItem("distPass_"+x[0])||"";return"<div class='v20-combo-card' data-dist='"+x[0]+"'><h4>🏢 "+x[1]+"</h4><div class='form-group'><label class='form-label'>آدرس پنل پخش</label><input class='form-input dist-url' value='"+esc(d.url)+"' placeholder='https://...'></div><div class='form-group'><label class='form-label'>نام کاربری</label><input class='form-input dist-user' value='"+esc(d.username)+"'></div><div class='form-group'><label class='form-label'>رمز ورود (فقط نشست جاری)</label><input type='password' class='form-input dist-pass' value='"+esc(pass)+"' autocomplete='new-password'></div><div style='display:flex;gap:7px;flex-wrap:wrap;margin-top:8px'><button type='button' class='btn btn-primary dist-save'>💾 ثبت امن اطلاعات</button><button type='button' class='btn btn-outline dist-open'>🔐 بازکردن پنل</button></div></div>";}).join("");host.onclick=function(e){var card=e.target.closest&&e.target.closest("[data-dist]");if(!card)return;var id=card.dataset.dist,d=ds[id];if(e.target.closest(".dist-save")){d.url=card.querySelector(".dist-url").value.trim();d.username=card.querySelector(".dist-user").value.trim();sessionStorage.setItem("distPass_"+id,card.querySelector(".dist-pass").value);save();v20Toast("✅ اطلاعات "+d.name+" ذخیره شد؛ رمز فقط در این نشست است.");}if(e.target.closest(".dist-open")){if(!d.url){alert("ابتدا آدرس پنل این پخش را ثبت کنید.");return;}window.open(d.url,"_blank","noopener");}};}
+  function renderDistributorCompanies(){var host=$("distributorCompanyGrid");if(!host)return;var ds=distStore();host.innerHTML=DIST_DEFS.map(function(x){var d=ds[x[0]],pass=sessionStorage.getItem("distPass_"+x[0])||"";return"<div class='v20-combo-card' data-dist='"+x[0]+"'><h4>🏢 "+x[1]+"</h4><div class='form-group'><label class='form-label'>آدرس پنل پخش</label><input class='form-input dist-url' value='"+esc(d.url)+"' placeholder='https://...'></div><div class='form-group'><label class='form-label'>نام کاربری</label><input class='form-input dist-user' value='"+esc(d.username)+"'></div><div class='form-group'><label class='form-label'>رمز ورود (فقط نشست جاری)</label><input type='password' class='form-input dist-pass' value='"+esc(pass)+"' autocomplete='new-password'></div><div style='display:flex;gap:7px;flex-wrap:wrap;margin-top:8px'><button type='button' class='btn btn-primary dist-save'>💾 ثبت امن اطلاعات</button><button type='button' class='btn btn-outline dist-open'>🔐 بازکردن پنل</button></div></div>";}).join("");host.onclick=function(e){var card=e.target.closest&&e.target.closest("[data-dist]");if(!card)return;var id=card.dataset.dist,d=ds[id];if(e.target.closest(".dist-save")){var safeUrl=card.querySelector(".dist-url").value.trim();if(safeUrl){try{var parsedUrl=new URL(safeUrl);if(parsedUrl.protocol!=="https:")throw Error("https only");safeUrl=parsedUrl.href;}catch(err){alert("برای امنیت دستگاه فقط آدرس معتبر https مجاز است.");return;}}d.url=safeUrl;d.username=card.querySelector(".dist-user").value.trim().replace(/[<>]/g,"");sessionStorage.setItem("distPass_"+id,card.querySelector(".dist-pass").value);save();v20Toast("✅ اطلاعات "+d.name+" ذخیره شد؛ رمز فقط در این نشست است.");}if(e.target.closest(".dist-open")){if(!d.url){alert("ابتدا آدرس پنل این پخش را ثبت کنید.");return;}window.open(d.url,"_blank","noopener");}};}
   function slashOnlyPersianDate(v){var original=String(v==null?"":v).trim(),raw=enDigits(original);if(/^1[34]\d{6}$/.test(raw))return raw.slice(0,4)+"/"+raw.slice(4,6)+"/"+raw.slice(6,8);var m=raw.match(/^(1[34]\d{2})[\/\-.](\d{1,2})[\/\-.](\d{1,2})$/);if(m)return m[1]+"/"+m[2].padStart(2,"0")+"/"+m[3].padStart(2,"0");return original;}
   function distLastDate(rows,headers,id){var ix=id==="daya"?13:(id==="shafaarad"?6:findDistIndex(headers,/تاریخ/,0)),list=rows||[];for(var i=list.length-1;i>=0;i--){var d=slashOnlyPersianDate(normalizeStoredRow(list[i])[ix]);if(/^1[34]\d{2}\//.test(d))return d;}return"—";}
   function renderDistributorActions(){var host=$("distributorActionGrid");if(!host)return;var ds=distStore();host.innerHTML=DIST_DEFS.map(function(x){var d=ds[x[0]];return"<div class='v20-combo-card' data-dist='"+x[0]+"'><h4>📦 "+x[1]+"</h4><div class='v20-mini'>آخرین تاریخ داروخانه: <b>"+esc((distLastDate(d.pharmacyRows,d.pharmacyHeaders,d.id)!=="—"?distLastDate(d.pharmacyRows,d.pharmacyHeaders,d.id):(d.pharmacyImports&&d.pharmacyImports[0]&&d.pharmacyImports[0].at?faDate(new Date(d.pharmacyImports[0].at)):"—")))+"</b></div><div class='v20-mini'>آخرین تاریخ موجودی: <b>"+esc((distLastDate(d.inventoryRows,d.inventoryHeaders,d.id)!=="—"?distLastDate(d.inventoryRows,d.inventoryHeaders,d.id):(d.inventoryImport&&d.inventoryImport.at?faDate(new Date(d.inventoryImport.at)):"—")))+"</b></div><div class='v20-card-tools' style='margin-top:8px'><button class='btn btn-outline dist-login'>🔐 ورود اطلاعات / پنل</button><label class='btn btn-primary btn-excel'>📊 ورود فایل داروخانه<input type='file' class='dist-ph-file' accept='.xlsx,.xls,.csv' hidden></label><label class='btn btn-primary btn-excel'>📦 ورود فایل موجودی<input type='file' class='dist-inv-file' accept='.xlsx,.xls,.csv' hidden></label></div></div>";}).join("");host.onclick=function(e){var c=e.target.closest&&e.target.closest("[data-dist]");if(!c)return;var d=ds[c.dataset.dist];if(e.target.closest(".dist-login")){if(!d.url)return alert("آدرس پنل را در تب اطلاعات شرکت‌ها ثبت کنید.");window.open(d.url,"_blank","noopener");}if(e.target.closest(".dist-view-ph"))showDistributorRaw(d,"pharmacy");if(e.target.closest(".dist-view-inv"))showDistributorRaw(d,"inventory");};Array.prototype.forEach.call(host.querySelectorAll(".dist-ph-file,.dist-inv-file"),function(inp){inp.onchange=function(){var c=inp.closest("[data-dist]"),kind=inp.classList.contains("dist-ph-file")?"pharmacy":"inventory";if(inp.files[0])importDistributorFile(c.dataset.dist,kind,inp.files[0]);inp.value="";};});}
@@ -34465,7 +34594,7 @@ button.v19-gps svg{display:block}
   function captureBulkState(){var S=st(),sc=S.snappCorporate||{},dc=S.distributorCompanies||{},dist={};Object.keys(dc).forEach(function(id){var d=dc[id]||{};dist[id]={pharmacyRows:d.pharmacyRows||[],pharmacyImports:d.pharmacyImports||[],inventoryRows:d.inventoryRows||[]};});return{snapp:{rows:sc.rows||[],topups:sc.topups||[],tripImports:sc.tripImports||[],topupImports:sc.topupImports||[]},distributors:dist,savedAt:Date.now()};}
   function hasBulk(b){return b&&((b.snapp&&((b.snapp.rows||[]).length||(b.snapp.topups||[]).length))||Object.keys(b.distributors||{}).some(function(id){var d=b.distributors[id];return(d.pharmacyRows||[]).length||(d.inventoryRows||[]).length;}));}
   function applyBulkState(b){if(!hasBulk(b))return false;var S=st();S.snappCorporate=S.snappCorporate||{};["rows","topups","tripImports","topupImports"].forEach(function(k){if((b.snapp[k]||[]).length)S.snappCorporate[k]=b.snapp[k];});S.distributorCompanies=S.distributorCompanies||{};Object.keys(b.distributors||{}).forEach(function(id){var to=S.distributorCompanies[id]||(S.distributorCompanies[id]={id:id}),from=b.distributors[id];["pharmacyRows","pharmacyImports","inventoryRows"].forEach(function(k){if((from[k]||[]).length)to[k]=from[k];});});return true;}
-  function saveBulkVault(){var data=captureBulkState(),local=window.indexedDB?bulkPut("bulk-v1",data).then(function(){return true;}).catch(function(){return false;}):Promise.resolve(false),remote=fetch("/api/bulk",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)}).then(function(r){return r.ok;}).catch(function(){return false;});return Promise.all([local,remote]).then(function(x){return x[0]||x[1];});}
+  function saveBulkVault(){var data=captureBulkState(),local=window.indexedDB?bulkPut("bulk-v1",data).then(function(){return true;}).catch(function(){return false;}):Promise.resolve(false),remote=fetch("/api/bulk",{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1"},body:JSON.stringify(data)}).then(function(r){return r.ok;}).catch(function(){return false;});return Promise.all([local,remote]).then(function(x){return x[0]||x[1];});}
   function paintHydratedBulk(message){try{saveState(false);}catch(e){}renderSnappCorporate();renderDistributorActions();renderDistributorDatabase();renderDistributorReport();invoiceStatusBaseCache=null;if(message)v20Toast(message);}
   function fetchServerBulk(){return fetch("/api/bulk",{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){return j&&j.status==="success"?j.data:null;}).catch(function(){return null;});}
   function initBulkVault(){var now=captureBulkState();if(hasBulk(now))return saveBulkVault().then(function(){window.__CRM_BULK_READY=true;return true;});var local=window.indexedDB?bulkGet("bulk-v1").catch(function(){return null;}):Promise.resolve(null);return local.then(function(b){if(hasBulk(b)){if(applyBulkState(b))paintHydratedBulk("✅ دیتابیس‌های اکسل از حافظه پایدار بازیابی شدند.");return b;}return fetchServerBulk().then(function(remote){if(hasBulk(remote)&&applyBulkState(remote)){paintHydratedBulk("✅ دیتابیس‌های اکسل از حافظه مشترک لینک برنامه بازیابی شدند.");if(window.indexedDB)return bulkPut("bulk-v1",remote).then(function(){return remote;});}return remote;});}).then(function(){window.__CRM_BULK_READY=true;return true;}).catch(function(){window.__CRM_BULK_READY=true;return false;});}
@@ -34520,6 +34649,7 @@ button.v19-gps svg{display:block}
     if (id === "tab-my-visit") setTimeout(refreshVisitCards, 60);
     if (id === "tab-rep-routes") setTimeout(renderV20Routes, 80);
     if (id === "tab-sales-targets") setTimeout(renderTargetsV20, 120);
+    if (id === "tab-troubleshooting") setTimeout(renderSecurityStatus, 60);
     setTimeout(function(){try{applyGlobalFieldOptions($(id)||document);restoreConfiguredFieldVisibility($(id));restoreDomFieldOrder();applyCentralPermissions();}catch(e){}},180);
   }
   function wrapSwitchTab() {
@@ -34587,7 +34717,7 @@ button.v19-gps svg{display:block}
   var v20InitDone=false;
   function init() {
     if(v20InitDone)return;if(!window.__CRM_ORIGIN_BOOTSTRAP_CHECKED){window.__CRM_ORIGIN_BOOTSTRAP_CHECKED=true;bootstrapEmptyOriginFromServer().then(function(reloaded){if(!reloaded)init();});return;}v20InitDone=true;
-    try { installLatinNumberLaw(); initBulkVault(); } catch (e) {}
+    try { installLatinNumberLaw(); installSafeBrowserGuards(); initBulkVault(); } catch (e) {}
     try { seedGreyDefaults(); } catch (e) {}
     try { wrapSwitchTab(); } catch (e) {}
     try { wrapListRenderers(); bindListOrderObserver(); } catch (e) {}
@@ -34633,7 +34763,7 @@ button.v19-gps svg{display:block}
   function reliableFeatureBoot(){try{setupSnappCorporate();applySnappVisibility();applyCentralPermissions();renderDistributorCompanies();setupDistributorSales();renderDistributorDatabase();if($("tab-distributor-invoice-status")&&$("tab-distributor-invoice-status").classList.contains("active"))setupInvoiceStatus();bindProductCrudV20();bindProductLabelFix();bindAddressFieldGuard();bindUserCrudV27();wrapListRenderers();bindListOrderObserver();restoreDomFieldOrder();}catch(e){try{console.error("reliable feature boot",e);}catch(x){}}}
   window.v20SetupSnappCorporate=reliableFeatureBoot;
   // اتصال هم‌زمان دکمه‌های فایل، مستقل از زمان loadState؛ عملیات واقعی هنگام انتخاب فایل state را می‌خواند.
-  try{installLatinNumberLaw();bindOriginSaveGate();bindManagerLayoutIntent();wrapFormLayoutMirror();wrapAllLegacyLayouts();bindSnappImportButtons();bindProductCrudV20();bindSafeOrderControls();}catch(e){}
+  try{installLatinNumberLaw();installSafeBrowserGuards();bindOriginSaveGate();bindManagerLayoutIntent();wrapFormLayoutMirror();wrapAllLegacyLayouts();bindSnappImportButtons();bindProductCrudV20();bindSafeOrderControls();}catch(e){}
   document.addEventListener("click",function(e){var n=e.target&&e.target.closest&&e.target.closest('[data-target],[data-side-target]');if(!n)return;var id=n.getAttribute('data-target')||n.getAttribute('data-side-target');if(id==='tab-snapp-corporate'||id==='tab-distributor-sales'||id==='tab-distributor-invoice-status'||id==='tab-distributor-database'||id==='tab-columns-products'||id==='tab-users-permissions')setTimeout(reliableFeatureBoot,0);},true);
   window.addEventListener("load",function(){setTimeout(init,60);});
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { setTimeout(init,60); });
@@ -36828,7 +36958,7 @@ button.v19-gps svg{display:block}
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.31.0",key="CRM_ASSET_BUILD";document.documentElement.classList.add("crm-booting");
+      var BUILD="11.32.0",key="CRM_ASSET_BUILD";document.documentElement.classList.add("crm-booting");
       if(sessionStorage.getItem("crmLoggedIn")!=="1"){location.replace("/login?build="+BUILD);return;}
       var old="";try{old=localStorage.getItem(key)||"";}catch(e){}
       if(old!==BUILD){
@@ -36853,7 +36983,7 @@ button.v19-gps svg{display:block}
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.31.0" />
+  <link rel="stylesheet" href="style.css?v=11.32.0" />
 </head>
 <body>
 
@@ -39031,22 +39161,22 @@ button.v19-gps svg{display:block}
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.31.0"></script>
-  <script src="crm-app.js?v=11.31.0"></script>
-  <script src="crm-features-v9.js?v=11.31.0"></script>
-  <script src="iran-facilities.js?v=11.31.0" defer></script>
-  <script src="crm-features-v10.js?v=11.31.0"></script>
-  <script src="crm-features-v11.js?v=11.31.0"></script>
-  <script src="crm-features-v12.js?v=11.31.0"></script>
-  <script src="crm-features-v13.js?v=11.31.0"></script>
-  <script src="crm-jalali.js?v=11.31.0"></script>
-  <script src="crm-features-v14.js?v=11.31.0"></script>
-  <script src="crm-features-v15.js?v=11.31.0"></script>
-  <script src="crm-features-v16.js?v=11.31.0"></script>
-  <script src="crm-features-v17.js?v=11.31.0"></script>
-  <script src="crm-features-v18.js?v=11.31.0"></script>
-  <script src="crm-features-v19.js?v=11.31.0"></script>
-  <script src="crm-features-v20.js?v=11.31.0"></script>
+  <script src="crm-data.js?v=11.32.0"></script>
+  <script src="crm-app.js?v=11.32.0"></script>
+  <script src="crm-features-v9.js?v=11.32.0"></script>
+  <script src="iran-facilities.js?v=11.32.0" defer></script>
+  <script src="crm-features-v10.js?v=11.32.0"></script>
+  <script src="crm-features-v11.js?v=11.32.0"></script>
+  <script src="crm-features-v12.js?v=11.32.0"></script>
+  <script src="crm-features-v13.js?v=11.32.0"></script>
+  <script src="crm-jalali.js?v=11.32.0"></script>
+  <script src="crm-features-v14.js?v=11.32.0"></script>
+  <script src="crm-features-v15.js?v=11.32.0"></script>
+  <script src="crm-features-v16.js?v=11.32.0"></script>
+  <script src="crm-features-v17.js?v=11.32.0"></script>
+  <script src="crm-features-v18.js?v=11.32.0"></script>
+  <script src="crm-features-v19.js?v=11.32.0"></script>
+  <script src="crm-features-v20.js?v=11.32.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
@@ -42073,7 +42203,7 @@ self.addEventListener("fetch", (event) => {
 فایل: public/sw.js (1588 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
-const CACHE = "ttt-v11.31.0";
+const CACHE = "ttt-v11.32.0";
 const PRECACHE = ["/", "/login", "/favicon.png", "/logo.png", "/vendor/leaflet.js", "/vendor/leaflet.css"];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(PRECACHE).catch(function () {}); }).then(function () { return self.skipWaiting(); }));
@@ -67486,7 +67616,7 @@ export function createZip(entries: ZipEntry[], modified = new Date()): Buffer {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/app-smoke.test.mjs (3816 بایت)
+فایل: tests/app-smoke.test.mjs (4304 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 import test from 'node:test';
@@ -67519,6 +67649,9 @@ test('automated app entry loads health, HTML, all scripts and critical UI', asyn
   const pageRes = await fetch(base + '/');
   assert.equal(pageRes.status, 200);
   assert.match(pageRes.headers.get('cache-control') || '', /no-store/);
+  assert.match(pageRes.headers.get('content-security-policy') || '', /object-src 'none'/);
+  assert.match(pageRes.headers.get('permissions-policy') || '', /camera=\(\).*microphone=\(\)/);
+  assert.equal(pageRes.headers.get('access-control-allow-origin'), null);
   const html = await pageRes.text();
   for (const id of ['tab-dashboard','tab-orders','tab-snapp-corporate','tab-distributor-companies','tab-distributor-sales','tab-distributor-database','btnToggleSideMenu','snappTripModeYear','snappTopupModeYear','btnBuildDistributorReport','tab-distributor-invoice-status','invoiceStatusBody','invoiceStatusSearch','productCode','btnImportSnappTrips','btnImportSnappTopups']) {
     assert.match(html, new RegExp(`id=["']${id}["']`), `missing critical UI #${id}`);
@@ -67535,7 +67668,9 @@ test('automated app entry loads health, HTML, all scripts and critical UI', asyn
 test('state API round-trip preserves unrelated sentinel data', async () => {
   const base = `http://127.0.0.1:${port}`;
   const sentinel = { _lastSavedAt: 42, users: [{ id:'sentinel-user', fullName:'اطلاعات قدیمی' }], formFieldMeta: { order: { sentinel: { order: 99 } } } };
-  const post = await fetch(base + '/api/state', { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify(sentinel) });
+  const rejected = await fetch(base + '/api/state', { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify(sentinel) });
+  assert.equal(rejected.status, 403);
+  const post = await fetch(base + '/api/state', { method:'POST', headers:{'content-type':'application/json','x-crm-request':'1'}, body:JSON.stringify(sentinel) });
   assert.equal(post.status, 200);
   const get = await fetch(base + '/api/state');
   const body = await get.json();
@@ -67546,7 +67681,7 @@ test('state API round-trip preserves unrelated sentinel data', async () => {
 test('bulk API round-trip preserves imported Excel vault for a new program link', async () => {
   const base = `http://127.0.0.1:${port}`;
   const bulk = { savedAt: 7, snapp: { rows:[['trip-sentinel']], topups:[], tripImports:[], topupImports:[] }, distributors: { daya: { pharmacyRows:[['invoice-sentinel']], pharmacyImports:[], inventoryRows:[] } } };
-  const post = await fetch(base + '/api/bulk', { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify(bulk) });
+  const post = await fetch(base + '/api/bulk', { method:'POST', headers:{'content-type':'application/json','x-crm-request':'1'}, body:JSON.stringify(bulk) });
   assert.equal(post.status, 200);
   const get = await fetch(base + '/api/bulk');
   assert.equal(get.status, 200);
@@ -67557,7 +67692,7 @@ test('bulk API round-trip preserves imported Excel vault for a new program link'
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/state-preservation.test.mjs (19967 بایت)
+فایل: tests/state-preservation.test.mjs (19996 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 import test from 'node:test';
@@ -67725,7 +67860,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /seen\[rowSignature\(r\)\]/);
   assert.match(v20Source, /d\.pharmacyRows=d\.pharmacyRows\.concat\(fresh\)/);
   assert.match(v20Source, /function bindSnappImportButtons/);
-  assert.match(v20Source, /try\{installLatinNumberLaw\(\);bindOriginSaveGate\(\);bindManagerLayoutIntent\(\);wrapFormLayoutMirror\(\);wrapAllLegacyLayouts\(\);bindSnappImportButtons\(\);bindProductCrudV20\(\);bindSafeOrderControls\(\);\}/, 'Latin-number law, critical buttons and all startup layout guards must bind synchronously');
+  assert.match(v20Source, /try\{installLatinNumberLaw\(\);installSafeBrowserGuards\(\);bindOriginSaveGate\(\);bindManagerLayoutIntent\(\);wrapFormLayoutMirror\(\);wrapAllLegacyLayouts\(\);bindSnappImportButtons\(\);bindProductCrudV20\(\);bindSafeOrderControls\(\);\}/, 'Latin-number law, critical buttons and all startup layout guards must bind synchronously');
   assert.match(v20Source, /contenteditable='true'/);
   assert.match(v20Source, /arc-save/);
   assert.match(v20Source, /raw-save/);
@@ -67775,7 +67910,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/version-11.24-regressions.test.mjs (23620 بایت)
+فایل: tests/version-11.24-regressions.test.mjs (24763 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 import test from 'node:test';
@@ -68007,12 +68142,12 @@ test('empty new origin safely bootstraps shared state and bulk data without over
 
 test('distributor Excel writes Persian month name while keeping all digits Latin', () => {
   const ctx={result:null,enDigits:v=>String(v),distFilter:()=>({mode:'month',year:'1405',month:'05'})};vm.createContext(ctx);vm.runInContext(`${extract('jalaliMonthName')};${extract('periodRows')};result=periodRows()`,ctx);assert.deepEqual(JSON.parse(JSON.stringify(ctx.result)),[['سال','1405'],['ماه','مرداد']]);
-  assert.match(v20,/installLatinNumberLaw\(\);bindOriginSaveGate\(\);bindManagerLayoutIntent/);
+  assert.match(v20,/installLatinNumberLaw\(\);installSafeBrowserGuards\(\);bindOriginSaveGate\(\);bindManagerLayoutIntent/);
   assert.match(v20,/Date\.prototype\[name\]=function\(\)/);
 });
 
 test('new build clears only old asset caches before revealing app and prevents manager-screen flash', () => {
-  assert.match(html,/var BUILD="11\.31\.0",key="CRM_ASSET_BUILD"/);
+  assert.match(html,/var BUILD="11\.32\.0",key="CRM_ASSET_BUILD"/);
   assert.match(html,/document\.documentElement\.classList\.add\("crm-booting"\)/);
   assert.match(html,/caches\.keys\(\).*caches\.delete/);
   assert.match(html,/navigator\.serviceWorker\.getRegistrations\(\).*unregister/);
@@ -68024,8 +68159,19 @@ test('new build clears only old asset caches before revealing app and prevents m
   assert.match(sw,/purgeOldCaches/);
 });
 
+test('security hardening blocks dangerous device APIs, cross-origin writes, executables and formula injection', () => {
+  assert.match(server,/Content-Security-Policy/);assert.match(server,/object-src 'none'/);assert.match(server,/Permissions-Policy/);
+  for(const denied of ['camera=()','microphone=()','usb=()','serial=()','hid=()','bluetooth=()','payment=()']) assert.ok(server.includes(denied),`missing ${denied}`);
+  assert.doesNotMatch(server,/Access-Control-Allow-Origin.*\*/);
+  assert.match(server,/function trustedWriteRequest/);assert.match(server,/x-crm-request/);assert.match(server,/untrusted write request/);
+  assert.match(server,/function sanitizeJsonValue/);assert.match(server,/__proto__/);assert.match(server,/function writeJsonAtomic/);assert.match(server,/mode: 0o600/);
+  assert.match(v20,/function installSafeBrowserGuards/);assert.match(v20,/exe\|msi\|apk\|bat\|cmd/);assert.match(v20,/32\*1024\*1024/);assert.match(v20,/javascript\|data\|file\|vbscript/);
+  assert.match(v20,/noopener,noreferrer/);assert.match(v20,/function renderSecurityStatus/);
+  assert.match(v11,/\^\[=\+@\]/);
+});
+
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.31\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.32\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
@@ -68047,4 +68193,4 @@ test('GPS quality rule remains stable and full address parts stay Iran-first wit
 ~~~~~~~~
 
 
-— پایان chat.arena نسخه ۱.۴۷ (نسخه برنامه 11.31.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —
+— پایان chat.arena نسخه ۱.۴۸ (نسخه برنامه 11.32.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —

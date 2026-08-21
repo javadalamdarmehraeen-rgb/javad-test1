@@ -594,7 +594,7 @@ PERMISSION_GROUPS = {
     { key: "sys_install", label: "مشاهده راهنمای نصب" }, { key: "sys_auto_pwa_control", label: "فعال‌سازی PWA" }, { key: "sys_mobile_all_orientations", label: "نمای کامل موبایل در حالت افقی و عمودی" }, { key: "sys_cross_link_state", label: "بازیابی امن اطلاعات در لینک جدید برنامه" }
   ],
   "عیب‌یابی": [
-    { key: "sys_diag", label: "مشاهده عیب‌یابی" }, { key: "sys_runtime_console_guard", label: "مشاهده وضعیت اجرای برنامه" }, { key: "sys_automated_app_test", label: "اجرای بررسی خودکار" }
+    { key: "sys_diag", label: "مشاهده عیب‌یابی" }, { key: "sys_runtime_console_guard", label: "مشاهده وضعیت اجرای برنامه" }, { key: "sys_automated_app_test", label: "اجرای بررسی خودکار" }, { key: "sys_security_headers", label: "محافظت امنیتی مرورگر و سیستم‌عامل" }, { key: "sys_safe_file_guard", label: "مسدودسازی فایل اجرایی و فایل حجیم" }, { key: "sys_safe_navigation", label: "مسدودسازی لینک و پروتکل خطرناک" }
   ]
 };
 

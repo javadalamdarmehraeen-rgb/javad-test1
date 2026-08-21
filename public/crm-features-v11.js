@@ -144,8 +144,9 @@
 
   function downloadExcelBordered(filename, headers, rows) {
     var esc = function (v) {
-      return String(v == null ? "" : v)
-        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      var text=String(v == null ? "" : v);
+      if (/^[=+@]/.test(text) || (/^-[^0-9]/.test(text))) text="'"+text;
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     };
     var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"></head><body>';
     html += '<table border="1" cellspacing="0" cellpadding="4" style="border-collapse:collapse;border:1px solid #000">';

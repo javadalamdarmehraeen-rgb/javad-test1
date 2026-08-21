@@ -49,7 +49,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.47 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.31.0
+نسخه این فایل: 1.48 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.32.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -3345,6 +3345,13 @@ git push gitlab main
 🤖 دستیار:
 نسخه **۱۱.۳۱.۰** ساخته شد. Head build gate فقط CacheStorage/SW قدیمی را پیش از render پاک و با query یک‌بار reload می‌کند؛ داده محلی هرگز پاک نمی‌شود. body تا central permission مخفی و admin flash حذف است. Server/SW no-store assets دارند. invoice shell pinned باقی است. Mobile order grid سه‌ردیفی با action 40px، clear max130px، hamburger 44px و landscape drawer دارد. Android نشان/بلد package intent و iOS/web universal directions دارند. users مرجع واحد reps شده؛ حذف/افزودن و selector self-only همگام است. مدیر province/city/district route را ذخیره و کنار نام می‌بیند. Cross-link state/bulk از نسخه قبل حفظ است. ۴۴ تست موفق؛ دستگاه واقعی و Persistent Disk در انتظار تأیید است.
 
+──────────────────────────────── نوبت ۵۳ ────────────────────────────────
+🧑 کاربر:
+«می‌خوام برنامه را از نظر امنیتی فوق‌العاده بالا ببری تا به سیستم‌عامل و بقیه اطلاعات ویندوز، Android یا iOS آسیب نزند و در کار سیستم یا گوشی خلل ایجاد نکند.»
+
+🤖 دستیار:
+نسخه **۱۱.۳۲.۰** با دفاع چندلایه ساخته شد: CSP/HSTS/nosniff/strict referrer/COOP/CORP و Permissions Policy که همه device APIها جز geolocation self را می‌بندد؛ wildcard CORS حذف و POSTها same-origin + X-CRM-Request شدند. JSON ضد prototype pollution sanitize و atomic mode0600 write می‌شود. Browser guard فایل اجرایی/installer/script و بیش از 32MB، unsafe protocols، opener، خطر drag/drop و control/HTML chars را می‌بندد. Excel formula injection و URL غیر-HTTPS پخش مسدود است. کادر وضعیت امنیت در عیب‌یابی افزوده شد. ۴۵ تست موفق. با صداقت: هیچ وب‌اپی تضمین مطلق علیه نقص مرورگر/OS نمی‌دهد؛ این لایه‌های تأییدشده باید با HTTPS، Persistent Disk و ممیزی نفوذ مستقل تکمیل شوند.
+
 """
 
 FILES_INTRO = """
@@ -3381,7 +3388,7 @@ def build():
         out.append("~~~~~~~~" + lang)
         out.append(content.rstrip("\n"))
         out.append("~~~~~~~~")
-    out.append("\n\n— پایان chat.arena نسخه ۱.۴۷ (نسخه برنامه 11.31.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
+    out.append("\n\n— پایان chat.arena نسخه ۱.۴۸ (نسخه برنامه 11.32.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
     with open(OUT, "w", encoding="utf-8") as f:
         f.write("\n".join(out))
     print("chat.arena written:", os.path.getsize(OUT), "bytes,", len(text_files), "text files embedded,", len(bin_files), "binary files listed")
