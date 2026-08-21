@@ -1529,3 +1529,14 @@ product first, then each representative, with achieved and remaining values. Ope
 reference fields (representative, year, month, province, city, district, pharmacy name) never
 show instant-add; only manager additions can mutate their options. Removed users are omitted
 from rendered history, and post-placement pharmacy duplicate notices remain hidden.
+
+# 86. ITEMIZED REAL-APPLICATION ACCEPTANCE RULE (PERMANENT)
+
+Every multipart user prompt must be decomposed into an explicit persisted checklist. Each
+item requires a real source change plus a targeted test or runtime observation; descriptive
+text alone never counts. Before ZIP and end-of-chat, load the served application in a
+browser-like runtime, execute its actual script chain, enter/switch relevant tabs, exercise
+critical interactions, record errors and only mark verified items confirmed. Canonical menu
+sources must be runtime-compared to static panes. Notification public-recipient permission,
+reply threads and Web Push remain permanent. Web Push may request permission only by user
+action and audible sound always follows OS/browser settings; never falsely guarantee sound.

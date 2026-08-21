@@ -4,6 +4,7 @@
 .github/workflows/keep_alive.yml
 .gitignore
 .gitlab-ci.yml
+AI_ACCEPTANCE_CHECKLIST.md
 AI_ARCHITECTURE.md
 AI_DECISION_LOG.md
 AI_PROJECT_CONTEXT.md

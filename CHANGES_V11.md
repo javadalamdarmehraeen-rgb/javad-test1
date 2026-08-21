@@ -595,3 +595,15 @@ CLEAN_EXTRA_FILES.bat و بعد PUSH_GITHUB_CLEAN.bat را اجرا کن.
 10. افزودن لحظه‌ای گزینه برای نماینده علمی، سال، ماه، استان، شهر، منطقه و نام داروخانه در فرم‌ها مسدود شد؛ تغییر گزینه‌های مرجع فقط از مدیر افزودن‌ها ممکن است.
 11. پس از جایگذاری داروخانه در سفارش، dataset ثابت و observer مانع بازگشت پیام «قبلاً ثبت شده — انتخاب» و کادر انتخاب قبلی می‌شود؛ با تغییر واقعی نام، قفل برداشته می‌شود.
 12. privacyList حتی برای مدیر، رکوردهای نمایندگانی را که دیگر در users فعال نیستند از نمای گزارش حذف می‌کند؛ تاریخچه canonical پاک نمی‌شود.
+
+# نسخه ۱۱.۳۵.۰
+
+1. قانون جدید تحویل چندبخشی با فایل `AI_ACCEPTANCE_CHECKLIST.md` پیاده شد: هر بند درخواست، تغییر واقعی، تست، وضعیت و runtime check پیش از ZIP ثبت می‌شود.
+2. علت واقعی ناپدیدشدن تب فاکتور در اجرای JSDOM پیدا شد: `setupNavigationMenu` منو را از `MENU_SECTIONS_LIST` بازسازی می‌کرد و این لیست فقط ۲۷ تب داشت؛ invoice-status به منبع اصلی منو اضافه و runtime تعداد ۲۸ تب را تأیید کرد.
+3. اعلان عمومی فقط برای مدیر یا کاربر دارای `notify_all_users=true` در گیرنده‌ها دیده می‌شود؛ فهرست گیرنده‌ها idempotent است تا global option engine آن را برنگرداند.
+4. پیام‌ها threadId/parentId دارند؛ کلید پاسخ و تاریخچه کنار هر پیام اضافه شد و کل رفت‌وبرگشت sender→recipient با تاریخ حفظ می‌شود.
+5. Web Push بدون dependency اضافه پیاده شد: VAPID P-256 خودکار، AES128GCM encryption، subscription persistence، send endpoint، stale cleanup و Service Worker push/notificationclick.
+6. کلید «فعال‌سازی اعلان صدادار دستگاه» اضافه شد؛ با اجازه کاربر، اعلان با vibration/renotify/requireInteraction حتی در حالت بسته بودن PWA از Push Service دریافت می‌شود. صدا تابع تنظیمات سیستم‌عامل است.
+7. قفل سفیدشدن سفارش رفع شد: MutationObserver پیام داروخانه فقط در صورت تغییر واقعی style/hidden می‌نویسد و دیگر روی mutation خودش حلقه بی‌نهایت نمی‌سازد.
+8. فیلد نماینده در پروفایل کاربر عادی به select تک‌گزینه‌ای disabled با ظاهر ساده و نام ثابت تبدیل شد؛ افزودن گزینه مرجع همچنان ممنوع است.
+9. Runtime validation واقعی JSDOM همه اسکریپت‌ها را از سرور بارگذاری کرد و invoice، target، محاسبه order total، permission public option، reply/history و نبود خطای runtime را تأیید کرد.

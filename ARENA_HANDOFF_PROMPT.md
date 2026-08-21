@@ -1283,3 +1283,10 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Reference instant-add is forbidden for rep/year/month/province/city/district/pharmacy-name outside manager additions.
 - Keep leave form repair and rep-home edit/delete.
 - After pharmacy placement, old duplicate/selection notices must stay hidden until user actually changes pharmacy name.
+## افزونه تحویل نسخه ۱۱.۳۵.۰
+- For every long/multipart prompt, update AI_ACCEPTANCE_CHECKLIST item-by-item and run browser-like runtime validation before ZIP.
+- Canonical MENU_SECTIONS_LIST must stay aligned with all 28 static tabs; invoice-status must never be omitted during menu rebuild.
+- Preserve notification permission filtering, thread reply/history and idempotent recipient sync.
+- Preserve zero-dependency Web Push VAPID/aes128gcm endpoints and SW push/click. Never promise forced sound; OS settings decide audio.
+- MutationObservers must never unconditionally rewrite their own observed attributes.
+- Normal representative reference selects remain one fixed disabled self value.

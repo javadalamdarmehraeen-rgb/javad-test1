@@ -1189,3 +1189,9 @@ Then change only what is requested.
 - Report aggregation uses canonical current product prices and computes target, achieved, remain, distributor total and pharmacy total.
 - Operational reference fields cannot mutate master options through instant-add.
 - Pharmacy placement notice guard is dataset+MutationObserver based.
+## معماری افزوده v11.35.0 — Runtime acceptance / Web Push
+- Delivery gate: itemized checklist + unit/static tests + HTTP smoke + browser-like runtime execution.
+- Canonical navigation source must include every static pane; dynamic menu rebuild is runtime-validated against expected 28 IDs.
+- Notification schema: id, threadId, parentId, sender, recipient, title, message, date, isRead.
+- Push server: generated persistent P-256 VAPID key, subscription registry keyed endpoint/user, RFC8291 aes128gcm payload, ES256 VAPID JWT and stale endpoint pruning.
+- Push client: permission gesture, PushManager subscription, user association, send endpoint; SW handles push and notification click.

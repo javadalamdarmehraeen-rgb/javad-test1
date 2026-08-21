@@ -14,6 +14,7 @@ const v19 = read('../public/crm-features-v19.js');
 const sw = read('../public/sw.js');
 const server = read('../server.js');
 const gitignore = read('../.gitignore');
+const acceptance = read('../AI_ACCEPTANCE_CHECKLIST.md');
 
 function extract(name) {
   const start=v20.indexOf(`function ${name}(`), brace=v20.indexOf('{',start);let depth=0,end=brace;
@@ -272,8 +273,41 @@ test('leave markup, home edit/delete and protected reference fields follow final
   assert.match(v20,/style\.setProperty\("display","none","important"\)/);
 });
 
+test('multi-part prompts require a real acceptance checklist before ZIP delivery', () => {
+  assert.match(acceptance,/پیام کاربر به بندهای مستقل شکسته شود/);
+  assert.match(acceptance,/توضیح متنی بدون تغییر کد «انجام‌شده» نیست/);
+  assert.match(acceptance,/runtime check/);
+  assert.match(acceptance,/نسخه 11\.35\.0/);
+});
+
+test('notifications enforce public-recipient permission, replies and persistent thread history', () => {
+  for(const fn of ['syncNotificationRecipients','setupNotificationCenterV35','renderNotificationsV35','replyNotificationV35','showNotificationThreadV35','sendPushForNotification','enableDeviceNotifications']) assert.match(v20,new RegExp(`function ${fn}\\(`));
+  assert.match(v20,/perms\.notify_all_users===true/);
+  assert.match(v20,/threadId:parent\.threadId\|\|parent\.id/);
+  assert.match(v20,/parentId:parent\.id/);
+  assert.match(v20,/تاریخچه پیام/);
+  assert.match(v20,/btnEnableDeviceNotifications/);
+  assert.match(data,/notify_reply/);assert.match(data,/notify_device_push/);
+});
+
+test('Web Push works through persisted VAPID/subscriptions and service-worker background notifications', () => {
+  for(const fn of ['getVapidKeys','encryptWebPush','vapidAuthorization','sendWebPush']) assert.match(server,new RegExp(`function ${fn}\\(`));
+  assert.match(server,/\/api\/push\/public-key/);assert.match(server,/\/api\/push\/subscribe/);assert.match(server,/\/api\/push\/send/);
+  assert.match(server,/Content-Encoding":"aes128gcm/);assert.match(server,/Urgency:"high"/);
+  assert.match(sw,/addEventListener\("push"/);assert.match(sw,/showNotification/);assert.match(sw,/vibrate:\[220,100,220,100,320\]/);assert.match(sw,/notificationclick/);
+  assert.match(gitignore,/push-subscriptions\.json/);assert.match(gitignore,/push-vapid\.json/);
+});
+
+test('placed pharmacy notice guard is loop-safe and home representative stays reference-protected', () => {
+  assert.match(v20,/getPropertyValue\("display"\)!=="none"/);
+  assert.match(v20,/getPropertyPriority\("display"\)!=="important"/);
+  assert.match(v20,/bindPlacedPharmacyNoticeGuard/);
+  assert.match(v19,/PharmacyName/);assert.match(v19,/نماینده علمی/);
+  assert.match(v20,/v35-fixed-rep/);assert.match(v20,/sel\.disabled=!allowAll/);
+});
+
 test('new build clears only old asset caches before revealing app and prevents manager-screen flash', () => {
-  assert.match(html,/var BUILD="11\.34\.0",key="CRM_ASSET_BUILD"/);
+  assert.match(html,/var BUILD="11\.35\.0",key="CRM_ASSET_BUILD"/);
   assert.match(html,/document\.documentElement\.classList\.add\("crm-booting"\)/);
   assert.match(html,/caches\.keys\(\).*caches\.delete/);
   assert.match(html,/navigator\.serviceWorker\.getRegistrations\(\).*unregister/);
@@ -297,7 +331,7 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.34\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.35\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);

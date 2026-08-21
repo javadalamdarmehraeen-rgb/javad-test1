@@ -1546,3 +1546,10 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - Reports are period-filtered, first all-rep per product then per-rep, with achieved/remain and financial totals.
 - Reference field instant-add is disabled in operational forms; manager additions remain the only mutation path.
 - Removed-user activity records remain stored but are excluded from every rendered privacy projection.
+## تصمیم ۸۸ — نسخه ۱۱.۳۵.۰: acceptance-by-runtime و Web Push threads (2026-08-21)
+- Long prompts now require a persisted itemized acceptance checklist; prose without source diff/test is never complete.
+- Runtime JSDOM exposed the actual invoice-tab root cause: static HTML was correct but setupNavigationMenu rebuilt from a 27-item canonical list. Fixing canonical MENU_SECTIONS_LIST—not another visibility patch—resolved it.
+- Notifications are conversation threads with permission-aware recipients and persisted reply chain.
+- Standards Web Push is implemented zero-dependency with persisted VAPID/subscriptions, RFC8291 aes128gcm and OS service-worker notification lifecycle.
+- Device sound cannot be forced by a web app; high urgency, vibration and renotify are sent, while audible behavior follows OS/PWA notification settings.
+- Mutation guards must be idempotent; observers cannot write the same observed attribute unconditionally.

@@ -564,7 +564,7 @@ PERMISSION_GROUPS = {
     { key: "hr_leave_req", label: "ثبت درخواست مرخصی" }, { key: "hr_all_leaves", label: "مشاهده همه مرخصی‌ها" }, { key: "hr_leave_approve", label: "تأیید یا رد مرخصی" }, { key: "hr_leave_excel", label: "خروجی اکسل" }
   ],
   "اعلان‌ها": [
-    { key: "notify_access", label: "مشاهده اعلان‌ها" }, { key: "sys_notify", label: "ارسال اعلان" }, { key: "notify_all_users", label: "ارسال به همه کاربران" }
+    { key: "notify_access", label: "مشاهده اعلان‌ها" }, { key: "sys_notify", label: "ارسال اعلان" }, { key: "notify_all_users", label: "ارسال به همه کاربران" }, { key: "notify_reply", label: "پاسخ و تاریخچه پیام" }, { key: "notify_device_push", label: "اعلان صدادار دستگاه در پس‌زمینه" }
   ],
   "گزارش ماهانه": [
     { key: "rep_monthly", label: "مشاهده گزارش ماهانه" }, { key: "rep_all_reports", label: "مشاهده گزارش همه نمایندگان" }, { key: "rep_item_sales", label: "گزارش فروش کالا" }, { key: "rep_excel", label: "خروجی اکسل" }

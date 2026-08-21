@@ -1450,3 +1450,15 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] حذف نماینده غیرفعال از نمایش فعالیت
 - [x] ۴۹/۴۹ تست
 - [ ] تأیید UI واقعی target matrix و multi-select توسط کاربر
+## ۷۶) نسخه ۱۱.۳۵.۰
+- [x] فایل acceptance checklist دائمی و OFFICIAL_FILELIST
+- [x] runtime ورود/اجرای واقعی همه اسکریپت‌ها با JSDOM
+- [x] کشف root cause منوی ۲۷تبی و افزودن invoice به MENU_SECTIONS_LIST
+- [x] اعلان عمومی وابسته به notify_all_users
+- [x] پاسخ و تاریخچه thread پیام‌ها
+- [x] Web Push VAPID/AES128GCM/subscribe/send/SW click
+- [x] کلید فعال‌سازی اعلان دستگاه
+- [x] رفع حلقه observer و سفیدشدن جایگذاری داروخانه
+- [x] نماینده ثابت self-only با ظاهر ساده در منزل/پروفایل
+- [x] ۵۴/۵۴ تست فعلی + runtime صفر خطا (پیش از ZIP دوباره اجرا شود)
+- [ ] تأیید Push واقعی روی Android/iOS/Windows با اجازه Notification و Persistent Disk

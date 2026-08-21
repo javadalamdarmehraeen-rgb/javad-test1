@@ -43,6 +43,8 @@ node_modules/
 server-db.json
 user-data.json
 user-bulk-data.json
+push-subscriptions.json
+push-vapid.json
 *.zip
 .arena/
 

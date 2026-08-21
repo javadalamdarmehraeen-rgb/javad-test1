@@ -36,6 +36,7 @@ const MENU_SECTIONS_LIST = [
   { id: "tab-snapp-corporate", label: "اسنپ سازمانی", icon: "🚕" },
   { id: "tab-distributor-companies", label: "اطلاعات شرکت‌ها", icon: "🏢" },
   { id: "tab-distributor-sales", label: "اطلاعات فروش پخش‌ها", icon: "📦" },
+  { id: "tab-distributor-invoice-status", label: "وضعیت فاکتور پخش‌ها", icon: "🧾" },
   { id: "tab-distributor-database", label: "دیتابیس پخش‌ها", icon: "🗄️" },
   { id: "tab-search-info", label: "جستجوی اطلاعات", icon: "🔍" },
   { id: "tab-rep-routes", label: "رصد تردد", icon: "🛣️" },
@@ -2965,7 +2966,7 @@ function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.34.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.35.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;

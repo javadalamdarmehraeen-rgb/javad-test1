@@ -211,6 +211,13 @@ self.addEventListener("push", (event) => {
   );
 });
 /* ----------------   ---------------- */
+self.addEventListener("push", (e) => {
+  let data={};try{data=e.data?e.data.json():{};}catch{data={body:e.data?e.data.text():"پیام جدید"};}
+  e.waitUntil(self.registration.showNotification(data.title||"پیام جدید CRM",{body:data.body||"",icon:"/logo.png",badge:"/favicon.png",tag:data.tag||"crm-message",renotify:true,vibrate:[220,100,220,100,320],requireInteraction:true,data:{url:data.url||"/panel#tab-notifications"}}));
+});
+self.addEventListener("notificationclick", (e) => {
+  e.notification.close();const url=e.notification.data?.url||"/panel#tab-notifications";e.waitUntil(clients.matchAll({type:"window",includeUncontrolled:true}).then((list)=>{const c=list[0];return c?(c.navigate(url),c.focus()):clients.openWindow(url);}));
+});
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   const url = new URL(req.url);

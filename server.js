@@ -13,6 +13,8 @@ const USER_BULK_PATH = path.join(RUNTIME_DATA_DIR, "user-bulk-data.json");
 const LEGACY_DATA_PATH = path.join(__dirname, "server-db.json");
 const ROOT_USER_DATA_PATH = path.join(__dirname, "user-data.json");
 const ROOT_BULK_DATA_PATH = path.join(__dirname, "user-bulk-data.json");
+const PUSH_SUBSCRIPTIONS_PATH = path.join(RUNTIME_DATA_DIR, "push-subscriptions.json");
+const VAPID_KEYS_PATH = path.join(RUNTIME_DATA_DIR, "push-vapid.json");
 if (!fs.existsSync(SERVER_DATA_PATH) && fs.existsSync(ROOT_USER_DATA_PATH) && ROOT_USER_DATA_PATH !== SERVER_DATA_PATH) {
   try { fs.copyFileSync(ROOT_USER_DATA_PATH, SERVER_DATA_PATH); } catch (e) {}
 }
@@ -83,6 +85,21 @@ function writeJsonAtomic(filePath, data) {
 function readJsonSafe(filePath) {
   try { return sanitizeJsonValue(JSON.parse(fs.readFileSync(filePath, "utf8"))); } catch (e) { return null; }
 }
+function b64url(input) { return Buffer.from(input).toString("base64").replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_"); }
+function fromB64url(input) { const s=String(input||"").replace(/-/g,"+").replace(/_/g,"/");return Buffer.from(s+"=".repeat((4-s.length%4)%4),"base64"); }
+function getVapidKeys() {
+  let keys=readJsonSafe(VAPID_KEYS_PATH);if(keys&&keys.publicKey&&keys.privateKey)return keys;
+  const ecdh=crypto.createECDH("prime256v1");ecdh.generateKeys();keys={publicKey:b64url(ecdh.getPublicKey()),privateKey:b64url(ecdh.getPrivateKey())};writeJsonAtomic(VAPID_KEYS_PATH,keys);return keys;
+}
+function hkdfExpand(prk, info, length) { let out=Buffer.alloc(0),prev=Buffer.alloc(0),i=1;while(out.length<length){prev=crypto.createHmac("sha256",prk).update(Buffer.concat([prev,Buffer.from(info),Buffer.from([i++])])).digest();out=Buffer.concat([out,prev]);}return out.subarray(0,length); }
+function encryptWebPush(subscription, payload) {
+  const clientPublic=fromB64url(subscription.keys&&subscription.keys.p256dh),auth=fromB64url(subscription.keys&&subscription.keys.auth);if(clientPublic.length!==65||!auth.length)throw new Error("invalid push keys");
+  const server=crypto.createECDH("prime256v1");server.generateKeys();const serverPublic=server.getPublicKey(),secret=server.computeSecret(clientPublic),prkKey=crypto.createHmac("sha256",auth).update(secret).digest(),keyInfo=Buffer.concat([Buffer.from("WebPush: info\0"),clientPublic,serverPublic]),ikm=hkdfExpand(prkKey,keyInfo,32),salt=crypto.randomBytes(16),prk=crypto.createHmac("sha256",salt).update(ikm).digest(),cek=hkdfExpand(prk,Buffer.from("Content-Encoding: aes128gcm\0"),16),nonce=hkdfExpand(prk,Buffer.from("Content-Encoding: nonce\0"),12),record=Buffer.concat([Buffer.from(payload),Buffer.from([2])]),cipher=crypto.createCipheriv("aes-128-gcm",cek,nonce),encrypted=Buffer.concat([cipher.update(record),cipher.final(),cipher.getAuthTag()]),rs=Buffer.alloc(4);rs.writeUInt32BE(4096,0);return Buffer.concat([salt,rs,Buffer.from([serverPublic.length]),serverPublic,encrypted]);
+}
+function vapidAuthorization(endpoint) {
+  const keys=getVapidKeys(),pub=fromB64url(keys.publicKey),priv=fromB64url(keys.privateKey),x=b64url(pub.subarray(1,33)),y=b64url(pub.subarray(33,65)),jwk={kty:"EC",crv:"P-256",x,y,d:b64url(priv)},key=crypto.createPrivateKey({key:jwk,format:"jwk"}),header=b64url(JSON.stringify({typ:"JWT",alg:"ES256"})),payload=b64url(JSON.stringify({aud:new URL(endpoint).origin,exp:Math.floor(Date.now()/1000)+12*3600,sub:process.env.VAPID_SUBJECT||"mailto:admin@example.com"})),unsigned=header+"."+payload,signature=crypto.sign("sha256",Buffer.from(unsigned),{key,dsaEncoding:"ieee-p1363"});return{value:"vapid t="+unsigned+"."+b64url(signature)+", k="+keys.publicKey,publicKey:keys.publicKey};
+}
+async function sendWebPush(subscription, message) { const body=encryptWebPush(subscription,JSON.stringify(message).slice(0,3500)),auth=vapidAuthorization(subscription.endpoint),response=await fetch(subscription.endpoint,{method:"POST",headers:{TTL:"86400",Urgency:"high","Content-Encoding":"aes128gcm","Content-Type":"application/octet-stream",Authorization:auth.value},body});return response.status; }
 
 function send(req, res, status, content, contentType, extra) {
   const headers = Object.assign({
@@ -150,7 +167,7 @@ const server = http.createServer((req, res) => {
     return send(req, res, 200, JSON.stringify({
       ok: true, status: "healthy", message: "OK",
       service: "namayandeelmi-javad-crm",
-      version: "11.34.0",
+      version: "11.35.0",
       timestamp: new Date().toISOString()
     }), "application/json; charset=utf-8");
   }
@@ -195,6 +212,16 @@ const server = http.createServer((req, res) => {
       } catch (err) { return send(req, res, 400, JSON.stringify({ status: "error", message: err.message }), "application/json; charset=utf-8"); }
     });
     return;
+  }
+
+  if (pathname === "/api/push/public-key" && req.method === "GET") {
+    return send(req,res,200,JSON.stringify({status:"success",publicKey:getVapidKeys().publicKey}),"application/json; charset=utf-8",{"Cache-Control":"no-store"});
+  }
+  if (pathname === "/api/push/subscribe" && req.method === "POST") {
+    let body="";req.on("data",c=>{body+=c;if(body.length>1024*1024)req.destroy();});req.on("end",()=>{try{const data=sanitizeJsonValue(JSON.parse(body)),sub=data.subscription;if(!sub||!/^https:\/\//.test(String(sub.endpoint||""))||!sub.keys)throw new Error("invalid subscription");let list=readJsonSafe(PUSH_SUBSCRIPTIONS_PATH)||[];list=list.filter(x=>x&&x.subscription&&x.subscription.endpoint!==sub.endpoint);list.push({userId:String(data.userId||""),username:String(data.username||""),name:String(data.name||""),subscription:sub,updatedAt:Date.now()});writeJsonAtomic(PUSH_SUBSCRIPTIONS_PATH,list.slice(-500));send(req,res,200,JSON.stringify({status:"success"}),"application/json; charset=utf-8",{"Cache-Control":"no-store"});}catch(e){send(req,res,400,JSON.stringify({status:"error",message:e.message}),"application/json; charset=utf-8");}});return;
+  }
+  if (pathname === "/api/push/send" && req.method === "POST") {
+    let body="";req.on("data",c=>{body+=c;if(body.length>1024*1024)req.destroy();});req.on("end",async()=>{try{const data=sanitizeJsonValue(JSON.parse(body)),recipients=Array.isArray(data.recipients)?data.recipients.map(String):[String(data.recipient||"")],all=recipients.some(x=>/همه کاربران|all/i.test(x)),list=readJsonSafe(PUSH_SUBSCRIPTIONS_PATH)||[],targets=list.filter(x=>all||recipients.includes(String(x.userId))||recipients.includes(String(x.username))||recipients.includes(String(x.name))),message={title:String(data.title||"پیام جدید").slice(0,120),body:String(data.body||"").slice(0,1000),url:String(data.url||"/panel#tab-notifications"),tag:String(data.tag||("crm-"+Date.now()))},stale=[];let sent=0;for(const item of targets){try{const status=await sendWebPush(item.subscription,message);if(status>=200&&status<300)sent++;if(status===404||status===410)stale.push(item.subscription.endpoint);}catch(e){}}if(stale.length)writeJsonAtomic(PUSH_SUBSCRIPTIONS_PATH,list.filter(x=>!stale.includes(x.subscription.endpoint)));send(req,res,200,JSON.stringify({status:"success",sent,targets:targets.length}),"application/json; charset=utf-8",{"Cache-Control":"no-store"});}catch(e){send(req,res,400,JSON.stringify({status:"error",message:e.message}),"application/json; charset=utf-8");}});return;
   }
 
   if (pathname === "/api/bulk" && req.method === "GET") {
@@ -284,5 +311,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, "0.0.0.0", () => {
-  console.log("CRM v11.34.0 listening on 0.0.0.0:" + PORT);
+  console.log("CRM v11.35.0 listening on 0.0.0.0:" + PORT);
 });

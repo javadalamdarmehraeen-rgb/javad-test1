@@ -15,7 +15,7 @@ test.before(async () => {
   });
 });
 
-test.after(() => { if (server && !server.killed) server.kill('SIGTERM'); try { rmSync('server-db.json', { force:true }); rmSync('user-data.json', { force:true }); rmSync('user-bulk-data.json', { force:true }); } catch {} });
+test.after(() => { if (server && !server.killed) server.kill('SIGTERM'); try { rmSync('server-db.json', { force:true }); rmSync('user-data.json', { force:true }); rmSync('user-bulk-data.json', { force:true }); rmSync('push-subscriptions.json', { force:true }); rmSync('push-vapid.json', { force:true }); } catch {} });
 
 test('automated app entry loads health, HTML, all scripts and critical UI', async () => {
   const base = `http://127.0.0.1:${port}`;
@@ -67,4 +67,14 @@ test('bulk API round-trip preserves imported Excel vault for a new program link'
   const body = await get.json();
   assert.equal(body.data.snapp.rows[0][0], 'trip-sentinel');
   assert.equal(body.data.distributors.daya.pharmacyRows[0][0], 'invoice-sentinel');
+});
+
+test('Web Push exposes a valid VAPID public key and rejects malformed subscription', async () => {
+  const base = `http://127.0.0.1:${port}`;
+  const keyRes = await fetch(base + '/api/push/public-key');
+  assert.equal(keyRes.status, 200);
+  const keyBody = await keyRes.json();
+  assert.match(keyBody.publicKey, /^[A-Za-z0-9_-]{80,100}$/);
+  const bad = await fetch(base + '/api/push/subscribe', { method:'POST', headers:{'content-type':'application/json','x-crm-request':'1'}, body:'{}' });
+  assert.equal(bad.status, 400);
 });
