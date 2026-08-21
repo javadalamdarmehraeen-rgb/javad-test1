@@ -7,7 +7,7 @@
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.33.0",key="CRM_ASSET_BUILD";document.documentElement.classList.add("crm-booting");
+      var BUILD="11.34.0",key="CRM_ASSET_BUILD";document.documentElement.classList.add("crm-booting");
       if(sessionStorage.getItem("crmLoggedIn")!=="1"){location.replace("/login?build="+BUILD);return;}
       var old="";try{old=localStorage.getItem(key)||"";}catch(e){}
       if(old!==BUILD){
@@ -32,7 +32,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.33.0" />
+  <link rel="stylesheet" href="style.css?v=11.34.0" />
 </head>
 <body>
 
@@ -1203,7 +1203,7 @@
           </button>
         </div>
 
- 10px; border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+        <form id="formLeaveRequest" onsubmit="return false;" style="background:#f8fafc;padding:1.25rem;border-radius:10px;border:1px solid var(--border-color);margin-bottom:1.5rem;">
           <h4 style="margin-bottom: 1rem; color: #1e293b;">📝 ثبت درخواست مرخصی / مأموریت جدید</h4>
           <div class="form-grid">
             <div class="form-group">
@@ -1364,6 +1364,17 @@
          13. TAB: SALES TARGETS (تارگت فروش) - Menu Item 13 + Real-Time Calc
          ====================================================================== -->
     <section id="tab-sales-targets" class="tab-pane">
+      <div class="card" id="representativeRoutesCard">
+        <div class="card-header"><div class="card-title"><span>🗺️ تعریف مسیرهای نمایندگان</span></div></div>
+        <p class="col-help">مدیر می‌تواند برای هر نماینده چند استان، شهر و منطقه را به‌عنوان مسیر فعالیت انتخاب و ذخیره کند.</p>
+        <div class="form-grid" id="representativeRoutesGrid">
+          <div class="form-group"><label class="form-label">نماینده علمی</label><select id="routeManagerRep" class="form-select"></select></div>
+          <div class="form-group"><label class="form-label">استان مسیر</label><select id="routeManagerProvince" class="form-select" multiple size="5"></select></div>
+          <div class="form-group"><label class="form-label">شهر مسیر</label><select id="routeManagerCity" class="form-select" multiple size="5"></select></div>
+          <div class="form-group"><label class="form-label">منطقه مسیر</label><select id="routeManagerDistrict" class="form-select" multiple size="5"></select></div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:1rem"><button type="button" id="btnSaveRepresentativeRoute" class="btn btn-primary">💾 ذخیره مسیر</button></div>
+      </div>
       <div class="card">
         <div class="card-header">
           <div class="card-title">
@@ -1694,18 +1705,6 @@
                   <option value="کارشناس فروش">کارشناس فروش</option>
                   <option value="سرپرست">سرپرست</option>
                 </select>
-              </div>
-              <div class="form-group">
-                <label class="form-label">استان مسیر فعالیت</label>
-                <input type="text" id="newActivityProvince" class="form-input" placeholder="مثلاً تهران" />
-              </div>
-              <div class="form-group">
-                <label class="form-label">شهر مسیر فعالیت</label>
-                <input type="text" id="newActivityCity" class="form-input" placeholder="مثلاً تهران یا مشهد" />
-              </div>
-              <div class="form-group full-width">
-                <label class="form-label">مناطق مسیر فعالیت</label>
-                <input type="text" id="newActivityDistricts" class="form-input" placeholder="مثلاً مناطق 1، 2، 3" />
               </div>
               <div class="form-group">
                 <label class="form-label">کنترل سیم‌کارت</label>
@@ -2210,22 +2209,22 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.33.0"></script>
-  <script src="crm-app.js?v=11.33.0"></script>
-  <script src="crm-features-v9.js?v=11.33.0"></script>
-  <script src="iran-facilities.js?v=11.33.0" defer></script>
-  <script src="crm-features-v10.js?v=11.33.0"></script>
-  <script src="crm-features-v11.js?v=11.33.0"></script>
-  <script src="crm-features-v12.js?v=11.33.0"></script>
-  <script src="crm-features-v13.js?v=11.33.0"></script>
-  <script src="crm-jalali.js?v=11.33.0"></script>
-  <script src="crm-features-v14.js?v=11.33.0"></script>
-  <script src="crm-features-v15.js?v=11.33.0"></script>
-  <script src="crm-features-v16.js?v=11.33.0"></script>
-  <script src="crm-features-v17.js?v=11.33.0"></script>
-  <script src="crm-features-v18.js?v=11.33.0"></script>
-  <script src="crm-features-v19.js?v=11.33.0"></script>
-  <script src="crm-features-v20.js?v=11.33.0"></script>
+  <script src="crm-data.js?v=11.34.0"></script>
+  <script src="crm-app.js?v=11.34.0"></script>
+  <script src="crm-features-v9.js?v=11.34.0"></script>
+  <script src="iran-facilities.js?v=11.34.0" defer></script>
+  <script src="crm-features-v10.js?v=11.34.0"></script>
+  <script src="crm-features-v11.js?v=11.34.0"></script>
+  <script src="crm-features-v12.js?v=11.34.0"></script>
+  <script src="crm-features-v13.js?v=11.34.0"></script>
+  <script src="crm-jalali.js?v=11.34.0"></script>
+  <script src="crm-features-v14.js?v=11.34.0"></script>
+  <script src="crm-features-v15.js?v=11.34.0"></script>
+  <script src="crm-features-v16.js?v=11.34.0"></script>
+  <script src="crm-features-v17.js?v=11.34.0"></script>
+  <script src="crm-features-v18.js?v=11.34.0"></script>
+  <script src="crm-features-v19.js?v=11.34.0"></script>
+  <script src="crm-features-v20.js?v=11.34.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />

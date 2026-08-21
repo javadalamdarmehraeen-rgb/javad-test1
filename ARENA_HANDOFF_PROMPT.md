@@ -1276,3 +1276,10 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Edit/delete order-row controls are manager-only and must be re-applied after dynamic row render.
 - Privacy must cover activity, leave, routes, homes, monthly and targets in addition to core CRM lists.
 - Preserve try/finally temporary filtering so canonical state is never mutated by rendering.
+## افزونه تحویل نسخه ۱۱.۳۴.۰
+- Activity route controls live only in target tab and support multiple provinces/cities/districts; do not restore them to users form.
+- Target entry stays fixed-product matrix with rep/year/month header and current master prices.
+- Keep all-rep product aggregate followed by per-rep achieved/remain financial cards.
+- Reference instant-add is forbidden for rep/year/month/province/city/district/pharmacy-name outside manager additions.
+- Keep leave form repair and rep-home edit/delete.
+- After pharmacy placement, old duplicate/selection notices must stay hidden until user actually changes pharmacy name.

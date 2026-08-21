@@ -1182,3 +1182,10 @@ Then change only what is requested.
 - Manager-only row operations are enforced after every render.
 - Legacy report renderers run against temporary owner-filtered state arrays in try/finally, restoring canonical state immediately after synchronous render.
 - Native v20 reports call privacyList directly.
+## معماری افزوده v11.34.0 — Route arrays / target matrix
+- User route schema: activityProvinces[], activityCities[], activityDistrictList[], plus legacy first-value fields and derived activityRouteLabel.
+- Route option hierarchy comes from canonical Iran geo data + manager extras + semantic global options.
+- Target matrix keys records by rep/year/month/product; zero rows are omitted, existing achievedCount survives upsert.
+- Report aggregation uses canonical current product prices and computes target, achieved, remain, distributor total and pharmacy total.
+- Operational reference fields cannot mutate master options through instant-add.
+- Pharmacy placement notice guard is dataset+MutationObserver based.

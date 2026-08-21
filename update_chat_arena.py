@@ -49,7 +49,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.49 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.33.0
+نسخه این فایل: 1.50 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.34.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -3359,6 +3359,13 @@ git push gitlab main
 🤖 دستیار:
 نسخه **۱۱.۳۳.۰** ساخته شد. نام کالا readonly و بدون list/datalist شد. bindOrderItemRuntime جمع را با count/gift/price فوراً محاسبه و total را visible می‌کند؛ edit/delete manager-only است. privacyList و bindPrivacyRenderers علاوه بر core lists، activity/map، leaves، routes، homes، monthly و targets را owner-filter می‌کنند و state در try/finally بازمی‌گردد. v20 routes/targets مستقیم فیلترند. selectors بعد render/delete از users فعال ساخته و برای کاربر عادی self-only هستند. اصلاحات cache/pinned tab/mobile/intents/routes از 11.31 حفظ شد. ۴۷ تست موفق؛ دستگاه و حساب واقعی در انتظار تأیید است.
 
+──────────────────────────────── نوبت ۵۵ ────────────────────────────────
+🧑 کاربر (خلاصه وفادار):
+«در بالای تارگت کادر تعریف مسیر نماینده با multi استان/شهر/منطقه و ذخیره بساز و route fields را از کاربران حذف کن. تارگت rep/year/month یک‌سطر و محصولات ثابت زیرهم با qty، قیمت و جمع‌های پخش/داروخانه، all-rep product summary و per-rep achieved/remain باشد. متن خراب مرخصی حذف؛ منزل edit/delete. افزودن برای rep/year/month/region و pharmacy name ممنوع و فقط مدیر. پروفایل نماینده فقط مسیر خودش. فعالیت نام کاربران حذف‌شده را نشان ندهد. بعد جایگذاری داروخانه پیام قبلاً ثبت‌شده برنگردد.»
+
+🤖 دستیار:
+نسخه **۱۱.۳۴.۰** ساخته شد. representativeRoutesCard با multi hierarchy و ذخیره array/label در بالای target آمد و route inputs از users form حذف شد. setupTargetPlannerV34 fixed product matrix، qty×current master prices، period upsert، grand totals و all/per-rep achieved/remain cards دارد. Leave form HTML تعمیر و home edit/delete اضافه شد. combo instant-add برای reference fields مسدود است. placed pharmacy dataset+observer پیام قبلی را پنهان نگه می‌دارد. Privacy rendered history کاربران حذف‌شده را کنار می‌گذارد. ۴۹ تست موفق؛ UI واقعی در انتظار تأیید است.
+
 """
 
 FILES_INTRO = """
@@ -3395,7 +3402,7 @@ def build():
         out.append("~~~~~~~~" + lang)
         out.append(content.rstrip("\n"))
         out.append("~~~~~~~~")
-    out.append("\n\n— پایان chat.arena نسخه ۱.۴۹ (نسخه برنامه 11.33.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
+    out.append("\n\n— پایان chat.arena نسخه ۱.۵۰ (نسخه برنامه 11.34.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
     with open(OUT, "w", encoding="utf-8") as f:
         f.write("\n".join(out))
     print("chat.arena written:", os.path.getsize(OUT), "bytes,", len(text_files), "text files embedded,", len(bin_files), "binary files listed")

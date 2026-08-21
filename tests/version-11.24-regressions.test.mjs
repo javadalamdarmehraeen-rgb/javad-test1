@@ -205,7 +205,7 @@ test('order product names are fixed, totals update live and edit/delete are mana
 });
 
 test('activity, leave, route, home, monthly and target renderers enforce representative ownership', () => {
-  assert.match(v20,/function privacyList/);assert.match(v20,/function bindPrivacyRenderers/);
+  assert.match(v20,/function privacyList/);assert.match(v20,/function bindPrivacyRenderers/);assert.match(v20,/active\[norm\(x\.fullName\)\]=1/);
   for(const pair of [['activityLog','activity_all_reps'],['leaves','hr_all_leaves'],['repRoutes','fld_all_routes'],['repHomes','fld_all_homes'],['salesTargets','target_all_reps']]) assert.ok(v20.includes(`\"${pair[0]}\",\"${pair[1]}\"`),`missing privacy wrapper ${pair}`);
   assert.match(v20,/renderMonthlyReportsTable=function/);assert.match(v20,/privacyList\(reps,\"rep_all_reports\"\)/);
   assert.match(v20,/privacyList\(\(\(st\(\)&&st\(\)\.repRoutes\)\|\|\[\]\),\"fld_all_routes\"\)/);
@@ -232,7 +232,8 @@ test('scientific representative data is strictly owner-scoped unless all-reps pe
   assert.match(v9,/repId: currentRepId\(\)/);assert.match(v9,/repId: userIdForRep/);
   assert.match(v20,/function syncRepsFromUsers/);assert.match(v20,/S\.users\|\|\[\]/);assert.match(v20,/S\.reps=reps/);
   assert.match(v20,/function syncRepresentativeSelectors/);assert.match(v20,/reps\.filter\(function\(r\)\{return u&&String\(r\.id\)===String\(u\.id\)/);
-  for(const id of ['newActivityProvince','newActivityCity','newActivityDistricts']) assert.ok(html.includes(`id="${id}"`),`missing activity route ${id}`);
+  for(const id of ['newActivityProvince','newActivityCity','newActivityDistricts']) assert.ok(!html.includes(`id="${id}"`),`legacy user-form route field remains ${id}`);
+  for(const id of ['representativeRoutesCard','routeManagerRep','routeManagerProvince','routeManagerCity','routeManagerDistrict','btnSaveRepresentativeRoute']) assert.ok(html.includes(`id="${id}"`),`missing target route manager ${id}`);
   assert.match(app,/user\.activityRouteLabel/);
   assert.match(v20,/window\.deleteUserCard=function/);assert.match(v20,/syncRepsFromUsers\(\);syncRepresentativeSelectors\(\)/);
 });
@@ -251,8 +252,28 @@ test('distributor Excel writes Persian month name while keeping all digits Latin
   assert.match(v20,/Date\.prototype\[name\]=function\(\)/);
 });
 
+test('target tab has multi-route manager and fixed product target planner with calculated reports', () => {
+  for(const id of ['representativeRoutesCard','routeManagerRep','routeManagerProvince','routeManagerCity','routeManagerDistrict','btnSaveRepresentativeRoute']) assert.ok(html.includes(`id="${id}"`));
+  for(const fn of ['setupRepresentativeRoutes','routeGeoValues','setupTargetPlannerV34','paintTargetPlanRows','renderTargetReportsV34','targetReportTable']) assert.match(v20,new RegExp(`function ${fn}\\(`));
+  assert.match(v20,/activityProvinces=routeSelected/);assert.match(v20,/activityCities=routeSelected/);assert.match(v20,/activityDistrictList=routeSelected/);
+  assert.match(v20,/n\*dp/);assert.match(v20,/n\*hp/);assert.match(v20,/محقق‌شده/);assert.match(v20,/مانده تارگت/);
+  assert.match(v20,/جمع همه تارگت نمایندگان به تفکیک کالا/);assert.match(v20,/تارگت‌های /);
+  assert.match(v20,/v34TargetGrandDist/);assert.match(v20,/v34TargetGrandPh/);
+});
+
+test('leave markup, home edit/delete and protected reference fields follow final rules', () => {
+  assert.doesNotMatch(html,/10px; border: 1px solid var\(--border-color\); margin-bottom: 1\.5rem;"&gt;/);
+  assert.match(html,/id="formLeaveRequest"/);
+  assert.match(app,/onclick="editRepHome\('\$\{hm\.id\}'\)"/);assert.match(app,/onclick="deleteRepHome\('\$\{hm\.id\}'\)"/);
+  assert.match(app,/function editRepHome/);assert.match(app,/function deleteRepHome/);
+  assert.match(v19,/Province\|City\|District\|Region\|Year\|Month\|Rep\|Representative\|PharmacyName/);
+  assert.match(v19,/نماینده علمی\|سال\|ماه\|استان\|شهر\|منطقه\|نام داروخانه/);
+  assert.match(v20,/function bindPlacedPharmacyNoticeGuard/);assert.match(v20,/dataset\.v20PlacedName/);
+  assert.match(v20,/style\.setProperty\("display","none","important"\)/);
+});
+
 test('new build clears only old asset caches before revealing app and prevents manager-screen flash', () => {
-  assert.match(html,/var BUILD="11\.33\.0",key="CRM_ASSET_BUILD"/);
+  assert.match(html,/var BUILD="11\.34\.0",key="CRM_ASSET_BUILD"/);
   assert.match(html,/document\.documentElement\.classList\.add\("crm-booting"\)/);
   assert.match(html,/caches\.keys\(\).*caches\.delete/);
   assert.match(html,/navigator\.serviceWorker\.getRegistrations\(\).*unregister/);
@@ -276,7 +297,7 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.33\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.34\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);

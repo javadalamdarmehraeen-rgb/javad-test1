@@ -1817,10 +1817,20 @@ function renderRepHomesTable() {
       <td style="direction:ltr;">${hm.lat}, ${hm.lng}</td>
       <td>
         <button class="btn btn-outline btn-sm" onclick="alert('نمایش آدرس منزل روی نقشه جامع فعال شد.')">📍 نمایش</button>
+        <button class="btn btn-outline btn-sm" onclick="editRepHome('${hm.id}')">✏️ ویرایش</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteRepHome('${hm.id}')">🗑️ حذف</button>
       </td>
     `;
     tbody.appendChild(tr);
   });
+}
+function editRepHome(id) {
+  const hm=(state.repHomes||[]).find(x=>String(x.id)===String(id));if(!hm)return;
+  const rep=document.getElementById("repHomeSelect"),addr=document.getElementById("repHomeAddressInput");if(rep)rep.value=hm.repName||"";if(addr){addr.value=hm.address||"";addr.focus();}
+  window._editingRepHomeId=hm.id;
+}
+function deleteRepHome(id) {
+  if(!confirm("این آدرس منزل حذف شود؟"))return;state.repHomes=(state.repHomes||[]).filter(x=>String(x.id)!==String(id));saveState();renderRepHomesTable();
 }
 
 function setupLeavesModule() {
@@ -2955,7 +2965,7 @@ function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.33.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.34.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;

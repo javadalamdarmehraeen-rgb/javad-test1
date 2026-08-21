@@ -56,12 +56,12 @@
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (173696 بایت)
+### `public/crm-app.js` (174448 بایت)
 - نقش: ============================================================================
-- تعداد توابع داخلی: 166
-- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `__CRM_SW_READY`, `_editingProductId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
+- تعداد توابع داخلی: 169
+- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
 
-### `public/crm-data.js` (63101 بایت)
+### `public/crm-data.js` (63289 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 1
 
@@ -110,15 +110,15 @@
 - تعداد توابع داخلی: 35
 - نام‌های window که تعریف/بازنویسی می‌کند: `_editingBoxId`, `_editingColField`, `_v18Confirm`, `_v18DefaultReq`, `_v18Sw`, `_v18Widget`, `applyAllFormLayouts`, `applyFullFormLayout`, `buildDesignerWidget`, `copyPageToTab`, `getUnifiedFieldList`, `lockManualDesigner`, `renderColBoxInfoTable`, `renderColBtnInfoTable`, `switchTab`, `validateRequiredFields`
 
-### `public/crm-features-v19.js` (61016 بایت)
+### `public/crm-features-v19.js` (61295 بایت)
 - نقش: v19 (11.15.0) — ستاره فقط تیک مدیر، کشویی‌های کنارهم + افزودن با تایپ،
 - تعداد توابع داخلی: 65
 - نام‌های window که تعریف/بازنویسی می‌کند: `_v18DefaultReq`, `_v19BackupLayoutGuard`, `_v19ComboHook`, `_v19Hist`, `_v19IcObs`, `_v19ProdTableWrap`, `_v19Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `extraListColumns`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderPharmaciesList`, `switchTab`, `testServerConnectivity`
 
-### `public/crm-features-v20.js` (240515 بایت)
+### `public/crm-features-v20.js` (255445 بایت)
 - نقش: ============================================================
-- تعداد توابع داخلی: 273
-- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFieldPermissions`, `applyFullFormLayout`, `applyUserRolePermissions`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `deleteUserCard`, `editProductCatalogItem`, `editUserCard`, `extraListColumns`, `getUnifiedFieldList`, `open`, `openRowDetailsModal`, `performAutoBackup`, `renderActivityLogTable`, `renderActivityMapAndChart`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLeavesTable`, `renderLiveLocationTab`, `renderMonthlyReportsTable`, `renderRepHomesTable`, `renderRepRoutesTable`, `renderSalesTargetsTable`, `renderUserCardsList`, `reverseGeocodeCoordinates`
+- تعداد توابع داخلی: 286
+- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFieldPermissions`, `applyFullFormLayout`, `applyUserRolePermissions`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `deleteUserCard`, `editProductCatalogItem`, `editUserCard`, `extraListColumns`, `getUnifiedFieldList`, `open`, `openRowDetailsModal`, `performAutoBackup`, `renderActivityLogTable`, `renderActivityMapAndChart`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLeavesTable`, `renderLiveLocationTab`, `renderMonthlyReportsTable`, `renderRepHomesTable`, `renderRepRoutesTable`, `renderUserCardsList`, `reverseGeocodeCoordinates`, `saveState`
 
 ### `public/crm-features-v9.js` (71826 بایت)
 - نقش: ===========================================================================
@@ -140,7 +140,7 @@
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (1588 بایت)
-- نقش: const CACHE = "ttt-v11.33.0";
+- نقش: const CACHE = "ttt-v11.34.0";
 - تعداد توابع داخلی: 0
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -279,7 +279,7 @@
 - `public/crm-features-v9.js` → 3 شناسه (مثل: `btnInstallAndroid`, `btnInstallIos`, `btnInstallWindows`)
 
 ### tab-leaves «📝 مرخصی‌ها»
-- `public/crm-app.js` → 9 شناسه (مثل: `btnExportLeavesCSV`, `leaveFromDate`, `leaveHoursGroup`, `leaveHoursInput`, `leaveReasonInput`, `leaveRepSelect`, `leaveToDate`, `leaveTypeSelect`)
+- `public/crm-app.js` → 10 شناسه (مثل: `btnExportLeavesCSV`, `formLeaveRequest`, `leaveFromDate`, `leaveHoursGroup`, `leaveHoursInput`, `leaveReasonInput`, `leaveRepSelect`, `leaveToDate`)
 
 ### tab-live-location «📍 موقعیت زنده»
 - `public/crm-app.js` → 1 شناسه (مثل: `map-live-reps`)
@@ -333,7 +333,7 @@
 - `public/crm-features-v9.js` → 11 شناسه (مثل: `btnPhMapSearch`, `btnPharmacyCurrentLocation`, `btnPharmacyGetAddressFromPoint`, `cardPhList`, `formPharmacy`, `phFileInput`, `phListCountBadge`, `phTableCountBadge`)
 
 ### tab-rep-homes «🏠 منزل نمایندگان»
-- `public/crm-app.js` → 1 شناسه (مثل: `tableRepHomesBody`)
+- `public/crm-app.js` → 3 شناسه (مثل: `repHomeAddressInput`, `repHomeSelect`, `tableRepHomesBody`)
 - `public/crm-features-v9.js` → 2 شناسه (مثل: `btnRepHomeCurrentLocation`, `repHomeSelect`)
 
 ### tab-rep-routes «🛣️ رصد تردد»
@@ -344,7 +344,7 @@
 ### tab-sales-targets «🎯 تارگت فروش»
 - `public/crm-app.js` → 9 شناسه (مثل: `formSalesTarget`, `tableSalesTargetsBody`, `tgtCalcDistPrice`, `tgtCalcPhPrice`, `tgtCountInput`, `tgtMonthSelect`, `tgtProductSelect`, `tgtRepSelect`)
 - `public/crm-features-v10.js` → 6 شناسه (مثل: `tgtCalcDistPrice`, `tgtCalcPhPrice`, `tgtCountInput`, `tgtProductSelect`, `tgtSummaryBox`, `tgtYearInput`)
-- `public/crm-features-v20.js` → 3 شناسه (مثل: `formSalesTarget`, `tableSalesTargetsBody`, `tgtSummaryBox`)
+- `public/crm-features-v20.js` → 9 شناسه (مثل: `btnSaveRepresentativeRoute`, `formSalesTarget`, `representativeRoutesCard`, `routeManagerCity`, `routeManagerDistrict`, `routeManagerProvince`, `routeManagerRep`, `tableSalesTargetsBody`)
 
 ### tab-search-info «🔍 جستجوی اطلاعات»
 - `public/crm-app.js` → 38 شناسه (مثل: `btnExportSearchInfoCSV`, `btnNavBalad`, `btnNavGoogle`, `btnNavNeshan`, `btnNavWaze`, `btnRowCopyText`, `btnRowDelete`, `btnRowEdit`)
@@ -363,7 +363,7 @@
 
 ### tab-users-permissions «👤 کاربران و دسترسی»
 - `public/crm-app.js` → 16 شناسه (مثل: `btnExportUsersCSV`, `btnPermSelectAll`, `btnPermSelectNone`, `btnSaveUserInfo`, `btnToggleShowAllPasswords`, `formCreateUser`, `newFullName`, `newPassword`)
-- `public/crm-features-v20.js` → 12 شناسه (مثل: `btnSaveUserInfo`, `formCreateUser`, `newActivityCity`, `newActivityDistricts`, `newActivityProvince`, `newFullName`, `newPassword`, `newPhone`)
+- `public/crm-features-v20.js` → 9 شناسه (مثل: `btnSaveUserInfo`, `formCreateUser`, `newFullName`, `newPassword`, `newPhone`, `newRole`, `newSimControl`, `newUsername`)
 
 ## ز) نام‌های تابع تکراری در چند فایل (نقاط حساس بازنویسی)
 

@@ -1539,3 +1539,10 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - Per-row edit/delete are manager-only regardless of stale markup or rerender.
 - Privacy is no longer limited to pharmacy/doctor/order lists; old activity/leaves/routes/homes/monthly/targets and v20 route/target paths all project owner-only data.
 - Representative selectors are rebuilt after dynamic render and user deletion from state.users-derived reps.
+## تصمیم ۸۷ — نسخه ۱۱.۳۴.۰: multi-route manager و target planner کامل (2026-08-21)
+- Representative activity routes belong in target management, not user credential form. They support multi province/city/district arrays and derive a display label.
+- Standard geography sources are unioned from IRAN_GEO_DATA, manager geoExtras and global semantic option registry.
+- Target entry is product-matrix based, not one product dropdown: fixed catalog rows × quantity × current master distributor/pharmacy prices.
+- Reports are period-filtered, first all-rep per product then per-rep, with achieved/remain and financial totals.
+- Reference field instant-add is disabled in operational forms; manager additions remain the only mutation path.
+- Removed-user activity records remain stored but are excluded from every rendered privacy projection.

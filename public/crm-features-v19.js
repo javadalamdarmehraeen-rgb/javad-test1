@@ -145,7 +145,8 @@ button.v19-gps svg{display:block}
   }
   function comboAllowsAdd(sel) {
     if (!sel || !sel.id) return false;
-    if (/Province$|City$|District$/.test(sel.id)) return false; // استان/شهر/منطقه ویرایشگر خودشان را دارند
+    if (/Province|City|District|Region|Year|Month|Rep|Representative|PharmacyName/i.test(sel.id)) return false; // این فیلدهای مرجع فقط توسط مدیر/افزودن‌ها مدیریت می‌شوند
+    var groupText=String((sel.closest(".form-group")||{}).textContent||"");if(/نماینده علمی|سال|ماه|استان|شهر|منطقه|نام داروخانه/.test(groupText))return false;
     if (sel.closest("#columnsDesignerHost") || sel.closest(".modal-overlay") || sel.closest("#manualDesignCanvas")) return false;
     var cf = sel.getAttribute("data-custom-field-id") || (sel.dataset && sel.dataset.customFieldId);
     if (cf) {

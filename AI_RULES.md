@@ -1517,3 +1517,15 @@ routes, homes, monthly reports and targets. Rendering may use temporary filtered
 only inside try/finally and must never mutate canonical state. Dynamic representative
 selectors are always derived from active users and show only self for normal users unless
 explicit all-reps permission.
+
+# 85. MULTI-ROUTE + TARGET MATRIX + REFERENCE OPTION RULE (PERMANENT)
+
+Representative activity routes are managed only in the target tab and may include multiple
+provinces, cities and districts from canonical/global manager options. User credential form
+must not duplicate these route controls. Target entry is a fixed product matrix: rep/year/
+month header, one readonly product row per catalog item, numeric target, current unit prices,
+calculated distributor/pharmacy totals and period save. Reports show all representatives by
+product first, then each representative, with achieved and remaining values. Operational
+reference fields (representative, year, month, province, city, district, pharmacy name) never
+show instant-add; only manager additions can mutate their options. Removed users are omitted
+from rendered history, and post-placement pharmacy duplicate notices remain hidden.
