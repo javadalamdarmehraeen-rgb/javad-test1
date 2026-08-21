@@ -1424,3 +1424,14 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] پنل وضعیت امنیت در عیب‌یابی
 - [x] ۴۵/۴۵ تست
 - [ ] ممیزی نفوذ مستقل و HTTPS/Render production headers توسط متخصص بیرونی
+## ۷۴) نسخه ۱۱.۳۳.۰
+- [x] نام ثابت و readonly کالا بدون datalist
+- [x] جمع مبلغ زنده با delegated listener
+- [x] visibility قطعی جمع مبلغ در موبایل
+- [x] edit/delete ردیف کالا فقط مدیر
+- [x] privacy فعالیت لحظه‌ای و نقشه آن
+- [x] privacy مرخصی، مسیر، منزل، ماهانه و تارگت
+- [x] privacy مستقیم v20 routes/targets
+- [x] selector نماینده self-only بعد هر render/delete
+- [x] ۴۷/۴۷ تست
+- [ ] تأیید رفتار واقعی گوشی و حساب نماینده

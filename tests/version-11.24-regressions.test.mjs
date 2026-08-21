@@ -193,6 +193,25 @@ test('mobile portrait and landscape keep buttons and form/list switch inside vie
   assert.match(v20,/overflow-wrap:anywhere!important/);
 });
 
+test('order product names are fixed, totals update live and edit/delete are manager-only', () => {
+  assert.match(app,/class=\"form-input order-item-name\" placeholder=\"نام ثابت کالا\"[\s\S]*readonly aria-readonly=\"true\"/);
+  assert.doesNotMatch(app,/class=\"form-input order-item-name\" list=/);
+  assert.match(app,/inp\.removeAttribute\(\"list\"\)/);assert.match(app,/inp\.readOnly = true/);
+  assert.match(v20,/function bindOrderItemRuntime/);assert.match(v20,/\.order-item-count,\.order-item-gift,\.order-item-price/);
+  assert.match(v20,/updateOrderTotalAmountDisplay/);assert.match(v20,/function applyOrderItemRoleControls/);
+  assert.match(v20,/edit\.style\.setProperty\(\"display\",manager\?\"\":\"none\"/);
+  assert.match(v20,/del\.style\.setProperty\(\"display\",manager\?\"\":\"none\"/);
+  assert.match(v20,/total\.style\.setProperty\(\"visibility\",\"visible\",\"important\"\)/);
+});
+
+test('activity, leave, route, home, monthly and target renderers enforce representative ownership', () => {
+  assert.match(v20,/function privacyList/);assert.match(v20,/function bindPrivacyRenderers/);
+  for(const pair of [['activityLog','activity_all_reps'],['leaves','hr_all_leaves'],['repRoutes','fld_all_routes'],['repHomes','fld_all_homes'],['salesTargets','target_all_reps']]) assert.ok(v20.includes(`\"${pair[0]}\",\"${pair[1]}\"`),`missing privacy wrapper ${pair}`);
+  assert.match(v20,/renderMonthlyReportsTable=function/);assert.match(v20,/privacyList\(reps,\"rep_all_reports\"\)/);
+  assert.match(v20,/privacyList\(\(\(st\(\)&&st\(\)\.repRoutes\)\|\|\[\]\),\"fld_all_routes\"\)/);
+  assert.match(v20,/privacyList\(\(S\.salesTargets\|\|\[\]\),\"target_all_reps\"\)/);
+});
+
 test('navigation links request real driving directions and universal installed-app opening', () => {
   assert.match(app,/https:\/\/nshn\.ir\/maps\?destination=\$\{lat\},\$\{lng\}&type=drive/);
   assert.match(app,/https:\/\/balad\.ir\/directions\/driving\?destination=\$\{lng\}%2C\$\{lat\}/);
@@ -215,6 +234,7 @@ test('scientific representative data is strictly owner-scoped unless all-reps pe
   assert.match(v20,/function syncRepresentativeSelectors/);assert.match(v20,/reps\.filter\(function\(r\)\{return u&&String\(r\.id\)===String\(u\.id\)/);
   for(const id of ['newActivityProvince','newActivityCity','newActivityDistricts']) assert.ok(html.includes(`id="${id}"`),`missing activity route ${id}`);
   assert.match(app,/user\.activityRouteLabel/);
+  assert.match(v20,/window\.deleteUserCard=function/);assert.match(v20,/syncRepsFromUsers\(\);syncRepresentativeSelectors\(\)/);
 });
 
 test('empty new origin safely bootstraps shared state and bulk data without overwriting existing local state', () => {
@@ -232,7 +252,7 @@ test('distributor Excel writes Persian month name while keeping all digits Latin
 });
 
 test('new build clears only old asset caches before revealing app and prevents manager-screen flash', () => {
-  assert.match(html,/var BUILD="11\.32\.0",key="CRM_ASSET_BUILD"/);
+  assert.match(html,/var BUILD="11\.33\.0",key="CRM_ASSET_BUILD"/);
   assert.match(html,/document\.documentElement\.classList\.add\("crm-booting"\)/);
   assert.match(html,/caches\.keys\(\).*caches\.delete/);
   assert.match(html,/navigator\.serviceWorker\.getRegistrations\(\).*unregister/);
@@ -256,7 +276,7 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.32\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.33\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);

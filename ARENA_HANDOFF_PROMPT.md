@@ -1270,3 +1270,9 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Keep formula-injection neutralization and HTTPS-only distributor URL.
 - Do not loosen hardware Permissions Policy except geolocation self unless user explicitly requires a capability.
 - Be honest: this is defense-in-depth inside browser sandbox, not an absolute guarantee against every OS/browser vulnerability.
+## افزونه تحویل نسخه ۱۱.۳۳.۰
+- Never restore order product datalist/editability. Product names are readonly catalog values.
+- Keep delegated total updates and explicit mobile visibility.
+- Edit/delete order-row controls are manager-only and must be re-applied after dynamic row render.
+- Privacy must cover activity, leave, routes, homes, monthly and targets in addition to core CRM lists.
+- Preserve try/finally temporary filtering so canonical state is never mutated by rendering.

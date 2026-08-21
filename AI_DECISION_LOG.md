@@ -1534,3 +1534,8 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - Client guards block executable/oversized uploads, unsafe protocols, opener access, dangerous drops and HTML control characters.
 - Excel formula injection and distributor non-HTTPS URLs are rejected/sanitized.
 - No web app can promise absolute OS safety, but browser sandbox and explicit permission boundaries are now maximally constrained without breaking required GPS/files/navigation.
+## تصمیم ۸۶ — نسخه ۱۱.۳۳.۰: fixed order products و privacy در تمام گزارش‌های نماینده (2026-08-21)
+- Order product identity is catalog-owned: readonly simple input, never datalist/editable dropdown. Counts/gifts/prices remain editable and delegated totals always recalculate.
+- Per-row edit/delete are manager-only regardless of stale markup or rerender.
+- Privacy is no longer limited to pharmacy/doctor/order lists; old activity/leaves/routes/homes/monthly/targets and v20 route/target paths all project owner-only data.
+- Representative selectors are rebuilt after dynamic render and user deletion from state.users-derived reps.

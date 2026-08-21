@@ -1176,3 +1176,9 @@ Then change only what is requested.
 - Client boundary: allowed upload extension whitelist, executable blacklist, 32MB cap, unsafe protocol guard, noopener/noreferrer, drag/drop guard, text control stripping.
 - Export boundary: spreadsheet formula-prefix neutralization.
 - Device boundary: only self geolocation allowed; all unnecessary device APIs denied by Permissions Policy.
+## معماری افزوده v11.33.0 — Catalog-owned order identity / comprehensive privacy projection
+- Product names in order rows are immutable catalog projections; UI cannot invent/rename product names.
+- Quantity/gift/price input events delegate to one runtime total updater; dynamic rows are observed and role controls reapplied.
+- Manager-only row operations are enforced after every render.
+- Legacy report renderers run against temporary owner-filtered state arrays in try/finally, restoring canonical state immediately after synchronous render.
+- Native v20 reports call privacyList directly.

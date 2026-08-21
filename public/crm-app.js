@@ -2268,7 +2268,9 @@ function refreshOrderProductCatalog() {
     dl.appendChild(o);
   });
   document.querySelectorAll(".order-item-name").forEach(inp => {
-    inp.setAttribute("list", "orderProductCatalogList");
+    inp.removeAttribute("list");
+    inp.readOnly = true;
+    inp.setAttribute("aria-readonly", "true");
   });
   const bar = document.getElementById("orderProductCatalogBar");
   if (bar) {
@@ -2343,7 +2345,7 @@ function addOrderItemRow(name = "", count = "", price = 0, giftCount = "") {
   const giftDisp = (Number(giftCount) > 0) ? String(giftCount) : "";
   const priceDisp = (Number(price) > 0) ? String(price) : "";
   row.innerHTML = `
-    <input type="text" class="form-input order-item-name" list="orderProductCatalogList" placeholder="نام کالا از فهرست ثبت‌شده..." value="${safeName}" />
+    <input type="text" class="form-input order-item-name" placeholder="نام ثابت کالا" value="${safeName}" readonly aria-readonly="true" />
     <input type="number" class="form-input order-item-count" placeholder="تعداد کالا" min="0" value="${cntDisp}" />
     <input type="number" class="form-input order-item-gift" placeholder="تعداد جایزه" min="0" value="${giftDisp}" title="تعداد جایزه" />
     <input type="number" class="form-input order-item-price" placeholder="قیمت واحد" min="0" value="${priceDisp}" />
@@ -2953,7 +2955,7 @@ function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.32.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.33.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;

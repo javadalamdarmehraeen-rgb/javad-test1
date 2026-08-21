@@ -56,7 +56,7 @@
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (173675 بایت)
+### `public/crm-app.js` (173696 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 166
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `__CRM_SW_READY`, `_editingProductId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
@@ -115,10 +115,10 @@
 - تعداد توابع داخلی: 65
 - نام‌های window که تعریف/بازنویسی می‌کند: `_v18DefaultReq`, `_v19BackupLayoutGuard`, `_v19ComboHook`, `_v19Hist`, `_v19IcObs`, `_v19ProdTableWrap`, `_v19Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `extraListColumns`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderPharmaciesList`, `switchTab`, `testServerConnectivity`
 
-### `public/crm-features-v20.js` (236331 بایت)
+### `public/crm-features-v20.js` (240515 بایت)
 - نقش: ============================================================
-- تعداد توابع داخلی: 269
-- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFieldPermissions`, `applyFullFormLayout`, `applyUserRolePermissions`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `deleteUserCard`, `editProductCatalogItem`, `editUserCard`, `extraListColumns`, `getUnifiedFieldList`, `open`, `openRowDetailsModal`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `renderUserCardsList`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `updateNavBadges`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`
+- تعداد توابع داخلی: 273
+- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFieldPermissions`, `applyFullFormLayout`, `applyUserRolePermissions`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `deleteUserCard`, `editProductCatalogItem`, `editUserCard`, `extraListColumns`, `getUnifiedFieldList`, `open`, `openRowDetailsModal`, `performAutoBackup`, `renderActivityLogTable`, `renderActivityMapAndChart`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLeavesTable`, `renderLiveLocationTab`, `renderMonthlyReportsTable`, `renderRepHomesTable`, `renderRepRoutesTable`, `renderSalesTargetsTable`, `renderUserCardsList`, `reverseGeocodeCoordinates`
 
 ### `public/crm-features-v9.js` (71826 بایت)
 - نقش: ===========================================================================
@@ -140,7 +140,7 @@
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (1588 بایت)
-- نقش: const CACHE = "ttt-v11.32.0";
+- نقش: const CACHE = "ttt-v11.33.0";
 - تعداد توابع داخلی: 0
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -316,7 +316,7 @@
 - `public/crm-features-v15.js` → 3 شناسه (مثل: `orderPharmacyName`, `orderPharmacyPickBox`, `orderTotalAmountDisplay`)
 - `public/crm-features-v17.js` → 9 شناسه (مثل: `existingPharmacyAlertText`, `existingPharmacyTopAlert`, `orderAddress`, `orderCity`, `orderDistrict`, `orderPharmacyMatchedId`, `orderPharmacyName`, `orderPharmacyPickBox`)
 - `public/crm-features-v19.js` → 2 شناسه (مثل: `orderEditId`, `orderItemsContainer`)
-- `public/crm-features-v20.js` → 10 شناسه (مثل: `btnSaveOrder`, `btnTopAutoFillPharmacy`, `existingPharmacyTopAlert`, `formOrder`, `orderCity`, `orderDistrict`, `orderEditId`, `orderPharmacyMatchedId`)
+- `public/crm-features-v20.js` → 11 شناسه (مثل: `btnSaveOrder`, `btnTopAutoFillPharmacy`, `existingPharmacyTopAlert`, `formOrder`, `orderCity`, `orderDistrict`, `orderEditId`, `orderItemsContainer`)
 - `public/crm-features-v9.js` → 7 شناسه (مثل: `cardOrdList`, `formOrder`, `ordListCountBadge`, `orderItemsContainer`, `searchOrderInput`, `tableOrdersBody`, `tableOrdersHeader`)
 
 ### tab-overview-map «🗺️ نقشه جامع»

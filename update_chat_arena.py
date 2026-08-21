@@ -49,7 +49,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.48 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.32.0
+نسخه این فایل: 1.49 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.33.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -3352,6 +3352,13 @@ git push gitlab main
 🤖 دستیار:
 نسخه **۱۱.۳۲.۰** با دفاع چندلایه ساخته شد: CSP/HSTS/nosniff/strict referrer/COOP/CORP و Permissions Policy که همه device APIها جز geolocation self را می‌بندد؛ wildcard CORS حذف و POSTها same-origin + X-CRM-Request شدند. JSON ضد prototype pollution sanitize و atomic mode0600 write می‌شود. Browser guard فایل اجرایی/installer/script و بیش از 32MB، unsafe protocols، opener، خطر drag/drop و control/HTML chars را می‌بندد. Excel formula injection و URL غیر-HTTPS پخش مسدود است. کادر وضعیت امنیت در عیب‌یابی افزوده شد. ۴۵ تست موفق. با صداقت: هیچ وب‌اپی تضمین مطلق علیه نقص مرورگر/OS نمی‌دهد؛ این لایه‌های تأییدشده باید با HTTPS، Persistent Disk و ممیزی نفوذ مستقل تکمیل شوند.
 
+──────────────────────────────── نوبت ۵۴ ────────────────────────────────
+🧑 کاربر (خلاصه وفادار):
+«مشکلات تب فاکتور، موبایل، مسیریابی، فهرست نمایندگان/مسیر فعالیت و flash مدیر هنوز گزارش شد. در سفارش نام کالا نباید کشویی باشد؛ ثابت و ساده باشد. جمع مبلغ موبایل دیده و با تعداد محاسبه شود؛ edit/delete هر سطر برای غیرمدیر حذف شود. نماینده در فعالیت لحظه‌ای، مرخصی و همه تب‌ها فقط اطلاعات خودش را ببیند.»
+
+🤖 دستیار:
+نسخه **۱۱.۳۳.۰** ساخته شد. نام کالا readonly و بدون list/datalist شد. bindOrderItemRuntime جمع را با count/gift/price فوراً محاسبه و total را visible می‌کند؛ edit/delete manager-only است. privacyList و bindPrivacyRenderers علاوه بر core lists، activity/map، leaves، routes، homes، monthly و targets را owner-filter می‌کنند و state در try/finally بازمی‌گردد. v20 routes/targets مستقیم فیلترند. selectors بعد render/delete از users فعال ساخته و برای کاربر عادی self-only هستند. اصلاحات cache/pinned tab/mobile/intents/routes از 11.31 حفظ شد. ۴۷ تست موفق؛ دستگاه و حساب واقعی در انتظار تأیید است.
+
 """
 
 FILES_INTRO = """
@@ -3388,7 +3395,7 @@ def build():
         out.append("~~~~~~~~" + lang)
         out.append(content.rstrip("\n"))
         out.append("~~~~~~~~")
-    out.append("\n\n— پایان chat.arena نسخه ۱.۴۸ (نسخه برنامه 11.32.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
+    out.append("\n\n— پایان chat.arena نسخه ۱.۴۹ (نسخه برنامه 11.33.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
     with open(OUT, "w", encoding="utf-8") as f:
         f.write("\n".join(out))
     print("chat.arena written:", os.path.getsize(OUT), "bytes,", len(text_files), "text files embedded,", len(bin_files), "binary files listed")

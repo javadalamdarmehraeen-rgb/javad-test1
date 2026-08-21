@@ -1506,3 +1506,14 @@ sanitized and atomically written mode 0600. Executable/script/installer files, u
 schemes, opener access, dangerous drops, oversized files and spreadsheet formulas are
 blocked. Never claim absolute OS security; report verified defense layers and recommend
 independent penetration testing for production assurance.
+
+# 84. FIXED ORDER PRODUCT + COMPREHENSIVE REPRESENTATIVE PRIVACY (PERMANENT)
+
+Order product names are fixed readonly catalog values and never dropdown/free-edit fields.
+Quantity, gift and price remain editable; totals recalculate immediately and remain visible
+on mobile. Row edit/delete actions are manager-only. Representative ownership filtering
+must apply not only to pharmacies/doctors/orders but also activity logs/maps, leaves,
+routes, homes, monthly reports and targets. Rendering may use temporary filtered arrays
+only inside try/finally and must never mutate canonical state. Dynamic representative
+selectors are always derived from active users and show only self for normal users unless
+explicit all-reps permission.
