@@ -1218,3 +1218,11 @@ Then change only what is requested.
 - HTML response boundary: every HTML is no-store and clears HTTP cache; SW script is no-store with root scope.
 - SW code boundary: navigation, HTML, JS, CSS, JSON and manifest are network-only/reload; only images/fonts may have version cache fallback.
 - Activation boundary: purge all caches, skipWaiting, clients.claim and build broadcast trigger automatic mismatch rescue.
+
+## معماری مستندسازی review — نوبت ۶۰
+- `PROJECT_GRAPH.md`: گراف خودکار روابط اجرایی.
+- `GITHUB_REVIEW_HANDOFF.md`: وضعیت عملیاتی Git/CI/deploy و نقشه موتورهای حساس برای reviewer.
+- `chat.arena`: حافظه کامل گفتگو و embed همه فایل‌های متنی؛ برای جستجوی عمیق، نه اولین سند کوتاه.
+- `ARENA_HANDOFF_PROMPT.md`: قوانین اجرایی مدل بعدی.
+- README: دروازه عمومی GitHub و ارجاع به handoff/runtime واقعی.
+این تفکیک مانع اشتباه‌گرفتن اسکلت Next.js، runtime Node/public و وضعیت production می‌شود.

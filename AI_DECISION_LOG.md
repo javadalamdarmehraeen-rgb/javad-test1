@@ -1578,3 +1578,9 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - پاک‌سازی cache نباید storage/indexedDB/cookies/data files را شامل شود.
 - SW نباید HTML/JS/CSS قدیمی را در حالت network failure برگرداند؛ تازگی نسخه بر offline stale shell اولویت دارد.
 - GitHub شاخه ثابت Arena را دریافت می‌کند و تغییر main فقط از Pull Request انجام می‌شود؛ GitLab از workflow main و secrets mirror می‌شود.
+
+## تصمیم ۹۲ — تحویل مستقل برای GitHub review و چت بعدی (2026-08-22)
+- chat.arena حافظه کامل و بزرگ است، اما reviewer به یک سند کوتاه‌تر و عملیاتی نیاز دارد؛ `GITHUB_REVIEW_HANDOFF.md` مرجع اول GitHub review شد.
+- هر handoff باید تفاوت source-tested، local-committed، branch-pushed، PR-created، main-merged، CI, GitLab, Render و production health را جدا بنویسد.
+- خطای مجوز GitHub بخشی از context دائمی است تا مدل بعدی push ناموفق را با deploy موفق اشتباه نگیرد.
+- README قدیمی Next.js نباید reviewer را منحرف کند؛ runtime فعلی Node/public در بالای README تصریح شد.

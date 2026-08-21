@@ -1313,3 +1313,11 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Never clear LocalStorage/IndexedDB/CRM data during cache rescue.
 - SW navigation/code assets remain network-only fresh; only image/font fallback cache is allowed.
 - Keep install/activate purge, skipWaiting/claim and CRM_BUILD_ACTIVE broadcast.
+
+## شروع اجباری چت بعد از نوبت ۶۰
+1. `PROJECT_GRAPH.md` را بخوان.
+2. `GITHUB_REVIEW_HANDOFF.md` را کامل بخوان.
+3. branch/commits/remotes/auth و production health را دوباره اندازه بگیر.
+4. اگر GitHub reconnect شده، فقط `arena/01a006e4-namayandeelmi-javad` را push و از آن PR به main بساز.
+5. source test را با deploy اشتباه نگیر؛ production در آخرین اندازه‌گیری 11.20.0 و source 11.38.0 است.
+6. بعد از merge، GitHub checks، GitLab mirror، Render deploy و cache rescue را جدا تأیید کن.

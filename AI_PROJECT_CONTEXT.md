@@ -911,3 +911,6 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 
 ## وضعیت انتشار 11.38.0 در پایان نوبت ۵۹
 Commit محلی `2c4fe0b` روی شاخه ثابت Arena ساخته شد. Push شاخه به GitHub به‌علت فقدان Workflows permission رد شد؛ Create Ref API نیز با `Resource not accessible by integration (403)` رد شد. فقط remote origin وجود دارد و GitLab remote موجود نیست. تا reconnect GitHub و سپس push/PR/merge، production همچنان نسخه قبلی است؛ هیچ ادعای deploy نباید شود.
+
+## نقطه شروع چت بعدی — نوبت ۶۰
+مرجع عملیاتی جدید `GITHUB_REVIEW_HANDOFF.md` است. هوش مصنوعی بعدی باید اول PROJECT_GRAPH و سپس این فایل را بخواند. آخرین commit محلی پیش از مستندسازی `4984d17` است؛ GitHub remote فقط main دارد، push/PR هنوز به‌علت permission انجام نشده، GitLab remote نیست و production در آخرین بررسی 11.20.0 است. نسخه سورس 11.38.0 و 57 تست موفق‌اند. نخستین اقدام پس از reconnect GitHub باید push همان شاخه ثابت، PR به main، check/merge و سپس production health باشد.

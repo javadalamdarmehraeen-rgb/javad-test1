@@ -15,6 +15,10 @@ const sw = read('../public/sw.js');
 const server = read('../server.js');
 const gitignore = read('../.gitignore');
 const acceptance = read('../AI_ACCEPTANCE_CHECKLIST.md');
+const githubHandoff = read('../GITHUB_REVIEW_HANDOFF.md');
+const projectGraph = read('../PROJECT_GRAPH.md');
+const officialFiles = read('../OFFICIAL_FILELIST.txt');
+const readme = read('../README.md');
 
 function extract(name) {
   const start=v20.indexOf(`function ${name}(`), brace=v20.indexOf('{',start);let depth=0,end=brace;
@@ -310,6 +314,17 @@ test('multi-part prompts require a real acceptance checklist before ZIP delivery
   assert.match(acceptance,/توضیح متنی بدون تغییر کد «انجام‌شده» نیست/);
   assert.match(acceptance,/runtime check/);
   assert.match(acceptance,/نسخه 11\.35\.0/);
+});
+
+test('next-chat GitHub handoff records exact publish truth and engine map', () => {
+  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.38\.0/);
+  assert.match(githubHandoff,/4984d17/);assert.match(githubHandoff,/Resource not accessible by integration/);
+  assert.match(githubHandoff,/Production[\s\S]*11\.20\.0/);
+  assert.match(githubHandoff,/موتور پاک‌سازی خودکار کش/);assert.match(githubHandoff,/موتورهای پایداری داده/);
+  assert.match(githubHandoff,/Source tested: yes\/no/);assert.match(githubHandoff,/Production health version/);
+  assert.match(projectGraph,/گراف عملیاتی انتشار و اسناد تحویل/);assert.match(projectGraph,/گراف موتور نجات کش 11\.38/);
+  assert.match(officialFiles,/^GITHUB_REVIEW_HANDOFF\.md$/m);
+  assert.match(readme,/GITHUB_REVIEW_HANDOFF\.md/);assert.match(readme,/runtime فعلی برنامه Node خالص/);
 });
 
 test('notifications enforce public-recipient permission, replies and persistent thread history', () => {

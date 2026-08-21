@@ -422,3 +422,19 @@
 - `public/crm-app.js` دو نسل کد فرم دارد؛ هر تغییر رفتاری فرم باید در هر دو نسل + مسیر فعال v9 جفت شود.
 - آخرین لایه (crm-features-v20.js) برنده نهایی بازنویسی‌هاست؛ اسکریپت‌های بعد از آن نباید بیایند مگر با افزودن به انتهای زنجیره.
 - اسکلت Next.js در `src/` خفته است؛ ورودی اصلی `server.js` + `public/` است.
+
+## ط) گراف عملیاتی انتشار و اسناد تحویل
+
+- نسخه سورس package: `11.38.0`
+- شاخه اجباری Arena: `arena/01a006e4-namayandeelmi-javad`؛ push/PR فقط از همین شاخه.
+- ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.
+- `GITHUB_REVIEW_HANDOFF.md` مرجع وضعیت commit/push/PR/GitLab/Render/production و دستورات بررسی است؛ قبل از ادعای deploy باید دوباره اندازه‌گیری شود.
+- زنجیره انتشار: source test → commit → push Arena branch → PR main → checks → merge → GitLab mirror → Render deploy → production health.
+
+## ی) گراف موتور نجات کش 11.38
+
+- `server.js /api/health` → نسخه واقعی server با no-store و `X-CRM-Build`.
+- `public/index.html` و `public/login.html` → مقایسه build محلی با health؛ mismatch → `/cache-reset`.
+- `server.js /cache-reset` → `Clear-Site-Data: cache` + حذف CacheStorage/SW + redirect یکتا؛ LocalStorage/IndexedDB ممنوع از حذف.
+- `public/sw.js` → purge install/activate + network-only HTML/JS/CSS + `CRM_BUILD_ACTIVE` broadcast.
+- `public/crm-app.js` → دریافت `CRM_BUILD_ACTIVE` و cache-reset خودکار در mismatch.

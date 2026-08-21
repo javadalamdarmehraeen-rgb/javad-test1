@@ -643,3 +643,11 @@ CLEAN_EXTRA_FILES.bat و بعد PUSH_GITHUB_CLEAN.bat را اجرا کن.
 6. navigation و HTML/JS/CSS/JSON/WebManifest در SW فقط از شبکه با cache reload/no-store می‌آیند و هیچ fallback به asset قدیمی ندارند؛ در قطع اینترنت پیام تلاش دوباره نمایش داده می‌شود.
 7. crm-app پیام CRM_BUILD_ACTIVE را می‌شنود و در mismatch خودکار cache-reset را اجرا می‌کند؛ این معادل عملی hard reload است و نیاز به Ctrl+Shift+R دستی را حذف می‌کند.
 8. HTTP واقعی headerها و endpoint، runtime حذف ۲ cache/۲ SW با حفظ sentinel، ۵۷/۵۷ تست، build و syntax تأیید شد.
+
+## تحویل مستندات نوبت ۶۰ — بدون تغییر نسخه برنامه
+
+1. فایل `GITHUB_REVIEW_HANDOFF.md` ساخته شد تا GitHub reviewer و هوش مصنوعی بعدی وضعیت واقعی source/commit/push/PR/deploy/production را یکجا ببیند.
+2. README در ابتدای فایل به handoff و PROJECT_GRAPH ارجاع می‌دهد و روشن می‌کند runtime واقعی `server.js + public/` است، نه اسکلت تاریخی Next.js.
+3. نتیجه تکراری push و Create Ref ثبت شد: GitHub App فاقد Workflows/Refs permission است و 403 می‌دهد؛ شاخه Arena remote نشده است.
+4. production دوباره بررسی و نسخه 11.20.0 ثبت شد؛ نسخه 11.38.0 تا push/PR/merge/deploy آنلاین نیست.
+5. نقشه مویرگی cache rescue، state/bulk، order, route, labels, tombstones, privacy, leave, notifications, Web Push، workflow و تست‌ها در handoff آمده است.

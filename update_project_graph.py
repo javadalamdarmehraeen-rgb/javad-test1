@@ -208,6 +208,27 @@ def build():
     L.append("- آخرین لایه (crm-features-v20.js) برنده نهایی بازنویسی‌هاست؛ اسکریپت‌های بعد از آن نباید بیایند مگر با افزودن به انتهای زنجیره.")
     L.append("- اسکلت Next.js در `src/` خفته است؛ ورودی اصلی `server.js` + `public/` است.")
     L.append("")
+    try:
+        with open(os.path.join(ROOT, "package.json"), "r", encoding="utf-8") as pf:
+            app_version = json.load(pf).get("version", "ناشناخته")
+    except Exception:
+        app_version = "ناشناخته"
+    L.append("## ط) گراف عملیاتی انتشار و اسناد تحویل")
+    L.append("")
+    L.append("- نسخه سورس package: `{}`".format(app_version))
+    L.append("- شاخه اجباری Arena: `arena/01a006e4-namayandeelmi-javad`؛ push/PR فقط از همین شاخه.")
+    L.append("- ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.")
+    L.append("- `GITHUB_REVIEW_HANDOFF.md` مرجع وضعیت commit/push/PR/GitLab/Render/production و دستورات بررسی است؛ قبل از ادعای deploy باید دوباره اندازه‌گیری شود.")
+    L.append("- زنجیره انتشار: source test → commit → push Arena branch → PR main → checks → merge → GitLab mirror → Render deploy → production health.")
+    L.append("")
+    L.append("## ی) گراف موتور نجات کش 11.38")
+    L.append("")
+    L.append("- `server.js /api/health` → نسخه واقعی server با no-store و `X-CRM-Build`.")
+    L.append("- `public/index.html` و `public/login.html` → مقایسه build محلی با health؛ mismatch → `/cache-reset`.")
+    L.append("- `server.js /cache-reset` → `Clear-Site-Data: cache` + حذف CacheStorage/SW + redirect یکتا؛ LocalStorage/IndexedDB ممنوع از حذف.")
+    L.append("- `public/sw.js` → purge install/activate + network-only HTML/JS/CSS + `CRM_BUILD_ACTIVE` broadcast.")
+    L.append("- `public/crm-app.js` → دریافت `CRM_BUILD_ACTIVE` و cache-reset خودکار در mismatch.")
+    L.append("")
     open(OUT, "w", encoding="utf-8").write("\n".join(L))
     print("PROJECT_GRAPH.md written: {} bytes, {} files analyzed, {} window names, {} tabs".format(
         os.path.getsize(OUT), len(infos), len(win_owner), len(tab_files)))

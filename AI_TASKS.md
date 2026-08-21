@@ -1500,3 +1500,12 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] commit محلی `2c4fe0b`
 - [ ] reconnect GitHub App با Workflows/Refs permission؛ push/PR/merge/deploy هنوز مسدود با 403
 - [ ] GitLab mirror پس از main push و secrets معتبر
+
+## ۸۰) تحویل به چت جدید / GitHub review
+- [x] ساخت GITHUB_REVIEW_HANDOFF.md
+- [x] ثبت commit chain، branch و خطای 403
+- [x] ثبت production health واقعی 11.20.0
+- [x] مستندسازی مویرگی cache/data/CRM/SW/workflow/tests
+- [x] افزودن فایل به OFFICIAL_FILELIST
+- [x] اصلاح ابتدای README برای runtime واقعی
+- [ ] پس از reconnect: push شاخه Arena، PR، checks، merge، GitLab mirror، Render و health 11.38.0

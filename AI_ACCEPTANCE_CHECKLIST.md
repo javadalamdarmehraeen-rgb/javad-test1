@@ -56,3 +56,11 @@
 - [ ] push واقعی GitHub و Pull Request به main — ناشناخته/مسدود: GitHub App هر دو push و Create Ref را به‌علت نداشتن Workflows/Refs permission با 403 رد کرد؛ اتصال GitHub در Arena باید دوباره برقرار شود.
 - [ ] GitLab mirror — ناشناخته/مسدود: remote گیت‌لب در sandbox وجود ندارد و mirror فقط پس از push/merge main و وجود secrets workflow ممکن است.
 - [x] تست/build/syntax/HTTP/runtime cache rescue و ZIP نسخه جدید — تأییدشده: ۵۷/۵۷، build، syntax، HTTP header/endpoint و runtime sentinel موفق؛ ZIP نهایی بررسی شد.
+
+## نوبت ۶۰ — تحویل برای چت جدید و بررسی GitHub
+- [x] وضعیت شاخه/commit/remotes از Git خوانده شد — تأییدشده: شاخه ثابت Arena، آخرین commit `4984d17`، remote فقط origin و remote head فقط main.
+- [x] production دوباره مستقل بررسی شد — تأییدشده: `/api/health` هنوز نسخه `11.20.0` را گزارش می‌کند.
+- [x] مشکل چت قبل مویرگی ثبت شد — تأییدشده: push و Create Ref با GitHub App به‌علت Workflows/Refs permission و 403 رد شده؛ GitLab remote موجود نیست.
+- [x] فایل مستقل `GITHUB_REVIEW_HANDOFF.md` ساخته و به OFFICIAL_FILELIST اضافه شد — تأییدشده.
+- [x] README به runtime واقعی و فایل handoff ارجاع مستقیم داد — تأییدشده.
+- [x] بازسازی نهایی PROJECT_GRAPH و chat.arena 1.55، تست اسناد، commit محلی و ZIP — تأییدشده: graph دارای بخش انتشار/cache، chat شامل نوبت 60 و handoff کامل، تست 58/58، build/syntax/diff موفق و ZIP بررسی شد.

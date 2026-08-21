@@ -49,7 +49,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.54 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.38.0
+نسخه این فایل: 1.55 | تاریخ به‌روزرسانی: 2026-08-22 (۳۱ مرداد ۱۴۰۵) | نسخه برنامه: 11.38.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -69,6 +69,8 @@ HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نما
    + قانون نوبت ۱۳: قبل از هر تحلیل، فایل PROJECT_GRAPH.md (گراف دانش پروژه) را بخوان؛
    همه فایل‌ها/توابع/روابط window/نقشه API/نقشه تب‌ها در آن است تا مجبور نباشی کل سورس
    را بخوانی (صرفه‌جویی توکن). بازسازی خودکار: python update_project_graph.py
+   + قانون نوبت ۶۰: بلافاصله بعد از PROJECT_GRAPH.md فایل GITHUB_REVIEW_HANDOFF.md را
+   بخوان؛ وضعیت دقیق commit/push/PR/GitLab/Render/production و نقشه موتور cache/data در آن است.
 ۳. به زبان فارسی و راست‌به‌چپ با کاربر صحبت کن. کاربر برنامه‌نویس نیست؛ خروجی نهایی
    همیشه باید «فایل زیپ کامل برنامه برای دانلود» + «دستورهای git برای آپدیت گیت‌هاب
    به‌همراه شماره نسخه» باشد.
@@ -3392,7 +3394,14 @@ git push gitlab main
 «چرا با وجود تأیید شما من هیچ تغییر آنلاین نمی‌بینم؟ کش‌های قدیمی را با هر ترفند حذف کن، Ctrl+Shift+R را خودکار انجام بده، تغییرات را به GitHub/GitLab بفهمان و اگر موتور لازم است بساز.»
 
 🤖 دستیار:
-علت عملی روشن شد: همه تغییرات sandbox/ZIP روی شاخه محلی uncommitted بودند و production main هنوز نسخه قدیمی داشت. نسخه **۱۱.۳۸.۰** موتور server-truth cache rescue ساخت: HTML Clear-Site-Data cache، endpoint /cache-reset با CacheStorage delete/SW unregister/unique redirect، health version no-store، index/login mismatch detection و SW network-only برای HTML/JS/CSS همراه purge/broadcast. Runtime sentinel نشان داد state/customFields/formFieldMeta باقی و فقط ۲ cache/۲ SW حذف شدند. ۵۷ تست و HTTP header واقعی موفق شد. commit محلی `2c4fe0b` ساخته شد؛ اما GitHub App هر دو push و Create Ref را به‌علت نداشتن Workflows/Refs permission با 403 رد کرد. GitLab remote نیز موجود نبود؛ بنابراین production هنوز به‌روز نشده و reconnect GitHub لازم است.
+علت عملی روشن شد: همه تغییرات sandbox/ZIP روی شاخه محلی uncommitted بودند و production main هنوز نسخه قدیمی داشت. نسخه **۱۱.۳۸.۰** موتور server-truth cache rescue ساخت: HTML Clear-Site-Data cache، endpoint /cache-reset با CacheStorage delete/SW unregister/unique redirect، health version no-store، index/login mismatch detection و SW network-only برای HTML/JS/CSS همراه purge/broadcast. Runtime sentinel نشان داد state/customFields/formFieldMeta باقی و فقط ۲ cache/۲ SW حذف شدند. ۵۷ تست و HTTP header واقعی موفق شد. commitهای محلی تا `4984d17` ساخته شدند؛ اما GitHub App هر دو push و Create Ref را به‌علت نداشتن Workflows/Refs permission با 403 رد کرد. GitLab remote نیز موجود نبود؛ بنابراین production هنوز به‌روز نشده و reconnect GitHub لازم است.
+
+──────────────────────────────── نوبت ۶۰ ────────────────────────────────
+🧑 کاربر (خلاصه وفادار):
+«می‌خواهم چت جدید شروع کنم. همه فایل‌ها، مخصوصاً گراف و chat.arena را به‌روزرسانی کن؛ مشکل چت قبلی، کارکرد مویرگی موتورها/فایل‌ها/کدها و وضعیت GitHub را طوری بنویس که مستقیم برای بررسی GitHub ارجاع بدهم.»
+
+🤖 دستیار:
+فایل مستقل `GITHUB_REVIEW_HANDOFF.md` ساخته و به OFFICIAL_FILELIST/README اضافه شد. این سند commit chain، شاخه ثابت، خطاهای push/403، نبود GitLab remote، production 11.20.0 در برابر source 11.38.0، مراحل reconnect→push→PR→merge→CI→mirror→Render و معماری مویرگی cache rescue، state/bulk، order، route، labels، tombstones، privacy، leave، notification، Web Push و تست‌ها را ثبت می‌کند. همه حافظه‌ها، قوانین، تصمیم‌ها، معماری، taskها و handoff به‌روز و graph/chat در پایان بازسازی می‌شوند.
 
 """
 
@@ -3430,7 +3439,7 @@ def build():
         out.append("~~~~~~~~" + lang)
         out.append(content.rstrip("\n"))
         out.append("~~~~~~~~")
-    out.append("\n\n— پایان chat.arena نسخه ۱.۵۴ (نسخه برنامه 11.38.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
+    out.append("\n\n— پایان chat.arena نسخه ۱.۵۵ (نسخه برنامه 11.38.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
     with open(OUT, "w", encoding="utf-8") as f:
         payload = "\n".join(out)
         payload = "\n".join(line.rstrip() for line in payload.splitlines())

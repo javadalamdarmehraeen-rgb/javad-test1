@@ -1552,3 +1552,7 @@ Before source changes, record readable state/bulk hashes or explicitly confirm a
 # 89. PRODUCTION TRUTH / AUTOMATIC CACHE RESCUE RULE (PERMANENT)
 
 Never tell the user production changed merely because sandbox tests or ZIP passed. Verify Git commit/push, PR/main merge, CI/deploy and production `/api/health`. Browser freshness uses server-truth health comparison plus `/cache-reset`; manual Ctrl+Shift+R must not be the normal upgrade path. Cache rescue may delete only HTTP/CacheStorage caches and Service Worker registrations; it must never call localStorage.clear, delete CRM_APP_STATE_V2, delete IndexedDB or touch persistent data files. SW must never serve stale HTML/JS/CSS fallback. Every final delivery reports separately: source tested, GitHub pushed, main merged, deploy confirmed, GitLab mirrored, production version.
+
+# 90. GITHUB REVIEW HANDOFF RULE (PERMANENT)
+
+At every major handoff, keep `GITHUB_REVIEW_HANDOFF.md` synchronized with the exact branch, commit chain, remote heads, permission failures, workflow, deployment gates, production health, cache/data guarantees and next commands. README must point reviewers to this handoff and PROJECT_GRAPH. Never make the next model infer publish status from source version or ZIP. The first next-chat action is graph → GitHub handoff → acceptance checklist → git/auth/production verification.

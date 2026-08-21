@@ -1,6 +1,13 @@
-#   
-          .
-Next.js 16 (App Router) + PostgreSQL (Drizzle ORM) + PWA (      iOS).
+# نماینده علمی — طنین طب طاها
+
+> **راهنمای بررسی نسخه جاری:** قبل از هر بررسی GitHub، فایل [`GITHUB_REVIEW_HANDOFF.md`](./GITHUB_REVIEW_HANDOFF.md) و سپس [`PROJECT_GRAPH.md`](./PROJECT_GRAPH.md) را بخوانید. نسخه فعال سورس `11.38.0` است؛ ورودی runtime اصلی `server.js + public/` است و اسکلت Next.js پوشه `src/` مسیر production فعلی نیست.
+>
+> **وضعیت انتشار در 2026-08-22:** commit محلی آماده است، اما GitHub App فاقد Workflows/Refs permission بوده و push/PR انجام نشده است. Production هنوز `11.20.0` گزارش می‌کند. جزئیات خطا و گام‌های دقیق انتشار در فایل handoff آمده است.
+
+این مخزن شامل برنامه CRM/PWA نمایندگان علمی، مدیریت داروخانه/پزشک/سفارش، مسیرها، تارگت، اعلان، پخش و ابزارهای حفظ داده است.
+
+## اسکلت تاریخی Next.js
+Next.js 16 (App Router) + PostgreSQL (Drizzle ORM) + PWA در پوشه `src/` به‌عنوان اسکلت تاریخی وجود دارد، اما runtime فعلی برنامه Node خالص و فایل‌های `public/` است.
 ##  
 |  |   |   |    |
 | --- | --- | --- | --- |
