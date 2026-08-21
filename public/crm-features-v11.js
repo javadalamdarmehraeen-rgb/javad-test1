@@ -561,7 +561,24 @@
       pharmacyEditId: "شناسه ویرایش داروخانه",
       doctorEditId: "شناسه ویرایش پزشک",
       orderEditId: "شناسه ویرایش سفارش",
-      orderPharmacyMatchedId: "شناسه داروخانه سفارش"
+      orderPharmacyMatchedId: "شناسه داروخانه سفارش",
+      leaveRepSelect: "نماینده علمی",
+      leaveTypeSelect: "نوع مرخصی یا مأموریت",
+      leaveFromDate: "از تاریخ",
+      leaveToDate: "تا تاریخ",
+      leaveHoursInput: "ساعت مرخصی",
+      leaveReasonInput: "علت درخواست",
+      routeManagerRep: "نماینده علمی",
+      routeManagerProvince: "استان مسیر",
+      routeManagerCity: "شهر مسیر",
+      routeManagerDistrict: "منطقه مسیر",
+      repHomeSelect: "نماینده علمی",
+      repHomeAddressInput: "آدرس منزل نماینده",
+      tgtRepSelect: "نماینده علمی",
+      tgtProductSelect: "محصول یا کالا",
+      tgtCountInput: "تعداد تارگت",
+      tgtYearInput: "سال هدف",
+      tgtMonthSelect: "ماه هدف"
     };
     window.FA_FIELD_LABELS = FA_LABELS;
     function pushField(id, labelText, type, group, full, kind) {
@@ -618,8 +635,13 @@
         else if (el.type === "file") type = "file";
         else if ((el.id || "").toLowerCase().indexOf("date") !== -1) type = "date";
         var ownLab = el.id && g.querySelector('label[for="' + el.id + '"]');
-        var labelText = ownLab ? String(ownLab.textContent || "").replace(/\s+/g, " ").trim() : (el.placeholder || el.id);
-        if ((!ownLab || /^[A-Za-z][A-Za-z0-9_\-]*$/.test(labelText)) && FA_LABELS[el.id]) labelText = FA_LABELS[el.id];
+        var directLab = null;
+        try { directLab = g.querySelector(":scope > .form-label, :scope > label"); } catch (e) { directLab = g.querySelector(".form-label, label"); }
+        var visibleLab = ownLab || (inputs.length === 1 ? directLab : null);
+        var labelText = visibleLab ? String(visibleLab.textContent || "").replace(/\s+/g, " ").trim() : (el.placeholder || el.id);
+        if ((!visibleLab || /^[A-Za-z][A-Za-z0-9_\-]*$/.test(labelText)) && FA_LABELS[el.id]) labelText = FA_LABELS[el.id];
+        // شناسه فنی هرگز نباید به‌عنوان عنوان دیداری به کاربر نشان داده شود.
+        if (/^[A-Za-z][A-Za-z0-9_\-]*$/.test(String(labelText || "").trim())) labelText = "فیلد برنامه";
         pushField(el.id, labelText, type, g, g.classList.contains("full-width") && inputs.length === 1, "field");
       });
     });
@@ -681,7 +703,7 @@
       list.push({
         id: b.id,
         builtin: true,
-        label: meta[b.id].label || b.label,
+        label: (meta[b.id].label && String(meta[b.id].label).trim() !== b.id && !/^[A-Za-z][A-Za-z0-9_\-]*$/.test(String(meta[b.id].label).trim())) ? meta[b.id].label : b.label,
         type: b.type,
         order: Number(meta[b.id].order) || b.scanOrder,
         listOrder: (meta[b.id].listOrder != null && meta[b.id].listOrder !== "") ? Number(meta[b.id].listOrder) : (Number(meta[b.id].order) || b.scanOrder),

@@ -206,8 +206,12 @@ test('order product names are fixed, totals update live and edit/delete are mana
 });
 
 test('activity, leave, route, home, monthly and target renderers enforce representative ownership', () => {
-  assert.match(v20,/function privacyList/);assert.match(v20,/function bindPrivacyRenderers/);assert.match(v20,/active\[norm\(x\.fullName\)\]=1/);
-  for(const pair of [['activityLog','activity_all_reps'],['leaves','hr_all_leaves'],['repRoutes','fld_all_routes'],['repHomes','fld_all_homes'],['salesTargets','target_all_reps']]) assert.ok(v20.includes(`\"${pair[0]}\",\"${pair[1]}\"`),`missing privacy wrapper ${pair}`);
+  assert.match(v20,/function privacyList/);assert.match(v20,/function bindPrivacyRenderers/);assert.match(v20,/activeNames\[norm\(x\.fullName\)\]=1/);
+  for(const pair of [['leaves','hr_all_leaves'],['repRoutes','fld_all_routes'],['repHomes','fld_all_homes'],['salesTargets','target_all_reps']]) assert.ok(v20.includes(`\"${pair[0]}\",\"${pair[1]}\"`),`missing privacy wrapper ${pair}`);
+  assert.match(v20,/function visibleActivityRowsV36/);assert.match(v20,/function renderActivityLogV36/);
+  assert.match(v20,/window\.renderActivityLogTable=renderActivityLogV36/);
+  assert.match(v20,/if\(manager\)return rows\.slice\(\)/);
+  assert.match(v20,/S\.activityLog=visibleActivityRowsV36\(\)/);
   assert.match(v20,/renderMonthlyReportsTable=function/);assert.match(v20,/privacyList\(reps,\"rep_all_reports\"\)/);
   assert.match(v20,/privacyList\(\(\(st\(\)&&st\(\)\.repRoutes\)\|\|\[\]\),\"fld_all_routes\"\)/);
   assert.match(v20,/privacyList\(\(S\.salesTargets\|\|\[\]\),\"target_all_reps\"\)/);
@@ -256,10 +260,23 @@ test('distributor Excel writes Persian month name while keeping all digits Latin
 test('target tab has multi-route manager and fixed product target planner with calculated reports', () => {
   for(const id of ['representativeRoutesCard','routeManagerRep','routeManagerProvince','routeManagerCity','routeManagerDistrict','btnSaveRepresentativeRoute']) assert.ok(html.includes(`id="${id}"`));
   for(const fn of ['setupRepresentativeRoutes','routeGeoValues','setupTargetPlannerV34','paintTargetPlanRows','renderTargetReportsV34','targetReportTable']) assert.match(v20,new RegExp(`function ${fn}\\(`));
+  assert.match(v20,/bindTargetsV20\(\); setupRepresentativeRoutes\(\); setupTargetPlannerV34\(\)/);
+  assert.match(v20,/tab-sales-targets[\s\S]{0,100}setupRepresentativeRoutes\(\);setupTargetPlannerV34\(\)/);
   assert.match(v20,/activityProvinces=routeSelected/);assert.match(v20,/activityCities=routeSelected/);assert.match(v20,/activityDistrictList=routeSelected/);
   assert.match(v20,/n\*dp/);assert.match(v20,/n\*hp/);assert.match(v20,/محقق‌شده/);assert.match(v20,/مانده تارگت/);
   assert.match(v20,/جمع همه تارگت نمایندگان به تفکیک کالا/);assert.match(v20,/تارگت‌های /);
   assert.match(v20,/v34TargetGrandDist/);assert.match(v20,/v34TargetGrandPh/);
+});
+
+test('order reset preserves field settings, placed notice stays hidden, and technical ids never become labels', () => {
+  for(const fn of ['hidePlacedOrderNotices','captureOrderFormSequence','restoreOrderFormSequence','captureOrderLayoutSettings','restoreOrderLayoutSettings','bindOrderFormPositionLock']) assert.match(v20,new RegExp(`function ${fn}\\(`));
+  assert.match(v20,/setTimeout\(hidePlacedOrderNotices,120\)/);
+  assert.match(v20,/style\.getPropertyPriority\("display"\)!=="important"/);
+  assert.match(v20,/reset\.addEventListener\("click",protectReset,true\)/);
+  assert.match(v20,/restoreOrderLayoutSettings\(settings\);restoreDomFieldOrder\(\);restoreOrderFormSequence\(seq\)/);
+  assert.match(v11,/var directLab/);assert.match(v11,/شناسه فنی هرگز نباید/);
+  assert.match(v11,/leaveRepSelect: "نماینده علمی"/);
+  assert.match(v11,/String\(meta\[b\.id\]\.label\)\.trim\(\) !== b\.id/);
 });
 
 test('leave markup, home edit/delete and protected reference fields follow final rules', () => {
@@ -307,7 +324,7 @@ test('placed pharmacy notice guard is loop-safe and home representative stays re
 });
 
 test('new build clears only old asset caches before revealing app and prevents manager-screen flash', () => {
-  assert.match(html,/var BUILD="11\.35\.0",key="CRM_ASSET_BUILD"/);
+  assert.match(html,/var BUILD="11\.36\.0",key="CRM_ASSET_BUILD"/);
   assert.match(html,/document\.documentElement\.classList\.add\("crm-booting"\)/);
   assert.match(html,/caches\.keys\(\).*caches\.delete/);
   assert.match(html,/navigator\.serviceWorker\.getRegistrations\(\).*unregister/);
@@ -331,7 +348,7 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.35\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.36\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);

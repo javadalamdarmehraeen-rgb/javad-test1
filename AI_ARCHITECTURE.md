@@ -1195,3 +1195,11 @@ Then change only what is requested.
 - Notification schema: id, threadId, parentId, sender, recipient, title, message, date, isRead.
 - Push server: generated persistent P-256 VAPID key, subscription registry keyed endpoint/user, RFC8291 aes128gcm payload, ES256 VAPID JWT and stale endpoint pruning.
 - Push client: permission gesture, PushManager subscription, user association, send endpoint; SW handles push and notification click.
+
+## معماری افزوده v11.36.0 — Transactional order reset / strict activity projection
+- Order reset is a UI-data operation, not a schema/layout operation. It snapshots layout metadata and DOM anchor sequence in memory, runs legacy reset, then restores both without writing a new automatic persistent layout snapshot.
+- Layout anchors fall back to the form-group id when no descendant input/select/textarea/button exists; this keeps dynamic custom-field hosts in sequence.
+- Order form has an in-memory late-mutation guard; explicit manager intent remains the only source allowed to approve a new layout.
+- Route manager setup is lifecycle-bound to initial boot, target-tab activation and reliable delayed boot.
+- Builtin label resolution priority is Persian DOM label/registry over stale technical metadata.
+- Activity history remains canonical in state, while visible projection requires an active user and is manager-active/all or representative-self-only.

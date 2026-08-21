@@ -1540,3 +1540,7 @@ critical interactions, record errors and only mark verified items confirmed. Can
 sources must be runtime-compared to static panes. Notification public-recipient permission,
 reply threads and Web Push remain permanent. Web Push may request permission only by user
 action and audible sound always follows OS/browser settings; never falsely guarantee sound.
+
+# 87. ORDER RESET / PERSIAN LABEL / ACTIVITY SELF-ONLY RULE (PERMANENT)
+
+Clearing or starting a new order may clear values only; it must never alter field layout metadata or DOM order. Layout anchors must include group IDs for containers without descendant controls. Automatic observers may restore an approved in-memory/explicit-manager order but must never persist a startup snapshot. After pharmacy auto-fill, duplicate notices remain idempotently hidden until the name truly changes. Builtin technical identifiers must never be shown as field labels; Persian DOM/registry titles win over stale metadata. Route controls must be initialized on target-tab activation, not merely exist in HTML. Activity logs retain canonical history but render only active-user rows; normal representatives always see only their own activity regardless of stale all-reps permissions.

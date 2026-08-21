@@ -49,7 +49,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.51 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.35.0
+نسخه این فایل: 1.52 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.36.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -3373,6 +3373,13 @@ git push gitlab main
 🤖 دستیار:
 نسخه **۱۱.۳۵.۰** ساخته شد و AI_ACCEPTANCE_CHECKLIST رسمی شد. JSDOM واقعی از سرور همه scriptها را اجرا کرد و root cause tab را یافت: MENU_SECTIONS_LIST فقط ۲۷ تب داشت و dynamic rebuild invoice را واقعاً از DOM حذف می‌کرد؛ اکنون ۲۸ تب و runtime تأیید است. اعلان public permission-aware، reply/thread/history و Web Push استاندارد VAPID/aes128gcm/SW push-click اضافه شد. Observer جایگذاری idempotent و white-lock رفع شد. نماینده fixed self-only شد. Runtime نتیجه invoice=true,target=true,orderTotal=300,publicOption=false,reply=true,errors=[] داشت. ۵۴ تست و تحویل Push واقعی دستگاه در انتظار مرحله نهایی/کاربر است.
 
+──────────────────────────────── نوبت ۵۷ ────────────────────────────────
+🧑 کاربر (خلاصه وفادار):
+«فیلدهای سفارشات قفل نیستند و جابه‌جا می‌شوند؛ پس از پرکردن خودکار پیام قبلاً ثبت‌شده می‌ماند و پاک‌کردن تنظیمات فیلدها را به‌هم می‌ریزد. تعریف مسیر تارگت خالی است. بعضی labelها شناسه کد مثل leaveRepSelect هستند و باید سراسری فارسی شوند. فعالیت لحظه‌ای هنوز کاربران حذف‌شده را نشان می‌دهد و نماینده فقط خودش را ببیند.»
+
+🤖 دستیار:
+نسخه **۱۱.۳۶.۰** ساخته شد. علت جابه‌جایی runtime مشخص شد: orderCustomFieldsContainer داخلش input نداشت و groupAnchor آن را از sequence حذف می‌کرد؛ fallback به id خود group و reset تراکنشی metadata/DOM ترتیب را ثابت کرد. پیام جایگذاری hidden/aria/display-important و idempotent شد. setupRepresentativeRoutes در boot/tab/reliable اجرا و runtime نماینده و ۳۱ استان را تأیید کرد. label مستقیم بدون for خوانده و metadata فنی builtin رد شد. renderActivityLogV36 کاربران حذف‌شده را کنار می‌گذارد و غیرمدیر را حتی با all-reps به self محدود می‌کند. ۵۵ تست و runtime واقعی بدون خطا تأیید شد.
+
 """
 
 FILES_INTRO = """
@@ -3409,7 +3416,7 @@ def build():
         out.append("~~~~~~~~" + lang)
         out.append(content.rstrip("\n"))
         out.append("~~~~~~~~")
-    out.append("\n\n— پایان chat.arena نسخه ۱.۵۱ (نسخه برنامه 11.35.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
+    out.append("\n\n— پایان chat.arena نسخه ۱.۵۲ (نسخه برنامه 11.36.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
     with open(OUT, "w", encoding="utf-8") as f:
         f.write("\n".join(out))
     print("chat.arena written:", os.path.getsize(OUT), "bytes,", len(text_files), "text files embedded,", len(bin_files), "binary files listed")

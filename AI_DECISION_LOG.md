@@ -1553,3 +1553,11 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - Standards Web Push is implemented zero-dependency with persisted VAPID/subscriptions, RFC8291 aes128gcm and OS service-worker notification lifecycle.
 - Device sound cannot be forced by a web app; high urgency, vibration and renotify are sent, while audible behavior follows OS/PWA notification settings.
 - Mutation guards must be idempotent; observers cannot write the same observed attribute unconditionally.
+
+## تصمیم ۸۹ — نسخه ۱۱.۳۶.۰: قفل تراکنشی فرم سفارش و activity self-only (2026-08-21)
+- پاک‌کردن داده فرم حق تغییر layout metadata یا ترتیب فیلدها را ندارد؛ reset با snapshot موقت in-memory و restore چندمرحله‌ای محافظت می‌شود.
+- گروه بدون input داخلی باید با id خود گروه در layout anchor ثبت شود؛ حذف چنین گروهی از sequence علت انتقال کادر سفارشی سفارش به ابتدای فرم بود.
+- پیام duplicate پس از placement سه لایه hidden/aria/display-important دارد، اما observer فقط هنگام تفاوت واقعی attribute می‌نویسد تا حلقه سفیدشدن برنگردد.
+- کنترل‌های route فقط وجود HTML کافی ندارند؛ setup باید در boot و tab activation واقعاً اجرا و با تعداد option در runtime آزموده شود.
+- شناسه فنی builtin هرگز label دیداری نیست؛ label مستقیم DOM و registry فارسی بر metadata فنی قدیمی اولویت دارد.
+- فعالیت لحظه‌ای از مجوز all-reps نماینده مستثناست: مدیر فعالیت کاربران فعال را می‌بیند، نماینده فقط خودش؛ تاریخچه canonical دست‌نخورده می‌ماند.

@@ -1290,3 +1290,10 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Preserve zero-dependency Web Push VAPID/aes128gcm endpoints and SW push/click. Never promise forced sound; OS settings decide audio.
 - MutationObservers must never unconditionally rewrite their own observed attributes.
 - Normal representative reference selects remain one fixed disabled self value.
+
+## افزونه تحویل نسخه ۱۱.۳۶.۰
+- Preserve reset-safe order layout: groupAnchor falls back to group id, reset snapshots/restores order metadata and sequence, and no startup snapshot is persisted.
+- Keep placed pharmacy notices hidden with idempotent hidden/aria/display-important checks; never reintroduce an observer write loop.
+- setupRepresentativeRoutes must run in boot, reliable boot and every target-tab activation.
+- Builtin technical IDs such as leaveRepSelect must never appear as visible labels; Persian DOM labels override stale technical metadata.
+- Activity rendering keeps canonical history but excludes removed users and is strictly self-only for every nonmanager account.
