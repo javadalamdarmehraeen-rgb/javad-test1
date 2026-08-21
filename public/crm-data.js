@@ -262,7 +262,7 @@ const IRAN_GEO_DATA = {
 };
 
 // لیست ۴۹ دسترسی رسمی سیستم در دسته‌بندی‌های مشخص‌شده در اسکرین‌شات کاربر
-const PERMISSION_GROUPS = {
+let PERMISSION_GROUPS = {
   "داشبورد": [
     { key: "dash_login", label: "ورود به داشبورد" },
     { key: "dash_stats", label: "مشاهده آمار کلی (کارت‌های بالای صفحه)" },
@@ -507,6 +507,94 @@ const PERMISSION_GROUPS = {
     { key: "sys_global_option_delete", label: "حذف گزینه هم‌زمان از همه فیلدهای هم‌نام" },
     { key: "sys_global_layout_lock", label: "قفل جای فیلدها در تمام تب‌ها" },
     { key: "sys_auto_pwa_control", label: "فعال‌سازی خودکار سرویس‌ورکر بدون رفرش دستی" }
+  ]
+};
+
+// نمای نهایی و خلوت دسترسی‌ها: دقیقاً یک گروه برای هر تب واقعی برنامه؛ گروه‌های نسخه‌ای قدیمی نمایش داده نمی‌شوند.
+PERMISSION_GROUPS = {
+  "داشبورد": [
+    { key: "dash_access", label: "مشاهده تب داشبورد" }, { key: "dash_widgets", label: "مشاهده و مدیریت ویجت‌های داشبورد" }
+  ],
+  "داروخانه‌ها": [
+    { key: "ph_access", label: "مشاهده تب داروخانه‌ها" }, { key: "ph_create", label: "ثبت و ویرایش داروخانه" }, { key: "ph_list", label: "مشاهده فهرست داروخانه‌ها" }, { key: "ph_all_reps", label: "مشاهده داروخانه‌های همه نمایندگان" }, { key: "ph_view_loc", label: "مشاهده موقعیت" }, { key: "ph_create_loc", label: "ثبت موقعیت" }, { key: "ph_upload", label: "بارگذاری فایل" }, { key: "ph_excel", label: "خروجی اکسل" }, { key: "ph_delete", label: "حذف داروخانه" }
+  ],
+  "پزشکان": [
+    { key: "doc_access", label: "مشاهده تب پزشکان" }, { key: "doc_create", label: "ثبت و ویرایش پزشک" }, { key: "doc_list", label: "مشاهده فهرست پزشکان" }, { key: "doc_all_reps", label: "مشاهده پزشکان همه نمایندگان" }, { key: "doc_view_loc", label: "مشاهده موقعیت" }, { key: "doc_create_loc", label: "ثبت موقعیت" }, { key: "doc_upload", label: "بارگذاری فایل" }, { key: "doc_excel", label: "خروجی اکسل" }, { key: "doc_delete", label: "حذف پزشک" }
+  ],
+  "سفارشات": [
+    { key: "ord_access", label: "مشاهده تب سفارشات" }, { key: "ord_create", label: "ثبت و ویرایش سفارش" }, { key: "ord_list", label: "مشاهده فهرست سفارشات" }, { key: "ord_all_reps", label: "مشاهده سفارش همه نمایندگان" }, { key: "ord_view_detail", label: "مشاهده جزئیات" }, { key: "ord_items", label: "ثبت کالا و جایزه" }, { key: "ord_send", label: "ارسال سفارش" }, { key: "ord_excel", label: "خروجی اکسل" }, { key: "ord_delete", label: "حذف سفارش" }
+  ],
+  "فعالیت لحظه‌ای": [
+    { key: "activity_access", label: "مشاهده فعالیت لحظه‌ای" }, { key: "activity_chart", label: "مشاهده نمودار فعالیت" }, { key: "activity_map", label: "مشاهده نقشه فعالیت" }
+  ],
+  "نقشه جامع": [
+    { key: "overview_map_access", label: "مشاهده نقشه جامع" }, { key: "overview_map_filters", label: "فیلتر استان، شهر و منطقه" }, { key: "overview_map_excel", label: "خروجی نتایج نقشه" }
+  ],
+  "موقعیت زنده": [
+    { key: "live_access", label: "مشاهده موقعیت زنده" }, { key: "live_all_reps", label: "مشاهده همه نمایندگان" }, { key: "live_text_address", label: "مشاهده آدرس متنی" }
+  ],
+  "اسنپ سازمانی": [
+    { key: "sys_snapp_access", label: "مشاهده تب اسنپ سازمانی" }, { key: "sys_snapp_import", label: "ورود فایل سفر" }, { key: "sys_snapp_topup", label: "ورود فایل افزایش موجودی" }, { key: "sys_snapp_export", label: "خروجی اکسل" }
+  ],
+  "اطلاعات شرکت‌ها": [
+    { key: "dist_companies_access", label: "مشاهده اطلاعات شرکت‌ها" }, { key: "dist_company_credentials", label: "ثبت اطلاعات ورود شرکت" }, { key: "dist_open_panel", label: "بازکردن پنل پخش" }
+  ],
+  "اطلاعات فروش پخش‌ها": [
+    { key: "dist_sales_access", label: "مشاهده فروش پخش‌ها" }, { key: "dist_import_pharmacies", label: "ورود فایل داروخانه" }, { key: "dist_import_inventory", label: "ورود فایل موجودی" }, { key: "dist_report_filters", label: "استفاده از فیلترها" }, { key: "dist_report_tables", label: "مشاهده گزارش‌ها" }, { key: "dist_multisheet_excel", label: "خروجی اکسل چندشیتی" }
+  ],
+  "وضعیت فاکتور پخش‌ها": [
+    { key: "dist_invoice_status_access", label: "مشاهده تب وضعیت فاکتور" }, { key: "dist_invoice_status_filters", label: "استفاده از فیلترها" }, { key: "dist_invoice_status_search", label: "جستجوی داروخانه" }, { key: "dist_invoice_status_match", label: "مشاهده تطبیق فاکتورها" }, { key: "dist_invoice_status_details", label: "مشاهده جزئیات فاکتور" }
+  ],
+  "دیتابیس پخش‌ها": [
+    { key: "dist_database_access", label: "مشاهده تب دیتابیس پخش‌ها" }, { key: "dist_view_database", label: "مشاهده دیتابیس" }, { key: "dist_database_files", label: "مشاهده ریز فایل‌ها" }, { key: "sys_editable_excel_database", label: "ویرایش دیتابیس" }
+  ],
+  "جستجوی اطلاعات": [
+    { key: "search_access", label: "مشاهده تب جستجو" }, { key: "search_all_records", label: "جستجو در همه رکوردها" }, { key: "search_view_detail", label: "مشاهده جزئیات" }, { key: "search_edit", label: "ویرایش از نتایج" }, { key: "search_delete", label: "حذف از نتایج" }, { key: "search_excel", label: "خروجی اکسل" }
+  ],
+  "رصد تردد": [
+    { key: "fld_track", label: "مشاهده رصد تردد" }, { key: "fld_routes_controls", label: "کنترل و جستجوی مسیرها" }, { key: "fld_routes_excel", label: "خروجی مسیرها" }
+  ],
+  "شروع/پایان ویزیت": [
+    { key: "fld_visit", label: "مشاهده تب ویزیت" }, { key: "fld_start_stop", label: "شروع و پایان ویزیت" }, { key: "fld_pause", label: "ثبت توقف" }, { key: "fld_visit_metrics", label: "مشاهده شاخص‌های ویزیت" }
+  ],
+  "منزل نمایندگان": [
+    { key: "fld_home_loc", label: "ثبت موقعیت منزل" }, { key: "fld_all_homes", label: "مشاهده منزل همه نمایندگان" }
+  ],
+  "مرخصی‌ها": [
+    { key: "hr_leave_req", label: "ثبت درخواست مرخصی" }, { key: "hr_all_leaves", label: "مشاهده همه مرخصی‌ها" }, { key: "hr_leave_approve", label: "تأیید یا رد مرخصی" }, { key: "hr_leave_excel", label: "خروجی اکسل" }
+  ],
+  "اعلان‌ها": [
+    { key: "notify_access", label: "مشاهده اعلان‌ها" }, { key: "sys_notify", label: "ارسال اعلان" }, { key: "notify_all_users", label: "ارسال به همه کاربران" }
+  ],
+  "گزارش ماهانه": [
+    { key: "rep_monthly", label: "مشاهده گزارش ماهانه" }, { key: "rep_all_reports", label: "مشاهده گزارش همه نمایندگان" }, { key: "rep_item_sales", label: "گزارش فروش کالا" }, { key: "rep_excel", label: "خروجی اکسل" }
+  ],
+  "تارگت فروش": [
+    { key: "sys_targets", label: "مشاهده و مدیریت تارگت" }, { key: "target_all_reps", label: "تارگت همه نمایندگان" }, { key: "target_delete", label: "حذف تارگت" }
+  ],
+  "افزودن‌ها": [
+    { key: "sys_additions", label: "مشاهده تب افزودن‌ها" }, { key: "sys_add_dropdown", label: "افزودن گزینه کشویی" }, { key: "sys_del_dropdown", label: "حذف گزینه کشویی" }, { key: "sys_global_option_edit", label: "ویرایش گزینه سراسری" }, { key: "sys_global_same_label_options", label: "یکسان‌سازی فیلدهای هم‌نام" }
+  ],
+  "ستون‌ها و کالاها": [
+    { key: "sys_cols", label: "مشاهده ستون‌ها و کالاها" }, { key: "sys_product_crud_guard", label: "افزودن و ویرایش کالا" }, { key: "sys_global_product_delete", label: "حذف کالا" }, { key: "sys_atomic_form_list_order", label: "تغییر ترتیب فرم و لیست" }
+  ],
+  "طراحی دستی تب‌ها": [
+    { key: "sys_manual_design", label: "مشاهده طراحی دستی" }, { key: "sys_copy_tabs", label: "کپی چیدمان بین تب‌ها" }, { key: "sys_global_layout_lock", label: "ذخیره و قفل چیدمان" }
+  ],
+  "کاربران و دسترسی": [
+    { key: "sys_users", label: "مشاهده کاربران و دسترسی" }, { key: "usr_edit_save", label: "ایجاد و ویرایش کاربر" }, { key: "usr_permission_templates", label: "ذخیره سطح دسترسی آماده" }, { key: "usr_tab_permission_checkboxes", label: "مدیریت ریزدسترسی‌ها" }, { key: "usr_chpass", label: "تغییر رمز کاربر" }
+  ],
+  "پیام‌رسان‌ها": [
+    { key: "sys_msg", label: "مشاهده تنظیمات پیام‌رسان" }, { key: "sys_share_fields", label: "انتخاب فیلدهای قابل ارسال" }, { key: "sys_share_order", label: "ترتیب اطلاعات ارسالی" }
+  ],
+  "پشتیبان‌گیری": [
+    { key: "sys_backup", label: "تهیه پشتیبان" }, { key: "sys_restore", label: "بازیابی دستی پشتیبان" }, { key: "sys_backup_email", label: "ارسال پشتیبان به ایمیل" }
+  ],
+  "نصب اپ": [
+    { key: "sys_install", label: "مشاهده راهنمای نصب" }, { key: "sys_auto_pwa_control", label: "فعال‌سازی PWA" }
+  ],
+  "عیب‌یابی": [
+    { key: "sys_diag", label: "مشاهده عیب‌یابی" }, { key: "sys_runtime_console_guard", label: "مشاهده وضعیت اجرای برنامه" }, { key: "sys_automated_app_test", label: "اجرای بررسی خودکار" }
   ]
 };
 

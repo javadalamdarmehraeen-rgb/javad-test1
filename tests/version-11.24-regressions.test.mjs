@@ -116,24 +116,53 @@ test('same-label dropdown options use one global source for add, rename, delete 
   let applied=0,saved=0;const c3={result:null,JSON,norm:v=>String(v||''),$:()=>({}),globalFieldKey:()=> 'ماه',seedGlobalOptions:()=>rec,applyGlobalOptionKey:()=>applied++,save:()=>saved++,mergeGlobalOption:(list,item)=>{if(!list.some(x=>x.value===item.value))list.push(item);}};vm.createContext(c3);vm.runInContext(`${extract('globalOptionChange')};globalOptionChange('month','add','','اردیبهشت');globalOptionChange('month','delete','فروردین','');result=true`,c3);assert.equal(rec.values.some(x=>x.value==='اردیبهشت'),true);assert.equal(rec.hidden.includes('فروردین'),true);assert.equal(applied,2);assert.equal(saved,2);
 });
 
-test('layout lock covers every tab grid and order mirror no longer invokes destructive layout', () => {
+test('layout lock restores only explicit manager snapshots and startup cannot capture or destructively rearrange', () => {
   assert.match(v20,/document\.querySelectorAll\("\.tab-pane \.form-grid"\)/);
-  assert.match(v20,/function gridLockKey/);
-  assert.match(v20,/new MutationObserver\(function\(records\)/);
-  assert.doesNotMatch(v20,/DOM_FORMS=\[/);
+  assert.match(v20,/CRM_MANAGER_GRID_ORDER_V2/);
+  assert.match(v20,/فقط اقدام صریح مدیر snapshot می‌سازد/);
+  assert.doesNotMatch(v20,/addEventListener\("beforeunload",captureDomFieldOrder/);
+  const bind=v20.slice(v20.indexOf('function bindDomOrderLock'),v20.indexOf('function orderEntityKey'));
+  assert.doesNotMatch(bind,/MutationObserver/);
   const mirror=v20.slice(v20.indexOf('function mirrorPharmacyFieldsToOrder'),v20.indexOf('function mergeSameNameFieldInfo'));
   assert.doesNotMatch(mirror,/applyFullFormLayout/);
-  assert.match(mirror,/restoreDomFieldOrder\(\);captureDomFieldOrder\(\)/);
+  const wrapper=v20.slice(v20.indexOf('function wrapFormLayoutMirror'),v20.indexOf('/* ---------- ۱۲)'));
+  assert.match(wrapper,/if\(!window\.__CRM_MANAGER_LAYOUT_INTENT\)/);
 });
 
 test('invoice tab visibility is reversible and old users inherit distributor access', () => {
   assert.match(v20,/if\(pane\)pane\.style\.display=allow\?"":"none"/);
   assert.match(v20,/perms\.dist_invoice_status_access==null&&perms\.dist_sales_access!==false/);
   assert.match(v11,/hideTab\("tab-distributor-invoice-status", "dist_invoice_status_access"\)/);
+  assert.match(v20,/function migrateInvoicePermissionOnce/);
+  assert.match(v20,/u\.permissions\.dist_invoice_status_access=true/);
+});
+
+test('permissions page uses exact real tab names without legacy version groups', () => {
+  for (const tab of ['داشبورد','داروخانه‌ها','پزشکان','سفارشات','فعالیت لحظه‌ای','نقشه جامع','موقعیت زنده','اسنپ سازمانی','اطلاعات شرکت‌ها','اطلاعات فروش پخش‌ها','وضعیت فاکتور پخش‌ها','دیتابیس پخش‌ها','جستجوی اطلاعات','رصد تردد','شروع/پایان ویزیت','منزل نمایندگان','مرخصی‌ها','اعلان‌ها','گزارش ماهانه','تارگت فروش','افزودن‌ها','ستون‌ها و کالاها','طراحی دستی تب‌ها','کاربران و دسترسی','پیام‌رسان‌ها','پشتیبان‌گیری','نصب اپ','عیب‌یابی']) assert.match(data,new RegExp(`"${tab}"\\s*:`));
+  const finalView=data.slice(data.indexOf('// نمای نهایی و خلوت دسترسی‌ها'));
+  assert.doesNotMatch(finalView,/ابزارهای مدیریت \(نسخه/);
+});
+
+test('final user editor always has save, exact roles and stable one-dropdown preset UI', () => {
+  assert.match(v20,/function bindUserCrudV27/);assert.match(v20,/function saveUserV27/);
+  assert.match(v20,/btn\.addEventListener\("click"[\s\S]*saveUserV27\(\)/);
+  assert.match(v20,/💾 ذخیره اطلاعات کاربر/);
+  assert.match(v20,/<option value='سرپرست'>سرپرست<\/option><option value='نماینده علمی'>نماینده علمی<\/option><option value='کارشناس فروش'>کارشناس فروش<\/option>/);
+  assert.match(v20,/v20PresetSave/);assert.doesNotMatch(v20,/id=['"]v20PresetUser|id=['"]v20PresetApply/);
+  assert.match(v20,/permissionLevelTemplates\[pid\]=checklistPermissions\(\)/);
+  assert.match(v20,/#tab-users-permissions \.permission-tag-chk,#tab-users-permissions \.permission-tag-chk:hover\{transition:none!important;transform:none!important/);
+  const state={users:[{id:'u1',fullName:'قدیم',username:'old',password:'1',permissions:{}}]},els={userEditId:{value:'u1'},newFullName:{value:'جدید'},newUsername:{value:'new'},newPassword:{value:'2'},newPhone:{value:'0912'},newRole:{value:'سرپرست'},newSimControl:{value:'بدون بررسی'},formCreateUser:{reset(){}},btnSaveUserInfo:{innerHTML:'',style:{}}};
+  const ctx={state,result:null,st:()=>state,$:id=>els[id]||null,checklistPermissions:()=>({ph_access:true}),save:()=>{},syncUsersAuthV27:()=>{},window:{renderUserCardsList:()=>{},updateNavBadges:()=>{}},v20Toast:()=>{},alert:()=>{}};vm.createContext(ctx);vm.runInContext(`${extract('saveUserV27')};saveUserV27();result=state.users`,ctx);assert.equal(ctx.result.length,1);assert.equal(ctx.result[0].fullName,'جدید');assert.equal(ctx.result[0].role,'سرپرست');assert.equal(ctx.result[0].permissions.ph_access,true);
+});
+
+test('gray dependency styling leaves labels unchanged and grays field plus checkbox only', () => {
+  assert.match(v20,/\.v20-grey-zone \.form-label\{color:inherit!important;opacity:1!important\}/);
+  assert.match(v20,/\.v20-grey-zone input\[type=checkbox\]\{opacity:\.5!important;accent-color:#94a3b8!important/);
+  assert.match(v20,/\.v20-grey-zone input:not\(\[type=checkbox\]\),\.v20-grey-zone select/);
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.26\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.27\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);

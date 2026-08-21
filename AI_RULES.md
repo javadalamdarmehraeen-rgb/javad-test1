@@ -1432,3 +1432,16 @@ may not override it unless the manager explicitly changes that tab. New permissi
 keys must be backward-compatible and must not make a newly delivered tab flash then
 disappear. PWA activation is automatic via versioned no-cache registration,
 skipWaiting, and clients.claim; diagnostics must not require endless manual refresh.
+
+# 78. EXPLICIT-MANAGER LAYOUT + CLEAN PERMISSIONS + USER SAVE RULE (PERMANENT)
+
+No startup, refresh, beforeunload, or broad DOM observer may capture a new layout or
+run destructive full-layout code. Legacy full layout is permitted only during an
+explicit manager interaction in columns/manual design; only that action may write the
+manager grid snapshot. Permission UI must map one group to every real navigation tab
+using the exact visible tab name and must never show historical "tools by version"
+groups. User editing must always expose and execute a final save button, updating the
+same user and auth map. Preset UI is exactly one level selector plus one save-level
+button, and role creation uses supervisor/scientific representative/sales expert saved
+templates. Gray dependency styling applies to the control and associated checkbox,
+never the label or whole container.

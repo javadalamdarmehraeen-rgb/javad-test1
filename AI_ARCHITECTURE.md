@@ -1133,3 +1133,10 @@ Then change only what is requested.
 - Incremental MutationObserver hydrates newly rendered/created dropdowns; ordinary selection does not save when the option already exists.
 - Layout lock keys every lockable grid by grid ID, form ID or pane/index and restores after delayed mutations.
 - SW lifecycle is versioned registration → update → ready → skipWaiting → clients.claim/controllerchange.
+## معماری افزوده v11.27.0 — Manager-intent layout gate / clean permissions / user CRUD
+- Synchronous final wrapper intercepts legacy layout before DOMContent; no manager intent means no mutation, only safe restore.
+- Explicit layout snapshots use `CRM_MANAGER_GRID_ORDER_V2`; startup never writes a baseline and therefore cannot freeze a regression.
+- Permission model retains underlying keys but projects a final 28-group UI matching nav tab labels exactly.
+- Invoice access migration `invoiceStatusPermissionV1127` runs once over existing users/templates to repair default-false rollout.
+- `bindUserCrudV27` capture-intercepts button/form submit and final-overrides `editUserCard`; auth map is rebuilt after save.
+- Preset bar is created once and contains only level select + save button.

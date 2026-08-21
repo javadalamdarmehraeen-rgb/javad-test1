@@ -1491,3 +1491,10 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - Layout lock enumerates every tab `.form-grid`, restores each independently, and observes delayed legacy form-group insertions.
 - Invoice tab visibility now clears stale inline `display:none`; missing new permission inherits prior dist-sales access.
 - PWA registration is cache-bypassed/versioned and activation is automatic, with no manual-refresh diagnostic loop.
+## تصمیم ۸۰ — نسخه ۱۱.۲۷.۰: مهار startup layout، permission tabs واقعی و CRUD نهایی کاربر (2026-08-21)
+- Legacy `applyFullFormLayout` is blocked unless an 800ms manager-intent gate is armed from columns/manual-design controls; wrapper binds synchronously before DOMContent startup handlers.
+- Automatic all-grid capture/observer was rolled back because it could freeze a version-induced order. Only explicit manager actions write `CRM_MANAGER_GRID_ORDER_V2`; legacy four-form snapshots remain readable.
+- Existing users receive a one-time invoice-status access migration, after which explicit manager permission changes remain authoritative.
+- Final permission view is a clean 28-tab map with exact UI names and active details, not historical version buckets.
+- Final user CRUD capture-handles save/edit and keeps preset UI idempotent to eliminate missing button and shake regressions.
+- Gray dependency styling never colors labels/containers; only controls and related checkbox are dimmed.

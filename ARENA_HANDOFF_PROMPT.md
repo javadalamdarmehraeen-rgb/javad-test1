@@ -1226,3 +1226,10 @@ ADDENDUM v11.16.1 (2026-08-16)
 - DOM order lock covers every tab form-grid; do not return to four-form-only lock or call full layout from pharmacy→order mirror.
 - Invoice tab visibility must be reversible; missing new permission inherits existing distributor-sales permission.
 - PWA must activate automatically; diagnostics must not tell users to refresh repeatedly.
+## افزونه تحویل نسخه ۱۱.۲۷.۰
+- Do not restore automatic layout snapshot on startup, beforeunload or broad MutationObserver. Only explicit manager actions may write manager-grid order.
+- Keep synchronous manager-intent gate around legacy applyFullFormLayout; startup calls must be no-ops.
+- Existing invoice permission migration is one-time; afterwards manager false must remain respected.
+- Permission UI must stay exactly 28 real tab groups; never re-display historical version buckets.
+- Final user create/edit/save is bindUserCrudV27/saveUserV27. Preset UI has only one level dropdown and save button.
+- Gray dependency must not color label or container.

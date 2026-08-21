@@ -1593,9 +1593,8 @@ function renderPermissionGroupsChecklist() {
   const container = document.getElementById("permissionGroupsContainer");
   if (!container) return;
   container.innerHTML = "";
-  const tabNames = {"داشبورد":"📊 تب داشبورد","ثبت اطلاعات داروخانه":"🏥 تب داروخانه‌ها","ثبت اطلاعات پزشک":"👨‍⚕️ تب پزشکان","ثبت سفارشات داروخانه":"📦 تب سفارشات","عملیات میدانی":"📍 تب‌های موقعیت و ویزیت","اداری و منابع انسانی":"📝 تب مرخصی‌ها","گزارش‌ها":"📈 تب گزارش‌ها","مدیریت سامانه":"⚙️ تب‌های مدیریتی"};
   Object.entries(PERMISSION_GROUPS).forEach(([groupName, items], gi) => {
-    const shownGroupName = tabNames[groupName] || groupName;
+    const shownGroupName = groupName;
     const grp = document.createElement("fieldset");
     grp.className = "permission-tab-group";
     grp.style.cssText = "border:1px solid #cbd5e1;border-radius:10px;padding:10px;margin:0 0 10px";
@@ -2954,7 +2953,7 @@ function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.26.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.27.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;

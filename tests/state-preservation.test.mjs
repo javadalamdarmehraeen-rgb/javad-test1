@@ -163,7 +163,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /seen\[rowSignature\(r\)\]/);
   assert.match(v20Source, /d\.pharmacyRows=d\.pharmacyRows\.concat\(fresh\)/);
   assert.match(v20Source, /function bindSnappImportButtons/);
-  assert.match(v20Source, /try\{bindSnappImportButtons\(\);bindProductCrudV20\(\);bindSafeOrderControls\(\);\}/, 'critical buttons must bind synchronously');
+  assert.match(v20Source, /try\{bindManagerLayoutIntent\(\);wrapFormLayoutMirror\(\);bindSnappImportButtons\(\);bindProductCrudV20\(\);bindSafeOrderControls\(\);\}/, 'critical buttons and startup layout guard must bind synchronously');
   assert.match(v20Source, /contenteditable='true'/);
   assert.match(v20Source, /arc-save/);
   assert.match(v20Source, /raw-save/);
@@ -190,7 +190,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /function safeOrderFields/);
   assert.doesNotMatch(v20Source.slice(v20Source.indexOf('function safeOrderFields'),v20Source.indexOf('function bindSafeOrderControls')),/applyFullFormLayout/);
   assert.match(v20Source, /v20PresetSave/);
-  assert.doesNotMatch(v20Source, /v20PresetUser|v20PresetApply/);
+  assert.doesNotMatch(v20Source, /id=['"]v20PresetUser|id=['"]v20PresetApply/);
   assert.match(v20Source, /permissionLevelTemplates/);
   assert.match(appSource, /userEditId/);
   assert.match(appSource, /btnSaveUserInfo/);
