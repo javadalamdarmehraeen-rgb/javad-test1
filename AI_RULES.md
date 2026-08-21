@@ -1457,3 +1457,14 @@ order; only explicit manager V2 snapshots may reorder. All legacy full/all/custo
 entry points are blocked outside manager intent. Dropdown/detail overlays must stack above
 following cards. Current-location target stays <=10m, accepts the first qualifying fix,
 runs reverse geocoding in parallel, and falls back to the best fix by 15 seconds.
+
+# 80. GRAPH-FIRST ARCHIVE + SINGLE TAB OWNER + ENGLISH DIGITS RULE (PERMANENT)
+
+Before every change, read PROJECT_GRAPH.md. At every chat/version end, regenerate the
+graph first, then update chat.arena and every required archive/context/decision/task/
+change/handoff file, run tests, build ZIP, present it, and include PowerShell. A tab must
+have one final permission owner; no older layer may independently hide invoice-status.
+All visible digits are English from parse time onward, including options, placeholders,
+titles, dynamic DOM, localized numbers and localized Date output, while passwords and
+Persian calendar/text semantics remain untouched. Distributor Excel uses Persian month
+names rather than month numbers.

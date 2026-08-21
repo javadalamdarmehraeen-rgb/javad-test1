@@ -1506,3 +1506,9 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - Visible configured fields are repaired without un-deleting intentional manager deletions.
 - Overlay stacking is globally raised on focus.
 - GPS keeps <=10m target, accepts first qualifying fix, runs reverse geocode in parallel, and caps fallback at 15s.
+## تصمیم ۸۲ — نسخه ۱۱.۲۹.۰: حذف رقابت permission، قانون parse-time ارقام انگلیسی و ماه نامی Excel (2026-08-21)
+- v11 must never hide invoice-status; only final central engine owns it. A fresh one-time V1129 migration repairs already-false rollout values.
+- Latin number law installs synchronously before all delayed boot code, wraps Number fa locale to en-US, and Latinizes Date locale output without changing Persian calendar text.
+- DOM formatter includes OPTION text and visible placeholder/title attributes while leaving password values unchanged.
+- Distributor workbook period metadata maps month number to Persian Jalali month name.
+- Every turn continues graph-first, graph regeneration, all archive docs, chat.arena versioning, tests, ZIP and PowerShell.

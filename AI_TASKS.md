@@ -1371,3 +1371,13 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] GPS <=10m با geocode موازی و حداکثر 15s
 - [x] ۳۷/۳۷ تست
 - [ ] تأیید ورود با کاربر واقعی و تغییر مجوز در مرورگر کاربر
+## ۷۰) نسخه ۱۱.۲۹.۰
+- [x] حذف hide قدیمی invoice-status از v11
+- [x] مهاجرت تازه V1129 برای مجوز تب
+- [x] نصب synchronous قانون ارقام انگلیسی
+- [x] پوشش option/placeholder/title و DOM جدید
+- [x] حفظ password و تقویم فارسی
+- [x] نام فارسی ماه در Excel پخش
+- [x] بروزرسانی گراف/chat/همه آرشیوها
+- [x] ۳۸/۳۸ تست
+- [ ] تأیید تب و ارقام روی مرورگر واقعی کاربر

@@ -136,7 +136,7 @@ test('invoice tab visibility is reversible and current user resolves by persiste
   assert.match(v20,/function v20CurrentUser\(\)/);
   assert.match(v20,/crmUserId/);
   assert.match(v20,/perms\.dist_invoice_status_access!==false/);
-  assert.match(v11,/hideTab\("tab-distributor-invoice-status", "dist_invoice_status_access"\)/);
+  assert.doesNotMatch(v11,/hideTab\("tab-distributor-invoice-status", "dist_invoice_status_access"\)/);
   assert.match(v20,/function migrateInvoicePermissionOnce/);
   assert.match(v20,/u\.permissions\.dist_invoice_status_access=true/);
 });
@@ -180,8 +180,14 @@ test('gray dependency styling leaves labels unchanged and grays field plus check
   assert.match(v20,/\.v20-grey-zone input:not\(\[type=checkbox\]\),\.v20-grey-zone select/);
 });
 
+test('distributor Excel writes Persian month name while keeping all digits Latin', () => {
+  const ctx={result:null,enDigits:v=>String(v),distFilter:()=>({mode:'month',year:'1405',month:'05'})};vm.createContext(ctx);vm.runInContext(`${extract('jalaliMonthName')};${extract('periodRows')};result=periodRows()`,ctx);assert.deepEqual(JSON.parse(JSON.stringify(ctx.result)),[['سال','1405'],['ماه','مرداد']]);
+  assert.match(v20,/installLatinNumberLaw\(\);bindManagerLayoutIntent/);
+  assert.match(v20,/Date\.prototype\[name\]=function\(\)/);
+});
+
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.28\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.29\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);

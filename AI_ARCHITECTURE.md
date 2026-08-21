@@ -1148,3 +1148,9 @@ Then change only what is requested.
 - No V1 order fallback exists; V2 explicit manager snapshots only. Full/all/custom layout functions share manager-intent gate.
 - Overlay stacking: focused group 10020, combo 10030, list/detail 10040.
 - GPS reverse geocode begins on fix callback and is awaited later, overlapping network with accuracy acquisition.
+## معماری افزوده v11.29.0 — Single permission owner / parse-time Latin law / named Excel month
+- Invoice tab has exactly one visibility owner: final central permissions. Older v11 hide hook is removed.
+- One-time `invoiceStatusPermissionV1129` repairs existing users/templates before central visibility evaluation.
+- `installLatinNumberLaw` executes synchronously at final script parse and once only; Number fa locale delegates to en-US, Date strings are digit-transliterated.
+- Incremental DOM formatting includes option text and visible attributes.
+- `periodRows` uses `jalaliMonthName` for workbook metadata.

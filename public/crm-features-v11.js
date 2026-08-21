@@ -2131,7 +2131,6 @@
     hideTab("tab-snapp-corporate", "sys_snapp_access");
     hideTab("tab-distributor-companies", "dist_companies_access");
     hideTab("tab-distributor-sales", "dist_sales_access");
-    hideTab("tab-distributor-invoice-status", "dist_invoice_status_access");
     hideTab("tab-distributor-database", "dist_database_access");
     hideTab("tab-users-permissions", "sys_users");
     hideTab("tab-backup", "sys_users");

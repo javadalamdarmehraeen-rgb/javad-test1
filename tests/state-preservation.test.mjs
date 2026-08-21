@@ -79,7 +79,7 @@ test('Persian address order starts with Iran and removes postal code', () => {
 test('global numeric display converts Persian digits to Latin without changing passwords/codes', () => {
   const start=v20Source.indexOf('function latinizeDigits('),brace=v20Source.indexOf('{',start);let depth=0,end=brace;for(;end<v20Source.length;end++){if(v20Source[end]==='{')depth++;else if(v20Source[end]==='}'&&--depth===0){end++;break;}}
   const ctx={result:null,enDigits:v=>String(v).replace(/[۰-۹]/g,c=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(c))};vm.createContext(ctx);vm.runInContext(`${v20Source.slice(start,end)};result=latinizeDigits`,ctx);assert.equal(ctx.result('۱۴۰۵/۰۸/۱۹'),'1405/08/19');assert.equal(ctx.result('۱٬۲۳۴٫۵'),'1,234.5');
-  assert.match(v20Source,/el\.type===\"password\"/);assert.match(v20Source,/data-no-number-group/);
+  assert.match(v20Source,/el\.type===\"password\"/);assert.match(v20Source,/data-no-number-group/);assert.match(v20Source,/function installLatinNumberLaw/);assert.match(v20Source,/Number\.prototype\.toLocaleString/);assert.doesNotMatch(v20Source,/INPUT\|TEXTAREA\|SELECT\|OPTION/);assert.match(v20Source,/el\.placeholder=latinizeDigits/);
 });
 
 test('Snapp numeric parser and exact-row signatures prevent strange/double totals', () => {
@@ -163,7 +163,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /seen\[rowSignature\(r\)\]/);
   assert.match(v20Source, /d\.pharmacyRows=d\.pharmacyRows\.concat\(fresh\)/);
   assert.match(v20Source, /function bindSnappImportButtons/);
-  assert.match(v20Source, /try\{bindManagerLayoutIntent\(\);wrapFormLayoutMirror\(\);wrapAllLegacyLayouts\(\);bindSnappImportButtons\(\);bindProductCrudV20\(\);bindSafeOrderControls\(\);\}/, 'critical buttons and all startup layout guards must bind synchronously');
+  assert.match(v20Source, /try\{installLatinNumberLaw\(\);bindManagerLayoutIntent\(\);wrapFormLayoutMirror\(\);wrapAllLegacyLayouts\(\);bindSnappImportButtons\(\);bindProductCrudV20\(\);bindSafeOrderControls\(\);\}/, 'Latin-number law, critical buttons and all startup layout guards must bind synchronously');
   assert.match(v20Source, /contenteditable='true'/);
   assert.match(v20Source, /arc-save/);
   assert.match(v20Source, /raw-save/);

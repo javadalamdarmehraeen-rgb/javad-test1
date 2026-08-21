@@ -1,6 +1,6 @@
 CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.44 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.28.0
+نسخه این فایل: 1.45 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.29.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -568,19 +568,19 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]      849 بایت  .gitattributes
   [متنی ]     1097 بایت  .gitignore
   [متنی ]     2057 بایت  .gitlab-ci.yml
-  [متنی ]    23814 بایت  AI_ARCHITECTURE.md
-  [متنی ]    53013 بایت  AI_DECISION_LOG.md
-  [متنی ]    28505 بایت  AI_PROJECT_CONTEXT.md
-  [متنی ]    31840 بایت  AI_RULES.md
-  [متنی ]    37838 بایت  AI_TASKS.md
-  [متنی ]    33653 بایت  ARENA_HANDOFF_PROMPT.md
+  [متنی ]    24440 بایت  AI_ARCHITECTURE.md
+  [متنی ]    53828 بایت  AI_DECISION_LOG.md
+  [متنی ]    29089 بایت  AI_PROJECT_CONTEXT.md
+  [متنی ]    32564 بایت  AI_RULES.md
+  [متنی ]    38355 بایت  AI_TASKS.md
+  [متنی ]    34167 بایت  ARENA_HANDOFF_PROMPT.md
   [متنی ]      600 بایت  CHANGES_V10.md
-  [متنی ]    70074 بایت  CHANGES_V11.md
+  [متنی ]    71559 بایت  CHANGES_V11.md
   [متنی ]     3939 بایت  CHANGES_V9.md
   [متنی ]     1806 بایت  CLEAN_EXTRA_FILES.bat
   [متنی ]     2377 بایت  KEEP_ONLY_GITHUB.bat
   [متنی ]     6375 بایت  OFFICIAL_FILELIST.txt
-  [متنی ]    40741 بایت  PROJECT_GRAPH.md
+  [متنی ]    40767 بایت  PROJECT_GRAPH.md
   [متنی ]     2642 بایت  PUSH_FRESH_GITHUB.bat
   [متنی ]     2680 بایت  PUSH_GITHUB_CLEAN.bat
   [متنی ]     6579 بایت  RAHNAMA_GITLAB.txt
@@ -600,7 +600,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     9884 بایت  server.js
   [متنی ]     2426 بایت  sync_all.sh
   [متنی ]      738 بایت  tsconfig.json
-  [متنی ]   298591 بایت  update_chat_arena.py
+  [متنی ]   300215 بایت  update_chat_arena.py
   [متنی ]    10215 بایت  update_project_graph.py
   [متنی ]     2844 بایت  .github/workflows/deploy.yml
   [متنی ]      214 بایت  .github/workflows/keep_alive.yml
@@ -611,7 +611,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]   173032 بایت  public/crm-app.js
   [متنی ]    62272 بایت  public/crm-data.js
   [متنی ]    13643 بایت  public/crm-features-v10.js
-  [متنی ]   107936 بایت  public/crm-features-v11.js
+  [متنی ]   107859 بایت  public/crm-features-v11.js
   [متنی ]    44613 بایت  public/crm-features-v12.js
   [متنی ]    32088 بایت  public/crm-features-v13.js
   [متنی ]    34125 بایت  public/crm-features-v14.js
@@ -620,7 +620,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]    19662 بایت  public/crm-features-v17.js
   [متنی ]    33040 بایت  public/crm-features-v18.js
   [متنی ]    61016 بایت  public/crm-features-v19.js
-  [متنی ]   220789 بایت  public/crm-features-v20.js
+  [متنی ]   222072 بایت  public/crm-features-v20.js
   [متنی ]    70837 بایت  public/crm-features-v9.js
   [متنی ]    25683 بایت  public/crm-jalali.js
   [متنی ]   142842 بایت  public/index.html
@@ -780,8 +780,8 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     2276 بایت  src/lib/useLive.ts
   [متنی ]     3346 بایت  src/lib/zip.ts
   [متنی ]     2907 بایت  tests/app-smoke.test.mjs
-  [متنی ]    19661 بایت  tests/state-preservation.test.mjs
-  [متنی ]    18918 بایت  tests/version-11.24-regressions.test.mjs
+  [متنی ]    19944 بایت  tests/state-preservation.test.mjs
+  [متنی ]    19479 بایت  tests/version-11.24-regressions.test.mjs
   [تصویر]    23282 بایت  public/apple-touch-icon.png
   [تصویر]     4527 بایت  public/favicon.png
   [تصویر]    26208 بایت  public/icon-192.png
@@ -3528,6 +3528,13 @@ git push gitlab main
 🤖 دستیار:
 نسخه **۱۱.۲۸.۰** ساخته شد. علت ریشه‌ای تب، ذخیره‌شدن فقط crmUserId و جستجوی نام/نقش بود؛ login اکنون همه هویت نشست را می‌نویسد و user ID-first حل می‌شود. موتور مرکزی دسترسی ۲۸ تب و کنترل‌های اصلی را با explicit false/missing allow/manager bypass و observer رندر پویا اعمال می‌کند. V1 layout کاملاً کنار گذاشته و سه موتور full/all/custom خارج اقدام مدیر مسدود شدند؛ فقط V2 صریح معتبر است و visibility فیلدهای مجاز ترمیم می‌شود. overlayها z-index 10040 دارند. GPS هدف ۱۰ متر را حفظ، اولین fix واجد شرایط را می‌پذیرد، geocode را موازی آغاز و سقف را ۱۵ ثانیه می‌کند. ۳۷ تست موفق؛ تأیید مرورگر واقعی باقی است.
 
+──────────────────────────────── نوبت ۵۰ ────────────────────────────────
+🧑 کاربر:
+«هنوز تب وضعیت فاکتور یک لحظه می‌آید و حذف می‌شود. چرا اعداد یک نسخه فارسی و نسخه دیگر انگلیسی‌اند؛ همه باید انگلیسی باشند. قبل هر تغییر گراف را بخوان و در هر چت گراف، chat.arena و همه آرشیوها را به‌روز کن. در Excel اطلاعات فروش پخش‌ها نام ماه باید نوشته شود نه عدد ماه.»
+
+🤖 دستیار:
+نسخه **۱۱.۲۹.۰** ساخته شد. گراف پیش از تغییر خوانده شد. مالکیت مخفی‌سازی invoice-status فقط به موتور مرکزی داده و hide قدیمی v11 حذف شد؛ مهاجرت تازه V1129 مقادیر false قبلی کاربران/الگوها را یک‌بار ترمیم می‌کند. installLatinNumberLaw از زمان parse، Number فارسی را en-US و ارقام Date را انگلیسی می‌کند؛ OPTION، placeholder، title و DOM پویا نیز پوشش دارند و password/تقویم فارسی تغییر نمی‌کند. Excel پخش نام ماه جلالی را می‌نویسد. همه فایل‌های تغییرات/تصمیم/وظایف/context/architecture/rules/handoff، سپس graph و chat.arena به‌روز و ۳۸ تست موفق شدند؛ تأیید مرورگر واقعی باقی است.
+
 
 
 ══════════════════════════════════════════════════════════════════════════════════
@@ -3742,7 +3749,7 @@ sync-after-deploy:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_ARCHITECTURE.md (23814 بایت)
+فایل: AI_ARCHITECTURE.md (24440 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI ARCHITECTURE
@@ -4895,10 +4902,16 @@ Then change only what is requested.
 - No V1 order fallback exists; V2 explicit manager snapshots only. Full/all/custom layout functions share manager-intent gate.
 - Overlay stacking: focused group 10020, combo 10030, list/detail 10040.
 - GPS reverse geocode begins on fix callback and is awaited later, overlapping network with accuracy acquisition.
+## معماری افزوده v11.29.0 — Single permission owner / parse-time Latin law / named Excel month
+- Invoice tab has exactly one visibility owner: final central permissions. Older v11 hide hook is removed.
+- One-time `invoiceStatusPermissionV1129` repairs existing users/templates before central visibility evaluation.
+- `installLatinNumberLaw` executes synchronously at final script parse and once only; Number fa locale delegates to en-US, Date strings are digit-transliterated.
+- Incremental DOM formatting includes option text and visible attributes.
+- `periodRows` uses `jalaliMonthName` for workbook metadata.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_DECISION_LOG.md (53013 بایت)
+فایل: AI_DECISION_LOG.md (53828 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI DECISION LOG
@@ -6409,10 +6422,16 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - Visible configured fields are repaired without un-deleting intentional manager deletions.
 - Overlay stacking is globally raised on focus.
 - GPS keeps <=10m target, accepts first qualifying fix, runs reverse geocode in parallel, and caps fallback at 15s.
+## تصمیم ۸۲ — نسخه ۱۱.۲۹.۰: حذف رقابت permission، قانون parse-time ارقام انگلیسی و ماه نامی Excel (2026-08-21)
+- v11 must never hide invoice-status; only final central engine owns it. A fresh one-time V1129 migration repairs already-false rollout values.
+- Latin number law installs synchronously before all delayed boot code, wraps Number fa locale to en-US, and Latinizes Date locale output without changing Persian calendar text.
+- DOM formatter includes OPTION text and visible placeholder/title attributes while leaving password values unchanged.
+- Distributor workbook period metadata maps month number to Persian Jalali month name.
+- Every turn continues graph-first, graph regeneration, all archive docs, chat.arena versioning, tests, ZIP and PowerShell.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_PROJECT_CONTEXT.md (28505 بایت)
+فایل: AI_PROJECT_CONTEXT.md (29089 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI PROJECT CONTEXT
@@ -7302,10 +7321,12 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.27.0 است. `applyFullFormLayout` از زمان parse نهایی با `__CRM_MANAGER_LAYOUT_INTENT` مهار می‌شود و فقط کنترل‌های مدیر آن را برای 800ms مجاز می‌کنند. `CRM_MANAGER_GRID_ORDER_V2` فقط با اقدام مدیر ذخیره می‌شود؛ capture startup/observer/beforeunload حذف است. مجوز invoice-status یک‌بار برای کاربران موجود true می‌شود. نمای نهایی PERMISSION_GROUPS دقیقاً 28 نام تب دارد. bindUserCrudV27/saveUserV27 مسیر نهایی ذخیره و ویرایش کاربر است. preset bar idempotent و gray labels ثابت هستند.
 ## افزونه وضعیت نسخه ۱۱.۲۸.۰
 نسخه فعال 11.28.0 است. Login اکنون crmUserId/name/username/role را ذخیره می‌کند؛ v20CurrentUser ابتدا ID را حل می‌کند. TAB_PERMISSION_MAP همه 28 تب و FEATURE_PERMISSION_MAP کنترل‌های اصلی را پوشش می‌دهد؛ applyCentralPermissions برنده نهایی و observer-backed است. legacy CRM_DOM_FIELD_ORDER_LOCK_V1 دیگر خوانده نمی‌شود و سه layout entry point فقط با manager intent اجرا می‌شوند. Overlayها z-index 10040 دارند. GPS target 10m، timeout 15s و addressPromise موازی دارد.
+## افزونه وضعیت نسخه ۱۱.۲۹.۰
+نسخه فعال 11.29.0 است. v11 دیگر tab-distributor-invoice-status را hide نمی‌کند؛ central engine تنها مرجع و invoiceStatusPermissionV1129 مهاجرت تازه است. installLatinNumberLaw در مسیر synchronous اجرا می‌شود و Number/Date locale output را English-digit می‌کند. formatVisibleNumbers اکنون OPTION، placeholder و title را نیز پوشش می‌دهد. jalaliMonthName در periodRows نام ماه فارسی را برای Excel برمی‌گرداند.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_RULES.md (31840 بایت)
+فایل: AI_RULES.md (32564 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI RULES
@@ -8767,10 +8788,21 @@ order; only explicit manager V2 snapshots may reorder. All legacy full/all/custo
 entry points are blocked outside manager intent. Dropdown/detail overlays must stack above
 following cards. Current-location target stays <=10m, accepts the first qualifying fix,
 runs reverse geocoding in parallel, and falls back to the best fix by 15 seconds.
+
+# 80. GRAPH-FIRST ARCHIVE + SINGLE TAB OWNER + ENGLISH DIGITS RULE (PERMANENT)
+
+Before every change, read PROJECT_GRAPH.md. At every chat/version end, regenerate the
+graph first, then update chat.arena and every required archive/context/decision/task/
+change/handoff file, run tests, build ZIP, present it, and include PowerShell. A tab must
+have one final permission owner; no older layer may independently hide invoice-status.
+All visible digits are English from parse time onward, including options, placeholders,
+titles, dynamic DOM, localized numbers and localized Date output, while passwords and
+Persian calendar/text semantics remain untouched. Distributor Excel uses Persian month
+names rather than month numbers.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_TASKS.md (37838 بایت)
+فایل: AI_TASKS.md (38355 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI TASKS
@@ -10146,10 +10178,20 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] GPS <=10m با geocode موازی و حداکثر 15s
 - [x] ۳۷/۳۷ تست
 - [ ] تأیید ورود با کاربر واقعی و تغییر مجوز در مرورگر کاربر
+## ۷۰) نسخه ۱۱.۲۹.۰
+- [x] حذف hide قدیمی invoice-status از v11
+- [x] مهاجرت تازه V1129 برای مجوز تب
+- [x] نصب synchronous قانون ارقام انگلیسی
+- [x] پوشش option/placeholder/title و DOM جدید
+- [x] حفظ password و تقویم فارسی
+- [x] نام فارسی ماه در Excel پخش
+- [x] بروزرسانی گراف/chat/همه آرشیوها
+- [x] ۳۸/۳۸ تست
+- [ ] تأیید تب و ارقام روی مرورگر واقعی کاربر
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: ARENA_HANDOFF_PROMPT.md (33653 بایت)
+فایل: ARENA_HANDOFF_PROMPT.md (34167 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # ARENA AI MASTER HANDOFF PROMPT
@@ -11395,6 +11437,12 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Restore only configured visible/nondeleted fields; intentional manager deletion remains authoritative.
 - Keep dropdown/info overlay high stacking.
 - GPS target remains <=10m, first qualifying fix accepted, reverse geocode parallel, timeout 15s.
+## افزونه تحویل نسخه ۱۱.۲۹.۰
+- Graph-first is mandatory every turn; regenerate PROJECT_GRAPH before chat.arena and update all archive docs.
+- Never re-add v11 invoice-status hide; final central engine is its sole visibility authority.
+- Preserve fresh V1129 one-time permission repair.
+- Latin-number law must bind synchronously and cover Number/Date/DOM option/placeholder/title while never altering passwords.
+- Distributor Excel month metadata must be Persian month name, not numeric month.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -11414,7 +11462,7 @@ Leaflet محلی. فونت گوگل حذف شد. gzip روی JS/CSS/HTML.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: CHANGES_V11.md (70074 بایت)
+فایل: CHANGES_V11.md (71559 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # نسخه ۱۱.۲۳.۰
@@ -11942,6 +11990,15 @@ CLEAN_EXTRA_FILES.bat و بعد PUSH_GITHUB_CLEAN.bat را اجرا کن.
 7. فیلدی که طبق تنظیم مدیر حذف/مخفی نشده باشد، پس از رندرهای قدیمی دوباره قابل مشاهده می‌شود؛ فیلدهای عمداً حذف‌شده یا showInForm=false همچنان محترم‌اند.
 8. dropdown و کادر اطلاعات با overflow visible، focus z-index و z-index نهایی بالای کارت‌های بعدی نمایش داده می‌شوند و پشت کادر زیرین پنهان نمی‌شوند.
 9. GPS هدف دقت ۱۰ متر را حفظ می‌کند، اما شرط نمونه دوم حذف و سقف انتظار از ۳۰ به ۱۵ ثانیه کاهش یافت؛ دریافت آدرس هم‌زمان با GPS آغاز می‌شود تا زمان‌ها روی هم جمع نشوند.
+
+# نسخه ۱۱.۲۹.۰
+
+1. گراف پروژه پیش از تغییر خوانده شد و قانون آرشیو پایان هر چت دوباره تثبیت شد.
+2. مخفی‌سازی قدیمی تب وضعیت فاکتور از لایه v11 حذف شد تا فقط موتور مرکزی نهایی درباره دسترسی آن تصمیم بگیرد و رقابت دو موتور باعث نمایش لحظه‌ای نشود.
+3. مهاجرت دسترسی جدید `invoiceStatusPermissionV1129` یک‌بار مجوز تب وضعیت فاکتور را برای کاربران/الگوهای موجود فعال می‌کند؛ پس از آن تغییر صریح مدیر معتبر است.
+4. قانون قطعی ارقام انگلیسی در زمان parse نصب می‌شود: Number با locale فارسی نیز en-US تولید می‌کند و خروجی Date فارسی فقط ارقامش انگلیسی می‌شود، بدون تغییر تقویم/متن فارسی.
+5. متن گزینه‌های select، placeholder ورودی‌ها، titleها و DOMهای تازه‌رندرشده نیز به ارقام انگلیسی تبدیل می‌شوند؛ password دست‌نخورده می‌ماند.
+6. خروجی Excel اطلاعات فروش پخش‌ها برای فیلتر ماه/روز به‌جای `01..12` نام فارسی ماه مثل «مرداد» را می‌نویسد؛ سال و روز با ارقام انگلیسی باقی می‌مانند.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -12415,7 +12472,7 @@ update_project_graph.py
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: PROJECT_GRAPH.md (40741 بایت)
+فایل: PROJECT_GRAPH.md (40767 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # 🕸️ گراف دانش پروژه «نماینده علمی» (PROJECT_GRAPH.md)
@@ -12490,7 +12547,7 @@ update_project_graph.py
 - تعداد توابع داخلی: 22
 - نام‌های window که تعریف/بازنویسی می‌کند: `__lastHealth`, `switchTab`
 
-### `public/crm-features-v11.js` (107936 بایت)
+### `public/crm-features-v11.js` (107859 بایت)
 - نقش: v11 — تغییر رمز، ردیف واقعی، اکسل خط‌کشی، ویزیت زنده، تارگت، ستون‌ها، دسترسی ریز
 - تعداد توابع داخلی: 101
 - نام‌های window که تعریف/بازنویسی می‌کند: `FA_FIELD_LABELS`, `_actMap`, `_actMarks`, `_activeColTab`, `_colDelPatched`, `_colEditScroll`, `_editingBoxId`, `_editingColField`, `_layoutBusy`, `_visitKeepAlive`, `addWidgetToActiveTab`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `applyFullFormLayout`, `applySelectExtraOptions`, `builtinFieldValue`, `changeUserPassword`, `cleanupOrphanCustomFields`, `deleteCustomField`, `downloadCSVFile`, `extraListColumns`, `getAllMenuSections`, `getMainGrid`, `getUnifiedFieldList`, `groupIsShared`, `isColShownInList`, `paintFieldBox`, `paintRequiredStar`, `refreshColumnsDesigner`, `renderAllSystemSelects`, `renderColBoxInfoTable`, `renderColBoxList`, `renderColBtnInfoTable`, `renderExtraTabCustomFields`, `renderUserCardsList`, `switchTab`, `validateRequiredFields`, `writeFieldSize`
@@ -12535,10 +12592,10 @@ update_project_graph.py
 - تعداد توابع داخلی: 65
 - نام‌های window که تعریف/بازنویسی می‌کند: `_v18DefaultReq`, `_v19BackupLayoutGuard`, `_v19ComboHook`, `_v19Hist`, `_v19IcObs`, `_v19ProdTableWrap`, `_v19Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `extraListColumns`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderPharmaciesList`, `switchTab`, `testServerConnectivity`
 
-### `public/crm-features-v20.js` (220789 بایت)
+### `public/crm-features-v20.js` (222072 بایت)
 - نقش: ============================================================
-- تعداد توابع داخلی: 258
-- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFieldPermissions`, `applyFullFormLayout`, `applyUserRolePermissions`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `editProductCatalogItem`, `editUserCard`, `extraListColumns`, `getUnifiedFieldList`, `openRowDetailsModal`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `renderUserCardsList`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `updateNavBadges`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`, `v20RenderProductExtras`, `v20SetupSnappCorporate`
+- تعداد توابع داخلی: 260
+- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFieldPermissions`, `applyFullFormLayout`, `applyUserRolePermissions`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `editProductCatalogItem`, `editUserCard`, `extraListColumns`, `getUnifiedFieldList`, `openRowDetailsModal`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `renderUserCardsList`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `updateNavBadges`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`, `v20RenderProductExtras`, `v20SetupSnappCorporate`
 
 ### `public/crm-features-v9.js` (70837 بایت)
 - نقش: ===========================================================================
@@ -12560,7 +12617,7 @@ update_project_graph.py
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (1249 بایت)
-- نقش: const CACHE = "ttt-v11.28.0";
+- نقش: const CACHE = "ttt-v11.29.0";
 - تعداد توابع داخلی: 0
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -13883,13 +13940,13 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.28.0",
+  "version": "11.29.0",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
       "name": "namayandeelmi-javad-crm",
-      "version": "11.28.0",
+      "version": "11.29.0",
       "license": "MIT",
       "engines": {
         "node": ">=20.0.0"
@@ -13905,7 +13962,7 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.28.0",
+  "version": "11.29.0",
   "description": "سیستم جامع مدیریت و ویزیت علمی، داروخانه‌ها، پزشکان و سفارشات (CRM / PWA) هماهنگ با Render و Neon",
   "main": "server.js",
   "engines": {
@@ -14100,7 +14157,7 @@ const server = http.createServer((req, res) => {
     return send(req, res, 200, JSON.stringify({
       ok: true, status: "healthy", message: "OK",
       service: "namayandeelmi-javad-crm",
-      version: "11.28.0",
+      version: "11.29.0",
       timestamp: new Date().toISOString()
     }), "application/json; charset=utf-8");
   }
@@ -14214,7 +14271,7 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, "0.0.0.0", () => {
-  console.log("CRM v11.28.0 listening on 0.0.0.0:" + PORT);
+  console.log("CRM v11.29.0 listening on 0.0.0.0:" + PORT);
 });
 ~~~~~~~~
 
@@ -14336,7 +14393,7 @@ git status -sb
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: update_chat_arena.py (298591 بایت)
+فایل: update_chat_arena.py (300215 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~python
 #!/usr/bin/env python3
@@ -14390,7 +14447,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.44 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.28.0
+نسخه این فایل: 1.45 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.29.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -17665,6 +17722,13 @@ git push gitlab main
 🤖 دستیار:
 نسخه **۱۱.۲۸.۰** ساخته شد. علت ریشه‌ای تب، ذخیره‌شدن فقط crmUserId و جستجوی نام/نقش بود؛ login اکنون همه هویت نشست را می‌نویسد و user ID-first حل می‌شود. موتور مرکزی دسترسی ۲۸ تب و کنترل‌های اصلی را با explicit false/missing allow/manager bypass و observer رندر پویا اعمال می‌کند. V1 layout کاملاً کنار گذاشته و سه موتور full/all/custom خارج اقدام مدیر مسدود شدند؛ فقط V2 صریح معتبر است و visibility فیلدهای مجاز ترمیم می‌شود. overlayها z-index 10040 دارند. GPS هدف ۱۰ متر را حفظ، اولین fix واجد شرایط را می‌پذیرد، geocode را موازی آغاز و سقف را ۱۵ ثانیه می‌کند. ۳۷ تست موفق؛ تأیید مرورگر واقعی باقی است.
 
+──────────────────────────────── نوبت ۵۰ ────────────────────────────────
+🧑 کاربر:
+«هنوز تب وضعیت فاکتور یک لحظه می‌آید و حذف می‌شود. چرا اعداد یک نسخه فارسی و نسخه دیگر انگلیسی‌اند؛ همه باید انگلیسی باشند. قبل هر تغییر گراف را بخوان و در هر چت گراف، chat.arena و همه آرشیوها را به‌روز کن. در Excel اطلاعات فروش پخش‌ها نام ماه باید نوشته شود نه عدد ماه.»
+
+🤖 دستیار:
+نسخه **۱۱.۲۹.۰** ساخته شد. گراف پیش از تغییر خوانده شد. مالکیت مخفی‌سازی invoice-status فقط به موتور مرکزی داده و hide قدیمی v11 حذف شد؛ مهاجرت تازه V1129 مقادیر false قبلی کاربران/الگوها را یک‌بار ترمیم می‌کند. installLatinNumberLaw از زمان parse، Number فارسی را en-US و ارقام Date را انگلیسی می‌کند؛ OPTION، placeholder، title و DOM پویا نیز پوشش دارند و password/تقویم فارسی تغییر نمی‌کند. Excel پخش نام ماه جلالی را می‌نویسد. همه فایل‌های تغییرات/تصمیم/وظایف/context/architecture/rules/handoff، سپس graph و chat.arena به‌روز و ۳۸ تست موفق شدند؛ تأیید مرورگر واقعی باقی است.
+
 """
 
 FILES_INTRO = """
@@ -17701,7 +17765,7 @@ def build():
         out.append("~~~~~~~~" + lang)
         out.append(content.rstrip("\n"))
         out.append("~~~~~~~~")
-    out.append("\n\n— پایان chat.arena نسخه ۱.۴۴ (نسخه برنامه 11.28.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
+    out.append("\n\n— پایان chat.arena نسخه ۱.۴۵ (نسخه برنامه 11.29.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
     with open(OUT, "w", encoding="utf-8") as f:
         f.write("\n".join(out))
     print("chat.arena written:", os.path.getsize(OUT), "bytes,", len(text_files), "text files embedded,", len(bin_files), "binary files listed")
@@ -21960,7 +22024,7 @@ function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.28.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.29.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -24294,7 +24358,7 @@ const DEFAULT_INITIAL_DATA = {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-features-v11.js (107936 بایت)
+فایل: public/crm-features-v11.js (107859 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // v11 — تغییر رمز، ردیف واقعی، اکسل خط‌کشی، ویزیت زنده، تارگت، ستون‌ها، دسترسی ریز
@@ -26430,7 +26494,6 @@ const DEFAULT_INITIAL_DATA = {
     hideTab("tab-snapp-corporate", "sys_snapp_access");
     hideTab("tab-distributor-companies", "dist_companies_access");
     hideTab("tab-distributor-sales", "dist_sales_access");
-    hideTab("tab-distributor-invoice-status", "dist_invoice_status_access");
     hideTab("tab-distributor-database", "dist_database_access");
     hideTab("tab-users-permissions", "sys_users");
     hideTab("tab-backup", "sys_users");
@@ -32735,7 +32798,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-features-v20.js (220789 بایت)
+فایل: public/crm-features-v20.js (222072 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================
@@ -32773,6 +32836,7 @@ button.v19-gps svg{display:block}
       .replace(/[\s\-ـ]+/g, "").trim().toLowerCase();
   }
   function st() { return window.state || null; }
+  function installLatinNumberLaw(){if(window.__CRM_LATIN_NUMBER_LAW)return;window.__CRM_LATIN_NUMBER_LAW=true;var digits=function(v){var fa="۰۱۲۳۴۵۶۷۸۹",ar="٠١٢٣٤٥٦٧٨٩";return String(v).replace(/[۰-۹]/g,function(c){return fa.indexOf(c);}).replace(/[٠-٩]/g,function(c){return ar.indexOf(c);}).replace(/٬/g,",").replace(/٫/g,".");};var numberOld=Number.prototype.toLocaleString;Number.prototype.toLocaleString=function(locale,opts){if(typeof locale==="string"&&/^fa(?:-|$)/i.test(locale))locale="en-US";return digits(numberOld.call(this,locale,opts));};["toLocaleString","toLocaleDateString","toLocaleTimeString"].forEach(function(name){var old=Date.prototype[name];Date.prototype[name]=function(){return digits(old.apply(this,arguments));};});}
   function save() { try { if (typeof saveState === "function") saveState(); } catch (e) {} }
   window.__CRM_BULK_READY = !window.indexedDB;
   function log(m) { try { console.log("[v20]", m); } catch (e) {} }
@@ -33814,7 +33878,7 @@ button.v19-gps svg{display:block}
   }
   function runtimeVersion(){
     var s=document.querySelector('script[src*="crm-features-v20.js"]'),src=s&&s.getAttribute('src')||"",m=src.match(/[?&]v=([^&]+)/);
-    return m?decodeURIComponent(m[1]):"11.28.0";
+    return m?decodeURIComponent(m[1]):"11.29.0";
   }
   function renderVersionBadge() {
     var b = $("v20VersionBadge"), actions = document.querySelector(".header-actions"); if (!actions) return;
@@ -34019,7 +34083,7 @@ button.v19-gps svg{display:block}
   function enhanceLiveLocation(){var sel=$("liveRepSearchSelect");if(sel&&sel.options.length){sel.options[0].textContent="همه نمایندگان";sel.options[0].value="";}var table=$("tableLiveReps"),hr=table&&table.querySelector("thead tr");if(hr&&!hr.querySelector(".v20-live-address-head")){var th=document.createElement("th");th.className="v20-live-address-head";th.textContent="آدرس متنی موقعیت فعلی";hr.insertBefore(th,hr.lastElementChild);}var body=$("tableLiveRepsBody"),reps=(st()&&st().reps)||[];if(body)Array.prototype.forEach.call(body.children,function(tr,i){var r=reps[i];if(!r)return;var old=tr.querySelector("[data-live-address]");if(!old){var td=document.createElement("td");td.setAttribute("data-live-address",r.id);td.textContent=r.textAddress||"در حال دریافت آدرس…";tr.insertBefore(td,tr.lastElementChild);}updateRepTextAddress(r);});}
   function bindLiveAll(){var btn=$("btnFindLiveRep");if(btn&&!btn.dataset.v20all){btn.dataset.v20all="1";btn.addEventListener("click",function(e){var sel=$("liveRepSearchSelect");if(sel&&sel.value)return;e.preventDefault();e.stopImmediatePropagation();if(typeof window.renderLiveLocationTab==="function")window.renderLiveLocationTab();setTimeout(function(){enhanceLiveLocation();try{var pts=((st()&&st().reps)||[]).filter(function(r){return r.lat&&r.lng;}).map(function(r){return[r.lat,r.lng];});if(typeof mapLiveReps!=="undefined"&&mapLiveReps&&pts.length)mapLiveReps.fitBounds(pts,{padding:[30,30]});}catch(x){}},80);},true);}var body=$("tableLiveRepsBody");if(body&&window.MutationObserver&&!body.dataset.v20addr){body.dataset.v20addr="1";var t;new MutationObserver(function(){clearTimeout(t);t=setTimeout(enhanceLiveLocation,40);}).observe(body,{childList:true,subtree:true});}enhanceLiveLocation();}
 
-  function migrateInvoicePermissionOnce(){var S=st();if(!S)return;S.settings=S.settings||{};if(S.settings.invoiceStatusPermissionV1127)return;(S.users||[]).forEach(function(u){u.permissions=u.permissions||{};u.permissions.dist_invoice_status_access=true;});var templates=S.settings.permissionLevelTemplates||{};Object.keys(templates).forEach(function(k){templates[k].dist_invoice_status_access=true;});S.settings.invoiceStatusPermissionV1127=true;try{saveState(false);}catch(e){}}
+  function migrateInvoicePermissionOnce(){var S=st();if(!S)return;S.settings=S.settings||{};if(S.settings.invoiceStatusPermissionV1129)return;(S.users||[]).forEach(function(u){u.permissions=u.permissions||{};u.permissions.dist_invoice_status_access=true;});var templates=S.settings.permissionLevelTemplates||{};Object.keys(templates).forEach(function(k){templates[k].dist_invoice_status_access=true;});S.settings.invoiceStatusPermissionV1129=true;try{saveState(false);}catch(e){}}
   function applySnappVisibility(){migrateInvoicePermissionOnce();var manager=v20IsManager(),u=v20CurrentUser(),perms=(u&&u.permissions)||{};function toggle(id,allow){document.querySelectorAll('[data-target="'+id+'"],[data-side-target="'+id+'"]').forEach(function(b){b.style.display=allow?"":"none";});var pane=$(id);if(pane)pane.style.display=allow?"":"none";}toggle("tab-snapp-corporate",manager||perms.sys_snapp_access!==false);toggle("tab-distributor-companies",manager||perms.dist_companies_access!==false);toggle("tab-distributor-sales",manager||perms.dist_sales_access!==false);toggle("tab-distributor-invoice-status",manager||perms.dist_invoice_status_access!==false);toggle("tab-distributor-database",manager||perms.dist_database_access!==false);}
 
   /* ---------- ۲۱-ب) موتور نهایی و برگشت‌پذیر دسترسی همه تب‌ها و ریزامکانات ---------- */
@@ -34040,7 +34104,7 @@ button.v19-gps svg{display:block}
 
   /* ---------- ۲۴) نمایش سه‌رقمی اعداد در خروجی‌های دیداری ---------- */
   function latinizeDigits(v){return enDigits(v).replace(/٬/g,",").replace(/٫/g,".");}
-  function formatVisibleNumbers(root){if(!root||!document.createTreeWalker)return;var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),nodes=[],n;while(n=w.nextNode())nodes.push(n);nodes.forEach(function(t){var p=t.parentElement;if(!p||/^(SCRIPT|STYLE|INPUT|TEXTAREA|SELECT|OPTION)$/.test(p.tagName))return;var old=t.nodeValue,latin=latinizeDigits(old),context=latinizeDigits(String(p.textContent||""));if(p.closest('[data-no-number-group]')||/تاریخ|سال|ماه|تلفن|همراه|مختصات|عرض جغرافیایی|طول جغرافیایی|کد|پلاک/.test(context)){if(latin!==old)t.nodeValue=latin;return;}var nw=latin.replace(/\d{4,}/g,function(x,off,all){if(all[off-1]==="/"||all[off+x.length]==="/"||all[off-1]==="."||all[off+x.length]==="."||(/^0\d{9,}$/.test(x))||(/^1[34]\d{6}$/.test(x)))return x;var v=Number(x);return isFinite(v)?v.toLocaleString("en-US"):x;});if(nw!==old)t.nodeValue=nw;});Array.prototype.forEach.call(root.querySelectorAll("input,textarea"),function(el){if(el.type==="password"||el.dataset.latinBound==="1")return;el.dataset.latinBound="1";var fix=function(){var v=latinizeDigits(el.value);if(v!==el.value){var pos=el.selectionStart;el.value=v;try{el.setSelectionRange(pos,pos);}catch(e){}}};fix();el.addEventListener("input",fix);});}
+  function formatVisibleNumbers(root){if(!root||!document.createTreeWalker)return;var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),nodes=[],n;while(n=w.nextNode())nodes.push(n);nodes.forEach(function(t){var p=t.parentElement;if(!p||/^(SCRIPT|STYLE|INPUT|TEXTAREA|SELECT)$/.test(p.tagName))return;var old=t.nodeValue,latin=latinizeDigits(old),context=latinizeDigits(String(p.textContent||""));if(p.closest('[data-no-number-group]')||/تاریخ|سال|ماه|تلفن|همراه|مختصات|عرض جغرافیایی|طول جغرافیایی|کد|پلاک/.test(context)){if(latin!==old)t.nodeValue=latin;return;}var nw=latin.replace(/\d{4,}/g,function(x,off,all){if(all[off-1]==="/"||all[off+x.length]==="/"||all[off-1]==="."||all[off+x.length]==="."||(/^0\d{9,}$/.test(x))||(/^1[34]\d{6}$/.test(x)))return x;var v=Number(x);return isFinite(v)?v.toLocaleString("en-US"):x;});if(nw!==old)t.nodeValue=nw;});Array.prototype.forEach.call(root.querySelectorAll("input,textarea"),function(el){if(el.placeholder)el.placeholder=latinizeDigits(el.placeholder);if(el.type==="password"||el.dataset.latinBound==="1")return;el.dataset.latinBound="1";var fix=function(){var v=latinizeDigits(el.value);if(v!==el.value){var pos=el.selectionStart;el.value=v;try{el.setSelectionRange(pos,pos);}catch(e){}}};fix();el.addEventListener("input",fix);});Array.prototype.forEach.call(root.querySelectorAll("[title]"),function(el){el.title=latinizeDigits(el.title);});}
 
   function bindNumberFormatting(){
     formatVisibleNumbers(document.body);
@@ -34119,7 +34183,8 @@ button.v19-gps svg{display:block}
 
   function reportTableHtml(title,rows){var all=rows.concat([totalMetricRow(rows)]);return"<div class='card'><div class='card-header'><div class='card-title'>"+esc(title)+"</div></div><div class='table-responsive'><table class='data-table'><thead><tr>"+DIST_HEADERS.map(function(h){return"<th>"+h+"</th>";}).join("")+"</tr></thead><tbody>"+all.map(function(r){return"<tr>"+r.map(function(v,i){return"<td>"+displayMetric(v,i)+"</td>";}).join("")+"</tr>";}).join("")+"</tbody></table></div></div>";}
   function renderDistributorReport(){var ds=distStore(),all={};distReportCache={};DIST_DEFS.forEach(function(x){var map=distributorMetrics(ds[x[0]]);mergeMetricMaps(all,map);distReportCache[x[0]]=metricRows(map);});distReportCache.all=metricRows(all);var host=$("distributorReportTables");if(host)host.innerHTML=reportTableHtml("همه پخش‌ها",distReportCache.all)+DIST_DEFS.map(function(x){return reportTableHtml(x[1],distReportCache[x[0]]);}).join("");var s=$("distributorReportSummary"),tot=totalMetricRow(distReportCache.all);if(s)s.innerHTML=[["جمع فروش تعدادی",tot[1]],["جمع ریال پخش",tot[2]],["جمع ریال داروخانه",tot[3]],["موجودی تعدادی",tot[16]]].map(function(x){return"<div class='v20-metric'>"+x[0]+"<b>"+Number(x[1]||0).toLocaleString("fa-IR")+"</b></div>";}).join("");}
-  function periodRows(){var f=distFilter();if(f.mode==="year")return[["سال",f.year]];if(f.mode==="month")return[["سال",f.year],["ماه",f.month]];if(f.mode==="day")return[["سال",f.year],["ماه",f.month],["روز",f.day]];if(f.mode==="range")return[["از تاریخ",f.from],["تا تاریخ",f.to]];return[["بازه","همه اطلاعات"]];}
+  function jalaliMonthName(v){var names=["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند"],n=parseInt(enDigits(v),10);return n>=1&&n<=12?names[n-1]:String(v||"");}
+  function periodRows(){var f=distFilter();if(f.mode==="year")return[["سال",f.year]];if(f.mode==="month")return[["سال",f.year],["ماه",jalaliMonthName(f.month)]];if(f.mode==="day")return[["سال",f.year],["ماه",jalaliMonthName(f.month)],["روز",f.day]];if(f.mode==="range")return[["از تاریخ",f.from],["تا تاریخ",f.to]];return[["بازه","همه اطلاعات"]];}
   function xmlEsc(v){return String(v==null?"":v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
   function excelDistributorCell(v,i,isTotal){var pre=isTotal?"Total":"";if(i===0)return'<Cell ss:StyleID="'+pre+'Text"><Data ss:Type="String">'+xmlEsc(v)+'</Data></Cell>';if([6,9,12,15].indexOf(i)>=0)return'<Cell ss:StyleID="'+pre+'PercentText"><Data ss:Type="String">'+xmlEsc(Number(v||0).toLocaleString("en-US",{maximumFractionDigits:2})+"%")+'</Data></Cell>';return'<Cell ss:StyleID="'+pre+'Number"><Data ss:Type="Number">'+xmlEsc(Number(v||0))+'</Data></Cell>';}
   function downloadDistributorWorkbook(){renderDistributorReport();var sheets=[["همه پخش‌ها",distReportCache.all]].concat(DIST_DEFS.map(function(x){return[x[1],distReportCache[x[0]]];})),border='<Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/></Borders>',xml='<?xml version="1.0"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"><Styles><Style ss:ID="Default" ss:Name="Normal"></Style><Style ss:ID="Header"><Font ss:Bold="1" ss:Color="#000000"/><Interior ss:Color="#87CEEB" ss:Pattern="Solid"/>'+border+'</Style><Style ss:ID="Text">'+border+'</Style><Style ss:ID="PercentText">'+border+'</Style><Style ss:ID="Number"><NumberFormat ss:Format="#,##0"/>'+border+'</Style><Style ss:ID="TotalText"><Font ss:Bold="1" ss:Color="#DC2626"/>'+border+'</Style><Style ss:ID="TotalPercentText"><Font ss:Bold="1" ss:Color="#DC2626"/>'+border+'</Style><Style ss:ID="TotalNumber"><Font ss:Bold="1" ss:Color="#DC2626"/><NumberFormat ss:Format="#,##0"/>'+border+'</Style></Styles>';sheets.forEach(function(sh){xml+='<Worksheet ss:Name="'+xmlEsc(sh[0])+'"><Table>';periodRows().forEach(function(r){xml+='<Row><Cell ss:StyleID="Header"><Data ss:Type="String">'+xmlEsc(r[0])+'</Data></Cell><Cell ss:StyleID="Text"><Data ss:Type="String">'+xmlEsc(r[1])+'</Data></Cell></Row>';});xml+='<Row>'+DIST_HEADERS.map(function(h){return'<Cell ss:StyleID="Header"><Data ss:Type="String">'+xmlEsc(h)+'</Data></Cell>';}).join('')+'</Row>';sh[1].forEach(function(r){xml+='<Row>'+r.map(function(v,i){return excelDistributorCell(v,i,false);}).join('')+'</Row>';});var total=totalMetricRow(sh[1]);xml+='<Row>'+total.map(function(v,i){return excelDistributorCell(v,i,true);}).join('')+'</Row>';xml+='</Table></Worksheet>';});xml+='</Workbook>';var blob=new Blob([xml],{type:'application/vnd.ms-excel'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='گزارش-فروش-پخش‌ها.xls';a.click();setTimeout(function(){URL.revokeObjectURL(a.href);},1000);}
@@ -34325,7 +34390,7 @@ button.v19-gps svg{display:block}
   var v20InitDone=false;
   function init() {
     if(v20InitDone)return;v20InitDone=true;
-    try { initBulkVault(); } catch (e) {}
+    try { installLatinNumberLaw(); initBulkVault(); } catch (e) {}
     try { seedGreyDefaults(); } catch (e) {}
     try { wrapSwitchTab(); } catch (e) {}
     try { wrapListRenderers(); bindListOrderObserver(); } catch (e) {}
@@ -34371,7 +34436,7 @@ button.v19-gps svg{display:block}
   function reliableFeatureBoot(){try{setupSnappCorporate();applySnappVisibility();applyCentralPermissions();renderDistributorCompanies();setupDistributorSales();renderDistributorDatabase();if($("tab-distributor-invoice-status")&&$("tab-distributor-invoice-status").classList.contains("active"))setupInvoiceStatus();bindProductCrudV20();bindProductLabelFix();bindAddressFieldGuard();bindUserCrudV27();wrapListRenderers();bindListOrderObserver();restoreDomFieldOrder();}catch(e){try{console.error("reliable feature boot",e);}catch(x){}}}
   window.v20SetupSnappCorporate=reliableFeatureBoot;
   // اتصال هم‌زمان دکمه‌های فایل، مستقل از زمان loadState؛ عملیات واقعی هنگام انتخاب فایل state را می‌خواند.
-  try{bindManagerLayoutIntent();wrapFormLayoutMirror();wrapAllLegacyLayouts();bindSnappImportButtons();bindProductCrudV20();bindSafeOrderControls();}catch(e){}
+  try{installLatinNumberLaw();bindManagerLayoutIntent();wrapFormLayoutMirror();wrapAllLegacyLayouts();bindSnappImportButtons();bindProductCrudV20();bindSafeOrderControls();}catch(e){}
   document.addEventListener("click",function(e){var n=e.target&&e.target.closest&&e.target.closest('[data-target],[data-side-target]');if(!n)return;var id=n.getAttribute('data-target')||n.getAttribute('data-side-target');if(id==='tab-snapp-corporate'||id==='tab-distributor-sales'||id==='tab-distributor-invoice-status'||id==='tab-distributor-database'||id==='tab-columns-products'||id==='tab-users-permissions')setTimeout(reliableFeatureBoot,0);},true);
   window.addEventListener("load",function(){setTimeout(init,60);});
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { setTimeout(init,60); });
@@ -36584,7 +36649,7 @@ button.v19-gps svg{display:block}
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.28.0" />
+  <link rel="stylesheet" href="style.css?v=11.29.0" />
 </head>
 <body>
 
@@ -38750,22 +38815,22 @@ button.v19-gps svg{display:block}
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.28.0"></script>
-  <script src="crm-app.js?v=11.28.0"></script>
-  <script src="crm-features-v9.js?v=11.28.0"></script>
-  <script src="iran-facilities.js?v=11.28.0" defer></script>
-  <script src="crm-features-v10.js?v=11.28.0"></script>
-  <script src="crm-features-v11.js?v=11.28.0"></script>
-  <script src="crm-features-v12.js?v=11.28.0"></script>
-  <script src="crm-features-v13.js?v=11.28.0"></script>
-  <script src="crm-jalali.js?v=11.28.0"></script>
-  <script src="crm-features-v14.js?v=11.28.0"></script>
-  <script src="crm-features-v15.js?v=11.28.0"></script>
-  <script src="crm-features-v16.js?v=11.28.0"></script>
-  <script src="crm-features-v17.js?v=11.28.0"></script>
-  <script src="crm-features-v18.js?v=11.28.0"></script>
-  <script src="crm-features-v19.js?v=11.28.0"></script>
-  <script src="crm-features-v20.js?v=11.28.0"></script>
+  <script src="crm-data.js?v=11.29.0"></script>
+  <script src="crm-app.js?v=11.29.0"></script>
+  <script src="crm-features-v9.js?v=11.29.0"></script>
+  <script src="iran-facilities.js?v=11.29.0" defer></script>
+  <script src="crm-features-v10.js?v=11.29.0"></script>
+  <script src="crm-features-v11.js?v=11.29.0"></script>
+  <script src="crm-features-v12.js?v=11.29.0"></script>
+  <script src="crm-features-v13.js?v=11.29.0"></script>
+  <script src="crm-jalali.js?v=11.29.0"></script>
+  <script src="crm-features-v14.js?v=11.29.0"></script>
+  <script src="crm-features-v15.js?v=11.29.0"></script>
+  <script src="crm-features-v16.js?v=11.29.0"></script>
+  <script src="crm-features-v17.js?v=11.29.0"></script>
+  <script src="crm-features-v18.js?v=11.29.0"></script>
+  <script src="crm-features-v19.js?v=11.29.0"></script>
+  <script src="crm-features-v20.js?v=11.29.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
@@ -41791,7 +41856,7 @@ self.addEventListener("fetch", (event) => {
 فایل: public/sw.js (1249 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
-const CACHE = "ttt-v11.28.0";
+const CACHE = "ttt-v11.29.0";
 const PRECACHE = ["/", "/login", "/favicon.png", "/logo.png", "/vendor/leaflet.js", "/vendor/leaflet.css"];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(PRECACHE).catch(function () {}); }).then(function () { return self.skipWaiting(); }));
@@ -67259,7 +67324,7 @@ test('state API round-trip preserves unrelated sentinel data', async () => {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/state-preservation.test.mjs (19661 بایت)
+فایل: tests/state-preservation.test.mjs (19944 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 import test from 'node:test';
@@ -67343,7 +67408,7 @@ test('Persian address order starts with Iran and removes postal code', () => {
 test('global numeric display converts Persian digits to Latin without changing passwords/codes', () => {
   const start=v20Source.indexOf('function latinizeDigits('),brace=v20Source.indexOf('{',start);let depth=0,end=brace;for(;end<v20Source.length;end++){if(v20Source[end]==='{')depth++;else if(v20Source[end]==='}'&&--depth===0){end++;break;}}
   const ctx={result:null,enDigits:v=>String(v).replace(/[۰-۹]/g,c=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(c))};vm.createContext(ctx);vm.runInContext(`${v20Source.slice(start,end)};result=latinizeDigits`,ctx);assert.equal(ctx.result('۱۴۰۵/۰۸/۱۹'),'1405/08/19');assert.equal(ctx.result('۱٬۲۳۴٫۵'),'1,234.5');
-  assert.match(v20Source,/el\.type===\"password\"/);assert.match(v20Source,/data-no-number-group/);
+  assert.match(v20Source,/el\.type===\"password\"/);assert.match(v20Source,/data-no-number-group/);assert.match(v20Source,/function installLatinNumberLaw/);assert.match(v20Source,/Number\.prototype\.toLocaleString/);assert.doesNotMatch(v20Source,/INPUT\|TEXTAREA\|SELECT\|OPTION/);assert.match(v20Source,/el\.placeholder=latinizeDigits/);
 });
 
 test('Snapp numeric parser and exact-row signatures prevent strange/double totals', () => {
@@ -67427,7 +67492,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /seen\[rowSignature\(r\)\]/);
   assert.match(v20Source, /d\.pharmacyRows=d\.pharmacyRows\.concat\(fresh\)/);
   assert.match(v20Source, /function bindSnappImportButtons/);
-  assert.match(v20Source, /try\{bindManagerLayoutIntent\(\);wrapFormLayoutMirror\(\);wrapAllLegacyLayouts\(\);bindSnappImportButtons\(\);bindProductCrudV20\(\);bindSafeOrderControls\(\);\}/, 'critical buttons and all startup layout guards must bind synchronously');
+  assert.match(v20Source, /try\{installLatinNumberLaw\(\);bindManagerLayoutIntent\(\);wrapFormLayoutMirror\(\);wrapAllLegacyLayouts\(\);bindSnappImportButtons\(\);bindProductCrudV20\(\);bindSafeOrderControls\(\);\}/, 'Latin-number law, critical buttons and all startup layout guards must bind synchronously');
   assert.match(v20Source, /contenteditable='true'/);
   assert.match(v20Source, /arc-save/);
   assert.match(v20Source, /raw-save/);
@@ -67477,7 +67542,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/version-11.24-regressions.test.mjs (18918 بایت)
+فایل: tests/version-11.24-regressions.test.mjs (19479 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 import test from 'node:test';
@@ -67618,7 +67683,7 @@ test('invoice tab visibility is reversible and current user resolves by persiste
   assert.match(v20,/function v20CurrentUser\(\)/);
   assert.match(v20,/crmUserId/);
   assert.match(v20,/perms\.dist_invoice_status_access!==false/);
-  assert.match(v11,/hideTab\("tab-distributor-invoice-status", "dist_invoice_status_access"\)/);
+  assert.doesNotMatch(v11,/hideTab\("tab-distributor-invoice-status", "dist_invoice_status_access"\)/);
   assert.match(v20,/function migrateInvoicePermissionOnce/);
   assert.match(v20,/u\.permissions\.dist_invoice_status_access=true/);
 });
@@ -67662,8 +67727,14 @@ test('gray dependency styling leaves labels unchanged and grays field plus check
   assert.match(v20,/\.v20-grey-zone input:not\(\[type=checkbox\]\),\.v20-grey-zone select/);
 });
 
+test('distributor Excel writes Persian month name while keeping all digits Latin', () => {
+  const ctx={result:null,enDigits:v=>String(v),distFilter:()=>({mode:'month',year:'1405',month:'05'})};vm.createContext(ctx);vm.runInContext(`${extract('jalaliMonthName')};${extract('periodRows')};result=periodRows()`,ctx);assert.deepEqual(JSON.parse(JSON.stringify(ctx.result)),[['سال','1405'],['ماه','مرداد']]);
+  assert.match(v20,/installLatinNumberLaw\(\);bindManagerLayoutIntent/);
+  assert.match(v20,/Date\.prototype\[name\]=function\(\)/);
+});
+
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.28\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.29\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
@@ -67685,4 +67756,4 @@ test('GPS quality rule remains stable and full address parts stay Iran-first wit
 ~~~~~~~~
 
 
-— پایان chat.arena نسخه ۱.۴۴ (نسخه برنامه 11.28.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —
+— پایان chat.arena نسخه ۱.۴۵ (نسخه برنامه 11.29.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —

@@ -1241,3 +1241,9 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Restore only configured visible/nondeleted fields; intentional manager deletion remains authoritative.
 - Keep dropdown/info overlay high stacking.
 - GPS target remains <=10m, first qualifying fix accepted, reverse geocode parallel, timeout 15s.
+## افزونه تحویل نسخه ۱۱.۲۹.۰
+- Graph-first is mandatory every turn; regenerate PROJECT_GRAPH before chat.arena and update all archive docs.
+- Never re-add v11 invoice-status hide; final central engine is its sole visibility authority.
+- Preserve fresh V1129 one-time permission repair.
+- Latin-number law must bind synchronously and cover Number/Date/DOM option/placeholder/title while never altering passwords.
+- Distributor Excel month metadata must be Persian month name, not numeric month.
