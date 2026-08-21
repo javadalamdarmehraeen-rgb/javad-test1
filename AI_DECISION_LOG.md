@@ -1498,3 +1498,11 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - Final permission view is a clean 28-tab map with exact UI names and active details, not historical version buckets.
 - Final user CRUD capture-handles save/edit and keeps preset UI idempotent to eliminate missing button and shake regressions.
 - Gray dependency styling never colors labels/containers; only controls and related checkbox are dimmed.
+## تصمیم ۸۱ — نسخه ۱۱.۲۸.۰: session-id permissions، حذف legacy layout و GPS موازی (2026-08-21)
+- Root permission bug: v9 login persisted only crmUserId while later engines searched crmUserName/role. Login now persists all, and `v20CurrentUser` resolves ID first.
+- One final permission engine maps all 28 tabs and active sub-controls, restores allowed inline displays, observes new nodes, and replaces old global permission entry points.
+- Missing permission means backward-compatible allow; explicit false means deny; manager resolved from current state user bypasses.
+- Legacy V1 DOM order is no longer read. Only explicit V2 manager snapshots can reorder. Full/all/custom layout startup calls are all gated.
+- Visible configured fields are repaired without un-deleting intentional manager deletions.
+- Overlay stacking is globally raised on focus.
+- GPS keeps <=10m target, accepts first qualifying fix, runs reverse geocode in parallel, and caps fallback at 15s.

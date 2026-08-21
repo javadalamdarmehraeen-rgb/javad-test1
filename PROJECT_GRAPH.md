@@ -115,12 +115,12 @@
 - تعداد توابع داخلی: 65
 - نام‌های window که تعریف/بازنویسی می‌کند: `_v18DefaultReq`, `_v19BackupLayoutGuard`, `_v19ComboHook`, `_v19Hist`, `_v19IcObs`, `_v19ProdTableWrap`, `_v19Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `extraListColumns`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderPharmaciesList`, `switchTab`, `testServerConnectivity`
 
-### `public/crm-features-v20.js` (214215 بایت)
+### `public/crm-features-v20.js` (220789 بایت)
 - نقش: ============================================================
-- تعداد توابع داخلی: 251
-- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFullFormLayout`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `editProductCatalogItem`, `editUserCard`, `extraListColumns`, `getUnifiedFieldList`, `openRowDetailsModal`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `renderUserCardsList`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `updateNavBadges`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`, `v20RenderProductExtras`, `v20SetupSnappCorporate`
+- تعداد توابع داخلی: 258
+- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFieldPermissions`, `applyFullFormLayout`, `applyUserRolePermissions`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `editProductCatalogItem`, `editUserCard`, `extraListColumns`, `getUnifiedFieldList`, `openRowDetailsModal`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `renderUserCardsList`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `updateNavBadges`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`, `v20RenderProductExtras`, `v20SetupSnappCorporate`
 
-### `public/crm-features-v9.js` (70562 بایت)
+### `public/crm-features-v9.js` (70837 بایت)
 - نقش: ===========================================================================
 - تعداد توابع داخلی: 99
 - نام‌های window که تعریف/بازنویسی می‌کند: `builtinFieldValue`, `downloadCSVFile`, `getOrderItemsFromUI`, `isColShownInList`, `renderDoctorsList`, `renderLiveLocationTab`, `renderOrdersList`, `renderPharmaciesList`, `setupLiveLocationTab`, `setupRepsTab`, `switchTab`, `validateRequiredFields`
@@ -140,7 +140,7 @@
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (1249 بایت)
-- نقش: const CACHE = "ttt-v11.27.0";
+- نقش: const CACHE = "ttt-v11.28.0";
 - تعداد توابع داخلی: 0
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -214,10 +214,10 @@
 - `CRM_LAST_GPS` ← localStorage: `public/crm-features-v11.js`
 - `CRM_USERS_AUTH` ← localStorage: `public/crm-app.js`, `public/crm-features-v11.js`, `public/crm-features-v20.js`
 - `crmLoggedIn` ← sessionStorage: `public/crm-app.js`, `public/crm-features-v10.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`
-- `crmUserId` ← sessionStorage: `public/crm-features-v9.js`
-- `crmUserName` ← sessionStorage: `public/crm-features-v10.js`, `public/crm-features-v11.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`
-- `crmUserRole` ← sessionStorage: `public/crm-features-v10.js`, `public/crm-features-v11.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`
-- `crmUsername` ← sessionStorage: `public/crm-features-v19.js`, `public/crm-features-v20.js`
+- `crmUserId` ← sessionStorage: `public/crm-features-v20.js`, `public/crm-features-v9.js`
+- `crmUserName` ← sessionStorage: `public/crm-features-v10.js`, `public/crm-features-v11.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`
+- `crmUserRole` ← sessionStorage: `public/crm-features-v10.js`, `public/crm-features-v11.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`
+- `crmUsername` ← sessionStorage: `public/crm-features-v19.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`
 - `distPass_` ← sessionStorage: `public/crm-features-v20.js`
 
 ## و) گراف تب‌ها (تب ↔ فایل‌هایی که با المان‌هایش کار می‌کنند)

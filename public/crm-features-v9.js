@@ -346,11 +346,11 @@
   function getCurrentPositionSafe() {
     return new Promise(function (resolve) {
       if (!navigator.geolocation) { resolve({ error: true, message: "GPS این دستگاه در دسترس نیست." }); return; }
-      var best=null,done=false,watch=null,samples=0;
+      var best=null,done=false,watch=null;
       function finish(result){if(done)return;done=true;if(watch!=null)try{navigator.geolocation.clearWatch(watch);}catch(e){}clearTimeout(timer);resolve(result);}
-      // قانون ثابت GPS: تا ۳۰ ثانیه بهترین نقطه را نگه می‌داریم و با اولین نقطه کم‌دقت متوقف نمی‌شویم.
-      var timer=setTimeout(function(){if(best)finish(best);else finish({error:true,message:"موقعیت دقیق دریافت نشد؛ GPS را روشن و دوباره تلاش کنید."});},30000);
-      watch=navigator.geolocation.watchPosition(function(pos){samples++;var cur={lat:pos.coords.latitude,lng:pos.coords.longitude,accuracy:Number(pos.coords.accuracy)||9999,fallback:false};if(!best||cur.accuracy<best.accuracy)best=cur;if(samples>=2&&cur.accuracy<=10)finish(cur);},function(err){if(err&&err.code===1)finish({error:true,message:"اجازه GPS داده نشده است."});},{enableHighAccuracy:true,timeout:30000,maximumAge:0});
+      // هدف دقت ۱۰ متر ثابت است؛ reverse geocode هم‌زمان با دریافت نقطه اجرا می‌شود تا زمان انتظار جمع نشود.
+      var timer=setTimeout(function(){if(best)finish(best);else finish({error:true,message:"موقعیت دقیق دریافت نشد؛ GPS را روشن و دوباره تلاش کنید."});},15000);
+      watch=navigator.geolocation.watchPosition(function(pos){var cur={lat:pos.coords.latitude,lng:pos.coords.longitude,accuracy:Number(pos.coords.accuracy)||9999,fallback:false};cur.addressPromise=geoReverse(cur.lat,cur.lng);if(!best||cur.accuracy<best.accuracy)best=cur;if(cur.accuracy<=10)finish(cur);},function(err){if(err&&err.code===1)finish({error:true,message:"اجازه GPS داده نشده است."});},{enableHighAccuracy:true,timeout:15000,maximumAge:0});
     });
   }
 
@@ -368,7 +368,7 @@
         try {
           const pos = await getCurrentPositionSafe();
           if (pos.error) { safeAlert(pos.message || "موقعیت دقیق دریافت نشد."); return; }
-          const addr = await geoReverse(pos.lat, pos.lng);
+          const addr = await (pos.addressPromise || geoReverse(pos.lat, pos.lng));
           applyPharmacyLocation(pos.lat, pos.lng, addr, val("pharmacyName") || "موقعیت فعلی داروخانه");
           safeAlert(pos.fallback
             ? ("موقعیت تستی تنظیم شد و آدرس در فیلد لوکیشن نشست:\n" + addr)
@@ -398,7 +398,7 @@
         try {
           const pos = await getCurrentPositionSafe();
           if (pos.error) { safeAlert(pos.message || "موقعیت دقیق دریافت نشد."); return; }
-          const addr = await geoReverse(pos.lat, pos.lng);
+          const addr = await (pos.addressPromise || geoReverse(pos.lat, pos.lng));
           applyDoctorLocation(pos.lat, pos.lng, addr, val("doctorName") || "موقعیت فعلی مطب");
           safeAlert("موقعیت فعلی روی نقشه آمد و آدرس در فیلد لوکیشن مطب نوشته شد:\n" + addr);
         } finally { btnDocCur.disabled = false; }
@@ -1132,7 +1132,7 @@
       btn.addEventListener("click", async function () {
         const pos = await getCurrentPositionSafe();
         if (pos.error) { safeAlert(pos.message || "موقعیت دقیق دریافت نشد."); return; }
-        const addr = await geoReverse(pos.lat, pos.lng);
+        const addr = await (pos.addressPromise || geoReverse(pos.lat, pos.lng));
         setVal("repHomeAddressInput", addr);
         const name = val("repHomeSelect") || currentRepName();
         if (!state.repHomes) state.repHomes = [];
@@ -1280,6 +1280,9 @@
     } catch (e) {}
     sessionStorage.setItem("crmLoggedIn", "1");
     sessionStorage.setItem("crmUserId", user.id);
+    sessionStorage.setItem("crmUserName", user.fullName || "");
+    sessionStorage.setItem("crmUsername", user.username || "");
+    sessionStorage.setItem("crmUserRole", user.role || "");
     const gate = $("loginGateOverlay");
     if (gate) gate.classList.add("hidden");
     document.body.classList.remove("is-gated");

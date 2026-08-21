@@ -1233,3 +1233,11 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Permission UI must stay exactly 28 real tab groups; never re-display historical version buckets.
 - Final user create/edit/save is bindUserCrudV27/saveUserV27. Preset UI has only one level dropdown and save button.
 - Gray dependency must not color label or container.
+## افزونه تحویل نسخه ۱۱.۲۸.۰
+- Preserve full login session writes and ID-first v20CurrentUser; this was the root of flashing/hidden tabs.
+- Central permission engine is final authority for all 28 tabs and mapped subcontrols; explicit false denies, missing key allows backward compatibility, manager bypasses.
+- Never read CRM_DOM_FIELD_ORDER_LOCK_V1 again. Only explicit CRM_MANAGER_GRID_ORDER_V2 may reorder.
+- Gate applyFullFormLayout, applyAllFormLayouts and applyCustomFieldOrderInForm during startup.
+- Restore only configured visible/nondeleted fields; intentional manager deletion remains authoritative.
+- Keep dropdown/info overlay high stacking.
+- GPS target remains <=10m, first qualifying fix accepted, reverse geocode parallel, timeout 15s.

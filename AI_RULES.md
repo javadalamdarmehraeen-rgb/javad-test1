@@ -1445,3 +1445,15 @@ same user and auth map. Preset UI is exactly one level selector plus one save-le
 button, and role creation uses supervisor/scientific representative/sales expert saved
 templates. Gray dependency styling applies to the control and associated checkbox,
 never the label or whole container.
+
+# 79. CENTRAL PERMISSIONS + STRICT V2 LAYOUT + FAST PRECISE GPS (PERMANENT)
+
+Login must persist user ID, full name, username, and role; permission lookup is ID-first.
+One final reversible engine controls every real tab and mapped subcontrol: explicit false
+denies, a missing new key allows for backward compatibility, and only a real manager
+resolved from state bypasses. Allowed nodes must have stale hiding removed and dynamic
+controls must receive permissions after render. Never read or restore V1 automatic DOM
+order; only explicit manager V2 snapshots may reorder. All legacy full/all/custom layout
+entry points are blocked outside manager intent. Dropdown/detail overlays must stack above
+following cards. Current-location target stays <=10m, accepts the first qualifying fix,
+runs reverse geocoding in parallel, and falls back to the best fix by 15 seconds.

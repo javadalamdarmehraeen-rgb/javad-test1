@@ -1,6 +1,6 @@
 CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.43 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.27.0
+نسخه این فایل: 1.44 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.28.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -568,19 +568,19 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]      849 بایت  .gitattributes
   [متنی ]     1097 بایت  .gitignore
   [متنی ]     2057 بایت  .gitlab-ci.yml
-  [متنی ]    22896 بایت  AI_ARCHITECTURE.md
-  [متنی ]    52018 بایت  AI_DECISION_LOG.md
-  [متنی ]    27839 بایت  AI_PROJECT_CONTEXT.md
-  [متنی ]    30973 بایت  AI_RULES.md
-  [متنی ]    37129 بایت  AI_TASKS.md
-  [متنی ]    32880 بایت  ARENA_HANDOFF_PROMPT.md
+  [متنی ]    23814 بایت  AI_ARCHITECTURE.md
+  [متنی ]    53013 بایت  AI_DECISION_LOG.md
+  [متنی ]    28505 بایت  AI_PROJECT_CONTEXT.md
+  [متنی ]    31840 بایت  AI_RULES.md
+  [متنی ]    37838 بایت  AI_TASKS.md
+  [متنی ]    33653 بایت  ARENA_HANDOFF_PROMPT.md
   [متنی ]      600 بایت  CHANGES_V10.md
-  [متنی ]    67619 بایت  CHANGES_V11.md
+  [متنی ]    70074 بایت  CHANGES_V11.md
   [متنی ]     3939 بایت  CHANGES_V9.md
   [متنی ]     1806 بایت  CLEAN_EXTRA_FILES.bat
   [متنی ]     2377 بایت  KEEP_ONLY_GITHUB.bat
   [متنی ]     6375 بایت  OFFICIAL_FILELIST.txt
-  [متنی ]    40571 بایت  PROJECT_GRAPH.md
+  [متنی ]    40741 بایت  PROJECT_GRAPH.md
   [متنی ]     2642 بایت  PUSH_FRESH_GITHUB.bat
   [متنی ]     2680 بایت  PUSH_GITHUB_CLEAN.bat
   [متنی ]     6579 بایت  RAHNAMA_GITLAB.txt
@@ -600,7 +600,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     9884 بایت  server.js
   [متنی ]     2426 بایت  sync_all.sh
   [متنی ]      738 بایت  tsconfig.json
-  [متنی ]   296841 بایت  update_chat_arena.py
+  [متنی ]   298591 بایت  update_chat_arena.py
   [متنی ]    10215 بایت  update_project_graph.py
   [متنی ]     2844 بایت  .github/workflows/deploy.yml
   [متنی ]      214 بایت  .github/workflows/keep_alive.yml
@@ -620,8 +620,8 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]    19662 بایت  public/crm-features-v17.js
   [متنی ]    33040 بایت  public/crm-features-v18.js
   [متنی ]    61016 بایت  public/crm-features-v19.js
-  [متنی ]   214215 بایت  public/crm-features-v20.js
-  [متنی ]    70562 بایت  public/crm-features-v9.js
+  [متنی ]   220789 بایت  public/crm-features-v20.js
+  [متنی ]    70837 بایت  public/crm-features-v9.js
   [متنی ]    25683 بایت  public/crm-jalali.js
   [متنی ]   142842 بایت  public/index.html
   [متنی ]    11799 بایت  public/iran-facilities.js
@@ -780,8 +780,8 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     2276 بایت  src/lib/useLive.ts
   [متنی ]     3346 بایت  src/lib/zip.ts
   [متنی ]     2907 بایت  tests/app-smoke.test.mjs
-  [متنی ]    19568 بایت  tests/state-preservation.test.mjs
-  [متنی ]    16459 بایت  tests/version-11.24-regressions.test.mjs
+  [متنی ]    19661 بایت  tests/state-preservation.test.mjs
+  [متنی ]    18918 بایت  tests/version-11.24-regressions.test.mjs
   [تصویر]    23282 بایت  public/apple-touch-icon.png
   [تصویر]     4527 بایت  public/favicon.png
   [تصویر]    26208 بایت  public/icon-192.png
@@ -3521,6 +3521,13 @@ git push gitlab main
 🤖 دستیار:
 نسخه **۱۱.۲۷.۰** ساخته شد. مجوز invoice-status یک‌بار برای کاربران موجود ترمیم و setup آن روی کلیک مستقیم متصل شد. موتور layout از parse نهایی تا اقدام صریح مدیر مسدود است؛ startup/observer/beforeunload دیگر snapshot نمی‌سازند و فقط `CRM_MANAGER_GRID_ORDER_V2` مدیر معتبر است. نمای دسترسی به ۲۸ گروه با نام دقیق تب‌ها تبدیل و گروه‌های نسخه‌ای حذف شد. bindUserCrudV27 کلید ذخیره همیشه‌نمایان، ویرایش همان رکورد، auth sync و سه نقش دقیق را تضمین می‌کند. preset bar یک‌بار ساخته می‌شود و فقط یک dropdown و ذخیره سطح دارد؛ transition/hover لرزان حذف شد. طوسی فقط control/checkbox است و لیبل ثابت می‌ماند. ۳۵ تست موفق؛ تأیید مرورگر واقعی کاربر باقی است.
 
+──────────────────────────────── نوبت ۴۹ ────────────────────────────────
+🧑 کاربر (خلاصه وفادار):
+«تب وضعیت فاکتور هنوز لحظه‌ای می‌آید و حذف می‌شود؛ فیلدها در نسخه جدید جابه‌جا/حذف شده‌اند؛ اطلاعات dropdown باید روی کادرهای بعدی بیاید نه پشت آنها؛ برداشتن یا گذاشتن تیک تب/زیرمجوز هیچ اثری در پنل کاربر ندارد؛ موقعیت فعلی حدود ۳۰ ثانیه طول می‌کشد و باید بدون کم‌شدن دقت سریع‌تر شود.»
+
+🤖 دستیار:
+نسخه **۱۱.۲۸.۰** ساخته شد. علت ریشه‌ای تب، ذخیره‌شدن فقط crmUserId و جستجوی نام/نقش بود؛ login اکنون همه هویت نشست را می‌نویسد و user ID-first حل می‌شود. موتور مرکزی دسترسی ۲۸ تب و کنترل‌های اصلی را با explicit false/missing allow/manager bypass و observer رندر پویا اعمال می‌کند. V1 layout کاملاً کنار گذاشته و سه موتور full/all/custom خارج اقدام مدیر مسدود شدند؛ فقط V2 صریح معتبر است و visibility فیلدهای مجاز ترمیم می‌شود. overlayها z-index 10040 دارند. GPS هدف ۱۰ متر را حفظ، اولین fix واجد شرایط را می‌پذیرد، geocode را موازی آغاز و سقف را ۱۵ ثانیه می‌کند. ۳۷ تست موفق؛ تأیید مرورگر واقعی باقی است.
+
 
 
 ══════════════════════════════════════════════════════════════════════════════════
@@ -3735,7 +3742,7 @@ sync-after-deploy:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_ARCHITECTURE.md (22896 بایت)
+فایل: AI_ARCHITECTURE.md (23814 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI ARCHITECTURE
@@ -4880,10 +4887,18 @@ Then change only what is requested.
 - Invoice access migration `invoiceStatusPermissionV1127` runs once over existing users/templates to repair default-false rollout.
 - `bindUserCrudV27` capture-intercepts button/form submit and final-overrides `editUserCard`; auth map is rebuilt after save.
 - Preset bar is created once and contains only level select + save button.
+## معماری افزوده v11.28.0 — Central access engine / strict V2 layout / parallel GPS
+- Session identity is complete and stable: id, full name, username, role. Current user resolution is ID-first.
+- `TAB_PERMISSION_MAP` projects tab-master keys to nav, side menu and pane; `FEATURE_PERMISSION_MAP` projects subkeys to concrete controls.
+- Allowed nodes have stale permission inline styles removed; denied nodes receive tracked `data-permission-hidden`; dynamic nodes are reapplied incrementally.
+- `window.applyUserRolePermissions` and `window.applyFieldPermissions` point to central engine.
+- No V1 order fallback exists; V2 explicit manager snapshots only. Full/all/custom layout functions share manager-intent gate.
+- Overlay stacking: focused group 10020, combo 10030, list/detail 10040.
+- GPS reverse geocode begins on fix callback and is awaited later, overlapping network with accuracy acquisition.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_DECISION_LOG.md (52018 بایت)
+فایل: AI_DECISION_LOG.md (53013 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI DECISION LOG
@@ -6386,10 +6401,18 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - Final permission view is a clean 28-tab map with exact UI names and active details, not historical version buckets.
 - Final user CRUD capture-handles save/edit and keeps preset UI idempotent to eliminate missing button and shake regressions.
 - Gray dependency styling never colors labels/containers; only controls and related checkbox are dimmed.
+## تصمیم ۸۱ — نسخه ۱۱.۲۸.۰: session-id permissions، حذف legacy layout و GPS موازی (2026-08-21)
+- Root permission bug: v9 login persisted only crmUserId while later engines searched crmUserName/role. Login now persists all, and `v20CurrentUser` resolves ID first.
+- One final permission engine maps all 28 tabs and active sub-controls, restores allowed inline displays, observes new nodes, and replaces old global permission entry points.
+- Missing permission means backward-compatible allow; explicit false means deny; manager resolved from current state user bypasses.
+- Legacy V1 DOM order is no longer read. Only explicit V2 manager snapshots can reorder. Full/all/custom layout startup calls are all gated.
+- Visible configured fields are repaired without un-deleting intentional manager deletions.
+- Overlay stacking is globally raised on focus.
+- GPS keeps <=10m target, accepts first qualifying fix, runs reverse geocode in parallel, and caps fallback at 15s.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_PROJECT_CONTEXT.md (27839 بایت)
+فایل: AI_PROJECT_CONTEXT.md (28505 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI PROJECT CONTEXT
@@ -7277,10 +7300,12 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 نسخه فعال 11.26.0 است. `settings.globalFieldOptions` منبع واحد گزینه‌های semantic label است و hidden optionها مانع بازگشت حذف‌ها می‌شوند. DOM/customFields هم‌نام با add/edit/delete یکپارچه می‌شوند. قفل DOM تمام `.tab-pane .form-grid`ها را پوشش می‌دهد. invoice-status display برگشت‌پذیر و permission آن backward-compatible است. SW از `/sw.js?v=11.26.0` با updateViaCache none، ready، skipWaiting و claim فعال می‌شود.
 ## افزونه وضعیت نسخه ۱۱.۲۷.۰
 نسخه فعال 11.27.0 است. `applyFullFormLayout` از زمان parse نهایی با `__CRM_MANAGER_LAYOUT_INTENT` مهار می‌شود و فقط کنترل‌های مدیر آن را برای 800ms مجاز می‌کنند. `CRM_MANAGER_GRID_ORDER_V2` فقط با اقدام مدیر ذخیره می‌شود؛ capture startup/observer/beforeunload حذف است. مجوز invoice-status یک‌بار برای کاربران موجود true می‌شود. نمای نهایی PERMISSION_GROUPS دقیقاً 28 نام تب دارد. bindUserCrudV27/saveUserV27 مسیر نهایی ذخیره و ویرایش کاربر است. preset bar idempotent و gray labels ثابت هستند.
+## افزونه وضعیت نسخه ۱۱.۲۸.۰
+نسخه فعال 11.28.0 است. Login اکنون crmUserId/name/username/role را ذخیره می‌کند؛ v20CurrentUser ابتدا ID را حل می‌کند. TAB_PERMISSION_MAP همه 28 تب و FEATURE_PERMISSION_MAP کنترل‌های اصلی را پوشش می‌دهد؛ applyCentralPermissions برنده نهایی و observer-backed است. legacy CRM_DOM_FIELD_ORDER_LOCK_V1 دیگر خوانده نمی‌شود و سه layout entry point فقط با manager intent اجرا می‌شوند. Overlayها z-index 10040 دارند. GPS target 10m، timeout 15s و addressPromise موازی دارد.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_RULES.md (30973 بایت)
+فایل: AI_RULES.md (31840 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI RULES
@@ -8730,10 +8755,22 @@ same user and auth map. Preset UI is exactly one level selector plus one save-le
 button, and role creation uses supervisor/scientific representative/sales expert saved
 templates. Gray dependency styling applies to the control and associated checkbox,
 never the label or whole container.
+
+# 79. CENTRAL PERMISSIONS + STRICT V2 LAYOUT + FAST PRECISE GPS (PERMANENT)
+
+Login must persist user ID, full name, username, and role; permission lookup is ID-first.
+One final reversible engine controls every real tab and mapped subcontrol: explicit false
+denies, a missing new key allows for backward compatibility, and only a real manager
+resolved from state bypasses. Allowed nodes must have stale hiding removed and dynamic
+controls must receive permissions after render. Never read or restore V1 automatic DOM
+order; only explicit manager V2 snapshots may reorder. All legacy full/all/custom layout
+entry points are blocked outside manager intent. Dropdown/detail overlays must stack above
+following cards. Current-location target stays <=10m, accepts the first qualifying fix,
+runs reverse geocoding in parallel, and falls back to the best fix by 15 seconds.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_TASKS.md (37129 بایت)
+فایل: AI_TASKS.md (37838 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI TASKS
@@ -10097,10 +10134,22 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] طوسی فقط فیلد و checkbox، نه لیبل
 - [x] ۳۵/۳۵ تست
 - [ ] تأیید DOM واقعی و چیدمان داده ذخیره‌شده کاربر
+## ۶۹) نسخه ۱۱.۲۸.۰
+- [x] ذخیره کامل session کاربر در login
+- [x] یافتن user بر اساس crmUserId
+- [x] موتور نهایی دسترسی ۲۸ تب
+- [x] اعمال زیرمجوزها روی کنترل‌های واقعی و رندرهای جدید
+- [x] حذف کامل fallback قفل V1
+- [x] مهار applyFull/applyAll/applyCustom startup
+- [x] بازگردانی فقط فیلدهای مجاز و غیرحذف‌شده
+- [x] نمایش overlay بالای کادرهای بعدی
+- [x] GPS <=10m با geocode موازی و حداکثر 15s
+- [x] ۳۷/۳۷ تست
+- [ ] تأیید ورود با کاربر واقعی و تغییر مجوز در مرورگر کاربر
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: ARENA_HANDOFF_PROMPT.md (32880 بایت)
+فایل: ARENA_HANDOFF_PROMPT.md (33653 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # ARENA AI MASTER HANDOFF PROMPT
@@ -11338,6 +11387,14 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Permission UI must stay exactly 28 real tab groups; never re-display historical version buckets.
 - Final user create/edit/save is bindUserCrudV27/saveUserV27. Preset UI has only one level dropdown and save button.
 - Gray dependency must not color label or container.
+## افزونه تحویل نسخه ۱۱.۲۸.۰
+- Preserve full login session writes and ID-first v20CurrentUser; this was the root of flashing/hidden tabs.
+- Central permission engine is final authority for all 28 tabs and mapped subcontrols; explicit false denies, missing key allows backward compatibility, manager bypasses.
+- Never read CRM_DOM_FIELD_ORDER_LOCK_V1 again. Only explicit CRM_MANAGER_GRID_ORDER_V2 may reorder.
+- Gate applyFullFormLayout, applyAllFormLayouts and applyCustomFieldOrderInForm during startup.
+- Restore only configured visible/nondeleted fields; intentional manager deletion remains authoritative.
+- Keep dropdown/info overlay high stacking.
+- GPS target remains <=10m, first qualifying fix accepted, reverse geocode parallel, timeout 15s.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -11357,7 +11414,7 @@ Leaflet محلی. فونت گوگل حذف شد. gzip روی JS/CSS/HTML.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: CHANGES_V11.md (67619 بایت)
+فایل: CHANGES_V11.md (70074 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # نسخه ۱۱.۲۳.۰
@@ -11873,6 +11930,18 @@ CLEAN_EXTRA_FILES.bat و بعد PUSH_GITHUB_CLEAN.bat را اجرا کن.
 6. نقش ایجاد کاربر فقط سرپرست، نماینده علمی و کارشناس فروش است و انتخاب آن الگوی ذخیره‌شده همان سطح را اعمال می‌کند.
 7. کادر سطح آماده فقط یک کشویی سطح و کلید «ذخیره سطح دسترسی» دارد و دیگر در هر رندر حذف/ساخته نمی‌شود؛ لرزش checkboxها و hover حذف شد.
 8. حالت طوسی فقط خود فیلد و checkbox مرتبط را طوسی می‌کند؛ لیبل و کل کادر رنگ طوسی نمی‌گیرند.
+
+# نسخه ۱۱.۲۸.۰
+
+1. علت اصلی ناپدیدشدن تب‌ها رفع شد: ورود قدیمی فقط `crmUserId` را ذخیره می‌کرد اما موتور دسترسی نام/نقش را می‌خواند. اکنون شناسه، نام کامل، نام کاربری و نقش همگی در نشست ذخیره و کاربر همیشه ابتدا با شناسه پایدار پیدا می‌شود.
+2. موتور مرکزی و برگشت‌پذیر دسترسی برای هر ۲۸ تب اضافه شد؛ تیک اصلی هر تب واقعاً منو و صفحه را نمایش/مخفی می‌کند و نبود کلید قدیمی به معنی مجاز است، نه مخفی.
+3. ریزدسترسی‌های رایج فرم، لیست، حذف، اکسل، ورود فایل، جزئیات فاکتور، دیتابیس و کاربران نیز روی کنترل‌های واقعی اعمال می‌شوند و MutationObserver کنترل‌های تازه‌رندرشده را پوشش می‌دهد.
+4. پنج موتور قدیمی دسترسی دیگر برنده نهایی نیستند؛ `applyUserRolePermissions` و `applyFieldPermissions` به موتور مرکزی نهایی متصل شدند.
+5. تمام کلیدهای layout قدیمی `CRM_DOM_FIELD_ORDER_LOCK_V1` از مسیر بازیابی حذف شدند؛ فقط snapshot صریح مدیر در `CRM_MANAGER_GRID_ORDER_V2` معتبر است.
+6. علاوه بر `applyFullFormLayout`، دو موتور `applyAllFormLayouts` و `applyCustomFieldOrderInForm` نیز در startup مسدود و فقط هنگام اقدام مستقیم مدیر مجاز شدند.
+7. فیلدی که طبق تنظیم مدیر حذف/مخفی نشده باشد، پس از رندرهای قدیمی دوباره قابل مشاهده می‌شود؛ فیلدهای عمداً حذف‌شده یا showInForm=false همچنان محترم‌اند.
+8. dropdown و کادر اطلاعات با overflow visible، focus z-index و z-index نهایی بالای کارت‌های بعدی نمایش داده می‌شوند و پشت کادر زیرین پنهان نمی‌شوند.
+9. GPS هدف دقت ۱۰ متر را حفظ می‌کند، اما شرط نمونه دوم حذف و سقف انتظار از ۳۰ به ۱۵ ثانیه کاهش یافت؛ دریافت آدرس هم‌زمان با GPS آغاز می‌شود تا زمان‌ها روی هم جمع نشوند.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -12346,7 +12415,7 @@ update_project_graph.py
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: PROJECT_GRAPH.md (40571 بایت)
+فایل: PROJECT_GRAPH.md (40741 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # 🕸️ گراف دانش پروژه «نماینده علمی» (PROJECT_GRAPH.md)
@@ -12466,12 +12535,12 @@ update_project_graph.py
 - تعداد توابع داخلی: 65
 - نام‌های window که تعریف/بازنویسی می‌کند: `_v18DefaultReq`, `_v19BackupLayoutGuard`, `_v19ComboHook`, `_v19Hist`, `_v19IcObs`, `_v19ProdTableWrap`, `_v19Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `extraListColumns`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderPharmaciesList`, `switchTab`, `testServerConnectivity`
 
-### `public/crm-features-v20.js` (214215 بایت)
+### `public/crm-features-v20.js` (220789 بایت)
 - نقش: ============================================================
-- تعداد توابع داخلی: 251
-- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFullFormLayout`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `editProductCatalogItem`, `editUserCard`, `extraListColumns`, `getUnifiedFieldList`, `openRowDetailsModal`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `renderUserCardsList`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `updateNavBadges`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`, `v20RenderProductExtras`, `v20SetupSnappCorporate`
+- تعداد توابع داخلی: 258
+- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFieldPermissions`, `applyFullFormLayout`, `applyUserRolePermissions`, `attachJalaliPicker`, `builtinFieldValue`, `deleteCustomField`, `deleteProductCatalogItem`, `editProductCatalogItem`, `editUserCard`, `extraListColumns`, `getUnifiedFieldList`, `openRowDetailsModal`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLiveLocationTab`, `renderUserCardsList`, `reverseGeocodeCoordinates`, `saveState`, `switchTab`, `updateNavBadges`, `v20ApplyGreyChains`, `v20ApplyOrderLock`, `v20DupGate`, `v20RenderComboManager`, `v20RenderProductExtras`, `v20SetupSnappCorporate`
 
-### `public/crm-features-v9.js` (70562 بایت)
+### `public/crm-features-v9.js` (70837 بایت)
 - نقش: ===========================================================================
 - تعداد توابع داخلی: 99
 - نام‌های window که تعریف/بازنویسی می‌کند: `builtinFieldValue`, `downloadCSVFile`, `getOrderItemsFromUI`, `isColShownInList`, `renderDoctorsList`, `renderLiveLocationTab`, `renderOrdersList`, `renderPharmaciesList`, `setupLiveLocationTab`, `setupRepsTab`, `switchTab`, `validateRequiredFields`
@@ -12491,7 +12560,7 @@ update_project_graph.py
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (1249 بایت)
-- نقش: const CACHE = "ttt-v11.27.0";
+- نقش: const CACHE = "ttt-v11.28.0";
 - تعداد توابع داخلی: 0
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -12565,10 +12634,10 @@ update_project_graph.py
 - `CRM_LAST_GPS` ← localStorage: `public/crm-features-v11.js`
 - `CRM_USERS_AUTH` ← localStorage: `public/crm-app.js`, `public/crm-features-v11.js`, `public/crm-features-v20.js`
 - `crmLoggedIn` ← sessionStorage: `public/crm-app.js`, `public/crm-features-v10.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`
-- `crmUserId` ← sessionStorage: `public/crm-features-v9.js`
-- `crmUserName` ← sessionStorage: `public/crm-features-v10.js`, `public/crm-features-v11.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`
-- `crmUserRole` ← sessionStorage: `public/crm-features-v10.js`, `public/crm-features-v11.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`
-- `crmUsername` ← sessionStorage: `public/crm-features-v19.js`, `public/crm-features-v20.js`
+- `crmUserId` ← sessionStorage: `public/crm-features-v20.js`, `public/crm-features-v9.js`
+- `crmUserName` ← sessionStorage: `public/crm-features-v10.js`, `public/crm-features-v11.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`
+- `crmUserRole` ← sessionStorage: `public/crm-features-v10.js`, `public/crm-features-v11.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`
+- `crmUsername` ← sessionStorage: `public/crm-features-v19.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`
 - `distPass_` ← sessionStorage: `public/crm-features-v20.js`
 
 ## و) گراف تب‌ها (تب ↔ فایل‌هایی که با المان‌هایش کار می‌کنند)
@@ -13814,13 +13883,13 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.27.0",
+  "version": "11.28.0",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
       "name": "namayandeelmi-javad-crm",
-      "version": "11.27.0",
+      "version": "11.28.0",
       "license": "MIT",
       "engines": {
         "node": ">=20.0.0"
@@ -13836,7 +13905,7 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.27.0",
+  "version": "11.28.0",
   "description": "سیستم جامع مدیریت و ویزیت علمی، داروخانه‌ها، پزشکان و سفارشات (CRM / PWA) هماهنگ با Render و Neon",
   "main": "server.js",
   "engines": {
@@ -14031,7 +14100,7 @@ const server = http.createServer((req, res) => {
     return send(req, res, 200, JSON.stringify({
       ok: true, status: "healthy", message: "OK",
       service: "namayandeelmi-javad-crm",
-      version: "11.27.0",
+      version: "11.28.0",
       timestamp: new Date().toISOString()
     }), "application/json; charset=utf-8");
   }
@@ -14145,7 +14214,7 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, "0.0.0.0", () => {
-  console.log("CRM v11.27.0 listening on 0.0.0.0:" + PORT);
+  console.log("CRM v11.28.0 listening on 0.0.0.0:" + PORT);
 });
 ~~~~~~~~
 
@@ -14267,7 +14336,7 @@ git status -sb
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: update_chat_arena.py (296841 بایت)
+فایل: update_chat_arena.py (298591 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~python
 #!/usr/bin/env python3
@@ -14321,7 +14390,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.43 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.27.0
+نسخه این فایل: 1.44 | تاریخ به‌روزرسانی: 2026-08-21 (۳۰ مرداد ۱۴۰۵) | نسخه برنامه: 11.28.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -17589,6 +17658,13 @@ git push gitlab main
 🤖 دستیار:
 نسخه **۱۱.۲۷.۰** ساخته شد. مجوز invoice-status یک‌بار برای کاربران موجود ترمیم و setup آن روی کلیک مستقیم متصل شد. موتور layout از parse نهایی تا اقدام صریح مدیر مسدود است؛ startup/observer/beforeunload دیگر snapshot نمی‌سازند و فقط `CRM_MANAGER_GRID_ORDER_V2` مدیر معتبر است. نمای دسترسی به ۲۸ گروه با نام دقیق تب‌ها تبدیل و گروه‌های نسخه‌ای حذف شد. bindUserCrudV27 کلید ذخیره همیشه‌نمایان، ویرایش همان رکورد، auth sync و سه نقش دقیق را تضمین می‌کند. preset bar یک‌بار ساخته می‌شود و فقط یک dropdown و ذخیره سطح دارد؛ transition/hover لرزان حذف شد. طوسی فقط control/checkbox است و لیبل ثابت می‌ماند. ۳۵ تست موفق؛ تأیید مرورگر واقعی کاربر باقی است.
 
+──────────────────────────────── نوبت ۴۹ ────────────────────────────────
+🧑 کاربر (خلاصه وفادار):
+«تب وضعیت فاکتور هنوز لحظه‌ای می‌آید و حذف می‌شود؛ فیلدها در نسخه جدید جابه‌جا/حذف شده‌اند؛ اطلاعات dropdown باید روی کادرهای بعدی بیاید نه پشت آنها؛ برداشتن یا گذاشتن تیک تب/زیرمجوز هیچ اثری در پنل کاربر ندارد؛ موقعیت فعلی حدود ۳۰ ثانیه طول می‌کشد و باید بدون کم‌شدن دقت سریع‌تر شود.»
+
+🤖 دستیار:
+نسخه **۱۱.۲۸.۰** ساخته شد. علت ریشه‌ای تب، ذخیره‌شدن فقط crmUserId و جستجوی نام/نقش بود؛ login اکنون همه هویت نشست را می‌نویسد و user ID-first حل می‌شود. موتور مرکزی دسترسی ۲۸ تب و کنترل‌های اصلی را با explicit false/missing allow/manager bypass و observer رندر پویا اعمال می‌کند. V1 layout کاملاً کنار گذاشته و سه موتور full/all/custom خارج اقدام مدیر مسدود شدند؛ فقط V2 صریح معتبر است و visibility فیلدهای مجاز ترمیم می‌شود. overlayها z-index 10040 دارند. GPS هدف ۱۰ متر را حفظ، اولین fix واجد شرایط را می‌پذیرد، geocode را موازی آغاز و سقف را ۱۵ ثانیه می‌کند. ۳۷ تست موفق؛ تأیید مرورگر واقعی باقی است.
+
 """
 
 FILES_INTRO = """
@@ -17625,7 +17701,7 @@ def build():
         out.append("~~~~~~~~" + lang)
         out.append(content.rstrip("\n"))
         out.append("~~~~~~~~")
-    out.append("\n\n— پایان chat.arena نسخه ۱.۴۳ (نسخه برنامه 11.27.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
+    out.append("\n\n— پایان chat.arena نسخه ۱.۴۴ (نسخه برنامه 11.28.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
     with open(OUT, "w", encoding="utf-8") as f:
         f.write("\n".join(out))
     print("chat.arena written:", os.path.getsize(OUT), "bytes,", len(text_files), "text files embedded,", len(bin_files), "binary files listed")
@@ -21884,7 +21960,7 @@ function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.27.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.28.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -32659,7 +32735,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-features-v20.js (214215 بایت)
+فایل: public/crm-features-v20.js (220789 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================
@@ -32758,6 +32834,7 @@ button.v19-gps svg{display:block}
       "#tab-snapp-corporate .data-table{min-width:900px}#tab-snapp-corporate .card{overflow:visible}" +
       ".v20-share-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:7px}.v20-share-item{display:grid;grid-template-columns:22px 1fr 58px;align-items:center;gap:6px;background:#f8fafc;border:1px solid #e2e8f0;padding:7px;border-radius:8px}.v20-share-order{width:55px;padding:4px}" +
       "#tab-users-permissions .permission-tag-chk,#tab-users-permissions .permission-tag-chk:hover{transition:none!important;transform:none!important;box-sizing:border-box!important}#tab-users-permissions .permission-tab-group{contain:layout style;min-height:0}#tab-users-permissions #btnSaveUserInfo{display:inline-flex!important;visibility:visible!important;opacity:1!important}" +
+      ".tab-pane .form-grid,.tab-pane .form-group,.tab-pane .card{overflow:visible!important}.tab-pane .form-group:focus-within{position:relative!important;z-index:10020!important}.crm-combo:focus-within{z-index:10030!important}.crm-combo-list,.ph-pick-overlay,.v20-local-match{z-index:10040!important;isolation:isolate!important}" +
       "#tab-snapp-corporate .form-grid,#tab-search-info .form-grid,#tab-rep-homes .form-grid,#tab-leaves .form-grid{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))!important;gap:14px!important;align-items:start}#tab-snapp-corporate .form-group,#tab-search-info .form-group,#tab-rep-homes .form-group,#tab-leaves .form-group{width:auto!important;max-width:100%!important;min-width:0!important}" +
       "#formCustomField #cfTargetEntity{display:none!important}#formCustomField #cfTargetEntity~*{display:none!important}#formCustomField .form-group:has(#cfTargetEntity){display:none!important}" +
       ".tab-pane .form-grid>.form-group{align-self:start!important;transform:none!important;transition:none!important}.tab-pane .crm-combo,.tab-pane .crm-combo-input{transform:none!important;transition:none!important}" +
@@ -33581,7 +33658,7 @@ button.v19-gps svg{display:block}
   function renderPresetBar() {
     var pane=$("tab-users-permissions");if(!pane)return;["v20PresetUser","v20PresetApply"].forEach(function(id){var x=$(id);if(x)x.remove();});var old=$("v20PresetBar");if(old){bindRoleTemplateSelect();return;}var S=st();if(!S)return;var card=pane.querySelector(".card")||pane,bar=document.createElement("div");bar.id="v20PresetBar";bar.style.cssText="border:1px solid #c7d2fe;background:#eef2ff;border-radius:12px;padding:12px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;min-height:58px;box-sizing:border-box;";var opts=ROLE_PRESETS.map(function(p){return"<option value='"+p.id+"'>"+p.label+"</option>";}).join("");bar.innerHTML="<strong>🎚️ سطوح دسترسی آماده:</strong><select id='v20PresetSel' class='form-select' style='min-width:180px'>"+opts+"</select><button type='button' id='v20PresetSave' class='btn btn-primary'>💾 ذخیره سطح دسترسی</button><span class='v20-mini'>تیک‌های فعلی پایین صفحه برای همین سطح ذخیره می‌شوند.</span>";card.insertBefore(bar,card.firstChild);bar.querySelector("#v20PresetSel").onchange=function(){applyPermissionsToChecklist(permissionTemplate(this.value));syncPermissionMasters();};bar.querySelector("#v20PresetSave").onclick=function(){var pid=bar.querySelector("#v20PresetSel").value;S.settings=S.settings||{};S.settings.permissionLevelTemplates=S.settings.permissionLevelTemplates||{};S.settings.permissionLevelTemplates[pid]=checklistPermissions();save();v20Toast("✅ سطح دسترسی «"+this.parentNode.querySelector("#v20PresetSel").selectedOptions[0].textContent+"» ذخیره شد.");};bindRoleTemplateSelect();}
   function syncUsersAuthV27(){try{var auth={};(st().users||[]).forEach(function(u){auth[u.username]={password:u.password,phone:u.phone,name:u.fullName,role:u.role,id:u.id};});localStorage.setItem("CRM_USERS_AUTH",JSON.stringify(auth));}catch(e){}}
-  function saveUserV27(){var S=st(),form=$("formCreateUser"),id=String(($("userEditId")||{}).value||""),full=String(($("newFullName")||{}).value||"").trim(),user=String(($("newUsername")||{}).value||"").trim(),pass=String(($("newPassword")||{}).value||"").trim(),phone=String(($("newPhone")||{}).value||"").trim(),role=String(($("newRole")||{}).value||"نماینده علمی"),sim=String(($("newSimControl")||{}).value||"");if(!full||!user||!pass)return alert("نام، نام کاربری و رمز عبور را کامل کنید.");var duplicate=(S.users||[]).some(function(u){return u.username===user&&String(u.id)!==id;});if(duplicate)return alert("این نام کاربری قبلاً ثبت شده است.");var current=id&&(S.users||[]).filter(function(u){return String(u.id)===id;})[0],rec=current||{id:"u-"+Date.now(),phoneLock:"آزاد - اولین ورود، گوشی را قفل می‌کند",lastLogin:""};rec.fullName=full;rec.username=user;rec.password=pass;rec.phone=phone;rec.role=role;rec.simControl=sim;rec.permissions=checklistPermissions();if(!current)S.users.push(rec);save();syncUsersAuthV27();if(form)form.reset();if($("userEditId"))$("userEditId").value="";var btn=$("btnSaveUserInfo");if(btn){btn.innerHTML="<span>➕ ایجاد کاربر</span>";btn.style.display="inline-flex";}try{if(typeof window.renderUserCardsList==="function")window.renderUserCardsList();if(typeof window.updateNavBadges==="function")window.updateNavBadges();}catch(e){}v20Toast(current?"✅ اطلاعات کاربر ذخیره شد.":"✅ کاربر جدید ایجاد شد.");}
+  function saveUserV27(){var S=st(),form=$("formCreateUser"),id=String(($("userEditId")||{}).value||""),full=String(($("newFullName")||{}).value||"").trim(),user=String(($("newUsername")||{}).value||"").trim(),pass=String(($("newPassword")||{}).value||"").trim(),phone=String(($("newPhone")||{}).value||"").trim(),role=String(($("newRole")||{}).value||"نماینده علمی"),sim=String(($("newSimControl")||{}).value||"");if(!full||!user||!pass)return alert("نام، نام کاربری و رمز عبور را کامل کنید.");var duplicate=(S.users||[]).some(function(u){return u.username===user&&String(u.id)!==id;});if(duplicate)return alert("این نام کاربری قبلاً ثبت شده است.");var current=id&&(S.users||[]).filter(function(u){return String(u.id)===id;})[0],rec=current||{id:"u-"+Date.now(),phoneLock:"آزاد - اولین ورود، گوشی را قفل می‌کند",lastLogin:""};rec.fullName=full;rec.username=user;rec.password=pass;rec.phone=phone;rec.role=role;rec.simControl=sim;rec.permissions=checklistPermissions();if(!current)S.users.push(rec);save();syncUsersAuthV27();applyCentralPermissions();if(form)form.reset();if($("userEditId"))$("userEditId").value="";var btn=$("btnSaveUserInfo");if(btn){btn.innerHTML="<span>➕ ایجاد کاربر</span>";btn.style.display="inline-flex";}try{if(typeof window.renderUserCardsList==="function")window.renderUserCardsList();if(typeof window.updateNavBadges==="function")window.updateNavBadges();}catch(e){}v20Toast(current?"✅ اطلاعات کاربر ذخیره شد.":"✅ کاربر جدید ایجاد شد.");}
   function bindUserCrudV27(){var form=$("formCreateUser"),btn=$("btnSaveUserInfo"),role=$("newRole");if(role){var cur=role.value;role.innerHTML="<option value='سرپرست'>سرپرست</option><option value='نماینده علمی'>نماینده علمی</option><option value='کارشناس فروش'>کارشناس فروش</option>";if(["سرپرست","نماینده علمی","کارشناس فروش"].indexOf(cur)>=0)role.value=cur;}if(btn){btn.style.display="inline-flex";btn.hidden=false;if(!btn.dataset.v27user){btn.dataset.v27user="1";btn.addEventListener("click",function(e){e.preventDefault();e.stopImmediatePropagation();saveUserV27();},true);}}if(form&&!form.dataset.v27user){form.dataset.v27user="1";form.addEventListener("submit",function(e){e.preventDefault();e.stopImmediatePropagation();saveUserV27();},true);}window.editUserCard=function(id){var u=(st().users||[]).filter(function(x){return String(x.id)===String(id);})[0];if(!u)return;if($("userEditId"))$("userEditId").value=u.id;[["newFullName","fullName"],["newUsername","username"],["newPassword","password"],["newPhone","phone"],["newRole","role"],["newSimControl","simControl"]].forEach(function(p){if($(p[0]))$(p[0]).value=u[p[1]]||"";});applyPermissionsToChecklist(u.permissions||{});syncPermissionMasters();var b=$("btnSaveUserInfo");if(b){b.innerHTML="<span>💾 ذخیره اطلاعات کاربر</span>";b.style.display="inline-flex";b.scrollIntoView({behavior:"smooth",block:"center"});}};syncPermissionMasters();}
 
 
@@ -33620,6 +33697,7 @@ button.v19-gps svg{display:block}
     } catch (e) {}
   }
   function bindManagerLayoutIntent(){if(document.documentElement.dataset.managerLayoutIntent)return;document.documentElement.dataset.managerLayoutIntent="1";function arm(e){if(e.target&&e.target.closest&&e.target.closest("#columnsDesignerHost,#manualDesignCanvas")){window.__CRM_MANAGER_LAYOUT_INTENT=true;clearTimeout(window.__CRM_MANAGER_LAYOUT_TIMER);window.__CRM_MANAGER_LAYOUT_TIMER=setTimeout(function(){window.__CRM_MANAGER_LAYOUT_INTENT=false;},800);}}document.addEventListener("pointerdown",arm,true);document.addEventListener("change",arm,true);document.addEventListener("click",arm,true);}
+  function wrapAllLegacyLayouts(){["applyAllFormLayouts","applyCustomFieldOrderInForm"].forEach(function(name){var old=window[name];if(typeof old!=="function"||old._v28guard)return;var w=function(){if(!window.__CRM_MANAGER_LAYOUT_INTENT){setTimeout(restoreDomFieldOrder,0);return;}return old.apply(this,arguments);};w._v28guard=true;window[name]=w;});}
   function wrapFormLayoutMirror() {
     var of = window.applyFullFormLayout;
     if (typeof of !== "function" || of._v20mirror) return;
@@ -33729,13 +33807,14 @@ button.v19-gps svg{display:block}
   }
 
   /* ---------- ۱۴) نسخه دقیق در هدر مدیر ---------- */
+  function v20CurrentUser(){var S=st(),id=sessionStorage.getItem("crmUserId")||"",username=sessionStorage.getItem("crmUsername")||"",name=sessionStorage.getItem("crmUserName")||"";return S&&((S.users||[]).filter(function(u){return(id&&String(u.id)===String(id))||(username&&u.username===username)||(name&&u.fullName===name);})[0])||null;}
   function v20IsManager() {
-    var logged = sessionStorage.getItem("crmLoggedIn") === "1", user = sessionStorage.getItem("crmUsername") || "", role = sessionStorage.getItem("crmUserRole") || "";
-    return !logged || user === "admin" || /مدیر|سرپرست|admin/i.test(role);
+    var logged=sessionStorage.getItem("crmLoggedIn")==="1",u=v20CurrentUser(),username=(u&&u.username)||sessionStorage.getItem("crmUsername")||"",role=(u&&u.role)||sessionStorage.getItem("crmUserRole")||"";
+    return !logged||username==="admin"||/مدیر|admin/i.test(role);
   }
   function runtimeVersion(){
     var s=document.querySelector('script[src*="crm-features-v20.js"]'),src=s&&s.getAttribute('src')||"",m=src.match(/[?&]v=([^&]+)/);
-    return m?decodeURIComponent(m[1]):"11.27.0";
+    return m?decodeURIComponent(m[1]):"11.28.0";
   }
   function renderVersionBadge() {
     var b = $("v20VersionBadge"), actions = document.querySelector(".header-actions"); if (!actions) return;
@@ -33941,7 +34020,15 @@ button.v19-gps svg{display:block}
   function bindLiveAll(){var btn=$("btnFindLiveRep");if(btn&&!btn.dataset.v20all){btn.dataset.v20all="1";btn.addEventListener("click",function(e){var sel=$("liveRepSearchSelect");if(sel&&sel.value)return;e.preventDefault();e.stopImmediatePropagation();if(typeof window.renderLiveLocationTab==="function")window.renderLiveLocationTab();setTimeout(function(){enhanceLiveLocation();try{var pts=((st()&&st().reps)||[]).filter(function(r){return r.lat&&r.lng;}).map(function(r){return[r.lat,r.lng];});if(typeof mapLiveReps!=="undefined"&&mapLiveReps&&pts.length)mapLiveReps.fitBounds(pts,{padding:[30,30]});}catch(x){}},80);},true);}var body=$("tableLiveRepsBody");if(body&&window.MutationObserver&&!body.dataset.v20addr){body.dataset.v20addr="1";var t;new MutationObserver(function(){clearTimeout(t);t=setTimeout(enhanceLiveLocation,40);}).observe(body,{childList:true,subtree:true});}enhanceLiveLocation();}
 
   function migrateInvoicePermissionOnce(){var S=st();if(!S)return;S.settings=S.settings||{};if(S.settings.invoiceStatusPermissionV1127)return;(S.users||[]).forEach(function(u){u.permissions=u.permissions||{};u.permissions.dist_invoice_status_access=true;});var templates=S.settings.permissionLevelTemplates||{};Object.keys(templates).forEach(function(k){templates[k].dist_invoice_status_access=true;});S.settings.invoiceStatusPermissionV1127=true;try{saveState(false);}catch(e){}}
-  function applySnappVisibility(){migrateInvoicePermissionOnce();var manager=v20IsManager(),S=st(),name=sessionStorage.getItem("crmUserName")||"",u=S&&((S.users||[]).filter(function(x){return x.fullName===name||x.username===sessionStorage.getItem("crmUsername");})[0]),perms=(u&&u.permissions)||{};function toggle(id,allow){document.querySelectorAll('[data-target="'+id+'"],[data-side-target="'+id+'"]').forEach(function(b){b.style.display=allow?"":"none";});var pane=$(id);if(pane)pane.style.display=allow?"":"none";}toggle("tab-snapp-corporate",manager||perms.sys_snapp_access===true);toggle("tab-distributor-companies",manager||perms.dist_companies_access===true);toggle("tab-distributor-sales",manager||perms.dist_sales_access===true);toggle("tab-distributor-invoice-status",manager||perms.dist_invoice_status_access===true||(perms.dist_invoice_status_access==null&&perms.dist_sales_access!==false));toggle("tab-distributor-database",manager||perms.dist_database_access===true);}
+  function applySnappVisibility(){migrateInvoicePermissionOnce();var manager=v20IsManager(),u=v20CurrentUser(),perms=(u&&u.permissions)||{};function toggle(id,allow){document.querySelectorAll('[data-target="'+id+'"],[data-side-target="'+id+'"]').forEach(function(b){b.style.display=allow?"":"none";});var pane=$(id);if(pane)pane.style.display=allow?"":"none";}toggle("tab-snapp-corporate",manager||perms.sys_snapp_access!==false);toggle("tab-distributor-companies",manager||perms.dist_companies_access!==false);toggle("tab-distributor-sales",manager||perms.dist_sales_access!==false);toggle("tab-distributor-invoice-status",manager||perms.dist_invoice_status_access!==false);toggle("tab-distributor-database",manager||perms.dist_database_access!==false);}
+
+  /* ---------- ۲۱-ب) موتور نهایی و برگشت‌پذیر دسترسی همه تب‌ها و ریزامکانات ---------- */
+  var TAB_PERMISSION_MAP={"tab-dashboard":"dash_access","tab-pharmacies":"ph_access","tab-doctors":"doc_access","tab-orders":"ord_access","tab-activity-log":"activity_access","tab-overview-map":"overview_map_access","tab-live-location":"live_access","tab-snapp-corporate":"sys_snapp_access","tab-distributor-companies":"dist_companies_access","tab-distributor-sales":"dist_sales_access","tab-distributor-invoice-status":"dist_invoice_status_access","tab-distributor-database":"dist_database_access","tab-search-info":"search_access","tab-rep-routes":"fld_track","tab-my-visit":"fld_visit","tab-rep-homes":"fld_home_loc","tab-leaves":"hr_leave_req","tab-notifications":"notify_access","tab-monthly-reports":"rep_monthly","tab-sales-targets":"sys_targets","tab-custom-fields":"sys_additions","tab-columns-products":"sys_cols","tab-manual-design":"sys_manual_design","tab-users-permissions":"sys_users","tab-messengers":"sys_msg","tab-backup":"sys_backup","tab-install-app":"sys_install","tab-troubleshooting":"sys_diag"};
+  var FEATURE_PERMISSION_MAP={ph_create:["#cardPhForm"],ph_list:["#cardPhList"],ph_excel:["#btnExportPharmaciesCSV"],ph_delete:["#tablePharmaciesBody .btn-danger"],doc_create:["#cardDocForm"],doc_list:["#cardDocList"],doc_excel:["#btnExportDoctorsCSV"],doc_delete:["#tableDoctorsBody .btn-danger"],ord_create:["#cardOrdForm"],ord_list:["#cardOrdList"],ord_excel:["#btnExportOrdersCSV"],ord_delete:["#tableOrdersBody .btn-danger"],sys_snapp_import:["#btnImportSnappTrips"],sys_snapp_topup:["#btnImportSnappTopups"],sys_snapp_export:["#btnExportSnappView","#btnExportSnappTopups"],dist_company_credentials:["#distributorCompanyGrid .dist-save"],dist_open_panel:["#distributorCompanyGrid .dist-open","#distributorActionGrid .dist-login"],dist_import_pharmacies:["#distributorActionGrid .dist-ph-file"],dist_import_inventory:["#distributorActionGrid .dist-inv-file"],dist_multisheet_excel:["#btnExportDistributorReport"],dist_invoice_status_filters:["#invoiceStatusFilterGrid"],dist_invoice_status_details:["#invoiceStatusBody .inv-status-view"],dist_view_database:["#distributorDatabaseGrid .db-ph","#distributorDatabaseGrid .db-inv"],dist_database_files:["#distributorDatabaseGrid .db-files"],search_excel:["#btnExportSearchInfoCSV"],hr_leave_excel:["#btnExportLeavesCSV"],rep_excel:["#btnExportMonthlyCSV"],usr_edit_save:["#formCreateUser","#userCardsContainer"],usr_permission_templates:["#v20PresetBar"],usr_tab_permission_checkboxes:["#permissionGroupsContainer"]};
+  function permissionAllowed(perms,key,manager){return manager||!key||perms[key]!==false;}
+  function setPermissionNodeVisible(node,allow){if(!node)return;var target=(node.matches&&node.matches("input[type=file]"))?node.closest("label"):node;if(!target)return;if(allow){if(target.dataset.permissionHidden==="1"){target.style.removeProperty("display");delete target.dataset.permissionHidden;}}else{target.style.setProperty("display","none","important");target.dataset.permissionHidden="1";}}
+  function applyCentralPermissions(){var logged=sessionStorage.getItem("crmLoggedIn")==="1",u=v20CurrentUser(),manager=v20IsManager(),perms=(u&&u.permissions)||{};if(!logged)manager=true;Object.keys(TAB_PERMISSION_MAP).forEach(function(id){var allow=permissionAllowed(perms,TAB_PERMISSION_MAP[id],manager);document.querySelectorAll('[data-target="'+id+'"],[data-side-target="'+id+'"]').forEach(function(n){setPermissionNodeVisible(n,allow);});var pane=$(id);if(pane){if(allow){if(pane.dataset.permissionHidden==="1"){pane.style.removeProperty("display");delete pane.dataset.permissionHidden;}}else{pane.style.setProperty("display","none","important");pane.dataset.permissionHidden="1";}}});Object.keys(FEATURE_PERMISSION_MAP).forEach(function(key){var allow=permissionAllowed(perms,key,manager);FEATURE_PERMISSION_MAP[key].forEach(function(sel){document.querySelectorAll(sel).forEach(function(n){setPermissionNodeVisible(n,allow);});});});var active=document.querySelector(".tab-pane.active");if(active&&!permissionAllowed(perms,TAB_PERMISSION_MAP[active.id],manager)&&active.id!=="tab-dashboard"){try{window.switchTab("tab-dashboard");}catch(e){}}}
+  function bindCentralPermissions(){if(document.body.dataset.centralPermissions)return;document.body.dataset.centralPermissions="1";window.applyUserRolePermissions=applyCentralPermissions;window.applyFieldPermissions=applyCentralPermissions;var t;new MutationObserver(function(records){var relevant=records.some(function(r){return(r.addedNodes||[]).length;});if(relevant){clearTimeout(t);t=setTimeout(applyCentralPermissions,80);}}).observe(document.body,{childList:true,subtree:true});window.addEventListener("focus",applyCentralPermissions);setTimeout(applyCentralPermissions,0);}
 
   /* ---------- ۲۲) تارگت کامل: تعداد، ریال پخش/داروخانه و جمع نمایندگان ---------- */
   function targetMoney(t){var p=((st().products||[]).filter(function(x){return x.name===t.productName||x.id===t.productId;})[0])||{},n=Number(t.targetCount||0),dp=Number(p.distributorPrice||p.distPrice||p.price||0),hp=Number(p.pharmacyPrice||p.price||0);return{count:n,distPrice:dp,phPrice:hp,distTotal:n*dp,phTotal:n*hp};}
@@ -34131,15 +34218,16 @@ button.v19-gps svg{display:block}
   function bindAddressFieldGuard(){["pharmacyAddress","doctorAddress","orderAddress"].forEach(function(id){var el=$(id);if(!el||el.dataset.addressGuard)return;el.dataset.addressGuard="1";var memory=String(el.value||"");el.addEventListener("input",function(){if(String(el.value||"").trim())memory=el.value;});el.addEventListener("focus",function(){memory=String(el.value||"")||memory;setTimeout(function(){if(!String(el.value||"").trim()&&memory)el.value=memory;},0);});el.addEventListener("click",function(){var before=String(el.value||"")||memory;setTimeout(function(){if(!String(el.value||"").trim()&&before)el.value=before;},0);});});}
 
   /* ---------- ۳۲) قفل مستقل ترتیب واقعی فرم‌ها بین Refresh ---------- */
-  var DOM_ORDER_KEY="CRM_DOM_FIELD_ORDER_LOCK_V1",MANAGER_ORDER_KEY="CRM_MANAGER_GRID_ORDER_V2",domOrderBusy=false,LEGACY_LOCK_FORMS={formPharmacy:1,formDoctor:1,formOrder:1,formProduct:1};
+  var MANAGER_ORDER_KEY="CRM_MANAGER_GRID_ORDER_V2",domOrderBusy=false;
   function mainFormGrid(form){if(!form)return null;for(var i=0;i<form.children.length;i++)if(form.children[i].classList&&form.children[i].classList.contains("form-grid"))return form.children[i];return form.querySelector(".form-grid");}
   function groupAnchor(g){var e=g&&g.querySelector("input[id],select[id],textarea[id],button[id]");return e?e.id:"";}
   function lockableGrids(){var out=[];Array.prototype.forEach.call(document.querySelectorAll(".tab-pane .form-grid"),function(grid){var groups=Array.prototype.filter.call(grid.children,function(g){return g.classList&&g.classList.contains("form-group")&&groupAnchor(g);});if(groups.length<2)return;if(out.indexOf(grid)<0)out.push(grid);});return out;}
   function gridLockKey(grid,index){var form=grid.closest("form[id]"),pane=grid.closest(".tab-pane");return grid.id?("grid:"+grid.id):(form?("form:"+form.id):("pane:"+((pane&&pane.id)||"unknown")+":"+index));}
   // فقط اقدام صریح مدیر snapshot می‌سازد؛ شروع نسخه/رفرش هرگز ترتیب تازه‌ای را خودکار ضبط نمی‌کند.
   function captureDomFieldOrder(){if(domOrderBusy)return;var out={};lockableGrids().forEach(function(grid,i){out[gridLockKey(grid,i)]=Array.prototype.filter.call(grid.children,function(g){return g.classList&&g.classList.contains("form-group");}).map(groupAnchor).filter(Boolean);});try{localStorage.setItem(MANAGER_ORDER_KEY,JSON.stringify(out));}catch(e){}}
-  function restoreDomFieldOrder(){var explicit={},legacy={};try{explicit=JSON.parse(localStorage.getItem(MANAGER_ORDER_KEY)||"{}");legacy=JSON.parse(localStorage.getItem(DOM_ORDER_KEY)||"{}");}catch(e){}domOrderBusy=true;lockableGrids().forEach(function(grid,i){var form=grid.closest("form[id]"),seq=explicit[gridLockKey(grid,i)];if((!seq||!seq.length)&&form&&LEGACY_LOCK_FORMS[form.id])seq=legacy[form.id];if(!Array.isArray(seq)||!seq.length)return;var groups={};Array.prototype.forEach.call(grid.children,function(g){var id=groupAnchor(g);if(id)groups[id]=g;});seq.forEach(function(id){if(groups[id])grid.appendChild(groups[id]);});});domOrderBusy=false;}
-  function bindDomOrderLock(){document.addEventListener("change",function(e){if(e.target&&e.target.closest&&e.target.closest("#columnsDesignerHost,#manualDesignCanvas,.col-order-input,.col-listorder-input"))setTimeout(captureDomFieldOrder,250);},true);document.addEventListener("click",function(e){if(e.target&&e.target.closest&&e.target.closest("#btnManSave"))setTimeout(captureDomFieldOrder,350);},true);setTimeout(restoreDomFieldOrder,250);setTimeout(restoreDomFieldOrder,1600);setTimeout(restoreDomFieldOrder,2800);}
+  function restoreDomFieldOrder(){var explicit={};try{explicit=JSON.parse(localStorage.getItem(MANAGER_ORDER_KEY)||"{}");}catch(e){}domOrderBusy=true;lockableGrids().forEach(function(grid,i){var seq=explicit[gridLockKey(grid,i)];if(!Array.isArray(seq)||!seq.length)return;var groups={};Array.prototype.forEach.call(grid.children,function(g){var id=groupAnchor(g);if(id)groups[id]=g;});seq.forEach(function(id){if(groups[id])grid.appendChild(groups[id]);});});domOrderBusy=false;}
+  function restoreConfiguredFieldVisibility(root){var panes=root&&root.classList&&root.classList.contains("tab-pane")?[root]:Array.prototype.slice.call(document.querySelectorAll(".tab-pane"));panes.forEach(function(pane){var fields=typeof window.getUnifiedFieldList==="function"?window.getUnifiedFieldList(pane.id):[];(fields||[]).forEach(function(f){if(!f||!f.id)return;var el=$(f.id)||pane.querySelector('[data-custom-field-id="'+f.id+'"]'),g=el&&el.closest&&el.closest(".form-group");if(!g)return;var show=!f.deleted&&f.showInForm!==false;if(show){g.classList.remove("col-hide-form");g.removeAttribute("data-col-hidden");if(g.dataset.permissionHidden!=="1")g.style.removeProperty("display");}else{g.style.setProperty("display","none","important");g.setAttribute("data-col-hidden","1");}});});}
+  function bindDomOrderLock(){document.addEventListener("change",function(e){if(e.target&&e.target.closest&&e.target.closest("#columnsDesignerHost,#manualDesignCanvas,.col-order-input,.col-listorder-input"))setTimeout(captureDomFieldOrder,250);},true);document.addEventListener("click",function(e){if(e.target&&e.target.closest&&e.target.closest("#btnManSave"))setTimeout(captureDomFieldOrder,350);},true);setTimeout(function(){restoreConfiguredFieldVisibility(document);restoreDomFieldOrder();},250);setTimeout(function(){restoreConfiguredFieldVisibility(document);restoreDomFieldOrder();},1600);setTimeout(function(){restoreConfiguredFieldVisibility(document);restoreDomFieldOrder();},2800);}
 
   /* ---------- ۳۳) ترتیب اتمی فرم و لیست بدون ناپدیدشدن فیلد ---------- */
   function orderEntityKey(tabId){return tabId==="tab-pharmacies"?"pharmacy":tabId==="tab-doctors"?"doctor":tabId==="tab-orders"?"order":tabId==="tab-columns-products"?"products":String(tabId||"").replace(/^tab-/,"");}
@@ -34156,6 +34244,7 @@ button.v19-gps svg{display:block}
     v20RefreshFab();
     renderVersionBadge();
     applySnappVisibility();
+    applyCentralPermissions();
     v20ApplyGreyChains();
     if (id === "tab-orders") { v20ApplyOrderLock(); setTimeout(v20PlaceMatchNearInput, 60); }
     if (id === "tab-custom-fields") setTimeout(window.v20RenderComboManager, 60);
@@ -34171,7 +34260,7 @@ button.v19-gps svg{display:block}
     if (id === "tab-my-visit") setTimeout(refreshVisitCards, 60);
     if (id === "tab-rep-routes") setTimeout(renderV20Routes, 80);
     if (id === "tab-sales-targets") setTimeout(renderTargetsV20, 120);
-    setTimeout(function(){try{applyGlobalFieldOptions($(id)||document);restoreDomFieldOrder();}catch(e){}},180);
+    setTimeout(function(){try{applyGlobalFieldOptions($(id)||document);restoreConfiguredFieldVisibility($(id));restoreDomFieldOrder();applyCentralPermissions();}catch(e){}},180);
   }
   function wrapSwitchTab() {
     var os = window.switchTab;
@@ -34242,7 +34331,7 @@ button.v19-gps svg{display:block}
     try { wrapListRenderers(); bindListOrderObserver(); } catch (e) {}
     try { bindInstantAddSave(); } catch (e) {}
     try { bindMirror(); } catch (e) {}
-    try { bindManagerLayoutIntent(); wrapFormLayoutMirror(); } catch (e) {}
+    try { bindManagerLayoutIntent(); wrapFormLayoutMirror(); wrapAllLegacyLayouts(); } catch (e) {}
     try { bindLive(); } catch (e) {}
     try { bindChpassFab(); } catch (e) {}
     try { bindOrderLocalMatch(); } catch (e) {}
@@ -34253,7 +34342,7 @@ button.v19-gps svg{display:block}
     try { renderShareManager(); } catch (e) {}
     try { bindV20Visit(); } catch (e) {}
     try { bindLiveAll(); } catch (e) {}
-    try { setupSnappCorporate(); applySnappVisibility(); } catch (e) {}
+    try { setupSnappCorporate(); applySnappVisibility(); bindCentralPermissions(); } catch (e) {}
     try { renderDistributorCompanies(); setupDistributorSales(); renderDistributorDatabase(); } catch (e) {}
     try { bindEmailBackup(); } catch (e) {}
     try { bindTargetsV20(); } catch (e) {}
@@ -34279,10 +34368,10 @@ button.v19-gps svg{display:block}
       } catch (e) {}
     }, 250);
   }
-  function reliableFeatureBoot(){try{setupSnappCorporate();applySnappVisibility();renderDistributorCompanies();setupDistributorSales();renderDistributorDatabase();if($("tab-distributor-invoice-status")&&$("tab-distributor-invoice-status").classList.contains("active"))setupInvoiceStatus();bindProductCrudV20();bindProductLabelFix();bindAddressFieldGuard();bindUserCrudV27();wrapListRenderers();bindListOrderObserver();restoreDomFieldOrder();}catch(e){try{console.error("reliable feature boot",e);}catch(x){}}}
+  function reliableFeatureBoot(){try{setupSnappCorporate();applySnappVisibility();applyCentralPermissions();renderDistributorCompanies();setupDistributorSales();renderDistributorDatabase();if($("tab-distributor-invoice-status")&&$("tab-distributor-invoice-status").classList.contains("active"))setupInvoiceStatus();bindProductCrudV20();bindProductLabelFix();bindAddressFieldGuard();bindUserCrudV27();wrapListRenderers();bindListOrderObserver();restoreDomFieldOrder();}catch(e){try{console.error("reliable feature boot",e);}catch(x){}}}
   window.v20SetupSnappCorporate=reliableFeatureBoot;
   // اتصال هم‌زمان دکمه‌های فایل، مستقل از زمان loadState؛ عملیات واقعی هنگام انتخاب فایل state را می‌خواند.
-  try{bindManagerLayoutIntent();wrapFormLayoutMirror();bindSnappImportButtons();bindProductCrudV20();bindSafeOrderControls();}catch(e){}
+  try{bindManagerLayoutIntent();wrapFormLayoutMirror();wrapAllLegacyLayouts();bindSnappImportButtons();bindProductCrudV20();bindSafeOrderControls();}catch(e){}
   document.addEventListener("click",function(e){var n=e.target&&e.target.closest&&e.target.closest('[data-target],[data-side-target]');if(!n)return;var id=n.getAttribute('data-target')||n.getAttribute('data-side-target');if(id==='tab-snapp-corporate'||id==='tab-distributor-sales'||id==='tab-distributor-invoice-status'||id==='tab-distributor-database'||id==='tab-columns-products'||id==='tab-users-permissions')setTimeout(reliableFeatureBoot,0);},true);
   window.addEventListener("load",function(){setTimeout(init,60);});
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { setTimeout(init,60); });
@@ -34291,7 +34380,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-features-v9.js (70562 بایت)
+فایل: public/crm-features-v9.js (70837 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ===========================================================================
@@ -34642,11 +34731,11 @@ button.v19-gps svg{display:block}
   function getCurrentPositionSafe() {
     return new Promise(function (resolve) {
       if (!navigator.geolocation) { resolve({ error: true, message: "GPS این دستگاه در دسترس نیست." }); return; }
-      var best=null,done=false,watch=null,samples=0;
+      var best=null,done=false,watch=null;
       function finish(result){if(done)return;done=true;if(watch!=null)try{navigator.geolocation.clearWatch(watch);}catch(e){}clearTimeout(timer);resolve(result);}
-      // قانون ثابت GPS: تا ۳۰ ثانیه بهترین نقطه را نگه می‌داریم و با اولین نقطه کم‌دقت متوقف نمی‌شویم.
-      var timer=setTimeout(function(){if(best)finish(best);else finish({error:true,message:"موقعیت دقیق دریافت نشد؛ GPS را روشن و دوباره تلاش کنید."});},30000);
-      watch=navigator.geolocation.watchPosition(function(pos){samples++;var cur={lat:pos.coords.latitude,lng:pos.coords.longitude,accuracy:Number(pos.coords.accuracy)||9999,fallback:false};if(!best||cur.accuracy<best.accuracy)best=cur;if(samples>=2&&cur.accuracy<=10)finish(cur);},function(err){if(err&&err.code===1)finish({error:true,message:"اجازه GPS داده نشده است."});},{enableHighAccuracy:true,timeout:30000,maximumAge:0});
+      // هدف دقت ۱۰ متر ثابت است؛ reverse geocode هم‌زمان با دریافت نقطه اجرا می‌شود تا زمان انتظار جمع نشود.
+      var timer=setTimeout(function(){if(best)finish(best);else finish({error:true,message:"موقعیت دقیق دریافت نشد؛ GPS را روشن و دوباره تلاش کنید."});},15000);
+      watch=navigator.geolocation.watchPosition(function(pos){var cur={lat:pos.coords.latitude,lng:pos.coords.longitude,accuracy:Number(pos.coords.accuracy)||9999,fallback:false};cur.addressPromise=geoReverse(cur.lat,cur.lng);if(!best||cur.accuracy<best.accuracy)best=cur;if(cur.accuracy<=10)finish(cur);},function(err){if(err&&err.code===1)finish({error:true,message:"اجازه GPS داده نشده است."});},{enableHighAccuracy:true,timeout:15000,maximumAge:0});
     });
   }
 
@@ -34664,7 +34753,7 @@ button.v19-gps svg{display:block}
         try {
           const pos = await getCurrentPositionSafe();
           if (pos.error) { safeAlert(pos.message || "موقعیت دقیق دریافت نشد."); return; }
-          const addr = await geoReverse(pos.lat, pos.lng);
+          const addr = await (pos.addressPromise || geoReverse(pos.lat, pos.lng));
           applyPharmacyLocation(pos.lat, pos.lng, addr, val("pharmacyName") || "موقعیت فعلی داروخانه");
           safeAlert(pos.fallback
             ? ("موقعیت تستی تنظیم شد و آدرس در فیلد لوکیشن نشست:\n" + addr)
@@ -34694,7 +34783,7 @@ button.v19-gps svg{display:block}
         try {
           const pos = await getCurrentPositionSafe();
           if (pos.error) { safeAlert(pos.message || "موقعیت دقیق دریافت نشد."); return; }
-          const addr = await geoReverse(pos.lat, pos.lng);
+          const addr = await (pos.addressPromise || geoReverse(pos.lat, pos.lng));
           applyDoctorLocation(pos.lat, pos.lng, addr, val("doctorName") || "موقعیت فعلی مطب");
           safeAlert("موقعیت فعلی روی نقشه آمد و آدرس در فیلد لوکیشن مطب نوشته شد:\n" + addr);
         } finally { btnDocCur.disabled = false; }
@@ -35428,7 +35517,7 @@ button.v19-gps svg{display:block}
       btn.addEventListener("click", async function () {
         const pos = await getCurrentPositionSafe();
         if (pos.error) { safeAlert(pos.message || "موقعیت دقیق دریافت نشد."); return; }
-        const addr = await geoReverse(pos.lat, pos.lng);
+        const addr = await (pos.addressPromise || geoReverse(pos.lat, pos.lng));
         setVal("repHomeAddressInput", addr);
         const name = val("repHomeSelect") || currentRepName();
         if (!state.repHomes) state.repHomes = [];
@@ -35576,6 +35665,9 @@ button.v19-gps svg{display:block}
     } catch (e) {}
     sessionStorage.setItem("crmLoggedIn", "1");
     sessionStorage.setItem("crmUserId", user.id);
+    sessionStorage.setItem("crmUserName", user.fullName || "");
+    sessionStorage.setItem("crmUsername", user.username || "");
+    sessionStorage.setItem("crmUserRole", user.role || "");
     const gate = $("loginGateOverlay");
     if (gate) gate.classList.add("hidden");
     document.body.classList.remove("is-gated");
@@ -36492,7 +36584,7 @@ button.v19-gps svg{display:block}
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.27.0" />
+  <link rel="stylesheet" href="style.css?v=11.28.0" />
 </head>
 <body>
 
@@ -38658,22 +38750,22 @@ button.v19-gps svg{display:block}
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.27.0"></script>
-  <script src="crm-app.js?v=11.27.0"></script>
-  <script src="crm-features-v9.js?v=11.27.0"></script>
-  <script src="iran-facilities.js?v=11.27.0" defer></script>
-  <script src="crm-features-v10.js?v=11.27.0"></script>
-  <script src="crm-features-v11.js?v=11.27.0"></script>
-  <script src="crm-features-v12.js?v=11.27.0"></script>
-  <script src="crm-features-v13.js?v=11.27.0"></script>
-  <script src="crm-jalali.js?v=11.27.0"></script>
-  <script src="crm-features-v14.js?v=11.27.0"></script>
-  <script src="crm-features-v15.js?v=11.27.0"></script>
-  <script src="crm-features-v16.js?v=11.27.0"></script>
-  <script src="crm-features-v17.js?v=11.27.0"></script>
-  <script src="crm-features-v18.js?v=11.27.0"></script>
-  <script src="crm-features-v19.js?v=11.27.0"></script>
-  <script src="crm-features-v20.js?v=11.27.0"></script>
+  <script src="crm-data.js?v=11.28.0"></script>
+  <script src="crm-app.js?v=11.28.0"></script>
+  <script src="crm-features-v9.js?v=11.28.0"></script>
+  <script src="iran-facilities.js?v=11.28.0" defer></script>
+  <script src="crm-features-v10.js?v=11.28.0"></script>
+  <script src="crm-features-v11.js?v=11.28.0"></script>
+  <script src="crm-features-v12.js?v=11.28.0"></script>
+  <script src="crm-features-v13.js?v=11.28.0"></script>
+  <script src="crm-jalali.js?v=11.28.0"></script>
+  <script src="crm-features-v14.js?v=11.28.0"></script>
+  <script src="crm-features-v15.js?v=11.28.0"></script>
+  <script src="crm-features-v16.js?v=11.28.0"></script>
+  <script src="crm-features-v17.js?v=11.28.0"></script>
+  <script src="crm-features-v18.js?v=11.28.0"></script>
+  <script src="crm-features-v19.js?v=11.28.0"></script>
+  <script src="crm-features-v20.js?v=11.28.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
@@ -41699,7 +41791,7 @@ self.addEventListener("fetch", (event) => {
 فایل: public/sw.js (1249 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
-const CACHE = "ttt-v11.27.0";
+const CACHE = "ttt-v11.28.0";
 const PRECACHE = ["/", "/login", "/favicon.png", "/logo.png", "/vendor/leaflet.js", "/vendor/leaflet.css"];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(PRECACHE).catch(function () {}); }).then(function () { return self.skipWaiting(); }));
@@ -67167,7 +67259,7 @@ test('state API round-trip preserves unrelated sentinel data', async () => {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/state-preservation.test.mjs (19568 بایت)
+فایل: tests/state-preservation.test.mjs (19661 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 import test from 'node:test';
@@ -67335,7 +67427,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /seen\[rowSignature\(r\)\]/);
   assert.match(v20Source, /d\.pharmacyRows=d\.pharmacyRows\.concat\(fresh\)/);
   assert.match(v20Source, /function bindSnappImportButtons/);
-  assert.match(v20Source, /try\{bindManagerLayoutIntent\(\);wrapFormLayoutMirror\(\);bindSnappImportButtons\(\);bindProductCrudV20\(\);bindSafeOrderControls\(\);\}/, 'critical buttons and startup layout guard must bind synchronously');
+  assert.match(v20Source, /try\{bindManagerLayoutIntent\(\);wrapFormLayoutMirror\(\);wrapAllLegacyLayouts\(\);bindSnappImportButtons\(\);bindProductCrudV20\(\);bindSafeOrderControls\(\);\}/, 'critical buttons and all startup layout guards must bind synchronously');
   assert.match(v20Source, /contenteditable='true'/);
   assert.match(v20Source, /arc-save/);
   assert.match(v20Source, /raw-save/);
@@ -67354,7 +67446,8 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.doesNotMatch(v9Source, /کد پستی:/);
   assert.doesNotMatch(v9Source, /String\(data\.display_name\)\.length > compact\.length/);
   assert.match(v20Source, /function bindDomOrderLock/);
-  assert.match(v20Source, /CRM_DOM_FIELD_ORDER_LOCK_V1/);
+  assert.match(v20Source, /CRM_MANAGER_GRID_ORDER_V2/);
+  assert.doesNotMatch(v20Source, /CRM_DOM_FIELD_ORDER_LOCK_V1/);
   assert.match(v20Source, /getUnifiedFieldList\(paneId\)/);
   assert.match(v20Source, /tablePharmaciesHeader/);
   assert.match(v20Source, /function bindListOrderObserver/);
@@ -67384,7 +67477,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/version-11.24-regressions.test.mjs (16459 بایت)
+فایل: tests/version-11.24-regressions.test.mjs (18918 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 import test from 'node:test';
@@ -67464,7 +67557,7 @@ test('invoice-status tab, filters, columns, details and permissions are complete
   assert.match(v20,/function invoiceStatusDetailRows/);
   assert.match(v20,/invoiceStatusBaseCache\|\|\(invoiceStatusBaseCache=buildInvoiceStatusMatches\(\)\)/);
   assert.match(v20,/تعداد کالای فاکتور شده/);
-  assert.match(v20,/toggle\("tab-distributor-invoice-status",manager\|\|perms\.dist_invoice_status_access===true\|\|\(perms\.dist_invoice_status_access==null&&perms\.dist_sales_access!==false\)\)/);
+  assert.match(v20,/toggle\("tab-distributor-invoice-status",manager\|\|perms\.dist_invoice_status_access!==false\)/);
 });
 
 test('invoice-status fuzzy name, location and ±3-day matching work on representative fixtures', () => {
@@ -67508,7 +67601,9 @@ test('same-label dropdown options use one global source for add, rename, delete 
 test('layout lock restores only explicit manager snapshots and startup cannot capture or destructively rearrange', () => {
   assert.match(v20,/document\.querySelectorAll\("\.tab-pane \.form-grid"\)/);
   assert.match(v20,/CRM_MANAGER_GRID_ORDER_V2/);
+  assert.doesNotMatch(v20,/CRM_DOM_FIELD_ORDER_LOCK_V1/);
   assert.match(v20,/فقط اقدام صریح مدیر snapshot می‌سازد/);
+  assert.match(v20,/function wrapAllLegacyLayouts/);
   assert.doesNotMatch(v20,/addEventListener\("beforeunload",captureDomFieldOrder/);
   const bind=v20.slice(v20.indexOf('function bindDomOrderLock'),v20.indexOf('function orderEntityKey'));
   assert.doesNotMatch(bind,/MutationObserver/);
@@ -67518,9 +67613,11 @@ test('layout lock restores only explicit manager snapshots and startup cannot ca
   assert.match(wrapper,/if\(!window\.__CRM_MANAGER_LAYOUT_INTENT\)/);
 });
 
-test('invoice tab visibility is reversible and old users inherit distributor access', () => {
+test('invoice tab visibility is reversible and current user resolves by persistent session id', () => {
   assert.match(v20,/if\(pane\)pane\.style\.display=allow\?"":"none"/);
-  assert.match(v20,/perms\.dist_invoice_status_access==null&&perms\.dist_sales_access!==false/);
+  assert.match(v20,/function v20CurrentUser\(\)/);
+  assert.match(v20,/crmUserId/);
+  assert.match(v20,/perms\.dist_invoice_status_access!==false/);
   assert.match(v11,/hideTab\("tab-distributor-invoice-status", "dist_invoice_status_access"\)/);
   assert.match(v20,/function migrateInvoicePermissionOnce/);
   assert.match(v20,/u\.permissions\.dist_invoice_status_access=true/);
@@ -67541,7 +67638,22 @@ test('final user editor always has save, exact roles and stable one-dropdown pre
   assert.match(v20,/permissionLevelTemplates\[pid\]=checklistPermissions\(\)/);
   assert.match(v20,/#tab-users-permissions \.permission-tag-chk,#tab-users-permissions \.permission-tag-chk:hover\{transition:none!important;transform:none!important/);
   const state={users:[{id:'u1',fullName:'قدیم',username:'old',password:'1',permissions:{}}]},els={userEditId:{value:'u1'},newFullName:{value:'جدید'},newUsername:{value:'new'},newPassword:{value:'2'},newPhone:{value:'0912'},newRole:{value:'سرپرست'},newSimControl:{value:'بدون بررسی'},formCreateUser:{reset(){}},btnSaveUserInfo:{innerHTML:'',style:{}}};
-  const ctx={state,result:null,st:()=>state,$:id=>els[id]||null,checklistPermissions:()=>({ph_access:true}),save:()=>{},syncUsersAuthV27:()=>{},window:{renderUserCardsList:()=>{},updateNavBadges:()=>{}},v20Toast:()=>{},alert:()=>{}};vm.createContext(ctx);vm.runInContext(`${extract('saveUserV27')};saveUserV27();result=state.users`,ctx);assert.equal(ctx.result.length,1);assert.equal(ctx.result[0].fullName,'جدید');assert.equal(ctx.result[0].role,'سرپرست');assert.equal(ctx.result[0].permissions.ph_access,true);
+  const ctx={state,result:null,st:()=>state,$:id=>els[id]||null,checklistPermissions:()=>({ph_access:true}),save:()=>{},syncUsersAuthV27:()=>{},applyCentralPermissions:()=>{},window:{renderUserCardsList:()=>{},updateNavBadges:()=>{}},v20Toast:()=>{},alert:()=>{}};vm.createContext(ctx);vm.runInContext(`${extract('saveUserV27')};saveUserV27();result=state.users`,ctx);assert.equal(ctx.result.length,1);assert.equal(ctx.result[0].fullName,'جدید');assert.equal(ctx.result[0].role,'سرپرست');assert.equal(ctx.result[0].permissions.ph_access,true);
+});
+
+test('central permission engine covers every tab, sub-controls and dynamically rendered nodes', () => {
+  for (const id of ['tab-dashboard','tab-pharmacies','tab-doctors','tab-orders','tab-activity-log','tab-overview-map','tab-live-location','tab-snapp-corporate','tab-distributor-companies','tab-distributor-sales','tab-distributor-invoice-status','tab-distributor-database','tab-search-info','tab-rep-routes','tab-my-visit','tab-rep-homes','tab-leaves','tab-notifications','tab-monthly-reports','tab-sales-targets','tab-custom-fields','tab-columns-products','tab-manual-design','tab-users-permissions','tab-messengers','tab-backup','tab-install-app','tab-troubleshooting']) assert.ok(v20.includes(`"${id}"`),`permission map missing ${id}`);
+  assert.match(v20,/var FEATURE_PERMISSION_MAP=/);assert.match(v20,/function applyCentralPermissions/);assert.match(v20,/function bindCentralPermissions/);
+  assert.match(v20,/window\.applyUserRolePermissions=applyCentralPermissions/);
+  assert.match(v20,/new MutationObserver\(function\(records\)[\s\S]*applyCentralPermissions/);
+  assert.match(v9,/sessionStorage\.setItem\("crmUserName"/);assert.match(v9,/sessionStorage\.setItem\("crmUsername"/);assert.match(v9,/sessionStorage\.setItem\("crmUserRole"/);
+  const store={crmUserId:'u2',crmLoggedIn:'1'},ctx={result:null,sessionStorage:{getItem:k=>store[k]||''},st:()=>({users:[{id:'u1',role:'مدیر'},{id:'u2',role:'نماینده علمی',permissions:{ord_access:false}}]})};vm.createContext(ctx);vm.runInContext(`${extract('v20CurrentUser')};${extract('permissionAllowed')};result={user:v20CurrentUser(),deny:permissionAllowed({ord_access:false},'ord_access',false),manager:permissionAllowed({ord_access:false},'ord_access',true)}`,ctx);assert.equal(ctx.result.user.id,'u2');assert.equal(ctx.result.deny,false);assert.equal(ctx.result.manager,true);
+});
+
+test('dropdowns and information overlays always rise above following cards', () => {
+  assert.match(v20,/\.tab-pane \.form-group:focus-within\{position:relative!important;z-index:10020!important\}/);
+  assert.match(v20,/\.crm-combo-list,\.ph-pick-overlay,\.v20-local-match\{z-index:10040!important/);
+  assert.match(v20,/\.tab-pane \.form-grid,\.tab-pane \.form-group,\.tab-pane \.card\{overflow:visible!important\}/);
 });
 
 test('gray dependency styling leaves labels unchanged and grays field plus checkbox only', () => {
@@ -67551,7 +67663,7 @@ test('gray dependency styling leaves labels unchanged and grays field plus check
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.27\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.28\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
@@ -67561,9 +67673,10 @@ test('PWA activation is automatic and diagnostics never request manual refresh',
 });
 
 test('GPS quality rule remains stable and full address parts stay Iran-first without postcode', () => {
-  assert.match(v9, /samples>=2&&cur\.accuracy<=10/);
-  assert.match(v9, /},30000\)/);
-  assert.match(v9, /enableHighAccuracy:true,timeout:30000,maximumAge:0/);
+  assert.match(v9, /if\(cur\.accuracy<=10\)finish\(cur\)/);
+  assert.match(v9, /addressPromise=geoReverse/);
+  assert.match(v9, /},15000\)/);
+  assert.match(v9, /enableHighAccuracy:true,timeout:15000,maximumAge:0/);
   assert.match(v9, /addr\.country \|\| \"ایران\"/);
   assert.match(v9, /addr\.building \|\| addr\.amenity \|\| addr\.shop/);
   assert.doesNotMatch(v9, /addr\.postcode/);
@@ -67572,4 +67685,4 @@ test('GPS quality rule remains stable and full address parts stay Iran-first wit
 ~~~~~~~~
 
 
-— پایان chat.arena نسخه ۱.۴۳ (نسخه برنامه 11.27.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —
+— پایان chat.arena نسخه ۱.۴۴ (نسخه برنامه 11.28.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —

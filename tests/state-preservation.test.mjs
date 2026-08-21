@@ -163,7 +163,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.match(v20Source, /seen\[rowSignature\(r\)\]/);
   assert.match(v20Source, /d\.pharmacyRows=d\.pharmacyRows\.concat\(fresh\)/);
   assert.match(v20Source, /function bindSnappImportButtons/);
-  assert.match(v20Source, /try\{bindManagerLayoutIntent\(\);wrapFormLayoutMirror\(\);bindSnappImportButtons\(\);bindProductCrudV20\(\);bindSafeOrderControls\(\);\}/, 'critical buttons and startup layout guard must bind synchronously');
+  assert.match(v20Source, /try\{bindManagerLayoutIntent\(\);wrapFormLayoutMirror\(\);wrapAllLegacyLayouts\(\);bindSnappImportButtons\(\);bindProductCrudV20\(\);bindSafeOrderControls\(\);\}/, 'critical buttons and all startup layout guards must bind synchronously');
   assert.match(v20Source, /contenteditable='true'/);
   assert.match(v20Source, /arc-save/);
   assert.match(v20Source, /raw-save/);
@@ -182,7 +182,8 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
   assert.doesNotMatch(v9Source, /کد پستی:/);
   assert.doesNotMatch(v9Source, /String\(data\.display_name\)\.length > compact\.length/);
   assert.match(v20Source, /function bindDomOrderLock/);
-  assert.match(v20Source, /CRM_DOM_FIELD_ORDER_LOCK_V1/);
+  assert.match(v20Source, /CRM_MANAGER_GRID_ORDER_V2/);
+  assert.doesNotMatch(v20Source, /CRM_DOM_FIELD_ORDER_LOCK_V1/);
   assert.match(v20Source, /getUnifiedFieldList\(paneId\)/);
   assert.match(v20Source, /tablePharmaciesHeader/);
   assert.match(v20Source, /function bindListOrderObserver/);

@@ -1140,3 +1140,11 @@ Then change only what is requested.
 - Invoice access migration `invoiceStatusPermissionV1127` runs once over existing users/templates to repair default-false rollout.
 - `bindUserCrudV27` capture-intercepts button/form submit and final-overrides `editUserCard`; auth map is rebuilt after save.
 - Preset bar is created once and contains only level select + save button.
+## معماری افزوده v11.28.0 — Central access engine / strict V2 layout / parallel GPS
+- Session identity is complete and stable: id, full name, username, role. Current user resolution is ID-first.
+- `TAB_PERMISSION_MAP` projects tab-master keys to nav, side menu and pane; `FEATURE_PERMISSION_MAP` projects subkeys to concrete controls.
+- Allowed nodes have stale permission inline styles removed; denied nodes receive tracked `data-permission-hidden`; dynamic nodes are reapplied incrementally.
+- `window.applyUserRolePermissions` and `window.applyFieldPermissions` point to central engine.
+- No V1 order fallback exists; V2 explicit manager snapshots only. Full/all/custom layout functions share manager-intent gate.
+- Overlay stacking: focused group 10020, combo 10030, list/detail 10040.
+- GPS reverse geocode begins on fix callback and is awaited later, overlapping network with accuracy acquisition.

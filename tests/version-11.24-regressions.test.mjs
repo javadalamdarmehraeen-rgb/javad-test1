@@ -75,7 +75,7 @@ test('invoice-status tab, filters, columns, details and permissions are complete
   assert.match(v20,/function invoiceStatusDetailRows/);
   assert.match(v20,/invoiceStatusBaseCache\|\|\(invoiceStatusBaseCache=buildInvoiceStatusMatches\(\)\)/);
   assert.match(v20,/تعداد کالای فاکتور شده/);
-  assert.match(v20,/toggle\("tab-distributor-invoice-status",manager\|\|perms\.dist_invoice_status_access===true\|\|\(perms\.dist_invoice_status_access==null&&perms\.dist_sales_access!==false\)\)/);
+  assert.match(v20,/toggle\("tab-distributor-invoice-status",manager\|\|perms\.dist_invoice_status_access!==false\)/);
 });
 
 test('invoice-status fuzzy name, location and ±3-day matching work on representative fixtures', () => {
@@ -119,7 +119,9 @@ test('same-label dropdown options use one global source for add, rename, delete 
 test('layout lock restores only explicit manager snapshots and startup cannot capture or destructively rearrange', () => {
   assert.match(v20,/document\.querySelectorAll\("\.tab-pane \.form-grid"\)/);
   assert.match(v20,/CRM_MANAGER_GRID_ORDER_V2/);
+  assert.doesNotMatch(v20,/CRM_DOM_FIELD_ORDER_LOCK_V1/);
   assert.match(v20,/فقط اقدام صریح مدیر snapshot می‌سازد/);
+  assert.match(v20,/function wrapAllLegacyLayouts/);
   assert.doesNotMatch(v20,/addEventListener\("beforeunload",captureDomFieldOrder/);
   const bind=v20.slice(v20.indexOf('function bindDomOrderLock'),v20.indexOf('function orderEntityKey'));
   assert.doesNotMatch(bind,/MutationObserver/);
@@ -129,9 +131,11 @@ test('layout lock restores only explicit manager snapshots and startup cannot ca
   assert.match(wrapper,/if\(!window\.__CRM_MANAGER_LAYOUT_INTENT\)/);
 });
 
-test('invoice tab visibility is reversible and old users inherit distributor access', () => {
+test('invoice tab visibility is reversible and current user resolves by persistent session id', () => {
   assert.match(v20,/if\(pane\)pane\.style\.display=allow\?"":"none"/);
-  assert.match(v20,/perms\.dist_invoice_status_access==null&&perms\.dist_sales_access!==false/);
+  assert.match(v20,/function v20CurrentUser\(\)/);
+  assert.match(v20,/crmUserId/);
+  assert.match(v20,/perms\.dist_invoice_status_access!==false/);
   assert.match(v11,/hideTab\("tab-distributor-invoice-status", "dist_invoice_status_access"\)/);
   assert.match(v20,/function migrateInvoicePermissionOnce/);
   assert.match(v20,/u\.permissions\.dist_invoice_status_access=true/);
@@ -152,7 +156,22 @@ test('final user editor always has save, exact roles and stable one-dropdown pre
   assert.match(v20,/permissionLevelTemplates\[pid\]=checklistPermissions\(\)/);
   assert.match(v20,/#tab-users-permissions \.permission-tag-chk,#tab-users-permissions \.permission-tag-chk:hover\{transition:none!important;transform:none!important/);
   const state={users:[{id:'u1',fullName:'قدیم',username:'old',password:'1',permissions:{}}]},els={userEditId:{value:'u1'},newFullName:{value:'جدید'},newUsername:{value:'new'},newPassword:{value:'2'},newPhone:{value:'0912'},newRole:{value:'سرپرست'},newSimControl:{value:'بدون بررسی'},formCreateUser:{reset(){}},btnSaveUserInfo:{innerHTML:'',style:{}}};
-  const ctx={state,result:null,st:()=>state,$:id=>els[id]||null,checklistPermissions:()=>({ph_access:true}),save:()=>{},syncUsersAuthV27:()=>{},window:{renderUserCardsList:()=>{},updateNavBadges:()=>{}},v20Toast:()=>{},alert:()=>{}};vm.createContext(ctx);vm.runInContext(`${extract('saveUserV27')};saveUserV27();result=state.users`,ctx);assert.equal(ctx.result.length,1);assert.equal(ctx.result[0].fullName,'جدید');assert.equal(ctx.result[0].role,'سرپرست');assert.equal(ctx.result[0].permissions.ph_access,true);
+  const ctx={state,result:null,st:()=>state,$:id=>els[id]||null,checklistPermissions:()=>({ph_access:true}),save:()=>{},syncUsersAuthV27:()=>{},applyCentralPermissions:()=>{},window:{renderUserCardsList:()=>{},updateNavBadges:()=>{}},v20Toast:()=>{},alert:()=>{}};vm.createContext(ctx);vm.runInContext(`${extract('saveUserV27')};saveUserV27();result=state.users`,ctx);assert.equal(ctx.result.length,1);assert.equal(ctx.result[0].fullName,'جدید');assert.equal(ctx.result[0].role,'سرپرست');assert.equal(ctx.result[0].permissions.ph_access,true);
+});
+
+test('central permission engine covers every tab, sub-controls and dynamically rendered nodes', () => {
+  for (const id of ['tab-dashboard','tab-pharmacies','tab-doctors','tab-orders','tab-activity-log','tab-overview-map','tab-live-location','tab-snapp-corporate','tab-distributor-companies','tab-distributor-sales','tab-distributor-invoice-status','tab-distributor-database','tab-search-info','tab-rep-routes','tab-my-visit','tab-rep-homes','tab-leaves','tab-notifications','tab-monthly-reports','tab-sales-targets','tab-custom-fields','tab-columns-products','tab-manual-design','tab-users-permissions','tab-messengers','tab-backup','tab-install-app','tab-troubleshooting']) assert.ok(v20.includes(`"${id}"`),`permission map missing ${id}`);
+  assert.match(v20,/var FEATURE_PERMISSION_MAP=/);assert.match(v20,/function applyCentralPermissions/);assert.match(v20,/function bindCentralPermissions/);
+  assert.match(v20,/window\.applyUserRolePermissions=applyCentralPermissions/);
+  assert.match(v20,/new MutationObserver\(function\(records\)[\s\S]*applyCentralPermissions/);
+  assert.match(v9,/sessionStorage\.setItem\("crmUserName"/);assert.match(v9,/sessionStorage\.setItem\("crmUsername"/);assert.match(v9,/sessionStorage\.setItem\("crmUserRole"/);
+  const store={crmUserId:'u2',crmLoggedIn:'1'},ctx={result:null,sessionStorage:{getItem:k=>store[k]||''},st:()=>({users:[{id:'u1',role:'مدیر'},{id:'u2',role:'نماینده علمی',permissions:{ord_access:false}}]})};vm.createContext(ctx);vm.runInContext(`${extract('v20CurrentUser')};${extract('permissionAllowed')};result={user:v20CurrentUser(),deny:permissionAllowed({ord_access:false},'ord_access',false),manager:permissionAllowed({ord_access:false},'ord_access',true)}`,ctx);assert.equal(ctx.result.user.id,'u2');assert.equal(ctx.result.deny,false);assert.equal(ctx.result.manager,true);
+});
+
+test('dropdowns and information overlays always rise above following cards', () => {
+  assert.match(v20,/\.tab-pane \.form-group:focus-within\{position:relative!important;z-index:10020!important\}/);
+  assert.match(v20,/\.crm-combo-list,\.ph-pick-overlay,\.v20-local-match\{z-index:10040!important/);
+  assert.match(v20,/\.tab-pane \.form-grid,\.tab-pane \.form-group,\.tab-pane \.card\{overflow:visible!important\}/);
 });
 
 test('gray dependency styling leaves labels unchanged and grays field plus checkbox only', () => {
@@ -162,7 +181,7 @@ test('gray dependency styling leaves labels unchanged and grays field plus check
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.27\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.28\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
@@ -172,9 +191,10 @@ test('PWA activation is automatic and diagnostics never request manual refresh',
 });
 
 test('GPS quality rule remains stable and full address parts stay Iran-first without postcode', () => {
-  assert.match(v9, /samples>=2&&cur\.accuracy<=10/);
-  assert.match(v9, /},30000\)/);
-  assert.match(v9, /enableHighAccuracy:true,timeout:30000,maximumAge:0/);
+  assert.match(v9, /if\(cur\.accuracy<=10\)finish\(cur\)/);
+  assert.match(v9, /addressPromise=geoReverse/);
+  assert.match(v9, /},15000\)/);
+  assert.match(v9, /enableHighAccuracy:true,timeout:15000,maximumAge:0/);
   assert.match(v9, /addr\.country \|\| \"ایران\"/);
   assert.match(v9, /addr\.building \|\| addr\.amenity \|\| addr\.shop/);
   assert.doesNotMatch(v9, /addr\.postcode/);
