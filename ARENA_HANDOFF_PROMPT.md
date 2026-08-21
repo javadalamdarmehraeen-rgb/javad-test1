@@ -1321,3 +1321,10 @@ ADDENDUM v11.16.1 (2026-08-16)
 4. اگر GitHub reconnect شده، فقط `arena/01a006e4-namayandeelmi-javad` را push و از آن PR به main بساز.
 5. source test را با deploy اشتباه نگیر؛ production در آخرین اندازه‌گیری 11.20.0 و source 11.38.0 است.
 6. بعد از merge، GitHub checks، GitLab mirror، Render deploy و cache rescue را جدا تأیید کن.
+
+## شروع اجباری چت بعد از نوبت ۶۱ (2026-08-22)
+1. `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` (بخش ۰ وضعیت انتشار) → `AI_ACCEPTANCE_CHECKLIST.md` → همین فایل.
+2. مخزن فعال `javadalamdarmehraeen-rgb/javad-test1` و شاخه جلسه `arena/01a0262d-javad-test1` است؛ production فعال `https://javad-test1.onrender.com` که در 2026-08-21T21:24Z نسخه 11.38.0 را سرو کرد و cache-rescue زنده داشت. سرویس قدیمی namayandeelmi-javad.onrender.com هنوز 11.20.0 است و مرجع نیست.
+3. قانون کاربر (نوبت ۶۱ → قانون ۹۱ AI_RULES): در هر چت همه ۱۵ فایل آرشیوی به‌روز شوند و ZIP کنار صفحه تحویل شود؛ اگر ممیزی نشان داد پرامپت معلق کدی نمانده، نسخه برنامه را بدون تغییر واقعی bump نکن.
+4. push فقط وقتی 403 می‌خورد که کامیت حاوی تغییر workflow باشد؛ PR با صفر تفاوت نسبت به main ممکن نیست.
+5. production /api/health تنها منبع حقیقت انتشار است؛ GitLab mirror تنها حلقه تأییدنشده است.

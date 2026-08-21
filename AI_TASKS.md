@@ -1509,3 +1509,26 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] افزودن فایل به OFFICIAL_FILELIST
 - [x] اصلاح ابتدای README برای runtime واقعی
 - [ ] پس از reconnect: push شاخه Arena، PR، checks، merge، GitLab mirror، Render و health 11.38.0
+
+## ۸۱) نوبت ۶۱ — اندازه‌گیری مجدد و تأیید انتشار 11.38.0
+- [x] خواندن چهار سند شروع (graph → handoff → checklist → handoff-prompt)
+- [x] اندازه‌گیری Git/auth/remote: working tree clean، origin فقط main در f541301، GitHub App با API محدود
+- [x] push موفق شاخه `arena/01a0262d-javad-test1` (بدون تغییر workflow در کامیت)
+- [x] تلاش PR: رد صفر‌تفاوت (نوک شاخه == main → سورس از قبل merged)
+- [x] checks ورک‌فلو روی f541301: build/test موفق
+- [x] تعیین production واقعی کاربر: `https://javad-test1.onrender.com`
+- [x] health دو بار مستقل: `11.38.0` (2026-08-21T21:24:15Z)
+- [x] مشاهده redirect زنده cache-rescue: `/login?build=11.38.0&__crm_reload=...`
+- [x] ZIP `namayandeelmi-v11.38.0.zip` ساخته/تأیید/تحویل
+- [ ] GitLab mirror — ناشناخته (remote و لاگ خام در دسترس نیست)
+
+## ۸۲) نوبت ۶۱ — ممیزی ۲۰ چت اخیر و همگام‌سازی کامل آرشیو
+- [x] استخراج پرامپت‌های نوبت ۴۱ تا ۶۰ از chat.arena (بخش ۸)
+- [x] ممیزی با ۲۲ نشانگر کد: همه نسخه‌های 11.23.0 تا 11.38.0 در سورس حاضرند
+- [x] 58/58 تست + syntax همه JS + build + diff-check موفق
+- [x] تصمیم: بدون تغییر کد، نسخه برنامه 11.38.0 می‌ماند (bump ساختگی ممنوع)
+- [x] ثبت قانون ۹۱ AI_RULES (همگام‌سازی ۱۵ فایل آرشیو در هر چت) + تأکید دوباره قانون ZIP
+- [x] به‌روزرسانی GITHUB_REVIEW_HANDOFF/AI_ACCEPTANCE_CHECKLIST/AI_DECISION_LOG/AI_TASKS/AI_PROJECT_CONTEXT/ARENA_HANDOFF_PROMPT/CHANGES_V11/README
+- [x] به‌روزرسانی قالب update_project_graph.py و بازسازی PROJECT_GRAPH.md
+- [x] افزودن نوبت ۶۱ به update_chat_arena.py و بازسازی chat.arena 1.56
+- [x] بازسازی ZIP نهایی و تحویل کنار صفحه

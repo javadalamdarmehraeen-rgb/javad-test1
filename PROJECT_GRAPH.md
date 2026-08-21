@@ -426,10 +426,12 @@
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
 - نسخه سورس package: `11.38.0`
-- شاخه اجباری Arena: `arena/01a006e4-namayandeelmi-javad`؛ push/PR فقط از همین شاخه.
+- مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a0262d-javad-test1`؛ push/PR فقط از همین شاخه.
+- Production فعال: `https://javad-test1.onrender.com` — در 2026-08-21T21:24Z نسخه `11.38.0` را سرو کرد؛ سرویس قدیمی `namayandeelmi-javad.onrender.com` هنوز `11.20.0` است.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.
 - `GITHUB_REVIEW_HANDOFF.md` مرجع وضعیت commit/push/PR/GitLab/Render/production و دستورات بررسی است؛ قبل از ادعای deploy باید دوباره اندازه‌گیری شود.
 - زنجیره انتشار: source test → commit → push Arena branch → PR main → checks → merge → GitLab mirror → Render deploy → production health.
+- قانون نوبت ۶۱: در هر چت همه فایل‌های آرشیوی (graph/handoff/chat.arena/اسکریپت‌های مولد/checklist/rules/decision/tasks/context/architecture/handoff-prompt/changes/README/OFFICIAL_FILELIST) به‌روز شوند و ZIP کنار صفحه تحویل شود.
 
 ## ی) گراف موتور نجات کش 11.38
 

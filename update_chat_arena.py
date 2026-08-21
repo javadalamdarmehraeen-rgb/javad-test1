@@ -49,7 +49,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.55 | تاریخ به‌روزرسانی: 2026-08-22 (۳۱ مرداد ۱۴۰۵) | نسخه برنامه: 11.38.0
+نسخه این فایل: 1.56 | تاریخ به‌روزرسانی: 2026-08-22 (۳۱ مرداد ۱۴۰۵) | نسخه برنامه: 11.38.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -3402,6 +3402,25 @@ git push gitlab main
 
 🤖 دستیار:
 فایل مستقل `GITHUB_REVIEW_HANDOFF.md` ساخته و به OFFICIAL_FILELIST/README اضافه شد. این سند commit chain، شاخه ثابت، خطاهای push/403، نبود GitLab remote، production 11.20.0 در برابر source 11.38.0، مراحل reconnect→push→PR→merge→CI→mirror→Render و معماری مویرگی cache rescue، state/bulk، order، route، labels، tombstones، privacy، leave، notification، Web Push و تست‌ها را ثبت می‌کند. همه حافظه‌ها، قوانین، تصمیم‌ها، معماری، taskها و handoff به‌روز و graph/chat در پایان بازسازی می‌شوند.
+
+──────────────────────────────── نوبت ۶۱ ────────────────────────────────
+🧑 کاربر (خلاصه وفادار):
+«اول PROJECT_GRAPH.md، بعد GITHUB_REVIEW_HANDOFF.md کامل، بعد AI_ACCEPTANCE_CHECKLIST.md و ARENA_HANDOFF_PROMPT.md را بخوان. سورس 11.38.0 است ولی production آخرین بررسی 11.20.0 بود. شاخه اجباری `arena/01a006e4-namayandeelmi-javad` است. push قبلی با 403 Workflows/Refs رد شده. وضعیت Git/GitHub auth/remote branch/production health را دوباره اندازه بگیر؛ اگر اتصال GitHub اصلاح شده بود همان شاخه Arena را push کن، PR به main بساز، checks را بررسی کن، merge کن و GitLab mirror و Render deploy را تأیید کن. تا وقتی production /api/health نسخه 11.38.0 را نشان نداده انتشار را موفق اعلام نکن. فعلا هیچ تغییری در کدهای برنامه انجام نده و فقط فایل زیپ قابل دانلود برنامه را در کنار صفحه بهم بده.»
+
+🤖 دستیار:
+هر چهار سند خوانده شد و وضعیت دوباره اندازه‌گیری شد: working tree clean، remote فقط main در `f541301`، GitHub App لاگین ولی با API محدود. push شاخه `arena/01a0262d-javad-test1` (شاخه ثابت این جلسه در مخزن `javad-test1`) این بار موفق شد چون کامیت جدید حاوی تغییر workflow نبود؛ PR با پیام «No commits between main and branch» رد شد چون نوک شاخه دقیقاً برابر main بود یعنی سورس 11.38.0 از قبل روی main بود. workflow «Build & Mirror & Deploy» روی همین commit موفق بود. کاربر تصریح کرد production فعلی `https://javad-test1.onrender.com` است؛ دو اندازه‌گیری مستقل `/api/health` نسخه `11.38.0` را برگرداند (21:24:15Z) و `/panel` با redirect زنده به `/login?build=11.38.0&__crm_reload=...` موتور cache rescue را در عمل نشان داد. ZIP `namayandeelmi-v11.38.0.zip` ساخته، از داخل تأیید (package.json/sw.js/server.js هر سه 11.38.0) و با present_file تحویل شد. GitLab mirror ناشناخته ماند (remote و لاگ در دسترس نیست). سرویس قدیمی namayandeelmi-javad.onrender.com هنوز 11.20.0 است.
+
+🧑 کاربر:
+«مخزن من در گیت‌هاب javad-test1 است و اینکه فعلا لینکی که با آن برنامه را بالا می‌آورم https://javad-test1.onrender.com/ است. اگر همه چیز را موفق دانستی فایل زیپ قابل دانلود را بهم تحویل بده.»
+
+🤖 دستیار:
+health لینک جدید دو بار مستقل 11.38.0 را تأیید کرد و صفحه ورود «طنین طب طاها» سالم بالا آمد؛ گزارش نهایی موفقیت انتشار با قالب §12 دستور تحویل ثبت و ZIP دوباره تحویل شد.
+
+🧑 کاربر (خلاصه وفادار):
+«در هر چت تو باید همه کدها را به فایل‌های آرشیوی زیر اضافه کنی و آن‌ها را به‌روز کنی و این قانون است: PROJECT_GRAPH.md، GITHUB_REVIEW_HANDOFF.md، chat.arena، update_chat_arena.py، update_project_graph.py، AI_ACCEPTANCE_CHECKLIST.md، AI_RULES.md، AI_DECISION_LOG.md، AI_TASKS.md، AI_PROJECT_CONTEXT.md، AI_ARCHITECTURE.md، ARENA_HANDOFF_PROMPT.md، CHANGES_V11.md، README.md، OFFICIAL_FILELIST.txt. همه قوانین چت‌های قبلی را رعایت کن. حالا با توجه به اطلاعاتی که داری پرامپت‌هایی که در ۲۰ چت قبلی به بعد در فایل گراف وجود داشته را در برنامه و کدها اعمال کن و نسخه جدید را تحویل بده. فایل زیپ قابل دانلود در کنار صفحه یادت نره؛ این یک قانون است.»
+
+🤖 دستیار:
+ممیزی کامل ۲۰ چت اخیر (نوبت‌های ۴۱ تا ۶۰ = نسخه‌های 11.23.0 تا 11.38.0) با ۲۲ نشانگر کد انجام شد: SHAFA_CODE_MAP اصلاحی، userEditId، safeOrderFields، سرستون 87CEEB، ensureProductCodes، تب وضعیت فاکتور، invoiceStatusBaseCache، globalFieldOptions، CRM_MANAGER_GRID_ORDER_V2، syncRepsFromUsers (با تست اختصاصی)، Permissions-Policy، x-crm-request، privacyList، representativeRoutesCard، setupTargetPlannerV34، notify_all_users، vapidAuthorization، groupAnchor، deletedUserTombstones، leaveFromTime، /cache-reset و CRM_BUILD_ACTIVE — همه در سورس موجودند؛ 58/58 تست موفق؛ پس هیچ پرامپت معلق‌ای نمانده و نسخه برنامه 11.38.0 بدون تغییر کد باقی ماند (تغییر ساختگی نسخه بدون تغییر کد ممنوع است). همه ۱۵ فایل آرشیوی برای نوبت ۶۱ به‌روز شد، قانون ۹۱ (همگام‌سازی آرشیو در هر چت) در AI_RULES ثبت شد، PROJECT_GRAPH و chat.arena 1.56 بازسازی شدند، ZIP نهایی بازساخته و تحویل شد.
 
 """
 
