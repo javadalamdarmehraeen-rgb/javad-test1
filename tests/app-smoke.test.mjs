@@ -15,7 +15,7 @@ test.before(async () => {
   });
 });
 
-test.after(() => { if (server && !server.killed) server.kill('SIGTERM'); try { rmSync('server-db.json', { force:true }); rmSync('user-data.json', { force:true }); } catch {} });
+test.after(() => { if (server && !server.killed) server.kill('SIGTERM'); try { rmSync('server-db.json', { force:true }); rmSync('user-data.json', { force:true }); rmSync('user-bulk-data.json', { force:true }); } catch {} });
 
 test('automated app entry loads health, HTML, all scripts and critical UI', async () => {
   const base = `http://127.0.0.1:${port}`;
@@ -49,4 +49,16 @@ test('state API round-trip preserves unrelated sentinel data', async () => {
   const body = await get.json();
   assert.equal(body.data.users[0].id, 'sentinel-user');
   assert.equal(body.data.formFieldMeta.order.sentinel.order, 99);
+});
+
+test('bulk API round-trip preserves imported Excel vault for a new program link', async () => {
+  const base = `http://127.0.0.1:${port}`;
+  const bulk = { savedAt: 7, snapp: { rows:[['trip-sentinel']], topups:[], tripImports:[], topupImports:[] }, distributors: { daya: { pharmacyRows:[['invoice-sentinel']], pharmacyImports:[], inventoryRows:[] } } };
+  const post = await fetch(base + '/api/bulk', { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify(bulk) });
+  assert.equal(post.status, 200);
+  const get = await fetch(base + '/api/bulk');
+  assert.equal(get.status, 200);
+  const body = await get.json();
+  assert.equal(body.data.snapp.rows[0][0], 'trip-sentinel');
+  assert.equal(body.data.distributors.daya.pharmacyRows[0][0], 'invoice-sentinel');
 });

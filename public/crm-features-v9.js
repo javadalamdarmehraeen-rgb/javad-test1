@@ -95,31 +95,18 @@
     if (!state.settings) state.settings = {};
   }
 
-  function currentRepName() {
-    return (typeof currentUserName === "string" && currentUserName) ? currentUserName : "مدیر سیستم";
-  }
+  function currentSessionUserV9(){var id=sessionStorage.getItem("crmUserId")||"",username=sessionStorage.getItem("crmUsername")||"";return((state&&state.users)||[]).filter(function(u){return(id&&String(u.id)===String(id))||(username&&u.username===username);})[0]||null;}
+  function currentRepName() {var u=currentSessionUserV9();return(u&&u.fullName)||((typeof currentUserName === "string"&&currentUserName)?currentUserName:"مدیر سیستم");}
+  function currentRepId(){var u=currentSessionUserV9();return(u&&u.id)||sessionStorage.getItem("crmUserId")||"";}
+  function userIdForRep(name){var u=((state&&state.users)||[]).filter(function(x){return x.fullName===name;})[0];return(u&&u.id)||((name===currentRepName())?currentRepId():"");}
+  function isAdminLike() {var u=currentSessionUserV9(),role=(u&&u.role)||sessionStorage.getItem("crmUserRole")||"",username=(u&&u.username)||sessionStorage.getItem("crmUsername")||"";return username==="admin"||/مدیر|admin/i.test(role)||sessionStorage.getItem("crmLoggedIn")!=="1";}
+  function canSeeAll(permissionKey){var u=currentSessionUserV9();return isAdminLike()||!!(u&&u.permissions&&u.permissions[permissionKey]===true);}
+  function ownedByCurrent(rec){var id=currentRepId(),name=currentRepName();return!!rec&&((id&&String(rec.repId||rec.ownerUserId||"")===String(id))||String(rec.repName||"")===String(name));}
 
-  function isAdminLike() {
-    const name = currentRepName();
-    return name.indexOf("مدیر") !== -1 || name.indexOf("سرپرست") !== -1 || name.indexOf("Admin") !== -1;
-  }
-
-  // قانون ثابت لیست‌ها: تازه‌ترین رکورد همیشه سطر اول؛ هرگز آرایه اصلی را reverse نکن.
-  function visiblePharmacies() {
-    const list = ((state && state.pharmacies) || []).slice().reverse();
-    if (isAdminLike()) return list;
-    return list.filter(function (p) { return !p.repName || p.repName === currentRepName(); });
-  }
-  function visibleDoctors() {
-    const list = ((state && state.doctors) || []).slice().reverse();
-    if (isAdminLike()) return list;
-    return list.filter(function (d) { return !d.repName || d.repName === currentRepName(); });
-  }
-  function visibleOrders() {
-    const list = ((state && state.orders) || []).slice().reverse();
-    if (isAdminLike()) return list;
-    return list.filter(function (o) { return !o.repName || o.repName === currentRepName(); });
-  }
+  // نماینده علمی فقط رکوردهای مالکیت‌دار خودش را می‌بیند؛ رکورد بدون مالک به کاربر عادی نشت نمی‌کند.
+  function visiblePharmacies() {const list=((state&&state.pharmacies)||[]).slice().reverse();return canSeeAll("ph_all_reps")?list:list.filter(ownedByCurrent);}
+  function visibleDoctors() {const list=((state&&state.doctors)||[]).slice().reverse();return canSeeAll("doc_all_reps")?list:list.filter(ownedByCurrent);}
+  function visibleOrders() {const list=((state&&state.orders)||[]).slice().reverse();return canSeeAll("ord_all_reps")?list:list.filter(ownedByCurrent);}
 
   // ---------- Jalali / Gregorian ----------
   function gregorianNowTehran() {
@@ -526,6 +513,7 @@
       isPercentage: val("pharmacyIsPercentage") === "true",
       fileName: ($("phFileInput") && $("phFileInput").files && $("phFileInput").files[0]) ? $("phFileInput").files[0].name : null,
       repName: currentRepName(),
+      repId: currentRepId(),
       customFields: (typeof extractCustomFieldValuesFromForm === "function")
         ? extractCustomFieldValuesFromForm("pharmacy", "pharmacyCustomFieldsContainer")
         : {}
@@ -574,6 +562,7 @@
       isPercentage: val("doctorIsPercentage") === "true",
       fileName: ($("docFileInput") && $("docFileInput").files && $("docFileInput").files[0]) ? $("docFileInput").files[0].name : null,
       repName: currentRepName(),
+      repId: currentRepId(),
       customFields: (typeof extractCustomFieldValuesFromForm === "function")
         ? extractCustomFieldValuesFromForm("doctor", "doctorCustomFieldsContainer")
         : {}
@@ -641,6 +630,7 @@
       district: val("orderDistrict"),
       address: val("orderAddress"),
       repName: val("orderRepName") || currentRepName(),
+      repId: userIdForRep(val("orderRepName") || currentRepName()),
       orderDate: val("orderDate") || todayJalaliStr(),
       status: val("orderStatus") || "در حال بررسی",
       notes: val("orderNotes"),
@@ -687,7 +677,8 @@
     if (!state.activityLog) state.activityLog = [];
     const now = new Date();
     const time = now.toLocaleTimeString("fa-IR", { timeZone: "Asia/Tehran", hour: "2-digit", minute: "2-digit" });
-    state.activityLog.unshift({ id: "act-" + Date.now(), time: time + " - امروز", repName: currentRepName(), action: action });
+    state.activityLog.unshift({ id: "act-" + Date.now(), time: time + " - امروز", repName: currentRepName(),
+      repId: currentRepId(), action: action });
     saveState(false);
     renderActivityChartAndTable();
   }

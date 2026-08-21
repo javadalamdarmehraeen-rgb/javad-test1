@@ -1154,3 +1154,11 @@ Then change only what is requested.
 - `installLatinNumberLaw` executes synchronously at final script parse and once only; Number fa locale delegates to en-US, Date strings are digit-transliterated.
 - Incremental DOM formatting includes option text and visible attributes.
 - `periodRows` uses `jalaliMonthName` for workbook metadata.
+## معماری افزوده v11.30.0 — Pinned access shell / owner privacy / cross-origin bootstrap
+- Invoice tab shell/nav is always rendered. `dist_invoice_status_access=false` produces an in-pane notice and hides data card only.
+- Mobile breakpoints: <=950 shared containment/wrapping, <=950 landscape two-column forms; <=768 portrait remains single-column.
+- Universal route URLs carry driving destination and use same-window assignment for mobile app-link handoff.
+- Ownership: records carry repId; normal reps see exact owner ID/name only; no ownerless fallback; all data requires explicit `*_all_reps` or manager.
+- Empty-origin bootstrap gate blocks saves, GETs `/api/state`, validates meaningful state, persists locally, then reloads. Existing local state bypasses GET entirely.
+- Bulk vault mirrors `captureBulkState()` to `/api/bulk`; server stores up to 64MB in `user-bulk-data.json`; local-miss hydrate tries server and writes IndexedDB.
+- Runtime data directory: `CRM_DATA_DIR`, else existing `/var/data`, else repository runtime directory. Persistent disk remains operational requirement.

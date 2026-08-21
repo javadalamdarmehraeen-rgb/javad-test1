@@ -2953,7 +2953,7 @@ function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.29.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.30.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -2993,31 +2993,23 @@ function setupNavigationAppsModal() {
   const btnBalad = document.getElementById("btnNavBalad");
   const btnGoogle = document.getElementById("btnNavGoogle");
   const btnWaze = document.getElementById("btnNavWaze");
-
-  if (btnNeshan) {
-    btnNeshan.onclick = () => {
-      window.open(`https://neshan.org/maps/@${activeNavCoords.lat},${activeNavCoords.lng},16z`, "_blank");
-      closeModalNavigationApps();
+  const go = (provider) => {
+    const lat = Number(activeNavCoords.lat).toFixed(6);
+    const lng = Number(activeNavCoords.lng).toFixed(6);
+    const name = encodeURIComponent(activeNavCoords.name || "مقصد");
+    const urls = {
+      neshan: `https://nshn.ir/maps?destination=${lat},${lng}&type=drive&name=${name}`,
+      balad: `https://balad.ir/directions/driving?destination=${lng}%2C${lat}`,
+      google: `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=driving&dir_action=navigate`,
+      waze: `https://waze.com/ul?ll=${lat},${lng}&navigate=yes`
     };
-  }
-  if (btnBalad) {
-    btnBalad.onclick = () => {
-      window.open(`https://balad.ir/location?latitude=${activeNavCoords.lat}&longitude=${activeNavCoords.lng}`, "_blank");
-      closeModalNavigationApps();
-    };
-  }
-  if (btnGoogle) {
-    btnGoogle.onclick = () => {
-      window.open(`https://www.google.com/maps/search/?api=1&query=${activeNavCoords.lat},${activeNavCoords.lng}`, "_blank");
-      closeModalNavigationApps();
-    };
-  }
-  if (btnWaze) {
-    btnWaze.onclick = () => {
-      window.open(`https://waze.com/ul?ll=${activeNavCoords.lat},${activeNavCoords.lng}&navigate=yes`, "_blank");
-      closeModalNavigationApps();
-    };
-  }
+    closeModalNavigationApps();
+    window.location.assign(urls[provider]);
+  };
+  if (btnNeshan) btnNeshan.onclick = () => go("neshan");
+  if (btnBalad) btnBalad.onclick = () => go("balad");
+  if (btnGoogle) btnGoogle.onclick = () => go("google");
+  if (btnWaze) btnWaze.onclick = () => go("waze");
 }
 
 // ----------------------------------------------------------------------------

@@ -1512,3 +1512,10 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - DOM formatter includes OPTION text and visible placeholder/title attributes while leaving password values unchanged.
 - Distributor workbook period metadata maps month number to Persian Jalali month name.
 - Every turn continues graph-first, graph regeneration, all archive docs, chat.arena versioning, tests, ZIP and PowerShell.
+## تصمیم ۸۳ — نسخه ۱۱.۳۰.۰: pinned invoice tab، mobile all-orientation، universal routing و cross-link persistence (2026-08-21)
+- Invoice navigation is permanently pinned. Permission denial hides its card and shows an access message, never removes the tab; V1130 repairs existing users once.
+- Mobile max-width 950 handles portrait and landscape; form/list buttons stay 50/50 inside viewport and all action rows wrap.
+- Navigation uses provider direction universal links, not map-location/download pages.
+- Representative privacy is ownership-first (repId, then exact repName); ownerless records are invisible to normal reps; all-reps requires explicit permission.
+- Existing local state remains authoritative. The sole remote-GET exception is a completely empty browser origin, which may bootstrap from the same backend without merging/overwriting.
+- Bulk IndexedDB data is mirrored to `/api/bulk` (64MB) for same-backend custom-link continuity; runtime files use persistent disk directory when available.

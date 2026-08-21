@@ -6,8 +6,19 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const SERVER_DATA_PATH = path.join(__dirname, "user-data.json");
+const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
+try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
+const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
+const USER_BULK_PATH = path.join(RUNTIME_DATA_DIR, "user-bulk-data.json");
 const LEGACY_DATA_PATH = path.join(__dirname, "server-db.json");
+const ROOT_USER_DATA_PATH = path.join(__dirname, "user-data.json");
+const ROOT_BULK_DATA_PATH = path.join(__dirname, "user-bulk-data.json");
+if (!fs.existsSync(SERVER_DATA_PATH) && fs.existsSync(ROOT_USER_DATA_PATH) && ROOT_USER_DATA_PATH !== SERVER_DATA_PATH) {
+  try { fs.copyFileSync(ROOT_USER_DATA_PATH, SERVER_DATA_PATH); } catch (e) {}
+}
+if (!fs.existsSync(USER_BULK_PATH) && fs.existsSync(ROOT_BULK_DATA_PATH) && ROOT_BULK_DATA_PATH !== USER_BULK_PATH) {
+  try { fs.copyFileSync(ROOT_BULK_DATA_PATH, USER_BULK_PATH); } catch (e) {}
+}
 if (!fs.existsSync(SERVER_DATA_PATH) && fs.existsSync(LEGACY_DATA_PATH)) {
   try { fs.copyFileSync(LEGACY_DATA_PATH, SERVER_DATA_PATH); } catch (e) {}
 }
@@ -95,7 +106,7 @@ const server = http.createServer((req, res) => {
     return send(req, res, 200, JSON.stringify({
       ok: true, status: "healthy", message: "OK",
       service: "namayandeelmi-javad-crm",
-      version: "11.29.0",
+      version: "11.30.0",
       timestamp: new Date().toISOString()
     }), "application/json; charset=utf-8");
   }
@@ -138,6 +149,22 @@ const server = http.createServer((req, res) => {
         if (!up.ok) return send(req, res, up.status, text, "application/json; charset=utf-8");
         return send(req, res, 200, JSON.stringify({ status: "sent" }), "application/json; charset=utf-8");
       } catch (err) { return send(req, res, 400, JSON.stringify({ status: "error", message: err.message }), "application/json; charset=utf-8"); }
+    });
+    return;
+  }
+
+  if (pathname === "/api/bulk" && req.method === "GET") {
+    if (!fs.existsSync(USER_BULK_PATH)) return send(req, res, 200, JSON.stringify({ status: "empty" }), "application/json; charset=utf-8");
+    return send(req, res, 200, JSON.stringify({ status: "success", data: JSON.parse(fs.readFileSync(USER_BULK_PATH, "utf8")) }), "application/json; charset=utf-8");
+  }
+
+  if (pathname === "/api/bulk" && req.method === "POST") {
+    if (rateLimited(ip + ":bulk")) return send(req, res, 429, JSON.stringify({ status: "error", message: "too many requests" }), "application/json; charset=utf-8");
+    let body = "";
+    req.on("data", (c) => { body += c; if (body.length > 64 * 1024 * 1024) req.destroy(); });
+    req.on("end", () => {
+      try { const data = JSON.parse(body); fs.writeFileSync(USER_BULK_PATH, JSON.stringify(data), "utf8"); send(req, res, 200, JSON.stringify({ status: "success" }), "application/json; charset=utf-8"); }
+      catch (err) { send(req, res, 400, JSON.stringify({ status: "error", message: err.message }), "application/json; charset=utf-8"); }
     });
     return;
   }
@@ -209,5 +236,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, "0.0.0.0", () => {
-  console.log("CRM v11.29.0 listening on 0.0.0.0:" + PORT);
+  console.log("CRM v11.30.0 listening on 0.0.0.0:" + PORT);
 });

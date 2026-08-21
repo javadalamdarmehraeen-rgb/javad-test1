@@ -516,10 +516,10 @@ PERMISSION_GROUPS = {
     { key: "dash_access", label: "مشاهده تب داشبورد" }, { key: "dash_widgets", label: "مشاهده و مدیریت ویجت‌های داشبورد" }
   ],
   "داروخانه‌ها": [
-    { key: "ph_access", label: "مشاهده تب داروخانه‌ها" }, { key: "ph_create", label: "ثبت و ویرایش داروخانه" }, { key: "ph_list", label: "مشاهده فهرست داروخانه‌ها" }, { key: "ph_all_reps", label: "مشاهده داروخانه‌های همه نمایندگان" }, { key: "ph_view_loc", label: "مشاهده موقعیت" }, { key: "ph_create_loc", label: "ثبت موقعیت" }, { key: "ph_upload", label: "بارگذاری فایل" }, { key: "ph_excel", label: "خروجی اکسل" }, { key: "ph_delete", label: "حذف داروخانه" }
+    { key: "ph_access", label: "مشاهده تب داروخانه‌ها" }, { key: "ph_create", label: "ثبت و ویرایش داروخانه" }, { key: "ph_list", label: "مشاهده فهرست داروخانه‌ها" }, { key: "ph_all_reps", label: "مشاهده داروخانه‌های همه نمایندگان" }, { key: "ph_view_loc", label: "مشاهده موقعیت" }, { key: "ph_create_loc", label: "ثبت موقعیت" }, { key: "ph_upload", label: "بارگذاری فایل" }, { key: "ph_excel", label: "خروجی اکسل" }, { key: "ph_route", label: "مسیریابی مستقیم تا داروخانه" }, { key: "ph_delete", label: "حذف داروخانه" }
   ],
   "پزشکان": [
-    { key: "doc_access", label: "مشاهده تب پزشکان" }, { key: "doc_create", label: "ثبت و ویرایش پزشک" }, { key: "doc_list", label: "مشاهده فهرست پزشکان" }, { key: "doc_all_reps", label: "مشاهده پزشکان همه نمایندگان" }, { key: "doc_view_loc", label: "مشاهده موقعیت" }, { key: "doc_create_loc", label: "ثبت موقعیت" }, { key: "doc_upload", label: "بارگذاری فایل" }, { key: "doc_excel", label: "خروجی اکسل" }, { key: "doc_delete", label: "حذف پزشک" }
+    { key: "doc_access", label: "مشاهده تب پزشکان" }, { key: "doc_create", label: "ثبت و ویرایش پزشک" }, { key: "doc_list", label: "مشاهده فهرست پزشکان" }, { key: "doc_all_reps", label: "مشاهده پزشکان همه نمایندگان" }, { key: "doc_view_loc", label: "مشاهده موقعیت" }, { key: "doc_create_loc", label: "ثبت موقعیت" }, { key: "doc_upload", label: "بارگذاری فایل" }, { key: "doc_excel", label: "خروجی اکسل" }, { key: "doc_route", label: "مسیریابی مستقیم تا پزشک" }, { key: "doc_delete", label: "حذف پزشک" }
   ],
   "سفارشات": [
     { key: "ord_access", label: "مشاهده تب سفارشات" }, { key: "ord_create", label: "ثبت و ویرایش سفارش" }, { key: "ord_list", label: "مشاهده فهرست سفارشات" }, { key: "ord_all_reps", label: "مشاهده سفارش همه نمایندگان" }, { key: "ord_view_detail", label: "مشاهده جزئیات" }, { key: "ord_items", label: "ثبت کالا و جایزه" }, { key: "ord_send", label: "ارسال سفارش" }, { key: "ord_excel", label: "خروجی اکسل" }, { key: "ord_delete", label: "حذف سفارش" }
@@ -546,7 +546,7 @@ PERMISSION_GROUPS = {
     { key: "dist_invoice_status_access", label: "مشاهده تب وضعیت فاکتور" }, { key: "dist_invoice_status_filters", label: "استفاده از فیلترها" }, { key: "dist_invoice_status_search", label: "جستجوی داروخانه" }, { key: "dist_invoice_status_match", label: "مشاهده تطبیق فاکتورها" }, { key: "dist_invoice_status_details", label: "مشاهده جزئیات فاکتور" }
   ],
   "دیتابیس پخش‌ها": [
-    { key: "dist_database_access", label: "مشاهده تب دیتابیس پخش‌ها" }, { key: "dist_view_database", label: "مشاهده دیتابیس" }, { key: "dist_database_files", label: "مشاهده ریز فایل‌ها" }, { key: "sys_editable_excel_database", label: "ویرایش دیتابیس" }
+    { key: "dist_database_access", label: "مشاهده تب دیتابیس پخش‌ها" }, { key: "dist_view_database", label: "مشاهده دیتابیس" }, { key: "dist_database_files", label: "مشاهده ریز فایل‌ها" }, { key: "sys_editable_excel_database", label: "ویرایش دیتابیس" }, { key: "sys_shared_bulk_links", label: "ماندگاری فایل‌های اکسل بین لینک‌های برنامه" }
   ],
   "جستجوی اطلاعات": [
     { key: "search_access", label: "مشاهده تب جستجو" }, { key: "search_all_records", label: "جستجو در همه رکوردها" }, { key: "search_view_detail", label: "مشاهده جزئیات" }, { key: "search_edit", label: "ویرایش از نتایج" }, { key: "search_delete", label: "حذف از نتایج" }, { key: "search_excel", label: "خروجی اکسل" }
@@ -591,7 +591,7 @@ PERMISSION_GROUPS = {
     { key: "sys_backup", label: "تهیه پشتیبان" }, { key: "sys_restore", label: "بازیابی دستی پشتیبان" }, { key: "sys_backup_email", label: "ارسال پشتیبان به ایمیل" }
   ],
   "نصب اپ": [
-    { key: "sys_install", label: "مشاهده راهنمای نصب" }, { key: "sys_auto_pwa_control", label: "فعال‌سازی PWA" }
+    { key: "sys_install", label: "مشاهده راهنمای نصب" }, { key: "sys_auto_pwa_control", label: "فعال‌سازی PWA" }, { key: "sys_mobile_all_orientations", label: "نمای کامل موبایل در حالت افقی و عمودی" }, { key: "sys_cross_link_state", label: "بازیابی امن اطلاعات در لینک جدید برنامه" }
   ],
   "عیب‌یابی": [
     { key: "sys_diag", label: "مشاهده عیب‌یابی" }, { key: "sys_runtime_console_guard", label: "مشاهده وضعیت اجرای برنامه" }, { key: "sys_automated_app_test", label: "اجرای بررسی خودکار" }

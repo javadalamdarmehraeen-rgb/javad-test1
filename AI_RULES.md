@@ -1468,3 +1468,16 @@ All visible digits are English from parse time onward, including options, placeh
 titles, dynamic DOM, localized numbers and localized Date output, while passwords and
 Persian calendar/text semantics remain untouched. Distributor Excel uses Persian month
 names rather than month numbers.
+
+# 81. PINNED TAB + MOBILE + OWNER PRIVACY + CROSS-LINK DATA RULE (PERMANENT)
+
+Invoice-status navigation is pinned and never removed; denied users see an in-tab access
+message rather than a flashing/disappearing tab. Android/iOS portrait and landscape must
+keep all controls and form/list switches inside viewport. Navigation links must request
+real directions to the destination via provider universal links. A scientific rep sees
+only records owned by their repId or exact repName unless an explicit all-reps permission
+is true; ownerless records never leak. Existing CRM_APP_STATE_V2 is always authoritative
+and never remotely overwritten. Only a completely empty new browser origin may bootstrap
+once from the same backend. Bulk Excel data must mirror through `/api/bulk` and persistent
+runtime storage; user-data and user-bulk-data remain excluded from Git/ZIP. Persistent disk
+configuration is required for server-side survival across deploys.

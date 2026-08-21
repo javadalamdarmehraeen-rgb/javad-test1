@@ -12,6 +12,8 @@ const data = read('../public/crm-data.js');
 const app = read('../public/crm-app.js');
 const v19 = read('../public/crm-features-v19.js');
 const sw = read('../public/sw.js');
+const server = read('../server.js');
+const gitignore = read('../.gitignore');
 
 function extract(name) {
   const start=v20.indexOf(`function ${name}(`), brace=v20.indexOf('{',start);let depth=0,end=brace;
@@ -75,7 +77,7 @@ test('invoice-status tab, filters, columns, details and permissions are complete
   assert.match(v20,/function invoiceStatusDetailRows/);
   assert.match(v20,/invoiceStatusBaseCache\|\|\(invoiceStatusBaseCache=buildInvoiceStatusMatches\(\)\)/);
   assert.match(v20,/تعداد کالای فاکتور شده/);
-  assert.match(v20,/toggle\("tab-distributor-invoice-status",manager\|\|perms\.dist_invoice_status_access!==false\)/);
+  assert.match(v20,/toggle\("tab-distributor-invoice-status",true\)/);
 });
 
 test('invoice-status fuzzy name, location and ±3-day matching work on representative fixtures', () => {
@@ -135,10 +137,13 @@ test('invoice tab visibility is reversible and current user resolves by persiste
   assert.match(v20,/if\(pane\)pane\.style\.display=allow\?"":"none"/);
   assert.match(v20,/function v20CurrentUser\(\)/);
   assert.match(v20,/crmUserId/);
-  assert.match(v20,/perms\.dist_invoice_status_access!==false/);
+  assert.match(v20,/invoiceAllowed=permissionAllowed\(perms,"dist_invoice_status_access",manager\)/);
   assert.doesNotMatch(v11,/hideTab\("tab-distributor-invoice-status", "dist_invoice_status_access"\)/);
   assert.match(v20,/function migrateInvoicePermissionOnce/);
+  assert.match(v20,/invoiceStatusPermissionV1130/);
   assert.match(v20,/u\.permissions\.dist_invoice_status_access=true/);
+  assert.match(v20,/pinned=id===\"tab-distributor-invoice-status\"/);
+  assert.match(v20,/invoiceStatusAccessNotice/);
 });
 
 test('permissions page uses exact real tab names without legacy version groups', () => {
@@ -180,14 +185,48 @@ test('gray dependency styling leaves labels unchanged and grays field plus check
   assert.match(v20,/\.v20-grey-zone input:not\(\[type=checkbox\]\),\.v20-grey-zone select/);
 });
 
+test('mobile portrait and landscape keep buttons and form/list switch inside viewport', () => {
+  assert.match(v20,/@media\(max-width:950px\)/);
+  assert.match(v20,/@media\(max-width:950px\) and \(orientation:landscape\)/);
+  for(const id of ['btnShowPhForm','btnShowPhList','btnShowDocForm','btnShowDocList','btnShowOrdForm','btnShowOrdList']) assert.ok(v20.includes(`#${id}`),`mobile CSS missing ${id}`);
+  assert.match(v20,/flex:1 1 calc\(50% - 6px\)!important/);
+  assert.match(v20,/overflow-wrap:anywhere!important/);
+});
+
+test('navigation links request real driving directions and universal installed-app opening', () => {
+  assert.match(app,/https:\/\/nshn\.ir\/maps\?destination=\$\{lat\},\$\{lng\}&type=drive/);
+  assert.match(app,/https:\/\/balad\.ir\/directions\/driving\?destination=\$\{lng\}%2C\$\{lat\}/);
+  assert.match(app,/google\.com\/maps\/dir\/\?api=1&destination=\$\{lat\},\$\{lng\}.*dir_action=navigate/);
+  assert.match(app,/waze\.com\/ul\?ll=\$\{lat\},\$\{lng\}&navigate=yes/);
+  assert.match(app,/window\.location\.assign\(urls\[provider\]\)/);
+  assert.doesNotMatch(app,/neshan\.org\/maps\/@/);
+});
+
+test('scientific representative data is strictly owner-scoped unless all-reps permission is true', () => {
+  assert.match(v9,/function currentSessionUserV9/);assert.match(v9,/function ownedByCurrent/);assert.match(v9,/function canSeeAll/);
+  assert.match(v9,/canSeeAll\("ph_all_reps"\)\?list:list\.filter\(ownedByCurrent\)/);
+  assert.match(v9,/canSeeAll\("doc_all_reps"\)\?list:list\.filter\(ownedByCurrent\)/);
+  assert.match(v9,/canSeeAll\("ord_all_reps"\)\?list:list\.filter\(ownedByCurrent\)/);
+  assert.doesNotMatch(v9,/return !p\.repName \|\| p\.repName === currentRepName\(\)/);
+  assert.match(v9,/repId: currentRepId\(\)/);assert.match(v9,/repId: userIdForRep/);
+});
+
+test('empty new origin safely bootstraps shared state and bulk data without overwriting existing local state', () => {
+  assert.match(v20,/function bootstrapEmptyOriginFromServer/);assert.match(v20,/window\.__CRM_HAD_SAVED_STATE!==false/);
+  assert.match(v20,/fetch\("\/api\/state",\{cache:"no-store"\}\)/);assert.match(v20,/localStorage\.setItem\("CRM_APP_STATE_V2"/);
+  assert.match(v20,/function bindOriginSaveGate/);assert.match(v20,/fetch\("\/api\/bulk"/);assert.match(v20,/fetchServerBulk/);
+  assert.match(server,/USER_BULK_PATH/);assert.match(server,/pathname === "\/api\/bulk" && req\.method === "GET"/);assert.match(server,/64 \* 1024 \* 1024/);
+  assert.match(gitignore,/user-bulk-data\.json/);
+});
+
 test('distributor Excel writes Persian month name while keeping all digits Latin', () => {
   const ctx={result:null,enDigits:v=>String(v),distFilter:()=>({mode:'month',year:'1405',month:'05'})};vm.createContext(ctx);vm.runInContext(`${extract('jalaliMonthName')};${extract('periodRows')};result=periodRows()`,ctx);assert.deepEqual(JSON.parse(JSON.stringify(ctx.result)),[['سال','1405'],['ماه','مرداد']]);
-  assert.match(v20,/installLatinNumberLaw\(\);bindManagerLayoutIntent/);
+  assert.match(v20,/installLatinNumberLaw\(\);bindOriginSaveGate\(\);bindManagerLayoutIntent/);
   assert.match(v20,/Date\.prototype\[name\]=function\(\)/);
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.29\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.30\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);

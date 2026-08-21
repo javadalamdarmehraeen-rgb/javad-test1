@@ -1381,3 +1381,17 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] بروزرسانی گراف/chat/همه آرشیوها
 - [x] ۳۸/۳۸ تست
 - [ ] تأیید تب و ارقام روی مرورگر واقعی کاربر
+## ۷۱) نسخه ۱۱.۳۰.۰
+- [x] pin دائمی تب وضعیت فاکتور + پیام عدم دسترسی داخل تب
+- [x] مهاجرت دسترسی V1130
+- [x] واکنش‌گرایی portrait/landscape تا 950px
+- [x] کلیدهای فرم/لیست داخل viewport
+- [x] لینک مسیریابی واقعی نشان/بلد/Google/Waze
+- [x] حریم داده نماینده بر اساس مالکیت و مجوز all-reps
+- [x] ثبت repId در رکوردهای جدید
+- [x] bootstrap امن فقط برای origin کاملاً خالی
+- [x] endpoint و فایل پایدار bulk برای Excel بین لینک‌ها
+- [x] پشتیبانی CRM_DATA_DIR و /var/data
+- [x] ۴۳/۴۳ تست شامل API bulk round-trip
+- [ ] تنظیم Persistent Disk واقعی Render و CRM_DATA_DIR توسط کاربر
+- [ ] تأیید Android/iOS و universal links روی گوشی واقعی

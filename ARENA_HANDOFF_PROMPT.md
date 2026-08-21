@@ -1247,3 +1247,10 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Preserve fresh V1129 one-time permission repair.
 - Latin-number law must bind synchronously and cover Number/Date/DOM option/placeholder/title while never altering passwords.
 - Distributor Excel month metadata must be Persian month name, not numeric month.
+## افزونه تحویل نسخه ۱۱.۳۰.۰
+- Never hide/remove invoice-status nav. Denial is shown inside pinned tab; keep V1130 one-time repair.
+- Preserve <=950 portrait/landscape mobile rules and in-viewport form/list buttons.
+- Navigation must use real directions universal URLs, never provider home/location/download pages.
+- Scientific reps may only see repId/exact repName-owned records unless explicit all-reps permission; ownerless data must not leak.
+- Current local state still wins. Remote GET is allowed only when the browser origin has no CRM_APP_STATE_V2 at all.
+- Preserve `/api/bulk`, user-bulk-data.json gitignore/ZIP exclusion, 64MB limit, server hydrate and persistent disk directory support.
