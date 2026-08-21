@@ -1126,3 +1126,10 @@ Then change only what is requested.
 - `invoiceStatusDetailRows`: canonical product union with order/invoice quantity, gift and signed deltas.
 - `invoiceStatusBaseCache`: heavy reconciliation once per tab entry/import; interactive filters reuse it.
 - UI: `tab-distributor-invoice-status`, single-row gray-chain filters, live search, result table and dynamic detail modal.
+## معماری افزوده v11.26.0 — Global option registry / all-grid lock / PWA lifecycle
+- Registry: `state.settings.globalFieldOptions[semanticLabel] = {values:[{value,text}], hidden:[], initialized}`.
+- Semantic keys include pharmacy, scientific representative, year, month, province, city, district; all other fields use normalized exact labels.
+- DOM select/datalist and `state.customFields[*].options` are projections of the same registry.
+- Incremental MutationObserver hydrates newly rendered/created dropdowns; ordinary selection does not save when the option already exists.
+- Layout lock keys every lockable grid by grid ID, form ID or pane/index and restores after delayed mutations.
+- SW lifecycle is versioned registration → update → ready → skipWaiting → clients.claim/controllerchange.

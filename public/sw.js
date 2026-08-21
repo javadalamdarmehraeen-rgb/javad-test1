@@ -1,4 +1,4 @@
-const CACHE = "ttt-v11.25.0";
+const CACHE = "ttt-v11.26.0";
 const PRECACHE = ["/", "/login", "/favicon.png", "/logo.png", "/vendor/leaflet.js", "/vendor/leaflet.css"];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(PRECACHE).catch(function () {}); }).then(function () { return self.skipWaiting(); }));
@@ -7,6 +7,9 @@ self.addEventListener("activate", function (e) {
   e.waitUntil(caches.keys().then(function (keys) {
     return Promise.all(keys.filter(function (k) { return k !== CACHE; }).map(function (k) { return caches.delete(k); }));
   }).then(function () { return self.clients.claim(); }));
+});
+self.addEventListener("message", function (e) {
+  if (e.data === "skipWaiting") self.skipWaiting();
 });
 self.addEventListener("fetch", function (e) {
   var u = new URL(e.request.url);

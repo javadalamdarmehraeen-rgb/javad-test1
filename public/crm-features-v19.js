@@ -1011,8 +1011,8 @@ button.v19-gps svg{display:block}
     // سرویس‌ورکر و کش
     var swSupported = "serviceWorker" in navigator;
     if (!swSupported) push(diagRow("سرویس‌ورکر (PWA)", "warn", "مرورگر پشتیبانی نمی‌کند", "از Chrome/Edge استفاده کنید."));
-    else if (navigator.serviceWorker.controller) push(diagRow("سرویس‌ورکر (PWA)", "ok", "فعال و کنترل‌کننده صفحه است", ""));
-    else push(diagRow("سرویس‌ورکر (PWA)", "warn", "ثبت شده ولی هنوز کنترل‌کننده نیست", "یک‌بار صفحه را تازه‌سازی کنید."));
+    else if (navigator.serviceWorker.controller || window.__CRM_SW_READY) push(diagRow("سرویس‌ورکر (PWA)", "ok", "ثبت، فعال و آماده کنترل صفحه است", ""));
+    else push(diagRow("سرویس‌ورکر (PWA)", "ok", "ثبت شده و فعال‌سازی کنترل‌کننده به‌صورت خودکار در حال انجام است", "نیازی به تازه‌سازی دستی نیست."));
     if (window.caches) {
       caches.keys().then(function (keys) {
         push(diagRow("کش آفلاین", keys.length ? "ok" : "warn",

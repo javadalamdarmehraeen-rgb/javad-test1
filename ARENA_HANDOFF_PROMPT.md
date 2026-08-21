@@ -1219,3 +1219,10 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Detail rows compare order qty/gift with invoice qty/gift by canonical product.
 - Keep invoiceStatusBaseCache so live search never rescans all distributor rows per keystroke.
 - New permission keys begin `dist_invoice_status_` and must stay in permission UI.
+## افزونه تحویل نسخه ۱۱.۲۶.۰
+- Never restore per-ID-only option behavior. Same semantic label means one global option registry across DOM and custom fields.
+- Deletion must persist in registry `hidden` so static markup cannot re-add it after rerender.
+- New same-label dropdowns must hydrate immediately from global options.
+- DOM order lock covers every tab form-grid; do not return to four-form-only lock or call full layout from pharmacy→order mirror.
+- Invoice tab visibility must be reversible; missing new permission inherits existing distributor-sales permission.
+- PWA must activate automatically; diagnostics must not tell users to refresh repeatedly.

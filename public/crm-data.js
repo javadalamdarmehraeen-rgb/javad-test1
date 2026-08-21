@@ -499,6 +499,14 @@ const PERMISSION_GROUPS = {
     { key: "dist_invoice_status_match", label: "تطبیق نام و استان و شهر و منطقه داروخانه" },
     { key: "dist_invoice_status_date_window", label: "تطبیق تاریخ فاکتور در بازه سه روز قبل و بعد سفارش" },
     { key: "dist_invoice_status_details", label: "مشاهده جزئیات تعداد و جایزه سفارش و فاکتور" }
+  ],
+  "یکسان‌سازی سراسری (نسخه ۱۱.۲۶)": [
+    { key: "sys_global_same_label_options", label: "یکسان‌سازی گزینه‌های فیلدهای هم‌نام در کل برنامه" },
+    { key: "sys_global_option_add", label: "افزودن گزینه هم‌زمان به همه فیلدهای هم‌نام" },
+    { key: "sys_global_option_edit", label: "ویرایش گزینه هم‌زمان در همه فیلدهای هم‌نام" },
+    { key: "sys_global_option_delete", label: "حذف گزینه هم‌زمان از همه فیلدهای هم‌نام" },
+    { key: "sys_global_layout_lock", label: "قفل جای فیلدها در تمام تب‌ها" },
+    { key: "sys_auto_pwa_control", label: "فعال‌سازی خودکار سرویس‌ورکر بدون رفرش دستی" }
   ]
 };
 

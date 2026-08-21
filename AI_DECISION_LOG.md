@@ -1484,3 +1484,10 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - Only matched invoices appear; unmatched orders are intentionally absent.
 - Invoice details aggregate rows by canonical master product and compare ordered/invoiced quantity and gift with signed differences.
 - Base matches are cached per tab entry so live text filtering does not rescan IndexedDB-sized rows.
+## تصمیم ۷۹ — نسخه ۱۱.۲۶.۰: Option registry سراسری، قفل همه تب‌ها و PWA خودکنترل (2026-08-21)
+- `settings.globalFieldOptions` is the single option registry keyed by semantic label; hidden values prevent deleted static options from returning after rerender.
+- Add/rename/delete propagates to all matching DOM selects/datalists and all matching customFields.
+- New same-label fields are hydrated from the registry; pharmacy/users/year/month can seed initial canonical options.
+- Layout lock enumerates every tab `.form-grid`, restores each independently, and observes delayed legacy form-group insertions.
+- Invoice tab visibility now clears stale inline `display:none`; missing new permission inherits prior dist-sales access.
+- PWA registration is cache-bypassed/versioned and activation is automatic, with no manual-refresh diagnostic loop.

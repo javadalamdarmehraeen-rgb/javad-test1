@@ -879,3 +879,5 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 در پایان هر چت، فایل ZIP کامل آخرین نسخه باید با present_file کنار صفحه نمایش داده شود و دستورات آماده PowerShell نیز در پاسخ نوشته شود.
 ## افزونه وضعیت نسخه ۱۱.۲۵.۰
 نسخه فعال 11.25.0 است. تب tab-distributor-invoice-status سفارش‌ها را با گروه فاکتورهای pharmacyRows چهار پخش تطبیق می‌دهد. شرط‌ها: نام fuzzy token/substring، استان، شهر، منطقه و invoice day در order day ±3. جزئیات بر اساس canonical product، qty و gift را تجمیع می‌کند. نتیجه پایه در invoiceStatusBaseCache نگه داشته می‌شود و فیلترهای نماینده/سال/ماه/بازه/search روی cache کار می‌کنند.
+## افزونه وضعیت نسخه ۱۱.۲۶.۰
+نسخه فعال 11.26.0 است. `settings.globalFieldOptions` منبع واحد گزینه‌های semantic label است و hidden optionها مانع بازگشت حذف‌ها می‌شوند. DOM/customFields هم‌نام با add/edit/delete یکپارچه می‌شوند. قفل DOM تمام `.tab-pane .form-grid`ها را پوشش می‌دهد. invoice-status display برگشت‌پذیر و permission آن backward-compatible است. SW از `/sw.js?v=11.26.0` با updateViaCache none، ready، skipWaiting و claim فعال می‌شود.

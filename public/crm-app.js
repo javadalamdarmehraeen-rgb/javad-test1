@@ -2951,15 +2951,22 @@ function downloadCSVFile(filename, headers, rows) {
 // 17. ثبت سرویس‌ورکر (PWA Service Worker Registration)
 // ----------------------------------------------------------------------------
 function setupPWAServiceWorker() {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js')
-      .then(reg => {
-        console.log('✅ سرویس‌ورکر PWA با موفقیت ثبت شد.');
-      })
-      .catch(err => {
-        console.warn('عدم ثبت سرویس‌ورکر در محیط تستی:', err);
-      });
-  }
+  if (!('serviceWorker' in navigator)) return;
+  const markReady = () => { window.__CRM_SW_READY = true; };
+  navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
+  navigator.serviceWorker.register('/sw.js?v=11.26.0', { scope: '/', updateViaCache: 'none' })
+    .then(async reg => {
+      try { await reg.update(); } catch (e) {}
+      const ready = await navigator.serviceWorker.ready;
+      const worker = ready.active || ready.waiting || ready.installing;
+      if (worker) worker.postMessage('skipWaiting');
+      if (navigator.serviceWorker.controller || ready.active) markReady();
+      console.log('✅ سرویس‌ورکر PWA ثبت و فعال شد.');
+    })
+    .catch(err => {
+      window.__CRM_SW_READY = false;
+      console.warn('عدم ثبت سرویس‌ورکر در محیط تستی:', err);
+    });
 }
 
 // ----------------------------------------------------------------------------

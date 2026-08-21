@@ -9,6 +9,9 @@ const v11 = read('../public/crm-features-v11.js');
 const v20 = read('../public/crm-features-v20.js');
 const html = read('../public/index.html');
 const data = read('../public/crm-data.js');
+const app = read('../public/crm-app.js');
+const v19 = read('../public/crm-features-v19.js');
+const sw = read('../public/sw.js');
 
 function extract(name) {
   const start=v20.indexOf(`function ${name}(`), brace=v20.indexOf('{',start);let depth=0,end=brace;
@@ -72,7 +75,7 @@ test('invoice-status tab, filters, columns, details and permissions are complete
   assert.match(v20,/function invoiceStatusDetailRows/);
   assert.match(v20,/invoiceStatusBaseCache\|\|\(invoiceStatusBaseCache=buildInvoiceStatusMatches\(\)\)/);
   assert.match(v20,/تعداد کالای فاکتور شده/);
-  assert.match(v20,/toggle\("tab-distributor-invoice-status",manager\|\|perms\.dist_invoice_status_access===true\)/);
+  assert.match(v20,/toggle\("tab-distributor-invoice-status",manager\|\|perms\.dist_invoice_status_access===true\|\|\(perms\.dist_invoice_status_access==null&&perms\.dist_sales_access!==false\)\)/);
 });
 
 test('invoice-status fuzzy name, location and ±3-day matching work on representative fixtures', () => {
@@ -95,6 +98,48 @@ test('invoice detail comparison reports ordered, gifted, invoiced and signed dif
   const ctx={result:null,norm:v=>String(v||'').replace(/\s+/g,''),snappNumber:v=>Number(v)||0,findKnownCodeInRow:()=>'',canonicalProduct:raw=>raw};vm.createContext(ctx);
   vm.runInContext(`${extract('invoiceStatusDetailRows')};result=invoiceStatusDetailRows({items:[{name:'امگا 3',count:10,giftCount:2}]},{distId:'other',schema:{code:-1,product:0,qty:1,giftQty:2},rows:[['امگا 3',8,1]]})`,ctx);
   assert.equal(ctx.result[0].orderQty,10);assert.equal(ctx.result[0].invoiceQty,8);assert.equal(ctx.result[0].qtyDiff,-2);assert.equal(ctx.result[0].giftDiff,-1);
+});
+
+test('same-label dropdown options use one global source for add, rename, delete and new fields', () => {
+  for (const fn of ['globalFieldKey','globalOptionState','seedGlobalOptions','applyGlobalOptionKey','globalOptionChange','setupGlobalFieldOptions']) assert.match(v20,new RegExp(`function ${fn}\\(`));
+  assert.match(v20,/settings\.globalFieldOptions/);
+  assert.match(v20,/globalOptionChange\(storeId,"add"/);
+  assert.match(v20,/globalOptionChange\(storeId,"delete"/);
+  assert.match(v20,/globalOptionChange\(storeId,"rename"/);
+  assert.match(v20,/globalCustomFields\(key\)\.forEach\(function\(f\)\{f\.options=/);
+  assert.match(v20,/setupGlobalFieldOptions\(\)/);
+  for (const key of ['sys_global_same_label_options','sys_global_option_add','sys_global_option_edit','sys_global_option_delete','sys_global_layout_lock','sys_auto_pwa_control']) assert.ok(data.includes(key),`missing permission ${key}`);
+  const ctx={result:null,faLabel:()=>'',norm:v=>String(v||'').replace(/\s+/g,'')};vm.createContext(ctx);vm.runInContext(`${extract('globalFieldKey')};result=globalFieldKey`,ctx);
+  assert.equal(ctx.result(null,'نام داروخانه'),'داروخانه');assert.equal(ctx.result(null,'نماینده علمی'),'نمایندهعلمی');assert.equal(ctx.result(null,'سال گزارش'),'سال');assert.equal(ctx.result(null,'ماه'),'ماه');
+  const rec={values:[{value:'فروردین',text:'فروردین'}],hidden:[],initialized:true},fields=[{label:'ماه',options:[]},{label:'ماه',options:['قدیمی']}];
+  const c2={result:null,globalOptionBusy:false,seedGlobalOptions:()=>rec,globalCustomFields:()=>fields,globalOptionElements:()=>[],norm:v=>String(v||'').replace(/\s+/g,''),mergeGlobalOption:(list,item)=>{if(!list.some(x=>x.value===item.value))list.push(item);}};vm.createContext(c2);vm.runInContext(`${extract('applyGlobalOptionKey')};applyGlobalOptionKey('ماه');result=globalCustomFields('ماه')`,c2);assert.deepEqual(JSON.parse(JSON.stringify(c2.result.map(x=>x.options))),[['فروردین'],['فروردین']]);
+  let applied=0,saved=0;const c3={result:null,JSON,norm:v=>String(v||''),$:()=>({}),globalFieldKey:()=> 'ماه',seedGlobalOptions:()=>rec,applyGlobalOptionKey:()=>applied++,save:()=>saved++,mergeGlobalOption:(list,item)=>{if(!list.some(x=>x.value===item.value))list.push(item);}};vm.createContext(c3);vm.runInContext(`${extract('globalOptionChange')};globalOptionChange('month','add','','اردیبهشت');globalOptionChange('month','delete','فروردین','');result=true`,c3);assert.equal(rec.values.some(x=>x.value==='اردیبهشت'),true);assert.equal(rec.hidden.includes('فروردین'),true);assert.equal(applied,2);assert.equal(saved,2);
+});
+
+test('layout lock covers every tab grid and order mirror no longer invokes destructive layout', () => {
+  assert.match(v20,/document\.querySelectorAll\("\.tab-pane \.form-grid"\)/);
+  assert.match(v20,/function gridLockKey/);
+  assert.match(v20,/new MutationObserver\(function\(records\)/);
+  assert.doesNotMatch(v20,/DOM_FORMS=\[/);
+  const mirror=v20.slice(v20.indexOf('function mirrorPharmacyFieldsToOrder'),v20.indexOf('function mergeSameNameFieldInfo'));
+  assert.doesNotMatch(mirror,/applyFullFormLayout/);
+  assert.match(mirror,/restoreDomFieldOrder\(\);captureDomFieldOrder\(\)/);
+});
+
+test('invoice tab visibility is reversible and old users inherit distributor access', () => {
+  assert.match(v20,/if\(pane\)pane\.style\.display=allow\?"":"none"/);
+  assert.match(v20,/perms\.dist_invoice_status_access==null&&perms\.dist_sales_access!==false/);
+  assert.match(v11,/hideTab\("tab-distributor-invoice-status", "dist_invoice_status_access"\)/);
+});
+
+test('PWA activation is automatic and diagnostics never request manual refresh', () => {
+  assert.match(app,/register\('\/sw\.js\?v=11\.26\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/navigator\.serviceWorker\.ready/);
+  assert.match(app,/postMessage\('skipWaiting'\)/);
+  assert.match(sw,/self\.clients\.claim\(\)/);
+  assert.match(sw,/e\.data === "skipWaiting"/);
+  assert.doesNotMatch(v19,/یک‌بار صفحه را تازه‌سازی کنید/);
+  assert.match(v19,/نیازی به تازه‌سازی دستی نیست/);
 });
 
 test('GPS quality rule remains stable and full address parts stay Iran-first without postcode', () => {

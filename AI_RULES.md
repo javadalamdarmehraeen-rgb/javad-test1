@@ -1420,3 +1420,15 @@ columns or row text). Details must aggregate canonical products and show ordered
 quantity/gift, invoiced quantity/gift, and signed differences. Live search must
 filter a cached reconciliation result and must not rescan all bulk rows per keypress.
 Every capability remains permission-controlled via `dist_invoice_status_*`.
+
+# 77. GLOBAL SAME-LABEL + ALL-TAB LOCK + PWA RULE (PERMANENT)
+
+Dropdowns with the same semantic label share one global source of options throughout
+the program. Add, rename, and delete must propagate to every matching select/datalist
+and custom field; deleted static values must stay hidden after rerender, and a newly
+created same-label dropdown must never start empty when global values exist. Layout
+order locking applies to every tab form-grid, not selected forms only; legacy renderers
+may not override it unless the manager explicitly changes that tab. New permission
+keys must be backward-compatible and must not make a newly delivered tab flash then
+disappear. PWA activation is automatic via versioned no-cache registration,
+skipWaiting, and clients.claim; diagnostics must not require endless manual refresh.

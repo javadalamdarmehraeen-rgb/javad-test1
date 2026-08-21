@@ -269,11 +269,44 @@
     return out;
   }
 
+  /* ---------- ۴-ب) منبع یکپارچه گزینه‌ها بر اساس نام لیبل در کل برنامه ---------- */
+  var globalOptionBusy=false,globalOptionObserverBound=false;
+  function globalFieldKey(el,label){
+    var l=String(label||faLabel(el,el&&el.closest&&el.closest('.tab-pane'))||"").trim(),n=norm(l);if(!n)return"";
+    if(/داروخانه/.test(l))return"داروخانه";if(/نماینده/.test(l))return"نمایندهعلمی";if(/استان/.test(l))return"استان";if(/شهر/.test(l))return"شهر";if(/منطقه|ناحیه/.test(l))return"منطقه";if(/سال/.test(l))return"سال";if(/ماه/.test(l))return"ماه";return"label:"+n;
+  }
+  function globalOptionState(){var S=st();if(!S)return{};S.settings=S.settings||{};S.settings.globalFieldOptions=S.settings.globalFieldOptions||{};return S.settings.globalFieldOptions;}
+  function globalOptionElements(){return Array.prototype.slice.call(document.querySelectorAll("select[id],input[list][id]")).filter(function(el){return!el.closest("#columnsDesignerHost,#manualDesignCanvas,#addTabPanel,.modal-overlay")&&!/^jalali/.test(el.id||"");});}
+  function globalElementOptions(el){var out=[],src=el.tagName==="SELECT"?el.options:((el.getAttribute("list")&&$(el.getAttribute("list")))||{}).options||[];Array.prototype.forEach.call(src,function(o){var v=String(o.value==null?"":o.value),t=String(o.textContent||v);if(v)out.push({value:v,text:t||v});});return out;}
+  function globalCustomFields(key){var out=[],S=st();Object.keys((S&&S.customFields)||{}).forEach(function(entity){(S.customFields[entity]||[]).forEach(function(f){if(f&&!f.deleted&&globalFieldKey(null,f.label)===key)out.push(f);});});return out;}
+  function mergeGlobalOption(list,item){if(!item||!String(item.value||"").trim())return;var v=String(item.value).trim(),at=list.findIndex(function(x){return norm(x.value)===norm(v);});if(at<0)list.push({value:v,text:String(item.text||v)});else if(!list[at].text)list[at].text=String(item.text||v);}
+  function seedGlobalOptions(key){
+    var store=globalOptionState(),rec=store[key];if(rec&&rec.initialized)return rec;rec=store[key]||(store[key]={values:[],hidden:[],initialized:true});rec.values=(rec.values||[]).map(function(x){return typeof x==="string"?{value:x,text:x}:x;});
+    globalOptionElements().forEach(function(el){if(globalFieldKey(el)===key)globalElementOptions(el).forEach(function(x){mergeGlobalOption(rec.values,x);});});globalCustomFields(key).forEach(function(f){(f.options||[]).forEach(function(v){mergeGlobalOption(rec.values,{value:v,text:v});});});
+    var S=st()||{};if(key==="داروخانه")(S.pharmacies||[]).forEach(function(p){mergeGlobalOption(rec.values,{value:p.name,text:p.name});});if(key==="نمایندهعلمی")(S.users||[]).forEach(function(u){if(u.fullName&&!/مدیر سیستم/.test(u.fullName))mergeGlobalOption(rec.values,{value:u.fullName,text:u.fullName});});
+    if(key==="سال"&&!rec.values.length){var y=Number((window.CRMJalali&&CRMJalali.jalaliTodayStr&&CRMJalali.jalaliTodayStr().slice(0,4))||1405);for(var i=y-8;i<=y+4;i++)mergeGlobalOption(rec.values,{value:String(i),text:String(i)});}
+    if(key==="ماه"&&!rec.values.length){["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند"].forEach(function(t,i){mergeGlobalOption(rec.values,{value:String(i+1).padStart(2,"0"),text:t});});}
+    return rec;
+  }
+  function applyGlobalOptionKey(key){
+    var rec=seedGlobalOptions(key),hidden=(rec.hidden||[]).map(norm),vals=(rec.values||[]).filter(function(x){return hidden.indexOf(norm(x.value))<0;});globalOptionBusy=true;
+    globalCustomFields(key).forEach(function(f){f.options=vals.map(function(x){return x.value;});});
+    globalOptionElements().forEach(function(el){if(globalFieldKey(el)!==key)return;var current=String(el.value||"");if(el.tagName==="SELECT"){var placeholder=null;Array.prototype.forEach.call(el.options,function(o){if(!String(o.value||"")&&!placeholder)placeholder={value:"",text:o.textContent||"انتخاب کنید..."};});el.innerHTML="";if(placeholder){var p=document.createElement("option");p.value="";p.textContent=placeholder.text;el.appendChild(p);}vals.forEach(function(x){var o=document.createElement("option");o.value=x.value;o.textContent=x.text||x.value;el.appendChild(o);});el.value=current;}else{var dl=$(el.getAttribute("list"));if(dl){dl.innerHTML="";vals.forEach(function(x){var o=document.createElement("option");o.value=x.value;dl.appendChild(o);});}}
+    });globalOptionBusy=false;
+  }
+  function applyGlobalFieldOptions(root){var keys={};(root&&root.querySelectorAll?Array.prototype.slice.call(root.querySelectorAll("select[id],input[list][id]")):globalOptionElements()).forEach(function(el){var k=globalFieldKey(el);if(k)keys[k]=1;});Object.keys(keys).forEach(applyGlobalOptionKey);}
+  function globalOptionChange(storeId,action,oldV,newV){var el=$(storeId),key=globalFieldKey(el);if(!key)return;var rec=seedGlobalOptions(key);rec.hidden=rec.hidden||[];var before=JSON.stringify(rec);if(action==="delete"){rec.values=(rec.values||[]).filter(function(x){return norm(x.value)!==norm(oldV);});if(rec.hidden.map(norm).indexOf(norm(oldV))<0)rec.hidden.push(oldV);}else if(action==="rename"){rec.values=(rec.values||[]).filter(function(x){return norm(x.value)!==norm(oldV);});if(rec.hidden.map(norm).indexOf(norm(oldV))<0)rec.hidden.push(oldV);rec.hidden=rec.hidden.filter(function(x){return norm(x)!==norm(newV);});mergeGlobalOption(rec.values,{value:newV,text:newV});}else{rec.hidden=rec.hidden.filter(function(x){return norm(x)!==norm(newV);});mergeGlobalOption(rec.values,{value:newV,text:newV});}if(JSON.stringify(rec)===before)return;applyGlobalOptionKey(key);save();}
+  function setupGlobalFieldOptions(){
+    applyGlobalFieldOptions(document);if(globalOptionObserverBound||!window.MutationObserver)return;globalOptionObserverBound=true;var timer;new MutationObserver(function(records){if(globalOptionBusy)return;var needs=false;records.forEach(function(r){Array.prototype.forEach.call(r.addedNodes||[],function(n){if(n.nodeType===1&&(n.matches&&n.matches("select,input[list]")||n.querySelector&&n.querySelector("select,input[list]")))needs=true;});});if(needs){clearTimeout(timer);timer=setTimeout(function(){applyGlobalFieldOptions(document);},80);}}).observe(document.body,{childList:true,subtree:true});
+    document.addEventListener("change",function(e){var el=e.target;if(!el||!(el.matches&&el.matches("select[id],input[list][id]"))||!String(el.value||"").trim())return;globalOptionChange(el.id,"add","",el.value);},true);
+  }
+
   function persistAdd(storeId, val) {
     var S = st(); if (!S) return;
     S.selectExtraOptions = S.selectExtraOptions || {};
     S.selectExtraOptions[storeId] = S.selectExtraOptions[storeId] || [];
-    if (S.selectExtraOptions[storeId].indexOf(val) === -1) { S.selectExtraOptions[storeId].push(val); save(); }
+    if (S.selectExtraOptions[storeId].indexOf(val) === -1) S.selectExtraOptions[storeId].push(val);
+    globalOptionChange(storeId,"add","",val);save();
   }
   function persistRemove(storeId, val) {
     var S = st(); if (!S) return;
@@ -282,7 +315,7 @@
     S.v20HiddenOptions = S.v20HiddenOptions || {};
     S.v20HiddenOptions[storeId] = S.v20HiddenOptions[storeId] || [];
     if (S.v20HiddenOptions[storeId].indexOf(val) === -1) S.v20HiddenOptions[storeId].push(val);
-    save();
+    globalOptionChange(storeId,"delete",val,"");save();
   }
   function persistRename(storeId, oldV, newV) {
     var S = st(); if (!S) return;
@@ -293,7 +326,7 @@
       S.v20Renames[storeId] = S.v20Renames[storeId] || {};
       S.v20Renames[storeId][oldV] = newV;
     }
-    save();
+    globalOptionChange(storeId,"rename",oldV,newV);save();
   }
 
   function optionRowsHtml(entry) {
@@ -594,12 +627,13 @@
     if (moved) {
       save();
       log("همگام فیلد داروخانه→سفارش: " + moved + " فیلد");
-      try { if (typeof window.applyFullFormLayout === "function") window.applyFullFormLayout("tab-orders"); } catch (e) {}
+      // افزودن فیلد نباید موتور مخرب چیدمان را اجرا کند؛ فقط همان بخش رسم و قفل جهانی بازگردانی می‌شود.
       try { if (typeof window.renderExtraTabCustomFields === "function") window.renderExtraTabCustomFields("order"); } catch (e) {}
+      setTimeout(function(){try{restoreDomFieldOrder();captureDomFieldOrder();}catch(e){}},20);
     }
     if (boot) S._v20MirrorBoot = true;
   }
-  function mergeSameNameFieldInfo(){var S=st(),key=v20PaneEntity(),arr=((S.customFields||{})[key]||[]),fresh=arr[arr.length-1];if(!fresh||!fresh.label)return;Object.keys(S.customFields||{}).forEach(function(k){((S.customFields[k])||[]).forEach(function(f){if(!f||f===fresh||norm(f.label)!==norm(fresh.label))return;fresh.options=Array.from(new Set((fresh.options||[]).concat(f.options||[])));if(!fresh.dependsOn&&f.dependsOn)fresh.dependsOn=f.dependsOn;if(!fresh.type&&f.type)fresh.type=f.type;});});save();}
+  function mergeSameNameFieldInfo(){var S=st(),entity=v20PaneEntity(),arr=((S.customFields||{})[entity]||[]),fresh=arr[arr.length-1];if(!fresh||!fresh.label)return;var key=globalFieldKey(null,fresh.label),rec=seedGlobalOptions(key);(fresh.options||[]).forEach(function(v){mergeGlobalOption(rec.values,{value:v,text:v});});Object.keys(S.customFields||{}).forEach(function(k){((S.customFields[k])||[]).forEach(function(f){if(!f||f===fresh||globalFieldKey(null,f.label)!==key)return;if(!fresh.dependsOn&&f.dependsOn)fresh.dependsOn=f.dependsOn;if(!fresh.type&&f.type)fresh.type=f.type;});});applyGlobalOptionKey(key);save();}
   function bindMirror() {
     document.addEventListener("click", function (e) {
       var t = e.target;
@@ -634,7 +668,7 @@
             });
             if (target) od.call(this, "order", target);
             setTimeout(function () {
-              try { if (typeof window.applyFullFormLayout === "function") window.applyFullFormLayout("tab-orders"); } catch (e) {}
+              try { if (typeof window.renderExtraTabCustomFields === "function") window.renderExtraTabCustomFields("order"); restoreDomFieldOrder(); captureDomFieldOrder(); } catch (e) {}
             }, 80);
           }
         } catch (e2) {}
@@ -1029,7 +1063,7 @@
   }
   function runtimeVersion(){
     var s=document.querySelector('script[src*="crm-features-v20.js"]'),src=s&&s.getAttribute('src')||"",m=src.match(/[?&]v=([^&]+)/);
-    return m?decodeURIComponent(m[1]):"11.25.0";
+    return m?decodeURIComponent(m[1]):"11.26.0";
   }
   function renderVersionBadge() {
     var b = $("v20VersionBadge"), actions = document.querySelector(".header-actions"); if (!actions) return;
@@ -1234,7 +1268,7 @@
   function enhanceLiveLocation(){var sel=$("liveRepSearchSelect");if(sel&&sel.options.length){sel.options[0].textContent="همه نمایندگان";sel.options[0].value="";}var table=$("tableLiveReps"),hr=table&&table.querySelector("thead tr");if(hr&&!hr.querySelector(".v20-live-address-head")){var th=document.createElement("th");th.className="v20-live-address-head";th.textContent="آدرس متنی موقعیت فعلی";hr.insertBefore(th,hr.lastElementChild);}var body=$("tableLiveRepsBody"),reps=(st()&&st().reps)||[];if(body)Array.prototype.forEach.call(body.children,function(tr,i){var r=reps[i];if(!r)return;var old=tr.querySelector("[data-live-address]");if(!old){var td=document.createElement("td");td.setAttribute("data-live-address",r.id);td.textContent=r.textAddress||"در حال دریافت آدرس…";tr.insertBefore(td,tr.lastElementChild);}updateRepTextAddress(r);});}
   function bindLiveAll(){var btn=$("btnFindLiveRep");if(btn&&!btn.dataset.v20all){btn.dataset.v20all="1";btn.addEventListener("click",function(e){var sel=$("liveRepSearchSelect");if(sel&&sel.value)return;e.preventDefault();e.stopImmediatePropagation();if(typeof window.renderLiveLocationTab==="function")window.renderLiveLocationTab();setTimeout(function(){enhanceLiveLocation();try{var pts=((st()&&st().reps)||[]).filter(function(r){return r.lat&&r.lng;}).map(function(r){return[r.lat,r.lng];});if(typeof mapLiveReps!=="undefined"&&mapLiveReps&&pts.length)mapLiveReps.fitBounds(pts,{padding:[30,30]});}catch(x){}},80);},true);}var body=$("tableLiveRepsBody");if(body&&window.MutationObserver&&!body.dataset.v20addr){body.dataset.v20addr="1";var t;new MutationObserver(function(){clearTimeout(t);t=setTimeout(enhanceLiveLocation,40);}).observe(body,{childList:true,subtree:true});}enhanceLiveLocation();}
 
-  function applySnappVisibility(){var manager=v20IsManager(),S=st(),name=sessionStorage.getItem("crmUserName")||"",u=S&&((S.users||[]).filter(function(x){return x.fullName===name||x.username===sessionStorage.getItem("crmUsername");})[0]),perms=(u&&u.permissions)||{};function toggle(id,allow){document.querySelectorAll('[data-target="'+id+'"],[data-side-target="'+id+'"]').forEach(function(b){b.style.display=allow?"":"none";});var pane=$(id);if(pane&&!allow)pane.style.display="none";}toggle("tab-snapp-corporate",manager||perms.sys_snapp_access===true);toggle("tab-distributor-companies",manager||perms.dist_companies_access===true);toggle("tab-distributor-sales",manager||perms.dist_sales_access===true);toggle("tab-distributor-invoice-status",manager||perms.dist_invoice_status_access===true);toggle("tab-distributor-database",manager||perms.dist_database_access===true);}
+  function applySnappVisibility(){var manager=v20IsManager(),S=st(),name=sessionStorage.getItem("crmUserName")||"",u=S&&((S.users||[]).filter(function(x){return x.fullName===name||x.username===sessionStorage.getItem("crmUsername");})[0]),perms=(u&&u.permissions)||{};function toggle(id,allow){document.querySelectorAll('[data-target="'+id+'"],[data-side-target="'+id+'"]').forEach(function(b){b.style.display=allow?"":"none";});var pane=$(id);if(pane)pane.style.display=allow?"":"none";}toggle("tab-snapp-corporate",manager||perms.sys_snapp_access===true);toggle("tab-distributor-companies",manager||perms.dist_companies_access===true);toggle("tab-distributor-sales",manager||perms.dist_sales_access===true);toggle("tab-distributor-invoice-status",manager||perms.dist_invoice_status_access===true||(perms.dist_invoice_status_access==null&&perms.dist_sales_access!==false));toggle("tab-distributor-database",manager||perms.dist_database_access===true);}
 
   /* ---------- ۲۲) تارگت کامل: تعداد، ریال پخش/داروخانه و جمع نمایندگان ---------- */
   function targetMoney(t){var p=((st().products||[]).filter(function(x){return x.name===t.productName||x.id===t.productId;})[0])||{},n=Number(t.targetCount||0),dp=Number(p.distributorPrice||p.distPrice||p.price||0),hp=Number(p.pharmacyPrice||p.price||0);return{count:n,distPrice:dp,phPrice:hp,distTotal:n*dp,phTotal:n*hp};}
@@ -1424,12 +1458,14 @@
   function bindAddressFieldGuard(){["pharmacyAddress","doctorAddress","orderAddress"].forEach(function(id){var el=$(id);if(!el||el.dataset.addressGuard)return;el.dataset.addressGuard="1";var memory=String(el.value||"");el.addEventListener("input",function(){if(String(el.value||"").trim())memory=el.value;});el.addEventListener("focus",function(){memory=String(el.value||"")||memory;setTimeout(function(){if(!String(el.value||"").trim()&&memory)el.value=memory;},0);});el.addEventListener("click",function(){var before=String(el.value||"")||memory;setTimeout(function(){if(!String(el.value||"").trim()&&before)el.value=before;},0);});});}
 
   /* ---------- ۳۲) قفل مستقل ترتیب واقعی فرم‌ها بین Refresh ---------- */
-  var DOM_ORDER_KEY="CRM_DOM_FIELD_ORDER_LOCK_V1",DOM_FORMS=["formPharmacy","formDoctor","formOrder","formProduct"];
+  var DOM_ORDER_KEY="CRM_DOM_FIELD_ORDER_LOCK_V1",domOrderBusy=false;
   function mainFormGrid(form){if(!form)return null;for(var i=0;i<form.children.length;i++)if(form.children[i].classList&&form.children[i].classList.contains("form-grid"))return form.children[i];return form.querySelector(".form-grid");}
-  function groupAnchor(g){var e=g&&g.querySelector("input[id],select[id],textarea[id]");return e?e.id:"";}
-  function captureDomFieldOrder(){var out={};DOM_FORMS.forEach(function(fid){var grid=mainFormGrid($(fid));if(!grid)return;out[fid]=Array.prototype.filter.call(grid.children,function(g){return g.classList&&g.classList.contains("form-group");}).map(groupAnchor).filter(Boolean);});try{localStorage.setItem(DOM_ORDER_KEY,JSON.stringify(out));}catch(e){}}
-  function restoreDomFieldOrder(){var data={};try{data=JSON.parse(localStorage.getItem(DOM_ORDER_KEY)||"{}");}catch(e){}DOM_FORMS.forEach(function(fid){var grid=mainFormGrid($(fid)),seq=data[fid];if(!grid||!Array.isArray(seq)||!seq.length)return;var groups={};Array.prototype.forEach.call(grid.children,function(g){var id=groupAnchor(g);if(id)groups[id]=g;});seq.forEach(function(id){if(groups[id])grid.appendChild(groups[id]);});});}
-  function bindDomOrderLock(){window.addEventListener("beforeunload",captureDomFieldOrder);document.addEventListener("change",function(e){if(e.target&&e.target.closest&&e.target.closest("#columnsDesignerHost,#manualDesignCanvas"))setTimeout(captureDomFieldOrder,250);},true);setTimeout(function(){restoreDomFieldOrder();captureDomFieldOrder();},2600);}
+  function groupAnchor(g){var e=g&&g.querySelector("input[id],select[id],textarea[id],button[id]");return e?e.id:"";}
+  function lockableGrids(){var out=[];Array.prototype.forEach.call(document.querySelectorAll(".tab-pane .form-grid"),function(grid){var groups=Array.prototype.filter.call(grid.children,function(g){return g.classList&&g.classList.contains("form-group")&&groupAnchor(g);});if(groups.length<2)return;if(out.indexOf(grid)<0)out.push(grid);});return out;}
+  function gridLockKey(grid,index){var form=grid.closest("form[id]"),pane=grid.closest(".tab-pane");return grid.id?("grid:"+grid.id):(form?("form:"+form.id):("pane:"+((pane&&pane.id)||"unknown")+":"+index));}
+  function captureDomFieldOrder(){if(domOrderBusy)return;var out={};lockableGrids().forEach(function(grid,i){var seq=Array.prototype.filter.call(grid.children,function(g){return g.classList&&g.classList.contains("form-group");}).map(groupAnchor).filter(Boolean),key=gridLockKey(grid,i);out[key]=seq;var form=grid.closest("form[id]");if(form)out[form.id]=seq;});try{localStorage.setItem(DOM_ORDER_KEY,JSON.stringify(out));}catch(e){}}
+  function restoreDomFieldOrder(){var data={};try{data=JSON.parse(localStorage.getItem(DOM_ORDER_KEY)||"{}");}catch(e){}domOrderBusy=true;lockableGrids().forEach(function(grid,i){var form=grid.closest("form[id]"),seq=data[gridLockKey(grid,i)]||(form&&data[form.id]);if(!Array.isArray(seq)||!seq.length)return;var groups={};Array.prototype.forEach.call(grid.children,function(g){var id=groupAnchor(g);if(id)groups[id]=g;});seq.forEach(function(id){if(groups[id])grid.appendChild(groups[id]);});});domOrderBusy=false;}
+  function bindDomOrderLock(){window.addEventListener("beforeunload",captureDomFieldOrder);document.addEventListener("change",function(e){if(e.target&&e.target.closest&&e.target.closest("#columnsDesignerHost,#manualDesignCanvas,.col-order-input,.col-listorder-input"))setTimeout(captureDomFieldOrder,250);},true);document.addEventListener("click",function(e){if(e.target&&e.target.closest&&e.target.closest("#btnManSave,#btnSaveCustomField,#btnSaveProduct"))setTimeout(captureDomFieldOrder,350);},true);if(window.MutationObserver){var t;new MutationObserver(function(records){if(domOrderBusy)return;var touched=records.some(function(r){return Array.prototype.some.call(r.addedNodes||[],function(n){return n.nodeType===1&&(n.classList&&n.classList.contains("form-group")||n.querySelector&&n.querySelector(".form-group"));});});if(touched){clearTimeout(t);t=setTimeout(restoreDomFieldOrder,60);}}).observe(document.body,{childList:true,subtree:true});}setTimeout(function(){restoreDomFieldOrder();captureDomFieldOrder();},800);setTimeout(restoreDomFieldOrder,2600);}
 
   /* ---------- ۳۳) ترتیب اتمی فرم و لیست بدون ناپدیدشدن فیلد ---------- */
   function orderEntityKey(tabId){return tabId==="tab-pharmacies"?"pharmacy":tabId==="tab-doctors"?"doctor":tabId==="tab-orders"?"order":tabId==="tab-columns-products"?"products":String(tabId||"").replace(/^tab-/,"");}
@@ -1461,6 +1497,7 @@
     if (id === "tab-my-visit") setTimeout(refreshVisitCards, 60);
     if (id === "tab-rep-routes") setTimeout(renderV20Routes, 80);
     if (id === "tab-sales-targets") setTimeout(renderTargetsV20, 120);
+    setTimeout(function(){try{applyGlobalFieldOptions($(id)||document);restoreDomFieldOrder();}catch(e){}},180);
   }
   function wrapSwitchTab() {
     var os = window.switchTab;
@@ -1547,6 +1584,7 @@
     try { bindEmailBackup(); } catch (e) {}
     try { bindTargetsV20(); } catch (e) {}
     try { bindNumberFormatting(); } catch (e) {}
+    try { setupGlobalFieldOptions(); } catch (e) {}
     try { bindGlobalDateLaw(); } catch (e) {}
     try { bindAddressFieldGuard(); } catch (e) {}
     try { bindDomOrderLock(); bindSafeOrderControls(); } catch (e) {}
