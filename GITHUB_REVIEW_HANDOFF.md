@@ -1,40 +1,62 @@
 # GITHUB_REVIEW_HANDOFF — تحویل مویرگی برای بررسی GitHub و هوش مصنوعی بعدی
 
-**تاریخ این تحویل:** 2026-08-22 / 31 مرداد 1405
+**تاریخ این تحویل:** 2026-08-22 / 31 مرداد 1405 (به‌روزرسانی نوبت ۶۱)
 **نسخه آماده سورس:** `11.38.0`
-**نسخه chat.arena پس از بازسازی این نوبت:** `1.55`
-**شاخه اجباری این جلسه:** `arena/01a006e4-namayandeelmi-javad`
-**مخزن:** `javadalamdarmehraeen-rgb/namayandeelmi-javad`
-**Production:** `https://namayandeelmi-javad.onrender.com`
+**نسخه chat.arena پس از بازسازی این نوبت:** `1.56`
+**شاخه اجباری این جلسه:** `arena/01a0262d-javad-test1` (نوبت‌های ۵۹–۶۰ روی `arena/01a006e4-namayandeelmi-javad` در مخزن قبلی بودند)
+**مخزن:** `javadalamdarmehraeen-rgb/javad-test1`
+**Production فعال (اعلام کاربر نوبت ۶۱):** `https://javad-test1.onrender.com`
+**سرویس قدیمی (دیگر مرجع):** `https://namayandeelmi-javad.onrender.com` — هنوز `11.20.0`
 
 ---
 
-## 1) حقیقت فعلی؛ قبل از هر اقدام این بخش را بخوان
+## 0) وضعیت نوبت ۶۱ — انتشار تأییدشده ✅
 
-1. سورس نسخه `11.38.0` در workspace کامل، تست‌شده و commit شده است.
-2. آخرین زنجیره commit محلی:
+```text
+Source tested:             yes — 58/58 تست، syntax همه JS، build، diff-check
+Local commit:              f541301 (تنها commit این clone؛ تاریخ مخزن squashed است)
+GitHub branch pushed:      yes — arena/01a0262d-javad-test1 → origin (2026-08-21)
+Pull Request:              لازم نبود — نوک شاخه == نوک main (سورس از قبل merged بود)؛ GitHub: «No commits between»
+Main merged:               بله — main خودش f541301 یعنی سورس کامل 11.38.0 است
+GitHub checks:             pass — «Build & Mirror & Deploy» روی f541301 تکمیل موفق (build+test)
+GitLab mirrored:           unknown — لاگ خام روی Azure Blob از sandbox در دسترس نیست
+Render deployed:           yes — javad-test1.onrender.com
+Production health version: 11.38.0 — دو اندازه‌گیری مستقل 2026-08-21T21:24:15Z
+Browser cache rescue:      verified — /panel → /login?build=11.38.0&__crm_reload=... (redirect زنده)
+```
+
+نکته کلیدی مجوزها: push شاخه وقتی رد می‌شود که کامیت‌های آن حاوی تغییر
+`.github/workflows/*` باشند (پیام «refusing to allow a GitHub App … without workflows
+permission»). push کامیت بدون تغییر workflow موفق است. `gh api` REST همچنان برای
+بیشتر endpointها 403 می‌دهد؛ خواندن مخزن و actions runs مجاز است.
+
+نکته تحویل ZIP (بازتأیید نوبت ۶۱): پنل پیش‌نمایش Arena محتوای ZIP را قابل دانلود
+نشان نمی‌دهد (گزارش کاربر، مثل نوبت ۴۶). کانال تحویل قطعی همان قانون ۶۴ است:
+سرور دانلود زنده پورت 8000 (`download_server.py` خارج از Git) که فایل را با
+`Content-Disposition: attachment` سرو می‌کند؛ لینک مستقیم: `…:8000/zip`.
+
+---
+
+## 1) حقیقت تاریخی نوبت‌های ۵۹–۶۰ (پیش از انتشار؛ برای درک خطاها نگه داشته شد)
+
+1. سورس نسخه `11.38.0` در workspace کامل، تست‌شده و commit شده بود.
+2. زنجیره commit محلی آن جلسه (مخزن قبلی):
    - `4984d17` — Prepare tested GitHub deploy and GitLab mirror workflow
    - `1d4f37f` — Record cache rescue validation and blocked publish status
    - `2c4fe0b` — Release 11.38.0 with automatic cache rescue and CRM fixes
-3. GitHub remote فعلاً فقط شاخه `main` را دارد و شاخه Arena روی GitHub ساخته نشده است.
-4. `git push -u origin arena/01a006e4-namayandeelmi-javad` چند بار با این خطا رد شد:
+3. در آن جلسه push شاخه Arena رد شد:
    ```text
    refusing to allow a GitHub App to create or update workflow
    .github/workflows/deploy.yml without workflows permission
    ```
-5. تلاش برای ساخت ref با `gh api` نیز با این خطا رد شد:
-   ```text
-   Resource not accessible by integration (HTTP 403)
-   ```
-6. GitHub App با نام `arena-ai-coding-agent[bot]` login است، اما مجوز **Workflows و Git Refs/Branches** ندارد.
-7. هیچ remote به نام `gitlab` در sandbox وجود ندارد. GitLab فقط از workflow و secrets زیر قابل mirror است:
+4. ساخت ref با `gh api` هم رد شد: `Resource not accessible by integration (HTTP 403)`.
+5. هیچ remote به نام `gitlab` در sandbox وجود ندارد. GitLab فقط از workflow و secrets زیر قابل mirror است:
    - `GITLAB_REPO_URL`
    - `GITLAB_TOKEN`
-8. Production مستقیماً در 2026-08-22 بررسی شد و هنوز پاسخ می‌دهد:
-   ```json
-   {"version":"11.20.0"}
-   ```
-9. بنابراین ادعای «برنامه آنلاین به‌روز شده» فعلاً غلط است. ZIP یا تست sandbox به‌تنهایی production را تغییر نمی‌دهد.
+6. production آن زمان (سرویس قدیمی namayandeelmi-javad) هنوز `11.20.0` بود.
+7. در نوبت ۶۱ این وضعیت‌ها دوباره اندازه‌گیری و رفع شدند: push موفق، main از قبل
+   حامل 11.38.0 بود و production فعال کاربر (`javad-test1.onrender.com`) نسخه
+   `11.38.0` را سرو کرد. تنها حلقه باز: تأیید مستقل GitLab mirror.
 
 ---
 
@@ -52,9 +74,9 @@
    git status --short
    git ls-remote --heads origin
    ```
-5. اگر GitHub reconnect شده بود، فقط همین شاخه را push کن:
+5. اگر GitHub reconnect شده بود، فقط شاخه اجباری همان جلسه را push کن (در نوبت ۶۱: `arena/01a0262d-javad-test1`):
    ```bash
-   git push -u origin arena/01a006e4-namayandeelmi-javad
+   git push -u origin arena/01a0262d-javad-test1
    ```
 6. Pull Request از همین شاخه به `main` بساز؛ شاخه دیگری نساز.
 7. تست‌ها و checkهای PR را بررسی کن.
@@ -402,7 +424,8 @@ Cache-Control: no-store
 بعد از merge/deploy، production را مستقل بررسی کن:
 
 ```text
-https://namayandeelmi-javad.onrender.com/api/health?nocache=TIMESTAMP
+https://javad-test1.onrender.com/api/health?nocache=TIMESTAMP      ← production فعال (نوبت ۶۱)
+https://namayandeelmi-javad.onrender.com/api/health?nocache=...    ← سرویس قدیمی (دیگر مرجع نیست)
 ```
 
 ---

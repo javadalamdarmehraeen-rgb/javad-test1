@@ -651,3 +651,15 @@ CLEAN_EXTRA_FILES.bat و بعد PUSH_GITHUB_CLEAN.bat را اجرا کن.
 3. نتیجه تکراری push و Create Ref ثبت شد: GitHub App فاقد Workflows/Refs permission است و 403 می‌دهد؛ شاخه Arena remote نشده است.
 4. production دوباره بررسی و نسخه 11.20.0 ثبت شد؛ نسخه 11.38.0 تا push/PR/merge/deploy آنلاین نیست.
 5. نقشه مویرگی cache rescue، state/bulk، order, route, labels, tombstones, privacy, leave, notifications, Web Push، workflow و تست‌ها در handoff آمده است.
+
+## تحویل نوبت ۶۱ — تأیید انتشار 11.38.0، ممیزی ۲۰ چت اخیر و همگام‌سازی کامل آرشیو (بدون تغییر کد برنامه)
+
+1. وضعیت واقعی دوباره اندازه‌گیری شد: working tree clean، remote فقط `main` در `f541301`، GitHub App لاگین ولی با REST API محدود؛ push کامیت بدون تغییر workflow مجاز است.
+2. شاخه `arena/01a0262d-javad-test1` با موفقیت به origin push شد؛ PR لازم نبود چون نوک شاخه دقیقاً برابر نوک main بود (سورس 11.38.0 از قبل روی main) و GitHub پیام «No commits between» داد.
+3. workflow «Build & Mirror & Deploy» روی `f541301` تکمیل موفق داشت (build + 58 تست).
+4. کاربر production فعال را `https://javad-test1.onrender.com` اعلام کرد؛ `/api/health` دو بار مستقل نسخه `11.38.0` را برگرداند (2026-08-21T21:24:15Z) و `/panel` با redirect زنده `/login?build=11.38.0&__crm_reload=...` موتور cache rescue را در عمل نشان داد؛ صفحه ورود «طنین طب طاها» سالم بالا آمد.
+5. ممیزی پرامپت‌های نوبت‌های ۴۱ تا ۶۰ (نسخه‌های 11.23.0 تا 11.38.0) با ۲۲ نشانگر کد انجام شد: SHAFA_CODE_MAP اصلاحی (1001→1391911001 تا 1007→1391902006)، userEditId، safeOrderFields، سرستون #87CEEB، ensureProductCodes، تب وضعیت فاکتور پخش‌ها، invoiceStatusBaseCache، globalFieldOptions، CRM_MANAGER_GRID_ORDER_V2، syncRepsFromUsers، Permissions-Policy، x-crm-request، privacyList، representativeRoutesCard، setupTargetPlannerV34، notify_all_users، vapidAuthorization، groupAnchor، deletedUserTombstones، leaveFromTime، /cache-reset و CRM_BUILD_ACTIVE — همه در سورس حاضر و 58/58 تست موفق؛ هیچ پرامپت معلق کدی نماند.
+6. تصمیم: نسخه برنامه 11.38.0 بدون تغییر می‌ماند؛ bump بدون تغییر واقعی کد ممنوع است (قوانین ۸۹ و ۹۱).
+7. قانون جدید دائمی ۹۱ در AI_RULES ثبت شد: در هر چت همه ۱۵ فایل آرشیوی به‌روز شوند، PROJECT_GRAPH با update_project_graph.py و chat.arena با update_chat_arena.py بازسازی شوند و ZIP طبق قانون ۶۴ کنار صفحه بیاید.
+8. همه آرشیوها به‌روز شدند: GITHUB_REVIEW_HANDOFF (بخش ۰ وضعیت انتشار)، AI_ACCEPTANCE_CHECKLIST (نوبت ۶۱)، AI_DECISION_LOG (تصمیم ۹۳)، AI_TASKS (بخش‌های ۸۱ و ۸۲)، AI_PROJECT_CONTEXT، ARENA_HANDOFF_PROMPT (شروع اجباری بعد از نوبت ۶۱)، README، این فایل؛ graph و chat.arena 1.56 بازسازی شدند.
+9. GitLab mirror تنها حلقه تأییدنشده باقی مانده است؛ سرویس قدیمی namayandeelmi-javad.onrender.com هنوز 11.20.0 است و دیگر مرجع health نیست.

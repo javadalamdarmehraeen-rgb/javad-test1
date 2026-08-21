@@ -1556,3 +1556,30 @@ Never tell the user production changed merely because sandbox tests or ZIP passe
 # 90. GITHUB REVIEW HANDOFF RULE (PERMANENT)
 
 At every major handoff, keep `GITHUB_REVIEW_HANDOFF.md` synchronized with the exact branch, commit chain, remote heads, permission failures, workflow, deployment gates, production health, cache/data guarantees and next commands. README must point reviewers to this handoff and PROJECT_GRAPH. Never make the next model infer publish status from source version or ZIP. The first next-chat action is graph → GitHub handoff → acceptance checklist → git/auth/production verification.
+
+# 91. ARCHIVE SYNC EVERY CHAT RULE (PERMANENT — USER-MANDATED 2026-08-22, نوبت ۶۱)
+
+Declared by the user and valid for ALL future chats: in every chat, before delivering the
+ZIP, ALL project-memory files must be updated with the codes/status/truth of that chat —
+no exceptions and no "next time":
+
+1. `PROJECT_GRAPH.md` (regenerate via `python update_project_graph.py` after editing its template)
+2. `GITHUB_REVIEW_HANDOFF.md` (publish chain, branch, production health, permissions)
+3. `chat.arena` (rebuild via `python update_chat_arena.py` after appending the new turn to its embedded conversation and bumping the file version)
+4. `update_chat_arena.py` (embedded HEADER version/date + new turn text)
+5. `update_project_graph.py` (template: branch, repo, production URL, laws)
+6. `AI_ACCEPTANCE_CHECKLIST.md` (new turn section, item by item)
+7. `AI_RULES.md` (new permanent laws only; never renumber)
+8. `AI_DECISION_LOG.md` (new decision entry)
+9. `AI_TASKS.md` (new task section)
+10. `AI_PROJECT_CONTEXT.md` (current context: repo, production, release state)
+11. `AI_ARCHITECTURE.md` (only when architecture/deployment reality changed)
+12. `ARENA_HANDOFF_PROMPT.md` (addendum for the next chat start)
+13. `CHANGES_V11.md` (delivery log of the turn)
+14. `README.md` (status banner, production URL, reviewer pointers)
+15. `OFFICIAL_FILELIST.txt` (register every newly added file immediately)
+
+All laws of previous chats remain in force. The delivery ZIP beside the page every chat is
+rule #64 and was re-mandated by the user in نوبت ۶۱. When an audit shows nothing pending
+in code, do NOT bump the app version artificially: archives carry the turn, the ZIP carries
+the archives, and production health stays the single source of release truth (rule #89).

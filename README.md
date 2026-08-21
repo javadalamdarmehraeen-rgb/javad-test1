@@ -2,7 +2,7 @@
 
 > **راهنمای بررسی نسخه جاری:** قبل از هر بررسی GitHub، فایل [`GITHUB_REVIEW_HANDOFF.md`](./GITHUB_REVIEW_HANDOFF.md) و سپس [`PROJECT_GRAPH.md`](./PROJECT_GRAPH.md) را بخوانید. نسخه فعال سورس `11.38.0` است؛ ورودی runtime اصلی `server.js + public/` است و اسکلت Next.js پوشه `src/` مسیر production فعلی نیست.
 >
-> **وضعیت انتشار در 2026-08-22:** commit محلی آماده است، اما GitHub App فاقد Workflows/Refs permission بوده و push/PR انجام نشده است. Production هنوز `11.20.0` گزارش می‌کند. جزئیات خطا و گام‌های دقیق انتشار در فایل handoff آمده است.
+> **وضعیت انتشار در 2026-08-22 (نوبت ۶۱):** انتشار `11.38.0` تأییدشده است. مخزن `javadalamdarmehraeen-rgb/javad-test1`، شاخه `arena/01a0262d-javad-test1` push شده، main حامل سورس کامل است، checks موفق‌اند و production فعال `https://javad-test1.onrender.com` دو بار مستقل نسخه `11.38.0` را سرو کرد همراه با redirect زنده cache-rescue (`/login?build=11.38.0&__crm_reload=...`). سرویس قدیمی `namayandeelmi-javad.onrender.com` هنوز `11.20.0` است و دیگر مرجع نیست. جزئیات و دستورات در فایل handoff آمده است.
 
 این مخزن شامل برنامه CRM/PWA نمایندگان علمی، مدیریت داروخانه/پزشک/سفارش، مسیرها، تارگت، اعلان، پخش و ابزارهای حفظ داده است.
 
@@ -310,7 +310,8 @@ Render    .
 |  |  |  |
 |---|---|---|
 | NdcoHub () | `https://ndcohub.ir` |    —     |
-| Render | `https://namayandeelmi-javad.onrender.com` |      |
+| Render (فعال) | `https://javad-test1.onrender.com` | نسخه 11.38.0 — تأیید 2026-08-21 |
+| Render (قدیمی) | `https://namayandeelmi-javad.onrender.com` | دیگر مرجع نیست؛ 11.20.0 |
 ### )      
 `src/lib/endpoints.ts` —          
       **     **.

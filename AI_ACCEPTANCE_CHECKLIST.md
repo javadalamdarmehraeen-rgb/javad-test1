@@ -64,3 +64,16 @@
 - [x] فایل مستقل `GITHUB_REVIEW_HANDOFF.md` ساخته و به OFFICIAL_FILELIST اضافه شد — تأییدشده.
 - [x] README به runtime واقعی و فایل handoff ارجاع مستقیم داد — تأییدشده.
 - [x] بازسازی نهایی PROJECT_GRAPH و chat.arena 1.55، تست اسناد، commit محلی و ZIP — تأییدشده: graph دارای بخش انتشار/cache، chat شامل نوبت 60 و handoff کامل، تست 58/58، build/syntax/diff موفق و ZIP بررسی شد.
+
+## نوبت ۶۱ — اندازه‌گیری مجدد، تأیید انتشار و همگام‌سازی کامل آرشیو
+- [x] چهار سند شروع به‌ترتیب خوانده شد (graph → handoff → checklist → handoff-prompt) — تأییدشده.
+- [x] وضعیت Git/auth/remote دوباره اندازه‌گیری شد — تأییدشده: tree clean، origin فقط main در `f541301`، GitHub App لاگین با API محدود (403 روی /user).
+- [x] push شاخه Arena — تأییدشده: `arena/01a0262d-javad-test1` روی GitHub ساخته شد (کامیت بدون تغییر workflow رد نشد)؛ بند معلق نوبت ۵۹ همین‌جا حل شد.
+- [x] Pull Request — تأییدشده به‌عنوان «لازم نبودن»: نوک شاخه == نوک main یعنی سورس 11.38.0 از قبل روی main بود؛ GitHub پیام «No commits between» داد.
+- [x] GitHub checks — تأییدشده: Build & Mirror & Deploy روی `f541301` تکمیل‌شده با build/test موفق.
+- [x] production health — تأییدشده: کاربر لینک فعال را `https://javad-test1.onrender.com` اعلام کرد؛ دو اندازه‌گیری مستقل `/api/health` نسخه `11.38.0` (2026-08-21T21:24:15Z).
+- [x] موتور cache rescue زنده — تأییدشده: `/panel` به `/login?build=11.38.0&__crm_reload=...` redirect شد و صفحه ورود سالم بالا آمد.
+- [x] ZIP نسخه — تأییدشده: `namayandeelmi-v11.38.0.zip` (۳۵۸ فایل) با package.json/sw.js/server.js هر سه 11.38.0 از داخل ZIP بررسی شد؛ پس از گزارش کاربر که پنل پیش‌نمایش ZIP را قابل دانلود نشان نمی‌دهد (مشکل شناخته‌شده نوبت ۴۶)، کانال تحویل قطعی طبق قانون ۶۴ راه افتاد: سرور دانلود زنده پورت 8000 با هدر attachment — تست واقعی 200/3,190,162 بایت/نسخه 11.38.0 موفق.
+- [x] ممیزی پرامپت‌های ۲۰ چت اخیر (نوبت ۴۱–۶۰) — تأییدشده با ۲۲ نشانگر کد + ۵۸/۵۸ تست: همه در سورس 11.38.0 اعمال‌اند؛ هیچ پرامپت معلق کدی باقی نماند؛ نسخه برنامه بدون تغییر کد bump نشد.
+- [x] به‌روزرساری همه ۱۵ فایل آرشیوی طبق قانون جدید ۹۱ (نوبت ۶۱) — تأییدشده: graph بازسازی، chat.arena 1.56، handoff/checklist/rules(+#91)/decision(+#۹۳)/tasks(+#۸۱،۸۲)/context/architecture/handoff-prompt/changes/README/filelist.
+- [ ] GitLab mirror — ناشناخته: remote گیت‌لب و لاگ خام workflow از sandbox قابل دسترسی نیست.

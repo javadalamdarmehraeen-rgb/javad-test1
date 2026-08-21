@@ -1226,3 +1226,9 @@ Then change only what is requested.
 - `ARENA_HANDOFF_PROMPT.md`: قوانین اجرایی مدل بعدی.
 - README: دروازه عمومی GitHub و ارجاع به handoff/runtime واقعی.
 این تفکیک مانع اشتباه‌گرفتن اسکلت Next.js، runtime Node/public و وضعیت production می‌شود.
+
+## معماری انتشار — نوبت ۶۱ (2026-08-22)
+- مخزن فعال `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه جلسه `arena/01a0262d-javad-test1`؛ main حامل سورس کامل 11.38.0 در `f541301`.
+- production فعال کاربر `https://javad-test1.onrender.com` است: `/api/health` دو بار مستقل `11.38.0` را سرو کرد (2026-08-21T21:24Z) و زنجیره cache-resuse زنده (`/panel` → `/login?build=11.38.0&__crm_reload=...`) کار کرد. سرویس قدیمی `namayandeelmi-javad.onrender.com` هنوز `11.20.0` است و در معماری مرجع نیست.
+- معماری مجوزهای انتشار: git push از طریق HTTPS کار می‌کند مگر کامیت حاوی تغییر `.github/workflows/*` باشد (آن حالت به workflows permission نیاز دارد و 403 می‌گیرد)؛ REST API اپ محدود است ولی خواندن مخزن/actions مجاز.
+- معماری آرشیو (قانون ۹۱): در هر چت ۱۵ فایل حافظه به‌روز می‌شوند؛ `PROJECT_GRAPH.md` فقط با `update_project_graph.py` و `chat.arena` فقط با `update_chat_arena.py` بازسازی می‌شوند تا ساختار همیشه از مولد خودش بیاید.
