@@ -6,6 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
+const APP_VERSION = "11.38.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -142,8 +143,14 @@ function sendFile(req, res, filePath, maxAge) {
       "Pragma": maxAge ? "" : "no-cache",
       "Expires": maxAge ? undefined : "0",
       "CDN-Cache-Control": maxAge ? ("public, max-age=" + maxAge) : "no-store",
-      "Surrogate-Control": maxAge ? ("max-age=" + maxAge) : "no-store"
+      "Surrogate-Control": maxAge ? ("max-age=" + maxAge) : "no-store",
+      "X-CRM-Build": APP_VERSION
     };
+    if (ext === ".html") extra["Clear-Site-Data"] = '"cache"';
+    if (path.basename(filePath) === "sw.js") {
+      extra["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0";
+      extra["Service-Worker-Allowed"] = "/";
+    }
     Object.keys(extra).forEach((k) => { if (extra[k] === undefined || extra[k] === "") delete extra[k]; });
     send(req, res, 200, buf, type, extra);
   });
@@ -163,13 +170,26 @@ const server = http.createServer((req, res) => {
     return send(req, res, 403, JSON.stringify({ status: "error", message: "untrusted write request" }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
   }
 
+  if (pathname === "/cache-reset" && req.method === "GET") {
+    const requested = parsed.searchParams.get("to") || "/panel";
+    const destination = /^\/(?:panel|login)(?:[/?#]|$)/.test(requested) ? requested : "/panel";
+    const body = `<!doctype html><html lang="fa" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>نوسازی برنامه</title><style>body{font-family:Tahoma,Arial;background:#f0fdfa;color:#134e4a;display:grid;place-items:center;min-height:100vh;margin:0;text-align:center}.box{background:#fff;padding:28px;border-radius:16px;box-shadow:0 12px 35px #0f766e22}.spin{font-size:38px}</style><div class="box"><div class="spin">⟳</div><h2>در حال دریافت نسخه جدید برنامه…</h2><p>اطلاعات و تنظیمات شما دست‌نخورده می‌ماند.</p></div><script>(async function(){var build=${JSON.stringify(APP_VERSION)},to=${JSON.stringify(destination)};try{localStorage.setItem("CRM_ASSET_BUILD",build);sessionStorage.setItem("CRM_CACHE_RESCUED_"+build,"1");}catch(e){}try{if("caches" in window){var keys=await caches.keys();await Promise.all(keys.map(function(k){return caches.delete(k);}));}}catch(e){}try{if("serviceWorker" in navigator){var regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(function(r){return r.unregister();}));}}catch(e){}var u=new URL(to,location.origin);u.searchParams.set("__crm_build",build);u.searchParams.set("__crm_reload",Date.now().toString());location.replace(u.pathname+u.search+u.hash);})();</script></html>`;
+    return send(req, res, 200, body, "text/html; charset=utf-8", {
+      "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+      "CDN-Cache-Control": "no-store",
+      "Surrogate-Control": "no-store",
+      "Clear-Site-Data": '"cache"',
+      "X-CRM-Build": APP_VERSION
+    });
+  }
+
   if (pathname === "/ping" || pathname === "/api/health" || pathname === "/api/ping" || pathname === "/healthz") {
     return send(req, res, 200, JSON.stringify({
       ok: true, status: "healthy", message: "OK",
       service: "namayandeelmi-javad-crm",
-      version: "11.37.0",
+      version: APP_VERSION,
       timestamp: new Date().toISOString()
-    }), "application/json; charset=utf-8");
+    }), "application/json; charset=utf-8", { "Cache-Control": "no-store", "X-CRM-Build": APP_VERSION });
   }
 
   if ((pathname === "/api/geocode" || pathname === "/api/reverse") && req.method === "GET") {
@@ -311,5 +331,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, "0.0.0.0", () => {
-  console.log("CRM v11.37.0 listening on 0.0.0.0:" + PORT);
+  console.log("CRM v" + APP_VERSION + " listening on 0.0.0.0:" + PORT);
 });

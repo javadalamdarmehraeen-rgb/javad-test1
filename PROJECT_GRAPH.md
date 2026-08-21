@@ -27,7 +27,7 @@
 
 ## ب) کارت فایل‌ها (نقش + توابع + نام‌های window که می‌سازد)
 
-### `server.js` (21078 بایت)
+### `server.js` (23357 بایت)
 - نقش: سرور سبک Node.js برای Render — ورود جدا، gzip، health، ژئوکد، محدودیت نرخ
 - تعداد توابع داخلی: 15
 - endpointهای سرور: `/api/backup`, `/api/backup/email`, `/api/bulk`, `/api/bulk`, `/api/push/public-key`, `/api/push/send`, `/api/push/subscribe`, `/api/state`, `/api/state`
@@ -56,7 +56,7 @@
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (175967 بایت)
+### `public/crm-app.js` (176378 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 169
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
@@ -139,9 +139,9 @@
 - نقش: * ============================================================
 - تعداد توابع داخلی: 10
 
-### `public/sw.js` (2462 بایت)
-- نقش: const CACHE = "ttt-v11.37.0";
-- تعداد توابع داخلی: 0
+### `public/sw.js` (3742 بایت)
+- نقش: const BUILD = "11.38.0";
+- تعداد توابع داخلی: 3
 
 ### `public/vendor/leaflet.js` (147552 بایت)
 - نقش: * @preserve
@@ -215,6 +215,8 @@
 
 - `CRM_APP_STATE_CORRUPT_ARCHIVE_` ← localStorage: `public/crm-app.js`
 - `CRM_APP_STATE_V2` ← localStorage: `public/crm-features-v10.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`
+- `CRM_ASSET_BUILD` ← localStorage: `server.js`
+- `CRM_CACHE_RESCUED_` ← sessionStorage: `server.js`
 - `CRM_DIAG_LOG` ← localStorage: `public/crm-features-v11.js`
 - `CRM_LAST_GPS` ← localStorage: `public/crm-features-v11.js`
 - `CRM_USERS_AUTH` ← localStorage: `public/crm-app.js`, `public/crm-features-v11.js`, `public/crm-features-v20.js`

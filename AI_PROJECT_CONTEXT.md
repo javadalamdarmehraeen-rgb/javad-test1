@@ -905,3 +905,9 @@ crm-features-v20.js; knowledge graph PROJECT_GRAPH.md is read-first
 
 ## افزونه وضعیت نسخه ۱۱.۳۷.۰
 نسخه فعال 11.37.0 است. پیش از تغییر backup خصوصی state/bulk ثبت شد. Existing CRM_APP_STATE_V2 بدون پاک‌سازی authoritative است؛ فقط fresh origin از business sample users/data خالی می‌شود. User delete tombstone durable دارد و دو identity نمونه قدیمی u-2/Taheri و u-3/nila یک‌بار به tombstone مهاجرت می‌شوند. Order pharmacy cards delegated-select هستند. Route controls manager-pinned، builtin labels Persian-projected، rep homes table+map strict active/self privacy، leave fromTime/toTime مستقل، notification recipient plain select و combo caret delegated است.
+
+## افزونه وضعیت نسخه ۱۱.۳۸.۰
+نسخه فعال 11.38.0 است. `/cache-reset` با Clear-Site-Data cache، حذف CacheStorage/SW و unique redirect معادل hard reload خودکار است و هیچ CRM data/storage را حذف نمی‌کند. Index/login نسخه server health را no-store مقایسه می‌کنند. SW کد و navigation را network-only تازه می‌گیرد، cacheها را در install/activate purge و CRM_BUILD_ACTIVE broadcast می‌کند. نسخه آنلاین فقط پس از merge/deploy واقعاً تغییر می‌کند.
+
+## وضعیت انتشار 11.38.0 در پایان نوبت ۵۹
+Commit محلی `2c4fe0b` روی شاخه ثابت Arena ساخته شد. Push شاخه به GitHub به‌علت فقدان Workflows permission رد شد؛ Create Ref API نیز با `Resource not accessible by integration (403)` رد شد. فقط remote origin وجود دارد و GitLab remote موجود نیست. تا reconnect GitHub و سپس push/PR/merge، production همچنان نسخه قبلی است؛ هیچ ادعای deploy نباید شود.

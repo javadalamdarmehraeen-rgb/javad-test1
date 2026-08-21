@@ -1570,3 +1570,11 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - حریم خصوصی نقشه به اندازه جدول مهم است؛ visible projection باید هم rows و هم map layers را کنترل کند.
 - گیرنده پیام یک reference select است نه searchable/free-typing combo.
 - Route manager controls system-owned هستند و metadata stale اجازه پنهان‌کردن آن‌ها را ندارد؛ metadata کاربر بازنویسی نمی‌شود.
+
+## تصمیم ۹۱ — نسخه ۱۱.۳۸.۰: server-truth cache rescue و تحویل واقعی از Git (2026-08-21)
+- نسخه‌ای که فقط در sandbox/ZIP است production نیست؛ تحویل واقعی نیازمند commit، push، merge به main و deploy موفق است.
+- نسخه سرور از `/api/health` منبع حقیقت build است؛ مقایسه فقط local HTML با localStorage برای کش کاملاً stale کافی نیست.
+- Hard reload وب با cache-reset استاندارد پیاده می‌شود: Clear-Site-Data cache + CacheStorage delete + SW unregister + unique URL replace.
+- پاک‌سازی cache نباید storage/indexedDB/cookies/data files را شامل شود.
+- SW نباید HTML/JS/CSS قدیمی را در حالت network failure برگرداند؛ تازگی نسخه بر offline stale shell اولویت دارد.
+- GitHub شاخه ثابت Arena را دریافت می‌کند و تغییر main فقط از Pull Request انجام می‌شود؛ GitLab از workflow main و secrets mirror می‌شود.

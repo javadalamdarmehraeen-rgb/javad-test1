@@ -632,3 +632,14 @@ CLEAN_EXTRA_FILES.bat و بعد PUSH_GITHUB_CLEAN.bat را اجرا کن.
 9. گیرنده اعلان plain select شد (`data-nocombo=1`)، input تایپی/افزودن گزینه حذف و placeholder + کاربران فعال ساخته می‌شود.
 10. فلش کشویی‌های جستجویی z-index/pointer area قطعی و delegated capture handler دارد؛ کلیک فلش مستقیماً فهرست را باز/بسته می‌کند.
 11. Runtime واقعی با manager/representative و sentinel نتیجه داد: preserved=true، route 4 fields/31 provinces، picker selected/filled/hidden، times=true، arrow=true، notification plain، manager homes all-active، rep home/activity self-only، ghost removed، errors=[].
+
+# نسخه ۱۱.۳۸.۰
+
+1. موتور مستقل `/cache-reset` اضافه شد: پاسخ با `Clear-Site-Data: "cache"` فقط cache را پاک می‌کند، همه CacheStorage و Service Workerهای قدیمی را unregister می‌کند و خودکار به همان صفحه با query یکتای build/timestamp برمی‌گردد.
+2. موتور هرگز LocalStorage، IndexedDB، CRM_APP_STATE_V2، customFields، formFieldMeta یا داده‌های Excel را پاک نمی‌کند. Runtime sentinel حفظ کامل state/settings را تأیید کرد.
+3. index و login در هر بار ورود `/api/health?__crm_nocache=timestamp` را با `cache:no-store` می‌خوانند؛ اگر نسخه سرور و HTML متفاوت باشد، خودکار وارد cache-reset می‌شوند، حتی وقتی HTML قدیمی و CRM_ASSET_BUILD قدیمی با هم برابر باشند.
+4. HTML همیشه `Clear-Site-Data: "cache"`، no-store و `X-CRM-Build` دارد؛ sw.js و health نیز no-store/X-CRM-Build هستند.
+5. Service Worker جدید در install/activate همه cacheها را پاک، فوراً skipWaiting/claim و build فعال را به پنجره‌ها broadcast می‌کند.
+6. navigation و HTML/JS/CSS/JSON/WebManifest در SW فقط از شبکه با cache reload/no-store می‌آیند و هیچ fallback به asset قدیمی ندارند؛ در قطع اینترنت پیام تلاش دوباره نمایش داده می‌شود.
+7. crm-app پیام CRM_BUILD_ACTIVE را می‌شنود و در mismatch خودکار cache-reset را اجرا می‌کند؛ این معادل عملی hard reload است و نیاز به Ctrl+Shift+R دستی را حذف می‌کند.
+8. HTTP واقعی headerها و endpoint، runtime حذف ۲ cache/۲ SW با حفظ sentinel، ۵۷/۵۷ تست، build و syntax تأیید شد.

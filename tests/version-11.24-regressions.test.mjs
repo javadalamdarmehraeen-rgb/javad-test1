@@ -326,7 +326,7 @@ test('Web Push works through persisted VAPID/subscriptions and service-worker ba
   for(const fn of ['getVapidKeys','encryptWebPush','vapidAuthorization','sendWebPush']) assert.match(server,new RegExp(`function ${fn}\\(`));
   assert.match(server,/\/api\/push\/public-key/);assert.match(server,/\/api\/push\/subscribe/);assert.match(server,/\/api\/push\/send/);
   assert.match(server,/Content-Encoding":"aes128gcm/);assert.match(server,/Urgency:"high"/);
-  assert.match(sw,/addEventListener\("push"/);assert.match(sw,/showNotification/);assert.match(sw,/vibrate:\[220,100,220,100,320\]/);assert.match(sw,/notificationclick/);
+  assert.match(sw,/addEventListener\("push"/);assert.match(sw,/showNotification/);assert.match(sw,/vibrate:\s*\[220,\s*100,\s*220,\s*100,\s*320\]/);assert.match(sw,/notificationclick/);
   assert.match(gitignore,/push-subscriptions\.json/);assert.match(gitignore,/push-vapid\.json/);
 });
 
@@ -339,16 +339,32 @@ test('placed pharmacy notice guard is loop-safe and home representative stays re
 });
 
 test('new build clears only old asset caches before revealing app and prevents manager-screen flash', () => {
-  assert.match(html,/var BUILD="11\.37\.0",key="CRM_ASSET_BUILD"/);
+  assert.match(html,/var BUILD="11\.38\.0",key="CRM_ASSET_BUILD"/);
   assert.match(html,/document\.documentElement\.classList\.add\("crm-booting"\)/);
-  assert.match(html,/caches\.keys\(\).*caches\.delete/);
-  assert.match(html,/navigator\.serviceWorker\.getRegistrations\(\).*unregister/);
-  assert.match(html,/location\.replace\(u\.toString\(\)\)/);
+  assert.match(html,/\/cache-reset\?to=/);
+  assert.match(server,/caches\.keys\(\)/);
+  assert.match(server,/navigator\.serviceWorker\.getRegistrations\(\)/);
   assert.match(v20,/document\.documentElement\.classList\.remove\("crm-booting"\)/);
   assert.match(server,/no-store, no-cache, must-revalidate, max-age=0/);
   assert.match(server,/CDN-Cache-Control/);
-  assert.match(sw,/cache:"no-store"/);
+  assert.match(sw,/cache: "no-store"/);
   assert.match(sw,/purgeOldCaches/);
+});
+
+test('v38 cache rescue automatically forces a fresh build without deleting CRM data', () => {
+  const login = read('../public/login.html');
+  assert.match(server,/pathname === "\/cache-reset"/);assert.match(server,/"Clear-Site-Data": '\"cache\"'/);
+  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.38\.0"/);
+  assert.match(html,/\/api\/health\?__crm_nocache=/);assert.match(html,/\/cache-reset\?to=/);assert.match(html,/d\.version!==BUILD/);
+  assert.match(login,/CRM_CACHE_RESCUED_/);assert.match(login,/\/cache-reset\?to=/);
+  assert.match(sw,/function purgeEveryCache/);assert.match(sw,/CRM_BUILD_ACTIVE/);assert.match(sw,/cache: "reload"/);
+  assert.match(sw,/request\.mode === "navigate"/);assert.doesNotMatch(sw,/caches\.match\(request\)[\s\S]{0,80}navigate/);
+  for(const source of [server,html,login,sw,app]) {
+    assert.doesNotMatch(source,/localStorage\.clear\s*\(/);
+    assert.doesNotMatch(source,/indexedDB\.deleteDatabase\s*\(/);
+    assert.doesNotMatch(source,/removeItem\(["']CRM_APP_STATE_V2/);
+  }
+  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.38\.0'/);
 });
 
 test('security hardening blocks dangerous device APIs, cross-origin writes, executables and formula injection', () => {
@@ -363,11 +379,11 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.37\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.38\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
-  assert.match(sw,/e\.data === "skipWaiting"/);
+  assert.match(sw,/event\.data === "skipWaiting"/);
   assert.doesNotMatch(v19,/یک‌بار صفحه را تازه‌سازی کنید/);
   assert.match(v19,/نیازی به تازه‌سازی دستی نیست/);
 });

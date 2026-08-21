@@ -19,8 +19,6 @@ jobs:
           node-version: "20"
           cache: npm
 
-      # برنامه اصلی صفر-وابستگی و Node خالص است؛ Next.js اسکلت خفته پروژه است.
-      # اجرای npx next در نسخه‌های قبل باعث ضربدر قرمز کاذب GitHub می‌شد.
       - run: npm ci
       - name: بررسی نحوی همه فایل‌های JavaScript
         run: find public -name '*.js' -print0 | xargs -0 -n1 node --check && node --check server.js
@@ -39,7 +37,7 @@ jobs:
           fetch-depth: 0
       - name: Push to GitLab
         env:
-          GITLAB_URL: ${{ secrets.GITLAB_REPO_URL }}   # https://gitlab.com/user/repo.git
+          GITLAB_URL: ${{ secrets.GITLAB_REPO_URL }}
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
         run: |
           if [ -z "$GITLAB_URL" ]; then echo "GITLAB_REPO_URL تنظیم نشده — رد شد"; exit 0; fi

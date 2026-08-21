@@ -1306,3 +1306,10 @@ ADDENDUM v11.16.1 (2026-08-16)
 - Route manager controls are pinned visible only for managers without mutating stored field metadata.
 - Rep-home privacy must filter both table and Leaflet markers: manager all active, representative self only.
 - Keep hourly leave fromTime/toTime plus legacy hours, plain notification recipient select and Persian builtin label guard.
+
+## افزونه تحویل نسخه ۱۱.۳۸.۰
+- Production is not updated by ZIP/sandbox. Report commit, branch push, PR/main merge, CI/deploy and production health separately.
+- Preserve `/cache-reset`, Clear-Site-Data cache-only, server health build comparison and unique redirect.
+- Never clear LocalStorage/IndexedDB/CRM data during cache rescue.
+- SW navigation/code assets remain network-only fresh; only image/font fallback cache is allowed.
+- Keep install/activate purge, skipWaiting/claim and CRM_BUILD_ACTIVE broadcast.

@@ -1488,3 +1488,15 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] فلش کشویی delegated و قابل کلیک
 - [x] ۵۶/۵۶ تست + runtime مدیر/نماینده صفر خطا
 - [ ] تأیید روی داده واقعی کاربر پس از استقرار
+
+## ۷۹) نسخه ۱۱.۳۸.۰
+- [x] endpoint cache-reset با Clear-Site-Data cache
+- [x] auto health build mismatch در index/login
+- [x] SW purge-all و network-only برای کد/HTML
+- [x] build broadcast و auto rescue در crm-app
+- [x] حفظ LocalStorage/IndexedDB/state sentinel
+- [x] هدر واقعی HTML/SW/health
+- [x] ۵۷/۵۷ تست + build/syntax/HTTP/runtime
+- [x] commit محلی `2c4fe0b`
+- [ ] reconnect GitHub App با Workflows/Refs permission؛ push/PR/merge/deploy هنوز مسدود با 403
+- [ ] GitLab mirror پس از main push و secrets معتبر

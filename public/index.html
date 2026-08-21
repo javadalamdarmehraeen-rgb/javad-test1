@@ -7,16 +7,15 @@
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.37.0",key="CRM_ASSET_BUILD";document.documentElement.classList.add("crm-booting");
-      if(sessionStorage.getItem("crmLoggedIn")!=="1"){location.replace("/login?build="+BUILD);return;}
-      var old="";try{old=localStorage.getItem(key)||"";}catch(e){}
-      if(old!==BUILD){
-        try{localStorage.setItem(key,BUILD);}catch(e){}
-        var clearCaches=("caches" in window)?caches.keys().then(function(keys){return Promise.all(keys.map(function(k){return caches.delete(k);}));}):Promise.resolve();
-        var clearWorkers=("serviceWorker" in navigator)?navigator.serviceWorker.getRegistrations().then(function(regs){return Promise.all(regs.map(function(r){return r.unregister();}));}):Promise.resolve();
-        Promise.all([clearCaches,clearWorkers]).finally(function(){var u=new URL(location.href);u.searchParams.set("build",BUILD);location.replace(u.toString());});
-        return;
-      }
+      var BUILD="11.38.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;
+      document.documentElement.classList.add("crm-booting");
+      function target(){return location.pathname+location.search+location.hash;}
+      function rescue(serverBuild){var u="/cache-reset?to="+encodeURIComponent(target())+"&build="+encodeURIComponent(serverBuild||BUILD)+"&t="+Date.now();location.replace(u);}
+      if(sessionStorage.getItem("crmLoggedIn")!=="1"){location.replace("/login?build="+BUILD+"&__crm_reload="+Date.now());return;}
+      var old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rescueKey)==="1";}catch(e){}
+      if(old!==BUILD&&!rescued){rescue(BUILD);return;}
+      try{localStorage.setItem(key,BUILD);sessionStorage.removeItem(rescueKey);}catch(e){}
+      fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD)rescue(d.version);}).catch(function(){});
       setTimeout(function(){document.documentElement.classList.remove("crm-booting");},5000);
     })();
   </script>
@@ -32,7 +31,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.37.0" />
+  <link rel="stylesheet" href="style.css?v=11.38.0" />
 </head>
 <body>
 
@@ -2214,22 +2213,22 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.37.0"></script>
-  <script src="crm-app.js?v=11.37.0"></script>
-  <script src="crm-features-v9.js?v=11.37.0"></script>
-  <script src="iran-facilities.js?v=11.37.0" defer></script>
-  <script src="crm-features-v10.js?v=11.37.0"></script>
-  <script src="crm-features-v11.js?v=11.37.0"></script>
-  <script src="crm-features-v12.js?v=11.37.0"></script>
-  <script src="crm-features-v13.js?v=11.37.0"></script>
-  <script src="crm-jalali.js?v=11.37.0"></script>
-  <script src="crm-features-v14.js?v=11.37.0"></script>
-  <script src="crm-features-v15.js?v=11.37.0"></script>
-  <script src="crm-features-v16.js?v=11.37.0"></script>
-  <script src="crm-features-v17.js?v=11.37.0"></script>
-  <script src="crm-features-v18.js?v=11.37.0"></script>
-  <script src="crm-features-v19.js?v=11.37.0"></script>
-  <script src="crm-features-v20.js?v=11.37.0"></script>
+  <script src="crm-data.js?v=11.38.0"></script>
+  <script src="crm-app.js?v=11.38.0"></script>
+  <script src="crm-features-v9.js?v=11.38.0"></script>
+  <script src="iran-facilities.js?v=11.38.0" defer></script>
+  <script src="crm-features-v10.js?v=11.38.0"></script>
+  <script src="crm-features-v11.js?v=11.38.0"></script>
+  <script src="crm-features-v12.js?v=11.38.0"></script>
+  <script src="crm-features-v13.js?v=11.38.0"></script>
+  <script src="crm-jalali.js?v=11.38.0"></script>
+  <script src="crm-features-v14.js?v=11.38.0"></script>
+  <script src="crm-features-v15.js?v=11.38.0"></script>
+  <script src="crm-features-v16.js?v=11.38.0"></script>
+  <script src="crm-features-v17.js?v=11.38.0"></script>
+  <script src="crm-features-v18.js?v=11.38.0"></script>
+  <script src="crm-features-v19.js?v=11.38.0"></script>
+  <script src="crm-features-v20.js?v=11.38.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />

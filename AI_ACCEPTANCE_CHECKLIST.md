@@ -44,3 +44,15 @@
 - [x] اعلان نماینده: گیرنده plain select بدون تایپ/افزودن گزینه باشد — تأییدشده؛ بدون `.crm-combo-input`، placeholder خالی و فقط کاربران فعال.
 - [x] فلش تمام کشویی‌های قابل جستجو با کلیک مستقیم فهرست را باز/بسته کند — تأییدشده با کلیک واقعی caret و بازشدن list.
 - [x] آزمون مدیر و نماینده، test/build/syntax/HTTP/runtime و ZIP نهایی — تأییدشده: runtime واقعی همه خروجی‌ها true و errors=[]، تست ۵۶/۵۶، build، syntax همه JS، diff check، health/assets/push نسخه 11.37.0؛ ZIP نهایی پاک‌سازی و از داخل بررسی شد.
+
+## نوبت ۵۹ — نسخه 11.38.0
+- [x] حفظ LocalStorage، IndexedDB، state و فایل‌های واقعی هنگام پاک‌سازی کش — تأییدشده؛ runtime sentinel شامل state/customFields/formFieldMeta و تنظیم دیگر بدون تغییر ماند.
+- [x] موتور `/cache-reset`: هدر Clear-Site-Data فقط cache، حذف CacheStorage/SW و بارگذاری اجباری خودکار — تأییدشده با HTTP و runtime: ۲ cache و ۲ registration حذف شدند.
+- [x] تشخیص نسخه واقعی سرور از `/api/health` حتی وقتی HTML و CRM_ASSET_BUILD قدیمی با هم برابرند — تأییدشده در index/login با cache:no-store و مقایسه version.
+- [x] Service Worker شبکه‌اولِ اجباری، بدون fallback به HTML/JS/CSS قدیمی و با broadcast نسخه فعال — تأییدشده با تست ساختاری و syntax.
+- [x] هدرهای HTML/SW/health شامل no-store و X-CRM-Build؛ HTML شامل Clear-Site-Data cache — تأییدشده با curl پاسخ واقعی 11.38.0.
+- [x] تست ثابت کند هیچ `localStorage.clear`، حذف CRM_APP_STATE_V2 یا IndexedDB وجود ندارد — تأییدشده در ۵ منبع و runtime sentinel.
+- [x] commit محلی روی شاخه ثابت Arena — تأییدشده: commit `2c4fe0b` ساخته شد.
+- [ ] push واقعی GitHub و Pull Request به main — ناشناخته/مسدود: GitHub App هر دو push و Create Ref را به‌علت نداشتن Workflows/Refs permission با 403 رد کرد؛ اتصال GitHub در Arena باید دوباره برقرار شود.
+- [ ] GitLab mirror — ناشناخته/مسدود: remote گیت‌لب در sandbox وجود ندارد و mirror فقط پس از push/merge main و وجود secrets workflow ممکن است.
+- [x] تست/build/syntax/HTTP/runtime cache rescue و ZIP نسخه جدید — تأییدشده: ۵۷/۵۷، build، syntax، HTTP header/endpoint و runtime sentinel موفق؛ ZIP نهایی بررسی شد.

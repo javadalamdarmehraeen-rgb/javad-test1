@@ -1,35 +1,79 @@
-const CACHE = "ttt-v11.37.0";
-const PRECACHE = ["/", "/login", "/favicon.png", "/logo.png", "/vendor/leaflet.js", "/vendor/leaflet.css"];
-self.addEventListener("install", function (e) {
-  e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(PRECACHE).catch(function () {}); }).then(function () { return self.skipWaiting(); }));
+const BUILD = "11.38.0";
+const CACHE = "crm-static-v" + BUILD;
+
+async function purgeEveryCache() {
+  const keys = await caches.keys();
+  await Promise.all(keys.map(function (key) { return caches.delete(key); }));
+}
+
+async function announceBuild() {
+  const list = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+  list.forEach(function (client) { client.postMessage({ type: "CRM_BUILD_ACTIVE", build: BUILD }); });
+}
+
+self.addEventListener("install", function (event) {
+  event.waitUntil(purgeEveryCache().then(function () { return self.skipWaiting(); }));
 });
-self.addEventListener("activate", function (e) {
-  e.waitUntil(caches.keys().then(function (keys) {
-    return Promise.all(keys.filter(function (k) { return k !== CACHE; }).map(function (k) { return caches.delete(k); }));
-  }).then(function () { return self.clients.claim(); }));
+
+self.addEventListener("activate", function (event) {
+  event.waitUntil(purgeEveryCache().then(function () { return self.clients.claim(); }).then(announceBuild));
 });
-self.addEventListener("message", function (e) {
-  if (e.data === "skipWaiting") self.skipWaiting();
-  if (e.data === "purgeOldCaches") e.waitUntil(caches.keys().then(function(keys){return Promise.all(keys.filter(function(k){return k!==CACHE;}).map(function(k){return caches.delete(k);}));}));
+
+self.addEventListener("message", function (event) {
+  if (event.data === "skipWaiting") self.skipWaiting();
+  if (event.data === "purgeOldCaches" || (event.data && event.data.type === "CRM_FORCE_REFRESH")) {
+    event.waitUntil(purgeEveryCache().then(announceBuild));
+  }
 });
-self.addEventListener("push", function (e) {
-  var data={};try{data=e.data?e.data.json():{};}catch(x){data={body:e.data?e.data.text():"پیام جدید"};}
-  e.waitUntil(self.registration.showNotification(data.title||"پیام جدید CRM",{body:data.body||"",icon:"/logo.png",badge:"/favicon.png",tag:data.tag||"crm-message",renotify:true,vibrate:[220,100,220,100,320],requireInteraction:true,data:{url:data.url||"/panel#tab-notifications"}}));
+
+self.addEventListener("push", function (event) {
+  let data = {};
+  try { data = event.data ? event.data.json() : {}; }
+  catch (e) { data = { body: event.data ? event.data.text() : "پیام جدید" }; }
+  event.waitUntil(self.registration.showNotification(data.title || "پیام جدید CRM", {
+    body: data.body || "", icon: "/logo.png", badge: "/favicon.png",
+    tag: data.tag || "crm-message", renotify: true,
+    vibrate: [220, 100, 220, 100, 320], requireInteraction: true,
+    data: { url: data.url || "/panel#tab-notifications" }
+  }));
 });
-self.addEventListener("notificationclick", function (e) {
-  e.notification.close();var url=(e.notification.data&&e.notification.data.url)||"/panel#tab-notifications";e.waitUntil(clients.matchAll({type:"window",includeUncontrolled:true}).then(function(list){for(var i=0;i<list.length;i++){if("focus" in list[i]){list[i].navigate(url);return list[i].focus();}}return clients.openWindow?clients.openWindow(url):null;}));
-});
-self.addEventListener("fetch", function (e) {
-  var u = new URL(e.request.url);
-  if (e.request.method !== "GET") return;
-  if (u.pathname.indexOf("/api/") === 0) return;
-  var fresh=/\.(?:js|css)$/.test(u.pathname)||e.request.mode==="navigate";
-  var request=fresh?new Request(e.request,{cache:"no-store"}):e.request;
-  e.respondWith(fetch(request).then(function (res) {
-    if (res.ok && (u.pathname.indexOf("/vendor/") === 0 || /\.(png|css|js)$/.test(u.pathname))) {
-      var copy = res.clone();
-      caches.open(CACHE).then(function (c) { c.put(e.request, copy); });
+
+self.addEventListener("notificationclick", function (event) {
+  event.notification.close();
+  const url = (event.notification.data && event.notification.data.url) || "/panel#tab-notifications";
+  event.waitUntil(clients.matchAll({ type: "window", includeUncontrolled: true }).then(function (list) {
+    for (let i = 0; i < list.length; i++) {
+      if ("focus" in list[i]) { list[i].navigate(url); return list[i].focus(); }
     }
-    return res;
-  }).catch(function () { return caches.match(e.request); }));
+    return clients.openWindow ? clients.openWindow(url) : null;
+  }));
+});
+
+self.addEventListener("fetch", function (event) {
+  const request = event.request;
+  if (request.method !== "GET") return;
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) return;
+
+  const isApi = url.pathname.indexOf("/api/") === 0;
+  const mustBeFresh = request.mode === "navigate" || /\.(?:html|js|css|json|webmanifest)$/.test(url.pathname) || url.pathname === "/sw.js";
+
+  if (isApi || mustBeFresh) {
+    const fresh = isApi ? new Request(request, { cache: "no-store" }) : new Request(request, { cache: "reload" });
+    event.respondWith(fetch(fresh).catch(function () {
+      if (request.mode === "navigate") {
+        return new Response("<!doctype html><meta charset='utf-8'><title>اتصال لازم است</title><body dir='rtl' style='font-family:Tahoma;text-align:center;padding:40px'><h2>برای دریافت آخرین نسخه، اینترنت را وصل کنید.</h2><button onclick='location.reload()'>تلاش دوباره</button></body>", { status: 503, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" } });
+      }
+      return new Response("نسخه تازه در دسترس نیست", { status: 503, headers: { "Cache-Control": "no-store" } });
+    }));
+    return;
+  }
+
+  event.respondWith(fetch(new Request(request, { cache: "no-cache" })).then(function (response) {
+    if (response.ok && /\.(?:png|jpg|jpeg|ico|woff2)$/.test(url.pathname)) {
+      const copy = response.clone();
+      caches.open(CACHE).then(function (cache) { cache.put(request, copy); });
+    }
+    return response;
+  }).catch(function () { return caches.match(request); }));
 });

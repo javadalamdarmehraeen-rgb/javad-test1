@@ -1211,3 +1211,10 @@ Then change only what is requested.
 - Representative-home privacy projects the same visible set into both table and Leaflet layers; old non-tile layers are removed before repaint.
 - Reference recipient select is explicitly excluded from searchable/free-entry combo transformation.
 - Hourly leave schema adds fromTime/toTime while retaining legacy combined-hours compatibility.
+
+## معماری افزوده v11.38.0 — Server-truth cache rescue
+- Build truth boundary: `/api/health` no-store version + `X-CRM-Build`; local HTML/localStorage cannot self-certify freshness.
+- Rescue boundary: `/cache-reset` emits Clear-Site-Data cache, clears CacheStorage, unregisters SW, records build marker and redirects with unique query. It never touches LocalStorage application keys or IndexedDB.
+- HTML response boundary: every HTML is no-store and clears HTTP cache; SW script is no-store with root scope.
+- SW code boundary: navigation, HTML, JS, CSS, JSON and manifest are network-only/reload; only images/fonts may have version cache fallback.
+- Activation boundary: purge all caches, skipWaiting, clients.claim and build broadcast trigger automatic mismatch rescue.
