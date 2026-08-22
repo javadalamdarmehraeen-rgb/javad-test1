@@ -663,3 +663,12 @@ CLEAN_EXTRA_FILES.bat و بعد PUSH_GITHUB_CLEAN.bat را اجرا کن.
 7. قانون جدید دائمی ۹۱ در AI_RULES ثبت شد: در هر چت همه ۱۵ فایل آرشیوی به‌روز شوند، PROJECT_GRAPH با update_project_graph.py و chat.arena با update_chat_arena.py بازسازی شوند و ZIP طبق قانون ۶۴ کنار صفحه بیاید.
 8. همه آرشیوها به‌روز شدند: GITHUB_REVIEW_HANDOFF (بخش ۰ وضعیت انتشار)، AI_ACCEPTANCE_CHECKLIST (نوبت ۶۱)، AI_DECISION_LOG (تصمیم ۹۳)، AI_TASKS (بخش‌های ۸۱ و ۸۲)، AI_PROJECT_CONTEXT، ARENA_HANDOFF_PROMPT (شروع اجباری بعد از نوبت ۶۱)، README، این فایل؛ graph و chat.arena 1.56 بازسازی شدند.
 9. GitLab mirror تنها حلقه تأییدنشده باقی مانده است؛ سرویس قدیمی namayandeelmi-javad.onrender.com هنوز 11.20.0 است و دیگر مرجع health نیست.
+
+## تحویل نوبت ۶۲ — قانون اجرای جزبه‌جز + راستی‌آزمایی ۲۱ بندِ پرامپت کاربر (بدون تغییر کد برنامه)
+
+1. قانون دائمی ۹۲ به AI_RULES اضافه شد: هر پرامپت به بندهای شماره‌دار شکسته شود، هر بند واقعاً در سورس اعمال/راستی‌آزمایی شود، و قبل از ZIP هوش مصنوعی خودش با سرور واقعی و تست ورود خودکار (app-smoke) وارد برنامه شود؛ تحویل فقط با جدول شواهد کامل.
+2. قالب بلوک پایان چت دائمی شد: git add -A / git commit با شماره نسخه و خلاصه فارسی / git push origin main / git push gitlab main.
+3. پرامپت بلند کاربر (اعلان، پاسخ/تاریخچه، Web Push صدادار، سفارشات/داروخانه، فعالیت لحظه‌ای، منزل نمایندگان، حفظ اطلاعات، قفل فیلدها، مسیرهای تارگت، label فارسی، مرخصی ساعتی، گیرنده plain و فلش کشویی‌ها) بند‌به‌بند راستی‌آزمایی شد: همه در 11.23.0–11.38.0 حاضر بودند؛ شواهد دقیق (نام تابع و خط) در AI_ACCEPTANCE_CHECKLIST نوبت ۶۲ ثبت شد.
+4. نکات کلیدی شواهد: گزینه اعلان عمومی فقط با notify_all_users (v20:1327)؛ کلید پاسخ/تاریخچه در renderNotificationsV35/showNotificationThreadV35؛ کارت داروخانه delegated در bindOrderPharmacyCardV37 (v20:1338)؛ حذف قطعی جواد علمدار/نیلا محرمی با tombstone (v20:1331)؛ منزل نماینده privacy در visibleRepHomesV37؛ «از ساعت/تا ساعت» فیلدهای ۵ و ۶ با step=60؛ گیرنده plain و فلش کشویی در setupV37FinalGuards.
+5. ورود خودکار به برنامه: سرور واقعی spawn شد و app-smoke ۴/۴ پاس شد (health/HTML/اسکریپت‌ها/UI حیاتی + round-trip حفظ sentinel و vault اکسل + VAPID کلید عمومی و رد subscription خراب)؛ مجموع کامل ۵۸/۵۸.
+6. هیچ بند معلق کدی نماند؛ طبق قوانین ۸۹/۹۱ نسخه برنامه بدون تغییر واقعی bump نشد و 11.38.0 ماند؛ آرشیوها/graph/chat 1.56 بازسازی و ZIP با سرور دانلود پورت 8000 تحویل شد.

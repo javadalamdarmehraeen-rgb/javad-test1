@@ -1583,3 +1583,24 @@ All laws of previous chats remain in force. The delivery ZIP beside the page eve
 rule #64 and was re-mandated by the user in نوبت ۶۱. When an audit shows nothing pending
 in code, do NOT bump the app version artificially: archives carry the turn, the ZIP carries
 the archives, and production health stays the single source of release truth (rule #89).
+
+# 92. PART-BY-PART PROMPT EXECUTION + SELF-VERIFICATION BEFORE DELIVERY (PERMANENT — USER-MANDATED 2026-08-22, نوبت ۶۲)
+
+Declared by the user and valid for ALL future chats, reinforcing the AI_ACCEPTANCE_CHECKLIST law:
+
+1. Every user prompt — however long — must be broken into numbered independent items BEFORE any work.
+2. Each item maps to its file/function/UI element and must be REALLY applied in source; prose without a
+   code/verification change is NOT «done».
+3. Before building the delivery ZIP and declaring end of chat, the AI MUST enter the program itself:
+   run the real server, run the automated app-entry test (tests/app-smoke.test.mjs pattern), plus
+   targeted runtime/DOM checks for every item of that prompt. An item is «تأییدشده» only with captured
+   evidence; anything unverifiable must be reported honestly as «در انتظار تأیید کاربر» or «ناشناخته».
+4. If verification exposes a real gap → fix it minimally, re-test, and only then deliver. If everything
+   is already applied, do NOT bump the app version artificially (rules #89/#91) — deliver the audited
+   truth with evidence.
+5. EVERY chat must end with a copy-ready command block in this exact shape (version + Persian summary):
+   git add -A
+   git commit -m "v<VERSION>: <خلاصه فارسی تغییرات همین نوبت>"
+   git push origin main
+   git push gitlab main
+6. The ZIP download beside the page (rule #64) comes only AFTER the verification table is complete.

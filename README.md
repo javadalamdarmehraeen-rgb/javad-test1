@@ -2,7 +2,7 @@
 
 > **راهنمای بررسی نسخه جاری:** قبل از هر بررسی GitHub، فایل [`GITHUB_REVIEW_HANDOFF.md`](./GITHUB_REVIEW_HANDOFF.md) و سپس [`PROJECT_GRAPH.md`](./PROJECT_GRAPH.md) را بخوانید. نسخه فعال سورس `11.38.0` است؛ ورودی runtime اصلی `server.js + public/` است و اسکلت Next.js پوشه `src/` مسیر production فعلی نیست.
 >
-> **وضعیت انتشار در 2026-08-22 (نوبت ۶۱):** انتشار `11.38.0` تأییدشده است. مخزن `javadalamdarmehraeen-rgb/javad-test1`، شاخه `arena/01a0262d-javad-test1` push شده، main حامل سورس کامل است، checks موفق‌اند و production فعال `https://javad-test1.onrender.com` دو بار مستقل نسخه `11.38.0` را سرو کرد همراه با redirect زنده cache-rescue (`/login?build=11.38.0&__crm_reload=...`). سرویس قدیمی `namayandeelmi-javad.onrender.com` هنوز `11.20.0` است و دیگر مرجع نیست. جزئیات و دستورات در فایل handoff آمده است.
+> **وضعیت انتشار در 2026-08-22 (نوبت ۶۲):** انتشار `11.38.0` تأییدشده است. مخزن `javadalamdarmehraeen-rgb/javad-test1`، شاخه `arena/01a0262d-javad-test1` push شده، main حامل سورس کامل است، checks موفق‌اند و production فعال `https://javad-test1.onrender.com` دو بار مستقل نسخه `11.38.0` را سرو کرد همراه با redirect زنده cache-rescue (`/login?build=11.38.0&__crm_reload=...`). سرویس قدیمی `namayandeelmi-javad.onrender.com` هنوز `11.20.0` است و دیگر مرجع نیست. از نوبت ۶۲ قانون ۹۲ فعال است: هر پرامپت بند‌به‌بند اجرا/راستی‌آزمایی و قبل از ZIP ورود خودکار به برنامه انجام می‌شود. جزئیات و دستورات در فایل handoff آمده است.
 
 این مخزن شامل برنامه CRM/PWA نمایندگان علمی، مدیریت داروخانه/پزشک/سفارش، مسیرها، تارگت، اعلان، پخش و ابزارهای حفظ داده است.
 

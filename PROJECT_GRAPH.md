@@ -431,7 +431,8 @@
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.
 - `GITHUB_REVIEW_HANDOFF.md` مرجع وضعیت commit/push/PR/GitLab/Render/production و دستورات بررسی است؛ قبل از ادعای deploy باید دوباره اندازه‌گیری شود.
 - زنجیره انتشار: source test → commit → push Arena branch → PR main → checks → merge → GitLab mirror → Render deploy → production health.
-- قانون نوبت ۶۱: در هر چت همه فایل‌های آرشیوی (graph/handoff/chat.arena/اسکریپت‌های مولد/checklist/rules/decision/tasks/context/architecture/handoff-prompt/changes/README/OFFICIAL_FILELIST) به‌روز شوند و ZIP کنار صفحه تحویل شود.
+- قانون نوبت ۶۱ (۹۱): در هر چت همه فایل‌های آرشیوی (graph/handoff/chat.arena/اسکریپت‌های مولد/checklist/rules/decision/tasks/context/architecture/handoff-prompt/changes/README/OFFICIAL_FILELIST) به‌روز شوند و ZIP کنار صفحه تحویل شود.
+- قانون نوبت ۶۲ (۹۲): هر پرامپت بند‌به‌بند اجرا و راستی‌آزمایی شود؛ قبل از ZIP ورود خودکار به برنامه (سرور واقعی + app-smoke) اجباری است؛ پایان هر چت بلوک دستور git با شماره نسخه تحویل می‌شود.
 
 ## ی) گراف موتور نجات کش 11.38
 

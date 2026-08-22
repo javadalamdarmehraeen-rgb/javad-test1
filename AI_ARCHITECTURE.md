@@ -1232,3 +1232,6 @@ Then change only what is requested.
 - production فعال کاربر `https://javad-test1.onrender.com` است: `/api/health` دو بار مستقل `11.38.0` را سرو کرد (2026-08-21T21:24Z) و زنجیره cache-resuse زنده (`/panel` → `/login?build=11.38.0&__crm_reload=...`) کار کرد. سرویس قدیمی `namayandeelmi-javad.onrender.com` هنوز `11.20.0` است و در معماری مرجع نیست.
 - معماری مجوزهای انتشار: git push از طریق HTTPS کار می‌کند مگر کامیت حاوی تغییر `.github/workflows/*` باشد (آن حالت به workflows permission نیاز دارد و 403 می‌گیرد)؛ REST API اپ محدود است ولی خواندن مخزن/actions مجاز.
 - معماری آرشیو (قانون ۹۱): در هر چت ۱۵ فایل حافظه به‌روز می‌شوند؛ `PROJECT_GRAPH.md` فقط با `update_project_graph.py` و `chat.arena` فقط با `update_chat_arena.py` بازسازی می‌شوند تا ساختار همیشه از مولد خودش بیاید.
+
+## معماری دروازه تحویل — نوبت ۶۲ (2026-08-22)
+دروازه تحویل استاندارد شد: قبل از هر ZIP، سرور واقعی spawn و تست app-smoke (health/HTML/اسکریپت‌ها/UI حیاتی + round-trip داده + VAPID) باید پاس شود؛ این دروازه در قانون ۹۲ AI_RULES اجباری است و نتیجه‌اش در AI_ACCEPTANCE_CHECKLIST همان نوبت ثبت می‌شود.

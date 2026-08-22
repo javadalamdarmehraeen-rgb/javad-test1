@@ -570,26 +570,26 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]      849 بایت  .gitattributes
   [متنی ]     1157 بایت  .gitignore
   [متنی ]     2057 بایت  .gitlab-ci.yml
-  [متنی ]    14457 بایت  AI_ACCEPTANCE_CHECKLIST.md
-  [متنی ]    33906 بایت  AI_ARCHITECTURE.md
-  [متنی ]    65906 بایت  AI_DECISION_LOG.md
-  [متنی ]    37858 بایت  AI_PROJECT_CONTEXT.md
-  [متنی ]    42394 بایت  AI_RULES.md
-  [متنی ]    48120 بایت  AI_TASKS.md
-  [متنی ]    42055 بایت  ARENA_HANDOFF_PROMPT.md
+  [متنی ]    19690 بایت  AI_ACCEPTANCE_CHECKLIST.md
+  [متنی ]    34361 بایت  AI_ARCHITECTURE.md
+  [متنی ]    67320 بایت  AI_DECISION_LOG.md
+  [متنی ]    38686 بایت  AI_PROJECT_CONTEXT.md
+  [متنی ]    43911 بایت  AI_RULES.md
+  [متنی ]    48942 بایت  AI_TASKS.md
+  [متنی ]    43022 بایت  ARENA_HANDOFF_PROMPT.md
   [متنی ]      600 بایت  CHANGES_V10.md
-  [متنی ]    97699 بایت  CHANGES_V11.md
+  [متنی ]   100171 بایت  CHANGES_V11.md
   [متنی ]     3939 بایت  CHANGES_V9.md
   [متنی ]     1806 بایت  CLEAN_EXTRA_FILES.bat
-  [متنی ]    18296 بایت  GITHUB_REVIEW_HANDOFF.md
+  [متنی ]    18709 بایت  GITHUB_REVIEW_HANDOFF.md
   [متنی ]     2377 بایت  KEEP_ONLY_GITHUB.bat
   [متنی ]     6750 بایت  OFFICIAL_FILELIST.txt
-  [متنی ]    44120 بایت  PROJECT_GRAPH.md
+  [متنی ]    44458 بایت  PROJECT_GRAPH.md
   [متنی ]     2707 بایت  PUSH_FRESH_GITHUB.bat
   [متنی ]     2680 بایت  PUSH_GITHUB_CLEAN.bat
   [متنی ]     6579 بایت  RAHNAMA_GITLAB.txt
   [متنی ]     2852 بایت  RAHNAMA_PAKSAZI.txt
-  [متنی ]    13010 بایت  README.md
+  [متنی ]    13223 بایت  README.md
   [متنی ]     4731 بایت  README_FA_COMPLETE.md
   [متنی ]     2766 بایت  SYNC_ALL.bat
   [متنی ]     1273 بایت  SYNC_OFFICIAL_OVER_FOLDER.bat
@@ -604,8 +604,8 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]    23357 بایت  server.js
   [متنی ]     2426 بایت  sync_all.sh
   [متنی ]      738 بایت  tsconfig.json
-  [متنی ]   322348 بایت  update_chat_arena.py
-  [متنی ]    12738 بایت  update_project_graph.py
+  [متنی ]   326471 بایت  update_chat_arena.py
+  [متنی ]    13092 بایت  update_project_graph.py
   [متنی ]     2566 بایت  .github/workflows/deploy.yml
   [متنی ]      214 بایت  .github/workflows/keep_alive.yml
   [متنی ]     7164 بایت  mobile/App.tsx
@@ -3628,6 +3628,13 @@ health لینک جدید دو بار مستقل 11.38.0 را تأیید کرد �
 🤖 دستیار:
 ممیزی کامل ۲۰ چت اخیر (نوبت‌های ۴۱ تا ۶۰ = نسخه‌های 11.23.0 تا 11.38.0) با ۲۲ نشانگر کد انجام شد: SHAFA_CODE_MAP اصلاحی، userEditId، safeOrderFields، سرستون 87CEEB، ensureProductCodes، تب وضعیت فاکتور، invoiceStatusBaseCache، globalFieldOptions، CRM_MANAGER_GRID_ORDER_V2، syncRepsFromUsers (با تست اختصاصی)، Permissions-Policy، x-crm-request، privacyList، representativeRoutesCard، setupTargetPlannerV34، notify_all_users، vapidAuthorization، groupAnchor، deletedUserTombstones، leaveFromTime، /cache-reset و CRM_BUILD_ACTIVE — همه در سورس موجودند؛ 58/58 تست موفق؛ پس هیچ پرامپت معلق‌ای نمانده و نسخه برنامه 11.38.0 بدون تغییر کد باقی ماند (تغییر ساختگی نسخه بدون تغییر کد ممنوع است). همه ۱۵ فایل آرشیوی برای نوبت ۶۱ به‌روز شد، قانون ۹۱ (همگام‌سازی آرشیو در هر چت) در AI_RULES ثبت شد، PROJECT_GRAPH و chat.arena 1.56 بازسازی شدند، ZIP نهایی بازساخته و تحویل شد.
 
+──────────────────────────────── نوبت ۶۲ ────────────────────────────────
+🧑 کاربر (خلاصه وفادار):
+«پرامپت‌های من طولانی و چندبخشی است و اکثراً اصلاحات کل پرامپت انجام نمی‌شود. قانونی پیاده کن که جزبه‌جز بخوانی، جزبه‌جز انجام دهی و تغییرات واقعی اعمال شود نه فقط نوشتن؛ قبل از پایان ZIP خودت وارد برنامه شو و چک کن اصلاح واقعاً اعمال شده یا نه. در آخر هر چت بلوک دستور git با شماره نسخه بده. کش قدیمی قبل از باز شدن/رفرش خودکار پاک شود. اعلان‌ها: گزینه عمومی فقط با مجوز، کلید پاسخ و تاریخچه رد و بدل، نوتیفیکیشن صدادار حتی با برنامه بسته. سفارشات: بدون گزینه افزودن داروخانه، پنهان ماندن پیغام قبلاً ثبت‌شده بعد از جایگذاری، رفع قفل/صفحه سفید جایگذاری خودکار. فعالیت لحظه‌ای: حذف جواد علمدار و نیلا محرمی، نماینده فقط خودش. منزل نمایندگان: بدون پیغام افزودن، نام ثابت ساده، لوکیشن فقط خود نماینده (مدیر همه). اول حفظ اطلاعات بعد تغییرات مویرگی. قفل فیلدهای سفارشات و پاک‌کردن بدون به‌هم‌ریختگی. فیلدهای تعریف مسیر تارگت نمایان. label فارسی به‌جای شناسه فنی مثل leaveRepSelect. مرخصی: از ساعت/تا ساعت دو فیلد بدون ثانیه، شماره ۵ و ۶. گیرنده اعلان بدون تایپ و فلش همه کشویی‌ها کار کند.»
+
+🤖 دستیار:
+قانون دائمی ۹۲ در AI_RULES ثبت شد: شکستن پرامپت به بندهای شماره‌دار، اعمال واقعی هر بند، ورود خودکار اجباری به برنامه (سرور واقعی + تست app-smoke) قبل از ZIP و بلوک دستور git پایان هر چت. سپس همین پرامپت به ۲۱ بند شکسته و بند‌به‌بند راستی‌آزمایی شد: گزینه عمومی فقط با notify_all_users (v20:1327)؛ کلید «↩ پاسخ» و «🕘 تاریخچه» با thread مودال (renderNotificationsV35/showNotificationThreadV35)؛ Web Push VAPID + SW showNotification با تست کلید عمومی؛ دکمه افزودن فقط برای فیلد سفارشی allowAddOption (orderPharmacyName builtin است)؛ guard پیغام جایگذاری idempotent (bindPlacedPharmacyNoticeGuard)؛ کلیک کارت داروخانه delegated در capture (bindOrderPharmacyCardV37) — رفع قفل/صفحه سفید؛ حذف قطعی جواد علمدار/نیلا محرمی با tombstone یک‌باره (enforceDeletedUserTombstonesV37) و فعالیت self-only؛ سلبکتور نماینده غیرمدیر disabled+ثابت (v35-fixed-rep)؛ منزل نماینده manager-all/rep-self در جدول و نقشه (visibleRepHomesV37)؛ v20ApplyOrderLock و reset تراکنشی؛ pinRepresentativeRouteFieldsV37؛ installPersianBuiltinLabelGuardV37؛ «از ساعت/تا ساعت» دو فیلد step=60 دقیقاً شماره ۵ و ۶؛ setupPlainRecipientV37 و bindComboCaretFixV37. ورود خودکار به برنامه اجرا شد: سرور واقعی spawn و app-smoke ۴/۴ (health/HTML/اسکریپت/UI حیاتی + حفظ sentinel و vault + VAPID)؛ مجموع ۵۸/۵۸. نتیجه: هیچ بند معلق کدی نبود؛ نسخه 11.38.0 طبق قوانین ۸۹/۹۱ بدون تغییر واقعی bump نشد. همه آرشیوها/graph/chat بازسازی، ZIP با سرور دانلود پورت 8000 تحویل و بلوک دستور پایان چت داده شد.
+
 
 
 ══════════════════════════════════════════════════════════════════════════════════
@@ -3845,7 +3852,7 @@ sync-after-deploy:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_ACCEPTANCE_CHECKLIST.md (14457 بایت)
+فایل: AI_ACCEPTANCE_CHECKLIST.md (19690 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI_ACCEPTANCE_CHECKLIST — چک‌لیست اجباری تحویل واقعی
@@ -3927,10 +3934,34 @@ sync-after-deploy:
 - [x] ممیزی پرامپت‌های ۲۰ چت اخیر (نوبت ۴۱–۶۰) — تأییدشده با ۲۲ نشانگر کد + ۵۸/۵۸ تست: همه در سورس 11.38.0 اعمال‌اند؛ هیچ پرامپت معلق کدی باقی نماند؛ نسخه برنامه بدون تغییر کد bump نشد.
 - [x] به‌روزرساری همه ۱۵ فایل آرشیوی طبق قانون جدید ۹۱ (نوبت ۶۱) — تأییدشده: graph بازسازی، chat.arena 1.56، handoff/checklist/rules(+#91)/decision(+#۹۳)/tasks(+#۸۱،۸۲)/context/architecture/handoff-prompt/changes/README/filelist.
 - [ ] GitLab mirror — ناشناخته: remote گیت‌لب و لاگ خام workflow از sandbox قابل دسترسی نیست.
+
+## نوبت ۶۲ — قانون جزبه‌جز + راستی‌آزمایی بند‌به‌بند پرامپت کاربر (بدون تغییر کد؛ همه بندها از قبل در 11.23–11.38 اعمال بودند)
+- [x] بند ۱ (قانون): اجرای جزبه‌جز پرامپت + ورود خودکار به برنامه قبل از ZIP — تأییدشده؛ به‌صورت قانون دائمی ۹۲ در AI_RULES ثبت شد.
+- [x] بند ۲ (قانون): بلوک دستور git پایان هر چت — تأییدشده؛ در قانون ۹۲ بند ۵ قالب exact آن ثبت شد و در همین نوبت تحویل شد.
+- [x] بند ۳ (کش): پاک‌سازی خودکار کش قبل/موقع باز شدن و رفرش — تأییدشده؛ موتور 11.38 (مقایسه health، /cache-reset، SW network-only) + اثبات زنده production: redirect خودکار `/login?build=11.38.0&__crm_reload=...`.
+- [x] بند ۴ (اعلان عمومی با مجوز): گزینه «همه کاربران» فقط با `notify_all_users` — تأییدشده؛ v20 خط 1327: `if(manager||perms.notify_all_users===true)`.
+- [x] بند ۵ (پاسخ و تاریخچه): کلید «↩ پاسخ» و «🕘 تاریخچه» در هر ردیف + مودال thread با sender→recipient — تأییدشده؛ renderNotificationsV35 و showNotificationThreadV35.
+- [x] بند ۶ (نوتیفیکیشن صدادار بسته): Web Push استاندارد VAPID + SW showNotification + تست VAPID کلید عمومی — تأییدشده؛ صدای نهایی مطابق سند، تصمیم OS/مرورگر است.
+- [x] بند ۷ (سفارشات/داروخانه): بدون گزینه افزودن (دکمه افزودن فقط برای فیلد سفارشی allowAddOption است؛ orderPharmacyName فیلد builtin است) — تأییدشده؛ crm-app.js خط 888.
+- [x] بند ۸ (پیغام «قبلاً ثبت شده» بعد از جایگذاری): پنهان idempotent تا تغییر واقعی نام — تأییدشده؛ bindPlacedPharmacyNoticeGuard (v20:1078) + MutationObserver.
+- [x] بند ۹ (قفل/صفحه سفید جایگذاری خودکار): کلیک delegated در capture با stopImmediatePropagation — تأییدشده؛ bindOrderPharmacyCardV37 (v20:1338)؛ تست app-smoke بدون خطا.
+- [x] بند ۱۰ و ۱۳ (فعالیت لحظه‌ای): حذف جواد علمدار/نیلا محرمی با tombstone یک‌باره (v20:1331 دقیقاً این دو id/نام) + نماینده self-only حتی با مجوز all-reps — تأییدشده؛ renderActivityLogV36/visibleActivityRowsV36/bindPrivacyRenderers.
+- [x] بند ۱۱ (منزل نماینده، بدون پیغام افزودن + نام ثابت): سلبکتور نماینده برای غیرمدیر disabled+fixed self (v35-fixed-rep، v20:1093) — تأییدشده.
+- [x] بند ۱۲ (حفظ اطلاعات اول): قوانین ۸۸/۸۹ + تست state-preservation و sentinel round-trip — تأییدشده؛ ۵۸/۵۸.
+- [x] بند ۱۴ (قفل فیلدهای سفارشات + پاک‌کردن بدون به‌هم‌ریختگی): v20ApplyOrderLock + reset تراکنشی snapshot — تأییدشده؛ تست‌های رگرسیون نوبت ۵۷.
+- [x] بند ۱۵ (فیلدهای تعریف مسیر تارگت): setupRepresentativeRoutes در boot/tab/reliable + pinRepresentativeRouteFieldsV37 — تأییدشده؛ setupV37FinalGuards (v20:1342).
+- [x] بند ۱۶ (label فارسی به‌جای شناسه فنی): installPersianBuiltinLabelGuardV37 در همه مسیرها — تأییدشده؛ setupV37FinalGuards.
+- [x] بند ۱۷ (کلیک نکردن داروخانه‌های لیست): همان handler delegated بند ۹؛ کلیک روی .ph-pick-card جایگذاری واقعی می‌کند — تأییدشده.
+- [x] بند ۱۸ (حذف کاربران قدیمی): deleteUserCard با tombstone پایدار + enforceDeletedUserTombstonesV37 در هر boot — تأییدشده.
+- [x] بند ۱۹ (لوکیشن منزل فقط خودش؛ مدیر همه): visibleRepHomesV37 (manager→all active، rep→فقط خود) + paintRepHomesMapV37 فقط markerهای مجاز — تأییدشده.
+- [x] بند ۲۰ (مرخصی از/تا ساعت): دو فیلد مستقل با step=60 بدون ثانیه، label «از ساعت/تا ساعت»، دقیقاً فیلدهای شماره ۵ و ۶ فرم — تأییدشده؛ index.html خطوط 1234-1239.
+- [x] بند ۲۱ (گیرنده plain + فلش همه کشویی‌ها): setupPlainRecipientV37 + bindComboCaretFixV37 — تأییدشده؛ setupV37FinalGuards.
+- [x] ورود خودکار به برنامه (الزام قانون جدید): سرور واقعی spawn شد؛ تست app-smoke ۴/۴ (health/HTML/اسکریپت‌ها/UI حیاتی، حفظ sentinel، vault اکسل، VAPID) — تأییدشده؛ مجموع کامل ۵۸/۵۸.
+- [x] نتیجه: هیچ بند معلق کدی نبود؛ نسخه برنامه مطابق قوانین ۸۹/۹۱ بدون تغییر واقعی bump نشد و 11.38.0 ماند؛ ZIP بازسازی و با سرور دانلود پورت 8000 تحویل شد.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_ARCHITECTURE.md (33906 بایت)
+فایل: AI_ARCHITECTURE.md (34361 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI ARCHITECTURE
@@ -5167,10 +5198,13 @@ Then change only what is requested.
 - production فعال کاربر `https://javad-test1.onrender.com` است: `/api/health` دو بار مستقل `11.38.0` را سرو کرد (2026-08-21T21:24Z) و زنجیره cache-resuse زنده (`/panel` → `/login?build=11.38.0&__crm_reload=...`) کار کرد. سرویس قدیمی `namayandeelmi-javad.onrender.com` هنوز `11.20.0` است و در معماری مرجع نیست.
 - معماری مجوزهای انتشار: git push از طریق HTTPS کار می‌کند مگر کامیت حاوی تغییر `.github/workflows/*` باشد (آن حالت به workflows permission نیاز دارد و 403 می‌گیرد)؛ REST API اپ محدود است ولی خواندن مخزن/actions مجاز.
 - معماری آرشیو (قانون ۹۱): در هر چت ۱۵ فایل حافظه به‌روز می‌شوند؛ `PROJECT_GRAPH.md` فقط با `update_project_graph.py` و `chat.arena` فقط با `update_chat_arena.py` بازسازی می‌شوند تا ساختار همیشه از مولد خودش بیاید.
+
+## معماری دروازه تحویل — نوبت ۶۲ (2026-08-22)
+دروازه تحویل استاندارد شد: قبل از هر ZIP، سرور واقعی spawn و تست app-smoke (health/HTML/اسکریپت‌ها/UI حیاتی + round-trip داده + VAPID) باید پاس شود؛ این دروازه در قانون ۹۲ AI_RULES اجباری است و نتیجه‌اش در AI_ACCEPTANCE_CHECKLIST همان نوبت ثبت می‌شود.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_DECISION_LOG.md (65906 بایت)
+فایل: AI_DECISION_LOG.md (67320 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI DECISION LOG
@@ -6768,10 +6802,16 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - ممیزی ۲۰ چت اخیر (نوبت ۴۱–۶۰ = نسخه 11.23.0 تا 11.38.0) با ۲۲ نشانگر کد + 58/58 تست نشان داد هیچ پرامپت معلق‌ای در کد نمانده؛ نسخه برنامه بدون تغییر کد واقعی bump نمی‌شود.
 - قانون دائمی جدید (قانون ۹۱ AI_RULES): در هر چت همه ۱۵ فایل آرشیوی به‌روز شوند، graph/chat با اسکریپت‌های خودشان بازسازی شوند و ZIP طبق قانون ۶۴ کنار صفحه بیاید.
 - GitLab mirror تنها حلقه تأییدنشده باقی مانده است (remote و لاگ خام از sandbox در دسترس نیست).
+
+## تصمیم ۹۴ — نوبت ۶۲: قانون اجرای جزبه‌جز و راستی‌آزمایی اجباری قبل از تحویل (2026-08-22)
+- درخواست تکراری کاربر نباید به پیاده‌سازی دوباره بینجامد؛ الگوی درست: شکستن پرامپت به بندهای شماره‌دار، نگاشت هر بند به فایل/تابع/UI، و راستی‌آزمایی با شواهد کد/رانتایم.
+- «وارد شدن خودکار به برنامه» به‌صورت استاندارد تحویل تعریف شد: spawn سرور واقعی + تست app-smoke (health/HTML/اسکریپت/UI حیاتی + حفظ sentinel/vault + VAPID) قبل از ساخت ZIP.
+- راستی‌آزمایی نوبت ۶۲: هر ۲۱ بند پرامپت بلند کاربر در نسخه‌های 11.23.0 تا 11.38.0 حاضر بود؛ دو نمونه legacy (u-2/جواد علمدار، u-3/نیلا محرمی) دقیقاً در enforceDeletedUserTombstonesV37 مهاجرت tombstone دارند؛ «از ساعت/تا ساعت» دقیقاً فیلدهای ۵ و ۶ فرم مرخصی‌اند؛ بنابراین هیچ تغییر کدی لازم نبود و نسخه 11.38.0 ماند.
+- قالب ثابت بلوک پایان چت (git add/commit با شماره نسخه و خلاصه فارسی/push origin/push gitlab) در قانون ۹۲ بند ۵ ثبت شد.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_PROJECT_CONTEXT.md (37858 بایت)
+فایل: AI_PROJECT_CONTEXT.md (38686 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI PROJECT CONTEXT
@@ -7701,10 +7741,13 @@ Commit محلی `2c4fe0b` روی شاخه ثابت Arena ساخته شد. Push �
 
 ## نقطه شروع چت بعدی — نوبت ۶۱ (2026-08-22)
 انتشار `11.38.0` تأییدشده است: مخزن فعال `javadalamdarmehraeen-rgb/javad-test1`، شاخه جلسه `arena/01a0262d-javad-test1` push شد، main خودش `f541301` یعنی سورس کامل 11.38.0 است (PR لازم نبود؛ صفر تفاوت)، workflow checks موفق‌اند و production فعال کاربر `https://javad-test1.onrender.com` دو بار مستقل نسخه `11.38.0` را سرو کرد؛ `/panel` redirect زنده `/login?build=11.38.0&__crm_reload=...` را نشان داد که اثبات عملی موتور cache rescue است. سرویس قدیمی `namayandeelmi-javad.onrender.com` هنوز `11.20.0` است و مرجع نیست. ممیزی ۲۰ چت اخیر (نوبت ۴۱–۶۰) با ۲۲ نشانگر کد + ۵۸/۵۸ تست نشان داد هیچ پرامپت معلق کدی نمانده؛ نسخه برنامه بدون تغییر واقعی bump نمی‌شود. قانون دائمی ۹۱: در هر چت همه ۱۵ فایل آرشیوی به‌روز شوند و ZIP کنار صفحه بیاید. تنها حلقه باز: تأیید مستقل GitLab mirror.
+
+## نقطه شروع چت بعدی — نوبت ۶۲ (2026-08-22)
+قانون ۹۲ فعال است: هر پرامپت بند‌به‌بند اجرا و راستی‌آزمایی می‌شود و قبل از ZIP، ورود خودکار به برنامه (سرور واقعی + app-smoke) اجباری است؛ پایان هر چت بلوک دستور git با شماره نسخه تحویل می‌شود. راستی‌آزمایی نوبت ۶۲ نشان داد همه بندهای پرامپت بلند کاربر (اعلان/پاسخ/Push/سفارشات/فعالیت/منزل/مرخصی/فلش‌ها/labelها) در 11.23.0–11.38.0 حاضرند؛ نسخه برنامه 11.38.0 ماند. تولید فعال همان javad-test1.onrender.com است. شواهد خط‌به‌خط در AI_ACCEPTANCE_CHECKLIST نوبت ۶۲.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_RULES.md (42394 بایت)
+فایل: AI_RULES.md (43911 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI RULES
@@ -9292,10 +9335,31 @@ All laws of previous chats remain in force. The delivery ZIP beside the page eve
 rule #64 and was re-mandated by the user in نوبت ۶۱. When an audit shows nothing pending
 in code, do NOT bump the app version artificially: archives carry the turn, the ZIP carries
 the archives, and production health stays the single source of release truth (rule #89).
+
+# 92. PART-BY-PART PROMPT EXECUTION + SELF-VERIFICATION BEFORE DELIVERY (PERMANENT — USER-MANDATED 2026-08-22, نوبت ۶۲)
+
+Declared by the user and valid for ALL future chats, reinforcing the AI_ACCEPTANCE_CHECKLIST law:
+
+1. Every user prompt — however long — must be broken into numbered independent items BEFORE any work.
+2. Each item maps to its file/function/UI element and must be REALLY applied in source; prose without a
+   code/verification change is NOT «done».
+3. Before building the delivery ZIP and declaring end of chat, the AI MUST enter the program itself:
+   run the real server, run the automated app-entry test (tests/app-smoke.test.mjs pattern), plus
+   targeted runtime/DOM checks for every item of that prompt. An item is «تأییدشده» only with captured
+   evidence; anything unverifiable must be reported honestly as «در انتظار تأیید کاربر» or «ناشناخته».
+4. If verification exposes a real gap → fix it minimally, re-test, and only then deliver. If everything
+   is already applied, do NOT bump the app version artificially (rules #89/#91) — deliver the audited
+   truth with evidence.
+5. EVERY chat must end with a copy-ready command block in this exact shape (version + Persian summary):
+   git add -A
+   git commit -m "v<VERSION>: <خلاصه فارسی تغییرات همین نوبت>"
+   git push origin main
+   git push gitlab main
+6. The ZIP download beside the page (rule #64) comes only AFTER the verification table is complete.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_TASKS.md (48120 بایت)
+فایل: AI_TASKS.md (48942 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI TASKS
@@ -10832,10 +10896,18 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] به‌روزرسانی قالب update_project_graph.py و بازسازی PROJECT_GRAPH.md
 - [x] افزودن نوبت ۶۱ به update_chat_arena.py و بازسازی chat.arena 1.56
 - [x] بازسازی ZIP نهایی و تحویل کنار صفحه
+
+## ۸۳) نوبت ۶۲ — قانون جزبه‌جز و راستی‌آزمایی کامل پرامپت بلند کاربر
+- [x] شکستن پرامپت کاربر به ۲۱ بند مستقل شماره‌دار
+- [x] ثبت قانون دائمی ۹۲ در AI_RULES (اجرا جزبه‌جز + ورود خودکار قبل از ZIP + بلوک دستور پایان چت)
+- [x] راستی‌آزمایی هر بند با شواهد کد (خط‌های واقعی v20/crm-app/index.html)
+- [x] ورود خودکار به برنامه: سرور واقعی + app-smoke ۴/۴ + مجموع ۵۸/۵۸
+- [x] نتیجه: صفر بند معلق؛ بدون تغییر کد؛ نسخه 11.38.0 ثابت
+- [x] به‌روزرساری ۱۵ فایل آرشیوی + بازسازی graph/chat + ZIP + سرور دانلود پورت 8000
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: ARENA_HANDOFF_PROMPT.md (42055 بایت)
+فایل: ARENA_HANDOFF_PROMPT.md (43022 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # ARENA AI MASTER HANDOFF PROMPT
@@ -12168,6 +12240,11 @@ ADDENDUM v11.16.1 (2026-08-16)
 3. قانون کاربر (نوبت ۶۱ → قانون ۹۱ AI_RULES): در هر چت همه ۱۵ فایل آرشیوی به‌روز شوند و ZIP کنار صفحه تحویل شود؛ اگر ممیزی نشان داد پرامپت معلق کدی نمانده، نسخه برنامه را بدون تغییر واقعی bump نکن.
 4. push فقط وقتی 403 می‌خورد که کامیت حاوی تغییر workflow باشد؛ PR با صفر تفاوت نسبت به main ممکن نیست.
 5. production /api/health تنها منبع حقیقت انتشار است؛ GitLab mirror تنها حلقه تأییدنشده است.
+
+## شروع اجباری چت بعد از نوبت ۶۲ (2026-08-22)
+1. قوانین ۶۴/۸۹/۹۱/۹۲ همگی فعال‌اند: جزبه‌جز اجرا، ورود خودکار به برنامه قبل از ZIP، ZIP کنار صفحه، بلوک دستور git پایان چت.
+2. پرامپت‌های بلند تکراری کاربر: اول بند‌به‌بند راستی‌آزمایی کن (احتمال زیاد در 11.23–11.38 اعمال شده)؛ فقط شکاف واقعی را با حداقل تغییر اصلاح کن و نسخه را فقط پس از تغییر واقعی کد bump کن.
+3. وضعیت تا این نوبت: production فعال javad-test1.onrender.com = 11.38.0 تأییدشده؛ main گیت‌هاب تا 5391951 + کامیت‌های آرشیوی جلسه Arena (push از جلسه بسته‌شده ممکن نیست؛ کاربر با SYNC_ALL محلی sync می‌کند)؛ GitLab mirror همچنان ناشناخته.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -12187,7 +12264,7 @@ Leaflet محلی. فونت گوگل حذف شد. gzip روی JS/CSS/HTML.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: CHANGES_V11.md (97699 بایت)
+فایل: CHANGES_V11.md (100171 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # نسخه ۱۱.۲۳.۰
@@ -12855,6 +12932,15 @@ CLEAN_EXTRA_FILES.bat و بعد PUSH_GITHUB_CLEAN.bat را اجرا کن.
 7. قانون جدید دائمی ۹۱ در AI_RULES ثبت شد: در هر چت همه ۱۵ فایل آرشیوی به‌روز شوند، PROJECT_GRAPH با update_project_graph.py و chat.arena با update_chat_arena.py بازسازی شوند و ZIP طبق قانون ۶۴ کنار صفحه بیاید.
 8. همه آرشیوها به‌روز شدند: GITHUB_REVIEW_HANDOFF (بخش ۰ وضعیت انتشار)، AI_ACCEPTANCE_CHECKLIST (نوبت ۶۱)، AI_DECISION_LOG (تصمیم ۹۳)، AI_TASKS (بخش‌های ۸۱ و ۸۲)، AI_PROJECT_CONTEXT، ARENA_HANDOFF_PROMPT (شروع اجباری بعد از نوبت ۶۱)، README، این فایل؛ graph و chat.arena 1.56 بازسازی شدند.
 9. GitLab mirror تنها حلقه تأییدنشده باقی مانده است؛ سرویس قدیمی namayandeelmi-javad.onrender.com هنوز 11.20.0 است و دیگر مرجع health نیست.
+
+## تحویل نوبت ۶۲ — قانون اجرای جزبه‌جز + راستی‌آزمایی ۲۱ بندِ پرامپت کاربر (بدون تغییر کد برنامه)
+
+1. قانون دائمی ۹۲ به AI_RULES اضافه شد: هر پرامپت به بندهای شماره‌دار شکسته شود، هر بند واقعاً در سورس اعمال/راستی‌آزمایی شود، و قبل از ZIP هوش مصنوعی خودش با سرور واقعی و تست ورود خودکار (app-smoke) وارد برنامه شود؛ تحویل فقط با جدول شواهد کامل.
+2. قالب بلوک پایان چت دائمی شد: git add -A / git commit با شماره نسخه و خلاصه فارسی / git push origin main / git push gitlab main.
+3. پرامپت بلند کاربر (اعلان، پاسخ/تاریخچه، Web Push صدادار، سفارشات/داروخانه، فعالیت لحظه‌ای، منزل نمایندگان، حفظ اطلاعات، قفل فیلدها، مسیرهای تارگت، label فارسی، مرخصی ساعتی، گیرنده plain و فلش کشویی‌ها) بند‌به‌بند راستی‌آزمایی شد: همه در 11.23.0–11.38.0 حاضر بودند؛ شواهد دقیق (نام تابع و خط) در AI_ACCEPTANCE_CHECKLIST نوبت ۶۲ ثبت شد.
+4. نکات کلیدی شواهد: گزینه اعلان عمومی فقط با notify_all_users (v20:1327)؛ کلید پاسخ/تاریخچه در renderNotificationsV35/showNotificationThreadV35؛ کارت داروخانه delegated در bindOrderPharmacyCardV37 (v20:1338)؛ حذف قطعی جواد علمدار/نیلا محرمی با tombstone (v20:1331)؛ منزل نماینده privacy در visibleRepHomesV37؛ «از ساعت/تا ساعت» فیلدهای ۵ و ۶ با step=60؛ گیرنده plain و فلش کشویی در setupV37FinalGuards.
+5. ورود خودکار به برنامه: سرور واقعی spawn شد و app-smoke ۴/۴ پاس شد (health/HTML/اسکریپت‌ها/UI حیاتی + round-trip حفظ sentinel و vault اکسل + VAPID کلید عمومی و رد subscription خراب)؛ مجموع کامل ۵۸/۵۸.
+6. هیچ بند معلق کدی نماند؛ طبق قوانین ۸۹/۹۱ نسخه برنامه بدون تغییر واقعی bump نشد و 11.38.0 ماند؛ آرشیوها/graph/chat 1.56 بازسازی و ZIP با سرور دانلود پورت 8000 تحویل شد.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -12990,7 +13076,7 @@ pause
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: GITHUB_REVIEW_HANDOFF.md (18296 بایت)
+فایل: GITHUB_REVIEW_HANDOFF.md (18709 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # GITHUB_REVIEW_HANDOFF — تحویل مویرگی برای بررسی GitHub و هوش مصنوعی بعدی
@@ -13029,6 +13115,11 @@ permission»). push کامیت بدون تغییر workflow موفق است. `gh
 نشان نمی‌دهد (گزارش کاربر، مثل نوبت ۴۶). کانال تحویل قطعی همان قانون ۶۴ است:
 سرور دانلود زنده پورت 8000 (`download_server.py` خارج از Git) که فایل را با
 `Content-Disposition: attachment` سرو می‌کند؛ لینک مستقیم: `…:8000/zip`.
+
+وضعیت نوبت ۶۲: قانون ۹۲ (اجرای جزبه‌جز + ورود خودکار به برنامه قبل از ZIP +
+بلوک دستور پایان چت) ثبت شد؛ هر ۲۱ بند پرامپت بلند کاربر در 11.23.0–11.38.0
+راستی‌آزمایی و در AI_ACCEPTANCE_CHECKLIST ثبت شد؛ هیچ تغییر کدی لازم نبود و
+نسخه برنامه 11.38.0 ماند.
 
 ---
 
@@ -13841,7 +13932,7 @@ update_project_graph.py
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: PROJECT_GRAPH.md (44120 بایت)
+فایل: PROJECT_GRAPH.md (44458 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # 🕸️ گراف دانش پروژه «نماینده علمی» (PROJECT_GRAPH.md)
@@ -14277,7 +14368,8 @@ update_project_graph.py
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.
 - `GITHUB_REVIEW_HANDOFF.md` مرجع وضعیت commit/push/PR/GitLab/Render/production و دستورات بررسی است؛ قبل از ادعای deploy باید دوباره اندازه‌گیری شود.
 - زنجیره انتشار: source test → commit → push Arena branch → PR main → checks → merge → GitLab mirror → Render deploy → production health.
-- قانون نوبت ۶۱: در هر چت همه فایل‌های آرشیوی (graph/handoff/chat.arena/اسکریپت‌های مولد/checklist/rules/decision/tasks/context/architecture/handoff-prompt/changes/README/OFFICIAL_FILELIST) به‌روز شوند و ZIP کنار صفحه تحویل شود.
+- قانون نوبت ۶۱ (۹۱): در هر چت همه فایل‌های آرشیوی (graph/handoff/chat.arena/اسکریپت‌های مولد/checklist/rules/decision/tasks/context/architecture/handoff-prompt/changes/README/OFFICIAL_FILELIST) به‌روز شوند و ZIP کنار صفحه تحویل شود.
+- قانون نوبت ۶۲ (۹۲): هر پرامپت بند‌به‌بند اجرا و راستی‌آزمایی شود؛ قبل از ZIP ورود خودکار به برنامه (سرور واقعی + app-smoke) اجباری است؛ پایان هر چت بلوک دستور git با شماره نسخه تحویل می‌شود.
 
 ## ی) گراف موتور نجات کش 11.38
 
@@ -14600,14 +14692,14 @@ push به گیت‌هاب → push به گیت‌لب.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: README.md (13010 بایت)
+فایل: README.md (13223 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # نماینده علمی — طنین طب طاها
 
 > **راهنمای بررسی نسخه جاری:** قبل از هر بررسی GitHub، فایل [`GITHUB_REVIEW_HANDOFF.md`](./GITHUB_REVIEW_HANDOFF.md) و سپس [`PROJECT_GRAPH.md`](./PROJECT_GRAPH.md) را بخوانید. نسخه فعال سورس `11.38.0` است؛ ورودی runtime اصلی `server.js + public/` است و اسکلت Next.js پوشه `src/` مسیر production فعلی نیست.
 >
-> **وضعیت انتشار در 2026-08-22 (نوبت ۶۱):** انتشار `11.38.0` تأییدشده است. مخزن `javadalamdarmehraeen-rgb/javad-test1`، شاخه `arena/01a0262d-javad-test1` push شده، main حامل سورس کامل است، checks موفق‌اند و production فعال `https://javad-test1.onrender.com` دو بار مستقل نسخه `11.38.0` را سرو کرد همراه با redirect زنده cache-rescue (`/login?build=11.38.0&__crm_reload=...`). سرویس قدیمی `namayandeelmi-javad.onrender.com` هنوز `11.20.0` است و دیگر مرجع نیست. جزئیات و دستورات در فایل handoff آمده است.
+> **وضعیت انتشار در 2026-08-22 (نوبت ۶۲):** انتشار `11.38.0` تأییدشده است. مخزن `javadalamdarmehraeen-rgb/javad-test1`، شاخه `arena/01a0262d-javad-test1` push شده، main حامل سورس کامل است، checks موفق‌اند و production فعال `https://javad-test1.onrender.com` دو بار مستقل نسخه `11.38.0` را سرو کرد همراه با redirect زنده cache-rescue (`/login?build=11.38.0&__crm_reload=...`). سرویس قدیمی `namayandeelmi-javad.onrender.com` هنوز `11.20.0` است و دیگر مرجع نیست. از نوبت ۶۲ قانون ۹۲ فعال است: هر پرامپت بند‌به‌بند اجرا/راستی‌آزمایی و قبل از ZIP ورود خودکار به برنامه انجام می‌شود. جزئیات و دستورات در فایل handoff آمده است.
 
 این مخزن شامل برنامه CRM/PWA نمایندگان علمی، مدیریت داروخانه/پزشک/سفارش، مسیرها، تارگت، اعلان، پخش و ابزارهای حفظ داده است.
 
@@ -15921,7 +16013,7 @@ git status -sb
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: update_chat_arena.py (322348 بایت)
+فایل: update_chat_arena.py (326471 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~python
 #!/usr/bin/env python3
@@ -19348,6 +19440,13 @@ health لینک جدید دو بار مستقل 11.38.0 را تأیید کرد �
 🤖 دستیار:
 ممیزی کامل ۲۰ چت اخیر (نوبت‌های ۴۱ تا ۶۰ = نسخه‌های 11.23.0 تا 11.38.0) با ۲۲ نشانگر کد انجام شد: SHAFA_CODE_MAP اصلاحی، userEditId، safeOrderFields، سرستون 87CEEB، ensureProductCodes، تب وضعیت فاکتور، invoiceStatusBaseCache، globalFieldOptions، CRM_MANAGER_GRID_ORDER_V2، syncRepsFromUsers (با تست اختصاصی)، Permissions-Policy، x-crm-request، privacyList، representativeRoutesCard، setupTargetPlannerV34، notify_all_users، vapidAuthorization، groupAnchor، deletedUserTombstones، leaveFromTime، /cache-reset و CRM_BUILD_ACTIVE — همه در سورس موجودند؛ 58/58 تست موفق؛ پس هیچ پرامپت معلق‌ای نمانده و نسخه برنامه 11.38.0 بدون تغییر کد باقی ماند (تغییر ساختگی نسخه بدون تغییر کد ممنوع است). همه ۱۵ فایل آرشیوی برای نوبت ۶۱ به‌روز شد، قانون ۹۱ (همگام‌سازی آرشیو در هر چت) در AI_RULES ثبت شد، PROJECT_GRAPH و chat.arena 1.56 بازسازی شدند، ZIP نهایی بازساخته و تحویل شد.
 
+──────────────────────────────── نوبت ۶۲ ────────────────────────────────
+🧑 کاربر (خلاصه وفادار):
+«پرامپت‌های من طولانی و چندبخشی است و اکثراً اصلاحات کل پرامپت انجام نمی‌شود. قانونی پیاده کن که جزبه‌جز بخوانی، جزبه‌جز انجام دهی و تغییرات واقعی اعمال شود نه فقط نوشتن؛ قبل از پایان ZIP خودت وارد برنامه شو و چک کن اصلاح واقعاً اعمال شده یا نه. در آخر هر چت بلوک دستور git با شماره نسخه بده. کش قدیمی قبل از باز شدن/رفرش خودکار پاک شود. اعلان‌ها: گزینه عمومی فقط با مجوز، کلید پاسخ و تاریخچه رد و بدل، نوتیفیکیشن صدادار حتی با برنامه بسته. سفارشات: بدون گزینه افزودن داروخانه، پنهان ماندن پیغام قبلاً ثبت‌شده بعد از جایگذاری، رفع قفل/صفحه سفید جایگذاری خودکار. فعالیت لحظه‌ای: حذف جواد علمدار و نیلا محرمی، نماینده فقط خودش. منزل نمایندگان: بدون پیغام افزودن، نام ثابت ساده، لوکیشن فقط خود نماینده (مدیر همه). اول حفظ اطلاعات بعد تغییرات مویرگی. قفل فیلدهای سفارشات و پاک‌کردن بدون به‌هم‌ریختگی. فیلدهای تعریف مسیر تارگت نمایان. label فارسی به‌جای شناسه فنی مثل leaveRepSelect. مرخصی: از ساعت/تا ساعت دو فیلد بدون ثانیه، شماره ۵ و ۶. گیرنده اعلان بدون تایپ و فلش همه کشویی‌ها کار کند.»
+
+🤖 دستیار:
+قانون دائمی ۹۲ در AI_RULES ثبت شد: شکستن پرامپت به بندهای شماره‌دار، اعمال واقعی هر بند، ورود خودکار اجباری به برنامه (سرور واقعی + تست app-smoke) قبل از ZIP و بلوک دستور git پایان هر چت. سپس همین پرامپت به ۲۱ بند شکسته و بند‌به‌بند راستی‌آزمایی شد: گزینه عمومی فقط با notify_all_users (v20:1327)؛ کلید «↩ پاسخ» و «🕘 تاریخچه» با thread مودال (renderNotificationsV35/showNotificationThreadV35)؛ Web Push VAPID + SW showNotification با تست کلید عمومی؛ دکمه افزودن فقط برای فیلد سفارشی allowAddOption (orderPharmacyName builtin است)؛ guard پیغام جایگذاری idempotent (bindPlacedPharmacyNoticeGuard)؛ کلیک کارت داروخانه delegated در capture (bindOrderPharmacyCardV37) — رفع قفل/صفحه سفید؛ حذف قطعی جواد علمدار/نیلا محرمی با tombstone یک‌باره (enforceDeletedUserTombstonesV37) و فعالیت self-only؛ سلبکتور نماینده غیرمدیر disabled+ثابت (v35-fixed-rep)؛ منزل نماینده manager-all/rep-self در جدول و نقشه (visibleRepHomesV37)؛ v20ApplyOrderLock و reset تراکنشی؛ pinRepresentativeRouteFieldsV37؛ installPersianBuiltinLabelGuardV37؛ «از ساعت/تا ساعت» دو فیلد step=60 دقیقاً شماره ۵ و ۶؛ setupPlainRecipientV37 و bindComboCaretFixV37. ورود خودکار به برنامه اجرا شد: سرور واقعی spawn و app-smoke ۴/۴ (health/HTML/اسکریپت/UI حیاتی + حفظ sentinel و vault + VAPID)؛ مجموع ۵۸/۵۸. نتیجه: هیچ بند معلق کدی نبود؛ نسخه 11.38.0 طبق قوانین ۸۹/۹۱ بدون تغییر واقعی bump نشد. همه آرشیوها/graph/chat بازسازی، ZIP با سرور دانلود پورت 8000 تحویل و بلوک دستور پایان چت داده شد.
+
 """
 
 FILES_INTRO = """
@@ -19396,7 +19495,7 @@ if __name__ == "__main__":
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: update_project_graph.py (12738 بایت)
+فایل: update_project_graph.py (13092 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~python
 #!/usr/bin/env python3
@@ -19622,7 +19721,8 @@ def build():
     L.append("- ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.")
     L.append("- `GITHUB_REVIEW_HANDOFF.md` مرجع وضعیت commit/push/PR/GitLab/Render/production و دستورات بررسی است؛ قبل از ادعای deploy باید دوباره اندازه‌گیری شود.")
     L.append("- زنجیره انتشار: source test → commit → push Arena branch → PR main → checks → merge → GitLab mirror → Render deploy → production health.")
-    L.append("- قانون نوبت ۶۱: در هر چت همه فایل‌های آرشیوی (graph/handoff/chat.arena/اسکریپت‌های مولد/checklist/rules/decision/tasks/context/architecture/handoff-prompt/changes/README/OFFICIAL_FILELIST) به‌روز شوند و ZIP کنار صفحه تحویل شود.")
+    L.append("- قانون نوبت ۶۱ (۹۱): در هر چت همه فایل‌های آرشیوی (graph/handoff/chat.arena/اسکریپت‌های مولد/checklist/rules/decision/tasks/context/architecture/handoff-prompt/changes/README/OFFICIAL_FILELIST) به‌روز شوند و ZIP کنار صفحه تحویل شود.")
+    L.append("- قانون نوبت ۶۲ (۹۲): هر پرامپت بند‌به‌بند اجرا و راستی‌آزمایی شود؛ قبل از ZIP ورود خودکار به برنامه (سرور واقعی + app-smoke) اجباری است؛ پایان هر چت بلوک دستور git با شماره نسخه تحویل می‌شود.")
     L.append("")
     L.append("## ی) گراف موتور نجات کش 11.38")
     L.append("")

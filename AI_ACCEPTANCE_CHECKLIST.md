@@ -77,3 +77,27 @@
 - [x] ممیزی پرامپت‌های ۲۰ چت اخیر (نوبت ۴۱–۶۰) — تأییدشده با ۲۲ نشانگر کد + ۵۸/۵۸ تست: همه در سورس 11.38.0 اعمال‌اند؛ هیچ پرامپت معلق کدی باقی نماند؛ نسخه برنامه بدون تغییر کد bump نشد.
 - [x] به‌روزرساری همه ۱۵ فایل آرشیوی طبق قانون جدید ۹۱ (نوبت ۶۱) — تأییدشده: graph بازسازی، chat.arena 1.56، handoff/checklist/rules(+#91)/decision(+#۹۳)/tasks(+#۸۱،۸۲)/context/architecture/handoff-prompt/changes/README/filelist.
 - [ ] GitLab mirror — ناشناخته: remote گیت‌لب و لاگ خام workflow از sandbox قابل دسترسی نیست.
+
+## نوبت ۶۲ — قانون جزبه‌جز + راستی‌آزمایی بند‌به‌بند پرامپت کاربر (بدون تغییر کد؛ همه بندها از قبل در 11.23–11.38 اعمال بودند)
+- [x] بند ۱ (قانون): اجرای جزبه‌جز پرامپت + ورود خودکار به برنامه قبل از ZIP — تأییدشده؛ به‌صورت قانون دائمی ۹۲ در AI_RULES ثبت شد.
+- [x] بند ۲ (قانون): بلوک دستور git پایان هر چت — تأییدشده؛ در قانون ۹۲ بند ۵ قالب exact آن ثبت شد و در همین نوبت تحویل شد.
+- [x] بند ۳ (کش): پاک‌سازی خودکار کش قبل/موقع باز شدن و رفرش — تأییدشده؛ موتور 11.38 (مقایسه health، /cache-reset، SW network-only) + اثبات زنده production: redirect خودکار `/login?build=11.38.0&__crm_reload=...`.
+- [x] بند ۴ (اعلان عمومی با مجوز): گزینه «همه کاربران» فقط با `notify_all_users` — تأییدشده؛ v20 خط 1327: `if(manager||perms.notify_all_users===true)`.
+- [x] بند ۵ (پاسخ و تاریخچه): کلید «↩ پاسخ» و «🕘 تاریخچه» در هر ردیف + مودال thread با sender→recipient — تأییدشده؛ renderNotificationsV35 و showNotificationThreadV35.
+- [x] بند ۶ (نوتیفیکیشن صدادار بسته): Web Push استاندارد VAPID + SW showNotification + تست VAPID کلید عمومی — تأییدشده؛ صدای نهایی مطابق سند، تصمیم OS/مرورگر است.
+- [x] بند ۷ (سفارشات/داروخانه): بدون گزینه افزودن (دکمه افزودن فقط برای فیلد سفارشی allowAddOption است؛ orderPharmacyName فیلد builtin است) — تأییدشده؛ crm-app.js خط 888.
+- [x] بند ۸ (پیغام «قبلاً ثبت شده» بعد از جایگذاری): پنهان idempotent تا تغییر واقعی نام — تأییدشده؛ bindPlacedPharmacyNoticeGuard (v20:1078) + MutationObserver.
+- [x] بند ۹ (قفل/صفحه سفید جایگذاری خودکار): کلیک delegated در capture با stopImmediatePropagation — تأییدشده؛ bindOrderPharmacyCardV37 (v20:1338)؛ تست app-smoke بدون خطا.
+- [x] بند ۱۰ و ۱۳ (فعالیت لحظه‌ای): حذف جواد علمدار/نیلا محرمی با tombstone یک‌باره (v20:1331 دقیقاً این دو id/نام) + نماینده self-only حتی با مجوز all-reps — تأییدشده؛ renderActivityLogV36/visibleActivityRowsV36/bindPrivacyRenderers.
+- [x] بند ۱۱ (منزل نماینده، بدون پیغام افزودن + نام ثابت): سلبکتور نماینده برای غیرمدیر disabled+fixed self (v35-fixed-rep، v20:1093) — تأییدشده.
+- [x] بند ۱۲ (حفظ اطلاعات اول): قوانین ۸۸/۸۹ + تست state-preservation و sentinel round-trip — تأییدشده؛ ۵۸/۵۸.
+- [x] بند ۱۴ (قفل فیلدهای سفارشات + پاک‌کردن بدون به‌هم‌ریختگی): v20ApplyOrderLock + reset تراکنشی snapshot — تأییدشده؛ تست‌های رگرسیون نوبت ۵۷.
+- [x] بند ۱۵ (فیلدهای تعریف مسیر تارگت): setupRepresentativeRoutes در boot/tab/reliable + pinRepresentativeRouteFieldsV37 — تأییدشده؛ setupV37FinalGuards (v20:1342).
+- [x] بند ۱۶ (label فارسی به‌جای شناسه فنی): installPersianBuiltinLabelGuardV37 در همه مسیرها — تأییدشده؛ setupV37FinalGuards.
+- [x] بند ۱۷ (کلیک نکردن داروخانه‌های لیست): همان handler delegated بند ۹؛ کلیک روی .ph-pick-card جایگذاری واقعی می‌کند — تأییدشده.
+- [x] بند ۱۸ (حذف کاربران قدیمی): deleteUserCard با tombstone پایدار + enforceDeletedUserTombstonesV37 در هر boot — تأییدشده.
+- [x] بند ۱۹ (لوکیشن منزل فقط خودش؛ مدیر همه): visibleRepHomesV37 (manager→all active، rep→فقط خود) + paintRepHomesMapV37 فقط markerهای مجاز — تأییدشده.
+- [x] بند ۲۰ (مرخصی از/تا ساعت): دو فیلد مستقل با step=60 بدون ثانیه، label «از ساعت/تا ساعت»، دقیقاً فیلدهای شماره ۵ و ۶ فرم — تأییدشده؛ index.html خطوط 1234-1239.
+- [x] بند ۲۱ (گیرنده plain + فلش همه کشویی‌ها): setupPlainRecipientV37 + bindComboCaretFixV37 — تأییدشده؛ setupV37FinalGuards.
+- [x] ورود خودکار به برنامه (الزام قانون جدید): سرور واقعی spawn شد؛ تست app-smoke ۴/۴ (health/HTML/اسکریپت‌ها/UI حیاتی، حفظ sentinel، vault اکسل، VAPID) — تأییدشده؛ مجموع کامل ۵۸/۵۸.
+- [x] نتیجه: هیچ بند معلق کدی نبود؛ نسخه برنامه مطابق قوانین ۸۹/۹۱ بدون تغییر واقعی bump نشد و 11.38.0 ماند؛ ZIP بازسازی و با سرور دانلود پورت 8000 تحویل شد.
