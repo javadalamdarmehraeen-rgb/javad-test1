@@ -672,3 +672,12 @@ CLEAN_EXTRA_FILES.bat و بعد PUSH_GITHUB_CLEAN.bat را اجرا کن.
 4. نکات کلیدی شواهد: گزینه اعلان عمومی فقط با notify_all_users (v20:1327)؛ کلید پاسخ/تاریخچه در renderNotificationsV35/showNotificationThreadV35؛ کارت داروخانه delegated در bindOrderPharmacyCardV37 (v20:1338)؛ حذف قطعی جواد علمدار/نیلا محرمی با tombstone (v20:1331)؛ منزل نماینده privacy در visibleRepHomesV37؛ «از ساعت/تا ساعت» فیلدهای ۵ و ۶ با step=60؛ گیرنده plain و فلش کشویی در setupV37FinalGuards.
 5. ورود خودکار به برنامه: سرور واقعی spawn شد و app-smoke ۴/۴ پاس شد (health/HTML/اسکریپت‌ها/UI حیاتی + round-trip حفظ sentinel و vault اکسل + VAPID کلید عمومی و رد subscription خراب)؛ مجموع کامل ۵۸/۵۸.
 6. هیچ بند معلق کدی نماند؛ طبق قوانین ۸۹/۹۱ نسخه برنامه بدون تغییر واقعی bump نشد و 11.38.0 ماند؛ آرشیوها/graph/chat 1.56 بازسازی و ZIP با سرور دانلود پورت 8000 تحویل شد.
+
+## تحویل نوبت ۶۴ — نسخه ۱۱.۳۸.۱: تعویض کامل دامنه قدیمی با javad-test1.onrender.com
+
+1. کاربر تصریح کرد سرویس فعال javad-test1.onrender.com با نشان 11.38.0 است؛ دستور تبدیل هر رد دامنه قدیمی که در برنامه ثبت شده شد.
+2. تمام ردهای `namayandeelmi-javad.onrender.com` در ۱۰ فایل کد/کانفیگ به `https://javad-test1.onrender.com` تبدیل شد: deploy.yml (sync)، keep_alive.yml (اصلاح مهم: بیدارباش سرویس فعال به‌جای قدیمی)، .gitlab-ci.yml، render.yaml، mobile/src/simAuth.ts، public/crm-data.js (apiEndpointUrl)، public/crm-app.js (متن عیب‌یابی)، src/lib/endpoints.ts، src/lib/sync-config.ts، src/proxy.ts — صفر رد باقی ماند.
+3. خلل‌سنجی: فراخوانی‌های /api/state از قبل نسبی بودند و چک same-origin سرور هاست‌محور است؛ apiEndpointUrl نمایشی/فال‌بک بود؛ خلل عملیاتی واقعی keep_alive بود که سرویس فعال را خواب می‌گذاشت — اصلاح شد. اپ موبایل هم اکنون به سرویس فعال وصل است.
+4. چون تغییر واقعی کد بود، نسخه به 11.38.1 ارتقا یافت: package.json، server.js، public/sw.js، public/index.html (BUILD + ?v=)، public/login.html، public/crm-app.js (register sw ?v=) و انتظارات تست نسخه همگام شدند.
+5. اثبات زنده کد 11.38 روی سرویس فعلی ثبت شد: /api/push/public-key فعال، /cache-reset فعال، نشان نسخه هدر 11.38.0.
+6. آزمون‌ها: 58/58 تست، syntax همه JS، app-smoke سرور واقعی 4/4 با 11.38.1؛ آرشیوها و chat.arena 1.57 بازسازی؛ ZIP namayandeelmi-v11.38.1.zip با سرور دانلود پورت 8000 تحویل شد؛ push به GitHub از این جلسه بسته است و با بلوک دستور پایان چت توسط کاربر انجام می‌شود.

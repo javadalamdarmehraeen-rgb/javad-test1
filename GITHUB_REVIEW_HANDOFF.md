@@ -1,12 +1,12 @@
 # GITHUB_REVIEW_HANDOFF — تحویل مویرگی برای بررسی GitHub و هوش مصنوعی بعدی
 
-**تاریخ این تحویل:** 2026-08-22 / 31 مرداد 1405 (به‌روزرسانی نوبت ۶۱)
-**نسخه آماده سورس:** `11.38.0`
-**نسخه chat.arena پس از بازسازی این نوبت:** `1.56`
+**تاریخ این تحویل:** 2026-08-22 / 31 مرداد 1405 (به‌روزرسانی نوبت ۶۴)
+**نسخه آماده سورس:** `11.38.1` (تبدیل تمام ردهای دامنه قدیمی به `javad-test1.onrender.com`؛ نوبت ۶۴ — قبلاً 11.38.0)
+**نسخه chat.arena پس از بازسازی این نوبت:** `1.57`
 **شاخه اجباری این جلسه:** `arena/01a0262d-javad-test1` (نوبت‌های ۵۹–۶۰ روی `arena/01a006e4-namayandeelmi-javad` در مخزن قبلی بودند)
 **مخزن:** `javadalamdarmehraeen-rgb/javad-test1`
-**Production فعال (اعلام کاربر نوبت ۶۱):** `https://javad-test1.onrender.com`
-**سرویس قدیمی (دیگر مرجع):** `https://namayandeelmi-javad.onrender.com` — هنوز `11.20.0`
+**Production فعال:** `https://javad-test1.onrender.com` — 11.38.0 سرو می‌کند؛ با push نسخه 11.38.1 توسط کاربر، Render دیپلوی می‌کند
+**سرویس قدیمی (دیگر مرجع):** `https://namayandeelmi-javad.onrender.com` — هنوز `11.20.0`؛ از نوبت ۶۴ هیچ ردی از آن در کد/کانفیگ برنامه نیست
 
 ---
 
@@ -499,3 +499,20 @@ Browser cache rescue: verified/pending user
 ```
 
 نباید «همه‌چیز اوکی است» گفته شود مگر همه خطوط بالا وضعیت واقعی و قابل‌سنجش داشته باشند.
+
+## تشخیص نوبت ۶۳ — «تغییرات اعمال نمی‌شود» = باز کردن سرویس قدیمی (2026-08-22T20:05Z)
+- اندازه‌گیری هم‌زمان: `javad-test1.onrender.com` = **11.38.0** (همه تغییرات زنده)؛ `namayandeelmi-javad.onrender.com` = **11.20.0** (هیچ‌کدام از تغییرات 11.21+ آنجا نیست).
+- کاربر دو سرویس Render موازی با ظاهر یکسان دارد؛ ورود از بوکمارک/آیکون PWA نصب‌شده قدیمی، سرویس قدیمی را باز می‌کند.
+- نشان نسخه در هدر برنامه: `#v20VersionBadge` (عنوان «نسخه دقیق برنامه نصب‌شده»)؛ روی موبایل <=768px پنهان است — چک با `/api/health`.
+- راهنمای کاربر: استفاده از دامنه جدید + یک‌بار `/cache-reset?to=/panel` + حذف PWA نصب‌شده قدیمی و نصب مجدد از دامنه جدید + تصمیم درباره سرویس قدیمی (suspend یا اتصال به مخزن javad-test1/main در Render Settings→Repository).
+- GitLab فقط mirror است و در مسیر deploy سرویس javad-test1 نیست؛ Neon/PostgreSQL در runtime فعلی CRM استفاده نمی‌شود (فایل + مرورگر) — اسکلت Next.js خفته است.
+- دسترسی من: جلسه GitHub بعد از merge بسته است (ولی GitHub سالم است — سرویس جدید از همان می‌خواند)؛ داشبورد Render/Neon بدون اکانت کاربر در دسترس نیست.
+
+## نوبت ۶۴ — تبدیل دامنه قدیمی به javad-test1.onrender.com و ارتقا به 11.38.1 (2026-08-22)
+- کاربر تصریح کرد: از `javad-test1.onrender.com` استفاده می‌کند، نشان نسخه 11.38.0 می‌بیند ولی «تغییرات را نمی‌بیند»؛ دستور داد هر رد دامنه قدیمی که در برنامه ثبت شده و خلل می‌کند را تبدیل کنم.
+- ردهای تبدیل‌شده (10 فایل): `.github/workflows/deploy.yml` (sync)، `.github/workflows/keep_alive.yml` (بیدارباش سرویس فعال — قبلاً سرویس قدیمی را بیدار نگه می‌داشت!)، `.gitlab-ci.yml`، `render.yaml` (PUBLIC_BASE_URL/ENDPOINTS)، `mobile/src/simAuth.ts` (API_BASE)، `public/crm-data.js` (apiEndpointUrl)، `public/crm-app.js` (متن عیب‌یابی)، `src/lib/endpoints.ts`، `src/lib/sync-config.ts`، `src/proxy.ts`.
+- صفر رد `namayandeelmi-javad.onrender.com` در کد/کانفیگ باقی ماند (فقط اسناد تاریخی).
+- بررسی خلل واقعی: تمام فراخوانی‌های `/api/state` نسبی‌اند و چک same-origin سرور هاست درخواست را می‌سنجد؛ `apiEndpointUrl` فقط نمایشی/فال‌بک بود؛ خلل اصلی عملیاتی، keep_alive بود که سرویس فعال را خواب می‌گذاشت.
+- ارتقای واقعی کد انجام شد → نسخه `11.38.1`: package.json/server.js/sw.js/index.html/login.html/crm-app.js (?v= و BUILD) + انتظارات تست نسخه.
+- اثبات زنده کد 11.38 روی سرویس فعال (برای اطمینان کاربر): `/api/push/public-key` کلید برمی‌گرداند (فقط 11.35+)، `/cache-reset?to=/panel` صفحه نوسازی می‌دهد (فقط 11.38+)، نشان نسخه هدر 11.38.0 است.
+- وضعیت انتشار: source tested 11.38.1 (58/58)؛ push از این جلسه ممکن نیست (بسته بعد از merge)؛ کاربر با بلوک دستور پایان چت push می‌کند → Render دیپلوی 11.38.1 → health باید 11.38.1 شود.

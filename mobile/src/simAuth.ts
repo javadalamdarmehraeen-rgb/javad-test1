@@ -20,7 +20,7 @@ import DeviceInfo from "react-native-device-info";
 import * as Keychain from "react-native-keychain";
 import { HmacSHA256, enc } from "crypto-js";
 //   
-export const API_BASE = "https://namayandeelmi-javad.onrender.com";
+export const API_BASE = "https://javad-test1.onrender.com";
 /**    MOBILE_APP_SECRET     */
 const APP_SECRET = "REPLACE_WITH_MOBILE_APP_SECRET";
 const DEVICE_ID_KEY = "sek_device_id";

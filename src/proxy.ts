@@ -5,7 +5,7 @@ import { NextResponse, type NextRequest } from "next/server";
  *      ndcohub.ir  onrender.com ( )  
  *      /    .
  */
-const ALLOWED = (process.env.NEXT_PUBLIC_ENDPOINTS || "https://ndcohub.ir,https://namayandeelmi-javad.onrender.com")
+const ALLOWED = (process.env.NEXT_PUBLIC_ENDPOINTS || "https://ndcohub.ir,https://javad-test1.onrender.com")
 
   .split(",")
   .map((s) => s.trim().replace(/\/$/, ""))

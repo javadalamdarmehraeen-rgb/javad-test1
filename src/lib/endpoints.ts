@@ -5,7 +5,7 @@
  * ------------------------------------------------------------
  *       :
  *    • https://ndcohub.ir                      (  )
- *    • https://namayandeelmi-javad.onrender.com (  )
+ *    • https://javad-test1.onrender.com (  )
  *
  *           .
  *            
@@ -25,7 +25,7 @@ export function endpointList(): string[] {
     .filter((s) => s.startsWith("http"));
   if (list.length) return list;
   // :    
-  return ["https://ndcohub.ir", "https://namayandeelmi-javad.onrender.com"];
+  return ["https://ndcohub.ir", "https://javad-test1.onrender.com"];
 }
 /**         —     */
 export function currentOrigin(): string {

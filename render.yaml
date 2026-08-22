@@ -38,8 +38,8 @@ services:
       - key: SYNC_INTERVAL_MINUTES
         value: "5"
       - key: NEXT_PUBLIC_ENDPOINTS
-        value: https://ndcohub.ir,https://namayandeelmi-javad.onrender.com
+        value: https://ndcohub.ir,https://javad-test1.onrender.com
       - key: PUBLIC_BASE_URL
-        value: https://namayandeelmi-javad.onrender.com
+        value: https://javad-test1.onrender.com
       - key: MOBILE_APP_SECRET
         sync: false
