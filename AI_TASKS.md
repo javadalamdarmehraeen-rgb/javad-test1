@@ -1549,3 +1549,12 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] 58/58 + syntax + app-smoke 4/4
 - [x] آرشیوها/graph/chat 1.57 + ZIP 11.38.1 + سرور دانلود
 - [ ] push کاربر → دیپلوی → health 11.38.1
+
+## ۸۵) نوبت ۶۵ — نسخه 11.39.0
+- [x] ترتیب کانونی فرم سفارشات (تاریخ اول) + مهاجرت یک‌باره V2
+- [x] داینامیک: apiEndpointUrl/diag host/API_BASE موبایل
+- [x] سنجش کارایی (1.34MB خام → 327KB gzip) + علت خواب سرویس + UptimeRobot
+- [x] تأیید تارگت به تفکیک کالا و قانون اعداد لاتین با سند کد
+- [x] تست رگرسیون جدید + 59/59 + app-smoke 4/4
+- [x] آرشیوها/graph/chat/ZIP 11.39.0 + سرور دانلود
+- [ ] push کاربر → دیپلوی → health 11.39.0

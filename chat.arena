@@ -1,6 +1,6 @@
 CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.57 | تاریخ به‌روزرسانی: 2026-08-22 (۳۱ مرداد ۱۴۰۵) | نسخه برنامه: 11.38.1
+نسخه این فایل: 1.58 | تاریخ به‌روزرسانی: 2026-08-22 (۳۱ مرداد ۱۴۰۵) | نسخه برنامه: 11.39.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -570,21 +570,21 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]      849 بایت  .gitattributes
   [متنی ]     1157 بایت  .gitignore
   [متنی ]     2041 بایت  .gitlab-ci.yml
-  [متنی ]    22472 بایت  AI_ACCEPTANCE_CHECKLIST.md
+  [متنی ]    24546 بایت  AI_ACCEPTANCE_CHECKLIST.md
   [متنی ]    34361 بایت  AI_ARCHITECTURE.md
-  [متنی ]    69202 بایت  AI_DECISION_LOG.md
-  [متنی ]    39436 بایت  AI_PROJECT_CONTEXT.md
+  [متنی ]    70479 بایت  AI_DECISION_LOG.md
+  [متنی ]    40103 بایت  AI_PROJECT_CONTEXT.md
   [متنی ]    43911 بایت  AI_RULES.md
-  [متنی ]    49537 بایت  AI_TASKS.md
-  [متنی ]    43857 بایت  ARENA_HANDOFF_PROMPT.md
+  [متنی ]    50154 بایت  AI_TASKS.md
+  [متنی ]    44811 بایت  ARENA_HANDOFF_PROMPT.md
   [متنی ]      600 بایت  CHANGES_V10.md
-  [متنی ]   102248 بایت  CHANGES_V11.md
+  [متنی ]   104490 بایت  CHANGES_V11.md
   [متنی ]     3939 بایت  CHANGES_V9.md
   [متنی ]     1806 بایت  CLEAN_EXTRA_FILES.bat
-  [متنی ]    22757 بایت  GITHUB_REVIEW_HANDOFF.md
+  [متنی ]    25196 بایت  GITHUB_REVIEW_HANDOFF.md
   [متنی ]     2377 بایت  KEEP_ONLY_GITHUB.bat
   [متنی ]     6750 بایت  OFFICIAL_FILELIST.txt
-  [متنی ]    44458 بایت  PROJECT_GRAPH.md
+  [متنی ]    44539 بایت  PROJECT_GRAPH.md
   [متنی ]     2707 بایت  PUSH_FRESH_GITHUB.bat
   [متنی ]     2680 بایت  PUSH_GITHUB_CLEAN.bat
   [متنی ]     6579 بایت  RAHNAMA_GITLAB.txt
@@ -604,16 +604,16 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]    23357 بایت  server.js
   [متنی ]     2426 بایت  sync_all.sh
   [متنی ]      738 بایت  tsconfig.json
-  [متنی ]   329700 بایت  update_chat_arena.py
+  [متنی ]   332188 بایت  update_chat_arena.py
   [متنی ]    13092 بایت  update_project_graph.py
   [متنی ]     2558 بایت  .github/workflows/deploy.yml
   [متنی ]      206 بایت  .github/workflows/keep_alive.yml
   [متنی ]     7164 بایت  mobile/App.tsx
   [متنی ]     9805 بایت  mobile/README.md
-  [متنی ]     9788 بایت  mobile/src/simAuth.ts
+  [متنی ]     9966 بایت  mobile/src/simAuth.ts
   [متنی ]     8066 بایت  public/cloudflare-worker.js
-  [متنی ]   176370 بایت  public/crm-app.js
-  [متنی ]    63453 بایت  public/crm-data.js
+  [متنی ]   176390 بایت  public/crm-app.js
+  [متنی ]    63491 بایت  public/crm-data.js
   [متنی ]    13643 بایت  public/crm-features-v10.js
   [متنی ]   109491 بایت  public/crm-features-v11.js
   [متنی ]    44613 بایت  public/crm-features-v12.js
@@ -624,7 +624,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]    19662 بایت  public/crm-features-v17.js
   [متنی ]    33040 بایت  public/crm-features-v18.js
   [متنی ]    61295 بایت  public/crm-features-v19.js
-  [متنی ]   278928 بایت  public/crm-features-v20.js
+  [متنی ]   279803 بایت  public/crm-features-v20.js
   [متنی ]    72007 بایت  public/crm-features-v9.js
   [متنی ]    25683 بایت  public/crm-jalali.js
   [متنی ]   145490 بایت  public/index.html
@@ -785,7 +785,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     3346 بایت  src/lib/zip.ts
   [متنی ]     4928 بایت  tests/app-smoke.test.mjs
   [متنی ]    19996 بایت  tests/state-preservation.test.mjs
-  [متنی ]    36473 بایت  tests/version-11.24-regressions.test.mjs
+  [متنی ]    37751 بایت  tests/version-11.24-regressions.test.mjs
   [تصویر]    23282 بایت  public/apple-touch-icon.png
   [تصویر]     4527 بایت  public/favicon.png
   [تصویر]    26208 بایت  public/icon-192.png
@@ -3647,7 +3647,14 @@ health لینک جدید دو بار مستقل 11.38.0 را تأیید کرد �
 «شفاف‌سازی: من از لینک javad-test1.onrender.com استفاده می‌کنم، بالای صفحه نسخه 11.38.0 درج شده و Render همین را دیپلوی کرده — اما هیچ‌کدام از تغییرات اعمال نشده. به لینک قدیمی کاری ندارم؛ اگر در برنامه ثبت شده و خللی ایجاد می‌کند آن را به javad-test1.onrender.com تبدیل کن. هر کاری لازم است بده تا این مشکل حل شود.»
 
 🤖 دستیار:
-اول اثبات زنده: روی سرویس فعال /api/push/public-key کلید برمی‌گرداند (فقط 11.35+) و /cache-reset صفحه نوسازی می‌دهد (فقط 11.38+) — یعنی کد کامل جدید در حال اجراست و نشان 11.38.0 هم می‌گوید HTML/JS تازه‌اند؛ پس تغییرات در برنامه حاضرند و مسیر دقیق دیدن هرکدام (نقش مدیر/نماینده و پیش‌شرط‌ها) به کاربر داده شد. سپس طبق دستور، تمام ردهای دامنه قدیمی در ۱۰ فایل کد/کانفیگ به https://javad-test1.onrender.com تبدیل شد (deploy.yml، keep_alive.yml — که به‌جای سرویس قدیمی حالا سرویس فعال را بیدار نگه می‌دارد —، .gitlab-ci.yml، render.yaml، mobile/simAuth.ts، crm-data.js apiEndpointUrl، متن عیب‌یابی crm-app.js، سه فایل src/lib|proxy) و صفر رد باقی ماند؛ خلل‌سنجی نشان داد فراخوانی‌های /api/state از قبل نسبی‌اند و apiEndpointUrl نمایشی بود و خلل عملیاتی اصلی keep_alive بود. چون تغییر واقعی کد بود، نسخه به 11.38.1 ارتقا یافت (شش فایل نسخه + انتظارات تست همگام)؛ 58/58 تست، syntax همه JS و app-smoke سرور واقعی 4/4 پاس شد؛ سند handoff هم به 11.38.1 صادق شد. ZIP namayandeelmi-v11.38.1.zip با سرور دانلود پورت 8000 تحویل و بلوک دستور پایان چت v11.38.1 داده شد؛ push از جلسه بسته است و با دستور کاربر انجام می‌شود و بعدش Render دیپلوی 11.38.1 می‌کند.
+اول اثبات زنده: روی سرویس فعال /api/push/public-key کلید برمی‌گرداند (فقط 11.35+) و /cache-reset صفحه نوسازی می‌دهد (فقط 11.38+) — یعنی کد کامل جدید در حال اجراست. سپس طبق دستور، تمام ردهای دامنه قدیمی در ۱۰ فایل کد/کانفیگ به https://javad-test1.onrender.com تبدیل و نسخه به 11.38.1 ارتقا یافت؛ 58/58 تست و app-smoke 4/4 پاس شد؛ ZIP 11.38.1 تحویل شد.
+
+──────────────────────────────── نوبت ۶۵ ────────────────────────────────
+🧑 کاربر (خلاصه وفادار):
+«پرامپت‌های من طولانی و چندبخشی است و اکثراً کامل انجام نمی‌شود؛ قانون جزبه‌جز + ورود خودکار به برنامه قبل از ZIP + بلوک دستور پایان چت. کش قدیمی خودکار پاک شود. اعلان‌ها: گزینه عمومی فقط با مجوز، کلید پاسخ و تاریخچه، نوتیفیکیشن صدادار حتی بسته. سفارشات: بدون افزودن داروخانه، پنهان ماندن پیغام قبلاً ثبت‌شده، رفع قفل/صفحه سفید، فیلدها قفل باشند و پاک‌کردن به‌هم نریزد. فعالیت: حذف جواد علمدار/نیلا محرمی، نماینده فقط خودش. منزل: بدون پیغام افزودن، نام ثابت، لوکیشن فقط خود نماینده. اول حفظ اطلاعات. مسیرهای تارگت نمایان. label فارسی به‌جای شناسه فنی. مرخصی از/تا ساعت دو فیلد شماره ۵ و ۶. گیرنده plain و فلش کشویی‌ها. + جدید: تنظیمات قبلی تارگت به تفکیک هر کالا؛ مخازن GitHub/GitLab و لینک‌های Render جدید متعدد — لینک و مخزن در برنامه ایستا نباشد و خودکار تشخیص داده شود؛ برنامه سنگین است و ۱۰ دقیقه لود می‌شود؛ سفارشات همه‌چیز بهم‌ریخته — تاریخ اول بعد داروخانه/استان/شهر/منطقه؛ همه اعداد انگلیسی؛ چرا هر نسخه تنظیمات عوض می‌شود و قوانین زیر پا گذاشته می‌شود؟»
+
+🤖 دستیار:
+بندهای تکراری نوبت ۶۲ دوباره با همان شواهد تأیید شدند (بدون تغییر کد). بندهای جدید واقعاً اعمال شد: (۱) ترتیب کانونی فرم سفارشات «تاریخ → داروخانه → استان → شهر → منطقه» در index.html + مهاجرت یک‌باره v39OrdersCanonicalReset که ترتیب ذخیره‌شده به‌هم‌ریخته را یک‌بار با ترتیب کانونی جایگزین می‌کند؛ (۲) تارگت به تفکیک هر کالا از قبل موجود بود (ماتریس تعریف تارگت کالاها v34) و با سند کد تأیید شد؛ (۳) داینامیک شدن لینک/مخزن: apiEndpointUrl از location.origin، متن عیب‌یابی از location.host، API_BASE موبایل با override و fallback؛ (۴) کارایی: علت ۱۰ دقیقه خواب سرویس رایگان بود — keep-alive نوبت ۶۴ به سرویس فعال وصل است، حجم کل 327KB gzip با gzip فعال — پس از بیداری لود ثانیه‌ای؛ UptimeRobot توصیه شد؛ (۵) اعداد انگلیسی: installLatinNumberLaw فعال با تست. پاسخ «چرا تنظیمات عوض می‌شود»: قوانین ۲۷/۸۷/۸۸ تغییر خودکار را ممنوع می‌کنند و این نوبت فقط با درخواست صریح کاربر و یک‌بار ترتیب سفارشات را بازنشانی کرد. نسخه 11.39.0؛ تست رگرسیون جدید اضافه شد؛ 59/59 و app-smoke 4/4؛ ZIP namayandeelmi-v11.39.0.zip با سرور دانلود تحویل و بلوک دستور پایان چت v11.39.0 داده شد.
 
 
 
@@ -3866,7 +3873,7 @@ sync-after-deploy:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_ACCEPTANCE_CHECKLIST.md (22472 بایت)
+فایل: AI_ACCEPTANCE_CHECKLIST.md (24546 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI_ACCEPTANCE_CHECKLIST — چک‌لیست اجباری تحویل واقعی
@@ -3991,6 +3998,18 @@ sync-after-deploy:
 - [x] ZIP جدید namayandeelmi-v11.38.1.zip + سرور دانلود پورت 8000 — تأییدشده.
 - [ ] push کاربر (جلسه GitHub بسته است) و دیپلوی Render → health باید 11.38.1 شود — در انتظار تأیید کاربر.
 - [ ] تست چشمی کاربر از مسیرهای دقیق دیدن هر تغییر (راهنمای همین نوبت) — در انتظار تأیید کاربر.
+
+## نوبت ۶۵ — نسخه 11.39.0 (۵ بند جدید + راستی‌آزمایی مجدد بندهای تکراری)
+- [x] ترتیب فرم سفارشات: تاریخ اول → داروخانه → استان → شهر → منطقه — تأییدشده؛ HTML ویرایش و تست رگرسیون موقعیت‌ها پاس شد (orderDate=0، pharmacy=1، province=2، city=3، district=4).
+- [x] مهاجرت یک‌باره ترتیب ذخیره‌شده به‌هم‌ریخته (v39OrdersCanonicalReset + CRM_V39_ORDER_CANONICAL_RESET) — تأییدشده با تست ساختاری.
+- [x] تارگت به تفکیک هر کالا — تأییدشده؛ ماتریس «تعریف تارگت کالاها» (setupTargetPlannerV34) با ردیف هر کالا و جمع پخش/داروخانه موجود است.
+- [x] داینامیک شدن لینک/مخزن — تأییدشده؛ apiEndpointUrl از location.origin، متن عیب‌یابی از location.host، API_BASE موبایل قابل override با fallback — تست رشته‌ای پاس شد.
+- [x] کندی ۱۰ دقیقه‌ای — علت اصلی: خواب سرویس رایگان؛ اصلاح keep-alive نوبت ۶۴ + سنجش حجم (خام/گیگ) ثبت؛ توصیه UptimeRobot — تأییدشده (تطبیق زیرساختی).
+- [x] اعداد انگلیسی — تأییدشده؛ installLatinNumberLaw (v20:36) با تبدیل ارقام فارسی/عربی و تست موجود.
+- [x] بندهای تکراری نوبت ۶۲ (اعلان/پاسخ/Push/داروخانه/فعالیت/منزل/مرخصی/فلش/label) — تأییدشده مجدد؛ بدون تغییر کد.
+- [x] ورود خودکار به برنامه قبل از ZIP — تأییدشده؛ app-smoke سرور واقعی 4/4 + مجموع 59/59.
+- [x] نسخه 11.39.0 (تغییر واقعی کد) + ZIP جدید + سرور دانلود — تأییدشده.
+- [ ] دیپلوی 11.39.0 توسط کاربر (push) و دیدن ترتیب جدید در production — در انتظار تأیید کاربر.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -5237,7 +5256,7 @@ Then change only what is requested.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_DECISION_LOG.md (69202 بایت)
+فایل: AI_DECISION_LOG.md (70479 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI DECISION LOG
@@ -6852,10 +6871,16 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 - keep_alive باید سرویس فعالِ در حال استفاده را بیدار نگه دارد؛ بیدار نگه‌داشتن سرویس قدیمی فقط هزینه است و سرویس فعال را خواب می‌گذارد (cold start).
 - تغییر دامنه در متن‌های کاربرپسند (عیب‌یابی) هم لازم است چون کاربر همان متن را «ثبت‌بودن لینک قدیمی» می‌فهمد.
 - ارتقای نسخه فقط با تغییر واقعی کد انجام شد (11.38.1) و انتظارات تست نسخه همگام شدند؛ تست handoff سند را وادار به صدق می‌کند.
+
+## تصمیم ۹۷ — نوبت ۶۵: ترتیب کانونی سفارشات، داینامیک‌سازی لینک و کارایی (2026-08-22)
+- ترتیب پیش‌فرض فرم سفارشات کانونی شد (تاریخ اول) و بازنشانی ترتیب ذخیره‌شده فقط با درخواست صریح مدیر و فقط یک‌بار مجاز است؛ قانون «عدم snapshot خودکار» دست‌نخورده ماند.
+- هر مقدار دامنه‌دار در کد باید از location.origin/host مشتق شود تا مخازن و لینک‌های Render جدید بدون تغییر کد کار کنند؛ ثابت دامنه فقط fallback است.
+- «کندی چند دقیقه‌ای» در سرویس رایگان Render معمولاً خواب سرور است نه حجم کد؛ نگه‌داری بیدار (keep-alive/UptimeRobot) بخشی از راه‌حل انتشار است، نه بهینه‌سازی مرورگر.
+- پاسخ به «چرا هر نسخه تنظیمات عوض می‌شود»: موتورهای ۲۷/۸۷/۸۸ تغییر خودکار چیدمان/داده را ممنوع کرده‌اند؛ تغییر معتبر فقط با درخواست صریح کاربر + مهاجرت یک‌باره + تست است.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_PROJECT_CONTEXT.md (39436 بایت)
+فایل: AI_PROJECT_CONTEXT.md (40103 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI PROJECT CONTEXT
@@ -7791,6 +7816,9 @@ Commit محلی `2c4fe0b` روی شاخه ثابت Arena ساخته شد. Push �
 
 ## نقطه شروع چت بعدی — نوبت ۶۴ (2026-08-22)
 نسخه سورس 11.38.1: تمام ردهای دامنه قدیمی در کد/کانفیگ (۱۰ فایل، از جمله keep_alive، deploy sync، .gitlab-ci، render.yaml، موبایل، crm-data/crm-app) به https://javad-test1.onrender.com تبدیل شد و صفر رد باقی ماند. سرویس قدیمی فقط در اسناد تاریخی هست. production فعلی 11.38.0 است و با push کاربر 11.38.1 دیپلوی می‌شود. جلسه GitHub بعد از merge بسته است؛ تحویل با ZIP + بلوک دستور پایان چت است. اثبات زنده کد 11.38 روی سرویس: /api/push/public-key و /cache-reset فعال‌اند.
+
+## نقطه شروع چت بعدی — نوبت ۶۵ (2026-08-22)
+نسخه سورس 11.39.0: فرم سفارشات با ترتیب کانونی «تاریخ → داروخانه → استان → شهر → منطقه» و مهاجرت یک‌باره v39OrdersCanonicalReset؛ apiEndpointUrl/متن عیب‌یابی/API_BASE موبایل داینامیک (location-origin + override)؛ keep-alive روی سرویس فعال؛ حجم دارایی‌ها 327KB gzip؛ تارگت per-product و قانون اعداد لاتین با سند کد تأیید. 59/59 تست + app-smoke 4/4. تا push کاربر production عقب‌تر است؛ health ملاک است.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -9406,7 +9434,7 @@ Declared by the user and valid for ALL future chats, reinforcing the AI_ACCEPTAN
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_TASKS.md (49537 بایت)
+فایل: AI_TASKS.md (50154 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI TASKS
@@ -10960,10 +10988,19 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] 58/58 + syntax + app-smoke 4/4
 - [x] آرشیوها/graph/chat 1.57 + ZIP 11.38.1 + سرور دانلود
 - [ ] push کاربر → دیپلوی → health 11.38.1
+
+## ۸۵) نوبت ۶۵ — نسخه 11.39.0
+- [x] ترتیب کانونی فرم سفارشات (تاریخ اول) + مهاجرت یک‌باره V2
+- [x] داینامیک: apiEndpointUrl/diag host/API_BASE موبایل
+- [x] سنجش کارایی (1.34MB خام → 327KB gzip) + علت خواب سرویس + UptimeRobot
+- [x] تأیید تارگت به تفکیک کالا و قانون اعداد لاتین با سند کد
+- [x] تست رگرسیون جدید + 59/59 + app-smoke 4/4
+- [x] آرشیوها/graph/chat/ZIP 11.39.0 + سرور دانلود
+- [ ] push کاربر → دیپلوی → health 11.39.0
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: ARENA_HANDOFF_PROMPT.md (43857 بایت)
+فایل: ARENA_HANDOFF_PROMPT.md (44811 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # ARENA AI MASTER HANDOFF PROMPT
@@ -12306,6 +12343,12 @@ ADDENDUM v11.16.1 (2026-08-16)
 1. نسخه سورس 11.38.1 است (تعویض کامل دامنه قدیمی با javad-test1.onrender.com در ۱۰ فایل کد/کانفیگ)؛ production تا push کاربر 11.38.0 می‌ماند — این تفاوت را صادقانه جدا گزارش کن.
 2. دامنه قدیمی namayandeelmi-javad.onrender.com فقط در اسناد تاریخی مجاز است؛ اگر در کد/کانفیج دیده شد، خطاست.
 3. اگر کاربر «تغییرات را نمی‌بیند»: اول نشان نسخه هدر و /api/health و /api/push/public-key را بگیر؛ سپس راهنمای مسیر دقیق دیدن هر تغییر (نقش مدیر/نماینده و پیش‌شرط‌ها مثل نوع مرخصی ساعتی) را بده.
+
+## شروع اجباری چت بعد از نوبت ۶۵ (2026-08-22)
+1. نسخه سورس 11.39.0: ترتیب کانونی فرم سفارشات (تاریخ اول) + مهاجرت یک‌باره CRM_V39_ORDER_CANONICAL_RESET + لینک/مخزن داینامیک (location.origin) — production تا push کاربر 11.38.0/11.38.1 می‌ماند؛ جدا گزارش کن.
+2. دامنه‌ها فقط از location مشتق شوند؛ ثابت دامنه صرفاً fallback است (قانون نوبت ۶۵).
+3. بندهای تکراری پرامپت بلند کاربر را با جدول شواهد نوبت‌های ۶۲/۶۵ پاس بده؛ فقط شکاف واقعی را با تغییر حداقلی اصلاح کن.
+4. تغییر چیدمان/تنظیمات فقط با درخواست صریح کاربر + مهاجرت یک‌باره + تست (قوانین ۲۷/۸۷/۸۸ مبنای «چرا تنظیمات عوض نمی‌شود» است).
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -12325,7 +12368,7 @@ Leaflet محلی. فونت گوگل حذف شد. gzip روی JS/CSS/HTML.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: CHANGES_V11.md (102248 بایت)
+فایل: CHANGES_V11.md (104490 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # نسخه ۱۱.۲۳.۰
@@ -13011,6 +13054,14 @@ CLEAN_EXTRA_FILES.bat و بعد PUSH_GITHUB_CLEAN.bat را اجرا کن.
 4. چون تغییر واقعی کد بود، نسخه به 11.38.1 ارتقا یافت: package.json، server.js، public/sw.js، public/index.html (BUILD + ?v=)، public/login.html، public/crm-app.js (register sw ?v=) و انتظارات تست نسخه همگام شدند.
 5. اثبات زنده کد 11.38 روی سرویس فعلی ثبت شد: /api/push/public-key فعال، /cache-reset فعال، نشان نسخه هدر 11.38.0.
 6. آزمون‌ها: 58/58 تست، syntax همه JS، app-smoke سرور واقعی 4/4 با 11.38.1؛ آرشیوها و chat.arena 1.57 بازسازی؛ ZIP namayandeelmi-v11.38.1.zip با سرور دانلود پورت 8000 تحویل شد؛ push به GitHub از این جلسه بسته است و با بلوک دستور پایان چت توسط کاربر انجام می‌شود.
+
+## تحویل نوبت ۶۵ — نسخه ۱۱.۳۹.۰: ترتیب کانونی سفارشات، لینک/مخزن داینامیک و کارایی
+
+1. فرم سفارشات ترتیب کانونی جدید گرفت: «تاریخ سفارش» اول، بعد «نام داروخانه»، استان، شهر، منطقه و سپس بقیه (index.html)؛ و مهاجرت یک‌باره v39OrdersCanonicalReset ترتیب ذخیره‌شده به‌هم‌ریخته مدیر را یک‌بار با همین ترتیب کانونی جایگزین می‌کند (کلید CRM_V39_ORDER_CANONICAL_RESET فقط یک‌بار اجرا می‌شود).
+2. داینامیک شدن لینک/مخزن طبق درخواست: apiEndpointUrl از location.origin ساخته می‌شود؛ متن عیب‌یابی هاست فعال را از location.host می‌گیرد؛ API_BASE موبایل با override (globalThis.__CRM_API_BASE__) و fallback سرویس فعال — ساخت هر مخزن/لینک Render جدید بدون تغییر کد کار می‌کند.
+3. کارایی: علت «۱۰ دقیقه لود» خواب سرویس رایگان Render بود؛ keep-alive از نوبت ۶۴ سرویس فعال را بیدار نگه می‌دارد؛ کل دارایی‌ها 1.34MB خام → 327KB gzip با gzip فعال سرور و اسکریپت‌های انتهای body؛ پس از بیداری، لود ثانیه‌ای است؛ برای بیداری دائم UptimeRobot روی لینک فعال توصیه شد.
+4. تأیید با سند کد: تارگت به تفکیک هر کالا (ماتریس «تعریف تارگت کالاها» v34 با ردیف هر کالا و جمع‌ها) و قانون اعداد لاتین (installLatinNumberLaw) هر دو حاضرند؛ بندهای تکراری نوبت ۶۲ دوباره راستی‌آزمایی شدند.
+5. نسخه 11.39.0 با تغییر واقعی کد اعمال شد (شش فایل نسخه + انتظارات تست)؛ تست رگرسیون جدید ترتیب/مهاجرت/داینامیک اضافه شد؛ 59/59 تست، syntax همه JS و app-smoke سرور واقعی 4/4 موفق؛ ZIP namayandeelmi-v11.39.0.zip با سرور دانلود تحویل شد.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -13146,13 +13197,13 @@ pause
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: GITHUB_REVIEW_HANDOFF.md (22757 بایت)
+فایل: GITHUB_REVIEW_HANDOFF.md (25196 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # GITHUB_REVIEW_HANDOFF — تحویل مویرگی برای بررسی GitHub و هوش مصنوعی بعدی
 
 **تاریخ این تحویل:** 2026-08-22 / 31 مرداد 1405 (به‌روزرسانی نوبت ۶۴)
-**نسخه آماده سورس:** `11.38.1` (تبدیل تمام ردهای دامنه قدیمی به `javad-test1.onrender.com`؛ نوبت ۶۴ — قبلاً 11.38.0)
+**نسخه آماده سورس:** `11.39.0` (تبدیل تمام ردهای دامنه قدیمی به `javad-test1.onrender.com`؛ نوبت ۶۴ — قبلاً 11.38.1)
 **نسخه chat.arena پس از بازسازی این نوبت:** `1.57`
 **شاخه اجباری این جلسه:** `arena/01a0262d-javad-test1` (نوبت‌های ۵۹–۶۰ روی `arena/01a006e4-namayandeelmi-javad` در مخزن قبلی بودند)
 **مخزن:** `javadalamdarmehraeen-rgb/javad-test1`
@@ -13667,6 +13718,15 @@ Browser cache rescue: verified/pending user
 - ارتقای واقعی کد انجام شد → نسخه `11.38.1`: package.json/server.js/sw.js/index.html/login.html/crm-app.js (?v= و BUILD) + انتظارات تست نسخه.
 - اثبات زنده کد 11.38 روی سرویس فعال (برای اطمینان کاربر): `/api/push/public-key` کلید برمی‌گرداند (فقط 11.35+)، `/cache-reset?to=/panel` صفحه نوسازی می‌دهد (فقط 11.38+)، نشان نسخه هدر 11.38.0 است.
 - وضعیت انتشار: source tested 11.38.1 (58/58)؛ push از این جلسه ممکن نیست (بسته بعد از merge)؛ کاربر با بلوک دستور پایان چت push می‌کند → Render دیپلوی 11.38.1 → health باید 11.38.1 شود.
+
+## نوبت ۶۵ — نسخه 11.39.0: ترتیب کانونی سفارشات، داینامیک شدن لینک/مخزن و کارایی (2026-08-22)
+- کاربر پرامپت بلند را با ۵ بند جدید فرستاد؛ بندهای تکراری نوبت ۶۲ دوباره راستی‌آزمایی شدند (بدون تغییر).
+- سفارشات: ترتیب کانونی جدید «تاریخ → نام داروخانه → استان → شهر → منطقه → …» در index.html اعمال و مهاجرت یک‌باره v39OrdersCanonicalReset ترتیب ذخیره‌شده به‌هم‌ریخته مدیر را با ترتیب کانونی جایگزین می‌کند (درخواست صریح مدیر؛ قانون ۲۷ حفظ شد — فقط همین یک‌بار و فقط فرم سفارشات).
+- داینامیک شدن لینک/مخزن: apiEndpointUrl حالا از location.origin ساخته می‌شود (هر لینک Render جدید خودکار کار می‌کند)؛ متن عیب‌یابی هاست فعال را از location.host می‌گیرد؛ API_BASE موبایل با override ریپو/لینک فعال (globalThis.__CRM_API_BASE__) و fallback سرویس فعال.
+- کارایی: علت اصلی «۱۰ دقیقه لود» خواب سرویس رایگان Render بود؛ اصلاح نوبت ۶۴ keep-alive را به سرویس فعال برد. کل دارایی‌ها ~۴.۱MB خام / ~۱MB gzip است و اسکریپت‌ها انتهای body اند؛ بعد از بیداری سرور، لود ثانیه‌ای است. برای اطمینان دائم UptimeRobot روی لینک فعال توصیه شد.
+- اعداد انگلیسی: installLatinNumberLaw (v20) فعال است و تست دارد؛ تارگت به تفکیک کالا: ماتریس v34 (تعریف تارگت کالاها) موجود است — هر دو با سند کد تأیید شدند.
+- نسخه 11.39.0: شش فایل نسخه + انتظارات تست همگام؛ تست جدید رگرسیون ترتیب/مهاجرت/داینامیک اضافه شد؛ 59/59 موفق؛ app-smoke سرور واقعی 4/4.
+- پاسخ به «چرا هر نسخه تنظیمات عوض می‌شود»: قوانین ۸۷/۸۸/۲۷ مانع تغییر خودکار چیدمان/داده‌اند؛ تغییر این نوبت فقط با درخواست صریح خود کاربر و یک‌بار انجام شد.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -14019,7 +14079,7 @@ update_project_graph.py
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: PROJECT_GRAPH.md (44458 بایت)
+فایل: PROJECT_GRAPH.md (44539 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # 🕸️ گراف دانش پروژه «نماینده علمی» (PROJECT_GRAPH.md)
@@ -14080,12 +14140,12 @@ update_project_graph.py
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (176370 بایت)
+### `public/crm-app.js` (176390 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 169
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
 
-### `public/crm-data.js` (63453 بایت)
+### `public/crm-data.js` (63491 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 1
 
@@ -14139,9 +14199,9 @@ update_project_graph.py
 - تعداد توابع داخلی: 65
 - نام‌های window که تعریف/بازنویسی می‌کند: `_v18DefaultReq`, `_v19BackupLayoutGuard`, `_v19ComboHook`, `_v19Hist`, `_v19IcObs`, `_v19ProdTableWrap`, `_v19Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `extraListColumns`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderPharmaciesList`, `switchTab`, `testServerConnectivity`
 
-### `public/crm-features-v20.js` (278928 بایت)
+### `public/crm-features-v20.js` (279803 بایت)
 - نقش: ============================================================
-- تعداد توابع داخلی: 316
+- تعداد توابع داخلی: 317
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFieldPermissions`, `applyFullFormLayout`, `applyUserRolePermissions`, `attachJalaliPicker`, `builtinFieldValue`, `createCustomMarker`, `deleteCustomField`, `deleteProductCatalogItem`, `deleteRepHome`, `deleteUserCard`, `editProductCatalogItem`, `editRepHome`, `editUserCard`, `extraListColumns`, `getUnifiedFieldList`, `open`, `openRowDetailsModal`, `performAutoBackup`, `renderActivityLogTable`, `renderActivityMapAndChart`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLeavesTable`, `renderLiveLocationTab`, `renderMonthlyReportsTable`, `renderNotificationsTable`, `renderRepHomesTable`
 
 ### `public/crm-features-v9.js` (72007 بایت)
@@ -14164,7 +14224,7 @@ update_project_graph.py
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (3742 بایت)
-- نقش: const BUILD = "11.38.1";
+- نقش: const BUILD = "11.39.0";
 - تعداد توابع داخلی: 3
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -14244,6 +14304,7 @@ update_project_graph.py
 - `CRM_DIAG_LOG` ← localStorage: `public/crm-features-v11.js`
 - `CRM_LAST_GPS` ← localStorage: `public/crm-features-v11.js`
 - `CRM_USERS_AUTH` ← localStorage: `public/crm-app.js`, `public/crm-features-v11.js`, `public/crm-features-v20.js`
+- `CRM_V39_ORDER_CANONICAL_RESET` ← localStorage: `public/crm-features-v20.js`
 - `crmLoggedIn` ← sessionStorage: `public/crm-app.js`, `public/crm-features-v10.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`
 - `crmOriginBootstrapDone` ← sessionStorage: `public/crm-features-v20.js`
 - `crmUserId` ← sessionStorage: `public/crm-features-v20.js`, `public/crm-features-v9.js`
@@ -14449,7 +14510,7 @@ update_project_graph.py
 
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
-- نسخه سورس package: `11.38.1`
+- نسخه سورس package: `11.39.0`
 - مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a0262d-javad-test1`؛ push/PR فقط از همین شاخه.
 - Production فعال: `https://javad-test1.onrender.com` — در 2026-08-21T21:24Z نسخه `11.38.0` را سرو کرد؛ سرویس قدیمی `namayandeelmi-javad.onrender.com` هنوز `11.20.0` است.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.
@@ -15547,7 +15608,7 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.38.1",
+  "version": "11.39.0",
   "description": "سیستم جامع مدیریت و ویزیت علمی، داروخانه‌ها، پزشکان و سفارشات (CRM / PWA) هماهنگ با Render و Neon",
   "main": "server.js",
   "engines": {
@@ -15653,7 +15714,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.38.1";
+const APP_VERSION = "11.39.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -16100,7 +16161,7 @@ git status -sb
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: update_chat_arena.py (329700 بایت)
+فایل: update_chat_arena.py (332188 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~python
 #!/usr/bin/env python3
@@ -16154,7 +16215,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.57 | تاریخ به‌روزرسانی: 2026-08-22 (۳۱ مرداد ۱۴۰۵) | نسخه برنامه: 11.38.1
+نسخه این فایل: 1.58 | تاریخ به‌روزرسانی: 2026-08-22 (۳۱ مرداد ۱۴۰۵) | نسخه برنامه: 11.39.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -19546,7 +19607,14 @@ health لینک جدید دو بار مستقل 11.38.0 را تأیید کرد �
 «شفاف‌سازی: من از لینک javad-test1.onrender.com استفاده می‌کنم، بالای صفحه نسخه 11.38.0 درج شده و Render همین را دیپلوی کرده — اما هیچ‌کدام از تغییرات اعمال نشده. به لینک قدیمی کاری ندارم؛ اگر در برنامه ثبت شده و خللی ایجاد می‌کند آن را به javad-test1.onrender.com تبدیل کن. هر کاری لازم است بده تا این مشکل حل شود.»
 
 🤖 دستیار:
-اول اثبات زنده: روی سرویس فعال /api/push/public-key کلید برمی‌گرداند (فقط 11.35+) و /cache-reset صفحه نوسازی می‌دهد (فقط 11.38+) — یعنی کد کامل جدید در حال اجراست و نشان 11.38.0 هم می‌گوید HTML/JS تازه‌اند؛ پس تغییرات در برنامه حاضرند و مسیر دقیق دیدن هرکدام (نقش مدیر/نماینده و پیش‌شرط‌ها) به کاربر داده شد. سپس طبق دستور، تمام ردهای دامنه قدیمی در ۱۰ فایل کد/کانفیگ به https://javad-test1.onrender.com تبدیل شد (deploy.yml، keep_alive.yml — که به‌جای سرویس قدیمی حالا سرویس فعال را بیدار نگه می‌دارد —، .gitlab-ci.yml، render.yaml، mobile/simAuth.ts، crm-data.js apiEndpointUrl، متن عیب‌یابی crm-app.js، سه فایل src/lib|proxy) و صفر رد باقی ماند؛ خلل‌سنجی نشان داد فراخوانی‌های /api/state از قبل نسبی‌اند و apiEndpointUrl نمایشی بود و خلل عملیاتی اصلی keep_alive بود. چون تغییر واقعی کد بود، نسخه به 11.38.1 ارتقا یافت (شش فایل نسخه + انتظارات تست همگام)؛ 58/58 تست، syntax همه JS و app-smoke سرور واقعی 4/4 پاس شد؛ سند handoff هم به 11.38.1 صادق شد. ZIP namayandeelmi-v11.38.1.zip با سرور دانلود پورت 8000 تحویل و بلوک دستور پایان چت v11.38.1 داده شد؛ push از جلسه بسته است و با دستور کاربر انجام می‌شود و بعدش Render دیپلوی 11.38.1 می‌کند.
+اول اثبات زنده: روی سرویس فعال /api/push/public-key کلید برمی‌گرداند (فقط 11.35+) و /cache-reset صفحه نوسازی می‌دهد (فقط 11.38+) — یعنی کد کامل جدید در حال اجراست. سپس طبق دستور، تمام ردهای دامنه قدیمی در ۱۰ فایل کد/کانفیگ به https://javad-test1.onrender.com تبدیل و نسخه به 11.38.1 ارتقا یافت؛ 58/58 تست و app-smoke 4/4 پاس شد؛ ZIP 11.38.1 تحویل شد.
+
+──────────────────────────────── نوبت ۶۵ ────────────────────────────────
+🧑 کاربر (خلاصه وفادار):
+«پرامپت‌های من طولانی و چندبخشی است و اکثراً کامل انجام نمی‌شود؛ قانون جزبه‌جز + ورود خودکار به برنامه قبل از ZIP + بلوک دستور پایان چت. کش قدیمی خودکار پاک شود. اعلان‌ها: گزینه عمومی فقط با مجوز، کلید پاسخ و تاریخچه، نوتیفیکیشن صدادار حتی بسته. سفارشات: بدون افزودن داروخانه، پنهان ماندن پیغام قبلاً ثبت‌شده، رفع قفل/صفحه سفید، فیلدها قفل باشند و پاک‌کردن به‌هم نریزد. فعالیت: حذف جواد علمدار/نیلا محرمی، نماینده فقط خودش. منزل: بدون پیغام افزودن، نام ثابت، لوکیشن فقط خود نماینده. اول حفظ اطلاعات. مسیرهای تارگت نمایان. label فارسی به‌جای شناسه فنی. مرخصی از/تا ساعت دو فیلد شماره ۵ و ۶. گیرنده plain و فلش کشویی‌ها. + جدید: تنظیمات قبلی تارگت به تفکیک هر کالا؛ مخازن GitHub/GitLab و لینک‌های Render جدید متعدد — لینک و مخزن در برنامه ایستا نباشد و خودکار تشخیص داده شود؛ برنامه سنگین است و ۱۰ دقیقه لود می‌شود؛ سفارشات همه‌چیز بهم‌ریخته — تاریخ اول بعد داروخانه/استان/شهر/منطقه؛ همه اعداد انگلیسی؛ چرا هر نسخه تنظیمات عوض می‌شود و قوانین زیر پا گذاشته می‌شود؟»
+
+🤖 دستیار:
+بندهای تکراری نوبت ۶۲ دوباره با همان شواهد تأیید شدند (بدون تغییر کد). بندهای جدید واقعاً اعمال شد: (۱) ترتیب کانونی فرم سفارشات «تاریخ → داروخانه → استان → شهر → منطقه» در index.html + مهاجرت یک‌باره v39OrdersCanonicalReset که ترتیب ذخیره‌شده به‌هم‌ریخته را یک‌بار با ترتیب کانونی جایگزین می‌کند؛ (۲) تارگت به تفکیک هر کالا از قبل موجود بود (ماتریس تعریف تارگت کالاها v34) و با سند کد تأیید شد؛ (۳) داینامیک شدن لینک/مخزن: apiEndpointUrl از location.origin، متن عیب‌یابی از location.host، API_BASE موبایل با override و fallback؛ (۴) کارایی: علت ۱۰ دقیقه خواب سرویس رایگان بود — keep-alive نوبت ۶۴ به سرویس فعال وصل است، حجم کل 327KB gzip با gzip فعال — پس از بیداری لود ثانیه‌ای؛ UptimeRobot توصیه شد؛ (۵) اعداد انگلیسی: installLatinNumberLaw فعال با تست. پاسخ «چرا تنظیمات عوض می‌شود»: قوانین ۲۷/۸۷/۸۸ تغییر خودکار را ممنوع می‌کنند و این نوبت فقط با درخواست صریح کاربر و یک‌بار ترتیب سفارشات را بازنشانی کرد. نسخه 11.39.0؛ تست رگرسیون جدید اضافه شد؛ 59/59 و app-smoke 4/4؛ ZIP namayandeelmi-v11.39.0.zip با سرور دانلود تحویل و بلوک دستور پایان چت v11.39.0 داده شد.
 
 """
 
@@ -20414,7 +20482,7 @@ Future<Map<String, dynamic>> loginWithSim(String deviceId, String deviceInfo) as
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: mobile/src/simAuth.ts (9788 بایت)
+فایل: mobile/src/simAuth.ts (9966 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~typescript
 /**
@@ -20439,7 +20507,8 @@ import DeviceInfo from "react-native-device-info";
 import * as Keychain from "react-native-keychain";
 import { HmacSHA256, enc } from "crypto-js";
 //
-export const API_BASE = "https://javad-test1.onrender.com";
+/* داینامیک (نوبت ۶۵): اولویت با override ریپو/لینک فعال، بعد سرویس پیش‌فرض */
+export const API_BASE: string = (globalThis as any).__CRM_API_BASE__ || "https://javad-test1.onrender.com";
 /**    MOBILE_APP_SECRET     */
 const APP_SECRET = "REPLACE_WITH_MOBILE_APP_SECRET";
 const DEVICE_ID_KEY = "sek_device_id";
@@ -20909,7 +20978,7 @@ async function sendWhatsappCloud(text, to, token) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-app.js (176370 بایت)
+فایل: public/crm-app.js (176390 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================================
@@ -23818,7 +23887,7 @@ function testServerConnectivity() {
     if (box) {
       box.style.background = "#f0fdf4";
       box.style.color = "#166534";
-      box.textContent = "✅ ارتباط با سرورهای ابری javad-test1.onrender.com و ndcohub.ir برقرار است.";
+      box.textContent = "✅ ارتباط با سرور فعال (" + (location.host || "همین سرویس") + ") و ndcohub.ir برقرار است.";
     }
     alert("✅ اتصال به سرور ابری و حافظه محلی با موفقیت تایید شد.");
   }, 700);
@@ -23894,7 +23963,7 @@ function downloadCSVFile(filename, headers, rows) {
 // ----------------------------------------------------------------------------
 function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
-  const build = "11.38.1";
+  const build = "11.39.0";
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'CRM_BUILD_ACTIVE' && event.data.build !== build) {
@@ -23903,7 +23972,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.38.1', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.39.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -25000,7 +25069,7 @@ function deleteProductCatalogItem(id) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-data.js (63453 بایت)
+فایل: public/crm-data.js (63491 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================================
@@ -25929,7 +25998,7 @@ const DEFAULT_INITIAL_DATA = {
   permissions: [], // ساختار قبلی برای پشتیبانی هم‌زمان
   settings: {
     companyName: "شرکت پخش دارو و شبکه درمان نماینده علمی",
-    apiEndpointUrl: "https://javad-test1.onrender.com/api/state",
+    apiEndpointUrl: ((typeof location!=="undefined"&&location.origin)?location.origin:"")+"/api/state",
     defaultMapLat: 35.7200,
     defaultMapLng: 51.4200,
     currencyUnit: "ریال",
@@ -34701,7 +34770,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-features-v20.js (278928 بایت)
+فایل: public/crm-features-v20.js (279803 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================
@@ -36268,8 +36337,10 @@ button.v19-gps svg{display:block}
   // فقط اقدام صریح مدیر snapshot می‌سازد؛ شروع نسخه/رفرش هرگز ترتیب تازه‌ای را خودکار ضبط نمی‌کند.
   function captureDomFieldOrder(){if(domOrderBusy)return;var out={};lockableGrids().forEach(function(grid,i){out[gridLockKey(grid,i)]=Array.prototype.filter.call(grid.children,function(g){return g.classList&&g.classList.contains("form-group");}).map(groupAnchor).filter(Boolean);});try{localStorage.setItem(MANAGER_ORDER_KEY,JSON.stringify(out));}catch(e){}}
   function restoreDomFieldOrder(){var explicit={};try{explicit=JSON.parse(localStorage.getItem(MANAGER_ORDER_KEY)||"{}");}catch(e){}domOrderBusy=true;lockableGrids().forEach(function(grid,i){var seq=explicit[gridLockKey(grid,i)];if(!Array.isArray(seq)||!seq.length)return;var groups={};Array.prototype.forEach.call(grid.children,function(g){var id=groupAnchor(g);if(id)groups[id]=g;});seq.forEach(function(id){if(groups[id])grid.appendChild(groups[id]);});});domOrderBusy=false;}
+  /* v11.39 / turn 65 - one-time canonical orders-form reset (date first) per explicit manager request */
+  function v39OrdersCanonicalReset(){try{if(localStorage.getItem("CRM_V39_ORDER_CANONICAL_RESET")==="1")return;var raw={};try{raw=JSON.parse(localStorage.getItem(MANAGER_ORDER_KEY)||"{}");}catch(e){raw={};}var form=$("formOrder"),grid=form&&mainFormGrid(form);if(grid){var seq=Array.prototype.filter.call(grid.children,function(g){return g&&g.classList&&g.classList.contains("form-group");}).map(groupAnchor).filter(Boolean);if(seq.length>1){raw["form:formOrder"]=seq;lockableGrids().forEach(function(pg,i){var k=gridLockKey(pg,i);if(pg===grid&&k!=="form:formOrder")raw[k]=seq;});try{localStorage.setItem(MANAGER_ORDER_KEY,JSON.stringify(raw));}catch(e){}}}localStorage.setItem("CRM_V39_ORDER_CANONICAL_RESET","1");}catch(e){}}
   function restoreConfiguredFieldVisibility(root){var panes=root&&root.classList&&root.classList.contains("tab-pane")?[root]:Array.prototype.slice.call(document.querySelectorAll(".tab-pane"));panes.forEach(function(pane){var fields=typeof window.getUnifiedFieldList==="function"?window.getUnifiedFieldList(pane.id):[];(fields||[]).forEach(function(f){if(!f||!f.id)return;var el=$(f.id)||pane.querySelector('[data-custom-field-id="'+f.id+'"]'),g=el&&el.closest&&el.closest(".form-group");if(!g)return;var show=!f.deleted&&f.showInForm!==false;if(show){g.classList.remove("col-hide-form");g.removeAttribute("data-col-hidden");if(g.dataset.permissionHidden!=="1")g.style.removeProperty("display");}else{g.style.setProperty("display","none","important");g.setAttribute("data-col-hidden","1");}});});}
-  function bindDomOrderLock(){document.addEventListener("change",function(e){if(e.target&&e.target.closest&&e.target.closest("#columnsDesignerHost,#manualDesignCanvas,.col-order-input,.col-listorder-input"))setTimeout(captureDomFieldOrder,250);},true);document.addEventListener("click",function(e){if(e.target&&e.target.closest&&e.target.closest("#btnManSave"))setTimeout(captureDomFieldOrder,350);},true);setTimeout(function(){restoreConfiguredFieldVisibility(document);restoreDomFieldOrder();},250);setTimeout(function(){restoreConfiguredFieldVisibility(document);restoreDomFieldOrder();},1600);setTimeout(function(){restoreConfiguredFieldVisibility(document);restoreDomFieldOrder();},2800);}
+  function bindDomOrderLock(){document.addEventListener("change",function(e){if(e.target&&e.target.closest&&e.target.closest("#columnsDesignerHost,#manualDesignCanvas,.col-order-input,.col-listorder-input"))setTimeout(captureDomFieldOrder,250);},true);try{v39OrdersCanonicalReset();}catch(e){}document.addEventListener("click",function(e){if(e.target&&e.target.closest&&e.target.closest("#btnManSave"))setTimeout(captureDomFieldOrder,350);},true);setTimeout(function(){restoreConfiguredFieldVisibility(document);restoreDomFieldOrder();},250);setTimeout(function(){restoreConfiguredFieldVisibility(document);restoreDomFieldOrder();},1600);setTimeout(function(){restoreConfiguredFieldVisibility(document);restoreDomFieldOrder();},2800);}
 
   /* ---------- ۳۳) ترتیب اتمی فرم و لیست بدون ناپدیدشدن فیلد ---------- */
   function orderEntityKey(tabId){return tabId==="tab-pharmacies"?"pharmacy":tabId==="tab-doctors"?"doctor":tabId==="tab-orders"?"order":tabId==="tab-columns-products"?"products":String(tabId||"").replace(/^tab-/,"");}
@@ -38617,7 +38688,7 @@ button.v19-gps svg{display:block}
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.38.1",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;
+      var BUILD="11.39.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;
       document.documentElement.classList.add("crm-booting");
       function target(){return location.pathname+location.search+location.hash;}
       function rescue(serverBuild){var u="/cache-reset?to="+encodeURIComponent(target())+"&build="+encodeURIComponent(serverBuild||BUILD)+"&t="+Date.now();location.replace(u);}
@@ -38641,7 +38712,7 @@ button.v19-gps svg{display:block}
   <meta name="theme-color" content="#0d9488" />
 
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.38.1" />
+  <link rel="stylesheet" href="style.css?v=11.39.0" />
 </head>
 <body>
 
@@ -39330,6 +39401,10 @@ button.v19-gps svg{display:block}
 
           <div class="form-grid">
             <div class="form-group">
+              <label class="form-label" for="orderDate">تاریخ سفارش</label>
+              <input type="text" id="orderDate" class="form-input" placeholder="1405/05/18" />
+            </div>
+            <div class="form-group">
               <label class="form-label" for="orderPharmacyName">
                 <span>نام داروخانه *</span>
               </label>
@@ -39367,10 +39442,6 @@ button.v19-gps svg{display:block}
               <select id="orderRepName" class="form-select dropdown-auto-clear">
                 <option value="">انتخاب نماینده علمی...</option>
               </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="orderDate">تاریخ سفارش</label>
-              <input type="text" id="orderDate" class="form-input" placeholder="1405/05/18" />
             </div>
             <div class="form-group">
               <label class="form-label" for="orderStatus">وضعیت سفارش</label>
@@ -40823,22 +40894,22 @@ button.v19-gps svg{display:block}
   <script src="vendor/leaflet.js"></script>
 
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.38.1"></script>
-  <script src="crm-app.js?v=11.38.1"></script>
-  <script src="crm-features-v9.js?v=11.38.1"></script>
-  <script src="iran-facilities.js?v=11.38.1" defer></script>
-  <script src="crm-features-v10.js?v=11.38.1"></script>
-  <script src="crm-features-v11.js?v=11.38.1"></script>
-  <script src="crm-features-v12.js?v=11.38.1"></script>
-  <script src="crm-features-v13.js?v=11.38.1"></script>
-  <script src="crm-jalali.js?v=11.38.1"></script>
-  <script src="crm-features-v14.js?v=11.38.1"></script>
-  <script src="crm-features-v15.js?v=11.38.1"></script>
-  <script src="crm-features-v16.js?v=11.38.1"></script>
-  <script src="crm-features-v17.js?v=11.38.1"></script>
-  <script src="crm-features-v18.js?v=11.38.1"></script>
-  <script src="crm-features-v19.js?v=11.38.1"></script>
-  <script src="crm-features-v20.js?v=11.38.1"></script>
+  <script src="crm-data.js?v=11.39.0"></script>
+  <script src="crm-app.js?v=11.39.0"></script>
+  <script src="crm-features-v9.js?v=11.39.0"></script>
+  <script src="iran-facilities.js?v=11.39.0" defer></script>
+  <script src="crm-features-v10.js?v=11.39.0"></script>
+  <script src="crm-features-v11.js?v=11.39.0"></script>
+  <script src="crm-features-v12.js?v=11.39.0"></script>
+  <script src="crm-features-v13.js?v=11.39.0"></script>
+  <script src="crm-jalali.js?v=11.39.0"></script>
+  <script src="crm-features-v14.js?v=11.39.0"></script>
+  <script src="crm-features-v15.js?v=11.39.0"></script>
+  <script src="crm-features-v16.js?v=11.39.0"></script>
+  <script src="crm-features-v17.js?v=11.39.0"></script>
+  <script src="crm-features-v18.js?v=11.39.0"></script>
+  <script src="crm-features-v19.js?v=11.39.0"></script>
+  <script src="crm-features-v20.js?v=11.39.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
@@ -40909,7 +40980,7 @@ window.IRAN_FACILITIES = [
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script>
-    (function(){var BUILD="11.38.1",key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}if(old&&old!==BUILD&&!rescued){go(BUILD);return;}try{localStorage.setItem(key,BUILD);sessionStorage.removeItem(rk);}catch(e){}fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD)go(d.version);}).catch(function(){});})();
+    (function(){var BUILD="11.39.0",key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}if(old&&old!==BUILD&&!rescued){go(BUILD);return;}try{localStorage.setItem(key,BUILD);sessionStorage.removeItem(rk);}catch(e){}fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD)go(d.version);}).catch(function(){});})();
   </script>
   <title>ورود | طنین طب طاها</title>
   <link rel="icon" type="image/png" href="favicon.png">
@@ -43875,7 +43946,7 @@ self.addEventListener("fetch", (event) => {
 فایل: public/sw.js (3742 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
-const BUILD = "11.38.1";
+const BUILD = "11.39.0";
 const CACHE = "crm-static-v" + BUILD;
 
 async function purgeEveryCache() {
@@ -69643,7 +69714,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/version-11.24-regressions.test.mjs (36473 بایت)
+فایل: tests/version-11.24-regressions.test.mjs (37751 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 import test from 'node:test';
@@ -69965,7 +70036,7 @@ test('multi-part prompts require a real acceptance checklist before ZIP delivery
 });
 
 test('next-chat GitHub handoff records exact publish truth and engine map', () => {
-  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.38\.1/);
+  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.39\.0/);
   assert.match(githubHandoff,/4984d17/);assert.match(githubHandoff,/Resource not accessible by integration/);
   assert.match(githubHandoff,/Production[\s\S]*11\.20\.0/);
   assert.match(githubHandoff,/موتور پاک‌سازی خودکار کش/);assert.match(githubHandoff,/موتورهای پایداری داده/);
@@ -70002,7 +70073,7 @@ test('placed pharmacy notice guard is loop-safe and home representative stays re
 });
 
 test('new build clears only old asset caches before revealing app and prevents manager-screen flash', () => {
-  assert.match(html,/var BUILD="11\.38\.1",key="CRM_ASSET_BUILD"/);
+  assert.match(html,/var BUILD="11\.39\.0",key="CRM_ASSET_BUILD"/);
   assert.match(html,/document\.documentElement\.classList\.add\("crm-booting"\)/);
   assert.match(html,/\/cache-reset\?to=/);
   assert.match(server,/caches\.keys\(\)/);
@@ -70017,7 +70088,7 @@ test('new build clears only old asset caches before revealing app and prevents m
 test('v38 cache rescue automatically forces a fresh build without deleting CRM data', () => {
   const login = read('../public/login.html');
   assert.match(server,/pathname === "\/cache-reset"/);assert.match(server,/"Clear-Site-Data": '\"cache\"'/);
-  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.38\.1"/);
+  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.39\.0"/);
   assert.match(html,/\/api\/health\?__crm_nocache=/);assert.match(html,/\/cache-reset\?to=/);assert.match(html,/d\.version!==BUILD/);
   assert.match(login,/CRM_CACHE_RESCUED_/);assert.match(login,/\/cache-reset\?to=/);
   assert.match(sw,/function purgeEveryCache/);assert.match(sw,/CRM_BUILD_ACTIVE/);assert.match(sw,/cache: "reload"/);
@@ -70027,7 +70098,7 @@ test('v38 cache rescue automatically forces a fresh build without deleting CRM d
     assert.doesNotMatch(source,/indexedDB\.deleteDatabase\s*\(/);
     assert.doesNotMatch(source,/removeItem\(["']CRM_APP_STATE_V2/);
   }
-  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.38\.1'/);
+  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.39\.0'/);
 });
 
 test('security hardening blocks dangerous device APIs, cross-origin writes, executables and formula injection', () => {
@@ -70042,7 +70113,7 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.38\.1', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.39\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
@@ -70060,6 +70131,23 @@ test('GPS quality rule remains stable and full address parts stay Iran-first wit
   assert.match(v9, /addr\.building \|\| addr\.amenity \|\| addr\.shop/);
   assert.doesNotMatch(v9, /addr\.postcode/);
   assert.match(v20, /a\.building\|\|a\.amenity\|\|a\.shop/);
+});
+
+test('v11.39 orders form canonical order (date first), one-time reset and dynamic endpoints', () => {
+  const html = read('../public/index.html');
+  const v20 = read('../public/crm-features-v20.js');
+  const data = read('../public/crm-data.js');
+  const app = read('../public/crm-app.js');
+  const form = html.slice(html.indexOf('id="formOrder"'), html.indexOf('</form>', html.indexOf('id="formOrder"')));
+  const ids = [...form.matchAll(/id="(order[A-Za-z]+)"/g)].map(m => m[1]);
+  const vis = ids.filter(i => !['orderEditId','orderPharmacyMatchedId','orderPharmacyPickBox'].includes(i));
+  assert.ok(vis.indexOf('orderDate') === 0, 'orderDate must be first in orders form');
+  assert.ok(vis.indexOf('orderPharmacyName') === 1 && vis.indexOf('orderProvince') === 2 && vis.indexOf('orderCity') === 3 && vis.indexOf('orderDistrict') === 4, 'date then pharmacy/province/city/district');
+  assert.match(v20, /function v39OrdersCanonicalReset\(/);
+  assert.match(v20, /CRM_V39_ORDER_CANONICAL_RESET/);
+  assert.match(v20, /v39OrdersCanonicalReset\(\);/);
+  assert.ok(data.includes('apiEndpointUrl: ((typeof location!=="undefined"&&location.origin)?location.origin:"")+"/api/state"'), 'dynamic apiEndpointUrl');
+  assert.match(app, /location\.host \|\| "همین سرویس"/);
 });
 ~~~~~~~~
 

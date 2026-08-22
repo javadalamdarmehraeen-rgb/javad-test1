@@ -931,3 +931,6 @@ Commit محلی `2c4fe0b` روی شاخه ثابت Arena ساخته شد. Push �
 
 ## نقطه شروع چت بعدی — نوبت ۶۴ (2026-08-22)
 نسخه سورس 11.38.1: تمام ردهای دامنه قدیمی در کد/کانفیگ (۱۰ فایل، از جمله keep_alive، deploy sync، .gitlab-ci، render.yaml، موبایل، crm-data/crm-app) به https://javad-test1.onrender.com تبدیل شد و صفر رد باقی ماند. سرویس قدیمی فقط در اسناد تاریخی هست. production فعلی 11.38.0 است و با push کاربر 11.38.1 دیپلوی می‌شود. جلسه GitHub بعد از merge بسته است؛ تحویل با ZIP + بلوک دستور پایان چت است. اثبات زنده کد 11.38 روی سرویس: /api/push/public-key و /cache-reset فعال‌اند.
+
+## نقطه شروع چت بعدی — نوبت ۶۵ (2026-08-22)
+نسخه سورس 11.39.0: فرم سفارشات با ترتیب کانونی «تاریخ → داروخانه → استان → شهر → منطقه» و مهاجرت یک‌باره v39OrdersCanonicalReset؛ apiEndpointUrl/متن عیب‌یابی/API_BASE موبایل داینامیک (location-origin + override)؛ keep-alive روی سرویس فعال؛ حجم دارایی‌ها 327KB gzip؛ تارگت per-product و قانون اعداد لاتین با سند کد تأیید. 59/59 تست + app-smoke 4/4. تا push کاربر production عقب‌تر است؛ health ملاک است.
