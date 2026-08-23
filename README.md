@@ -1,8 +1,8 @@
 # نماینده علمی — طنین طب طاها
 
-> **راهنمای بررسی نسخه جاری:** قبل از هر بررسی GitHub، فایل [`GITHUB_REVIEW_HANDOFF.md`](./GITHUB_REVIEW_HANDOFF.md) و سپس [`PROJECT_GRAPH.md`](./PROJECT_GRAPH.md) را بخوانید. نسخه فعال سورس `11.38.0` است؛ ورودی runtime اصلی `server.js + public/` است و اسکلت Next.js پوشه `src/` مسیر production فعلی نیست.
+> **راهنمای بررسی نسخه جاری:** قبل از هر بررسی GitHub، فایل [`GITHUB_REVIEW_HANDOFF.md`](./GITHUB_REVIEW_HANDOFF.md) و سپس [`PROJECT_GRAPH.md`](./PROJECT_GRAPH.md) را بخوانید. نسخه فعال سورس `11.38.1` است؛ ورودی runtime اصلی `server.js + public/` است و اسکلت Next.js پوشه `src/` مسیر production فعلی نیست.
 >
-> **وضعیت انتشار در 2026-08-22:** commit محلی آماده است، اما GitHub App فاقد Workflows/Refs permission بوده و push/PR انجام نشده است. Production هنوز `11.20.0` گزارش می‌کند. جزئیات خطا و گام‌های دقیق انتشار در فایل handoff آمده است.
+> **وضعیت انتشار در 2026-08-22 (نوبت ۶۴):** سورس `11.38.1` آماده push کاربر است — تمام ردهای دامنه قدیمی در کد/کانفیگ به `https://javad-test1.onrender.com` تبدیل شد (شامل keep-alive، sync، موبایل و متن عیب‌یابی). production فعال همین حالا 11.38.0 سرو می‌کند و با push شما 11.38.1 می‌شود. سرویس قدیمی `namayandeelmi-javad.onrender.com` دیگر در برنامه هیچ ردی ندارد. جزئیات در فایل handoff.
 
 این مخزن شامل برنامه CRM/PWA نمایندگان علمی، مدیریت داروخانه/پزشک/سفارش، مسیرها، تارگت، اعلان، پخش و ابزارهای حفظ داده است.
 
@@ -310,7 +310,8 @@ Render    .
 |  |  |  |
 |---|---|---|
 | NdcoHub () | `https://ndcohub.ir` |    —     |
-| Render | `https://namayandeelmi-javad.onrender.com` |      |
+| Render (فعال) | `https://javad-test1.onrender.com` | نسخه 11.38.0 — تأیید 2026-08-21 |
+| Render (قدیمی) | `https://namayandeelmi-javad.onrender.com` | دیگر مرجع نیست؛ 11.20.0 |
 ### )      
 `src/lib/endpoints.ts` —          
       **     **.

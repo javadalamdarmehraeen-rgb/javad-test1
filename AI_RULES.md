@@ -1556,3 +1556,51 @@ Never tell the user production changed merely because sandbox tests or ZIP passe
 # 90. GITHUB REVIEW HANDOFF RULE (PERMANENT)
 
 At every major handoff, keep `GITHUB_REVIEW_HANDOFF.md` synchronized with the exact branch, commit chain, remote heads, permission failures, workflow, deployment gates, production health, cache/data guarantees and next commands. README must point reviewers to this handoff and PROJECT_GRAPH. Never make the next model infer publish status from source version or ZIP. The first next-chat action is graph → GitHub handoff → acceptance checklist → git/auth/production verification.
+
+# 91. ARCHIVE SYNC EVERY CHAT RULE (PERMANENT — USER-MANDATED 2026-08-22, نوبت ۶۱)
+
+Declared by the user and valid for ALL future chats: in every chat, before delivering the
+ZIP, ALL project-memory files must be updated with the codes/status/truth of that chat —
+no exceptions and no "next time":
+
+1. `PROJECT_GRAPH.md` (regenerate via `python update_project_graph.py` after editing its template)
+2. `GITHUB_REVIEW_HANDOFF.md` (publish chain, branch, production health, permissions)
+3. `chat.arena` (rebuild via `python update_chat_arena.py` after appending the new turn to its embedded conversation and bumping the file version)
+4. `update_chat_arena.py` (embedded HEADER version/date + new turn text)
+5. `update_project_graph.py` (template: branch, repo, production URL, laws)
+6. `AI_ACCEPTANCE_CHECKLIST.md` (new turn section, item by item)
+7. `AI_RULES.md` (new permanent laws only; never renumber)
+8. `AI_DECISION_LOG.md` (new decision entry)
+9. `AI_TASKS.md` (new task section)
+10. `AI_PROJECT_CONTEXT.md` (current context: repo, production, release state)
+11. `AI_ARCHITECTURE.md` (only when architecture/deployment reality changed)
+12. `ARENA_HANDOFF_PROMPT.md` (addendum for the next chat start)
+13. `CHANGES_V11.md` (delivery log of the turn)
+14. `README.md` (status banner, production URL, reviewer pointers)
+15. `OFFICIAL_FILELIST.txt` (register every newly added file immediately)
+
+All laws of previous chats remain in force. The delivery ZIP beside the page every chat is
+rule #64 and was re-mandated by the user in نوبت ۶۱. When an audit shows nothing pending
+in code, do NOT bump the app version artificially: archives carry the turn, the ZIP carries
+the archives, and production health stays the single source of release truth (rule #89).
+
+# 92. PART-BY-PART PROMPT EXECUTION + SELF-VERIFICATION BEFORE DELIVERY (PERMANENT — USER-MANDATED 2026-08-22, نوبت ۶۲)
+
+Declared by the user and valid for ALL future chats, reinforcing the AI_ACCEPTANCE_CHECKLIST law:
+
+1. Every user prompt — however long — must be broken into numbered independent items BEFORE any work.
+2. Each item maps to its file/function/UI element and must be REALLY applied in source; prose without a
+   code/verification change is NOT «done».
+3. Before building the delivery ZIP and declaring end of chat, the AI MUST enter the program itself:
+   run the real server, run the automated app-entry test (tests/app-smoke.test.mjs pattern), plus
+   targeted runtime/DOM checks for every item of that prompt. An item is «تأییدشده» only with captured
+   evidence; anything unverifiable must be reported honestly as «در انتظار تأیید کاربر» or «ناشناخته».
+4. If verification exposes a real gap → fix it minimally, re-test, and only then deliver. If everything
+   is already applied, do NOT bump the app version artificially (rules #89/#91) — deliver the audited
+   truth with evidence.
+5. EVERY chat must end with a copy-ready command block in this exact shape (version + Persian summary):
+   git add -A
+   git commit -m "v<VERSION>: <خلاصه فارسی تغییرات همین نوبت>"
+   git push origin main
+   git push gitlab main
+6. The ZIP download beside the page (rule #64) comes only AFTER the verification table is complete.

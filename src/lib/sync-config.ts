@@ -1,7 +1,7 @@
 /**
  * ============================================================
  *    
- *  Render (namayandeelmi-javad.onrender.com)  NdcoHub.ir
+ *  Render (javad-test1.onrender.com)  NdcoHub.ir
  * ------------------------------------------------------------
  *       :
  *    uid        →    (UUID)       
@@ -82,7 +82,7 @@ export function syncSecret(): string {
 }
 /**          */
 export const PUBLIC_ENDPOINTS: string[] = (
-  process.env.NEXT_PUBLIC_ENDPOINTS || "https://ndcohub.ir,https://namayandeelmi-javad.onrender.com"
+  process.env.NEXT_PUBLIC_ENDPOINTS || "https://ndcohub.ir,https://javad-test1.onrender.com"
 )
   .split(",")
   .map((s) => s.trim().replace(/\/$/, ""))
