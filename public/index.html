@@ -19,10 +19,10 @@
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.44.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;
+      var BUILD="11.44.1";var __justRescued=(location.search.indexOf("__crm_reload")!==-1);,key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;
       document.documentElement.classList.add("crm-booting");
       function target(){return location.pathname+location.search+location.hash;}
-      function rescue(serverBuild){var u="/cache-reset?to="+encodeURIComponent(target())+"&build="+encodeURIComponent(serverBuild||BUILD)+"&t="+Date.now();location.replace(u);}
+      function rescue(serverBuild){if(__justRescued)return;var u="/cache-reset?to="+encodeURIComponent(target())+"&build="+encodeURIComponent(serverBuild||BUILD)+"&t="+Date.now();location.replace(u);}
       if(sessionStorage.getItem("crmLoggedIn")!=="1"){location.replace("/login?build="+BUILD+"&__crm_reload="+Date.now());return;}
       var old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rescueKey)==="1";}catch(e){}
       if(old!==BUILD&&!rescued){rescue(BUILD);return;}
@@ -43,7 +43,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.44.0" />
+  <link rel="stylesheet" href="style.css?v=11.44.1" />
 </head>
 <body>
 
@@ -2254,9 +2254,9 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.44.0"></script>
-  <script src="crm-app.js?v=11.44.0"></script>
-          <script src="crm-bundle.js?v=11.44.0" defer></script>
+  <script src="crm-data.js?v=11.44.1"></script>
+  <script src="crm-app.js?v=11.44.1"></script>
+          <script src="crm-bundle.js?v=11.44.1" defer></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
