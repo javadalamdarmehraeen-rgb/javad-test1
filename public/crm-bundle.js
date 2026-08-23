@@ -12742,3 +12742,31 @@ button.v19-gps svg{display:block}
 /* v11.46: ساعت پایان ویزیت — پیوست امن انتهای باندل */
 (function(){function v46bind(){var b=document.getElementById("btnEndVisit");if(!b||b.dataset.v46end)return;b.dataset.v46end="1";b.addEventListener("click",function(){var now=new Date();var t=String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0");var box=document.getElementById("visitEndTimeBox");if(box)box.textContent="ساعت پایان: "+t;try{if(window.state)window.state.__lastVisitEnd=t;}catch(e){}});}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",v46bind);else v46bind();})();
+
+/* v11.47: پلاک/طبقه منزل نمایندگان — ذخیره خودکار در رکورد و نمایش در لیست */
+(function(){
+  function v46home(){
+    var btns=document.querySelectorAll("#tab-rep-homes .btn, #tab-rep-homes button");
+    btns.forEach(function(b){
+      if(b.dataset.v46h)return;b.dataset.v46h="1";
+      var t=String(b.textContent||"");
+      if(t.indexOf("ذخیره")===-1)return;
+      b.addEventListener("click",function(){
+        setTimeout(function(){
+          try{
+            var S=window.state;if(!S||!S.repHomes||!S.repHomes.length)return;
+            var pl=document.getElementById("repHomePlate"),fl=document.getElementById("repHomeFloor");
+            var last=S.repHomes[S.repHomes.length-1];
+            if(pl&&pl.value)last.plate=pl.value;
+            if(fl&&fl.value)last.floor=fl.value;
+            if(window.saveState)window.saveState(false);
+            var tbl=document.getElementById("tableRepHomesBody");
+            if(tbl&&tbl.rows.length){var c=tbl.rows[tbl.rows.length-1];if(c&&c.cells.length>1){var sp=document.createElement("td");sp.textContent=(last.plate?"پلاک "+last.plate:"—")+" / "+(last.floor?"طبقه "+last.floor:"—");c.insertBefore(sp,c.cells[c.cells.length-1]);}}
+          }catch(e){}
+        },350);
+      },true);
+    });
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",v46home);else v46home();
+  document.addEventListener("click",function(e){if(e.target&&e.target.closest&&e.target.closest("#tab-rep-homes"))setTimeout(v46home,400);},true);
+})();
