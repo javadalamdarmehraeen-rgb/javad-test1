@@ -6499,7 +6499,6 @@ window.IRAN_FACILITIES = [
       };
     }
     var t = todayJ();
-    console.log("jalali ready", jalaliTodayStr(), gregorianBadge(), "1mordad-wd", weekdayIran(t.jy, 5, 1));
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
@@ -7824,7 +7823,6 @@ window.IRAN_FACILITIES = [
         }, 180);
       };
     }
-    console.log("v15 ready", VER);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
@@ -8613,7 +8611,6 @@ window.IRAN_FACILITIES = [
         }, 200);
       };
     }
-    console.log("v16 ready", VER);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
@@ -9078,7 +9075,6 @@ window.IRAN_FACILITIES = [
         }, 220);
       };
     }
-    console.log("v17 ready", VER);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
@@ -9774,7 +9770,6 @@ window.IRAN_FACILITIES = [
         }, 180);
       };
     }
-    console.log("v18 ready", VER);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
@@ -10928,7 +10923,6 @@ button.v19-gps svg{display:block}
         return r;
       };
     }
-    console.log("v19 ready", VER);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
