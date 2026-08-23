@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.40.0";
+const APP_VERSION = "11.41.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -244,6 +244,21 @@ const server = http.createServer((req, res) => {
     let body="";req.on("data",c=>{body+=c;if(body.length>1024*1024)req.destroy();});req.on("end",async()=>{try{const data=sanitizeJsonValue(JSON.parse(body)),recipients=Array.isArray(data.recipients)?data.recipients.map(String):[String(data.recipient||"")],all=recipients.some(x=>/همه کاربران|all/i.test(x)),list=readJsonSafe(PUSH_SUBSCRIPTIONS_PATH)||[],targets=list.filter(x=>all||recipients.includes(String(x.userId))||recipients.includes(String(x.username))||recipients.includes(String(x.name))),message={title:String(data.title||"پیام جدید").slice(0,120),body:String(data.body||"").slice(0,1000),url:String(data.url||"/panel#tab-notifications"),tag:String(data.tag||("crm-"+Date.now()))},stale=[];let sent=0;for(const item of targets){try{const status=await sendWebPush(item.subscription,message);if(status>=200&&status<300)sent++;if(status===404||status===410)stale.push(item.subscription.endpoint);}catch(e){}}if(stale.length)writeJsonAtomic(PUSH_SUBSCRIPTIONS_PATH,list.filter(x=>!stale.includes(x.subscription.endpoint)));send(req,res,200,JSON.stringify({status:"success",sent,targets:targets.length}),"application/json; charset=utf-8",{"Cache-Control":"no-store"});}catch(e){send(req,res,400,JSON.stringify({status:"error",message:e.message}),"application/json; charset=utf-8");}});return;
   }
 
+  if (pathname === "/api/feedback" && req.method === "POST") {
+    let fbBody="";
+    req.on("data", (c) => { fbBody += c; if (fbBody.length > 1024 * 1024) req.destroy(); });
+    req.on("end", () => {
+      try { writeJsonAtomic(path.join(RUNTIME_DATA_DIR, "feedback.json"), JSON.parse(fbBody)); send(req, res, 200, JSON.stringify({ status: "success", saved: true }), "application/json; charset=utf-8", { "Cache-Control": "no-store" }); }
+      catch (e) { send(req, res, 400, JSON.stringify({ status: "error" }), "application/json; charset=utf-8"); }
+    });
+    return;
+  }
+  if (pathname === "/api/feedback" && req.method === "GET") {
+    var fbf = path.join(RUNTIME_DATA_DIR, "feedback.json");
+    if (fs.existsSync(fbf)) { send(req, res, 200, JSON.stringify(JSON.parse(fs.readFileSync(fbf, "utf8"))), "application/json; charset=utf-8", { "Cache-Control": "no-store" }); }
+    else { send(req, res, 200, JSON.stringify({ status: "empty" }), "application/json; charset=utf-8", { "Cache-Control": "no-store" }); }
+    return;
+  }
   if (pathname === "/api/bulk" && req.method === "GET") {
     if (!fs.existsSync(USER_BULK_PATH)) return send(req, res, 200, JSON.stringify({ status: "empty" }), "application/json; charset=utf-8");
     const data = readJsonSafe(USER_BULK_PATH);
