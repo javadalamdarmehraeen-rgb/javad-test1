@@ -1463,7 +1463,7 @@
     try { setupOnTheFlyNameFields(); } catch (e) { console.error(e); }
     try { setupWidgetManager(); } catch (e) { console.error(e); }
     try { hookSwitchTab(); } catch (e) { console.error(e); }
-    console.log("✅ لایه v9.1.0 طنین طب طاها فعال شد (لوگو، نقشه دوطرفه، فرم/لیست همزمان، ذخیره تک‌منبع).");
+    
   }
 
   if (document.readyState === "loading") {
@@ -1805,7 +1805,7 @@ window.IRAN_FACILITIES = [
         }, 80);
       };
     }
-    console.log("v10 ready");
+    
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
@@ -4098,7 +4098,7 @@ window.IRAN_FACILITIES = [
     window.paintRequiredStar = paintRequiredStar;
     window.groupIsShared = groupIsShared;
     logOp("بارگذاری نسخه ۱۱.۱۴");
-    console.log("v11.14 ready");
+    
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
@@ -5035,7 +5035,7 @@ window.IRAN_FACILITIES = [
       };
     }
 
-    console.log("v12 ready");
+    
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
@@ -5806,7 +5806,7 @@ window.IRAN_FACILITIES = [
         }, 160);
       };
     }
-    console.log("v13 ready");
+    
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
@@ -7263,7 +7263,7 @@ window.IRAN_FACILITIES = [
       }
     });
 
-    console.log("v14 ready");
+    
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);

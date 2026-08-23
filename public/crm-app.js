@@ -25,7 +25,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "11.44.1";
+const CRM_APP_VERSION = "11.44.2";
 try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
@@ -2993,7 +2993,7 @@ function downloadCSVFile(filename, headers, rows) {
 // ----------------------------------------------------------------------------
 function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
-  const build = "11.44.1";
+  const build = "11.44.2";
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'CRM_BUILD_ACTIVE' && event.data.build !== build) {
@@ -3002,7 +3002,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.44.1', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.44.2', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -3280,7 +3280,7 @@ document.addEventListener("DOMContentLoaded", () => {
   try { renderNotificationsTable(); } catch(e) {}
 
   try { setupAllFormSubmitHandlers(); } catch(e) { console.error("error submitHandlers:", e); }
-  console.log("✅ سیستم مدیریت و ویزیت علمی با تمامی ۱۲ بازخورد تاریخی، اسلش خودکار، پیام‌رسانی و تارگت بارگذاری شد.");
+  
 });
 
 
