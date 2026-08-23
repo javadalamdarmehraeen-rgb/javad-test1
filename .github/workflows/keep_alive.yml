@@ -9,4 +9,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Call Render App
-        run: curl -I  https://javad-test1.onrender.com
+        run: curl -I  https://namayandeelmi-javad.onrender.com

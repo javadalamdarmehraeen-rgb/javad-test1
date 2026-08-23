@@ -19,19 +19,11 @@ Namayande Elmi
 
 Repository:
 
-https://github.com/javadalamdarmehraeen-rgb/namayandeelmi-javad (مخزن نوبت‌های ۵۹–۶۰)
+https://github.com/javadalamdarmehraeen-rgb/namayandeelmi-javad
 
-مخزن فعال از نوبت ۶۱:
+Production:
 
-https://github.com/javadalamdarmehraeen-rgb/javad-test1
-
-Production فعال (اعلام کاربر، نوبت ۶۱):
-
-https://javad-test1.onrender.com — نسخه 11.38.0 تأییدشده در 2026-08-21T21:24Z
-
-سرویس قدیمی (دیگر مرجع نیست):
-
-https://namayandeelmi-javad.onrender.com — هنوز 11.20.0
+https://namayandeelmi-javad.onrender.com
 
 Current project version reported by package.json:
 
@@ -922,18 +914,3 @@ Commit محلی `2c4fe0b` روی شاخه ثابت Arena ساخته شد. Push �
 
 ## نقطه شروع چت بعدی — نوبت ۶۰
 مرجع عملیاتی جدید `GITHUB_REVIEW_HANDOFF.md` است. هوش مصنوعی بعدی باید اول PROJECT_GRAPH و سپس این فایل را بخواند. آخرین commit محلی پیش از مستندسازی `4984d17` است؛ GitHub remote فقط main دارد، push/PR هنوز به‌علت permission انجام نشده، GitLab remote نیست و production در آخرین بررسی 11.20.0 است. نسخه سورس 11.38.0 و 57 تست موفق‌اند. نخستین اقدام پس از reconnect GitHub باید push همان شاخه ثابت، PR به main، check/merge و سپس production health باشد.
-
-## نقطه شروع چت بعدی — نوبت ۶۱ (2026-08-22)
-انتشار `11.38.0` تأییدشده است: مخزن فعال `javadalamdarmehraeen-rgb/javad-test1`، شاخه جلسه `arena/01a0262d-javad-test1` push شد، main خودش `f541301` یعنی سورس کامل 11.38.0 است (PR لازم نبود؛ صفر تفاوت)، workflow checks موفق‌اند و production فعال کاربر `https://javad-test1.onrender.com` دو بار مستقل نسخه `11.38.0` را سرو کرد؛ `/panel` redirect زنده `/login?build=11.38.0&__crm_reload=...` را نشان داد که اثبات عملی موتور cache rescue است. سرویس قدیمی `namayandeelmi-javad.onrender.com` هنوز `11.20.0` است و مرجع نیست. ممیزی ۲۰ چت اخیر (نوبت ۴۱–۶۰) با ۲۲ نشانگر کد + ۵۸/۵۸ تست نشان داد هیچ پرامپت معلق کدی نمانده؛ نسخه برنامه بدون تغییر واقعی bump نمی‌شود. قانون دائمی ۹۱: در هر چت همه ۱۵ فایل آرشیوی به‌روز شوند و ZIP کنار صفحه بیاید. تنها حلقه باز: تأیید مستقل GitLab mirror.
-
-## نقطه شروع چت بعدی — نوبت ۶۲ (2026-08-22)
-قانون ۹۲ فعال است: هر پرامپت بند‌به‌بند اجرا و راستی‌آزمایی می‌شود و قبل از ZIP، ورود خودکار به برنامه (سرور واقعی + app-smoke) اجباری است؛ پایان هر چت بلوک دستور git با شماره نسخه تحویل می‌شود. راستی‌آزمایی نوبت ۶۲ نشان داد همه بندهای پرامپت بلند کاربر (اعلان/پاسخ/Push/سفارشات/فعالیت/منزل/مرخصی/فلش‌ها/labelها) در 11.23.0–11.38.0 حاضرند؛ نسخه برنامه 11.38.0 ماند. تولید فعال همان javad-test1.onrender.com است. شواهد خط‌به‌خط در AI_ACCEPTANCE_CHECKLIST نوبت ۶۲.
-
-## نقطه شروع چت بعدی — نوبت ۶۴ (2026-08-22)
-نسخه سورس 11.38.1: تمام ردهای دامنه قدیمی در کد/کانفیگ (۱۰ فایل، از جمله keep_alive، deploy sync، .gitlab-ci، render.yaml، موبایل، crm-data/crm-app) به https://javad-test1.onrender.com تبدیل شد و صفر رد باقی ماند. سرویس قدیمی فقط در اسناد تاریخی هست. production فعلی 11.38.0 است و با push کاربر 11.38.1 دیپلوی می‌شود. جلسه GitHub بعد از merge بسته است؛ تحویل با ZIP + بلوک دستور پایان چت است. اثبات زنده کد 11.38 روی سرویس: /api/push/public-key و /cache-reset فعال‌اند.
-
-## نقطه شروع چت بعدی — نوبت ۶۵ (2026-08-22)
-نسخه سورس 11.39.0: فرم سفارشات با ترتیب کانونی «تاریخ → داروخانه → استان → شهر → منطقه» و مهاجرت یک‌باره v39OrdersCanonicalReset؛ apiEndpointUrl/متن عیب‌یابی/API_BASE موبایل داینامیک (location-origin + override)؛ keep-alive روی سرویس فعال؛ حجم دارایی‌ها 327KB gzip؛ تارگت per-product و قانون اعداد لاتین با سند کد تأیید. 59/59 تست + app-smoke 4/4. تا push کاربر production عقب‌تر است؛ health ملاک است.
-
-## نقطه شروع چت بعدی — نوبت ۶۷ (2026-08-22)
-نسخه 11.40.0: حذف دائمی هویت‌های مدیریت‌حذف‌شده از همه لیست‌ها، گیرندگان اعلان نقش‌آگاه، کلیک سه‌مسیره داروخانه با بازخورد، محافظ افزودن فیلدهای مرجع برای غیرمدیر. 60/60 تست + app-smoke 4/4. production تا push کاربر 11.38.1 است. تشخیص‌ها و شواهد در GITHUB_REVIEW_HANDOFF نوبت ۶۷.

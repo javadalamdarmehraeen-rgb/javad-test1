@@ -20,8 +20,7 @@ import DeviceInfo from "react-native-device-info";
 import * as Keychain from "react-native-keychain";
 import { HmacSHA256, enc } from "crypto-js";
 //   
-/* داینامیک (نوبت ۶۵): اولویت با override ریپو/لینک فعال، بعد سرویس پیش‌فرض */
-export const API_BASE: string = (globalThis as any).__CRM_API_BASE__ || "https://javad-test1.onrender.com";
+export const API_BASE = "https://namayandeelmi-javad.onrender.com";
 /**    MOBILE_APP_SECRET     */
 const APP_SECRET = "REPLACE_WITH_MOBILE_APP_SECRET";
 const DEVICE_ID_KEY = "sek_device_id";

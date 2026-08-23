@@ -2904,7 +2904,7 @@ function testServerConnectivity() {
     if (box) {
       box.style.background = "#f0fdf4";
       box.style.color = "#166534";
-      box.textContent = "✅ ارتباط با سرور فعال (" + (location.host || "همین سرویس") + ") و ndcohub.ir برقرار است.";
+      box.textContent = "✅ ارتباط با سرورهای ابری namayandeelmi-javad.onrender.com و ndcohub.ir برقرار است.";
     }
     alert("✅ اتصال به سرور ابری و حافظه محلی با موفقیت تایید شد.");
   }, 700);
@@ -2980,7 +2980,7 @@ function downloadCSVFile(filename, headers, rows) {
 // ----------------------------------------------------------------------------
 function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
-  const build = "11.40.0";
+  const build = "11.38.0";
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'CRM_BUILD_ACTIVE' && event.data.build !== build) {
@@ -2989,7 +2989,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.40.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.38.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;

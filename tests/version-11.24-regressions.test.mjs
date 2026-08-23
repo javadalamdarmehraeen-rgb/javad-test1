@@ -317,7 +317,7 @@ test('multi-part prompts require a real acceptance checklist before ZIP delivery
 });
 
 test('next-chat GitHub handoff records exact publish truth and engine map', () => {
-  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.40\.0/);
+  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.38\.0/);
   assert.match(githubHandoff,/4984d17/);assert.match(githubHandoff,/Resource not accessible by integration/);
   assert.match(githubHandoff,/Production[\s\S]*11\.20\.0/);
   assert.match(githubHandoff,/موتور پاک‌سازی خودکار کش/);assert.match(githubHandoff,/موتورهای پایداری داده/);
@@ -354,7 +354,7 @@ test('placed pharmacy notice guard is loop-safe and home representative stays re
 });
 
 test('new build clears only old asset caches before revealing app and prevents manager-screen flash', () => {
-  assert.match(html,/var BUILD="11\.40\.0",key="CRM_ASSET_BUILD"/);
+  assert.match(html,/var BUILD="11\.38\.0",key="CRM_ASSET_BUILD"/);
   assert.match(html,/document\.documentElement\.classList\.add\("crm-booting"\)/);
   assert.match(html,/\/cache-reset\?to=/);
   assert.match(server,/caches\.keys\(\)/);
@@ -369,7 +369,7 @@ test('new build clears only old asset caches before revealing app and prevents m
 test('v38 cache rescue automatically forces a fresh build without deleting CRM data', () => {
   const login = read('../public/login.html');
   assert.match(server,/pathname === "\/cache-reset"/);assert.match(server,/"Clear-Site-Data": '\"cache\"'/);
-  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.40\.0"/);
+  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.38\.0"/);
   assert.match(html,/\/api\/health\?__crm_nocache=/);assert.match(html,/\/cache-reset\?to=/);assert.match(html,/d\.version!==BUILD/);
   assert.match(login,/CRM_CACHE_RESCUED_/);assert.match(login,/\/cache-reset\?to=/);
   assert.match(sw,/function purgeEveryCache/);assert.match(sw,/CRM_BUILD_ACTIVE/);assert.match(sw,/cache: "reload"/);
@@ -379,7 +379,7 @@ test('v38 cache rescue automatically forces a fresh build without deleting CRM d
     assert.doesNotMatch(source,/indexedDB\.deleteDatabase\s*\(/);
     assert.doesNotMatch(source,/removeItem\(["']CRM_APP_STATE_V2/);
   }
-  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.40\.0'/);
+  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.38\.0'/);
 });
 
 test('security hardening blocks dangerous device APIs, cross-origin writes, executables and formula injection', () => {
@@ -394,7 +394,7 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.40\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.38\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
@@ -412,45 +412,4 @@ test('GPS quality rule remains stable and full address parts stay Iran-first wit
   assert.match(v9, /addr\.building \|\| addr\.amenity \|\| addr\.shop/);
   assert.doesNotMatch(v9, /addr\.postcode/);
   assert.match(v20, /a\.building\|\|a\.amenity\|\|a\.shop/);
-});
-
-test('v11.39 orders form canonical order (date first), one-time reset and dynamic endpoints', () => {
-  const html = read('../public/index.html');
-  const v20 = read('../public/crm-features-v20.js');
-  const data = read('../public/crm-data.js');
-  const app = read('../public/crm-app.js');
-  const form = html.slice(html.indexOf('id="formOrder"'), html.indexOf('</form>', html.indexOf('id="formOrder"')));
-  const ids = [...form.matchAll(/id="(order[A-Za-z]+)"/g)].map(m => m[1]);
-  const vis = ids.filter(i => !['orderEditId','orderPharmacyMatchedId','orderPharmacyPickBox'].includes(i));
-  assert.ok(vis.indexOf('orderDate') === 0, 'orderDate must be first in orders form');
-  assert.ok(vis.indexOf('orderPharmacyName') === 1 && vis.indexOf('orderProvince') === 2 && vis.indexOf('orderCity') === 3 && vis.indexOf('orderDistrict') === 4, 'date then pharmacy/province/city/district');
-  assert.match(v20, /function v39OrdersCanonicalReset\(/);
-  assert.match(v20, /CRM_V39_ORDER_CANONICAL_RESET/);
-  assert.match(v20, /v39OrdersCanonicalReset\(\);/);
-  assert.ok(data.includes('apiEndpointUrl: ((typeof location!=="undefined"&&location.origin)?location.origin:"")+"/api/state"'), 'dynamic apiEndpointUrl');
-  assert.match(app, /location\.host \|\| "همین سرویس"/);
-});
-
-test('v11.40 removed identities, role-aware recipients, pharmacy pick feedback and reference instant-add guard', () => {
-  const v20 = read('../public/crm-features-v20.js');
-  const html = read('../public/index.html');
-  // A) permanently removed identities + projection in every list
-  assert.match(v20, /function permanentlyRemovedNamesV40\(/);
-  assert.match(v20, /جواد علمدار/); assert.match(v20, /خانم نیلا محرمی/);
-  assert.match(v20, /function enforceRemovedIdentitiesV40\(/);
-  assert.match(v20, /function dropRemovedUserRowsV40\(/);
-  assert.match(v20, /dropRemovedUserRowsV40\(privacyList\(all,cfg\[2\]\)\)/);
-  assert.match(v20, /dropRemovedUserRowsV40\(privacyList\(reps,"rep_all_reports"\)\)/);
-  assert.match(v20, /enforceRemovedIdentitiesV40\(\);/);
-  // B) role-aware recipients: rep sees only manager/supervisor/sales-expert
-  assert.match(v20, /users=users\.filter\(function\(x\)\{var role=String\(x\.role\|\|""\);return \/سرپرست\|کارشناس فروش\/\.test\(role\)\|\|\(\/\^مدیر\/\.test\(role\)&&!\/نماینده\/\.test\(role\)\);\}\)/);
-  // C) pharmacy pick: mousedown+pointerdown+click with dedupe and feedback toasts
-  assert.match(v20, /__v40LastPick/);
-  assert.match(v20, /جایگذاری شد/); assert.match(v20, /پیدا نشد؛ نام را دستی تکمیل کنید/);
-  // D) reference instant-add guard for rep/year/month/geo/pharmacy fields
-  assert.match(v20, /function installReferenceInstantAddGuardV40\(/);
-  assert.match(v20, /installReferenceInstantAddGuardV40\(\);/);
-  assert.match(v20, /نماینده\|سال\|ماه\|استان\|شهر\|منطقه\|داروخانه/);
-  // route manager box still present (turn-67 item 2)
-  assert.match(v20, /representativeRoutesCard/); assert.match(v20, /btnSaveRepresentativeRoute/);
 });

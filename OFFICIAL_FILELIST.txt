@@ -4,7 +4,6 @@
 .github/workflows/keep_alive.yml
 .gitignore
 .gitlab-ci.yml
-OFFICIAL_FILELIST.txt
 AI_ACCEPTANCE_CHECKLIST.md
 AI_ARCHITECTURE.md
 AI_DECISION_LOG.md
@@ -240,14 +239,6 @@ src/lib/tracker.ts
 src/lib/useLive.ts
 src/lib/zip.ts
 src/proxy.ts
-src/app/admin/records/[type]/page.tsx
-src/app/api/attachments/[id]/route.ts
-src/app/api/map/tiles/[z]/[x]/[y]/route.ts
-src/app/api/records/[type]/route.ts
-src/app/api/records/[type]/send/route.ts
-src/app/api/tiles/[z]/[x]/[y]/route.ts
-src/app/icons/[file]/route.ts
-src/app/screenshots/[file]/route.ts
 sync_all.sh
 tests/app-smoke.test.mjs
 tests/state-preservation.test.mjs
