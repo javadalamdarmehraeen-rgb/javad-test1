@@ -53,7 +53,8 @@ const MENU_SECTIONS_LIST = [
   { id: "tab-messengers", label: "پیام‌رسان‌ها", icon: "💬" },
   { id: "tab-backup", label: "پشتیبان‌گیری", icon: "💾" },
   { id: "tab-install-app", label: "نصب اپ", icon: "📲" },
-  { id: "tab-troubleshooting", label: "عیب‌یابی", icon: "🛠️" }
+  { id: "tab-troubleshooting", label: "عیب‌یابی", icon: "🛠️" },
+  { id: "tab-changelog", label: "تغییرات در نسخه جدید", icon: "📋" }
 ];
 
 // ----------------------------------------------------------------------------
@@ -2989,7 +2990,7 @@ function downloadCSVFile(filename, headers, rows) {
 // ----------------------------------------------------------------------------
 function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
-  const build = "11.42.0";
+  const build = "11.43.0";
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'CRM_BUILD_ACTIVE' && event.data.build !== build) {
@@ -2998,7 +2999,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.42.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.43.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;

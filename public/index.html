@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
+    <script>
+      window.__CRM_ERRS = [];
+      window.addEventListener("error", function (e) {
+        try { window.__CRM_ERRS.push({ msg: String(e.message || "").slice(0, 300), src: String(e.filename || "").slice(0, 160), line: e.lineno || 0, at: Date.now() }); } catch (x) {}
+      });
+      window.addEventListener("unhandledrejection", function (e) {
+        try { window.__CRM_ERRS.push({ msg: "unhandled: " + String(e.reason && (e.reason.message || e.reason) || "").slice(0, 300), at: Date.now() }); } catch (x) {}
+      });
+    </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>سیستم جامع مدیریت و ویزیت علمی — طنین طب طاها</title>
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.42.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;
+      var BUILD="11.43.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;
       document.documentElement.classList.add("crm-booting");
       function target(){return location.pathname+location.search+location.hash;}
       function rescue(serverBuild){var u="/cache-reset?to="+encodeURIComponent(target())+"&build="+encodeURIComponent(serverBuild||BUILD)+"&t="+Date.now();location.replace(u);}
@@ -31,7 +40,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.42.0" />
+  <link rel="stylesheet" href="style.css?v=11.43.0" />
 </head>
 <body>
 
@@ -1952,6 +1961,20 @@
     <!-- ======================================================================
          21. TAB: SEARCH INFORMATION (جستجوی اطلاعات) - Section 6 Requirement
          ====================================================================== -->
+    <section id="tab-changelog" class="tab-pane">
+      <div class="card">
+        <div class="card-header"><div class="card-title">📋 تغییرات در نسخه جدید + موتور تشخیص اعمال‌نشده‌ها</div></div>
+        <div id="v41DiagHost" class="v20-visit-metrics"></div>
+        <p class="col-help">ریز تغییرات نسخه جاری + وضعیت هر بند؛ بند اعمال‌نشده را تیک بزنید و گزارش بفرستید.</p>
+        <div id="v41ChangeHost"></div>
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+          <button type="button" id="btnRunDiagnosis" class="btn btn-primary">🩺 اجرای موتور تشخیص اعمال‌نشده‌ها</button>
+          <button type="button" id="btnSendUnappliedReport" class="btn btn-success">📤 ارسال گزارش</button>
+          <button type="button" id="btnDownloadUnappliedReport" class="btn btn-outline">⬇️ دانلود گزارش</button>
+        </div>
+        <div id="v41ReportStatus" style="margin-top:8px;font-size:12px;color:#0f766e"></div>
+      </div>
+    </section>
     <section id="tab-search-info" class="tab-pane">
       <div class="card">
         <div class="card-header">
@@ -2228,22 +2251,22 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.42.0"></script>
-  <script src="crm-app.js?v=11.42.0"></script>
-  <script src="crm-features-v9.js?v=11.42.0"></script>
-  <script src="iran-facilities.js?v=11.42.0" defer></script>
-  <script src="crm-features-v10.js?v=11.42.0"></script>
-  <script src="crm-features-v11.js?v=11.42.0"></script>
-  <script src="crm-features-v12.js?v=11.42.0"></script>
-  <script src="crm-features-v13.js?v=11.42.0"></script>
-  <script src="crm-jalali.js?v=11.42.0"></script>
-  <script src="crm-features-v14.js?v=11.42.0"></script>
-  <script src="crm-features-v15.js?v=11.42.0"></script>
-  <script src="crm-features-v16.js?v=11.42.0"></script>
-  <script src="crm-features-v17.js?v=11.42.0"></script>
-  <script src="crm-features-v18.js?v=11.42.0"></script>
-  <script src="crm-features-v19.js?v=11.42.0"></script>
-  <script src="crm-features-v20.js?v=11.42.0"></script>
+  <script src="crm-data.js?v=11.43.0"></script>
+  <script src="crm-app.js?v=11.43.0"></script>
+  <script src="crm-features-v9.js?v=11.43.0"></script>
+  <script src="iran-facilities.js?v=11.43.0" defer></script>
+  <script src="crm-features-v10.js?v=11.43.0"></script>
+  <script src="crm-features-v11.js?v=11.43.0"></script>
+  <script src="crm-features-v12.js?v=11.43.0"></script>
+  <script src="crm-features-v13.js?v=11.43.0"></script>
+  <script src="crm-jalali.js?v=11.43.0"></script>
+  <script src="crm-features-v14.js?v=11.43.0"></script>
+  <script src="crm-features-v15.js?v=11.43.0"></script>
+  <script src="crm-features-v16.js?v=11.43.0"></script>
+  <script src="crm-features-v17.js?v=11.43.0"></script>
+  <script src="crm-features-v18.js?v=11.43.0"></script>
+  <script src="crm-features-v19.js?v=11.43.0"></script>
+  <script src="crm-features-v20.js?v=11.43.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
