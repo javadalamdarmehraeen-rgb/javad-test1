@@ -7,7 +7,7 @@
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.41.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;
+      var BUILD="11.42.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;
       document.documentElement.classList.add("crm-booting");
       function target(){return location.pathname+location.search+location.hash;}
       function rescue(serverBuild){var u="/cache-reset?to="+encodeURIComponent(target())+"&build="+encodeURIComponent(serverBuild||BUILD)+"&t="+Date.now();location.replace(u);}
@@ -31,7 +31,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.41.0" />
+  <link rel="stylesheet" href="style.css?v=11.42.0" />
 </head>
 <body>
 
@@ -379,6 +379,14 @@
                 <button type="button" id="btnPhPercentageNo" class="btn-toggle-option active">خیر</button>
                 <button type="button" id="btnPhPercentageYes" class="btn-toggle-option">بله</button>
               </div>
+            <div class="form-group">
+              <label class="form-label" for="pharmacyPlate">پلاک</label>
+              <input type="text" id="pharmacyPlate" class="form-input" placeholder="مثلاً 12" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="pharmacyFloor">طبقه</label>
+              <input type="text" id="pharmacyFloor" class="form-input" placeholder="مثلاً 3" />
+            </div>
               <input type="hidden" id="pharmacyIsPercentage" value="false" />
             </div>
 
@@ -729,6 +737,13 @@
               </label>
               <input type="text" id="orderPharmacyName" class="form-input" placeholder="نام داروخانه را وارد کنید..." required autocomplete="off" />
               <datalist id="pharmacyNamesList"></datalist>
+            <div class="form-group">
+              <label class="form-label" for="pharmacyType">نوع داروخانه</label>
+              <select id="pharmacyType" class="form-select" data-nocombo="1">
+                <option value="">انتخاب نوع...</option>
+                <option>شبانه‌روزی</option><option>روزانه</option><option>بیمارستانی</option><option>نیمه‌وقت</option>
+              </select>
+            </div>
               <div id="orderPharmacyPickBox" class="ph-pick-box ph-pick-overlay" hidden></div>
             </div>
 
@@ -1292,7 +1307,7 @@
           <div class="form-grid">
             <div class="form-group">
               <label class="form-label">گیرنده پیام *</label>
-              <select id="msgRecipientSelect" class="form-select dropdown-auto-clear" data-nocombo="1" required>
+              <select id="msgRecipientSelect" data-nocombo="1" class="form-select dropdown-auto-clear" data-nocombo="1" required>
                 <option value="">انتخاب گیرنده...</option>
               </select>
             </div>
@@ -2213,22 +2228,22 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.41.0"></script>
-  <script src="crm-app.js?v=11.41.0"></script>
-  <script src="crm-features-v9.js?v=11.41.0"></script>
-  <script src="iran-facilities.js?v=11.41.0" defer></script>
-  <script src="crm-features-v10.js?v=11.41.0"></script>
-  <script src="crm-features-v11.js?v=11.41.0"></script>
-  <script src="crm-features-v12.js?v=11.41.0"></script>
-  <script src="crm-features-v13.js?v=11.41.0"></script>
-  <script src="crm-jalali.js?v=11.41.0"></script>
-  <script src="crm-features-v14.js?v=11.41.0"></script>
-  <script src="crm-features-v15.js?v=11.41.0"></script>
-  <script src="crm-features-v16.js?v=11.41.0"></script>
-  <script src="crm-features-v17.js?v=11.41.0"></script>
-  <script src="crm-features-v18.js?v=11.41.0"></script>
-  <script src="crm-features-v19.js?v=11.41.0"></script>
-  <script src="crm-features-v20.js?v=11.41.0"></script>
+  <script src="crm-data.js?v=11.42.0"></script>
+  <script src="crm-app.js?v=11.42.0"></script>
+  <script src="crm-features-v9.js?v=11.42.0"></script>
+  <script src="iran-facilities.js?v=11.42.0" defer></script>
+  <script src="crm-features-v10.js?v=11.42.0"></script>
+  <script src="crm-features-v11.js?v=11.42.0"></script>
+  <script src="crm-features-v12.js?v=11.42.0"></script>
+  <script src="crm-features-v13.js?v=11.42.0"></script>
+  <script src="crm-jalali.js?v=11.42.0"></script>
+  <script src="crm-features-v14.js?v=11.42.0"></script>
+  <script src="crm-features-v15.js?v=11.42.0"></script>
+  <script src="crm-features-v16.js?v=11.42.0"></script>
+  <script src="crm-features-v17.js?v=11.42.0"></script>
+  <script src="crm-features-v18.js?v=11.42.0"></script>
+  <script src="crm-features-v19.js?v=11.42.0"></script>
+  <script src="crm-features-v20.js?v=11.42.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />

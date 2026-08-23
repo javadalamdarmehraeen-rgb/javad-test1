@@ -317,7 +317,7 @@ test('multi-part prompts require a real acceptance checklist before ZIP delivery
 });
 
 test('next-chat GitHub handoff records exact publish truth and engine map', () => {
-  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.41\.0/);
+  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.42\.0/);
   assert.match(githubHandoff,/4984d17/);assert.match(githubHandoff,/Resource not accessible by integration/);
   assert.match(githubHandoff,/Production[\s\S]*11\.20\.0/);
   assert.match(githubHandoff,/موتور پاک‌سازی خودکار کش/);assert.match(githubHandoff,/موتورهای پایداری داده/);
@@ -354,7 +354,7 @@ test('placed pharmacy notice guard is loop-safe and home representative stays re
 });
 
 test('new build clears only old asset caches before revealing app and prevents manager-screen flash', () => {
-  assert.match(html,/var BUILD="11\.41\.0",key="CRM_ASSET_BUILD"/);
+  assert.match(html,/var BUILD="11\.42\.0",key="CRM_ASSET_BUILD"/);
   assert.match(html,/document\.documentElement\.classList\.add\("crm-booting"\)/);
   assert.match(html,/\/cache-reset\?to=/);
   assert.match(server,/caches\.keys\(\)/);
@@ -369,7 +369,7 @@ test('new build clears only old asset caches before revealing app and prevents m
 test('v38 cache rescue automatically forces a fresh build without deleting CRM data', () => {
   const login = read('../public/login.html');
   assert.match(server,/pathname === "\/cache-reset"/);assert.match(server,/"Clear-Site-Data": '\"cache\"'/);
-  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.41\.0"/);
+  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.42\.0"/);
   assert.match(html,/\/api\/health\?__crm_nocache=/);assert.match(html,/\/cache-reset\?to=/);assert.match(html,/d\.version!==BUILD/);
   assert.match(login,/CRM_CACHE_RESCUED_/);assert.match(login,/\/cache-reset\?to=/);
   assert.match(sw,/function purgeEveryCache/);assert.match(sw,/CRM_BUILD_ACTIVE/);assert.match(sw,/cache: "reload"/);
@@ -379,7 +379,7 @@ test('v38 cache rescue automatically forces a fresh build without deleting CRM d
     assert.doesNotMatch(source,/indexedDB\.deleteDatabase\s*\(/);
     assert.doesNotMatch(source,/removeItem\(["']CRM_APP_STATE_V2/);
   }
-  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.41\.0'/);
+  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.42\.0'/);
 });
 
 test('security hardening blocks dangerous device APIs, cross-origin writes, executables and formula injection', () => {
@@ -394,7 +394,7 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.41\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.42\.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
@@ -453,4 +453,20 @@ test('v11.40 removed identities, role-aware recipients, pharmacy pick feedback a
   assert.match(v20, /نماینده\|سال\|ماه\|استان\|شهر\|منطقه\|داروخانه/);
   // route manager box still present (turn-67 item 2)
   assert.match(v20, /representativeRoutesCard/); assert.match(v20, /btnSaveRepresentativeRoute/);
+});
+test('v11.42 user-report fixes: pharmacy fields, dup guard, role law, notifications plain', () => {
+  const v20 = read('../public/crm-features-v20.js');
+  const app = read('../public/crm-app.js');
+  const html = read('../public/index.html');
+  assert.match(html,/id="pharmacyType"[\s\S]*?شبانه‌روزی[\s\S]*?نیمه‌وقت/);
+  assert.match(html,/id="pharmacyPlate"/); assert.match(html,/id="pharmacyFloor"/);
+  assert.match(html,/id="msgRecipientSelect" data-nocombo="1"/);
+  assert.match(app,/managerPhone, phType, phPlate, phFloor/);
+  assert.match(app,/\$\{ph\.managerPhone \|\| ph\.phone \|\| "-"\}/);
+  assert.match(app,/شماره همراه مسئول سفارش/);
+  assert.match(v20,/function v42ConfirmDupGuard\(/);
+  assert.match(v20,/ثبت تکراری مجاز نیست/);
+  assert.match(v20,/function v42ClearOnLeave\(/);
+  assert.match(v20,/سرپرست\|کارشناس فروش\/\.test\(String\(u&&u\.role\|\|""\)\)\|\|perms\[keyById\[sel\.id\]\]===true/);
+  assert.match(v20,/distributorFilterGrid\{display:flex/);
 });

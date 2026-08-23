@@ -1082,6 +1082,10 @@ function setupPharmacyTab() {
       const isPercentage = hiddenIsPerc.value === "true";
       const fileName = (fileInput.files && fileInput.files[0]) ? fileInput.files[0].name : null;
       const customFieldsVals = extractCustomFieldValuesFromForm("pharmacy", "pharmacyCustomFieldsContainer");
+      const managerPhone = document.getElementById("pharmacyManagerPhone").value.trim();
+      const phType = document.getElementById("pharmacyType") ? document.getElementById("pharmacyType").value : "";
+      const phPlate = document.getElementById("pharmacyPlate") ? document.getElementById("pharmacyPlate").value.trim() : "";
+      const phFloor = document.getElementById("pharmacyFloor") ? document.getElementById("pharmacyFloor").value.trim() : "";
 
       if (typeof window.validateRequiredFields === "function" && !window.validateRequiredFields("tab-pharmacies")) return;
 
@@ -1090,7 +1094,7 @@ function setupPharmacyTab() {
         if (idx !== -1) {
           state.pharmacies[idx] = {
             ...state.pharmacies[idx],
-            dateAdded, name, phone, manager, province, city, district, address, lat, lng,
+            dateAdded, name, phone, manager, managerPhone, phType, phPlate, phFloor, province, city, district, address, lat, lng,
             isPercentage, fileName: fileName || state.pharmacies[idx].fileName,
             customFields: customFieldsVals
           };
@@ -1099,7 +1103,7 @@ function setupPharmacyTab() {
       } else {
         const newPharmacy = {
           id: "ph-" + Date.now(),
-          dateAdded, name, phone, manager, province, city, district, address, lat, lng,
+          dateAdded, name, phone, manager, managerPhone, phType, phPlate, phFloor, province, city, district, address, lat, lng,
           isPercentage, fileName,
           repName: "مدیر سیستم",
           customFields: customFieldsVals
@@ -1125,6 +1129,7 @@ function resetPharmacyForm() {
   document.getElementById("pharmacyPhone").value = "";
   document.getElementById("pharmacyManager").value = "";
   document.getElementById("pharmacyAddress").value = "";
+  ["pharmacyPlate","pharmacyFloor","pharmacyType"].forEach(function(id){var el=document.getElementById(id);if(el)el.value="";});
   document.getElementById("pharmacyLocationText").value = "";
   document.getElementById("pharmacyIsPercentage").value = "false";
   document.getElementById("btnPhPercentageNo").classList.add("active");
@@ -1155,7 +1160,7 @@ function renderPharmaciesList(searchQuery = "") {
     <th>استان</th>
     <th>شهر</th>
     <th>نام داروخانه</th>
-    <th>شماره همراه</th>
+    <th>شماره همراه مسئول سفارش</th>
     <th>درصدی</th>
     <th>فایل</th>
     <th>عملیات</th>
@@ -1195,7 +1200,7 @@ function renderPharmaciesList(searchQuery = "") {
       <td>${ph.province}</td>
       <td>${ph.city}</td>
       <td><strong style="color: #0d9488;">${ph.name}</strong></td>
-      <td><span style="direction: ltr; display: inline-block;">${ph.phone || "-"}</span></td>
+      <td><span style="direction: ltr; display: inline-block;">${ph.managerPhone || ph.phone || "-"}</span></td>
       <td>${ph.isPercentage ? '<span class="badge-status-online">بله</span>' : '<span>خیر</span>'}</td>
       <td>${ph.fileName ? `<span style="color:#0d9488;">📎 ${ph.fileName}</span>` : '-'}</td>
     `;
@@ -1227,6 +1232,10 @@ function editPharmacy(id) {
   document.getElementById("pharmacyDate").value = ph.dateAdded || "";
   document.getElementById("pharmacyName").value = ph.name;
   document.getElementById("pharmacyPhone").value = ph.phone || "";
+  if(document.getElementById("pharmacyManagerPhone"))document.getElementById("pharmacyManagerPhone").value=ph.managerPhone||"";
+  if(document.getElementById("pharmacyType"))document.getElementById("pharmacyType").value=ph.phType||"";
+  if(document.getElementById("pharmacyPlate"))document.getElementById("pharmacyPlate").value=ph.phPlate||"";
+  if(document.getElementById("pharmacyFloor"))document.getElementById("pharmacyFloor").value=ph.phFloor||"";
   document.getElementById("pharmacyManager").value = ph.manager || "";
   document.getElementById("pharmacyAddress").value = ph.address || "";
   document.getElementById("pharmacyLocationText").value = ph.address || "";
@@ -2980,7 +2989,7 @@ function downloadCSVFile(filename, headers, rows) {
 // ----------------------------------------------------------------------------
 function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
-  const build = "11.41.0";
+  const build = "11.42.0";
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'CRM_BUILD_ACTIVE' && event.data.build !== build) {
@@ -2989,7 +2998,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.41.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.42.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
