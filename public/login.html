@@ -7,9 +7,22 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
   <script>
-    (function(){var BUILD="11.45.1",key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}if(old&&old!==BUILD&&!rescued){go(BUILD);return;}try{localStorage.setItem(key,BUILD);sessionStorage.removeItem(rk);}catch(e){}fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD)go(d.version);}).catch(function(){});})();
+    (function(){var BUILD="11.46.0",key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}if(old&&old!==BUILD&&!rescued){go(BUILD);return;}try{localStorage.setItem(key,BUILD);sessionStorage.removeItem(rk);}catch(e){}fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD)go(d.version);}).catch(function(){});})();
   </script>
   <title>ورود | طنین طب طاها</title>
+
+    <script>/*__PWD_TOGGLE*/
+      /* v11.46: نمایش/پنهان رمز — دابل‌کلیک روی هر فیلد رمز در کل برنامه */
+      document.addEventListener("dblclick", function (e) {
+        var el = e.target;
+        if (el && el.tagName === "INPUT" && el.type === "password") { el.type = "text"; el.title = "دوبار کلیک کنید تا پنهان شود"; }
+        else if (el && el.tagName === "INPUT" && el.type === "text" && el.dataset.wasPassword === "1") { el.type = "password"; }
+      }, true);
+      document.addEventListener("focusout", function (e) {
+        var el = e.target;
+        if (el && el.tagName === "INPUT" && el.type === "text" && el.dataset.wasPassword === "1") { el.type = "password"; }
+      }, true);
+    </script>
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="manifest.json">

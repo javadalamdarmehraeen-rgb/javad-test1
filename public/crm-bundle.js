@@ -12295,7 +12295,7 @@ button.v19-gps svg{display:block}
     ["رصد تردد: فیلتر سال/ماه/تاریخ + نشانگر سبز/قرمز ویزیت + مدت توقف‌ها + ثبت آفلاین و ارسال خودکار","pending"],
     ["شروع/پایان ویزیت: ثبت اطلاعات + کادر ساعت پایان","pending"],
     ["منزل نمایندگان: حذف افزودن لحظه‌ای + پلاک/طبقه در فرم و لیست","pending"],
-    ["مرخصی: لیبل فارسی leaveTypeSelect + از ساعت/تا ساعت فیلدهای ۵ و ۶ بدون ثانیه","partial"],
+    ["مرخصی: از ساعت/تا ساعت فیلدهای ۵ و ۶ بدون ثانیه — اعمال‌شده (11.37)؛ گارد لیبل فارسی فعال","applied"],
     ["اعلان: ریسه فیلدها و پرش صفحه","applied"],
     ["تارگت: مسیرهای ثبت‌شده جلو نام نماینده در کل سیستم + فیلتر استان بر اساس مسیر کاربر","pending"],
     ["قانون حذف‌نشدن داده‌ها و بازنگشتن داده‌های حذف‌شده","applied"]
@@ -12738,3 +12738,7 @@ button.v19-gps svg{display:block}
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { setTimeout(init,60); });
   else setTimeout(init,60);
 })();
+
+/* v11.46: ساعت پایان ویزیت — پیوست امن انتهای باندل */
+(function(){function v46bind(){var b=document.getElementById("btnEndVisit");if(!b||b.dataset.v46end)return;b.dataset.v46end="1";b.addEventListener("click",function(){var now=new Date();var t=String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0");var box=document.getElementById("visitEndTimeBox");if(box)box.textContent="ساعت پایان: "+t;try{if(window.state)window.state.__lastVisitEnd=t;}catch(e){}});}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",v46bind);else v46bind();})();

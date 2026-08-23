@@ -16,10 +16,23 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
   <title>سیستم جامع مدیریت و ویزیت علمی — طنین طب طاها</title>
+
+    <script>/*__PWD_TOGGLE*/
+      /* v11.46: نمایش/پنهان رمز — دابل‌کلیک روی هر فیلد رمز در کل برنامه */
+      document.addEventListener("dblclick", function (e) {
+        var el = e.target;
+        if (el && el.tagName === "INPUT" && el.type === "password") { el.type = "text"; el.title = "دوبار کلیک کنید تا پنهان شود"; }
+        else if (el && el.tagName === "INPUT" && el.type === "text" && el.dataset.wasPassword === "1") { el.type = "password"; }
+      }, true);
+      document.addEventListener("focusout", function (e) {
+        var el = e.target;
+        if (el && el.tagName === "INPUT" && el.type === "text" && el.dataset.wasPassword === "1") { el.type = "password"; }
+      }, true);
+    </script>
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.45.1",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="11.46.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       document.documentElement.classList.add("crm-booting");
       function target(){return location.pathname+location.search+location.hash;}
       function rescue(serverBuild){if(__justRescued)return;var u="/cache-reset?to="+encodeURIComponent(target())+"&build="+encodeURIComponent(serverBuild||BUILD)+"&t="+Date.now();location.replace(u);}
@@ -43,7 +56,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.45.1" />
+  <link rel="stylesheet" href="style.css?v=11.46.0" />
 </head>
 <body>
 
@@ -1225,7 +1238,7 @@
           <button type="button" id="btnStartVisit" class="btn btn-primary" style="background:#0d9488;">▶️ شروع ویزیت</button>
           <button type="button" id="btnEndVisit" class="btn btn-danger">⏹ پایان ویزیت</button>
         </div>
-        <div id="visitStatusBox" style="padding:0.85rem 1rem;border-radius:10px;border:1px solid #e2e8f0;margin-bottom:1rem;">ویزیتی فعال نیست.</div>
+        <div id="visitStatusBox"<span id="visitEndTimeBox" style="display:inline-block;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:8px;padding:6px 12px;font-weight:700;color:#0f766e">⏱ ساعت پایان: —</span>  style="padding:0.85rem 1rem;border-radius:10px;border:1px solid #e2e8f0;margin-bottom:1rem;">ویزیتی فعال نیست.</div>
         <div id="map-my-visit" class="map-container" style="height:380px;"></div>
       </div>
     </section>
@@ -2269,9 +2282,9 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.45.1"></script>
-  <script src="crm-app.js?v=11.45.1"></script>
-          <script src="crm-bundle.js?v=11.45.1"></script>
+  <script src="crm-data.js?v=11.46.0"></script>
+  <script src="crm-app.js?v=11.46.0"></script>
+          <script src="crm-bundle.js?v=11.46.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
