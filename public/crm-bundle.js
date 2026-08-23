@@ -1,0 +1,12740 @@
+/* crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
+/* ===================== (bundled from public/crm-features-v9.js) ===================== */
+// ===========================================================================
+// crm-features-v9.js
+// لایه تکمیلی روی اسکلت موجود: لوگو، ورود، نقشه دوطرفه، فرم/لیست همزمان،
+// نقشه جامع، رصد تردد، منزل، لیست‌ها و ذخیره تک‌منبع.
+// این فایل بعد از crm-app.js بارگذاری می‌شود و رفتارهای ناقص را جایگزین می‌کند.
+// ===========================================================================
+
+(function () {
+  "use strict";
+
+  const PAGE_SIZE = 15;
+  const CITY_COORDS = {
+    "تهران": [35.6892, 51.3890],
+    "کرج": [35.8400, 50.9391],
+    "مشهد": [36.2605, 59.6168],
+    "اصفهان": [32.6546, 51.6680],
+    "شیراز": [29.5918, 52.5837],
+    "تبریز": [38.0800, 46.2919],
+    "اهواز": [31.3183, 48.6706],
+    "قم": [34.6416, 50.8746],
+    "کرمان": [30.2839, 57.0834],
+    "رشت": [37.2808, 49.5832],
+    "ساری": [36.5633, 53.0601],
+    "ارومیه": [37.5527, 45.0761],
+    "یزد": [31.8974, 54.3569],
+    "کرمانشاه": [34.3142, 47.0650],
+    "همدان": [34.7992, 48.5146],
+    "زاهدان": [29.4963, 60.8629],
+    "بندرعباس": [27.1832, 56.2666],
+    "اراک": [34.0954, 49.7013],
+    "شهرکرد": [32.3256, 50.8644],
+    "بوشهر": [28.9234, 50.8203],
+    "گرگان": [36.8456, 54.4393],
+    "سنندج": [35.3219, 46.9862],
+    "خرم‌آباد": [33.4878, 48.3558],
+    "ایلام": [33.6374, 46.4227],
+    "یاسوج": [30.6684, 51.5880],
+    "بجنورد": [37.4747, 57.3290],
+    "بیرجند": [32.8649, 59.2262],
+    "سمنان": [35.5769, 53.3971],
+    "زنجان": [36.6736, 48.4787],
+    "قزوین": [36.2797, 50.0049],
+    "اردبیل": [38.2498, 48.2933]
+  };
+
+  let mapRepRoutes = null;
+  let mapRepHomes = null;
+  let routeLayers = [];
+  let homeLayers = [];
+  let liveMoveTimer = null;
+  let lastOverviewResults = [];
+  const listPage = { pharmacy: 1, doctor: 1, order: 1 };
+
+  function $(id) { return document.getElementById(id); }
+  function val(id) { const el = $(id); return el ? String(el.value || "").trim() : ""; }
+  function setVal(id, v) { const el = $(id); if (el) el.value = v == null ? "" : v; }
+
+  function replaceNode(el) {
+    if (!el || !el.parentNode) return el;
+    const clone = el.cloneNode(true);
+    el.parentNode.replaceChild(clone, el);
+    return clone;
+  }
+
+  function debounce(fn, ms) {
+    let t = null;
+    return function () {
+      const args = arguments;
+      const ctx = this;
+      clearTimeout(t);
+      t = setTimeout(function () { fn.apply(ctx, args); }, ms);
+    };
+  }
+
+  function safeAlert(msg) {
+    try { alert(msg); } catch (e) { console.log(msg); }
+  }
+
+  function ensureStateExtras() {
+    if (!state) return;
+    if (!state.hospitals) state.hospitals = (typeof DEFAULT_INITIAL_DATA !== "undefined" && DEFAULT_INITIAL_DATA.hospitals) ? DEFAULT_INITIAL_DATA.hospitals.slice() : [];
+    if (!state.visits) state.visits = [];
+    if (!state.messengers) state.messengers = {};
+    if (!state.messengers.channels) {
+      state.messengers.channels = {
+        bale: { auto: false, manual: true },
+        eitaa: { auto: false, manual: true },
+        telegram: { auto: true, manual: true },
+        soroush: { auto: false, manual: true },
+        whatsapp: { auto: false, manual: true },
+        sms: { auto: false, manual: true }
+      };
+    }
+    if (typeof state.messengers.allowPeerMessaging !== "boolean") state.messengers.allowPeerMessaging = false;
+    if (!state.settings) state.settings = {};
+  }
+
+  function currentSessionUserV9(){var id=sessionStorage.getItem("crmUserId")||"",username=sessionStorage.getItem("crmUsername")||"";return((state&&state.users)||[]).filter(function(u){return(id&&String(u.id)===String(id))||(username&&u.username===username);})[0]||null;}
+  function currentRepName() {var u=currentSessionUserV9();return(u&&u.fullName)||((typeof currentUserName === "string"&&currentUserName)?currentUserName:"مدیر سیستم");}
+  function currentRepId(){var u=currentSessionUserV9();return(u&&u.id)||sessionStorage.getItem("crmUserId")||"";}
+  function userIdForRep(name){var u=((state&&state.users)||[]).filter(function(x){return x.fullName===name;})[0];return(u&&u.id)||((name===currentRepName())?currentRepId():"");}
+  function isAdminLike() {var u=currentSessionUserV9(),role=(u&&u.role)||sessionStorage.getItem("crmUserRole")||"",username=(u&&u.username)||sessionStorage.getItem("crmUsername")||"";return username==="admin"||/مدیر|admin/i.test(role)||sessionStorage.getItem("crmLoggedIn")!=="1";}
+  function canSeeAll(permissionKey){var u=currentSessionUserV9();return isAdminLike()||!!(u&&u.permissions&&u.permissions[permissionKey]===true);}
+  function ownedByCurrent(rec){var id=currentRepId(),name=currentRepName();return!!rec&&((id&&String(rec.repId||rec.ownerUserId||"")===String(id))||String(rec.repName||"")===String(name));}
+
+  // نماینده علمی فقط رکوردهای مالکیت‌دار خودش را می‌بیند؛ رکورد بدون مالک به کاربر عادی نشت نمی‌کند.
+  function visiblePharmacies() {const list=((state&&state.pharmacies)||[]).slice().reverse();return canSeeAll("ph_all_reps")?list:list.filter(ownedByCurrent);}
+  function visibleDoctors() {const list=((state&&state.doctors)||[]).slice().reverse();return canSeeAll("doc_all_reps")?list:list.filter(ownedByCurrent);}
+  function visibleOrders() {const list=((state&&state.orders)||[]).slice().reverse();return canSeeAll("ord_all_reps")?list:list.filter(ownedByCurrent);}
+
+  // ---------- Jalali / Gregorian ----------
+  function gregorianNowTehran() {
+    const parts = new Intl.DateTimeFormat("en-US", {
+      timeZone: "Asia/Tehran",
+      year: "numeric",
+      month: "short",
+      day: "2-digit"
+    }).formatToParts(new Date());
+    const get = function (t) {
+      const f = parts.find(function (p) { return p.type === t; });
+      return f ? f.value : "";
+    };
+    return { year: get("year"), month: get("month").toUpperCase(), day: get("day") };
+  }
+
+  function gregorianToJalali(gy, gm, gd) {
+    const g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+    let jy;
+    if (gy > 1600) {
+      jy = 979;
+      gy -= 1600;
+    } else {
+      jy = 0;
+      gy -= 621;
+    }
+    const gy2 = (gm > 2) ? (gy + 1) : gy;
+    let days = (365 * gy) + Math.floor((gy2 + 3) / 4) - Math.floor((gy2 + 99) / 100) + Math.floor((gy2 + 399) / 400) - 80 + gd + g_d_m[gm - 1];
+    jy += 33 * Math.floor(days / 12053);
+    days %= 12053;
+    jy += 4 * Math.floor(days / 1461);
+    days %= 1461;
+    if (days > 365) {
+      jy += Math.floor((days - 1) / 365);
+      days = (days - 1) % 365;
+    }
+    const jm = (days < 186) ? 1 + Math.floor(days / 31) : 7 + Math.floor((days - 186) / 30);
+    const jd = 1 + ((days < 186) ? (days % 31) : ((days - 186) % 30));
+    return { y: jy, m: jm, d: jd };
+  }
+
+  function todayJalaliStr() {
+    const p = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Tehran", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date()).split("-");
+    const j = gregorianToJalali(parseInt(p[0], 10), parseInt(p[1], 10), parseInt(p[2], 10));
+    const mm = j.m < 10 ? "0" + j.m : String(j.m);
+    const dd = j.d < 10 ? "0" + j.d : String(j.d);
+    return j.y + "/" + mm + "/" + dd;
+  }
+
+  function updateGregorianBadges() {
+    const g = gregorianNowTehran();
+    document.querySelectorAll(".jalali-badge-header").forEach(function (el) { el.textContent = g.month; });
+    document.querySelectorAll(".jalali-badge-day").forEach(function (el) { el.textContent = String(parseInt(g.day, 10)); });
+    const todayBtn = $("jalaliTodayBtn");
+    if (todayBtn) todayBtn.textContent = "امروز: " + todayJalaliStr();
+  }
+
+  function setupDynamicDateFields() {
+    const today = todayJalaliStr();
+    ["pharmacyDate", "doctorDate", "orderDate", "leaveFromDate", "leaveToDate"].forEach(function (id) {
+      const el = $(id);
+      if (el && !el.value) el.value = today;
+    });
+    const btnToday = $("jalaliTodayBtn");
+    if (btnToday) {
+      btnToday.onclick = function () {
+        if (typeof activeDateInputForPicker !== "undefined" && activeDateInputForPicker) {
+          activeDateInputForPicker.value = todayJalaliStr();
+        }
+        const popup = $("jalaliCalendarPopup");
+        if (popup) popup.classList.remove("active");
+      };
+    }
+    updateGregorianBadges();
+    setInterval(updateGregorianBadges, 60 * 1000);
+  }
+
+  // ---------- Geocoding ----------
+  async function fetchJson(url) {
+    const res = await fetch(url, { headers: { "Accept": "application/json", "Accept-Language": "fa,en" } });
+    if (!res.ok) throw new Error("http " + res.status);
+    return res.json();
+  }
+
+  async function geoReverse(lat, lng) {
+    try {
+      const data = await fetchJson("/api/reverse?lat=" + encodeURIComponent(lat) + "&lng=" + encodeURIComponent(lng));
+      if (data && data.display_name) return formatNominatim(data, lat, lng);
+    } catch (e) { /* fallback */ }
+    try {
+      const url = "https://nominatim.openstreetmap.org/reverse?format=json&lat=" + lat + "&lon=" + lng + "&zoom=18&addressdetails=1";
+      const data = await fetchJson(url);
+      if (data && data.display_name) return formatNominatim(data, lat, lng);
+    } catch (e2) { /* ignore */ }
+    return "موقعیت ثبت‌شده (" + Number(lat).toFixed(6) + ", " + Number(lng).toFixed(6) + ")";
+  }
+
+  async function geoSearch(query, limit) {
+    limit = limit || 5;
+    if (!query || query.trim().length < 2) return [];
+    const q = query.trim();
+    try {
+      const data = await fetchJson("/api/geocode?q=" + encodeURIComponent(q) + "&limit=" + limit);
+      if (Array.isArray(data)) return data;
+    } catch (e) { /* fallback */ }
+    try {
+      const url = "https://nominatim.openstreetmap.org/search?format=json&q=" + encodeURIComponent(q) + "&limit=" + limit + "&addressdetails=1&countrycodes=ir";
+      const data = await fetchJson(url);
+      if (Array.isArray(data)) return data;
+    } catch (e2) { /* ignore */ }
+    return [];
+  }
+
+  function formatNominatim(data, lat, lng) {
+    const addr = data.address || {};
+    const parts = [
+      addr.country || "ایران",
+      addr.state,
+      addr.county,
+      addr.municipality,
+      addr.city || addr.town || addr.village || addr.hamlet,
+      addr.city_district,
+      addr.suburb,
+      addr.neighbourhood || addr.residential || addr.locality,
+      addr.quarter,
+      addr.road || addr.pedestrian || addr.street || addr.footway,
+      addr.building || addr.amenity || addr.shop,
+      addr.house_number ? ("پلاک: " + addr.house_number) : ""
+    ].filter(Boolean);
+    const uniq = [];
+    parts.forEach(function (p) { if (uniq.indexOf(p) === -1) uniq.push(p); });
+    var compact = uniq.join("، ");
+    // ترتیب فارسی همیشه از کشور به جزئیات است؛ display_name معکوس جایگزین نشود.
+    if (compact) return compact;
+    return data.display_name || ("موقعیت " + Number(lat).toFixed(6) + ", " + Number(lng).toFixed(6));
+  }
+
+  function renderSuggestBox(box, items, onPick) {
+    if (!box) return;
+    box.innerHTML = "";
+    if (!items || !items.length) {
+      box.hidden = true;
+      return;
+    }
+    items.forEach(function (it) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "geo-suggest-item";
+      btn.textContent = it.display_name;
+      btn.addEventListener("click", function () { onPick(it); });
+      box.appendChild(btn);
+    });
+    box.hidden = false;
+  }
+
+  function bindAutocomplete(inputId, boxId, applyFn) {
+    const input = $(inputId);
+    const box = $(boxId);
+    if (!input || !box) return;
+    const run = debounce(async function () {
+      const q = input.value.trim();
+      if (q.length < 3) { box.hidden = true; return; }
+      const items = await geoSearch(q, 5);
+      renderSuggestBox(box, items, function (it) {
+        const lat = parseFloat(it.lat);
+        const lon = parseFloat(it.lon);
+        const label = formatNominatim(it, lat, lon);
+        input.value = label;
+        box.hidden = true;
+        applyFn(lat, lon, label);
+      });
+    }, 380);
+    input.addEventListener("input", run);
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        box.hidden = true;
+        doAddressSearch(input.value, applyFn);
+      }
+    });
+    document.addEventListener("click", function (e) {
+      if (!box.contains(e.target) && e.target !== input) box.hidden = true;
+    });
+  }
+
+  async function doAddressSearch(query, applyFn) {
+    const q = (query || "").trim();
+    if (!q) { safeAlert("ابتدا آدرس را در فیلد لوکیشن بنویسید."); return; }
+    const items = await geoSearch(q, 1);
+    if (!items.length) { safeAlert("آدرسی با این مشخصات پیدا نشد."); return; }
+    const it = items[0];
+    const lat = parseFloat(it.lat);
+    const lon = parseFloat(it.lon);
+    const label = formatNominatim(it, lat, lon);
+    applyFn(lat, lon, label);
+  }
+
+  function applyPharmacyLocation(lat, lng, address, nameText) {
+    setVal("pharmacyLat", Number(lat).toFixed(6));
+    setVal("pharmacyLng", Number(lng).toFixed(6));
+    if (address) {
+      setVal("phMapSearchInput", address);
+      setVal("pharmacyAddress", address);
+      setVal("pharmacyLocationText", address);
+    }
+    if (typeof updatePharmacyFormMarker === "function") {
+      updatePharmacyFormMarker(lat, lng, nameText || val("pharmacyName") || "موقعیت داروخانه", true);
+    }
+  }
+
+  function applyDoctorLocation(lat, lng, address, nameText) {
+    setVal("doctorLat", Number(lat).toFixed(6));
+    setVal("doctorLng", Number(lng).toFixed(6));
+    if (address) {
+      setVal("docMapSearchInput", address);
+      setVal("doctorAddress", address);
+      setVal("doctorLocationText", address);
+    }
+    if (typeof updateDoctorFormMarker === "function") {
+      updateDoctorFormMarker(lat, lng, nameText || val("doctorName") || "موقعیت مطب", true);
+    }
+  }
+
+  function getCurrentPositionSafe() {
+    return new Promise(function (resolve) {
+      if (!navigator.geolocation) { resolve({ error: true, message: "GPS این دستگاه در دسترس نیست." }); return; }
+      var best=null,done=false,watch=null;
+      function finish(result){if(done)return;done=true;if(watch!=null)try{navigator.geolocation.clearWatch(watch);}catch(e){}clearTimeout(timer);resolve(result);}
+      // هدف دقت ۱۰ متر ثابت است؛ reverse geocode هم‌زمان با دریافت نقطه اجرا می‌شود تا زمان انتظار جمع نشود.
+      var timer=setTimeout(function(){if(best)finish(best);else finish({error:true,message:"موقعیت دقیق دریافت نشد؛ GPS را روشن و دوباره تلاش کنید."});},15000);
+      watch=navigator.geolocation.watchPosition(function(pos){var cur={lat:pos.coords.latitude,lng:pos.coords.longitude,accuracy:Number(pos.coords.accuracy)||9999,fallback:false};cur.addressPromise=geoReverse(cur.lat,cur.lng);if(!best||cur.accuracy<best.accuracy)best=cur;if(cur.accuracy<=10)finish(cur);},function(err){if(err&&err.code===1)finish({error:true,message:"اجازه GPS داده نشده است."});},{enableHighAccuracy:true,timeout:15000,maximumAge:0});
+    });
+  }
+
+  function setupTwoWayLocationSync() {
+    const btnPhCur = replaceNode($("btnPharmacyCurrentLocation"));
+    const btnPhAddr = replaceNode($("btnPharmacyGetAddressFromPoint"));
+    const btnPhSearch = replaceNode($("btnPhMapSearch"));
+    const btnDocCur = replaceNode($("btnDoctorCurrentLocation"));
+    const btnDocAddr = replaceNode($("btnDoctorGetAddressFromPoint"));
+    const btnDocSearch = replaceNode($("btnDocMapSearch"));
+
+    if (btnPhCur) {
+      btnPhCur.addEventListener("click", async function () {
+        btnPhCur.disabled = true;
+        try {
+          const pos = await getCurrentPositionSafe();
+          if (pos.error) { safeAlert(pos.message || "موقعیت دقیق دریافت نشد."); return; }
+          const addr = await (pos.addressPromise || geoReverse(pos.lat, pos.lng));
+          applyPharmacyLocation(pos.lat, pos.lng, addr, val("pharmacyName") || "موقعیت فعلی داروخانه");
+          safeAlert(pos.fallback
+            ? ("موقعیت تستی تنظیم شد و آدرس در فیلد لوکیشن نشست:\n" + addr)
+            : ("موقعیت فعلی روی نقشه آمد و آدرس در فیلد لوکیشن نوشته شد:\n" + addr));
+        } finally { btnPhCur.disabled = false; }
+      });
+    }
+    if (btnPhAddr) {
+      btnPhAddr.addEventListener("click", async function () {
+        const lat = parseFloat(val("pharmacyLat")) || 35.7605;
+        const lng = parseFloat(val("pharmacyLng")) || 51.4180;
+        const addr = await geoReverse(lat, lng);
+        applyPharmacyLocation(lat, lng, addr, val("pharmacyName") || "داروخانه");
+        safeAlert("آدرس این نقطه در فیلد لوکیشن قرار گرفت:\n" + addr);
+      });
+    }
+    if (btnPhSearch) {
+      btnPhSearch.addEventListener("click", function () {
+        doAddressSearch(val("phMapSearchInput"), function (lat, lng, label) {
+          applyPharmacyLocation(lat, lng, label, val("pharmacyName") || label);
+        });
+      });
+    }
+    if (btnDocCur) {
+      btnDocCur.addEventListener("click", async function () {
+        btnDocCur.disabled = true;
+        try {
+          const pos = await getCurrentPositionSafe();
+          if (pos.error) { safeAlert(pos.message || "موقعیت دقیق دریافت نشد."); return; }
+          const addr = await (pos.addressPromise || geoReverse(pos.lat, pos.lng));
+          applyDoctorLocation(pos.lat, pos.lng, addr, val("doctorName") || "موقعیت فعلی مطب");
+          safeAlert("موقعیت فعلی روی نقشه آمد و آدرس در فیلد لوکیشن مطب نوشته شد:\n" + addr);
+        } finally { btnDocCur.disabled = false; }
+      });
+    }
+    if (btnDocAddr) {
+      btnDocAddr.addEventListener("click", async function () {
+        const lat = parseFloat(val("doctorLat")) || 35.7580;
+        const lng = parseFloat(val("doctorLng")) || 51.4400;
+        const addr = await geoReverse(lat, lng);
+        applyDoctorLocation(lat, lng, addr, val("doctorName") || "مطب");
+        safeAlert("آدرس این نقطه در فیلد لوکیشن مطب قرار گرفت:\n" + addr);
+      });
+    }
+    if (btnDocSearch) {
+      btnDocSearch.addEventListener("click", function () {
+        doAddressSearch(val("docMapSearchInput"), function (lat, lng, label) {
+          applyDoctorLocation(lat, lng, label, val("doctorName") || label);
+        });
+      });
+    }
+
+    bindAutocomplete("phMapSearchInput", "phMapSuggestBox", function (lat, lng, label) {
+      applyPharmacyLocation(lat, lng, label, val("pharmacyName") || label);
+    });
+    bindAutocomplete("docMapSearchInput", "docMapSuggestBox", function (lat, lng, label) {
+      applyDoctorLocation(lat, lng, label, val("doctorName") || label);
+    });
+
+    // کلیک روی نقشه هم آدرس را در همان فیلد لوکیشن بنشاند
+    if (typeof mapPharmacyForm !== "undefined" && mapPharmacyForm) {
+      mapPharmacyForm.on("click", async function (e) {
+        const addr = await geoReverse(e.latlng.lat, e.latlng.lng);
+        applyPharmacyLocation(e.latlng.lat, e.latlng.lng, addr, val("pharmacyName") || "نقطه انتخابی");
+      });
+    }
+    if (typeof mapDoctorForm !== "undefined" && mapDoctorForm) {
+      mapDoctorForm.on("click", async function (e) {
+        const addr = await geoReverse(e.latlng.lat, e.latlng.lng);
+        applyDoctorLocation(e.latlng.lat, e.latlng.lng, addr, val("doctorName") || "نقطه انتخابی");
+      });
+    }
+  }
+
+  // ---------- Form / List: never hide the form ----------
+  function setupSplitFormList() {
+    function bindPair(btnFormId, btnListId, formCardId, listCardId) {
+      const bF = replaceNode($(btnFormId));
+      const bL = replaceNode($(btnListId));
+      const cF = $(formCardId);
+      const cL = $(listCardId);
+      if (cF) cF.style.display = "block";
+      if (cL) cL.style.display = "block";
+      if (bF) {
+        bF.addEventListener("click", function () {
+          bF.className = "btn btn-primary btn-sm";
+          bF.style.background = "#0d9488";
+          if (bL) { bL.className = "btn btn-outline btn-sm"; bL.style.background = ""; }
+          if (cF) { cF.style.display = "block"; cF.scrollIntoView({ behavior: "smooth", block: "start" }); }
+          if (cL) cL.style.display = "block";
+        });
+      }
+      if (bL) {
+        bL.addEventListener("click", function () {
+          bL.className = "btn btn-primary btn-sm";
+          bL.style.background = "#0d9488";
+          if (bF) { bF.className = "btn btn-outline btn-sm"; bF.style.background = ""; }
+          if (cF) cF.style.display = "block";
+          if (cL) { cL.style.display = "block"; cL.scrollIntoView({ behavior: "smooth", block: "start" }); }
+        });
+      }
+    }
+    bindPair("btnShowPhForm", "btnShowPhList", "cardPhForm", "cardPhList");
+    bindPair("btnShowDocForm", "btnShowDocList", "cardDocForm", "cardDocList");
+    bindPair("btnShowOrdForm", "btnShowOrdList", "cardOrdForm", "cardOrdList");
+  }
+
+  // ---------- Single save handlers ----------
+  const saveLock = { pharmacy: false, doctor: false, order: false };
+
+  function setupSingleSaveHandlers() {
+    // فرم را clone نمی‌کنیم تا لیسنرهای استان/شهر و درصدی از بین نروند.
+    // با capture + stopImmediatePropagation از ذخیره تکراری جلوگیری می‌شود.
+    ["formPharmacy", "formDoctor", "formOrder"].forEach(function (id) {
+      const f = $(id);
+      if (f) f.onsubmit = function (e) { e.preventDefault(); };
+    });
+    ["btnSavePharmacy", "btnSaveDoctor", "btnSaveOrder"].forEach(function (id) {
+      const b = $(id);
+      if (b) b.onclick = null;
+    });
+    bindOneSubmit($("formPharmacy"), function () { savePharmacyV9(); });
+    bindOneSubmit($("formDoctor"), function () { saveDoctorV9(); });
+    bindOneSubmit($("formOrder"), function () { saveOrderV9(); });
+  }
+
+  function bindOneSubmit(form, handler) {
+    if (!form) return;
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      handler();
+    }, true);
+  }
+
+  function savePharmacyV9() {
+    if (saveLock.pharmacy) return;
+    saveLock.pharmacy = true;
+    setTimeout(function () { saveLock.pharmacy = false; }, 400);
+    ensureStateExtras();
+    const editId = val("pharmacyEditId");
+    const rec = {
+      id: editId || ("ph-" + Date.now()),
+      dateAdded: val("pharmacyDate") || todayJalaliStr(),
+      name: val("pharmacyName"),
+      phone: val("pharmacyPhone"),
+      manager: val("pharmacyManager"),
+      managerPhone: val("pharmacyManagerPhone"),
+      province: val("pharmacyProvince"),
+      city: val("pharmacyCity"),
+      district: val("pharmacyDistrict"),
+      address: val("pharmacyAddress") || val("phMapSearchInput"),
+      lat: parseFloat(val("pharmacyLat")) || 35.7605,
+      lng: parseFloat(val("pharmacyLng")) || 51.4180,
+      isPercentage: val("pharmacyIsPercentage") === "true",
+      fileName: ($("phFileInput") && $("phFileInput").files && $("phFileInput").files[0]) ? $("phFileInput").files[0].name : null,
+      repName: currentRepName(),
+      repId: currentRepId(),
+      customFields: (typeof extractCustomFieldValuesFromForm === "function")
+        ? extractCustomFieldValuesFromForm("pharmacy", "pharmacyCustomFieldsContainer")
+        : {}
+    };
+    if (typeof window.validateRequiredFields === "function" && !window.validateRequiredFields("tab-pharmacies")) return;
+    if (!editId) {
+      const dup = state.pharmacies.some(function (p) { return p.name === rec.name || (rec.phone && p.phone === rec.phone); });
+      if (dup && !window.v20DupGate("pharmacy")) return;
+      state.pharmacies.push(rec);
+    } else {
+      const idx = state.pharmacies.findIndex(function (p) { return p.id === editId; });
+      if (idx !== -1) state.pharmacies[idx] = Object.assign({}, state.pharmacies[idx], rec);
+    }
+    saveState();
+    if (typeof resetPharmacyForm === "function") {
+      try { resetPharmacyForm(); } catch (e) { /* ignore hidden field errors */ }
+    }
+    renderPharmaciesListV9();
+    if (typeof renderDashboardOverviewMap === "function") renderDashboardOverviewMap();
+    if (typeof updateNavBadges === "function") updateNavBadges();
+    if (typeof populatePharmacyDatalistInOrders === "function") populatePharmacyDatalistInOrders();
+    logActivity("ثبت/ویرایش داروخانه «" + rec.name + "»");
+    const listCard = $("cardPhList");
+    if (listCard) listCard.scrollIntoView({ behavior: "smooth", block: "start" });
+    safeAlert("داروخانه «" + rec.name + "» ذخیره شد.");
+  }
+
+  function saveDoctorV9() {
+    if (saveLock.doctor) return;
+    saveLock.doctor = true;
+    setTimeout(function () { saveLock.doctor = false; }, 400);
+    ensureStateExtras();
+    const editId = val("doctorEditId");
+    const rec = {
+      id: editId || ("doc-" + Date.now()),
+      dateAdded: val("doctorDate") || todayJalaliStr(),
+      name: val("doctorName"),
+      specialty: val("doctorSpecialty"),
+      phone: val("doctorPhone"),
+      province: val("doctorProvince"),
+      city: val("doctorCity"),
+      district: val("doctorDistrict"),
+      address: val("doctorAddress") || val("docMapSearchInput"),
+      lat: parseFloat(val("doctorLat")) || 35.7580,
+      lng: parseFloat(val("doctorLng")) || 51.4400,
+      isPercentage: val("doctorIsPercentage") === "true",
+      fileName: ($("docFileInput") && $("docFileInput").files && $("docFileInput").files[0]) ? $("docFileInput").files[0].name : null,
+      repName: currentRepName(),
+      repId: currentRepId(),
+      customFields: (typeof extractCustomFieldValuesFromForm === "function")
+        ? extractCustomFieldValuesFromForm("doctor", "doctorCustomFieldsContainer")
+        : {}
+    };
+    if (typeof window.validateRequiredFields === "function" && !window.validateRequiredFields("tab-doctors")) return;
+    if (!editId) {
+      const dup = state.doctors.some(function (d) { return d.name === rec.name || (rec.phone && d.phone === rec.phone); });
+      if (dup && !window.v20DupGate("doctor")) return;
+      state.doctors.push(rec);
+    } else {
+      const idx = state.doctors.findIndex(function (d) { return d.id === editId; });
+      if (idx !== -1) state.doctors[idx] = Object.assign({}, state.doctors[idx], rec);
+    }
+    saveState();
+    if (typeof resetDoctorForm === "function") {
+      try { resetDoctorForm(); } catch (e) { /* ignore */ }
+    }
+    renderDoctorsListV9();
+    if (typeof renderDashboardOverviewMap === "function") renderDashboardOverviewMap();
+    if (typeof updateNavBadges === "function") updateNavBadges();
+    logActivity("ثبت/ویرایش پزشک «" + rec.name + "»");
+    const listCard = $("cardDocList");
+    if (listCard) listCard.scrollIntoView({ behavior: "smooth", block: "start" });
+    safeAlert("پزشک/مطب «" + rec.name + "» ذخیره شد.");
+  }
+
+  function collectOrderItems() {
+    const container = $("orderItemsContainer");
+    if (!container) return [];
+    const rows = container.children;
+    const items = [];
+    for (let i = 0; i < rows.length; i++) {
+      const nameEl = rows[i].querySelector(".order-item-name");
+      const countEl = rows[i].querySelector(".order-item-count");
+      const giftEl = rows[i].querySelector(".order-item-gift");
+      const priceEl = rows[i].querySelector(".order-item-price");
+      if (nameEl && nameEl.value.trim()) {
+        // کالای بدون تعداد اصلاً سفارش نیست؛ قبلاً || 1 به‌اشتباه آن را یک عدد حساب می‌کرد.
+        const qty = parseInt(countEl && countEl.value, 10) || 0;
+        if (qty <= 0) continue;
+        items.push({
+          name: nameEl.value.trim(),
+          count: qty,
+          giftCount: parseInt(giftEl && giftEl.value, 10) || 0,
+          price: parseInt(priceEl && priceEl.value, 10) || 0
+        });
+      }
+    }
+    return items;
+  }
+
+  function saveOrderV9() {
+    ensureStateExtras();
+    const editId = val("orderEditId");
+    const items = collectOrderItems();
+    const matchedPharmacy = (state.pharmacies || []).find(function(p){ return p.id === val("orderPharmacyMatchedId") || p.name === val("orderPharmacyName"); }) || {};
+    const rec = {
+      id: editId || ("ord-" + Date.now()),
+      pharmacyName: val("orderPharmacyName"),
+      pharmacyId: matchedPharmacy.id || val("orderPharmacyMatchedId"),
+      orderManager: matchedPharmacy.manager || "",
+      orderManagerPhone: matchedPharmacy.managerPhone || "",
+      province: val("orderProvince"),
+      city: val("orderCity"),
+      district: val("orderDistrict"),
+      address: val("orderAddress"),
+      repName: val("orderRepName") || currentRepName(),
+      repId: userIdForRep(val("orderRepName") || currentRepName()),
+      orderDate: val("orderDate") || todayJalaliStr(),
+      status: val("orderStatus") || "در حال بررسی",
+      notes: val("orderNotes"),
+      items: items,
+      quantityValidated: true,
+      totalAmount: items.reduce(function (s, it) { return s + (it.count * it.price); }, 0),
+      customFields: (typeof extractCustomFieldValuesFromForm === "function")
+        ? extractCustomFieldValuesFromForm("order", "orderCustomFieldsContainer")
+        : {}
+    };
+    if (typeof window.validateRequiredFields === "function" && !window.validateRequiredFields("tab-orders")) return;
+    if (!items.length) {
+      safeAlert("حداقل یک قلم کالا وارد کنید.");
+      return;
+    }
+    items.forEach(function (item) {
+      const tgt = (state.salesTargets || []).find(function (t) { return t.repName === rec.repName && t.productName === item.name; });
+      if (tgt) {
+        tgt.achievedCount = (tgt.achievedCount || 0) + item.count;
+        const prod = (state.products || []).find(function (p) { return p.name === item.name; });
+        tgt.achievedAmount = tgt.achievedCount * (prod ? (prod.pharmacyPrice || prod.price || 45000) : 45000);
+      }
+    });
+    if (editId) {
+      const idx = state.orders.findIndex(function (o) { return o.id === editId; });
+      if (idx !== -1) state.orders[idx] = Object.assign({}, state.orders[idx], rec);
+    } else {
+      state.orders.push(rec);
+    }
+    saveState();
+    if (typeof resetOrderForm === "function") {
+      try { resetOrderForm(); } catch (e) { /* ignore */ }
+    }
+    renderOrdersListV9();
+    if (typeof renderSalesTargetsTable === "function") renderSalesTargetsTable();
+    if (typeof updateNavBadges === "function") updateNavBadges();
+    logActivity("ثبت سفارش برای «" + rec.pharmacyName + "»");
+    const listCard = $("cardOrdList");
+    if (listCard) listCard.scrollIntoView({ behavior: "smooth", block: "start" });
+    safeAlert("سفارش «" + rec.pharmacyName + "» ذخیره شد.");
+  }
+
+  function logActivity(action) {
+    if (!state.activityLog) state.activityLog = [];
+    const now = new Date();
+    const time = now.toLocaleTimeString("fa-IR", { timeZone: "Asia/Tehran", hour: "2-digit", minute: "2-digit" });
+    state.activityLog.unshift({ id: "act-" + Date.now(), time: time + " - امروز", repName: currentRepName(),
+      repId: currentRepId(), action: action });
+    saveState(false);
+    renderActivityChartAndTable();
+  }
+
+  // ---------- Lists with location / routing / row modal ----------
+  function pageSlice(arr, key) {
+    const page = listPage[key] || 1;
+    const start = (page - 1) * PAGE_SIZE;
+    return { rows: arr.slice(start, start + PAGE_SIZE), total: arr.length, page: page, pages: Math.max(1, Math.ceil(arr.length / PAGE_SIZE)) };
+  }
+
+  function renderPager(hostId, key, pages, page, redraw) {
+    let host = $(hostId);
+    if (!host) {
+      const table = document.querySelector("#" + (key === "pharmacy" ? "tablePharmacies" : key === "doctor" ? "tableDoctors" : "tableOrders"));
+      if (!table || !table.parentNode) return;
+      host = document.createElement("div");
+      host.id = hostId;
+      host.className = "table-pager";
+      table.parentNode.appendChild(host);
+    }
+    host.innerHTML = "";
+    for (let i = 1; i <= pages; i++) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "btn btn-sm " + (i === page ? "btn-primary" : "btn-outline");
+      if (i === page) b.style.background = "#0d9488";
+      b.textContent = String(i);
+      b.addEventListener("click", function () { listPage[key] = i; redraw(); });
+      host.appendChild(b);
+    }
+  }
+
+  function locCell(rec) {
+    const ok = !!(rec.lat && rec.lng);
+    return ok
+      ? '<span class="loc-ok">ثبت شده</span> <button type="button" class="btn btn-outline btn-sm btn-show-on-map">نقشه</button>'
+      : '<span class="loc-miss">ثبت نشده</span>';
+  }
+
+  function sortedListFields(entity) {
+    return ((state.customFields || {})[entity] || []).filter(function (f) { return f.showInList; })
+      .slice().sort(function (a, b) { return (Number(a.order) || 999) - (Number(b.order) || 999); });
+  }
+  function thVis(entity, id, label) {
+    if (typeof window.isColShownInList === "function" && !window.isColShownInList(entity, id)) return "";
+    return "<th>" + label + "</th>";
+  }
+  function tdVis(entity, id, html) {
+    if (typeof window.isColShownInList === "function" && !window.isColShownInList(entity, id)) return "";
+    return html;
+  }
+  function extraHead(entity) {
+    if (typeof window.extraListColumns !== "function") return "";
+    return window.extraListColumns(entity).map(function (c) { return "<th>" + c.label + "</th>"; }).join("");
+  }
+  function extraCells(entity, rec) {
+    if (typeof window.extraListColumns !== "function") return "";
+    return window.extraListColumns(entity).map(function (c) {
+      var val = (typeof window.builtinFieldValue === "function") ? window.builtinFieldValue(entity, c.id, rec) : "—";
+      return "<td>" + val + "</td>";
+    }).join("");
+  }
+  function cfHeaderHtml(entity) {
+    return sortedListFields(entity).map(function (f) { return "<th>" + f.label + "</th>"; }).join("");
+  }
+  function cfCellHtml(entity, rec) {
+    return sortedListFields(entity).map(function (f) {
+      var val = (rec.customFields && rec.customFields[f.label]) ? rec.customFields[f.label] : "—";
+      return "<td><strong>" + val + "</strong></td>";
+    }).join("");
+  }
+
+  function renderPharmaciesListV9(q) {
+    const tbody = $("tablePharmaciesBody");
+    const thead = $("tablePharmaciesHeader");
+    if (!tbody || !thead) return;
+    thead.innerHTML = "<th>ردیف</th><th>نام نماینده</th>" +
+      thVis("pharmacy", "pharmacyDate", "تاریخ ثبت") +
+      thVis("pharmacy", "pharmacyProvince", "استان") +
+      thVis("pharmacy", "pharmacyCity", "شهر") +
+      thVis("pharmacy", "pharmacyName", "نام داروخانه") +
+      thVis("pharmacy", "pharmacyPhone", "شماره همراه") +
+      thVis("pharmacy", "pharmacyIsPercentage", "درصدی") +
+      thVis("pharmacy", "phMapSearchInput", "لوکیشن") +
+      "<th>مسیریابی</th>" + extraHead("pharmacy") + cfHeaderHtml("pharmacy") + "<th>عملیات</th>";
+    const query = (q != null ? q : val("searchPharmacyInput")).toLowerCase();
+    const filtered = visiblePharmacies().filter(function (ph) {
+      if (!query) return true;
+      return [ph.name, ph.address, ph.phone, ph.repName, ph.city].join(" ").toLowerCase().indexOf(query) !== -1;
+    });
+    const slice = pageSlice(filtered, "pharmacy");
+    tbody.innerHTML = "";
+    slice.rows.forEach(function (ph, i) {
+      const tr = document.createElement("tr");
+      tr.style.cursor = "pointer";
+      const abs = ((listPage.pharmacy - 1) * PAGE_SIZE) + i + 1;
+      tr.innerHTML =
+        "<td>" + abs + "</td>" +
+        "<td><strong>" + (ph.repName || "—") + "</strong></td>" +
+        tdVis("pharmacy", "pharmacyDate", "<td>" + (ph.dateAdded || "—") + "</td>") +
+        tdVis("pharmacy", "pharmacyProvince", "<td>" + (ph.province || "—") + "</td>") +
+        tdVis("pharmacy", "pharmacyCity", "<td>" + (ph.city || "—") + "</td>") +
+        tdVis("pharmacy", "pharmacyName", "<td><strong style='color:#0d9488'>" + ph.name + "</strong></td>") +
+        tdVis("pharmacy", "pharmacyPhone", "<td style='direction:ltr'>" + (ph.phone || "—") + "</td>") +
+        tdVis("pharmacy", "pharmacyIsPercentage", "<td>" + (ph.isPercentage ? "بله" : "خیر") + "</td>") +
+        tdVis("pharmacy", "phMapSearchInput", "<td>" + locCell(ph) + "</td>") +
+        "<td><button type='button' class='btn btn-outline btn-sm btn-route'>مسیریابی</button></td>" +
+        extraCells("pharmacy", ph) +
+        cfCellHtml("pharmacy", ph) +
+        "<td><button type='button' class='btn btn-outline btn-sm btn-edit'>ویرایش</button> <button type='button' class='btn btn-danger btn-sm btn-del'>حذف</button></td>";
+      tr.addEventListener("click", function () { if (typeof openRowDetailsModal === "function") openRowDetailsModal(ph, "pharmacy"); });
+      const showBtn = tr.querySelector(".btn-show-on-map");
+      if (showBtn) showBtn.addEventListener("click", function (e) { e.stopPropagation(); focusOnMap(ph.lat, ph.lng, ph.name); });
+      const routeBtn = tr.querySelector(".btn-route");
+      if (routeBtn) routeBtn.addEventListener("click", function (e) { e.stopPropagation(); if (typeof openNavigationAppModal === "function") openNavigationAppModal(ph.lat, ph.lng, ph.name); });
+      tr.querySelector(".btn-edit").addEventListener("click", function (e) { e.stopPropagation(); if (typeof editPharmacy === "function") editPharmacy(ph.id); });
+      tr.querySelector(".btn-del").addEventListener("click", function (e) { e.stopPropagation(); if (typeof deletePharmacy === "function") deletePharmacy(ph.id); });
+      tbody.appendChild(tr);
+    });
+    const badge = $("phListCountBadge");
+    const tableBadge = $("phTableCountBadge");
+    if (badge) badge.textContent = filtered.length;
+    if (tableBadge) tableBadge.textContent = filtered.length;
+    renderPager("phListPager", "pharmacy", slice.pages, slice.page, function () { renderPharmaciesListV9(query); });
+  }
+
+  function renderDoctorsListV9(q) {
+    const tbody = $("tableDoctorsBody");
+    const thead = $("tableDoctorsHeader");
+    if (!tbody || !thead) return;
+    thead.innerHTML = "<th>ردیف</th><th>نام نماینده</th>" +
+      thVis("doctor", "doctorDate", "تاریخ ثبت") +
+      thVis("doctor", "doctorProvince", "استان / شهر / منطقه") +
+      thVis("doctor", "doctorName", "نام پزشک / مطب") +
+      thVis("doctor", "doctorSpecialty", "تخصص") +
+      thVis("doctor", "doctorIsPercentage", "درصدی") +
+      thVis("doctor", "docMapSearchInput", "لوکیشن") +
+      "<th>مسیریابی</th>" + extraHead("doctor") + cfHeaderHtml("doctor") + "<th>عملیات</th>";
+    const query = (q != null ? q : val("searchDoctorInput")).toLowerCase();
+    const filtered = visibleDoctors().filter(function (d) {
+      if (!query) return true;
+      return [d.name, d.specialty, d.address, d.repName, d.city].join(" ").toLowerCase().indexOf(query) !== -1;
+    });
+    const slice = pageSlice(filtered, "doctor");
+    tbody.innerHTML = "";
+    slice.rows.forEach(function (doc, i) {
+      const tr = document.createElement("tr");
+      tr.style.cursor = "pointer";
+      const abs = ((listPage.doctor - 1) * PAGE_SIZE) + i + 1;
+      tr.innerHTML =
+        "<td>" + abs + "</td>" +
+        "<td><strong>" + (doc.repName || "—") + "</strong></td>" +
+        "<td>" + (doc.dateAdded || "—") + "</td>" +
+        "<td>" + [doc.province, doc.city, doc.district].filter(Boolean).join(" / ") + "</td>" +
+        "<td><strong style='color:#0d9488'>" + doc.name + "</strong></td>" +
+        "<td>" + (doc.specialty || "—") + "</td>" +
+        "<td>" + (doc.isPercentage ? "بله" : "خیر") + "</td>" +
+        "<td>" + locCell(doc) + "</td>" +
+        "<td><button type='button' class='btn btn-outline btn-sm btn-route'>مسیریابی</button></td>" +
+        cfCellHtml("doctor", doc) +
+        "<td><button type='button' class='btn btn-outline btn-sm btn-edit'>ویرایش</button> <button type='button' class='btn btn-danger btn-sm btn-del'>حذف</button></td>";
+      tr.addEventListener("click", function () { if (typeof openRowDetailsModal === "function") openRowDetailsModal(doc, "doctor"); });
+      const showBtn = tr.querySelector(".btn-show-on-map");
+      if (showBtn) showBtn.addEventListener("click", function (e) { e.stopPropagation(); focusOnMap(doc.lat, doc.lng, doc.name); });
+      tr.querySelector(".btn-route").addEventListener("click", function (e) { e.stopPropagation(); if (typeof openNavigationAppModal === "function") openNavigationAppModal(doc.lat, doc.lng, doc.name); });
+      tr.querySelector(".btn-edit").addEventListener("click", function (e) { e.stopPropagation(); if (typeof editDoctor === "function") editDoctor(doc.id); });
+      tr.querySelector(".btn-del").addEventListener("click", function (e) { e.stopPropagation(); if (typeof deleteDoctor === "function") deleteDoctor(doc.id); });
+      tbody.appendChild(tr);
+    });
+    renderPager("docListPager", "doctor", slice.pages, slice.page, function () { renderDoctorsListV9(query); });
+  }
+
+  function cleanOrderItemsV9(ord){var items=(ord.items||[]).filter(function(i){return Number(i.count)>0;});if(!ord.quantityValidated){var ones=items.filter(function(i){return Number(i.count)===1;}),real=items.filter(function(i){return Number(i.count)>1;});if(ones.length>=2&&real.length)items=real;}return items;}
+  function renderOrdersListV9(q) {
+    const tbody = $("tableOrdersBody");
+    const thead = $("tableOrdersHeader");
+    if (!tbody || !thead) return;
+    thead.innerHTML = "<th>ردیف</th>" +
+      thVis("order", "orderRepName", "نام نماینده") +
+      thVis("order", "orderPharmacyName", "نام داروخانه") +
+      thVis("order", "orderProvince", "استان / شهر") +
+      thVis("order", "orderDate", "تاریخ") +
+      "<th>اقلام / جایزه</th><th>مبلغ کل</th>" +
+      thVis("order", "orderStatus", "وضعیت") +
+      extraHead("order") + cfHeaderHtml("order") + "<th>عملیات</th>";
+    const query = (q != null ? q : val("searchOrderInput")).toLowerCase();
+    const filtered = visibleOrders().filter(function (o) {
+      if (!query) return true;
+      return [o.pharmacyName, o.repName, o.status].join(" ").toLowerCase().indexOf(query) !== -1;
+    });
+    const slice = pageSlice(filtered, "order");
+    tbody.innerHTML = "";
+    slice.rows.forEach(function (ord, i) {
+      const validItems = cleanOrderItemsV9(ord);
+      const gifts = validItems.map(function (it) { return it.name + " = تعداد کالا: " + it.count + " / تعداد جایزه: " + (it.giftCount || 0); }).join("، ");
+      const cleanTotal = validItems.reduce(function(s,it){return s+(Number(it.count)||0)*(Number(it.price)||0);},0);
+      const tr = document.createElement("tr");
+      tr.style.cursor = "pointer";
+      const abs = ((listPage.order - 1) * PAGE_SIZE) + i + 1;
+      tr.innerHTML =
+        "<td>" + abs + "</td>" +
+        tdVis("order", "orderRepName", "<td><strong>" + (ord.repName || "—") + "</strong></td>") +
+        tdVis("order", "orderPharmacyName", "<td><strong style='color:#0d9488'>" + ord.pharmacyName + "</strong></td>") +
+        tdVis("order", "orderProvince", "<td>" + [ord.province, ord.city].filter(Boolean).join(" / ") + "</td>") +
+        tdVis("order", "orderDate", "<td>" + (ord.orderDate || "—") + "</td>") +
+        "<td>" + (gifts || "—") + "</td>" +
+        "<td>" + Number(cleanTotal || 0).toLocaleString("fa-IR") + "</td>" +
+        tdVis("order", "orderStatus", "<td>" + (ord.status || "—") + "</td>") +
+        extraCells("order", ord) +
+        cfCellHtml("order", ord) +
+        "<td><button type='button' class='btn btn-outline btn-sm btn-edit'>ویرایش</button> <button type='button' class='btn btn-danger btn-sm btn-del'>حذف</button></td>";
+      tr.addEventListener("click", function () { if (typeof openRowDetailsModal === "function") openRowDetailsModal(ord, "order"); });
+      tr.querySelector(".btn-edit").addEventListener("click", function (e) { e.stopPropagation(); if (typeof editOrder === "function") editOrder(ord.id); });
+      tr.querySelector(".btn-del").addEventListener("click", function (e) { e.stopPropagation(); if (typeof deleteOrder === "function") deleteOrder(ord.id); });
+      tbody.appendChild(tr);
+    });
+    const badge = $("ordListCountBadge");
+    if (badge) badge.textContent = filtered.length;
+    renderPager("ordListPager", "order", slice.pages, slice.page, function () { renderOrdersListV9(query); });
+  }
+
+  function focusOnMap(lat, lng, name) {
+    if (typeof switchTab === "function") switchTab("tab-overview-map");
+    setTimeout(function () {
+      if (typeof initFullOverviewMap === "function") initFullOverviewMap();
+      if (typeof mapFullOverview !== "undefined" && mapFullOverview && lat && lng) {
+        mapFullOverview.setView([lat, lng], 16);
+        if (typeof L !== "undefined") L.popup().setLatLng([lat, lng]).setContent(name || "موقعیت").openOn(mapFullOverview);
+      }
+    }, 220);
+  }
+
+  function bindInstantSearch() {
+    const ph = $("searchPharmacyInput");
+    const doc = $("searchDoctorInput");
+    const ord = $("searchOrderInput");
+    if (ph) ph.addEventListener("input", function () { listPage.pharmacy = 1; renderPharmaciesListV9(ph.value); });
+    if (doc) doc.addEventListener("input", function () { listPage.doctor = 1; renderDoctorsListV9(doc.value); });
+    if (ord) ord.addEventListener("input", function () { listPage.order = 1; renderOrdersListV9(ord.value); });
+  }
+
+  // ---------- Comprehensive map ----------
+  function setupOverviewMapV9() {
+    const prov = $("mapFilterProvince");
+    const city = $("mapFilterCity");
+    const dist = $("mapFilterDistrict");
+    const btn = replaceNode($("btnFocusMapRegion"));
+    const btnX = replaceNode($("btnExportOverviewMapCSV"));
+
+    if (prov) {
+      const keep = prov.value || "ایران";
+      if (typeof populateProvinces === "function") populateProvinces(prov);
+      const iran = document.createElement("option");
+      iran.value = "ایران";
+      iran.textContent = "ایران";
+      prov.insertBefore(iran, prov.firstChild);
+      if (!Array.from(prov.options).some(function (o) { return o.value === keep; })) prov.value = "ایران";
+      else prov.value = keep;
+      const freshProv = replaceNode(prov);
+      freshProv.addEventListener("change", function () {
+        const iranMode = freshProv.value === "ایران" || !freshProv.value;
+        if (city) { city.disabled = iranMode; if (iranMode) city.innerHTML = '<option value="">همه شهرها</option>'; }
+        if (dist) { dist.disabled = iranMode; if (iranMode) dist.innerHTML = '<option value="">همه مناطق</option>'; }
+        if (!iranMode && typeof populateCities === "function" && city) populateCities(freshProv.value, city);
+      });
+    }
+    if (city) {
+      const freshCity = replaceNode(city);
+      freshCity.addEventListener("change", function () {
+        const p = val("mapFilterProvince");
+        if (typeof populateDistricts === "function" && dist) populateDistricts(p, freshCity.value, dist);
+      });
+    }
+    if (btn) btn.addEventListener("click", applyOverviewFilters);
+    if (btnX) btnX.addEventListener("click", exportOverviewResults);
+  }
+
+  function applyOverviewFilters() {
+    if (typeof initFullOverviewMap === "function") initFullOverviewMap();
+    const p = val("mapFilterProvince");
+    const c = val("mapFilterCity");
+    const d = val("mapFilterDistrict");
+    const iranMode = p === "ایران" || !p;
+
+    function matchGeo(rec) {
+      if (iranMode) return true;
+      if (p && rec.province !== p) return false;
+      if (c && rec.city !== c) return false;
+      if (d && rec.district !== d) return false;
+      return true;
+    }
+
+    const ph = ((state && state.pharmacies) || []).filter(matchGeo);
+    const docs = ((state && state.doctors) || []).filter(matchGeo);
+    const hos = ((state && state.hospitals) || []).filter(matchGeo);
+    lastOverviewResults = []
+      .concat(ph.map(function (x) { return Object.assign({ kind: "داروخانه" }, x); }))
+      .concat(docs.map(function (x) { return Object.assign({ kind: "پزشک" }, x); }))
+      .concat(hos.map(function (x) { return Object.assign({ kind: x.type || "بیمارستان" }, x); }));
+
+    if ($("cntOverviewPharmacies")) $("cntOverviewPharmacies").textContent = ph.length;
+    if ($("cntOverviewDoctors")) $("cntOverviewDoctors").textContent = docs.length;
+    if ($("cntOverviewHospitals")) $("cntOverviewHospitals").textContent = hos.length;
+
+    if (typeof mapFullOverview !== "undefined" && mapFullOverview && typeof markersFullOverview !== "undefined") {
+      markersFullOverview.forEach(function (m) { try { mapFullOverview.removeLayer(m); } catch (e) {} });
+      markersFullOverview = [];
+      const pts = [];
+      lastOverviewResults.forEach(function (rec) {
+        if (!rec.lat || !rec.lng) return;
+        const type = rec.kind === "پزشک" ? "doctor" : (rec.kind === "داروخانه" ? "pharmacy" : "rep");
+        if (typeof createCustomMarker === "function") {
+          const m = createCustomMarker(rec.lat, rec.lng, type, rec.name, mapFullOverview);
+          markersFullOverview.push(m);
+        }
+        pts.push([rec.lat, rec.lng]);
+      });
+      if (iranMode) {
+        mapFullOverview.setView([32.4279, 53.6880], 5);
+      } else if (c && CITY_COORDS[c]) {
+        mapFullOverview.setView(CITY_COORDS[c], 12);
+      } else if (p && CITY_COORDS[p]) {
+        mapFullOverview.setView(CITY_COORDS[p], 8);
+      } else if (pts.length) {
+        mapFullOverview.fitBounds(pts, { padding: [40, 40] });
+      }
+    }
+  }
+
+  function exportOverviewResults() {
+    const hdrs = ["ردیف", "نام نماینده", "نوع", "نام", "استان", "شهر", "منطقه", "آدرس"];
+    const rows = lastOverviewResults.map(function (r, i) {
+      return [i + 1, r.repName || "—", r.kind || "", r.name || "", r.province || "", r.city || "", r.district || "", r.address || ""];
+    });
+    if (typeof downloadCSVFile === "function") downloadCSVFile("overview-map-results.csv", hdrs, rows);
+  }
+
+  // ---------- Routes / Homes / Live / Activity ----------
+  function ensureLeafletMap(id, holderName, zoom, center) {
+    const el = $(id);
+    if (!el || typeof L === "undefined") return null;
+    if (window[holderName]) {
+      setTimeout(function () { window[holderName].invalidateSize(); }, 120);
+      return window[holderName];
+    }
+    const map = L.map(id).setView(center || [35.72, 51.42], zoom || 11);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OpenStreetMap" }).addTo(map);
+    window[holderName] = map;
+    return map;
+  }
+
+  function initRepRoutesMap() {
+    mapRepRoutes = ensureLeafletMap("map-rep-routes-full", "_mapRepRoutes", 12, [35.73, 51.42]);
+    if (!mapRepRoutes) return;
+    routeLayers.forEach(function (l) { try { mapRepRoutes.removeLayer(l); } catch (e) {} });
+    routeLayers = [];
+    const filter = val("routeRepFilterSelect");
+    const routes = ((state && state.repRoutes) || []).filter(function (r) { return !filter || r.repName === filter; });
+    const pts = [];
+    routes.forEach(function (rt, idx) {
+      const colors = ["#0d9488", "#2563eb", "#f59e0b"];
+      const path = rt.path || [];
+      if (path.length && typeof L !== "undefined") {
+        const line = L.polyline(path, { color: colors[idx % colors.length], weight: 4, opacity: 0.85 }).addTo(mapRepRoutes);
+        routeLayers.push(line);
+        path.forEach(function (p) { pts.push(p); });
+      }
+      (rt.stops || []).forEach(function (st) {
+        if (!st.lat || !st.lng) return;
+        const color = st.visited ? "#16a34a" : "#ea580c";
+        const mk = L.circleMarker([st.lat, st.lng], { radius: 8, color: "#fff", weight: 2, fillColor: color, fillOpacity: 1 })
+          .bindTooltip((st.visited ? "✅ " : "⏳ ") + st.name + (st.time ? (" — " + st.time) : ""), { permanent: false });
+        mk.addTo(mapRepRoutes);
+        routeLayers.push(mk);
+        pts.push([st.lat, st.lng]);
+      });
+    });
+    if (pts.length) mapRepRoutes.fitBounds(pts, { padding: [30, 30] });
+    renderRoutesTableV9(routes);
+  }
+
+  function renderRoutesTableV9(routes) {
+    const tbody = $("tableRepRoutesBody");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+    (routes || state.repRoutes || []).forEach(function (rt) {
+      const tr = document.createElement("tr");
+      tr.innerHTML =
+        "<td><strong>" + rt.repName + "</strong></td>" +
+        "<td>" + (rt.startTime || "—") + "</td>" +
+        "<td>" + (rt.endTime || "—") + "</td>" +
+        "<td>" + (rt.lastStop || rt.checkpoint || "—") + "</td>" +
+        "<td>✅ " + (rt.visited || 0) + " / ⏳ " + (rt.pending || 0) + "</td>" +
+        "<td>" + (rt.status || "—") + "</td>";
+      tbody.appendChild(tr);
+    });
+  }
+
+  function setupRoutesUi() {
+    const sel = $("routeRepFilterSelect");
+    if (sel) {
+      sel.innerHTML = '<option value="">همه نمایندگان</option>';
+      ((state && state.reps) || []).forEach(function (r) {
+        sel.innerHTML += '<option value="' + r.name + '">' + r.name + "</option>";
+      });
+      sel.addEventListener("change", initRepRoutesMap);
+    }
+    const btn = $("btnRefreshRepRoutesMap");
+    if (btn) btn.addEventListener("click", initRepRoutesMap);
+  }
+
+  function initRepHomesMap() {
+    mapRepHomes = ensureLeafletMap("map-rep-homes", "_mapRepHomes", 11, [35.73, 51.42]);
+    if (!mapRepHomes) return;
+    homeLayers.forEach(function (l) { try { mapRepHomes.removeLayer(l); } catch (e) {} });
+    homeLayers = [];
+    const pts = [];
+    ((state && state.repHomes) || []).forEach(function (hm) {
+      if (!hm.lat || !hm.lng) return;
+      if (typeof createCustomMarker === "function") {
+        const m = createCustomMarker(hm.lat, hm.lng, "rep", "منزل " + hm.repName, mapRepHomes);
+        homeLayers.push(m);
+      }
+      pts.push([hm.lat, hm.lng]);
+    });
+    if (pts.length) mapRepHomes.fitBounds(pts, { padding: [40, 40] });
+    if (typeof renderRepHomesTable === "function") renderRepHomesTable();
+  }
+
+  function setupHomesUi() {
+    const sel = $("repHomeSelect");
+    if (sel) {
+      sel.innerHTML = "";
+      ((state && state.reps) || []).forEach(function (r) {
+        sel.innerHTML += '<option value="' + r.name + '">' + r.name + "</option>";
+      });
+      if (!isAdminLike()) sel.value = currentRepName();
+    }
+    const btn = replaceNode($("btnRepHomeCurrentLocation"));
+    if (btn) {
+      btn.addEventListener("click", async function () {
+        const pos = await getCurrentPositionSafe();
+        if (pos.error) { safeAlert(pos.message || "موقعیت دقیق دریافت نشد."); return; }
+        const addr = await (pos.addressPromise || geoReverse(pos.lat, pos.lng));
+        setVal("repHomeAddressInput", addr);
+        const name = val("repHomeSelect") || currentRepName();
+        if (!state.repHomes) state.repHomes = [];
+        const idx = state.repHomes.findIndex(function (h) { return h.repName === name; });
+        const owner = ((state && state.users) || []).find(function (u) { return u && u.fullName === name; });
+        const rec = { id: "home-" + Date.now(), repId: owner ? owner.id : (sessionStorage.getItem("crmUserId") || ""), repName: name, address: addr, lat: pos.lat, lng: pos.lng };
+        if (idx === -1) state.repHomes.push(rec);
+        else state.repHomes[idx] = Object.assign({}, state.repHomes[idx], rec);
+        saveState();
+        initRepHomesMap();
+        if (mapRepHomes) mapRepHomes.setView([pos.lat, pos.lng], 16);
+        safeAlert("لوکیشن منزل «" + name + "» ثبت شد و آدرس در فیلد نشست.");
+      });
+    }
+  }
+
+  function setupLiveLocationV9() {
+    const sel = $("liveRepSearchSelect");
+    if (sel) {
+      sel.innerHTML = '<option value="">جستجوی نماینده روی نقشه...</option>';
+      ((state && state.reps) || []).forEach(function (r) {
+        sel.innerHTML += '<option value="' + r.id + '">' + r.name + "</option>";
+      });
+    }
+    const btnFind = replaceNode($("btnFindLiveRep"));
+    if (btnFind) btnFind.addEventListener("click", function () {
+      const id = val("liveRepSearchSelect");
+      const rep = ((state && state.reps) || []).find(function (r) { return r.id === id || r.name === id; });
+      if (!rep) { safeAlert("نماینده را انتخاب کنید."); return; }
+      renderLiveLocationTabV9();
+      if (typeof mapLiveReps !== "undefined" && mapLiveReps && rep.lat) {
+        mapLiveReps.setView([rep.lat, rep.lng], 15);
+      }
+    });
+    const btnSim = replaceNode($("btnSimulateLiveMovement"));
+    if (btnSim) btnSim.addEventListener("click", function () {
+      if (liveMoveTimer) { clearInterval(liveMoveTimer); liveMoveTimer = null; btnSim.textContent = "▶️ شبیه‌سازی حرکت زنده نمایندگان"; return; }
+      btnSim.textContent = "⏸️ توقف شبیه‌سازی";
+      liveMoveTimer = setInterval(function () {
+        ((state && state.reps) || []).forEach(function (r) {
+          if (!r.lat) return;
+          r.lat += (Math.random() - 0.5) * 0.004;
+          r.lng += (Math.random() - 0.5) * 0.004;
+          r.lastUpdate = "لحظاتی پیش";
+        });
+        renderLiveLocationTabV9();
+      }, 2500);
+    });
+    const btnRef = replaceNode($("btnRefreshLiveMap"));
+    if (btnRef) btnRef.addEventListener("click", renderLiveLocationTabV9);
+    renderLiveLocationTabV9();
+  }
+
+  function renderLiveLocationTabV9() {
+    if (typeof mapLiveReps !== "undefined" && mapLiveReps && typeof createCustomMarker === "function") {
+      Object.keys(markersLiveReps || {}).forEach(function (k) {
+        try { mapLiveReps.removeLayer(markersLiveReps[k]); } catch (e) {}
+      });
+      markersLiveReps = {};
+      ((state && state.reps) || []).forEach(function (r) {
+        if (!r.lat || !r.lng) return;
+        markersLiveReps[r.id] = createCustomMarker(r.lat, r.lng, "rep", r.name, mapLiveReps);
+      });
+      try { mapLiveReps.invalidateSize(); } catch (e) {}
+    }
+    const tbody = $("tableLiveRepsBody");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+    ((state && state.reps) || []).forEach(function (r) {
+      const tr = document.createElement("tr");
+      tr.innerHTML =
+        "<td><strong>" + r.name + "</strong></td>" +
+        "<td>" + (r.status || "—") + "</td>" +
+        "<td style='direction:ltr'>" + (r.lat ? (Number(r.lat).toFixed(4) + ", " + Number(r.lng).toFixed(4)) : "—") + "</td>" +
+        "<td>" + (r.lastUpdate || "—") + "</td>" +
+        "<td>" + (r.currentVisit || "—") + "</td>" +
+        "<td><button type='button' class='btn btn-outline btn-sm'>نمایش</button></td>";
+      tr.querySelector("button").addEventListener("click", function () {
+        if (typeof mapLiveReps !== "undefined" && mapLiveReps && r.lat) mapLiveReps.setView([r.lat, r.lng], 15);
+      });
+      tbody.appendChild(tr);
+    });
+  }
+
+  function renderActivityChartAndTable() {
+    const box = $("activityChartBox");
+    const counts = {};
+    ((state && state.activityLog) || []).forEach(function (a) {
+      counts[a.repName] = (counts[a.repName] || 0) + 1;
+    });
+    const max = Math.max(1, ...Object.values(counts), 1);
+    if (box) {
+      box.innerHTML = Object.keys(counts).map(function (name) {
+        const n = counts[name];
+        const pct = Math.round((n / max) * 100);
+        return '<div class="activity-bar-card"><strong>' + name + "</strong><div>" + n + " فعالیت</div><div class='activity-bar-track'><div class='activity-bar-fill' style='width:" + pct + "%'></div></div></div>";
+      }).join("") || "<div class='activity-bar-card'>هنوز فعالیتی ثبت نشده است.</div>";
+    }
+    if (typeof renderActivityLogTable === "function") renderActivityLogTable();
+  }
+
+  // ---------- Login gate + role filter ----------
+  function setupLoginGate() {
+    const gate = $("loginGateOverlay");
+    const already = sessionStorage.getItem("crmLoggedIn") === "1";
+    if (already && gate) gate.classList.add("hidden");
+    if (!already) {
+      document.body.classList.add("is-gated");
+      if (typeof openModalLogin === "function") {
+        /* gate is the first page; keep modal as secondary */
+      }
+    }
+    const btn = $("btnGateLogin");
+    if (btn) btn.addEventListener("click", function () { attemptLogin(val("gateUsername"), val("gatePassword"), val("gatePhone")); });
+    ["gatePassword", "gateUsername", "gatePhone"].forEach(function (id) {
+      const el = $(id);
+      if (el) el.addEventListener("keydown", function (e) { if (e.key === "Enter") attemptLogin(val("gateUsername"), val("gatePassword"), val("gatePhone")); });
+    });
+
+    const formLogin = $("formLoginModal");
+    if (formLogin) {
+      const fresh = replaceNode(formLogin);
+      fresh.addEventListener("submit", function (e) {
+        e.preventDefault();
+        attemptLogin(val("loginUsernameInput"), val("loginPasswordInput"), val("loginUserName"), val("loginRoleSelect"));
+      });
+    }
+  }
+
+  function attemptLogin(username, password, phone, roleIdx) {
+    ensureStateExtras();
+    const users = (state && state.users) || [];
+    let user = users.find(function (u) {
+      const uOk = !username || u.username === username;
+      const pOk = !password || u.password === password;
+      const phOk = !phone || !u.phone || u.phone === phone;
+      return uOk && pOk && (username || phone);
+    });
+    if (!user && (username === "admin" && password === "123")) user = users[0];
+    if (!user && roleIdx != null && users[parseInt(roleIdx, 10)]) user = users[parseInt(roleIdx, 10)];
+    if (!user) { safeAlert("نام کاربری، رمز عبور یا شماره همراه نادرست است."); return; }
+
+    try {
+      currentRoleIndex = users.indexOf(user);
+      currentUserName = user.fullName;
+    } catch (e) {}
+    sessionStorage.setItem("crmLoggedIn", "1");
+    sessionStorage.setItem("crmUserId", user.id);
+    sessionStorage.setItem("crmUserName", user.fullName || "");
+    sessionStorage.setItem("crmUsername", user.username || "");
+    sessionStorage.setItem("crmUserRole", user.role || "");
+    const gate = $("loginGateOverlay");
+    if (gate) gate.classList.add("hidden");
+    document.body.classList.remove("is-gated");
+    if (typeof closeModalLogin === "function") closeModalLogin();
+    if (typeof applyUserRolePermissions === "function") applyUserRolePermissions();
+    applyRoleDataFilter();
+    safeAlert("ورود موفق: " + user.fullName);
+  }
+
+  function applyRoleDataFilter() {
+    renderPharmaciesListV9();
+    renderDoctorsListV9();
+    renderOrdersListV9();
+    if (typeof updateNavBadges === "function") updateNavBadges();
+  }
+
+  // ---------- Messengers / backup / install / excel ----------
+  function setupMessengersUi() {
+    const box = $("messengerTogglesBox");
+    if (!box || !state.messengers) return;
+    const labels = { bale: "بله", eitaa: "ایتا", telegram: "تلگرام", soroush: "سروش", whatsapp: "واتساپ", sms: "پیامک" };
+    const peer = state.messengers.allowPeerMessaging ? "checked" : "";
+    let html = '<label style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.75rem;"><input type="checkbox" id="chkPeerMsg" ' + peer + ' /> نمایندگان بتوانند به یکدیگر پیام بدهند</label>';
+    html += '<div class="form-grid">';
+    Object.keys(labels).forEach(function (k) {
+      const ch = state.messengers.channels[k] || { auto: false, manual: true };
+      html += '<div class="form-group"><strong>' + labels[k] + '</strong>' +
+        '<label style="display:flex;gap:0.4rem;align-items:center;"><input type="checkbox" data-ch="' + k + '" data-k="auto" ' + (ch.auto ? "checked" : "") + ' /> ارسال خودکار</label>' +
+        '<label style="display:flex;gap:0.4rem;align-items:center;"><input type="checkbox" data-ch="' + k + '" data-k="manual" ' + (ch.manual ? "checked" : "") + ' /> ارسال دستی</label></div>';
+    });
+    html += "</div>";
+    box.innerHTML = html;
+    box.querySelectorAll("input[type=checkbox]").forEach(function (inp) {
+      inp.addEventListener("change", function () {
+        if (inp.id === "chkPeerMsg") state.messengers.allowPeerMessaging = inp.checked;
+        else {
+          const ch = inp.getAttribute("data-ch");
+          const k = inp.getAttribute("data-k");
+          if (!state.messengers.channels[ch]) state.messengers.channels[ch] = {};
+          state.messengers.channels[ch][k] = inp.checked;
+        }
+        saveState(false);
+      });
+    });
+  }
+
+  function setupBackupExtras() {
+    const interval = $("backupIntervalSelect");
+    const email = $("backupEmailInput");
+    if (interval && state.settings) {
+      interval.value = String(state.settings.autoBackupIntervalMinutes || 5);
+      interval.addEventListener("change", function () {
+        state.settings.autoBackupIntervalMinutes = parseInt(interval.value, 10) || 5;
+        saveState(false);
+      });
+    }
+    if (email && state.settings) {
+      email.value = state.settings.backupEmail || "";
+      email.addEventListener("change", function () {
+        state.settings.backupEmail = email.value.trim();
+        saveState(false);
+      });
+    }
+  }
+
+  function setupInstallLinks() {
+    const win = $("btnInstallWindows");
+    const andr = $("btnInstallAndroid");
+    const ios = $("btnInstallIos");
+    let deferred = null;
+    window.addEventListener("beforeinstallprompt", function (e) {
+      e.preventDefault();
+      deferred = e;
+    });
+    function tryInstall(e) {
+      if (e) e.preventDefault();
+      if (deferred) { deferred.prompt(); return; }
+      safeAlert("از منوی مرورگر گزینه Install app / افزودن به صفحه اصلی را بزنید. آیکون برنامه لوگوی طنین طب طاها است.");
+    }
+    if (win) win.addEventListener("click", tryInstall);
+    if (andr) andr.addEventListener("click", tryInstall);
+    if (ios) ios.addEventListener("click", function (e) {
+      e.preventDefault();
+      safeAlert("در آیفون: دکمه Share سپس Add to Home Screen را بزنید.");
+    });
+  }
+
+  function patchExcelExports() {
+    if (typeof downloadCSVFile !== "function") return;
+    const orig = downloadCSVFile;
+    window.downloadCSVFile = function (filename, headers, rows) {
+      let hdrs = headers.slice();
+      let rws = rows.map(function (r) { return r.slice(); });
+      if (hdrs[0] !== "ردیف") {
+        hdrs = ["ردیف"].concat(hdrs);
+        rws = rws.map(function (r, i) { return [i + 1].concat(r); });
+      }
+      if (hdrs[1] !== "نام نماینده" && hdrs.indexOf("نام نماینده") === -1 && hdrs.indexOf("نماینده علمی") === -1) {
+        hdrs.splice(1, 0, "نام نماینده");
+        rws = rws.map(function (r) { return [r[0], currentRepName()].concat(r.slice(1)); });
+      }
+      return orig(filename, hdrs, rws);
+    };
+  }
+
+  function setupOnTheFlyNameFields() {
+    function attach(id, getter) {
+      const el = $(id);
+      if (!el || el.dataset.flyBound === "1") return;
+      el.dataset.flyBound = "1";
+      el.addEventListener("blur", function () {
+        const v = el.value.trim();
+        if (!v) return;
+        const list = getter();
+        if (list.indexOf(v) === -1) {
+          /* مقدار جدید همان لحظه در فیلد می‌ماند و هنگام ذخیره به دیتابیس می‌رود */
+        }
+      });
+    }
+    attach("pharmacyName", function () { return state.pharmacies.map(function (p) { return p.name; }); });
+    attach("doctorName", function () { return state.doctors.map(function (d) { return d.name; }); });
+  }
+
+  function setupWidgetManager() {
+    const btn = document.querySelector("#dashboardChartsWidget .btn");
+    if (!btn || btn.dataset.bound === "1") return;
+    btn.dataset.bound = "1";
+    btn.onclick = function () {
+      const card = $("dashboardChartsWidget");
+      if (!card) return;
+      const hide = card.getAttribute("data-collapsed") === "1";
+      card.setAttribute("data-collapsed", hide ? "0" : "1");
+      const body = card.querySelector("div[style*='grid']");
+      if (body) body.style.display = hide ? "grid" : "none";
+    };
+  }
+
+  function hookSwitchTab() {
+    if (typeof switchTab !== "function") return;
+    const orig = switchTab;
+    window.switchTab = function (id) {
+      orig(id);
+      setTimeout(function () {
+        if (id === "tab-overview-map") applyOverviewFilters();
+        if (id === "tab-rep-routes") initRepRoutesMap();
+        if (id === "tab-rep-homes") initRepHomesMap();
+        if (id === "tab-live-location") renderLiveLocationTabV9();
+        if (id === "tab-activity-log") renderActivityChartAndTable();
+        if (id === "tab-pharmacies" && typeof mapPharmacyForm !== "undefined" && mapPharmacyForm) mapPharmacyForm.invalidateSize();
+        if (id === "tab-doctors" && typeof mapDoctorForm !== "undefined" && mapDoctorForm) mapDoctorForm.invalidateSize();
+      }, 180);
+    };
+  }
+
+  function overrideListRenderers() {
+    if (typeof renderPharmaciesList === "function") window.renderPharmaciesList = renderPharmaciesListV9;
+    if (typeof renderDoctorsList === "function") window.renderDoctorsList = renderDoctorsListV9;
+    if (typeof renderOrdersList === "function") window.renderOrdersList = renderOrdersListV9;
+    if (typeof getOrderItemsFromUI === "function") window.getOrderItemsFromUI = collectOrderItems;
+    window.setupRepsTab = window.setupRepsTab || function () {};
+    window.setupLiveLocationTab = setupLiveLocationV9;
+    window.renderLiveLocationTab = renderLiveLocationTabV9;
+  }
+
+  function boot() {
+    try { ensureStateExtras(); } catch (e) { console.error(e); }
+    try { setupLoginGate(); } catch (e) { console.error(e); }
+    try { setupDynamicDateFields(); } catch (e) { console.error(e); }
+    try { setupTwoWayLocationSync(); } catch (e) { console.error(e); }
+    try { setupSplitFormList(); } catch (e) { console.error(e); }
+    try { setupSingleSaveHandlers(); } catch (e) { console.error(e); }
+    try { overrideListRenderers(); } catch (e) { console.error(e); }
+    try { renderPharmaciesListV9(); renderDoctorsListV9(); renderOrdersListV9(); } catch (e) { console.error(e); }
+    try { bindInstantSearch(); } catch (e) { console.error(e); }
+    try { setupOverviewMapV9(); } catch (e) { console.error(e); }
+    try { setupRoutesUi(); } catch (e) { console.error(e); }
+    try { setupHomesUi(); } catch (e) { console.error(e); }
+    try { setupLiveLocationV9(); } catch (e) { console.error(e); }
+    try { renderActivityChartAndTable(); } catch (e) { console.error(e); }
+    try { setupMessengersUi(); } catch (e) { console.error(e); }
+    try { setupBackupExtras(); } catch (e) { console.error(e); }
+    try { setupInstallLinks(); } catch (e) { console.error(e); }
+    try { patchExcelExports(); } catch (e) { console.error(e); }
+    try { setupOnTheFlyNameFields(); } catch (e) { console.error(e); }
+    try { setupWidgetManager(); } catch (e) { console.error(e); }
+    try { hookSwitchTab(); } catch (e) { console.error(e); }
+    console.log("✅ لایه v9.1.0 طنین طب طاها فعال شد (لوگو، نقشه دوطرفه، فرم/لیست همزمان، ذخیره تک‌منبع).");
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
+})();
+
+/* ===================== (bundled from public/iran-facilities.js) ===================== */
+// پایگاه مرجع مراکز درمان ایران — مراکز شاخص هر استان (نه تک‌تک داروخانه‌های کشور)
+// جستجوی نقشه جامع و تب جستجوی اطلاعات از این فهرست + داده‌های ثبت‌شده برنامه استفاده می‌کند.
+window.IRAN_FACILITIES = [
+  {kind:"بیمارستان", name:"بیمارستان شریعتی", specialty:"عمومی و تخصصی", hours:"شبانه‌روزی", province:"تهران", city:"تهران", district:"منطقه ۶", address:"کارگر شمالی", lat:35.7215, lng:51.3908},
+  {kind:"بیمارستان", name:"بیمارستان قلب شهید رجایی", specialty:"قلب و عروق", hours:"شبانه‌روزی", province:"تهران", city:"تهران", district:"منطقه ۳", address:"ولیعصر، نیایش", lat:35.7770, lng:51.3980},
+  {kind:"بیمارستان", name:"بیمارستان امام خمینی", specialty:"عمومی", hours:"شبانه‌روزی", province:"تهران", city:"تهران", district:"منطقه ۶", address:"بلوار کشاورز", lat:35.7080, lng:51.3940},
+  {kind:"داروخانه", name:"داروخانه ۱۳ آبان", specialty:"شبانه‌روزی", hours:"شبانه‌روزی", province:"تهران", city:"تهران", district:"منطقه ۶", address:"انقلاب", lat:35.7008, lng:51.3912},
+  {kind:"داروخانه", name:"داروخانه هلال احمر انقلاب", specialty:"روزانه", hours:"روزانه", province:"تهران", city:"تهران", district:"منطقه ۱۱", address:"انقلاب", lat:35.6890, lng:51.3890},
+  {kind:"پزشک", name:"مطب تخصصی قلب ونک", specialty:"قلب و عروق", hours:"روزانه", province:"تهران", city:"تهران", district:"منطقه ۳", address:"میدان ونک", lat:35.7572, lng:51.4100},
+  {kind:"درمانگاه", name:"درمانگاه شبانه‌روزی ولیعصر", specialty:"عمومی", hours:"شبانه‌روزی", province:"تهران", city:"تهران", district:"منطقه ۳", address:"ولیعصر", lat:35.7820, lng:51.4185},
+  {kind:"بیمارستان", name:"بیمارستان امام رضا (ع)", specialty:"عمومی", hours:"شبانه‌روزی", province:"خراسان رضوی", city:"مشهد", district:"منطقه ۱", address:"خیابان امام رضا", lat:36.2870, lng:59.6150},
+  {kind:"بیمارستان", name:"بیمارستان قائم مشهد", specialty:"عمومی", hours:"شبانه‌روزی", province:"خراسان رضوی", city:"مشهد", district:"منطقه ۲", address:"احمدآباد", lat:36.3050, lng:59.5780},
+  {kind:"داروخانه", name:"داروخانه شبانه‌روزی امام رضا", specialty:"شبانه‌روزی", hours:"شبانه‌روزی", province:"خراسان رضوی", city:"مشهد", district:"منطقه ۱", address:"حرم", lat:36.2880, lng:59.6155},
+  {kind:"بیمارستان", name:"بیمارستان الزهرا اصفهان", specialty:"عمومی", hours:"شبانه‌روزی", province:"اصفهان", city:"اصفهان", district:"منطقه ۵", address:"صفه", lat:32.6070, lng:51.6620},
+  {kind:"داروخانه", name:"داروخانه شبانه‌روزی کاشانی", specialty:"شبانه‌روزی", hours:"شبانه‌روزی", province:"اصفهان", city:"اصفهان", district:"منطقه ۳", address:"کاشانی", lat:32.6610, lng:51.6670},
+  {kind:"بیمارستان", name:"بیمارستان نمازی شیراز", specialty:"عمومی", hours:"شبانه‌روزی", province:"فارس", city:"شیراز", district:"منطقه ۱", address:"زند", lat:29.6280, lng:52.5230},
+  {kind:"پزشک", name:"مطب فوق تخصص گوارش شیراز", specialty:"گوارش", hours:"روزانه", province:"فارس", city:"شیراز", district:"منطقه ۲", address:"ستارخان", lat:29.6350, lng:52.5310},
+  {kind:"بیمارستان", name:"بیمارستان امام رضا تبریز", specialty:"عمومی", hours:"شبانه‌روزی", province:"آذربایجان شرقی", city:"تبریز", district:"منطقه ۲", address:"گلگشت", lat:38.0660, lng:46.3220},
+  {kind:"داروخانه", name:"داروخانه شبانه‌روزی ولیعصر تبریز", specialty:"شبانه‌روزی", hours:"شبانه‌روزی", province:"آذربایجان شرقی", city:"تبریز", district:"منطقه ۱", address:"ولیعصر", lat:38.0740, lng:46.2910},
+  {kind:"بیمارستان", name:"بیمارستان امام خمینی ارومیه", specialty:"عمومی", hours:"شبانه‌روزی", province:"آذربایجان غربی", city:"ارومیه", district:"منطقه ۱", address:" prof", lat:37.5480, lng:45.0720},
+  {kind:"بیمارستان", name:"بیمارستان مدنی کرج", specialty:"عمومی", hours:"شبانه‌روزی", province:"البرز", city:"کرج", district:"منطقه ۱", address:"طالقانی", lat:35.8400, lng:50.9390},
+  {kind:"داروخانه", name:"داروخانه شبانه‌روزی گوهردشت", specialty:"شبانه‌روزی", hours:"شبانه‌روزی", province:"البرز", city:"کرج", district:"منطقه ۲", address:"گوهردشت", lat:35.8480, lng:50.9670},
+  {kind:"بیمارستان", name:"بیمارستان گلستان اهواز", specialty:"عمومی", hours:"شبانه‌روزی", province:"خوزستان", city:"اهواز", district:"منطقه ۲", address:"گلستان", lat:31.3180, lng:48.6700},
+  {kind:"بیمارستان", name:"بیمارستان امام خمینی ساری", specialty:"عمومی", hours:"شبانه‌روزی", province:"مازندران", city:"ساری", district:"منطقه ۱", address:"امیرمازندرانی", lat:36.5630, lng:53.0600},
+  {kind:"بیمارستان", name:"بیمارستان رازی رشت", specialty:"عمومی", hours:"شبانه‌روزی", province:"گیلان", city:"رشت", district:"منطقه ۲", address:"لاکان", lat:37.2680, lng:49.5890},
+  {kind:"بیمارستان", name:"بیمارستان شهید بهشتی قم", specialty:"عمومی", hours:"شبانه‌روزی", province:"قم", city:"قم", district:"منطقه ۱", address:"شهید بهشتی", lat:34.6416, lng:50.8746},
+  {kind:"بیمارستان", name:"بیمارستان افضلی‌پور کرمان", specialty:"عمومی", hours:"شبانه‌روزی", province:"کرمان", city:"کرمان", district:"منطقه ۱", address:"جاده هفت باغ", lat:30.2839, lng:57.0834},
+  {kind:"بیمارستان", name:"بیمارستان امام رضا کرمانشاه", specialty:"عمومی", hours:"شبانه‌روزی", province:"کرمانشاه", city:"کرمانشاه", district:"منطقه ۲", address:"دولت‌آباد", lat:34.3142, lng:47.0650},
+  {kind:"بیمارستان", name:"بیمارستان پنجم آذر گرگان", specialty:"عمومی", hours:"شبانه‌روزی", province:"گلستان", city:"گرگان", district:"منطقه ۱", address:"ولیعصر", lat:36.8456, lng:54.4393},
+  {kind:"بیمارستان", name:"بیمارستان شهید محمدی بندرعباس", specialty:"عمومی", hours:"شبانه‌روزی", province:"هرمزگان", city:"بندرعباس", district:"منطقه ۱", address:"امام خمینی", lat:27.1832, lng:56.2666},
+  {kind:"بیمارستان", name:"بیمارستان شهدای عشایر خرم‌آباد", specialty:"عمومی", hours:"شبانه‌روزی", province:"لرستان", city:"خرم‌آباد", district:"منطقه ۱", address:"کمالوند", lat:33.4878, lng:48.3558},
+  {kind:"بیمارستان", name:"بیمارستان بعثت همدان", specialty:"عمومی", hours:"شبانه‌روزی", province:"همدان", city:"همدان", district:"منطقه ۱", address:"میدان امام", lat:34.7992, lng:48.5146},
+  {kind:"بیمارستان", name:"بیمارستان کوثر سنندج", specialty:"عمومی", hours:"شبانه‌روزی", province:"کردستان", city:"سنندج", district:"منطقه ۱", address:"پاسداران", lat:35.3219, lng:46.9862},
+  {kind:"بیمارستان", name:"بیمارستان ولیعصر اراک", specialty:"عمومی", hours:"شبانه‌روزی", province:"مرکزی", city:"اراک", district:"منطقه ۱", address:"شهید بهشتی", lat:34.0954, lng:49.7013},
+  {kind:"بیمارستان", name:"بیمارستان امام رضا اردبیل", specialty:"عمومی", hours:"شبانه‌روزی", province:"اردبیل", city:"اردبیل", district:"منطقه ۱", address:"دانشگاه", lat:38.2498, lng:48.2933},
+  {kind:"بیمارستان", name:"بیمارستان شهید صدوقی یزد", specialty:"عمومی", hours:"شبانه‌روزی", province:"یزد", city:"یزد", district:"منطقه ۱", address:"صفائیه", lat:31.8974, lng:54.3569},
+  {kind:"بیمارستان", name:"بیمارستان بوعلی قزوین", specialty:"عمومی", hours:"شبانه‌روزی", province:"قزوین", city:"قزوین", district:"منطقه ۱", address:"نواب", lat:36.2797, lng:50.0049},
+  {kind:"بیمارستان", name:"بیمارستان ولیعصر زنجان", specialty:"عمومی", hours:"شبانه‌روزی", province:"زنجان", city:"زنجان", district:"منطقه ۱", address:" prof", lat:36.6736, lng:48.4787},
+  {kind:"بیمارستان", name:"بیمارستان کوثر سمنان", specialty:"عمومی", hours:"شبانه‌روزی", province:"سمنان", city:"سمنان", district:"منطقه ۱", address:"مدرس", lat:35.5769, lng:53.3971},
+  {kind:"بیمارستان", name:"بیمارستان علی‌ابن‌ابیطالب زاهدان", specialty:"عمومی", hours:"شبانه‌روزی", province:"سیستان و بلوچستان", city:"زاهدان", district:"منطقه ۱", address:"معلم", lat:29.4963, lng:60.8629},
+  {kind:"بیمارستان", name:"بیمارستان شهدای خلیج فارس بوشهر", specialty:"عمومی", hours:"شبانه‌روزی", province:"بوشهر", city:"بوشهر", district:"منطقه ۱", address:"امام خمینی", lat:28.9234, lng:50.8203},
+  {kind:"بیمارستان", name:"بیمارستان آیت‌الله کاشانی شهرکرد", specialty:"عمومی", hours:"شبانه‌روزی", province:"چهارمحال و بختیاری", city:"شهرکرد", district:"منطقه ۱", address:"ملت", lat:32.3256, lng:50.8644},
+  {kind:"بیمارستان", name:"بیمارستان امام حسن بجنورد", specialty:"عمومی", hours:"شبانه‌روزی", province:"خراسان شمالی", city:"بجنورد", district:"منطقه ۱", address:"طالقانی", lat:37.4747, lng:57.3290},
+  {kind:"بیمارستان", name:"بیمارستان امام رضا بیرجند", specialty:"عمومی", hours:"شبانه‌روزی", province:"خراسان جنوبی", city:"بیرجند", district:"منطقه ۱", address:"غفاری", lat:32.8649, lng:59.2262},
+  {kind:"بیمارستان", name:"بیمارستان امام سجاد یاسوج", specialty:"عمومی", hours:"شبانه‌روزی", province:"کهگیلویه و بویراحمد", city:"یاسوج", district:"منطقه ۱", address:"دانشگاه", lat:30.6684, lng:51.5880},
+  {kind:"بیمارستان", name:"بیمارستان امام خمینی ایلام", specialty:"عمومی", hours:"شبانه‌روزی", province:"ایلام", city:"ایلام", district:"منطقه ۱", address:"آیت‌الله حیدری", lat:33.6374, lng:46.4227}
+];
+
+/* ===================== (bundled from public/crm-features-v10.js) ===================== */
+// v10 — ورود جدا، ویجت داشبورد، تارگت، عیب‌یابی تصویری، افزودن لحظه‌ای، پنهان‌سازی دسترسی
+(function () {
+  "use strict";
+
+  function $(id) { return document.getElementById(id); }
+  function ensure() {
+    if (!window.state) return;
+    if (!state.settings) state.settings = {};
+    if (!state.settings.dashWidgets) {
+      state.settings.dashWidgets = ["stats", "salesBar", "visitPie", "orders", "leaves"];
+    }
+  }
+
+  function keepAlive() {
+    const ping = function () {
+      fetch("/api/health").then(function (r) { return r.json(); }).then(function (j) {
+        window.__lastHealth = j;
+        var el = $("globalOnlineStatusBadge");
+        if (el) { el.textContent = "🟢 آنلاین"; el.style.background = "#10b981"; }
+      }).catch(function () {
+        var el = $("globalOnlineStatusBadge");
+        if (el) { el.textContent = "🔴 آفلاین / صف محلی"; el.style.background = "#ef4444"; }
+      });
+    };
+    ping();
+    setInterval(ping, 4 * 60 * 1000);
+  }
+
+  function applySessionUser() {
+    var name = sessionStorage.getItem("crmUserName");
+    var role = sessionStorage.getItem("crmUserRole");
+    if (name) {
+      try { currentUserName = name; } catch (e) {}
+      var lab = $("currentUserRoleLabel");
+      if (lab) lab.textContent = role + " — " + name;
+    }
+    if (role && role.indexOf("نماینده") !== -1) {
+      document.querySelectorAll(".nav-item, .side-menu-item").forEach(function (b) {
+        var t = b.getAttribute("data-target") || b.getAttribute("data-side-target") || "";
+        if (t === "tab-users-permissions" || t === "tab-messengers" || t === "tab-backup") {
+          b.style.display = "none";
+        }
+      });
+    }
+  }
+
+  function setupInstantAdd() {
+    ["pharmacyName", "pharmacyManager", "doctorName", "doctorSpecialty", "orderPharmacyName", "productName", "productCategory"].forEach(function (id) {
+      var el = $(id);
+      if (!el || el.dataset.fly === "1") return;
+      el.dataset.fly = "1";
+      var listId = id + "FlyList";
+      if (!document.getElementById(listId)) {
+        var dl = document.createElement("datalist");
+        dl.id = listId;
+        el.setAttribute("list", listId);
+        el.parentNode.appendChild(dl);
+      }
+      var fill = function () {
+        var dl = document.getElementById(listId);
+        if (!dl || !state) return;
+        var vals = [];
+        if (id.indexOf("pharmacyName") === 0 || id === "orderPharmacyName") vals = (state.pharmacies || []).map(function (p) { return p.name; });
+        else if (id === "doctorName") vals = (state.doctors || []).map(function (d) { return d.name; });
+        else if (id === "doctorSpecialty") vals = (state.doctors || []).map(function (d) { return d.specialty; });
+        else if (id === "productName") vals = (state.products || []).map(function (p) { return p.name; });
+        else if (id === "productCategory") vals = (state.products || []).map(function (p) { return p.category; });
+        else if (id === "pharmacyManager") vals = (state.pharmacies || []).map(function (p) { return p.manager; }).filter(Boolean);
+        dl.innerHTML = "";
+        vals.filter(function (v, i, a) { return v && a.indexOf(v) === i; }).forEach(function (v) {
+          var o = document.createElement("option");
+          o.value = v;
+          dl.appendChild(o);
+        });
+      };
+      el.addEventListener("focus", fill);
+      el.addEventListener("blur", function () {
+        if (el.value.trim()) fill();
+      });
+    });
+  }
+
+  var WIDGET_DEFS = [
+    { id: "stats", title: "آمار کلی کارت‌ها" },
+    { id: "salesBar", title: "نمودار میله‌ای فروش نمایندگان" },
+    { id: "visitPie", title: "نمودار دایره‌ای ویزیت" },
+    { id: "orders", title: "سفارشات اخیر" },
+    { id: "leaves", title: "مرخصی‌های جاری" },
+    { id: "activity", title: "فعالیت لحظه‌ای" }
+  ];
+
+  function renderWidgetPicker() {
+    var box = $("dashboardWidgetPicker");
+    if (!box || !state) return;
+    var on = state.settings.dashWidgets || [];
+    box.innerHTML = WIDGET_DEFS.map(function (w) {
+      var chk = on.indexOf(w.id) !== -1 ? "checked" : "";
+      return '<label class="widget-chip"><input type="checkbox" data-w="' + w.id + '" ' + chk + '> ' + w.title + "</label>";
+    }).join("");
+    box.querySelectorAll("input").forEach(function (inp) {
+      inp.addEventListener("change", function () {
+        var id = inp.getAttribute("data-w");
+        var arr = state.settings.dashWidgets.slice();
+        if (inp.checked && arr.indexOf(id) === -1) arr.push(id);
+        if (!inp.checked) arr = arr.filter(function (x) { return x !== id; });
+        state.settings.dashWidgets = arr;
+        if (typeof saveState === "function") saveState(false);
+        renderDashWidgets();
+      });
+    });
+    var addBtn = $("btnAddDashWidget");
+    if (addBtn && !addBtn.dataset.b) {
+      addBtn.dataset.b = "1";
+      addBtn.addEventListener("click", function () {
+        alert("گزارش‌ها را از چک‌لیست بالا تیک بزنید یا بردارید.");
+      });
+    }
+  }
+
+  function barHtml(items) {
+    var max = 1;
+    items.forEach(function (it) { if (it.v > max) max = it.v; });
+    return '<div class="mini-bars">' + items.map(function (it) {
+      var h = Math.max(8, Math.round((it.v / max) * 110));
+      return '<div class="mini-bar"><div class="mini-bar-fill" style="height:' + h + 'px"></div><span>' + it.l + "</span></div>";
+    }).join("") + "</div>";
+  }
+
+  function renderDashWidgets() {
+    var host = $("dashboardWidgetsHost");
+    if (!host || !state) return;
+    var on = state.settings.dashWidgets || [];
+    var html = "";
+    if (on.indexOf("salesBar") !== -1) {
+      var sales = (state.reps || []).map(function (r) {
+        var sum = (state.orders || []).filter(function (o) { return o.repName === r.name; }).reduce(function (s, o) { return s + (o.totalAmount || 0); }, 0);
+        return { l: r.name.split(" ")[0], v: sum || 1 };
+      });
+      html += '<div class="card"><div class="card-header"><div class="card-title">📊 فروش نمایندگان</div></div>' + barHtml(sales) + "</div>";
+    }
+    if (on.indexOf("visitPie") !== -1) {
+      var ph = (state.pharmacies || []).length;
+      var doc = (state.doctors || []).length;
+      var tot = Math.max(1, ph + doc);
+      var a = Math.round((ph / tot) * 100);
+      html += '<div class="card"><div class="card-header"><div class="card-title">🥧 نسبت مراکز</div></div><div class="pie-row"><div class="pie" style="background:conic-gradient(#0d9488 0 ' + a + '%,#2563eb ' + a + '% 100%)"></div><div>داروخانه ' + ph + ' / پزشک ' + doc + "</div></div></div>";
+    }
+    if (on.indexOf("orders") !== -1) {
+      html += '<div class="card"><div class="card-header"><div class="card-title">📦 سفارشات اخیر</div></div><ul class="plain-list">' +
+        (state.orders || []).slice(0, 5).map(function (o) {
+          return "<li>" + o.pharmacyName + " — " + Number(o.totalAmount || 0).toLocaleString("fa-IR") + " ریال</li>";
+        }).join("") + "</ul></div>";
+    }
+    if (on.indexOf("leaves") !== -1) {
+      html += '<div class="card"><div class="card-header"><div class="card-title">📝 مرخصی جاری</div></div><ul class="plain-list">' +
+        (state.leaves || []).map(function (l) { return "<li>" + l.repName + " (" + (l.status || "") + ")</li>"; }).join("") + "</ul></div>";
+    }
+    if (on.indexOf("activity") !== -1) {
+      html += '<div class="card"><div class="card-header"><div class="card-title">⏱️ فعالیت</div></div><ul class="plain-list">' +
+        (state.activityLog || []).slice(0, 6).map(function (a) { return "<li>" + a.repName + " — " + a.action + "</li>"; }).join("") + "</ul></div>";
+    }
+    host.innerHTML = html;
+    var builtIn = $("dashboardChartsWidget");
+    if (builtIn) builtIn.style.display = on.indexOf("salesBar") !== -1 ? "" : "none";
+  }
+
+  function enhanceSalesTargets() {
+    var year = $("tgtYearInput");
+    if (year && year.tagName === "INPUT") {
+      var sel = document.createElement("select");
+      sel.id = "tgtYearInput";
+      sel.className = "form-select";
+      ["1403", "1404", "1405", "1406", "1407"].forEach(function (y) {
+        var o = document.createElement("option");
+        o.value = y; o.textContent = y;
+        if (y === "1405") o.selected = true;
+        sel.appendChild(o);
+      });
+      year.parentNode.replaceChild(sel, year);
+    }
+    var prod = $("tgtProductSelect");
+    var cnt = $("tgtCountInput");
+    if (prod && cnt) {
+      var recalc = function () {
+        var p = (state.products || []).find(function (x) { return x.name === prod.value; });
+        var n = parseInt(cnt.value, 10) || 0;
+        var d = n * (p ? (p.distributorPrice || p.price || 40000) : 0);
+        var h = n * (p ? (p.pharmacyPrice || p.price || 45000) : 0);
+        if ($("tgtCalcDistPrice")) $("tgtCalcDistPrice").textContent = d.toLocaleString("fa-IR") + " ریال";
+        if ($("tgtCalcPhPrice")) $("tgtCalcPhPrice").textContent = h.toLocaleString("fa-IR") + " ریال";
+      };
+      prod.addEventListener("change", recalc);
+      cnt.addEventListener("input", recalc);
+    }
+    renderTgtSummary();
+  }
+
+  function renderTgtSummary() {
+    var box = $("tgtSummaryBox");
+    if (!box || !state) return;
+    var map = {};
+    (state.salesTargets || []).forEach(function (t) {
+      if (!map[t.repName]) map[t.repName] = { t: 0, a: 0 };
+      map[t.repName].t += t.targetAmount || 0;
+      map[t.repName].a += t.achievedAmount || 0;
+    });
+    box.innerHTML = "<h4>گزارش تجمیعی نمایندگان</h4>" + Object.keys(map).map(function (n) {
+      var x = map[n];
+      var p = x.t ? Math.round(x.a / x.t * 100) : 0;
+      return "<div>" + n + " — هدف " + x.t.toLocaleString("fa-IR") + " / تحقق " + x.a.toLocaleString("fa-IR") + " (" + p + "٪)</div>";
+    }).join("") || "<div>هنوز تارگتی ثبت نشده.</div>";
+  }
+
+  function renderDiagnostics() {
+    var box = $("diagnosticsVisual");
+    var st = $("diagnosticsStatusBox");
+    if (!box) return;
+    var rows = [
+      ["مرورگر آنلاین", navigator.onLine],
+      ["ورود نشست", sessionStorage.getItem("crmLoggedIn") === "1"],
+      ["Leaflet", typeof L !== "undefined"],
+      ["حافظه محلی", !!localStorage.getItem("CRM_APP_STATE_V2")],
+      ["Service Worker", "serviceWorker" in navigator],
+      ["تعداد داروخانه", (state && state.pharmacies || []).length],
+      ["تعداد پزشک", (state && state.doctors || []).length],
+      ["مراکز مرجع ایران", (window.IRAN_FACILITIES || []).length]
+    ];
+    box.innerHTML = rows.map(function (r) {
+      var ok = r[1] === true || (typeof r[1] === "number" && r[1] >= 0);
+      return '<div class="diag-row"><span class="diag-dot ' + (r[1] ? "ok" : "bad") + '"></span><strong>' + r[0] + "</strong><span>" + r[1] + "</span></div>";
+    }).join("");
+    fetch("/api/health").then(function (r) { return r.json(); }).then(function (j) {
+      if (st) { st.style.background = "#f0fdf4"; st.style.color = "#166534"; st.textContent = "سرور سالم است — نسخه " + (j.version || "") + " — " + j.timestamp; }
+      box.innerHTML += '<div class="diag-row"><span class="diag-dot ok"></span><strong>سلامت سرور</strong><span>' + (j.status || "ok") + "</span></div>";
+    }).catch(function () {
+      if (st) { st.style.background = "#fef2f2"; st.style.color = "#b91c1c"; st.textContent = "سرور پاسخ نداد. کار آفلاین روی حافظه محلی ادامه دارد."; }
+    });
+  }
+
+  function mergeFacilitiesIntoSearch() {
+    if (!window.IRAN_FACILITIES || !state) return;
+    if (!state.hospitals) state.hospitals = [];
+    window.IRAN_FACILITIES.filter(function (f) { return f.kind === "بیمارستان" || f.kind === "درمانگاه"; }).forEach(function (f) {
+      if (!state.hospitals.some(function (h) { return h.name === f.name; })) {
+        state.hospitals.push({
+          id: "fac-" + f.name, name: f.name, type: f.kind, specialty: f.specialty,
+          province: f.province, city: f.city, district: f.district, address: f.address,
+          lat: f.lat, lng: f.lng, hours: f.hours
+        });
+      }
+    });
+  }
+
+  function forceListsVisible() {
+    ["cardPhForm", "cardPhList", "cardDocForm", "cardDocList", "cardOrdForm", "cardOrdList"].forEach(function (id) {
+      var el = $(id);
+      if (el) el.style.setProperty("display", "block", "important");
+    });
+  }
+
+  function boot() {
+    try { ensure(); } catch (e) {}
+    try { keepAlive(); } catch (e) {}
+    try { applySessionUser(); } catch (e) {}
+    try { setupInstantAdd(); } catch (e) {}
+    try { renderWidgetPicker(); renderDashWidgets(); } catch (e) {}
+    try { enhanceSalesTargets(); } catch (e) {}
+    try { renderDiagnostics(); } catch (e) {}
+    try { mergeFacilitiesIntoSearch(); } catch (e) {}
+    try { forceListsVisible(); } catch (e) {}
+    var orig = window.switchTab;
+    if (typeof orig === "function") {
+      window.switchTab = function (id) {
+        orig(id);
+        setTimeout(function () {
+          forceListsVisible();
+          if (id === "tab-troubleshooting") renderDiagnostics();
+          if (id === "tab-sales-targets") renderTgtSummary();
+          if (id === "tab-dashboard") renderDashWidgets();
+        }, 80);
+      };
+    }
+    console.log("v10 ready");
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+
+/* ===================== (bundled from public/crm-features-v11.js) ===================== */
+// v11 — تغییر رمز، ردیف واقعی، اکسل خط‌کشی، ویزیت زنده، تارگت، ستون‌ها، دسترسی ریز
+(function () {
+  "use strict";
+
+  function $(id) { return document.getElementById(id); }
+  function logOp(msg) {
+    if (!window.state) return;
+    if (!state.diagLog) state.diagLog = [];
+    var t = new Date().toLocaleString("fa-IR", { timeZone: "Asia/Tehran" });
+    state.diagLog.unshift({ t: t, msg: String(msg), user: (typeof currentUserName === "string" ? currentUserName : "سیستم") });
+    if (state.diagLog.length > 200) state.diagLog.length = 200;
+    try { localStorage.setItem("CRM_DIAG_LOG", JSON.stringify(state.diagLog)); } catch (e) {}
+  }
+
+  function persistUsersToAuth() {
+    try {
+      var map = {};
+      (state.users || []).forEach(function (u) {
+        map[u.username] = { password: u.password, phone: u.phone, name: u.fullName, role: u.role, id: u.id };
+      });
+      localStorage.setItem("CRM_USERS_AUTH", JSON.stringify(map));
+    } catch (e) {}
+  }
+
+  window.changeUserPassword = function (userId) {
+    var u = (state.users || []).find(function (x) { return x.id === userId; });
+    if (!u) return;
+    var cur = prompt("رمز فعلی «" + u.fullName + "» را وارد کنید:");
+    if (cur === null) return;
+    if (cur !== u.password) { alert("رمز فعلی نادرست است."); return; }
+    var nw = prompt("رمز عبور جدید:");
+    if (!nw || !String(nw).trim()) { alert("رمز جدید خالی است."); return; }
+    var nw2 = prompt("تکرار رمز جدید:");
+    if (nw !== nw2) { alert("دو رمز جدید یکسان نیستند."); return; }
+    u.password = String(nw).trim();
+    saveState();
+    persistUsersToAuth();
+    logOp("تغییر رمز کاربر " + u.username);
+    if (typeof renderUserCardsList === "function") renderUserCardsList();
+    alert("رمز «" + u.fullName + "» در سیستم اصلی ذخیره شد. از ورود بعدی همین رمز معتبر است.");
+  };
+
+  function patchUserCardsWithPasswordChange() {
+    if (typeof renderUserCardsList !== "function") return;
+    var orig = renderUserCardsList;
+    window.renderUserCardsList = function () {
+      orig();
+      var cards = document.querySelectorAll("#userCardsContainer > div");
+      (state.users || []).forEach(function (u, i) {
+        var card = cards[i];
+        if (!card || card.querySelector(".btn-change-pass")) return;
+        var row = card.querySelector("div[style*='f8fafc']") || card.lastElementChild;
+        if (!row) return;
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "btn btn-primary btn-sm btn-change-pass";
+        btn.style.background = "#0d9488";
+        btn.textContent = "🔑 تغییر رمز عبور";
+        btn.addEventListener("click", function () { changeUserPassword(u.id); });
+        var holder = row.querySelector("div") || row;
+        holder.appendChild(btn);
+      });
+    };
+    renderUserCardsList();
+  }
+
+  function gregorianNow() {
+    if (window.CRMJalali && typeof window.CRMJalali.gregorianBadge === "function") {
+      var gb = window.CRMJalali.gregorianBadge();
+      return { m: gb.mon, d: gb.day };
+    }
+    var GMON = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+    var parts = new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Tehran", month: "numeric", day: "numeric" }).formatToParts(new Date());
+    var mi = 8, d = "13";
+    parts.forEach(function (p) {
+      if (p.type === "month") mi = parseInt(p.value, 10);
+      if (p.type === "day") d = String(parseInt(p.value, 10));
+    });
+    return { m: GMON[mi - 1] || "AUG", d: d };
+  }
+
+  function refreshAllDateBadges() {
+    var g = gregorianNow();
+    document.querySelectorAll(".jalali-badge-header").forEach(function (el) { el.textContent = g.m; });
+    document.querySelectorAll(".jalali-badge-day").forEach(function (el) { el.textContent = g.d; });
+  }
+
+  function setupInstantAddAll() {
+    document.querySelectorAll("input.form-input[type='text'], input.form-input:not([type])").forEach(function (el) {
+      if (el.dataset.flyAll === "1") return;
+      if (el.id && /Date|Lat|Lng|Phone|password|Password|username|Username/.test(el.id)) return;
+      el.dataset.flyAll = "1";
+      var listId = (el.id || ("fly" + Math.random().toString(36).slice(2))) + "AllList";
+      if (!document.getElementById(listId)) {
+        var dl = document.createElement("datalist");
+        dl.id = listId;
+        el.setAttribute("list", listId);
+        el.parentNode.appendChild(dl);
+      }
+      el.addEventListener("blur", function () {
+        var v = el.value.trim();
+        if (!v) return;
+        var dl = document.getElementById(listId);
+        if (!dl) return;
+        var exists = false;
+        Array.prototype.forEach.call(dl.options, function (o) { if (o.value === v) exists = true; });
+        if (!exists) {
+          var o = document.createElement("option");
+          o.value = v;
+          dl.appendChild(o);
+        }
+        if (!state.typedOptions) state.typedOptions = {};
+        var key = el.id || "misc";
+        if (!state.typedOptions[key]) state.typedOptions[key] = [];
+        if (state.typedOptions[key].indexOf(v) === -1) state.typedOptions[key].push(v);
+        try { saveState(false); } catch (e) {}
+      });
+      el.addEventListener("focus", function () {
+        var dl = document.getElementById(listId);
+        if (!dl || !state || !state.typedOptions) return;
+        var arr = state.typedOptions[el.id] || [];
+        dl.innerHTML = "";
+        arr.forEach(function (v) {
+          var o = document.createElement("option");
+          o.value = v;
+          dl.appendChild(o);
+        });
+      });
+    });
+  }
+
+  function realRowLists() {
+    function numberTable(tbodyId) {
+      var tb = $(tbodyId);
+      if (!tb) return;
+      Array.prototype.forEach.call(tb.rows, function (tr, i) {
+        if (tr.cells[0]) tr.cells[0].textContent = String(i + 1);
+      });
+    }
+    numberTable("tablePharmaciesBody");
+    numberTable("tableDoctorsBody");
+    numberTable("tableOrdersBody");
+  }
+
+  function downloadExcelBordered(filename, headers, rows) {
+    var esc = function (v) {
+      var text=String(v == null ? "" : v);
+      if (/^[=+@]/.test(text) || (/^-[^0-9]/.test(text))) text="'"+text;
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    };
+    var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"></head><body>';
+    html += '<table border="1" cellspacing="0" cellpadding="4" style="border-collapse:collapse;border:1px solid #000">';
+    html += "<tr>" + headers.map(function (h) {
+      return '<th style="border:1px solid #000;background:#87CEEB;color:#000;font-weight:bold">' + esc(h) + "</th>";
+    }).join("") + "</tr>";
+    rows.forEach(function (r) {
+      html += "<tr>" + r.map(function (c) {
+        var filled = c !== null && c !== undefined && String(c).trim() !== "";
+        return '<td' + (filled ? ' style="border:1px solid #000"' : '') + '>' + esc(c) + "</td>";
+      }).join("") + "</tr>";
+    });
+    html += "</table></body></html>";
+    var blob = new Blob(["\uFEFF" + html], { type: "application/vnd.ms-excel;charset=utf-8;" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename.replace(/\.csv$/i, ".xls");
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+
+  function patchExcel() {
+    if (typeof downloadCSVFile !== "function") return;
+    var orig = downloadCSVFile;
+    window.downloadCSVFile = function (filename, headers, rows) {
+      var hdrs = headers.slice();
+      var rws = rows.map(function (r) { return r.slice(); });
+      if (hdrs[0] !== "ردیف") {
+        hdrs = ["ردیف"].concat(hdrs);
+        rws = rws.map(function (r, i) { return [i + 1].concat(r); });
+      }
+      // قانون سراسری اکسل: ستون اول «ردیف» و ستون دوم «نام نماینده» باشد.
+      var repAt = hdrs.findIndex(function (h) { return /نام نماینده|نماینده علمی|نماینده/.test(String(h)); });
+      if (repAt < 0) {
+        hdrs.splice(1, 0, "نام نماینده");
+        rws = rws.map(function (r) { var x = r.slice(); x.splice(1, 0, (typeof currentUserName === "string" ? currentUserName : "—")); return x; });
+      } else if (repAt !== 1) {
+        var repHeader = hdrs.splice(repAt, 1)[0]; hdrs.splice(1, 0, repHeader);
+        rws = rws.map(function (r) { var x = r.slice(), v = x.splice(repAt, 1)[0]; x.splice(1, 0, v); return x; });
+      }
+      // فقط یک فایل اکسل دریافت شود؛ اجرای orig قبلاً همان گزارش را دوباره با پسوند CSV دانلود می‌کرد.
+      downloadExcelBordered(filename, hdrs, rws);
+    };
+  }
+
+  var visitWatchId = null;
+  var visitSession = null;
+
+  function lastKnownFix() {
+    try { return JSON.parse(localStorage.getItem("CRM_LAST_GPS") || "null"); } catch (e) { return null; }
+  }
+  function saveLastFix(lat, lng, acc) {
+    try { localStorage.setItem("CRM_LAST_GPS", JSON.stringify({ lat: lat, lng: lng, acc: acc, t: Date.now() })); } catch (e) {}
+  }
+
+  function startVisitTracking() {
+    if (!state) return;
+    if (!state.visitTracks) state.visitTracks = [];
+    var name = (typeof currentUserName === "string" && currentUserName) ? currentUserName : "نماینده";
+    visitSession = {
+      id: "vt-" + Date.now(),
+      repName: name,
+      startTime: new Date().toLocaleTimeString("fa-IR", { timeZone: "Asia/Tehran" }),
+      endTime: "",
+      points: [],
+      stops: [],
+      active: true
+    };
+    state.visitTracks.push(visitSession);
+    saveState();
+    logOp("شروع ویزیت " + name);
+    var lastStopAt = Date.now();
+    var lastLat = null, lastLng = null;
+    var pushPoint = function (lat, lng, acc, source) {
+      if (!visitSession || !visitSession.active) return;
+      var pt = { lat: Number(lat), lng: Number(lng), acc: acc || 0, t: Date.now(), source: source || "gps" };
+      visitSession.points.push(pt);
+      saveLastFix(pt.lat, pt.lng, pt.acc);
+      if (lastLat != null) {
+        var d = Math.hypot(pt.lat - lastLat, pt.lng - lastLng);
+        if (d < 0.00015 && Date.now() - lastStopAt > 45000) {
+          visitSession.stops.push({ lat: pt.lat, lng: pt.lng, time: new Date().toLocaleTimeString("fa-IR"), name: "توقف" });
+          lastStopAt = Date.now();
+        }
+      }
+      lastLat = pt.lat; lastLng = pt.lng;
+      saveState(false);
+      drawVisitOnMaps();
+      updateVisitUi();
+    };
+    if (navigator.geolocation) {
+      visitWatchId = navigator.geolocation.watchPosition(
+        function (pos) { pushPoint(pos.coords.latitude, pos.coords.longitude, pos.coords.accuracy, "gps"); },
+        function () {
+          var lk = lastKnownFix();
+          if (lk) pushPoint(lk.lat, lk.lng, lk.acc, "last-known");
+        },
+        { enableHighAccuracy: true, maximumAge: 3000, timeout: 12000 }
+      );
+    }
+    if (window._visitKeepAlive) clearInterval(window._visitKeepAlive);
+    window._visitKeepAlive = setInterval(function () {
+      if (!visitSession || !visitSession.active) return;
+      var lk = lastKnownFix();
+      if (lk) pushPoint(lk.lat, lk.lng, lk.acc, "hold");
+    }, 20000);
+    updateVisitUi();
+    alert("ویزیت شروع شد. مسیر حتی در نقطه کور با آخرین موقعیت معتبر ادامه می‌یابد تا پایان ویزیت.");
+  }
+
+  function stopVisitTracking() {
+    if (visitWatchId != null && navigator.geolocation) {
+      navigator.geolocation.clearWatch(visitWatchId);
+      visitWatchId = null;
+    }
+    if (window._visitKeepAlive) { clearInterval(window._visitKeepAlive); window._visitKeepAlive = null; }
+    if (visitSession) {
+      visitSession.active = false;
+      visitSession.endTime = new Date().toLocaleTimeString("fa-IR", { timeZone: "Asia/Tehran" });
+      saveState();
+      logOp("پایان ویزیت " + visitSession.repName + " — " + (visitSession.points || []).length + " نقطه");
+    }
+    updateVisitUi();
+    drawVisitOnMaps();
+    alert("ویزیت پایان یافت و مسیر در رصد تردد ذخیره شد.");
+  }
+
+  function updateVisitUi() {
+    var st = $("visitStatusBox");
+    if (!st) return;
+    if (visitSession && visitSession.active) {
+      st.innerHTML = "در حال ویزیت — " + (visitSession.points || []).length + " نقطه ثبت شده از " + visitSession.startTime;
+      st.style.background = "#ecfdf5";
+    } else if (visitSession) {
+      st.innerHTML = "ویزیت قبلی پایان یافت: " + visitSession.startTime + " تا " + visitSession.endTime;
+      st.style.background = "#f8fafc";
+    } else {
+      st.innerHTML = "ویزیتی فعال نیست. برای شروع مسیر دکمه شروع ویزیت را بزنید.";
+    }
+  }
+
+  var visitMap = null;
+  function drawVisitOnMaps() {
+    if (typeof L === "undefined") return;
+    var el = $("map-my-visit");
+    if (el && !visitMap) {
+      visitMap = L.map("map-my-visit").setView([35.72, 51.42], 13);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19 }).addTo(visitMap);
+    }
+    if (visitMap && visitSession && visitSession.points.length) {
+      if (visitMap._line) visitMap.removeLayer(visitMap._line);
+      if (visitMap._marks) visitMap._marks.forEach(function (m) { visitMap.removeLayer(m); });
+      visitMap._marks = [];
+      var latlngs = visitSession.points.map(function (p) { return [p.lat, p.lng]; });
+      visitMap._line = L.polyline(latlngs, { color: "#0d9488", weight: 4 }).addTo(visitMap);
+      (visitSession.stops || []).forEach(function (s) {
+        var mk = L.circleMarker([s.lat, s.lng], { radius: 7, color: "#ea580c", fillColor: "#ea580c", fillOpacity: 1 }).bindTooltip("توقف " + (s.time || ""));
+        mk.addTo(visitMap);
+        visitMap._marks.push(mk);
+      });
+      visitMap.fitBounds(latlngs, { padding: [30, 30] });
+    }
+  }
+
+  function setupVisitButtons() {
+    var b1 = $("btnStartVisit");
+    var b2 = $("btnEndVisit");
+    if (b1) b1.addEventListener("click", startVisitTracking);
+    if (b2) b2.addEventListener("click", stopVisitTracking);
+    updateVisitUi();
+  }
+
+  function renderActivityMapAndChart() {
+    var box = $("activityChartBox");
+    if (box && state) {
+      var counts = {};
+      (state.activityLog || []).forEach(function (a) { counts[a.repName] = (counts[a.repName] || 0) + 1; });
+      var max = 1;
+      Object.keys(counts).forEach(function (k) { if (counts[k] > max) max = counts[k]; });
+      box.innerHTML = Object.keys(counts).map(function (n) {
+        var pct = Math.round(counts[n] / max * 100);
+        return '<div class="activity-bar-card"><strong>' + n + "</strong><div>" + counts[n] + ' فعالیت</div><div class="activity-bar-track"><div class="activity-bar-fill" style="width:' + pct + '%"></div></div></div>';
+      }).join("") || "<div>فعالیتی نیست</div>";
+    }
+    var el = $("map-activity-log");
+    if (el && typeof L !== "undefined") {
+      if (!window._actMap) {
+        window._actMap = L.map("map-activity-log").setView([35.72, 51.42], 11);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19 }).addTo(window._actMap);
+      }
+      if (window._actMarks) window._actMarks.forEach(function (m) { window._actMap.removeLayer(m); });
+      window._actMarks = [];
+      (state.reps || []).forEach(function (r) {
+        if (!r.lat) return;
+        var m = L.marker([r.lat, r.lng]).bindTooltip(r.name + " — " + (r.currentVisit || ""));
+        m.addTo(window._actMap);
+        window._actMarks.push(m);
+      });
+    }
+  }
+
+  var COL_TAB_KEYS = {
+    "tab-dashboard": "dashboard",
+    "tab-pharmacies": "pharmacy",
+    "tab-doctors": "doctor",
+    "tab-orders": "order",
+    "tab-activity-log": "activity",
+    "tab-overview-map": "overview",
+    "tab-live-location": "live",
+    "tab-snapp-corporate": "snapp",
+    "tab-distributor-companies": "distributorCompanies",
+    "tab-distributor-sales": "distributorSales",
+    "tab-distributor-database": "distributorDatabase",
+    "tab-search-info": "search",
+    "tab-rep-routes": "routes",
+    "tab-my-visit": "visit",
+    "tab-rep-homes": "homes",
+    "tab-leaves": "leave",
+    "tab-notifications": "notifications",
+    "tab-monthly-reports": "reports",
+    "tab-sales-targets": "target",
+    "tab-custom-fields": "additions",
+    "tab-columns-products": "products",
+    "tab-manual-design": "manualdesign",
+    "tab-users-permissions": "users",
+    "tab-messengers": "messengers",
+    "tab-backup": "backup",
+    "tab-install-app": "install",
+    "tab-troubleshooting": "diagnostics"
+  };
+  var COL_KNOWN_HOSTS = {
+    pharmacy: "pharmacyCustomFieldsContainer",
+    doctor: "doctorCustomFieldsContainer",
+    order: "orderCustomFieldsContainer"
+  };
+  var DEFAULT_LIST_ON = {
+    pharmacy: ["pharmacyDate", "pharmacyProvince", "pharmacyCity", "pharmacyName", "pharmacyPhone", "pharmacyIsPercentage", "phMapSearchInput"],
+    doctor: ["doctorDate", "doctorName", "doctorSpecialty", "doctorProvince", "doctorIsPercentage", "docMapSearchInput"],
+    order: ["orderRepName", "orderPharmacyName", "orderProvince", "orderDate", "orderStatus"]
+  };
+  var KEY_TO_TAB = {};
+  Object.keys(COL_TAB_KEYS).forEach(function (tab) { KEY_TO_TAB[COL_TAB_KEYS[tab]] = tab; });
+
+  function escHtml(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  function fieldKeyForTab(tabId) {
+    try {
+      var ut = ((typeof state !== "undefined" && state && state.userTabs) || []).filter(function (t) {
+        return t.id === tabId;
+      })[0];
+      if (ut && ut.key) return ut.key;
+    } catch (e) {}
+    return COL_TAB_KEYS[tabId] || String(tabId || "").replace(/^tab-/, "") || "misc";
+  }
+
+  function containerIdForKey(key) {
+    return COL_KNOWN_HOSTS[key] || ("cfHost-" + key);
+  }
+
+  function getFieldList(key) {
+    if (typeof state === "undefined" || !state) return [];
+    if (!state.customFields) state.customFields = {};
+    if (!state.customFields[key]) state.customFields[key] = [];
+    return state.customFields[key];
+  }
+
+  function sortedFields(key) {
+    return getFieldList(key).slice().sort(function (a, b) {
+      var ao = a.order == null || a.order === "" ? 999 : Number(a.order);
+      var bo = b.order == null || b.order === "" ? 999 : Number(b.order);
+      if (ao !== bo) return ao - bo;
+      return String(a.id || "").localeCompare(String(b.id || ""));
+    });
+  }
+
+  function ensureMeta(key) {
+    if (typeof state === "undefined" || !state) return {};
+    if (!state.formFieldMeta) state.formFieldMeta = {};
+    if (!state.formFieldMeta[key]) state.formFieldMeta[key] = {};
+    return state.formFieldMeta[key];
+  }
+
+  function getTabForm(tabId) {
+    var pane = $(tabId);
+    if (!pane) return null;
+    return pane.querySelector("form") || pane.querySelector(".card");
+  }
+
+  function getMainGrid(tabId) {
+    var form = getTabForm(tabId);
+    if (!form) return null;
+    var direct = form.querySelector(":scope > .form-grid");
+    if (direct) return direct;
+    var pane = $(tabId);
+    if (pane) {
+      var card = pane.querySelector(".card");
+      if (card) {
+        var g = card.querySelector(":scope > form > .form-grid") || card.querySelector(":scope > .form-grid");
+        if (g) return g;
+      }
+    }
+    return form.querySelector(".form-grid");
+  }
+
+  function ensureFieldHost(tabId, key) {
+    var cid = containerIdForKey(key);
+    if ($(cid)) return cid;
+    var pane = $(tabId);
+    if (!pane) return null;
+    var card = pane.querySelector(".card") || pane;
+    var form = card.querySelector("form");
+    var grid = form && form.querySelector(".form-grid");
+    var host = document.createElement("div");
+    host.id = cid;
+    host.className = "form-group full-width form-grid extra-cf-host";
+    host.setAttribute("data-cf-host", key);
+    if (grid) grid.appendChild(host);
+    else if (form) form.appendChild(host);
+    else {
+      var header = card.querySelector(".card-header");
+      if (header && header.nextSibling) card.insertBefore(host, header.nextSibling);
+      else card.appendChild(host);
+    }
+    return cid;
+  }
+
+  function isHostGroup(ch) {
+    if (!ch) return false;
+    if (ch.id && /CustomFieldsContainer|cfHost-/.test(ch.id)) return true;
+    if (ch.classList && ch.classList.contains("extra-cf-host")) return true;
+    return false;
+  }
+
+  function slugLabel(s) {
+    return String(s || "").replace(/\s+/g, "-").replace(/[^\w\u0600-\u06FF\-]/g, "").slice(0, 40) || "field";
+  }
+
+  function fieldLabelOf(el, group) {
+    if (el && el.id) {
+      var lab = group.querySelector('label[for="' + el.id + '"]');
+      if (lab) return String(lab.textContent || "").replace(/\s+/g, " ").trim();
+    }
+    var l = group.querySelector(".form-label, label, h4");
+    if (l) return String(l.textContent || "").replace(/\s+/g, " ").trim();
+    if (el && el.placeholder) return String(el.placeholder).replace(/\s+/g, " ").trim();
+    return (el && el.id) || "فیلد";
+  }
+
+  function scanBuiltinFields(tabId) {
+    var pane = $(tabId);
+    if (!pane) return [];
+    var fields = [];
+    var seen = {};
+    var idx = 0;
+    var FA_LABELS = {
+      pharmacyLat: "عرض جغرافیایی",
+      pharmacyLng: "طول جغرافیایی",
+      doctorLat: "عرض جغرافیایی",
+      doctorLng: "طول جغرافیایی",
+      phFileInput: "فایل داروخانه",
+      docFileInput: "فایل پزشک",
+      phMapSearchInput: "جستجوی لوکیشن داروخانه",
+      docMapSearchInput: "جستجوی لوکیشن مطب",
+      pharmacyLocationText: "متن لوکیشن داروخانه",
+      doctorLocationText: "متن لوکیشن مطب",
+      pharmacyIsPercentage: "داروخانه درصدی",
+      doctorIsPercentage: "پزشک درصدی",
+      btnSavePharmacy: "ثبت اطلاعات داروخانه",
+      btnSaveDoctor: "ثبت اطلاعات پزشک",
+      btnSaveOrder: "ثبت و ذخیره سفارش",
+      btnResetPharmacyForm: "بازنشانی فرم داروخانه",
+      btnResetDoctorForm: "بازنشانی فرم پزشک",
+      btnResetOrderForm: "سفارش جدید",
+      btnPharmacyCurrentLocation: "موقعیت فعلی داروخانه",
+      btnDoctorCurrentLocation: "موقعیت فعلی مطب",
+      btnPharmacyGetAddressFromPoint: "دریافت آدرس این نقطه",
+      btnDoctorGetAddressFromPoint: "دریافت آدرس این نقطه",
+      btnPhMapSearch: "جستجوی نقشه داروخانه",
+      btnDocMapSearch: "جستجوی نقشه مطب",
+      btnPhPercentageNo: "درصدی: خیر",
+      btnPhPercentageYes: "درصدی: بله",
+      btnDocPercentageNo: "درصدی: خیر",
+      btnDocPercentageYes: "درصدی: بله",
+      btnShowPhForm: "فرم ثبت داروخانه",
+      btnShowPhList: "لیست داروخانه‌ها",
+      btnShowDocForm: "فرم ثبت پزشک",
+      btnShowDocList: "لیست پزشکان",
+      btnShowOrdForm: "فرم ثبت سفارش",
+      btnShowOrdList: "لیست سفارشات",
+      btnExportPharmaciesCSV: "خروجی اکسل داروخانه‌ها",
+      btnExportDoctorsCSV: "خروجی اکسل پزشکان",
+      btnExportOrdersCSV: "خروجی اکسل سفارشات",
+      btnAddOrderItemRow: "افزودن قلم دارویی",
+      "map-pharmacy-form": "نقشه داروخانه",
+      "map-doctor-form": "نقشه مطب",
+      "map-dashboard-overview": "نقشه داشبورد",
+      "map-full-overview": "نقشه جامع",
+      "map-live-reps": "نقشه موقعیت زنده",
+      "map-my-visit": "نقشه ویزیت",
+      "map-search-info": "نقشه جستجو",
+      "map-rep-routes-full": "نقشه رصد تردد",
+      "map-rep-homes": "نقشه منزل نمایندگان",
+      "map-activity-log": "نقشه فعالیت",
+      searchPharmacyInput: "جستجوی داروخانه",
+      searchDoctorInput: "جستجوی پزشک",
+      searchOrderInput: "جستجوی سفارش",
+      phMonthFilter: "فیلتر ماه داروخانه",
+      pharmacyEditId: "شناسه ویرایش داروخانه",
+      doctorEditId: "شناسه ویرایش پزشک",
+      orderEditId: "شناسه ویرایش سفارش",
+      orderPharmacyMatchedId: "شناسه داروخانه سفارش",
+      leaveRepSelect: "نماینده علمی",
+      leaveTypeSelect: "نوع مرخصی یا مأموریت",
+      leaveFromDate: "از تاریخ",
+      leaveToDate: "تا تاریخ",
+      leaveHoursInput: "بازه ساعت مرخصی",
+      leaveFromTime: "از ساعت",
+      leaveToTime: "تا ساعت",
+      leaveReasonInput: "علت درخواست",
+      routeManagerRep: "نماینده علمی",
+      routeManagerProvince: "استان مسیر",
+      routeManagerCity: "شهر مسیر",
+      routeManagerDistrict: "منطقه مسیر",
+      repHomeSelect: "نماینده علمی",
+      repHomeAddressInput: "آدرس منزل نماینده",
+      tgtRepSelect: "نماینده علمی",
+      tgtProductSelect: "محصول یا کالا",
+      tgtCountInput: "تعداد تارگت",
+      tgtYearInput: "سال هدف",
+      tgtMonthSelect: "ماه هدف"
+    };
+    window.FA_FIELD_LABELS = FA_LABELS;
+    function pushField(id, labelText, type, group, full, kind) {
+      if (!id || seen[id]) return;
+      seen[id] = true;
+      idx += 1;
+      if (FA_LABELS[id]) labelText = FA_LABELS[id];
+      else if (labelText && /^[A-Za-z][A-Za-z0-9_\-]*$/.test(String(labelText).trim())) {
+        labelText = FA_LABELS[id] || labelText;
+      }
+      if (labelText && labelText.length > 80) labelText = labelText.slice(0, 77) + "…";
+      if (group && !group.getAttribute("data-col-fid")) group.setAttribute("data-col-fid", id);
+      fields.push({
+        id: id,
+        label: labelText || id,
+        type: type || "simple",
+        scanOrder: idx,
+        el: group,
+        full: !!full,
+        kind: kind || "field"
+      });
+    }
+
+    var groups = pane.querySelectorAll(".form-group");
+    Array.prototype.forEach.call(groups, function (g) {
+      if (isHostGroup(g)) return;
+      if (g.closest("#columnsDesignerHost") || g.closest("#colDesignerPanel") || g.closest(".modal-overlay") || g.closest("#jalaliCalendarPopup")) return;
+      if (g.querySelector("[data-custom-field-id]")) return;
+      if (g.id === "orderItemsContainer" || g.closest("#orderItemsContainer") || g.querySelector("#orderItemsContainer")) return;
+
+      var inputs = [];
+      Array.prototype.forEach.call(g.querySelectorAll("input, select, textarea"), function (el) {
+        if (el.type === "hidden") return;
+        if (el.closest(".form-group") !== g) return;
+        if (el.closest("#columnsDesignerHost")) return;
+        if (el.closest("#orderItemsContainer") || el.closest(".order-item-row")) return;
+        inputs.push(el);
+      });
+
+      if (!inputs.length) {
+        var hid = g.querySelector('input[type="hidden"][id]');
+        var title = g.querySelector(":scope > .form-label, :scope > label, :scope > h4");
+        if (hid && hid.id) {
+          pushField(hid.id, fieldLabelOf(hid, g) || (title ? title.textContent : hid.id), "block", g, true, "block");
+        }
+        return;
+      }
+
+      inputs.forEach(function (el) {
+        if (!el.id) return;
+        var type = "simple";
+        if (el.tagName === "SELECT") type = "select";
+        else if (el.type === "number") type = "number";
+        else if (el.type === "file") type = "file";
+        else if ((el.id || "").toLowerCase().indexOf("date") !== -1) type = "date";
+        var ownLab = el.id && g.querySelector('label[for="' + el.id + '"]');
+        var directLab = null;
+        try { directLab = g.querySelector(":scope > .form-label, :scope > label"); } catch (e) { directLab = g.querySelector(".form-label, label"); }
+        var visibleLab = ownLab || (inputs.length === 1 ? directLab : null);
+        var labelText = visibleLab ? String(visibleLab.textContent || "").replace(/\s+/g, " ").trim() : (el.placeholder || el.id);
+        if ((!visibleLab || /^[A-Za-z][A-Za-z0-9_\-]*$/.test(labelText)) && FA_LABELS[el.id]) labelText = FA_LABELS[el.id];
+        // شناسه فنی هرگز نباید به‌عنوان عنوان دیداری به کاربر نشان داده شود.
+        if (/^[A-Za-z][A-Za-z0-9_\-]*$/.test(String(labelText || "").trim())) labelText = "فیلد برنامه";
+        pushField(el.id, labelText, type, g, g.classList.contains("full-width") && inputs.length === 1, "field");
+      });
+    });
+
+    if (tabId === "tab-orders" && $("orderItemsContainer")) {
+      var boxG = $("orderItemsContainer").closest(".form-group");
+      pushField("orderItemsBox", "کادر اقلام سفارش", "box", boxG, true, "box");
+      pushField("orderItemName", "نام کالا (داخل کادر اقلام)", "simple", boxG, false, "ordercol");
+      pushField("orderItemCount", "تعداد کالا (داخل کادر اقلام)", "number", boxG, false, "ordercol");
+      pushField("orderItemGift", "تعداد جایزه (داخل کادر اقلام)", "number", boxG, false, "ordercol");
+      pushField("orderItemPrice", "قیمت واحد (داخل کادر اقلام)", "number", boxG, false, "ordercol");
+    }
+
+    function wrapWidget(el) {
+      if (!el) return null;
+      if (el.classList && el.classList.contains("form-group")) return el;
+      if (el.parentNode && el.parentNode.classList && el.parentNode.classList.contains("col-widget-wrap")) {
+        return el.parentNode;
+      }
+      return el;
+    }
+    var skipBtn = {
+      btnToggleSideMenu: 1, btnCloseSideMenu: 1, btnNotificationBellHeader: 1,
+      btnOpenLoginModal: 1, btnLogoutSystem: 1, btnAddDashWidget: 1
+    };
+    Array.prototype.forEach.call(pane.querySelectorAll("button[id], .btn-toggle-option[id]"), function (btn) {
+      if (!btn.id || seen[btn.id] || skipBtn[btn.id]) return;
+      if (btn.closest("#columnsDesignerHost") || btn.closest(".modal-overlay") || btn.closest("#jalaliCalendarPopup")) return;
+      if (btn.closest(".app-header") || btn.closest(".app-nav") || btn.closest(".side-menu-drawer")) return;
+      if (btn.closest(".col-widget-wrap")) return;
+      if (btn.closest("#tab-manual-design")) return;
+      var label = (FA_LABELS[btn.id] || String(btn.textContent || btn.title || btn.id)).replace(/\s+/g, " ").trim();
+      var wrap = wrapWidget(btn);
+      pushField(btn.id, label, "widget", wrap, false, "widget");
+    });
+    Array.prototype.forEach.call(pane.querySelectorAll(".map-container[id]"), function (mapEl) {
+      if (!mapEl.id || seen[mapEl.id]) return;
+      if (mapEl.closest("#columnsDesignerHost") || mapEl.closest(".modal-overlay")) return;
+      var wrap = wrapWidget(mapEl);
+      pushField(mapEl.id, FA_LABELS[mapEl.id] || "نقشه", "widget", wrap, true, "widget");
+    });
+    return fields;
+  }
+
+  function getUnifiedFieldList(tabId) {
+    var key = fieldKeyForTab(tabId);
+    var meta = ensureMeta(key);
+    var list = [];
+    var listDefaults = DEFAULT_LIST_ON[key] || [];
+    scanBuiltinFields(tabId).forEach(function (b) {
+      if (!b.id || /^auto-tab-orders-/.test(b.id)) return;
+      if (b.label && /اقلام دارویی سفارش/.test(b.label) && b.kind !== "box" && b.id !== "orderItemsBox") return;
+      if (!meta[b.id]) meta[b.id] = {};
+      if (meta[b.id].deleted) return;
+      if (meta[b.id].order == null || meta[b.id].order === "") meta[b.id].order = b.scanOrder;
+      var showForm = meta[b.id].showInForm !== false && meta[b.id].hidden !== true;
+      var showList = meta[b.id].showInList;
+      if (showList !== true && showList !== false) showList = listDefaults.indexOf(b.id) !== -1;
+      list.push({
+        id: b.id,
+        builtin: true,
+        label: (meta[b.id].label && String(meta[b.id].label).trim() !== b.id && !/^[A-Za-z][A-Za-z0-9_\-]*$/.test(String(meta[b.id].label).trim())) ? meta[b.id].label : b.label,
+        type: b.type,
+        order: Number(meta[b.id].order) || b.scanOrder,
+        listOrder: (meta[b.id].listOrder != null && meta[b.id].listOrder !== "") ? Number(meta[b.id].listOrder) : (Number(meta[b.id].order) || b.scanOrder),
+        size: meta[b.id].size,
+        height: meta[b.id].height,
+        hidden: !showForm,
+        showInForm: showForm,
+        showInList: showList === true,
+        full: b.full,
+        kind: b.kind || "field",
+        place: meta[b.id].place || (b.full || b.kind === "box" ? "under" : "beside"),
+        required: meta[b.id].required === true || (meta[b.id].required == null && window._v18DefaultReq && window._v18DefaultReq[b.id]),
+        allowAddOption: meta[b.id].allowAddOption !== false,
+        exportExcel: meta[b.id].exportExcel === true,
+        labelFontFamily: meta[b.id].labelFontFamily || "",
+        labelFontWeight: meta[b.id].labelFontWeight || "",
+        labelFontSize: meta[b.id].labelFontSize || "",
+        fieldFontFamily: meta[b.id].fieldFontFamily || "",
+        fieldFontWeight: meta[b.id].fieldFontWeight || "",
+        fieldFontSize: meta[b.id].fieldFontSize || "",
+        boxId: meta[b.id].boxId || ""
+      });
+    });
+    sortedFields(key).forEach(function (c) {
+      list.push({
+        id: c.id,
+        builtin: false,
+        label: c.label,
+        type: c.inputKind || c.type || "simple",
+        order: Number(c.order) || 999,
+        listOrder: (c.listOrder != null && c.listOrder !== "") ? Number(c.listOrder) : (Number(c.order) || 999),
+        size: c.size,
+        height: c.height,
+        hidden: c.showInForm === false,
+        showInForm: c.showInForm !== false,
+        showInList: c.showInList !== false,
+        options: c.options,
+        allowAddOption: c.allowAddOption,
+        dependsOn: c.dependsOn,
+        inputKind: c.inputKind,
+        kind: "custom",
+        place: c.place || "beside",
+        required: c.required === true,
+        exportExcel: c.exportExcel === true,
+        labelFontFamily: c.labelFontFamily || "",
+        labelFontWeight: c.labelFontWeight || "",
+        labelFontSize: c.labelFontSize || "",
+        fieldFontFamily: c.fieldFontFamily || "",
+        fieldFontWeight: c.fieldFontWeight || "",
+        fieldFontSize: c.fieldFontSize || "",
+        boxId: c.boxId || ""
+      });
+    });
+    list.sort(function (a, b) {
+      var ao = Number(a.order) || 999;
+      var bo = Number(b.order) || 999;
+      if (ao !== bo) return ao - bo;
+      if (a.builtin !== b.builtin) return a.builtin ? -1 : 1;
+      return String(a.id).localeCompare(String(b.id));
+    });
+    return list;
+  }
+
+  window.cleanupOrphanCustomFields = function (entityType, containerId, removeValidOutside) {
+    var container = document.getElementById(containerId);
+    var form = container ? container.closest("form") : null;
+    var root = form || document;
+    var valid = {};
+    ((state.customFields || {})[entityType] || []).forEach(function (f) { valid[f.id] = true; });
+    Array.prototype.slice.call(root.querySelectorAll("[data-custom-field-id]")).forEach(function (inp) {
+      var id = inp.getAttribute("data-custom-field-id");
+      if (valid[id]) return;
+      var g = inp.closest(".form-group");
+      if (g) g.remove();
+      else inp.remove();
+    });
+  };
+
+  function findFieldGroup(tabId, field) {
+    var grid = getMainGrid(tabId);
+    var form = getTabForm(tabId);
+    var root = form || grid || document;
+    if (!field.builtin) {
+      var inp = root.querySelector('[data-custom-field-id="' + field.id + '"]') ||
+        document.querySelector('[data-custom-field-id="' + field.id + '"]');
+      return inp ? inp.closest(".form-group") : null;
+    }
+    var el = document.getElementById(field.id) ||
+      document.querySelector('[data-col-fid="' + field.id + '"]');
+    if (!el) return null;
+    if (field.kind === "widget") {
+      if (el.parentNode && el.parentNode.classList && el.parentNode.classList.contains("col-widget-wrap")) return el.parentNode;
+      return el;
+    }
+    var g = el.classList && el.classList.contains("form-group") ? el : el.closest(".form-group");
+    return g;
+  }
+
+  function groupIsShared(group, fieldId) {
+    if (!group || !fieldId) return false;
+    if (group.querySelector(".form-group")) return true;
+    var extra = 0;
+    Array.prototype.forEach.call(group.querySelectorAll("input[id], select[id], textarea[id]"), function (el) {
+      if (el.type === "hidden") return;
+      if (el.id && el.id !== fieldId) extra += 1;
+    });
+    return extra > 0;
+  }
+
+  function stripLabelStarText(lab) {
+    if (!lab) return;
+    var nodes = lab.childNodes;
+    for (var i = 0; i < nodes.length; i++) {
+      var n = nodes[i];
+      if (n.nodeType === 3) {
+        n.nodeValue = String(n.nodeValue || "")
+          .replace(/\s*\*+\s*$/g, "")
+          .replace(/\s+\*\s+/g, " ")
+          .replace(/^\s*\*\s*/, "");
+      }
+    }
+    Array.prototype.forEach.call(lab.querySelectorAll("span"), function (sp) {
+      if (sp.classList && sp.classList.contains("req-star")) return;
+      var t = String(sp.textContent || "");
+      if (t.replace(/\s/g, "") === "*") {
+        if (sp.parentNode) sp.parentNode.removeChild(sp);
+      } else if (/\*/.test(t) && !sp.querySelector("input")) {
+        sp.textContent = t.replace(/\s*\*+\s*/g, " ").replace(/\s+/g, " ").trim();
+      }
+    });
+  }
+
+  function paintRequiredStar(group, f) {
+    if (!group || !f) return;
+    var lab = (f.id && group.querySelector('label[for="' + f.id + '"]')) ||
+      group.querySelector(".form-label, label, h4");
+    if (!lab || lab.querySelector("input")) return;
+    stripLabelStarText(lab);
+    var star = lab.querySelector(".req-star");
+    if (f.required && f.showInForm && !f.hidden) {
+      if (!star) {
+        star = document.createElement("span");
+        star.className = "req-star";
+        star.setAttribute("aria-hidden", "true");
+        star.textContent = "*";
+        lab.appendChild(star);
+      } else {
+        star.textContent = "*";
+      }
+      star.style.color = "#dc2626";
+      star.style.fontWeight = "900";
+      star.style.margin = "0";
+      star.style.padding = "0";
+      star.style.marginInlineStart = "1px";
+    } else if (star) {
+      star.parentNode.removeChild(star);
+    }
+    var inp = (f.id && document.getElementById(f.id)) ||
+      group.querySelector("input:not([type=hidden]), select, textarea");
+    if (inp && inp.tagName !== "BUTTON") {
+      if (f.required && f.showInForm && !f.hidden) {
+        inp.setAttribute("data-req", "1");
+        inp.removeAttribute("required");
+      } else {
+        inp.removeAttribute("data-req");
+        inp.removeAttribute("required");
+      }
+    }
+  }
+
+  function paintFieldBox(group, f) {
+    if (!group || !f) return;
+    var hide = !f.showInForm || f.hidden;
+    var shared = groupIsShared(group, f.id);
+    var targetInp = (f.id && group.contains(document.getElementById(f.id)) && document.getElementById(f.id)) ||
+      group.querySelector("input:not([type=hidden]), select, textarea");
+    if (hide) {
+      if (shared && targetInp) {
+        var hidLab = f.id && group.querySelector('label[for="' + f.id + '"]');
+        if (hidLab) hidLab.style.display = "none";
+        targetInp.style.display = "none";
+        targetInp.setAttribute("data-col-hidden", "1");
+        var hidCombo = targetInp.closest ? targetInp.closest(".crm-combo") : null;
+        if (hidCombo) hidCombo.style.display = "none";
+      } else {
+        group.classList.toggle("col-hide-form", true);
+        group.style.display = "none";
+        group.setAttribute("data-col-hidden", "1");
+      }
+      return;
+    }
+    group.classList.remove("col-hide-form");
+    group.style.display = "";
+    group.removeAttribute("data-col-hidden");
+    if (targetInp) {
+      targetInp.style.display = "";
+      targetInp.removeAttribute("data-col-hidden");
+      var showLab = f.id && group.querySelector('label[for="' + f.id + '"]');
+      if (showLab) showLab.style.display = "";
+      var showCombo = targetInp.closest ? targetInp.closest(".crm-combo") : null;
+      if (showCombo) showCombo.style.display = "";
+    }
+    var size = parseInt(f.size, 10);
+    var place = f.place || (f.full ? "under" : "beside");
+    group.classList.toggle("col-place-under", place === "under");
+    group.classList.toggle("col-place-beside", place !== "under");
+    if (place === "under") {
+      group.style.setProperty("flex", "1 1 100%", "important");
+      group.style.setProperty("max-width", "100%", "important");
+      group.style.setProperty("min-width", "100%", "important");
+      group.style.setProperty("width", "100%", "important");
+    } else if (!shared) {
+      var w = size > 40 ? size : 260;
+      group.style.setProperty("flex", "0 0 " + w + "px", "important");
+      group.style.setProperty("max-width", w + "px", "important");
+      group.style.setProperty("min-width", Math.min(140, w) + "px", "important");
+      group.style.setProperty("width", w + "px", "important");
+    }
+    var hgt = parseInt(f.height, 10);
+    if (hgt > 20) {
+      var hInp = targetInp || group.querySelector(".form-input, .form-select, .form-textarea, input:not([type=hidden]), select, textarea");
+      if (hInp && hInp.tagName !== "BUTTON") {
+        hInp.style.setProperty("height", hgt + "px", "important");
+        hInp.style.setProperty("min-height", hgt + "px", "important");
+      }
+      if (f.kind === "widget" || (group.classList && (group.classList.contains("col-user-box") || group.classList.contains("col-widget-wrap")))) {
+        group.style.setProperty("min-height", hgt + "px", "important");
+      }
+    }
+    if (size > 40) {
+      var sizedInp = targetInp || group.querySelector(".form-input, .form-select, .form-textarea, input:not([type=hidden]), select, textarea");
+      if (sizedInp) {
+        sizedInp.style.setProperty("width", size + "px", "important");
+        sizedInp.style.setProperty("max-width", size + "px", "important");
+        sizedInp.style.setProperty("min-width", Math.min(120, size) + "px", "important");
+      }
+      var combo = sizedInp && sizedInp.closest ? sizedInp.closest(".crm-combo") : group.querySelector(".crm-combo");
+      if (combo) {
+        combo.style.setProperty("width", size + "px", "important");
+        combo.style.setProperty("max-width", size + "px", "important");
+      }
+    }
+    var lab = group.querySelector(".form-label, label, h4");
+    var inp = group.querySelector(".form-input, .form-select, .form-textarea, input, select, textarea, button");
+    function applyFont(el, fam, weight, size) {
+      if (!el) return;
+      if (fam) el.style.fontFamily = fam;
+      else el.style.removeProperty("font-family");
+      if (weight === "bold") el.style.fontWeight = "800";
+      else if (weight === "normal") el.style.fontWeight = "400";
+      else el.style.removeProperty("font-weight");
+      var px = parseInt(size, 10);
+      if (px) {
+        if (px > 28) px = 28;
+        if (px < 10) px = 10;
+        el.style.fontSize = px + "px";
+      } else if (size) el.style.fontSize = size;
+      else el.style.removeProperty("font-size");
+    }
+    applyFont(lab, f.labelFontFamily || f.fontFamily, f.labelFontWeight || f.fontWeight, f.labelFontSize || f.fontSize);
+    applyFont(inp, f.fieldFontFamily || f.fontFamily, f.fieldFontWeight || f.fontWeight, f.fieldFontSize || f.fontSize);
+    if (f.kind === "widget" && group.querySelector(".map-container")) {
+      group.classList.add("col-place-under");
+      group.style.setProperty("width", "100%", "important");
+      group.style.setProperty("max-width", "100%", "important");
+    }
+  }
+
+  function applyOrderItemLayout() {
+    var meta = ensureMeta("order");
+    var specs = [
+      { id: "orderItemName", def: "2.2fr" },
+      { id: "orderItemCount", def: "0.7fr" },
+      { id: "orderItemGift", def: "0.9fr" },
+      { id: "orderItemPrice", def: "1.1fr" }
+    ];
+    var underCount = 0;
+    var parts = specs.map(function (s) {
+      var m = meta[s.id] || {};
+      if (m.showInForm === false || m.hidden) return "0px";
+      if ((m.place || "beside") === "under") { underCount += 1; return "1fr"; }
+      var size = parseInt(m.size, 10);
+      return size > 40 ? (size + "px") : s.def;
+    });
+    parts.push("auto");
+    var tpl = underCount === specs.length ? "1fr" : parts.join(" ");
+    document.querySelectorAll(".order-item-row, .order-item-head").forEach(function (el) {
+      el.style.gridTemplateColumns = tpl;
+    });
+  }
+
+  function getBoxes(key) {
+    if (!state.formBoxes) state.formBoxes = {};
+    if (!state.formBoxes[key]) state.formBoxes[key] = [];
+    return state.formBoxes[key];
+  }
+
+  function applyUserBoxes(tabId, key, grid, placed) {
+    if (!grid) return;
+    var boxes = getBoxes(key);
+    boxes.forEach(function (box) {
+      if (!box || !box.id) return;
+      var wrap = document.getElementById(box.id);
+      if (!wrap) {
+        wrap = document.createElement("div");
+        wrap.id = box.id;
+        wrap.className = "col-user-box";
+        wrap.innerHTML = '<div class="col-user-box-title"></div><div class="col-user-box-body form-grid form-grid-sized"></div>';
+        grid.appendChild(wrap);
+      }
+      var title = wrap.querySelector(".col-user-box-title");
+      if (title) title.textContent = box.label || "کادر";
+      var body = wrap.querySelector(".col-user-box-body") || wrap;
+      (box.fieldIds || []).forEach(function (fid) {
+        if (fid === "orderItemsBox" || fid.indexOf("orderItem") === 0) return;
+        var item = null;
+        placed.forEach(function (p) { if (p.f.id === fid) item = p; });
+        if (item && item.group && item.group !== wrap) {
+          var g = item.group;
+          if (g.tagName === "BUTTON" || (g.classList && g.classList.contains("map-container"))) {
+            if (g.parentNode && g.parentNode.classList && g.parentNode.classList.contains("col-widget-wrap")) {
+              g = g.parentNode;
+            } else if (g.parentNode) {
+              var ww = document.createElement("div");
+              ww.className = "form-group col-widget-wrap";
+              ww.setAttribute("data-col-fid", fid);
+              g.parentNode.insertBefore(ww, g);
+              ww.appendChild(g);
+              g = ww;
+            }
+          }
+          if (g !== wrap) body.appendChild(g);
+        }
+      });
+    });
+  }
+
+  window.validateRequiredFields = function (tabId) {
+    var list = [];
+    try { list = getUnifiedFieldList(tabId); } catch (e) { return true; }
+    var missing = [];
+    list.forEach(function (f) {
+      if (!f.required || !f.showInForm || f.hidden) return;
+      if (f.kind === "ordercol" || f.kind === "box") return;
+      var el = document.getElementById(f.id);
+      if (!el) {
+        var g = findFieldGroup(tabId, f);
+        el = g && g.querySelector("input:not([type=hidden]), select, textarea");
+      }
+      if (!el) return;
+      if (!(String(el.value || "").trim())) missing.push(f.label || f.id);
+    });
+    if (missing.length) {
+      alert(missing.map(function (n) {
+        return "فیلد «" + n + "» خالی است و باید پر شود.";
+      }).join("\n"));
+      return false;
+    }
+    return true;
+  };
+
+  function applyFullFormLayout(tabId) {
+    if (!tabId || window._layoutBusy) return;
+    var key = fieldKeyForTab(tabId);
+    var cid = ensureFieldHost(tabId, key);
+    var grid = getMainGrid(tabId);
+    var container = cid ? $(cid) : null;
+    if (cid && typeof renderCustomFieldsInForm === "function") {
+      window._layoutBusy = true;
+      var skip = window.applyCustomFieldOrderInForm;
+      try {
+        window.applyCustomFieldOrderInForm = function () {};
+        renderCustomFieldsInForm(key, cid);
+      } catch (e) { console.error("renderCustomFieldsInForm", e); }
+      window.applyCustomFieldOrderInForm = skip;
+      window._layoutBusy = false;
+    }
+    var unified = getUnifiedFieldList(tabId);
+    var meta = ensureMeta(key);
+    if (grid) grid.classList.add("form-grid-sized");
+    var placed = [];
+    unified.forEach(function (f) {
+      if (f.kind === "ordercol") return;
+      var group = findFieldGroup(tabId, f);
+      if (!group && !f.builtin && container) {
+        group = container.querySelector('[data-custom-field-id="' + f.id + '"]');
+        if (group) group = group.closest(".form-group");
+      }
+      if (!group) return;
+      if (f.builtin && meta[f.id] && meta[f.id].label) {
+        var lab = group.querySelector(".form-label, label");
+        if (lab && !lab.querySelector("input")) lab.textContent = meta[f.id].label;
+      }
+      paintFieldBox(group, f);
+      paintRequiredStar(group, f);
+      placed.push({ f: f, group: group });
+    });
+    if (grid) {
+      placed.forEach(function (item) {
+        if (!item.f.showInForm || item.f.hidden) return;
+        if (item.f.kind === "widget") return;
+        if (item.group.parentNode !== grid) grid.appendChild(item.group);
+        else grid.appendChild(item.group);
+      });
+      placed.forEach(function (item) {
+        if (item.f.showInForm && !item.f.hidden) return;
+        if (groupIsShared(item.group, item.f.id)) return;
+        if (item.group.parentNode === grid) grid.appendChild(item.group);
+      });
+      if (container && container.parentNode === grid) grid.appendChild(container);
+      applyUserBoxes(tabId, key, grid, placed);
+    }
+    if (tabId === "tab-orders") applyOrderItemLayout();
+    try {
+      if (tabId === "tab-pharmacies" && typeof mapPharmacyForm !== "undefined" && mapPharmacyForm) {
+        setTimeout(function () { mapPharmacyForm.invalidateSize(); }, 160);
+      }
+      if (tabId === "tab-doctors" && typeof mapDoctorForm !== "undefined" && mapDoctorForm) {
+        setTimeout(function () { mapDoctorForm.invalidateSize(); }, 160);
+      }
+    } catch (e) {}
+  }
+
+  window.applyFullFormLayout = applyFullFormLayout;
+  window.getMainGrid = getMainGrid;
+  window.getAllMenuSections = function () {
+    var base = (typeof MENU_SECTIONS_LIST !== "undefined" ? MENU_SECTIONS_LIST.slice() : []);
+    try {
+      ((state && state.userTabs) || []).forEach(function (t) {
+        if (!t || !t.id) return;
+        var exists = false;
+        base.forEach(function (s) { if (s.id === t.id) exists = true; });
+        if (!exists) base.push({ id: t.id, label: t.label, icon: t.icon || "📋", badgeId: t.badgeId });
+      });
+      if (!state.tabOrder) state.tabOrder = {};
+      base.forEach(function (s, i) {
+        if (state.tabOrder[s.id] == null || state.tabOrder[s.id] === "") state.tabOrder[s.id] = i + 1;
+      });
+      base.sort(function (a, b) {
+        return (Number(state.tabOrder[a.id]) || 999) - (Number(state.tabOrder[b.id]) || 999);
+      });
+    } catch (e) {}
+    return base;
+  };
+
+  window.applyAllFormLayouts = function () {
+    window.getAllMenuSections().forEach(function (sec) {
+      try { applyFullFormLayout(sec.id); } catch (e) { console.error("layout", sec.id, e); }
+    });
+  };
+
+  window.applyCustomFieldOrderInForm = function (entityType, containerId) {
+    window.cleanupOrphanCustomFields(entityType, containerId, false);
+    var tabId = KEY_TO_TAB[entityType] || ("tab-" + entityType);
+    applyFullFormLayout(tabId);
+  };
+
+  function bindFieldDependencies(entityType, containerId) {
+    var container = document.getElementById(containerId);
+    var form = container ? container.closest("form") : null;
+    var root = form || container;
+    if (!root) return;
+    var fields = (state.customFields && state.customFields[entityType]) || [];
+    function applyDeps() {
+      fields.forEach(function (f) {
+        if (!f.dependsOn) return;
+        var input = root.querySelector('[data-custom-field-id="' + f.id + '"]');
+        var parent = root.querySelector('[data-custom-field-id="' + f.dependsOn + '"]');
+        if (!input) return;
+        var group = input.closest(".form-group");
+        if (!group) return;
+        var parentVal = parent ? String(parent.value || "").trim() : "";
+        group.style.display = parentVal ? "" : "none";
+      });
+    }
+    fields.forEach(function (f) {
+      if (!f.dependsOn) return;
+      var parent = root.querySelector('[data-custom-field-id="' + f.dependsOn + '"]');
+      if (parent && parent.dataset.depBound !== "1") {
+        parent.dataset.depBound = "1";
+        parent.addEventListener("change", applyDeps);
+        parent.addEventListener("input", applyDeps);
+      }
+    });
+    applyDeps();
+  }
+
+  window.renderExtraTabCustomFields = function () {
+    var secs = typeof window.getAllMenuSections === "function" ? window.getAllMenuSections() : (typeof MENU_SECTIONS_LIST !== "undefined" ? MENU_SECTIONS_LIST : []);
+    secs.forEach(function (sec) {
+      var key = fieldKeyForTab(sec.id);
+      if (key === "pharmacy" || key === "doctor" || key === "order") return;
+      var cid = ensureFieldHost(sec.id, key);
+      if (cid && typeof renderCustomFieldsInForm === "function") {
+        renderCustomFieldsInForm(key, cid);
+      }
+    });
+  };
+
+  window.refreshColumnsDesigner = function () {
+    renderColTabGrid();
+    if (window._activeColTab) renderColDesignerPanel();
+  };
+
+  function setupColumnsDesigner() {
+    var host = $("columnsDesignerHost");
+    if (!host) return;
+    host.dataset.v112 = "1";
+    host.dataset.v111 = "1";
+    host.dataset.ready = "1";
+    if (!$("colTabGrid") || !host.querySelector(".col-tab-grid")) {
+      host.innerHTML =
+        '<p class="col-tab-hint">همه تب‌ها مثل داشبورد اینجاست. روی یک تب بزنید تا <strong>همه فیلدهای همان فرم</strong> (ثابت + اضافه‌شده) را ببینید، ویرایش یا حذف کنید.</p>' +
+        '<div class="col-tab-grid" id="colTabGrid"></div>' +
+        '<div class="col-designer-panel" id="colDesignerPanel" hidden></div>';
+    }
+    try { renderColTabGrid(); } catch (e) { console.error("renderColTabGrid", e); }
+    if (window._activeColTab) {
+      try { renderColDesignerPanel(); } catch (e) { console.error("renderColDesignerPanel", e); }
+    }
+  }
+
+  function renderColTabGrid() {
+    var grid = $("colTabGrid");
+    if (!grid) {
+      var host = $("columnsDesignerHost");
+      if (!host) return;
+      host.innerHTML =
+        '<p class="col-tab-hint">همه تب‌ها مثل داشبورد اینجاست. روی یک تب بزنید تا فیلدهای همان تب را ببینید.</p>' +
+        '<div class="col-tab-grid" id="colTabGrid"></div>' +
+        '<div class="col-designer-panel" id="colDesignerPanel" hidden></div>';
+      grid = $("colTabGrid");
+    }
+    if (!grid || typeof window.getAllMenuSections !== "function") return;
+    var html = "";
+    window.getAllMenuSections().forEach(function (sec) {
+      var n = 0;
+      try { n = getUnifiedFieldList(sec.id).length; } catch (e) { n = 0; }
+      var active = window._activeColTab === sec.id ? " active" : "";
+      html += '<button type="button" class="nav-item col-designer-tab col-tab-card' + active + '" data-col-tab="' + sec.id + '">' +
+        "<span>" + sec.icon + " " + escHtml(sec.label) + "</span>" +
+        '<span class="nav-badge">' + n + "</span></button>";
+    });
+    grid.innerHTML = html;
+    Array.prototype.forEach.call(grid.querySelectorAll(".col-designer-tab"), function (btn) {
+      btn.addEventListener("click", function () {
+        window._activeColTab = btn.getAttribute("data-col-tab");
+        window._editingColField = null;
+        renderColTabGrid();
+        renderColDesignerPanel();
+        var panel = $("colDesignerPanel");
+        if (panel) panel.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+  }
+
+  function fillDesignerForm(field) {
+    if (!$("colFieldLabel")) return;
+    $("colFieldLabel").value = field ? (field.label || "") : "";
+    var type = field ? (field.inputKind || field.type || "simple") : "simple";
+    if (type === "select" || type === "date" || type === "number" || type === "simple") $("colFieldType").value = type;
+    else $("colFieldType").value = "simple";
+    $("colFieldOrder").value = field && field.order ? field.order : (getUnifiedFieldList(window._activeColTab).length + 1);
+    if ($("colFieldListOrder")) {
+      $("colFieldListOrder").value = field && field.listOrder ? field.listOrder : (getUnifiedFieldList(window._activeColTab).length + 1);
+    }
+    var shownSize = field && parseInt(field.size, 10) > 40 ? parseInt(field.size, 10) : 0;
+    var shownH = field && parseInt(field.height, 10) > 20 ? parseInt(field.height, 10) : 0;
+    if (field) {
+      var liveEl = document.getElementById(field.id);
+      var liveG = null;
+      if (liveEl) {
+        liveG = liveEl.closest(".form-group") || liveEl;
+        var rw = Math.round(liveEl.getBoundingClientRect().width);
+        var rh = Math.round(liveEl.getBoundingClientRect().height);
+        if (!(shownSize > 40) && rw > 40) shownSize = rw;
+        if (!(shownH > 20) && rh > 16) shownH = rh;
+      }
+      if (!(shownSize > 40) && liveG) {
+        var gw = Math.round(liveG.getBoundingClientRect().width);
+        if (gw > 40) shownSize = gw;
+      }
+      if (!(shownSize > 40) && (field.full || field.place === "under" || /Address|address|آدرس/.test((field.label || "") + (field.id || "")))) shownSize = 560;
+    }
+    $("colFieldSize").value = shownSize > 40 ? shownSize : 220;
+    if ($("colFieldHeight")) $("colFieldHeight").value = shownH > 20 ? shownH : 42;
+    if ($("colAddKind")) $("colAddKind").value = (field && (field.kind === "widget" || String(field.inputKind || "").indexOf("widget-") === 0)) ? "button" : (field && field.kind === "box" ? "box" : "field");
+    if ($("colFieldPlace")) $("colFieldPlace").value = field && field.place ? field.place : (field && field.full ? "under" : "beside");
+    $("colFieldOpts").value = field && field.options ? field.options.join("، ") : "";
+    $("colFieldDep").value = field && field.dependsOn ? field.dependsOn : "";
+    $("colFieldFly").checked = !field || field.allowAddOption !== false;
+    $("colFieldInForm").checked = !field || field.showInForm !== false;
+    $("colFieldInList").checked = !field || field.showInList !== false;
+    if ($("colFieldReq")) $("colFieldReq").checked = !!(field && field.required);
+    if ($("colFieldExcel")) $("colFieldExcel").checked = !!(field && field.exportExcel);
+    var btn = $("btnSaveColField");
+    if (btn) btn.textContent = field ? ("ذخیره ویرایش «" + field.label + "»") : "ثبت فیلد در این تب";
+    var optsWrap = $("colFieldOptsWrap");
+    if (optsWrap) optsWrap.style.display = $("colFieldType").value === "select" ? "" : "none";
+    var typeSel = $("colFieldType");
+    if (typeSel) typeSel.disabled = !!(field && field.builtin);
+  }
+
+  function renderColDesignerPanel() {
+    var panel = $("colDesignerPanel");
+    if (!panel) return;
+    var tabId = window._activeColTab;
+    if (!tabId) {
+      panel.hidden = true;
+      panel.innerHTML = "";
+      return;
+    }
+    var sec = ((typeof window.getAllMenuSections === "function" ? window.getAllMenuSections() : []).filter(function (s) {
+      return s.id === tabId;
+    })[0]) || { label: tabId, icon: "🧱" };
+    var key = fieldKeyForTab(tabId);
+    ensureFieldHost(tabId, key);
+    try { ensureSequentialOrders(tabId); } catch (e) {}
+    var list = [];
+    try { list = getUnifiedFieldList(tabId); } catch (e) { console.error(e); list = []; }
+    panel.hidden = false;
+    panel.innerHTML =
+      '<div class="col-panel-head">' +
+        "<div><strong>" + sec.icon + " " + escHtml(sec.label) + "</strong>" +
+        '<div class="col-panel-sub">شماره ترتیب = شماره ردیف. اگر ۴ بگذارید همان فیلد ردیف ۴ فرم می‌شود. ▲▼ یکی‌یکی جابه‌جا می‌کند. اندازه به پیکسل عرض فیلد را عوض می‌کند. تیک نمایش در فرم/لیست برای همه فیلدهاست.</div></div>' +
+        '<div class="col-panel-actions">' +
+          '<button type="button" class="btn btn-primary btn-sm" id="btnColOpenTab" style="background:#0d9488">باز کردن فرم این تب</button>' +
+          '<button type="button" class="btn btn-outline btn-sm" id="btnColBackToGrid">بازگشت به لیست تب‌ها</button>' +
+        "</div>" +
+      "</div>" +
+      '<div class="form-grid col-add-grid">' +
+        '<div class="form-group"><label class="form-label">چه چیزی اضافه شود؟</label><select id="colAddKind" class="form-select"><option value="field">فیلد</option><option value="box">کادر</option><option value="button">کلید</option></select><small class="col-help">فیلد، کادر یا کلید در جای خودش می‌نشیند</small></div>' +
+        '<div class="form-group"><label class="form-label" id="colFieldLabelCap">عنوان فیلد</label><input id="colFieldLabel" class="form-input" placeholder="مثلاً کد اقتصادی"></div>' +
+        '<div class="form-group" id="colFieldTypeWrap"><label class="form-label">نوع</label><select id="colFieldType" class="form-select"><option value="simple">ساده (متنی)</option><option value="select">کشویی</option><option value="date">تاریخ</option><option value="number">عددی</option></select></div>' +
+        '<div class="form-group" id="colBtnKindWrap" style="display:none"><label class="form-label">نوع کلید</label><select id="colBtnKind" class="form-select"><option value="widget-save">ثبت / ذخیره</option><option value="widget-edit">ویرایش</option><option value="widget-delete">حذف</option><option value="widget-reset">بازنشانی</option><option value="widget-excel">خروجی اکسل</option><option value="widget-print">چاپ</option><option value="widget-search">جستجو</option><option value="widget-myloc">موقعیت کنونی</option><option value="widget-getaddr">دریافت آدرس</option><option value="widget-map">نقشه</option></select></div>' +
+        '<div class="form-group"><label class="form-label">شماره ترتیب در فرم</label><input id="colFieldOrder" class="form-input" type="number" min="1" value="' + (list.length + 1) + '"><small class="col-help">فقط جای فیلد در فرم ثبت</small></div>' +
+        '<div class="form-group"><label class="form-label">شماره ترتیب در لیست</label><input id="colFieldListOrder" class="form-input" type="number" min="1" value="' + (list.length + 1) + '"><small class="col-help">جای ستون در جدول لیست — جدا از فرم</small></div>' +
+        '<div class="form-group"><label class="form-label">عرض (پیکسل)</label><input id="colFieldSize" class="form-input" type="number" min="40" max="1200" value="220"><small class="col-help">عدد واقعی عرض همان فیلد/کادر/کلید</small></div>' +
+        '<div class="form-group"><label class="form-label">ارتفاع (پیکسل)</label><input id="colFieldHeight" class="form-input" type="number" min="24" max="800" value="42"><small class="col-help">عدد واقعی ارتفاع همان مورد</small></div>' +
+        '<div class="form-group"><label class="form-label">جای فیلد در صفحه</label><select id="colFieldPlace" class="form-select"><option value="beside">روبرو (کنار فیلدها)</option><option value="under">زیر هم (سطر جدا)</option></select></div>' +
+        '<div class="form-group"><label class="form-label">داخل کدام کادر؟</label><select id="colFieldBoxTarget" class="form-select"><option value="">روی خود فرم (بدون کادر)</option></select></div>' +
+        '<div class="form-group" id="colFieldOptsWrap"><label class="form-label">گزینه‌های کشویی</label><input id="colFieldOpts" class="form-input" placeholder="با ویرگول جدا کنید"></div>' +
+        '<div class="form-group"><label class="form-label">وابسته به فیلد (شناسه اختیاری)</label><input id="colFieldDep" class="form-input" placeholder="خالی بماند اگر مستقل است"></div>' +
+        '<div class="form-group"><label><input type="checkbox" id="colFieldFly" checked> افزودن لحظه‌ای گزینه</label></div>' +
+        '<div class="form-group"><label><input type="checkbox" id="colFieldInForm" checked> نمایش در فرم</label></div>' +
+        '<div class="form-group"><label><input type="checkbox" id="colFieldInList" checked> نمایش در لیست</label></div>' +
+        '<div class="form-group"><label><input type="checkbox" id="colFieldReq"> ستاره‌دار (الزامی)</label></div>' +
+        '<div class="form-group"><label><input type="checkbox" id="colFieldExcel"> خروجی اکسل</label></div>' +
+      "</div>" +
+      '<div class="col-add-actions"><button type="button" id="btnSaveColField" class="btn btn-primary" style="background:#0d9488">ثبت فیلد در تب «' + escHtml(sec.label) + "»</button></div>" +
+      '<div class="col-box-maker">' +
+        "<strong>ایجاد کادر گروهی</strong>" +
+        '<div class="form-grid" style="margin-top:.5rem">' +
+          '<div class="form-group"><label class="form-label">نام کادر</label><input id="colBoxLabel" class="form-input" placeholder="مثلاً اطلاعات تماس"></div>' +
+        "</div>" +
+        '<button type="button" id="btnAddColBox" class="btn btn-outline btn-sm">➕ ثبت کادر</button>' +
+        '<div id="colBoxList"></div>' +
+      "</div>" +
+      '<div class="col-preview" id="colOrderPreview"></div>' +
+      '<div id="colFieldList" class="table-responsive col-sticky-table" style="margin-top:1rem"></div>' +
+      '<div id="colBoxInfoHost" class="col-info-extra" style="margin-top:1.25rem"><h4 style="margin:0 0 .5rem;color:#0f766e">اطلاعات کادرها</h4><div id="colBoxInfoList" class="table-responsive col-sticky-table"></div></div>' +
+      '<div id="colBtnInfoHost" class="col-info-extra" style="margin-top:1.25rem"><h4 style="margin:0 0 .5rem;color:#0f766e">اطلاعات کلیدها</h4><div id="colBtnInfoList" class="table-responsive col-sticky-table"></div></div>';
+
+    var typeSel = $("colFieldType");
+    var optsWrap = $("colFieldOptsWrap");
+    function toggleOpts() {
+      if (optsWrap) optsWrap.style.display = typeSel && typeSel.value === "select" ? "" : "none";
+    }
+    if (typeSel) typeSel.addEventListener("change", toggleOpts);
+    toggleOpts();
+    function toggleAddKind() {
+      var k = $("colAddKind") ? $("colAddKind").value : "field";
+      var cap = $("colFieldLabelCap");
+      if (cap) cap.textContent = k === "box" ? "عنوان کادر" : (k === "button" ? "عنوان کلید" : "عنوان فیلد");
+      if ($("colFieldTypeWrap")) $("colFieldTypeWrap").style.display = k === "field" ? "" : "none";
+      if ($("colBtnKindWrap")) $("colBtnKindWrap").style.display = k === "button" ? "" : "none";
+      if ($("colFieldOptsWrap")) $("colFieldOptsWrap").style.display = (k === "field" && typeSel && typeSel.value === "select") ? "" : "none";
+    }
+    if ($("colAddKind")) $("colAddKind").addEventListener("change", toggleAddKind);
+    toggleAddKind();
+
+    if ($("btnColBackToGrid")) {
+      $("btnColBackToGrid").addEventListener("click", function () {
+        window._activeColTab = "";
+        window._editingColField = null;
+        renderColTabGrid();
+        renderColDesignerPanel();
+      });
+    }
+    if ($("btnColOpenTab")) {
+      $("btnColOpenTab").addEventListener("click", function () {
+        applyFullFormLayout(tabId);
+        if (typeof switchTab === "function") switchTab(tabId);
+      });
+    }
+
+    if ($("btnSaveColField")) {
+      $("btnSaveColField").addEventListener("click", function () {
+        saveDesignerField(tabId, key, sec);
+      });
+    }
+
+    if (window._editingColField) fillDesignerForm(window._editingColField);
+    renderColFieldList();
+    renderColBoxList(tabId, key);
+    if ($("btnAddColBox")) {
+      $("btnAddColBox").addEventListener("click", function () {
+        var name = ($("colBoxLabel").value || "").trim();
+        if (!name) { alert("نام کادر را بنویسید."); return; }
+        if (window._editingBoxId) {
+          var box = getBoxes(key).filter(function (x) { return x.id === window._editingBoxId; })[0];
+          if (box) box.label = name;
+          window._editingBoxId = "";
+          if ($("btnAddColBox")) $("btnAddColBox").textContent = "➕ ثبت کادر";
+        } else {
+          getBoxes(key).push({ id: "box-" + key + "-" + Date.now(), label: name, fieldIds: [] });
+        }
+        saveState();
+        $("colBoxLabel").value = "";
+        applyFullFormLayout(tabId);
+        renderColBoxList(tabId, key);
+      });
+    }
+  }
+
+  window.renderColBoxList = renderColBoxList;
+  function renderColBoxList(tabId, key) {
+    var host = $("colBoxList");
+    if (!host) return;
+    var boxes = getBoxes(key);
+    var fields = [];
+    try { fields = getUnifiedFieldList(tabId); } catch (e) {}
+    if (!boxes.length) {
+      host.innerHTML = "<p class='col-help'>کادری نیست. با نام دلخواه یک کادر بسازید و بعد مشخص کنید کدام فیلدها داخلش باشند.</p>";
+      return;
+    }
+    host.innerHTML = boxes.map(function (b) {
+      var checks = fields.filter(function (f) { return f.kind !== "box"; }).map(function (f) {
+        var on = (b.fieldIds || []).indexOf(f.id) !== -1;
+        return "<label class='col-box-chk'><input type='checkbox' data-box='" + escHtml(b.id) + "' data-fid='" + escHtml(f.id) + "'" + (on ? " checked" : "") + "> " + escHtml(f.label) + "</label>";
+      }).join("");
+      return "<div class='col-user-box-admin'><div class='col-user-box-admin-head'><strong>" + escHtml(b.label) + "</strong>" +
+        " <button type='button' class='btn btn-outline btn-sm col-edit-box' data-box='" + escHtml(b.id) + "'>✏️ ویرایش</button>" +
+        " <button type='button' class='btn btn-danger btn-sm col-del-box' data-box='" + escHtml(b.id) + "'>حذف</button></div>" +
+        "<div class='col-box-fields'>" + checks + "</div></div>";
+    }).join("");
+    Array.prototype.forEach.call(host.querySelectorAll("input[type=checkbox][data-box]"), function (chk) {
+      chk.addEventListener("change", function () {
+        var bid = chk.getAttribute("data-box");
+        var fid = chk.getAttribute("data-fid");
+        var box = getBoxes(key).filter(function (x) { return x.id === bid; })[0];
+        if (!box) return;
+        if (!box.fieldIds) box.fieldIds = [];
+        var i = box.fieldIds.indexOf(fid);
+        if (chk.checked && i === -1) box.fieldIds.push(fid);
+        if (!chk.checked && i !== -1) box.fieldIds.splice(i, 1);
+        writeFieldFlag(tabId, fid, "boxId", chk.checked ? bid : "");
+        saveState();
+        applyFullFormLayout(tabId);
+      });
+    });
+    Array.prototype.forEach.call(host.querySelectorAll(".col-edit-box"), function (btn) {
+      btn.addEventListener("click", function () {
+        var bid = btn.getAttribute("data-box");
+        var box = getBoxes(key).filter(function (x) { return x.id === bid; })[0];
+        if (!box) return;
+        window._editingBoxId = bid;
+        if ($("colBoxLabel")) $("colBoxLabel").value = box.label || "";
+        if ($("btnAddColBox")) $("btnAddColBox").textContent = "💾 ذخیره ویرایش کادر";
+        if ($("colBoxLabel")) $("colBoxLabel").focus();
+      });
+    });
+    Array.prototype.forEach.call(host.querySelectorAll(".col-del-box"), function (btn) {
+      btn.addEventListener("click", function () {
+        var bid = btn.getAttribute("data-box");
+        state.formBoxes[key] = getBoxes(key).filter(function (x) { return x.id !== bid; });
+        var el = document.getElementById(bid);
+        if (el) el.parentNode && el.parentNode.removeChild(el);
+        saveState();
+        applyFullFormLayout(tabId);
+        renderColBoxList(tabId, key);
+      });
+    });
+  }
+
+  function saveDesignerField(tabId, key, sec) {
+    var label = ($("colFieldLabel").value || "").trim();
+    if (!label) { alert("عنوان فیلد را بنویسید."); return; }
+    var type = $("colFieldType").value;
+    var opts = ($("colFieldOpts").value || "").split(/[،,]/).map(function (s) { return s.trim(); }).filter(Boolean);
+    var order = parseInt($("colFieldOrder").value, 10);
+    if (!order || order < 1) order = getUnifiedFieldList(tabId).length + 1;
+    var size = parseInt($("colFieldSize").value, 10) || 220;
+    var heightVal = $("colFieldHeight") ? (parseInt($("colFieldHeight").value, 10) || 0) : 0;
+    var listOrderVal = $("colFieldListOrder") ? (parseInt($("colFieldListOrder").value, 10) || 0) : 0;
+    var addKind = $("colAddKind") ? $("colAddKind").value : "field";
+    var placeVal = $("colFieldPlace") ? $("colFieldPlace").value : "beside";
+    var reqVal = $("colFieldReq") ? $("colFieldReq").checked : false;
+    var excelVal = $("colFieldExcel") ? $("colFieldExcel").checked : false;
+    var editing = window._editingColField;
+
+    if (addKind === "box" && !editing) {
+      if (!label) { alert("عنوان کادر را بنویسید."); return; }
+      getBoxes(key).push({ id: "box-" + key + "-" + Date.now(), label: label, fieldIds: [], order: order, size: size, height: heightVal });
+      saveState();
+      logOp("افزودن کادر «" + label + "» به تب " + sec.label);
+      afterSaveStayOnList();
+      if (typeof window.renderColBoxInfoTable === "function") window.renderColBoxInfoTable(tabId, key);
+      alert("کادر «" + label + "» در تب «" + sec.label + "» ثبت شد.");
+      return;
+    }
+    if (addKind === "button" && !editing) {
+      var wkind = $("colBtnKind") ? $("colBtnKind").value : "widget-save";
+      if (typeof window.addWidgetToActiveTab === "function") {
+        var w = window.addWidgetToActiveTab(wkind, label || "کلید", { tabId: tabId, allowDup: true });
+        if (w) {
+          w.order = order;
+          w.listOrder = listOrderVal || order;
+          w.size = size;
+          w.height = heightVal;
+          w.place = placeVal;
+        }
+        saveState();
+      }
+      afterSaveStayOnList();
+      if (typeof window.renderColBtnInfoTable === "function") window.renderColBtnInfoTable(tabId, key);
+      return;
+    }
+
+    function afterSaveStayOnList() {
+      window._editingColField = null;
+      fillDesignerForm(null);
+      var btn = $("btnSaveColField");
+      if (btn) btn.textContent = "ثبت فیلد در تب «" + (sec.label || "") + "»";
+      applyFullFormLayout(tabId);
+      renderColFieldList();
+      renderColTabGrid();
+      var box = $("colFieldList");
+      if (box) {
+        box.scrollIntoView({ block: "start" });
+        if (window._colEditScroll) box.scrollTop = window._colEditScroll.list || 0;
+      }
+      if (window._colEditScroll && window._colEditScroll.y != null) {
+        try { window.scrollTo(0, window._colEditScroll.y); } catch (e) {}
+      }
+    }
+
+    if (editing && editing.builtin) {
+      var meta = ensureMeta(key);
+      if (!meta[editing.id]) meta[editing.id] = {};
+      meta[editing.id].label = label;
+      meta[editing.id].size = size;
+      if (heightVal > 20) meta[editing.id].height = heightVal;
+      if (listOrderVal > 0) meta[editing.id].listOrder = listOrderVal;
+      meta[editing.id].place = placeVal || "beside";
+      meta[editing.id].showInForm = $("colFieldInForm").checked;
+      meta[editing.id].showInList = $("colFieldInList").checked;
+      meta[editing.id].hidden = !$("colFieldInForm").checked;
+      meta[editing.id].required = reqVal;
+      meta[editing.id].exportExcel = excelVal;
+      meta[editing.id].allowAddOption = $("colFieldFly") ? $("colFieldFly").checked : true;
+      saveState();
+      logOp("ویرایش فیلد ثابت «" + label + "» در تب " + sec.label);
+      setAnyFieldOrder(tabId, editing.id, order);
+      afterSaveStayOnList();
+      alert("تغییرات فیلد «" + label + "» ذخیره شد.");
+      return;
+    }
+
+    if (editing && !editing.builtin) {
+      var rec = null;
+      getFieldList(key).forEach(function (f) { if (f.id === editing.id) rec = f; });
+      if (rec) {
+        rec.label = label;
+        rec.type = type === "select" ? "select" : "simple";
+        rec.inputKind = type;
+        rec.options = opts;
+        rec.allowAddOption = $("colFieldFly").checked;
+        rec.showInForm = $("colFieldInForm").checked;
+        rec.showInList = $("colFieldInList").checked;
+        rec.size = size;
+        if (heightVal > 20) rec.height = heightVal;
+        if (listOrderVal > 0) rec.listOrder = listOrderVal;
+        if ($("colFieldPlace")) rec.place = $("colFieldPlace").value || "beside";
+        rec.dependsOn = ($("colFieldDep").value || "").trim();
+        rec.required = reqVal;
+        rec.exportExcel = excelVal;
+        saveState();
+        logOp("ویرایش فیلد «" + label + "» در تب " + sec.label);
+        document.querySelectorAll('[data-custom-field-id="' + rec.id + '"]').forEach(function (inp) {
+          var g = inp.closest(".form-group");
+          if (g) g.remove();
+        });
+        if (typeof renderCustomFieldsTable === "function") renderCustomFieldsTable();
+        if (typeof renderAllCustomFieldsInFormsAndTables === "function") renderAllCustomFieldsInFormsAndTables();
+        setAnyFieldOrder(tabId, rec.id, order);
+        afterSaveStayOnList();
+        alert("ویرایش فیلد «" + label + "» ذخیره شد و روی فرم تب اعمال گردید.");
+        return;
+      }
+    }
+
+    var neu = {
+      id: "cf-" + key + "-" + Date.now(),
+      label: label,
+      type: type === "select" ? "select" : "simple",
+      inputKind: type,
+      options: opts,
+      allowAddOption: $("colFieldFly").checked,
+      showInForm: $("colFieldInForm").checked,
+      showInList: $("colFieldInList").checked,
+      order: order,
+      listOrder: listOrderVal || order,
+      size: size,
+      height: heightVal || 0,
+      place: placeVal || "beside",
+      required: reqVal,
+      exportExcel: excelVal,
+      dependsOn: ($("colFieldDep").value || "").trim()
+    };
+    getFieldList(key).push(neu);
+    saveState();
+    logOp("افزودن فیلد «" + label + "» به تب " + sec.label + " با ترتیب " + order);
+    if (typeof renderCustomFieldsTable === "function") renderCustomFieldsTable();
+    if (typeof renderAllCustomFieldsInFormsAndTables === "function") renderAllCustomFieldsInFormsAndTables();
+    setAnyFieldOrder(tabId, neu.id, order);
+    afterSaveStayOnList();
+    alert("فیلد «" + label + "» در تب «" + sec.label + "» ثبت شد.");
+  }
+
+  function renderColFieldList() {
+    var box = $("colFieldList");
+    var preview = $("colOrderPreview");
+    if (!window._activeColTab) return;
+    var tabId = window._activeColTab;
+    var key = fieldKeyForTab(tabId);
+    var list = getUnifiedFieldList(tabId);
+    if (preview) {
+      preview.innerHTML = list.length
+        ? ("<strong>ردیف‌های فرم این تب:</strong> " + list.map(function (f, i) {
+          return (i + 1) + ". " + escHtml(f.label) + (f.hidden ? " (مخفی در فرم)" : "") + (f.showInList ? "" : " (بدون لیست)");
+        }).join("  ←  "))
+        : "فیلدی در این تب پیدا نشد.";
+    }
+    if (!box) return;
+    if (!list.length) {
+      box.innerHTML = "<div class='col-empty'>فیلدی در فرم این تب نیست.</div>";
+      return;
+    }
+    var fontOpts = function (cur) {
+      return "<option value=''" + (!cur ? " selected" : "") + ">پیش‌فرض</option>" +
+        "<option value='Tahoma'" + (cur === "Tahoma" ? " selected" : "") + ">Tahoma</option>" +
+        "<option value='Vazirmatn'" + (cur === "Vazirmatn" ? " selected" : "") + ">وزیر</option>" +
+        "<option value='Tahoma, Arial'" + (cur && cur.indexOf("Arial") !== -1 ? " selected" : "") + ">Arial</option>" +
+        "<option value='Georgia'" + (cur === "Georgia" ? " selected" : "") + ">Georgia</option>";
+    };
+    var html = "<table class='data-table'><thead><tr><th>ترتیب فرم</th><th>ترتیب لیست</th><th>عنوان</th><th>نوع</th><th>چینش</th><th>فونت لیبل</th><th>بولد لیبل</th><th>سایز فونت لیبل</th><th>فونت فیلد</th><th>بولد فیلد</th><th>سایز فونت فیلد</th><th>ستاره</th><th>فرم</th><th>لیست</th><th>اکسل</th><th>جابجایی</th><th>عملیات</th></tr></thead><tbody>";
+    list.forEach(function (f, i) {
+      if (f.kind === "box" || f.kind === "widget" || String(f.inputKind || f.type || "").indexOf("widget-") === 0) return;
+      var src = (f.kind === "ordercol" ? "داخل کادر اقلام" : (f.builtin ? "ثابت فرم" : "اضافه‌شده"));
+      var hid = f.hidden ? " col-row-hidden" : "";
+      var rowNo = list.indexOf(f) + 1;
+      var listNo = f.listOrder || rowNo;
+      var place = f.place || "beside";
+      var labFs = parseInt(f.labelFontSize, 10) || 14;
+      var fldFs = parseInt(f.fieldFontSize, 10) || 14;
+      if (labFs > 28) labFs = 28;
+      if (labFs < 10) labFs = 10;
+      if (fldFs > 28) fldFs = 28;
+      if (fldFs < 10) fldFs = 10;
+      html += "<tr class='" + hid + "' data-fid='" + escHtml(f.id) + "'>" +
+        "<td><input type='number' min='1' class='form-input col-order-input' data-fid='" + escHtml(f.id) + "' value='" + rowNo + "' title='ترتیب در فرم ثبت'></td>" +
+        "<td><input type='number' min='1' class='form-input col-listorder-input' data-fid='" + escHtml(f.id) + "' value='" + listNo + "' title='ترتیب در لیست'></td>" +
+        "<td><strong>" + escHtml(f.label) + "</strong>" + (f.required ? " <span class='col-req-star'>*</span>" : "") + (f.hidden ? " <span class='col-hidden-badge'>مخفی</span>" : "") + "</td>" +
+        "<td>" + src + "</td>" +
+        "<td><select class='form-select col-place-sel' data-fid='" + escHtml(f.id) + "'><option value='beside'" + (place !== "under" ? " selected" : "") + ">روبرو</option><option value='under'" + (place === "under" ? " selected" : "") + ">زیر هم</option></select></td>" +
+        "<td><select class='form-select col-labelfont-sel' data-fid='" + escHtml(f.id) + "'>" + fontOpts(f.labelFontFamily || "") + "</select></td>" +
+        "<td style='text-align:center'><input type='checkbox' class='col-labelbold-chk' data-fid='" + escHtml(f.id) + "'" + (f.labelFontWeight === "bold" ? " checked" : "") + "></td>" +
+        "<td><input type='number' min='10' max='28' class='form-input col-labelsize-inp' data-fid='" + escHtml(f.id) + "' value='" + labFs + "' title='سایز فونت لیبل ۱۰ تا ۲۸'></td>" +
+        "<td><select class='form-select col-fieldfont-sel' data-fid='" + escHtml(f.id) + "'>" + fontOpts(f.fieldFontFamily || "") + "</select></td>" +
+        "<td style='text-align:center'><input type='checkbox' class='col-fieldbold-chk' data-fid='" + escHtml(f.id) + "'" + (f.fieldFontWeight === "bold" ? " checked" : "") + "></td>" +
+        "<td><input type='number' min='10' max='28' class='form-input col-fieldsize-inp' data-fid='" + escHtml(f.id) + "' value='" + fldFs + "' title='سایز فونت داخل فیلد ۱۰ تا ۲۸'></td>" +
+        "<td style='text-align:center'><input type='checkbox' class='col-req-chk' data-fid='" + escHtml(f.id) + "'" + (f.required ? " checked" : "") + " title='الزامی'></td>" +
+        "<td style='text-align:center'><input type='checkbox' class='col-flag-form' data-fid='" + escHtml(f.id) + "'" + (f.showInForm ? " checked" : "") + "></td>" +
+        "<td style='text-align:center'><input type='checkbox' class='col-flag-list' data-fid='" + escHtml(f.id) + "'" + (f.showInList ? " checked" : "") + "></td>" +
+        "<td style='text-align:center'><input type='checkbox' class='col-excel-chk' data-fid='" + escHtml(f.id) + "'" + (f.exportExcel ? " checked" : "") + " title='خروجی اکسل'></td>" +
+        "<td><button type='button' class='btn btn-outline btn-sm col-move-up' data-fid='" + escHtml(f.id) + "'>▲ بالاتر</button> " +
+        "<button type='button' class='btn btn-outline btn-sm col-move-down' data-fid='" + escHtml(f.id) + "'>▼ پایین‌تر</button></td>" +
+        "<td class='col-ops'>";
+      html += "<button type='button' class='btn btn-outline btn-sm col-edit-field' data-fid='" + escHtml(f.id) + "'>✏️ ویرایش</button> ";
+      html += "<button type='button' class='btn btn-danger btn-sm col-del-field' data-fid='" + escHtml(f.id) + "'>حذف</button>";
+      html += "</td></tr>";
+    });
+    html += "</tbody></table>";
+    box.innerHTML = html;
+
+    Array.prototype.forEach.call(box.querySelectorAll(".col-order-input"), function (inp) {
+      inp.addEventListener("change", function () {
+        setAnyFieldOrder(tabId, inp.getAttribute("data-fid"), parseInt(inp.value, 10));
+      });
+    });
+    Array.prototype.forEach.call(box.querySelectorAll(".col-listorder-input"), function (inp) {
+      inp.addEventListener("change", function () {
+        setListFieldOrder(tabId, inp.getAttribute("data-fid"), parseInt(inp.value, 10));
+      });
+    });
+    Array.prototype.forEach.call(box.querySelectorAll(".col-excel-chk"), function (inp) {
+      inp.addEventListener("change", function () {
+        writeFieldFlag(tabId, inp.getAttribute("data-fid"), "exportExcel", inp.checked);
+        saveState();
+      });
+    });
+    Array.prototype.forEach.call(box.querySelectorAll(".col-place-sel"), function (sel) {
+      sel.addEventListener("change", function () {
+        writeFieldFlag(tabId, sel.getAttribute("data-fid"), "place", sel.value);
+        saveState();
+        applyFullFormLayout(tabId);
+      });
+    });
+    function bindFlag(sel, flag, transform) {
+      Array.prototype.forEach.call(box.querySelectorAll(sel), function (el) {
+        el.addEventListener("change", function () {
+          var v = el.type === "checkbox" ? el.checked : el.value;
+          if (transform) v = transform(el);
+          writeFieldFlag(tabId, el.getAttribute("data-fid"), flag, v);
+          saveState();
+          applyFullFormLayout(tabId);
+        });
+      });
+    }
+    bindFlag(".col-labelfont-sel", "labelFontFamily");
+    bindFlag(".col-labelbold-chk", "labelFontWeight", function (el) { return el.checked ? "bold" : "normal"; });
+    bindFlag(".col-labelsize-inp", "labelFontSize", function (el) {
+      var n = parseInt(el.value, 10) || 14;
+      if (n < 10) n = 10;
+      if (n > 28) n = 28;
+      el.value = n;
+      return String(n);
+    });
+    bindFlag(".col-fieldfont-sel", "fieldFontFamily");
+    bindFlag(".col-fieldbold-chk", "fieldFontWeight", function (el) { return el.checked ? "bold" : "normal"; });
+    bindFlag(".col-fieldsize-inp", "fieldFontSize", function (el) {
+      var n = parseInt(el.value, 10) || 14;
+      if (n < 10) n = 10;
+      if (n > 28) n = 28;
+      el.value = n;
+      return String(n);
+    });
+    bindFlag(".col-req-chk", "required", function (el) { return el.checked; });
+    Array.prototype.forEach.call(box.querySelectorAll(".col-flag-form"), function (inp) {
+      inp.addEventListener("change", function () {
+        writeFieldFlag(tabId, inp.getAttribute("data-fid"), "showInForm", inp.checked);
+        saveState();
+        applyFullFormLayout(tabId);
+        refreshEntityLists(tabId);
+        renderColFieldList();
+      });
+    });
+    Array.prototype.forEach.call(box.querySelectorAll(".col-flag-list"), function (inp) {
+      inp.addEventListener("change", function () {
+        writeFieldFlag(tabId, inp.getAttribute("data-fid"), "showInList", inp.checked);
+        saveState();
+        refreshEntityLists(tabId);
+      });
+    });
+    Array.prototype.forEach.call(box.querySelectorAll(".col-move-up"), function (btn) {
+      btn.addEventListener("click", function () { nudgeAnyField(tabId, btn.getAttribute("data-fid"), -1); });
+    });
+    Array.prototype.forEach.call(box.querySelectorAll(".col-move-down"), function (btn) {
+      btn.addEventListener("click", function () { nudgeAnyField(tabId, btn.getAttribute("data-fid"), 1); });
+    });
+    Array.prototype.forEach.call(box.querySelectorAll(".col-edit-field"), function (btn) {
+      btn.addEventListener("click", function () {
+        var id = btn.getAttribute("data-fid");
+        var field = getUnifiedFieldList(tabId).filter(function (f) { return f.id === id; })[0];
+        if (!field) return;
+        window._colEditScroll = { y: window.scrollY, list: box.scrollTop || 0 };
+        window._editingColField = field;
+        fillDesignerForm(field);
+        var lab = $("colFieldLabel");
+        if (lab) {
+          lab.focus();
+          lab.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      });
+    });
+    Array.prototype.forEach.call(box.querySelectorAll(".col-del-field"), function (btn) {
+      btn.addEventListener("click", function () {
+        deleteAnyField(tabId, btn.getAttribute("data-fid"));
+      });
+    });
+    Array.prototype.forEach.call(box.querySelectorAll(".col-restore-field"), function (btn) {
+      btn.addEventListener("click", function () {
+        var meta = ensureMeta(key);
+        var id = btn.getAttribute("data-fid");
+        if (!meta[id]) meta[id] = {};
+        meta[id].hidden = false;
+        saveState();
+        applyFullFormLayout(tabId);
+        renderColFieldList();
+        renderColTabGrid();
+      });
+    });
+  }
+
+  function writeFieldOrder(tabId, fieldId, newOrder) {
+    var key = fieldKeyForTab(tabId);
+    var custom = null;
+    getFieldList(key).forEach(function (f) { if (f.id === fieldId) custom = f; });
+    if (custom) {
+      custom.order = newOrder;
+      return;
+    }
+    var meta = ensureMeta(key);
+    if (!meta[fieldId]) meta[fieldId] = {};
+    meta[fieldId].order = newOrder;
+  }
+
+  function writeListFieldOrder(tabId, fieldId, newOrder) {
+    var key = fieldKeyForTab(tabId);
+    var custom = null;
+    getFieldList(key).forEach(function (f) { if (f.id === fieldId) custom = f; });
+    if (custom) {
+      custom.listOrder = newOrder;
+      return;
+    }
+    var meta = ensureMeta(key);
+    if (!meta[fieldId]) meta[fieldId] = {};
+    meta[fieldId].listOrder = newOrder;
+  }
+
+  window.writeFieldSize = writeFieldSize;
+  function writeFieldSize(tabId, fieldId, size) {
+    var key = fieldKeyForTab(tabId);
+    var custom = null;
+    getFieldList(key).forEach(function (f) { if (f.id === fieldId) custom = f; });
+    size = parseInt(size, 10) || 220;
+    if (custom) {
+      custom.size = size;
+      return;
+    }
+    var meta = ensureMeta(key);
+    if (!meta[fieldId]) meta[fieldId] = {};
+    meta[fieldId].size = size;
+  }
+
+  function writeFieldFlag(tabId, fieldId, flag, value) {
+    var key = fieldKeyForTab(tabId);
+    var custom = null;
+    getFieldList(key).forEach(function (f) { if (f.id === fieldId) custom = f; });
+    if (custom) {
+      custom[flag] = value;
+      if (flag === "showInForm") custom.showInForm = value;
+      return;
+    }
+    var meta = ensureMeta(key);
+    if (!meta[fieldId]) meta[fieldId] = {};
+    meta[fieldId][flag] = value;
+    if (flag === "showInForm") meta[fieldId].hidden = !value;
+  }
+
+  function refreshEntityLists(tabId) {
+    var key = fieldKeyForTab(tabId);
+    try {
+      if (key === "pharmacy" && typeof renderPharmaciesList === "function") renderPharmaciesList();
+      if (key === "doctor" && typeof renderDoctorsList === "function") renderDoctorsList();
+      if (key === "order" && typeof renderOrdersList === "function") renderOrdersList();
+    } catch (e) {}
+  }
+
+  function reindexOrders(tabId, orderedIds) {
+    orderedIds.forEach(function (id, i) { writeFieldOrder(tabId, id, i + 1); });
+  }
+
+  function ensureSequentialOrders(tabId) {
+    var list = getUnifiedFieldList(tabId);
+    var ok = true;
+    list.forEach(function (f, i) {
+      if (Number(f.order) !== i + 1) ok = false;
+    });
+    if (ok) return;
+    reindexOrders(tabId, list.map(function (f) { return f.id; }));
+    try { saveState(false); } catch (e) {}
+  }
+
+  function setListFieldOrder(tabId, fieldId, newOrder) {
+    var list = getUnifiedFieldList(tabId).slice().sort(function (a, b) {
+      var ao = Number(a.listOrder) || Number(a.order) || 999;
+      var bo = Number(b.listOrder) || Number(b.order) || 999;
+      if (ao !== bo) return ao - bo;
+      return String(a.id).localeCompare(String(b.id));
+    });
+    var ids = list.map(function (f) { return f.id; });
+    var from = ids.indexOf(fieldId);
+    if (from < 0) return;
+    var rowNum = parseInt(newOrder, 10);
+    if (!rowNum || rowNum < 1) rowNum = 1;
+    if (rowNum > ids.length) rowNum = ids.length;
+    ids.splice(from, 1);
+    ids.splice(rowNum - 1, 0, fieldId);
+    ids.forEach(function (id, i) { writeListFieldOrder(tabId, id, i + 1); });
+    saveState();
+    logOp("انتقال ستون لیست به ردیف " + rowNum);
+    renderColFieldList();
+    refreshEntityLists(tabId);
+  }
+
+  function setAnyFieldOrder(tabId, fieldId, newOrder) {
+    var list = getUnifiedFieldList(tabId);
+    var ids = list.map(function (f) { return f.id; });
+    var from = ids.indexOf(fieldId);
+    if (from < 0) return;
+    var rowNum = parseInt(newOrder, 10);
+    if (!rowNum || rowNum < 1) rowNum = 1;
+    if (rowNum > ids.length) rowNum = ids.length;
+    ids.splice(from, 1);
+    ids.splice(rowNum - 1, 0, fieldId);
+    reindexOrders(tabId, ids);
+    saveState();
+    logOp("انتقال فیلد به ردیف " + rowNum);
+    applyFullFormLayout(tabId);
+    renderColFieldList();
+    refreshEntityLists(tabId);
+  }
+
+  function nudgeAnyField(tabId, fieldId, dir) {
+    var list = getUnifiedFieldList(tabId);
+    var ids = list.map(function (f) { return f.id; });
+    var from = ids.indexOf(fieldId);
+    var to = from + dir;
+    if (from < 0 || to < 0 || to >= ids.length) return;
+    ids.splice(from, 1);
+    ids.splice(to, 0, fieldId);
+    reindexOrders(tabId, ids);
+    saveState();
+    logOp("جابجایی فیلد به ردیف " + (to + 1));
+    applyFullFormLayout(tabId);
+    renderColFieldList();
+    refreshEntityLists(tabId);
+  }
+
+  function deleteAnyField(tabId, fieldId) {
+    var key = fieldKeyForTab(tabId);
+    var custom = null;
+    getFieldList(key).forEach(function (f) { if (f.id === fieldId) custom = f; });
+    if (custom) {
+      if (!confirm("فیلد «" + custom.label + "» از فرم تب «" + (tabId) + "» حذف شود؟")) return;
+      state.customFields[key] = getFieldList(key).filter(function (f) { return f.id !== fieldId; });
+      document.querySelectorAll('[data-custom-field-id="' + fieldId + '"]').forEach(function (inp) {
+        var g = inp.closest(".form-group");
+        if (g) g.remove();
+        else inp.remove();
+      });
+      saveState();
+      logOp("حذف فیلد «" + custom.label + "» از فرم تب");
+      if (typeof renderCustomFieldsTable === "function") renderCustomFieldsTable();
+      if (typeof renderAllCustomFieldsInFormsAndTables === "function") renderAllCustomFieldsInFormsAndTables();
+      applyFullFormLayout(tabId);
+      renderColDesignerPanel();
+      renderColTabGrid();
+      alert("فیلد از فرم تب اصلی هم حذف شد.");
+      return;
+    }
+    var unified = getUnifiedFieldList(tabId);
+    var field = unified.filter(function (f) { return f.id === fieldId; })[0];
+    var label = field ? field.label : fieldId;
+    if (!confirm("فیلد «" + label + "» کاملاً از فرم این تب حذف شود؟ (برگشت با دکمه بازگردانی پایین طراح)")) return;
+    var meta = ensureMeta(key);
+    if (!meta[fieldId]) meta[fieldId] = {};
+    meta[fieldId].deleted = true;
+    meta[fieldId].hidden = true;
+    var live = document.getElementById(fieldId);
+    if (live) {
+      var grp = live.closest(".form-group, .col-widget-wrap");
+      if (grp && grp.parentNode) grp.parentNode.removeChild(grp);
+    }
+    saveState();
+    applyFullFormLayout(tabId);
+    logOp("حذف کامل فیلد «" + label + "» از فرم تب");
+    refreshEntityLists(tabId);
+    renderColFieldList();
+    renderColTabGrid();
+    alert("فیلد «" + label + "» کاملاً حذف شد.");
+  }
+
+  window.isColShownInList = function (entity, fieldId) {
+    var customs = (state.customFields && state.customFields[entity]) || [];
+    var cf = null;
+    customs.forEach(function (f) { if (f.id === fieldId) cf = f; });
+    if (cf) return cf.showInList !== false;
+    var meta = ((state.formFieldMeta || {})[entity] || {})[fieldId];
+    if (meta && meta.showInList === false) return false;
+    if (meta && meta.showInList === true) return true;
+    return (DEFAULT_LIST_ON[entity] || []).indexOf(fieldId) !== -1;
+  };
+
+  window.builtinFieldValue = function (entity, fieldId, rec) {
+    if (!rec) return "—";
+    var map = {
+      pharmacyDate: rec.dateAdded,
+      pharmacyProvince: rec.province,
+      pharmacyCity: rec.city,
+      pharmacyDistrict: rec.district,
+      pharmacyName: rec.name,
+      pharmacyPhone: rec.phone,
+      pharmacyManager: rec.manager,
+      pharmacyManagerPhone: rec.managerPhone,
+      pharmacyAddress: rec.address,
+      pharmacyIsPercentage: rec.isPercentage ? "بله" : "خیر",
+      phFileInput: rec.fileName,
+      phMapSearchInput: (rec.lat && rec.lng) ? "ثبت شده" : "ثبت نشده",
+      doctorDate: rec.dateAdded,
+      doctorName: rec.name,
+      doctorSpecialty: rec.specialty,
+      doctorPhone: rec.phone,
+      doctorProvince: [rec.province, rec.city, rec.district].filter(Boolean).join(" / "),
+      doctorCity: rec.city,
+      doctorDistrict: rec.district,
+      doctorAddress: rec.address,
+      doctorIsPercentage: rec.isPercentage ? "بله" : "خیر",
+      docFileInput: rec.fileName,
+      docMapSearchInput: (rec.lat && rec.lng) ? "ثبت شده" : "ثبت نشده",
+      orderPharmacyName: rec.pharmacyName,
+      orderProvince: [rec.province, rec.city].filter(Boolean).join(" / "),
+      orderCity: rec.city,
+      orderDistrict: rec.district,
+      orderAddress: rec.address,
+      orderRepName: rec.repName,
+      orderDate: rec.orderDate,
+      orderStatus: rec.status,
+      orderNotes: rec.notes
+    };
+    var v = map[fieldId];
+    return (v == null || v === "") ? "—" : v;
+  };
+
+  window.extraListColumns = function (entity) {
+    var meta = ((state.formFieldMeta || {})[entity]) || {};
+    var defs = DEFAULT_LIST_ON[entity] || [];
+    var out = [];
+    Object.keys(meta).forEach(function (id) {
+      if (!meta[id] || meta[id].showInList !== true) return;
+      if (defs.indexOf(id) !== -1) return;
+      out.push({ id: id, label: meta[id].label || id });
+    });
+    return out;
+  };
+
+  function tabLabelOfPane(el) {
+    var pane = el.closest(".tab-pane");
+    if (!pane || !pane.id || typeof MENU_SECTIONS_LIST === "undefined") return "سایر";
+    var sec = MENU_SECTIONS_LIST.filter(function (s) { return s.id === pane.id; })[0];
+    return sec ? (sec.icon + " " + sec.label) : pane.id;
+  }
+
+  window.applySelectExtraOptions = function () {
+    if (!state || !state.selectExtraOptions) return;
+    Object.keys(state.selectExtraOptions).forEach(function (id) {
+      var sel = document.getElementById(id);
+      if (!sel || sel.tagName !== "SELECT") return;
+      (state.selectExtraOptions[id] || []).forEach(function (opt) {
+        var exists = false;
+        Array.prototype.forEach.call(sel.options, function (o) { if (o.value === opt) exists = true; });
+        if (!exists) {
+          var o = document.createElement("option");
+          o.value = opt;
+          o.textContent = opt;
+          sel.appendChild(o);
+        }
+      });
+    });
+  };
+
+  window.renderAllSystemSelects = function () {
+    var box = $("tableAllSelectsBody");
+    if (!box) return;
+    window.applySelectExtraOptions();
+    var rows = [];
+    document.querySelectorAll("select.form-select, select[id]").forEach(function (sel) {
+      if (!sel.id) return;
+      if (sel.closest("#jalaliCalendarPopup") || sel.closest("#columnsDesignerHost") || sel.closest(".modal-overlay")) return;
+      if (sel.id.indexOf("jalali") === 0) return;
+      var label = "";
+      var lab = document.querySelector('label[for="' + sel.id + '"]');
+      if (lab) label = lab.textContent.replace(/\s+/g, " ").trim();
+      if (!label) {
+        var g = sel.closest(".form-group");
+        if (g) {
+          var l2 = g.querySelector(".form-label, label");
+          if (l2) label = l2.textContent.replace(/\s+/g, " ").trim();
+        }
+      }
+      if (!label) label = sel.id;
+      var opts = [];
+      Array.prototype.forEach.call(sel.options, function (o) {
+        if (o.value) opts.push(o.textContent || o.value);
+      });
+      rows.push({
+        id: sel.id,
+        tab: tabLabelOfPane(sel),
+        label: label,
+        opts: opts
+      });
+    });
+    if (!rows.length) {
+      box.innerHTML = "<tr><td colspan='5'>کشویی‌ای پیدا نشد.</td></tr>";
+      return;
+    }
+    box.innerHTML = rows.map(function (r) {
+      return "<tr><td>" + escHtml(r.tab) + "</td><td><strong>" + escHtml(r.label) + "</strong></td><td dir='ltr'>" + escHtml(r.id) + "</td><td>" + escHtml(r.opts.slice(0, 12).join("، ")) + (r.opts.length > 12 ? "…" : "") + "</td>" +
+        "<td><button type='button' class='btn btn-outline btn-sm btn-add-sel-opt' data-sid='" + escHtml(r.id) + "' data-slabel='" + escHtml(r.label) + "'>➕ گزینه جدید</button></td></tr>";
+    }).join("");
+    Array.prototype.forEach.call(box.querySelectorAll(".btn-add-sel-opt"), function (btn) {
+      btn.addEventListener("click", function () {
+        var id = btn.getAttribute("data-sid");
+        var slabel = btn.getAttribute("data-slabel") || id;
+        var val = prompt("گزینه جدید برای «" + slabel + "»:");
+        if (!val || !String(val).trim()) return;
+        val = String(val).trim();
+        if (!state.selectExtraOptions) state.selectExtraOptions = {};
+        if (!state.selectExtraOptions[id]) state.selectExtraOptions[id] = [];
+        if (state.selectExtraOptions[id].indexOf(val) === -1) state.selectExtraOptions[id].push(val);
+        saveState();
+        window.applySelectExtraOptions();
+        window.renderAllSystemSelects();
+        logOp("افزودن گزینه «" + val + "» به کشویی " + slabel);
+        alert("گزینه «" + val + "» به فیلد «" + slabel + "» اضافه شد.");
+      });
+    });
+  };
+
+  function applyFieldPermissions() {
+    var role = sessionStorage.getItem("crmUserRole") || "";
+    var name = sessionStorage.getItem("crmUserName") || "";
+    var user = (state.users || []).find(function (u) { return u.fullName === name; });
+    if (!user || !user.permissions) return;
+    var p = user.permissions;
+    var hideTab = function (id, key) {
+      if (p[key] === false) {
+        document.querySelectorAll('[data-target="' + id + '"],[data-side-target="' + id + '"]').forEach(function (b) { b.style.display = "none"; });
+        var pane = $(id);
+        if (pane) pane.style.display = "none";
+      }
+    };
+    hideTab("tab-pharmacies", "ph_access");
+    hideTab("tab-doctors", "doc_access");
+    hideTab("tab-orders", "ord_access");
+    hideTab("tab-snapp-corporate", "sys_snapp_access");
+    hideTab("tab-distributor-companies", "dist_companies_access");
+    hideTab("tab-distributor-sales", "dist_sales_access");
+    hideTab("tab-distributor-database", "dist_database_access");
+    hideTab("tab-users-permissions", "sys_users");
+    hideTab("tab-backup", "sys_users");
+    if (p.ph_percentage === false) {
+      var el = document.querySelector("#pharmacyIsPercentage");
+      if (el && el.closest(".form-group")) el.closest(".form-group").style.display = "none";
+    }
+    if (p.ph_create_loc === false) {
+      var loc = $("phMapSearchInput");
+      if (loc && loc.closest(".form-group")) loc.closest(".form-group").parentElement.style.display = "none";
+    }
+  }
+
+  function renderDiagOps() {
+    var box = $("diagnosticsOpsLog");
+    if (!box) return;
+    var logs = (state && state.diagLog) || [];
+    try {
+      if (!logs.length) logs = JSON.parse(localStorage.getItem("CRM_DIAG_LOG") || "[]");
+    } catch (e) {}
+    box.innerHTML = logs.slice(0, 80).map(function (l) {
+      return '<div class="diag-row"><span class="diag-dot ok"></span><strong>' + (l.t || "") + "</strong><span>" + (l.user || "") + " — " + (l.msg || "") + "</span></div>";
+    }).join("") || "<div class='diag-row'>هنوز عملیاتی ثبت نشده.</div>";
+  }
+
+  function enhanceOverviewSearch() {
+    var btn = $("btnFocusMapRegion");
+    if (!btn || btn.dataset.v11 === "1") return;
+    btn.dataset.v11 = "1";
+    btn.addEventListener("click", function () {
+      var box = $("overviewResultsTableWrap");
+      if (!box) return;
+      var p = ($("mapFilterProvince") || {}).value;
+      var c = ($("mapFilterCity") || {}).value;
+      var d = ($("mapFilterDistrict") || {}).value;
+      var iran = p === "ایران" || !p;
+      var fac = (window.IRAN_FACILITIES || []).concat(state.pharmacies || []).concat(state.doctors || []).concat(state.hospitals || []);
+      var rows = fac.filter(function (f) {
+        if (iran) return true;
+        if (p && f.province && f.province !== p) return false;
+        if (c && f.city && f.city !== c) return false;
+        if (d && f.district && f.district !== d) return false;
+        return true;
+      });
+      box.innerHTML = "<table class='data-table'><thead><tr><th>ردیف</th><th>نوع</th><th>نام</th><th>تخصص/ساعت</th><th>شهر</th><th>آدرس</th></tr></thead><tbody>" +
+        rows.slice(0, 80).map(function (r, i) {
+          return "<tr><td>" + (i + 1) + "</td><td>" + (r.kind || r.type || "مرکز") + "</td><td>" + (r.name || "") + "</td><td>" + (r.specialty || r.hours || "") + "</td><td>" + (r.city || "") + "</td><td>" + (r.address || "") + "</td></tr>";
+        }).join("") + "</tbody></table>";
+    });
+  }
+
+  function preciseLocationInputs() {
+    ["pharmacyLat", "pharmacyLng", "doctorLat", "doctorLng"].forEach(function (id) {
+      var el = $(id);
+      if (el) el.setAttribute("step", "0.000001");
+    });
+  }
+
+  function boot() {
+    try {
+      if (state && !state.diagLog) {
+        try { state.diagLog = JSON.parse(localStorage.getItem("CRM_DIAG_LOG") || "[]"); } catch (e) { state.diagLog = []; }
+      }
+    } catch (e) {}
+    try { persistUsersToAuth(); } catch (e) {}
+    try { patchUserCardsWithPasswordChange(); } catch (e) { console.error(e); }
+    try { refreshAllDateBadges(); } catch (e) {}
+    try { setupInstantAddAll(); } catch (e) {}
+    try { realRowLists(); } catch (e) {}
+    try { patchExcel(); } catch (e) {}
+    try { setupVisitButtons(); } catch (e) {}
+    try { renderActivityMapAndChart(); } catch (e) {}
+    try {
+      if (typeof deleteCustomField === "function" && !window._colDelPatched) {
+        window._colDelPatched = true;
+        var origDel = deleteCustomField;
+        window.deleteCustomField = function (entity, fieldId) {
+          origDel(entity, fieldId);
+          if (typeof window.refreshColumnsDesigner === "function") window.refreshColumnsDesigner();
+        };
+      }
+    } catch (e) {}
+    try { setupColumnsDesigner(); } catch (e) {}
+    try { if (typeof window.renderExtraTabCustomFields === "function") window.renderExtraTabCustomFields(); } catch (e) {}
+    try {
+      if (typeof renderAllCustomFieldsInFormsAndTables === "function") renderAllCustomFieldsInFormsAndTables();
+      window.applyAllFormLayouts();
+    } catch (e) {}
+    try { if (typeof mergeCatalogIntoOrderItems === "function") mergeCatalogIntoOrderItems(); } catch (e) {}
+    try { window.applySelectExtraOptions(); } catch (e) {}
+    try { window.renderAllSystemSelects(); } catch (e) {}
+    try { applyFieldPermissions(); } catch (e) {}
+    try { renderDiagOps(); } catch (e) {}
+    try { enhanceOverviewSearch(); } catch (e) {}
+    try { preciseLocationInputs(); } catch (e) {}
+
+    var origSw = window.switchTab;
+    if (typeof origSw === "function") {
+      window.switchTab = function (id) {
+        origSw(id);
+        setTimeout(function () {
+          realRowLists();
+          refreshAllDateBadges();
+          if (id === "tab-activity-log") renderActivityMapAndChart();
+          if (id === "tab-my-visit") { updateVisitUi(); drawVisitOnMaps(); if (visitMap) visitMap.invalidateSize(); }
+          if (id === "tab-columns-products") setupColumnsDesigner();
+          if (id === "tab-troubleshooting") renderDiagOps();
+          if (id === "tab-users-permissions") patchUserCardsWithPasswordChange();
+          if (id === "tab-custom-fields" && typeof window.renderAllSystemSelects === "function") window.renderAllSystemSelects();
+          if (id === "tab-orders" && typeof mergeCatalogIntoOrderItems === "function") mergeCatalogIntoOrderItems();
+          try { applyFullFormLayout(id); } catch (e) {}
+        }, 120);
+      };
+    }
+
+    ["tablePharmaciesBody", "tableDoctorsBody", "tableOrdersBody"].forEach(function (id) {
+      var el = $(id);
+      if (!el) return;
+      var obs = new MutationObserver(function () { realRowLists(); });
+      obs.observe(el, { childList: true });
+    });
+
+    window.getUnifiedFieldList = getUnifiedFieldList;
+    window.paintFieldBox = paintFieldBox;
+    window.paintRequiredStar = paintRequiredStar;
+    window.groupIsShared = groupIsShared;
+    logOp("بارگذاری نسخه ۱۱.۱۴");
+    console.log("v11.14 ready");
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+
+/* ===================== (bundled from public/crm-features-v12.js) ===================== */
+// v12 — نشستن فیلد روی تب اصلی، ویرایش کادر، کلیدهای اصلی در طراح، تب ساز مدیر
+(function () {
+  "use strict";
+
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  window.iconFromTabLabel = function (label) {
+    var s = String(label || "");
+    var rules = [
+      [/داروخان|دارو/, "🏥"], [/پزشک|مطب|دکتر/, "👨‍⚕️"], [/سفارش|فروش/, "📦"],
+      [/نقشه|لوکیشن|موقعیت/, "🗺️"], [/ویزیت/, "▶️"], [/مرخصی/, "📝"],
+      [/کاربر|دسترسی/, "👤"], [/گزارش/, "📈"], [/تارگت/, "🎯"],
+      [/کالا|محصول/, "💊"], [/اعلان|پیام/, "🔔"], [/پشتیبان/, "💾"],
+      [/عیب/, "🛠️"], [/جستجو/, "🔍"], [/خانه|منزل/, "🏠"],
+      [/تردد|مسیر/, "🛣️"], [/بازرسی|انبار/, "📋"], [/بیمارستان/, "🏨"]
+    ];
+    for (var i = 0; i < rules.length; i++) if (rules[i][0].test(s)) return rules[i][1];
+    var icons = ["📋", "📌", "📁", "🗂️", "⭐", "🟢", "📘", "🧩", "📎", "📝"];
+    var h = 0;
+    for (var j = 0; j < s.length; j++) h = (h + s.charCodeAt(j)) % icons.length;
+    return icons[h];
+  };
+
+  var WIDGET_PALETTE = [
+    { kind: "simple", label: "فیلد متنی", icon: "✏️", group: "field" },
+    { kind: "number", label: "فیلد عددی", icon: "🔢", group: "field" },
+    { kind: "date", label: "فیلد تاریخ", icon: "📅", group: "field" },
+    { kind: "select", label: "فیلد کشویی", icon: "📑", group: "field" },
+    { kind: "textarea", label: "متن بلند", icon: "📝", group: "field" },
+    { kind: "phone", label: "شماره تماس", icon: "📞", group: "field" },
+    { kind: "widget-file", label: "بارگذاری فایل", icon: "📎", group: "field" },
+    { kind: "widget-map", label: "نقشه", icon: "🗺️", group: "tool" },
+    { kind: "widget-myloc", label: "موقعیت کنونی من", icon: "📡", group: "tool" },
+    { kind: "widget-getaddr", label: "دریافت آدرس این نقطه", icon: "🔍", group: "tool" },
+    { kind: "widget-searchaddr", label: "جستجوی آدرس روی نقشه", icon: "🧭", group: "tool" },
+    { kind: "widget-save", label: "ثبت / ذخیره", icon: "💾", group: "tool" },
+    { kind: "widget-reset", label: "بازنشانی فرم", icon: "♻️", group: "tool" },
+    { kind: "widget-edit", label: "ویرایش", icon: "✏️", group: "tool" },
+    { kind: "widget-delete", label: "حذف", icon: "🗑️", group: "tool" },
+    { kind: "widget-excel", label: "خروجی اکسل", icon: "⬇️", group: "tool" },
+    { kind: "widget-search", label: "جستجو در لیست", icon: "🔎", group: "tool" },
+    { kind: "widget-print", label: "چاپ", icon: "🖨️", group: "tool" },
+    { kind: "widget-list", label: "لیست رکوردها", icon: "📋", group: "tool" }
+  ];
+
+  function tabKey(tabId) {
+    var ut = ((state && state.userTabs) || []).filter(function (t) { return t.id === tabId; })[0];
+    if (ut && ut.key) return ut.key;
+    return String(tabId || "").replace(/^tab-/, "") || "misc";
+  }
+
+  function isUserTab(tabId) {
+    return ((state && state.userTabs) || []).some(function (t) { return t.id === tabId; });
+  }
+
+  function stampWidgetField(wrap, fid, field) {
+    if (!wrap) return wrap;
+    wrap.setAttribute("data-col-fid", fid);
+    if (field && field.actionScope) wrap.setAttribute("data-action-scope", field.actionScope);
+    if (field && field.scopeId) wrap.setAttribute("data-scope-id", field.scopeId);
+    if (!wrap.querySelector('[data-custom-field-id="' + fid + '"]')) {
+      var hid = document.createElement("input");
+      hid.type = "hidden";
+      hid.setAttribute("data-custom-field-id", fid);
+      wrap.appendChild(hid);
+    }
+    return wrap;
+  }
+
+  window.buildDesignerWidget = function (field, tabId) {
+    var kind = field.inputKind || field.type || "";
+    var wrap = document.createElement("div");
+    wrap.className = "form-group col-widget-wrap";
+    wrap.setAttribute("data-col-fid", field.id);
+    wrap.setAttribute("data-widget-kind", kind);
+    var fid = field.id;
+    var title = esc(field.label || "امکان");
+
+    if (kind === "widget-map") {
+      wrap.classList.add("full-width");
+      wrap.innerHTML = '<label class="form-label">' + title + "</label>" +
+        '<div class="map-container" id="map-' + fid + '" style="height:280px"></div>' +
+        '<input type="hidden" data-custom-field-id="' + fid + '" value="">' +
+        '<input type="hidden" id="' + fid + '-lat" data-widget-lat="' + fid + '">' +
+        '<input type="hidden" id="' + fid + '-lng" data-widget-lng="' + fid + '">';
+      setTimeout(function () { initUserMap(fid, tabId); }, 80);
+      return stampWidgetField(wrap, fid, field);
+    }
+    if (kind === "widget-myloc") {
+      wrap.innerHTML = '<button type="button" class="btn btn-primary btn-sm" id="btn-' + fid + '">📡 ' + title + "</button>";
+      setTimeout(function () {
+        var b = $("btn-" + fid);
+        if (b && !b.dataset.bound) {
+          b.dataset.bound = "1";
+          b.addEventListener("click", function () { runMyLocation(tabId); });
+        }
+      }, 30);
+      return stampWidgetField(wrap, fid, field);
+    }
+    if (kind === "widget-getaddr") {
+      wrap.innerHTML = '<button type="button" class="btn btn-success btn-sm" id="btn-' + fid + '">🔍 ' + title + "</button>";
+      setTimeout(function () {
+        var b = $("btn-" + fid);
+        if (b && !b.dataset.bound) {
+          b.dataset.bound = "1";
+          b.addEventListener("click", function () { runGetAddress(tabId); });
+        }
+      }, 30);
+      return stampWidgetField(wrap, fid, field);
+    }
+    if (kind === "widget-searchaddr") {
+      wrap.innerHTML = '<label class="form-label">' + title + "</label>" +
+        '<div style="display:flex;gap:.4rem">' +
+        '<input type="text" class="form-input" data-custom-field-id="' + fid + '" placeholder="آدرس را بنویسید...">' +
+        '<button type="button" class="btn btn-outline btn-sm" id="btn-' + fid + '">جستجو</button></div>';
+      setTimeout(function () {
+        var b = $("btn-" + fid);
+        if (b && !b.dataset.bound) {
+          b.dataset.bound = "1";
+          b.addEventListener("click", function () {
+            var inp = wrap.querySelector("input");
+            runSearchAddress(tabId, inp ? inp.value : "");
+          });
+        }
+      }, 30);
+      return stampWidgetField(wrap, fid, field);
+    }
+    if (kind === "widget-file") {
+      wrap.innerHTML = '<label class="form-label">' + title + "</label>" +
+        '<input type="file" class="form-input" data-custom-field-id="' + fid + '">';
+      return stampWidgetField(wrap, fid, field);
+    }
+    if (kind === "widget-save") {
+      wrap.innerHTML = '<button type="button" class="btn btn-primary" id="btn-' + fid + '" style="background:#0d9488">💾 ' + title + "</button>";
+      setTimeout(function () {
+        var b = $("btn-" + fid);
+        if (b && !b.dataset.bound) {
+          b.dataset.bound = "1";
+          b.addEventListener("click", function () { saveUserTabRecord(tabId, wrap); });
+        }
+      }, 30);
+      return stampWidgetField(wrap, fid, field);
+    }
+    if (kind === "widget-reset") {
+      wrap.innerHTML = '<button type="button" class="btn btn-outline" id="btn-' + fid + '">♻️ ' + title + "</button>";
+      setTimeout(function () {
+        var b = $("btn-" + fid);
+        if (b && !b.dataset.bound) {
+          b.dataset.bound = "1";
+          b.addEventListener("click", function () { resetUserTabForm(tabId, wrap); });
+        }
+      }, 30);
+      return stampWidgetField(wrap, fid, field);
+    }
+    if (kind === "widget-edit") {
+      wrap.innerHTML = '<button type="button" class="btn btn-outline btn-sm" id="btn-' + fid + '">✏️ ' + title + "</button>";
+      setTimeout(function () {
+        var b = $("btn-" + fid);
+        if (b && !b.dataset.bound) {
+          b.dataset.bound = "1";
+          b.addEventListener("click", function () {
+            var recs = ((state.customRecords || {})[tabKey(tabId)] || []);
+            if (!recs.length) { alert("هنوز رکوردی برای ویرایش نیست."); return; }
+            var sid = wrap.getAttribute("data-scope-id");
+            var rec = recs.filter(function (r) { return r.id === sid; })[0] || recs[recs.length - 1];
+            loadUserTabRecord(tabId, rec.id);
+          });
+        }
+      }, 30);
+      return stampWidgetField(wrap, fid, field);
+    }
+    if (kind === "widget-delete") {
+      wrap.innerHTML = '<button type="button" class="btn btn-danger btn-sm" id="btn-' + fid + '">🗑️ ' + title + "</button>";
+      setTimeout(function () {
+        var b = $("btn-" + fid);
+        if (b && !b.dataset.bound) {
+          b.dataset.bound = "1";
+          b.addEventListener("click", function () {
+            var hid = $("edit-" + tabKey(tabId));
+            var id = (wrap.getAttribute("data-action-scope") === "row" && wrap.getAttribute("data-scope-id")) || (hid && hid.value);
+            if (!id) { alert("ابتدا یک ردیف را برای حذف انتخاب کنید یا کلید را کنار همان ردیف بگذارید."); return; }
+            deleteUserTabRecord(tabId, id);
+          });
+        }
+      }, 30);
+      return stampWidgetField(wrap, fid, field);
+    }
+    if (kind === "widget-excel") {
+      wrap.innerHTML = '<button type="button" class="btn btn-success btn-sm" id="btn-' + fid + '">⬇️ ' + title + "</button>";
+      setTimeout(function () {
+        var b = $("btn-" + fid);
+        if (b && !b.dataset.bound) {
+          b.dataset.bound = "1";
+          b.addEventListener("click", function () {
+            if (typeof downloadCSVFile === "function") {
+              var recs = ((state.customRecords || {})[tabKey(tabId)] || []);
+              downloadCSVFile("tab-export.xls", ["ردیف", "داده"], recs.map(function (r, i) {
+                return [i + 1, JSON.stringify(r.values || {})];
+              }));
+            } else alert("خروجی اکسل آماده است.");
+          });
+        }
+      }, 30);
+      return stampWidgetField(wrap, fid, field);
+    }
+    if (kind === "widget-search") {
+      wrap.innerHTML = '<label class="form-label">' + title + "</label>" +
+        '<input type="text" class="form-input" data-custom-field-id="' + fid + '" placeholder="جستجو...">';
+      return stampWidgetField(wrap, fid, field);
+    }
+    if (kind === "widget-print") {
+      wrap.innerHTML = '<button type="button" class="btn btn-outline btn-sm" id="btn-' + fid + '">🖨️ ' + title + "</button>";
+      setTimeout(function () {
+        var b = $("btn-" + fid);
+        if (b && !b.dataset.bound) {
+          b.dataset.bound = "1";
+          b.addEventListener("click", function () { window.print(); });
+        }
+      }, 30);
+      return stampWidgetField(wrap, fid, field);
+    }
+    if (kind === "textarea") {
+      wrap.innerHTML = '<label class="form-label">' + title + "</label>" +
+        '<textarea class="form-textarea" data-custom-field-id="' + fid + '" rows="3"></textarea>';
+      return stampWidgetField(wrap, fid, field);
+    }
+    if (kind === "phone") {
+      wrap.innerHTML = '<label class="form-label">' + title + "</label>" +
+        '<input type="tel" class="form-input" data-custom-field-id="' + fid + '" dir="ltr" placeholder="0912...">';
+      return stampWidgetField(wrap, fid, field);
+    }
+    if (kind === "widget-list") {
+      wrap.classList.add("full-width");
+      wrap.innerHTML = '<label class="form-label">' + title + "</label>" +
+        '<div class="table-responsive"><table class="data-table"><thead><tr id="head-' + esc(tabKey(tabId)) + '"></tr></thead>' +
+        '<tbody id="body-' + esc(tabKey(tabId)) + '"></tbody></table></div>';
+      setTimeout(function () { renderUserTabList(tabId); }, 40);
+      return stampWidgetField(wrap, fid, field);
+    }
+    if (kind === "select") {
+      wrap.innerHTML = '<label class="form-label">' + title + "</label>" +
+        '<select class="form-select" data-custom-field-id="' + fid + '"><option value="">انتخاب کنید...</option>' +
+        (field.options || ["گزینه ۱", "گزینه ۲"]).map(function (o) {
+          return "<option>" + esc(o) + "</option>";
+        }).join("") + "</select>";
+      return stampWidgetField(wrap, fid, field);
+    }
+    if (kind === "date") {
+      wrap.innerHTML = '<label class="form-label">' + title + "</label>" +
+        '<input type="text" class="form-input jalali-date-input" data-kind="date" data-custom-field-id="' + fid + '" placeholder="1405/05/22" inputmode="numeric">';
+      setTimeout(function () {
+        var inp = wrap.querySelector("input");
+        if (inp && window.attachJalaliPicker) window.attachJalaliPicker(inp);
+      }, 30);
+      return stampWidgetField(wrap, fid, field);
+    }
+    var itype = kind === "number" ? "number" : "text";
+    wrap.innerHTML = '<label class="form-label">' + title + "</label>" +
+      '<input type="' + itype + '" class="form-input" data-custom-field-id="' + fid + '" placeholder="' + title + '...">';
+    if (kind !== "number") {
+      setTimeout(function () {
+        var inp = wrap.querySelector("input");
+        if (inp && window.attachInstantAdd) window.attachInstantAdd(inp);
+      }, 30);
+    }
+    return stampWidgetField(wrap, fid, field);
+  };
+  window.WIDGET_PALETTE = WIDGET_PALETTE;
+
+  var userMaps = {};
+  function initUserMap(fid, tabId) {
+    if (typeof L === "undefined") return;
+    var el = $("map-" + fid);
+    if (!el || el._leaflet_id) return;
+    var map = L.map("map-" + fid).setView([35.72, 51.42], 12);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OSM" }).addTo(map);
+    var marker = L.marker([35.72, 51.42]).addTo(map);
+    userMaps[fid] = { map: map, marker: marker };
+    map.on("click", function (e) {
+      setTabCoords(tabId, e.latlng.lat, e.latlng.lng, fid);
+    });
+    setTimeout(function () { map.invalidateSize(); }, 200);
+  }
+
+  function setTabCoords(tabId, lat, lng, preferFid) {
+    var pane = $(tabId);
+    if (!pane) return;
+    var latEl = pane.querySelector("[data-widget-lat]") || (preferFid && $(preferFid + "-lat"));
+    var lngEl = pane.querySelector("[data-widget-lng]") || (preferFid && $(preferFid + "-lng"));
+    if (latEl) latEl.value = Number(lat).toFixed(6);
+    if (lngEl) lngEl.value = Number(lng).toFixed(6);
+    var store = pane.querySelector("[data-custom-field-id][type=hidden]");
+    if (store) store.value = Number(lat).toFixed(6) + "," + Number(lng).toFixed(6);
+    Object.keys(userMaps).forEach(function (fid) {
+      var um = userMaps[fid];
+      if (!um || !um.map) return;
+      um.marker.setLatLng([lat, lng]);
+      um.map.setView([lat, lng], 15);
+    });
+  }
+
+  function runMyLocation(tabId) {
+    var apply = function (lat, lng) {
+      setTabCoords(tabId, lat, lng);
+      if (typeof reverseGeocodeCoordinates === "function") {
+        reverseGeocodeCoordinates(lat, lng).then(function (addr) {
+          fillAddressOnTab(tabId, addr);
+          alert("موقعیت نشست:\n" + addr);
+        });
+      }
+    };
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function (pos) { apply(pos.coords.latitude, pos.coords.longitude); },
+        function () { apply(35.72, 51.42); },
+        { enableHighAccuracy: true, timeout: 8000 }
+      );
+    } else apply(35.72, 51.42);
+  }
+
+  function runGetAddress(tabId) {
+    var pane = $(tabId);
+    if (!pane) return;
+    var latEl = pane.querySelector("[data-widget-lat]");
+    var lngEl = pane.querySelector("[data-widget-lng]");
+    var lat = latEl ? parseFloat(latEl.value) : NaN;
+    var lng = lngEl ? parseFloat(lngEl.value) : NaN;
+    if (!isFinite(lat) || !isFinite(lng)) { alert("اول روی نقشه نقطه بگذارید یا موقعیت فعلی را بگیرید."); return; }
+    if (typeof reverseGeocodeCoordinates !== "function") return;
+    reverseGeocodeCoordinates(lat, lng).then(function (addr) {
+      fillAddressOnTab(tabId, addr);
+      alert("آدرس این نقطه:\n" + addr);
+    });
+  }
+
+  function runSearchAddress(tabId, q) {
+    if (!q || !String(q).trim()) { alert("آدرس را بنویسید."); return; }
+    if (typeof searchAddressOnMap !== "function") return;
+    searchAddressOnMap(String(q).trim(), function (lat, lng) {
+      setTabCoords(tabId, lat, lng);
+    });
+  }
+
+  function fillAddressOnTab(tabId, addr) {
+    var pane = $(tabId);
+    if (!pane) return;
+    var cand = pane.querySelector("input[data-custom-field-id][placeholder*='آدرس'], input[id*='ddress'], input[id*='location']");
+    if (!cand) {
+      var inputs = pane.querySelectorAll("input.form-input[type='text'], input.form-input:not([type])");
+      if (inputs.length) cand = inputs[inputs.length - 1];
+    }
+    if (cand) cand.value = addr;
+  }
+
+  function collectUserTabValues(tabId) {
+    var pane = $(tabId);
+    var key = tabKey(tabId);
+    var vals = {};
+    if (!pane) return vals;
+    (pane.querySelectorAll("[data-custom-field-id]") || []).forEach(function (el) {
+      var id = el.getAttribute("data-custom-field-id");
+      if (!id) return;
+      if (el.type === "file") vals[id] = el.files && el.files[0] ? el.files[0].name : "";
+      else vals[id] = (el.value || "").trim();
+    });
+    var latEl = pane.querySelector("[data-widget-lat]");
+    var lngEl = pane.querySelector("[data-widget-lng]");
+    if (latEl) vals._lat = latEl.value;
+    if (lngEl) vals._lng = lngEl.value;
+    vals._tab = key;
+    return vals;
+  }
+
+  function saveUserTabRecord(tabId, scopeEl) {
+    if (!isUserTab(tabId)) {
+      var form = $(tabId) && $(tabId).querySelector("form");
+      if (form && typeof form.requestSubmit === "function") form.requestSubmit();
+      else if (form) form.dispatchEvent(new Event("submit", { cancelable: true }));
+      return;
+    }
+    if (typeof window.validateRequiredFields === "function" && !window.validateRequiredFields(tabId)) return;
+    var key = tabKey(tabId);
+    if (!state.customRecords) state.customRecords = {};
+    if (!state.customRecords[key]) state.customRecords[key] = [];
+    var vals = collectUserTabValues(tabId);
+    var hid = $("edit-" + key);
+    var editId = hid ? hid.value : "";
+    if (editId) {
+      var idx = state.customRecords[key].findIndex(function (r) { return r.id === editId; });
+      if (idx !== -1) state.customRecords[key][idx] = Object.assign({}, state.customRecords[key][idx], { values: vals });
+    } else {
+      state.customRecords[key].push({
+        id: "ur-" + Date.now(),
+        createdAt: new Date().toLocaleString("fa-IR", { timeZone: "Asia/Tehran" }),
+        values: vals
+      });
+    }
+    saveState();
+    if (hid) hid.value = "";
+    renderUserTabList(tabId);
+    resetUserTabForm(tabId);
+    alert("رکورد در تب «" + (((state.userTabs || []).filter(function (t) { return t.id === tabId; })[0] || {}).label || tabId) + "» ذخیره شد.");
+  }
+
+  function resetUserTabForm(tabId) {
+    var pane = $(tabId);
+    if (!pane) return;
+    pane.querySelectorAll("input.form-input, select.form-select, textarea").forEach(function (el) {
+      if (el.type === "file") el.value = "";
+      else if (el.type !== "hidden") el.value = "";
+    });
+    var hid = $("edit-" + tabKey(tabId));
+    if (hid) hid.value = "";
+  }
+
+  function loadUserTabRecord(tabId, recId) {
+    var key = tabKey(tabId);
+    var rec = ((state.customRecords || {})[key] || []).filter(function (r) { return r.id === recId; })[0];
+    if (!rec) return;
+    var pane = $(tabId);
+    if (!pane) return;
+    var hid = $("edit-" + key);
+    if (hid) hid.value = recId;
+    Object.keys(rec.values || {}).forEach(function (id) {
+      if (id.charAt(0) === "_") return;
+      var el = pane.querySelector('[data-custom-field-id="' + id + '"]');
+      if (el && el.type !== "file") el.value = rec.values[id];
+    });
+    if (rec.values._lat && rec.values._lng) setTabCoords(tabId, rec.values._lat, rec.values._lng);
+    if (typeof switchTab === "function") switchTab(tabId);
+  }
+
+  function deleteUserTabRecord(tabId, recId) {
+    if (!confirm("این ردیف حذف شود؟")) return;
+    var key = tabKey(tabId);
+    state.customRecords[key] = ((state.customRecords || {})[key] || []).filter(function (r) { return r.id !== recId; });
+    saveState();
+    renderUserTabList(tabId);
+    resetUserTabForm(tabId);
+  }
+
+  function renderUserTabList(tabId) {
+    var key = tabKey(tabId);
+    var head = $("head-" + key);
+    var body = $("body-" + key);
+    if (!head || !body) return;
+    var fields = ((state.customFields || {})[key] || []).filter(function (f) {
+      return f.showInList !== false && String(f.inputKind || "").indexOf("widget-") !== 0;
+    });
+    head.innerHTML = "<th>ردیف</th><th>تاریخ</th>" + fields.map(function (f) {
+      return "<th>" + esc(f.label) + "</th>";
+    }).join("") + "<th>عملیات</th>";
+    var rows = ((state.customRecords || {})[key] || []);
+    body.innerHTML = rows.map(function (r, i) {
+      var tds = fields.map(function (f) {
+        var v = (r.values || {})[f.id];
+        return "<td>" + esc(v == null || v === "" ? "—" : v) + "</td>";
+      }).join("");
+      return "<tr><td>" + (i + 1) + "</td><td>" + esc(r.createdAt || "") + "</td>" + tds +
+        '<td><button type="button" class="btn btn-outline btn-sm" data-edit="' + esc(r.id) + '">✏️ ویرایش</button> ' +
+        '<button type="button" class="btn btn-danger btn-sm" data-del="' + esc(r.id) + '">🗑️ حذف</button></td></tr>';
+    }).join("") || "<tr><td colspan='" + (fields.length + 3) + "'>رکوردی نیست</td></tr>";
+    body.querySelectorAll("[data-edit]").forEach(function (b) {
+      b.addEventListener("click", function () { loadUserTabRecord(tabId, b.getAttribute("data-edit")); });
+    });
+    body.querySelectorAll("[data-del]").forEach(function (b) {
+      b.addEventListener("click", function () { deleteUserTabRecord(tabId, b.getAttribute("data-del")); });
+    });
+  }
+
+  function ensureUserTabPane(tab) {
+    if (!tab || !tab.id) return;
+    if ($(tab.id)) {
+      renderUserTabList(tab.id);
+      return;
+    }
+    var main = document.querySelector("main.main-content");
+    if (!main) return;
+    var key = tab.key || tabKey(tab.id);
+    var sec = document.createElement("section");
+    sec.id = tab.id;
+    sec.className = "tab-pane user-made-tab";
+    sec.innerHTML =
+      '<div class="card user-blank-card">' +
+        '<div class="card-header"><div class="card-title"><span>' + esc(tab.icon || "📋") + " " + esc(tab.label) + "</span></div>" +
+        '<button type="button" class="btn btn-outline btn-sm" onclick="switchTab(\'tab-dashboard\')">🏠 صفحه اصلی</button></div>' +
+        '<p class="col-help" style="margin:0 0 .75rem">صفحه خالی است. از «ستون‌ها و کالاها» یا «طراحی دستی تب‌ها» فیلد و کلید بگذارید.</p>' +
+        '<form id="form-' + key + '" onsubmit="return false;">' +
+          '<input type="hidden" id="edit-' + key + '" value="">' +
+          '<div class="form-grid" id="grid-' + key + '"></div>' +
+          '<div id="cfHost-' + key + '" class="form-group full-width form-grid extra-cf-host"></div>' +
+        "</form></div>";
+    main.appendChild(sec);
+  }
+
+  function stripDefaultUserChrome(tab) {
+    if (!tab || !$(tab.id)) return;
+    var key = tab.key || tabKey(tab.id);
+    var pane = $(tab.id);
+    ["btnSave-" + key, "btnReset-" + key].forEach(function (id) {
+      var b = $(id);
+      if (!b) return;
+      var g = b.closest(".form-group") || b.parentNode;
+      if (g && g.parentNode) g.parentNode.removeChild(g);
+    });
+    var head = $("head-" + key);
+    if (head) {
+      var card = head.closest(".card");
+      if (card && card.parentNode && !card.querySelector("form")) card.parentNode.removeChild(card);
+    }
+  }
+
+  window.createUserTab = function (label) {
+    label = String(label || "").trim();
+    if (!label) { alert("نام تب را بنویسید."); return null; }
+    if (!state.userTabs) state.userTabs = [];
+    var stamp = Date.now();
+    var tab = {
+      id: "tab-user-" + stamp,
+      label: label,
+      icon: window.iconFromTabLabel(label),
+      key: "usertab-" + stamp,
+      userMade: true
+    };
+    if (!state.tabOrder) state.tabOrder = {};
+    var maxN = 0;
+    Object.keys(state.tabOrder).forEach(function (k) {
+      var n = Number(state.tabOrder[k]) || 0;
+      if (n > maxN) maxN = n;
+    });
+    state.tabOrder[tab.id] = maxN + 1;
+    state.userTabs.push(tab);
+    if (!state.customFields) state.customFields = {};
+    if (!state.customFields[tab.key]) state.customFields[tab.key] = [];
+    if (!state.customRecords) state.customRecords = {};
+    state.customRecords[tab.key] = [];
+    saveState();
+    ensureUserTabPane(tab);
+    if (typeof setupNavigationMenu === "function") setupNavigationMenu();
+    window._activeColTab = tab.id;
+    window._activeManualTab = tab.id;
+    if (typeof window.refreshColumnsDesigner === "function") window.refreshColumnsDesigner();
+    alert("تب «" + label + "» خالی ساخته شد. همین‌جا از امکانات آماده روی آن بگذارید.");
+    return tab.id;
+  };
+
+  window.deleteUserTab = function (tabId) {
+    var tab = ((state.userTabs || []).filter(function (t) { return t.id === tabId; })[0]);
+    if (!tab) return;
+    if (!confirm("تب «" + tab.label + "» و همه فیلدها و رکوردهایش حذف شود؟")) return;
+    state.userTabs = state.userTabs.filter(function (t) { return t.id !== tabId; });
+    if (state.customFields) delete state.customFields[tab.key];
+    if (state.customRecords) delete state.customRecords[tab.key];
+    if (state.formBoxes) delete state.formBoxes[tab.key];
+    if (state.formFieldMeta) delete state.formFieldMeta[tab.key];
+    var pane = $(tabId);
+    if (pane && pane.parentNode) pane.parentNode.removeChild(pane);
+    saveState();
+    window._activeColTab = "";
+    if (typeof setupNavigationMenu === "function") setupNavigationMenu();
+    if (typeof window.refreshColumnsDesigner === "function") window.refreshColumnsDesigner();
+    if (typeof switchTab === "function") switchTab("tab-dashboard");
+  };
+
+  window.addWidgetToActiveTab = function (kind, label, opts) {
+    opts = opts || {};
+    var tabId = opts.tabId || window._activeManualTab || window._activeColTab;
+    if (!tabId || tabId === "tab-manual-design") {
+      alert("اول یک تب را از گرید بالا انتخاب کنید.");
+      return null;
+    }
+    var key = fieldKeyOfTab(tabId);
+    if (!state.customFields) state.customFields = {};
+    if (!state.customFields[key]) state.customFields[key] = [];
+    if (isUserTab(tabId)) {
+      var ut = (state.userTabs || []).filter(function (t) { return t.id === tabId; })[0];
+      if (ut) ensureUserTabPane(ut);
+    }
+    var isWidget = String(kind).indexOf("widget-") === 0;
+    if (isWidget && !opts.allowDup) {
+      var exists = state.customFields[key].filter(function (f) { return f.inputKind === kind; })[0];
+      if (exists) {
+        if (typeof window.applyFullFormLayout === "function") window.applyFullFormLayout(tabId);
+        if (typeof window.refreshManualCanvas === "function") window.refreshManualCanvas(tabId);
+        var st = $("colAddStatus") || $("manAddStatus");
+        if (st) st.textContent = "«" + label + "» از قبل روی این تب هست.";
+        else alert("«" + label + "» از قبل روی این تب هست. می‌توانید جایش را در طراحی دستی عوض کنید.");
+        return exists;
+      }
+    }
+    var neu = {
+      id: "cf-" + key + "-" + kind.replace(/\W/g, "") + "-" + Date.now(),
+      label: label,
+      type: kind === "select" ? "select" : "simple",
+      inputKind: kind,
+      options: kind === "select" ? ["گزینه ۱", "گزینه ۲"] : [],
+      showInForm: true,
+      showInList: !isWidget,
+      order: (state.customFields[key].length || 0) + 1,
+      size: kind === "widget-map" || kind === "textarea" || kind === "widget-list" ? 900 : 220,
+      place: kind === "widget-map" || kind === "textarea" || kind === "widget-list" ? "under" : "beside",
+      actionScope: opts.scope || "form",
+      scopeId: opts.scopeId || ""
+    };
+    if (opts.x != null) neu._placeX = opts.x;
+    if (opts.y != null) neu._placeY = opts.y;
+    state.customFields[key].push(neu);
+    saveState();
+    var cid = (key === "pharmacy" ? "pharmacyCustomFieldsContainer" : key === "doctor" ? "doctorCustomFieldsContainer" : key === "order" ? "orderCustomFieldsContainer" : ("cfHost-" + key));
+    if (!$(cid) && typeof window.applyFullFormLayout === "function") {
+      /* host after layout */
+    }
+    if (typeof window.applyFullFormLayout === "function") window.applyFullFormLayout(tabId);
+    else if (typeof renderCustomFieldsInForm === "function" && $(cid)) renderCustomFieldsInForm(key, cid);
+    if (opts.x != null && typeof window.placeFieldOnTab === "function") {
+      window.placeFieldOnTab(tabId, neu.id, opts.x, opts.y, opts.scope, opts.scopeId);
+    }
+    if (typeof window.refreshColumnsDesigner === "function") window.refreshColumnsDesigner();
+    if (typeof window.refreshManualCanvas === "function") window.refreshManualCanvas(tabId);
+    var st2 = $("colAddStatus") || $("manAddStatus");
+    if (st2) st2.textContent = "«" + label + "» به تب اضافه شد.";
+    else alert("«" + label + "» به تب اضافه شد.");
+    return neu;
+  };
+  function addWidgetToActiveTab(kind, label) {
+    return window.addWidgetToActiveTab(kind, label);
+  }
+
+  function fieldKeyOfTab(tabId) {
+    var ut = ((state.userTabs || []).filter(function (t) { return t.id === tabId; })[0]);
+    if (ut && ut.key) return ut.key;
+    var map = { "tab-pharmacies": "pharmacy", "tab-doctors": "doctor", "tab-orders": "order" };
+    return map[tabId] || String(tabId || "").replace(/^tab-/, "") || "misc";
+  }
+
+  function createFieldOnTab(tabId, kind, label, boxId) {
+    var key = fieldKeyOfTab(tabId);
+    if (!state.customFields) state.customFields = {};
+    if (!state.customFields[key]) state.customFields[key] = [];
+    var isWidget = String(kind).indexOf("widget-") === 0;
+    var neu = {
+      id: "cf-" + key + "-" + Date.now() + "-" + Math.floor(Math.random() * 999),
+      label: label,
+      type: kind === "select" ? "select" : (kind === "number" ? "simple" : "simple"),
+      inputKind: kind,
+      options: kind === "select" ? ["گزینه ۱", "گزینه ۲"] : [],
+      allowAddOption: kind === "select",
+      showInForm: true,
+      showInList: !isWidget,
+      order: state.customFields[key].length + 1,
+      size: kind === "widget-map" || kind === "textarea" ? 900 : 260,
+      place: kind === "widget-map" || kind === "textarea" ? "under" : "beside",
+      boxId: boxId || ""
+    };
+    state.customFields[key].push(neu);
+    if (boxId) {
+      if (!state.formBoxes) state.formBoxes = {};
+      if (!state.formBoxes[key]) state.formBoxes[key] = [];
+      state.formBoxes[key].forEach(function (bx) {
+        if (bx.id === boxId) {
+          if (!bx.fieldIds) bx.fieldIds = [];
+          if (bx.fieldIds.indexOf(neu.id) === -1) bx.fieldIds.push(neu.id);
+        }
+      });
+    }
+    return neu;
+  }
+
+  function enhanceDesignerChrome() {
+    var host = $("columnsDesignerHost");
+    if (!host) return;
+    var secs = typeof window.getAllMenuSections === "function" ? window.getAllMenuSections() : [];
+
+    if (!$("colNewTabBar")) {
+      var bar = document.createElement("div");
+      bar.id = "colNewTabBar";
+      bar.className = "col-newtab-bar";
+      bar.innerHTML =
+        "<strong>تب جدید مدیر:</strong>" +
+        '<input id="colNewTabLabel" class="form-input" placeholder="مثلاً بازرسی انبار">' +
+        '<input id="colNewTabOrder" class="form-input" type="number" min="1" placeholder="شماره تب" style="max-width:110px">' +
+        '<button type="button" id="btnCreateUserTab" class="btn btn-primary btn-sm" style="background:#0d9488">➕ ساخت تب جدید</button>' +
+        '<span class="col-help">تب به منوی اصلی و سایدبار هم اضافه می‌شود. شماره یعنی جای تب در منو.</span>';
+      var grid = $("colTabGrid");
+      if (grid && grid.parentNode) grid.parentNode.insertBefore(bar, grid);
+      else host.insertBefore(bar, host.firstChild);
+      var btn = $("btnCreateUserTab");
+      if (btn) btn.addEventListener("click", function () {
+        var id = window.createUserTab(($("colNewTabLabel") || {}).value);
+        var ord = parseInt(($("colNewTabOrder") || {}).value, 10);
+        if (id && ord > 0) {
+          if (!state.tabOrder) state.tabOrder = {};
+          state.tabOrder[id] = ord;
+          saveState();
+          if (typeof setupNavigationMenu === "function") setupNavigationMenu();
+          if (typeof window.refreshColumnsDesigner === "function") window.refreshColumnsDesigner();
+        }
+        if ($("colNewTabLabel")) $("colNewTabLabel").value = "";
+      });
+    }
+
+    var orderHost = $("colTabOrderBar");
+    if (!orderHost) {
+      orderHost = document.createElement("div");
+      orderHost.id = "colTabOrderBar";
+      orderHost.className = "col-tab-order-bar";
+      var g2 = $("colTabGrid");
+      if (g2 && g2.parentNode) g2.parentNode.insertBefore(orderHost, g2.nextSibling);
+      else host.appendChild(orderHost);
+    }
+    if (!state.tabOrder) state.tabOrder = {};
+    orderHost.innerHTML = "<strong>شماره تب‌ها در منوی اصلی</strong><div class='col-tab-order-list'>" +
+      secs.map(function (sec, i) {
+        var n = Number(state.tabOrder[sec.id]) || (i + 1);
+        return "<label class='col-tab-order-row'><span>" + esc(sec.icon + " " + sec.label) +
+          "</span><input type='number' min='1' class='form-input col-tab-ord' data-tid='" + esc(sec.id) + "' value='" + n + "'></label>";
+      }).join("") + "</div>" +
+      '<button type="button" id="btnSaveTabOrder" class="btn btn-primary btn-sm" style="background:#0d9488;margin-top:.45rem">ذخیره ترتیب تب‌ها</button>';
+    var saveOrd = $("btnSaveTabOrder");
+    if (saveOrd && !saveOrd.dataset.bound) {
+      saveOrd.dataset.bound = "1";
+      saveOrd.addEventListener("click", function () {
+        orderHost.querySelectorAll(".col-tab-ord").forEach(function (inp) {
+          state.tabOrder[inp.getAttribute("data-tid")] = parseInt(inp.value, 10) || 1;
+        });
+        saveState();
+        if (typeof setupNavigationMenu === "function") setupNavigationMenu();
+        if (typeof window.refreshColumnsDesigner === "function") window.refreshColumnsDesigner();
+        alert("ترتیب تب‌ها در منوی اصلی ذخیره شد.");
+      });
+    }
+
+    var panel = $("colDesignerPanel");
+    if (panel && !panel.hidden && window._activeColTab) {
+      var boxSel = $("colFieldBoxTarget");
+      if (boxSel && boxSel.options.length <= 1) {
+        var key0 = fieldKeyOfTab(window._activeColTab);
+        ((state.formBoxes && state.formBoxes[key0]) || []).forEach(function (b) {
+          var o = document.createElement("option");
+          o.value = b.id;
+          o.textContent = b.label;
+          boxSel.appendChild(o);
+        });
+      }
+
+      if (!$("colWidgetPalette")) {
+        var pal = document.createElement("div");
+        pal.id = "colWidgetPalette";
+        pal.className = "col-widget-palette";
+        pal.innerHTML = "<strong>امکانات آماده همین برنامه</strong>" +
+          "<p class='col-help'>اول تب را از گرید بالا انتخاب کنید، بعد روی یک امکان بزنید. روی تب خالی ساخته می‌شود.</p>" +
+          '<div id="colAddStatus" class="col-add-status">تب فعال: انتخاب نشده</div>' +
+          '<div class="col-widget-btns">' +
+          WIDGET_PALETTE.map(function (w) {
+            return '<button type="button" class="btn btn-outline btn-sm col-add-widget" draggable="true" data-kind="' + w.kind + '" data-label="' + esc(w.label) + '">' + w.icon + " " + esc(w.label) + "</button>";
+          }).join("") + "</div>";
+        var boxMaker = panel.querySelector(".col-box-maker");
+        if (boxMaker) boxMaker.parentNode.insertBefore(pal, boxMaker);
+        else panel.insertBefore(pal, panel.firstChild.nextSibling);
+      }
+
+      var maker = panel.querySelector(".col-box-maker");
+      if (maker && !maker.dataset.rich) {
+        maker.dataset.rich = "1";
+        var oldList = $("colBoxList");
+        maker.innerHTML =
+          "<strong>ساخت / ویرایش کادر</strong>" +
+          '<div class="form-grid" style="margin-top:.5rem">' +
+            '<div class="form-group"><label class="form-label">نام کادر</label><input id="colBoxLabel" class="form-input" placeholder="مثلاً اطلاعات تماس"></div>' +
+            '<div class="form-group"><label class="form-label">این کادر در کدام تب باشد؟</label><select id="colBoxTab" class="form-select"></select></div>' +
+            '<div class="form-group"><label class="form-label">شماره ترتیب کادر</label><input id="colBoxOrder" class="form-input" type="number" min="1" value="1"></div>' +
+          "</div>" +
+          "<p class='col-help' style='margin:.55rem 0 .35rem'>داخل این کادر چه چیزی ساخته شود؟ (چند مورد را می‌توانید روشن کنید)</p>" +
+          '<div id="colBoxNewItems" class="col-widget-btns">' +
+          WIDGET_PALETTE.map(function (w) {
+            return "<label class='col-box-chk'><input type='checkbox' class='col-box-newitem' data-kind='" + w.kind + "' data-label='" + esc(w.label) + "'> " + w.icon + " " + esc(w.label) + "</label>";
+          }).join("") + "</div>" +
+          '<button type="button" id="btnAddColBox" class="btn btn-primary btn-sm" style="background:#0d9488;margin-top:.65rem">➕ ثبت کادر</button>' +
+          '<div id="colBoxList"></div>';
+        var tabSel = $("colBoxTab");
+        if (tabSel) {
+          secs.forEach(function (sec) {
+            var o = document.createElement("option");
+            o.value = sec.id;
+            o.textContent = sec.icon + " " + sec.label;
+            if (sec.id === window._activeColTab) o.selected = true;
+            tabSel.appendChild(o);
+          });
+        }
+        var addBtn = $("btnAddColBox");
+        if (addBtn) {
+          addBtn.addEventListener("click", function () {
+            var name = (($("colBoxLabel") || {}).value || "").trim();
+            if (!name) { alert("نام کادر را بنویسید."); return; }
+            var destTab = (($("colBoxTab") || {}).value) || window._activeColTab;
+            var destKey = fieldKeyOfTab(destTab);
+            if (!state.formBoxes) state.formBoxes = {};
+            if (!state.formBoxes[destKey]) state.formBoxes[destKey] = [];
+            var box;
+            if (window._editingBoxId) {
+              box = state.formBoxes[destKey].filter(function (x) { return x.id === window._editingBoxId; })[0];
+              if (!box) {
+                box = { id: window._editingBoxId, label: name, fieldIds: [] };
+                state.formBoxes[destKey].push(box);
+              }
+              box.label = name;
+              window._editingBoxId = "";
+              addBtn.textContent = "➕ ثبت کادر";
+            } else {
+              box = { id: "box-" + destKey + "-" + Date.now(), label: name, fieldIds: [], order: parseInt(($("colBoxOrder") || {}).value, 10) || 1 };
+              state.formBoxes[destKey].push(box);
+            }
+            maker.querySelectorAll(".col-box-newitem:checked").forEach(function (chk) {
+              createFieldOnTab(destTab, chk.getAttribute("data-kind"), chk.getAttribute("data-label"), box.id);
+              chk.checked = false;
+            });
+            saveState();
+            if ($("colBoxLabel")) $("colBoxLabel").value = "";
+            if (typeof window.applyFullFormLayout === "function") window.applyFullFormLayout(destTab);
+            if (typeof window.refreshColumnsDesigner === "function") window.refreshColumnsDesigner();
+            alert("کادر «" + name + "» در تب انتخاب‌شده ثبت شد و موارد تیک‌خورده داخلش قرار گرفت.");
+          });
+        }
+        var destKeyNow = fieldKeyOfTab(window._activeColTab);
+        if (typeof window.renderColBoxList === "function") {
+          try { window.renderColBoxList(window._activeColTab, destKeyNow); } catch (e) {}
+        }
+      }
+
+      var stBar = $("colAddStatus");
+      if (stBar) {
+        var secN = (secs.filter(function (s) { return s.id === window._activeColTab; })[0] || {});
+        stBar.textContent = "تب فعال: " + (secN.icon || "") + " " + (secN.label || window._activeColTab);
+      }
+
+      if (isUserTab(window._activeColTab) && !$("btnDeleteUserTab")) {
+        var actions = panel.querySelector(".col-panel-actions");
+        if (actions) {
+          var del = document.createElement("button");
+          del.type = "button";
+          del.id = "btnDeleteUserTab";
+          del.className = "btn btn-danger btn-sm";
+          del.textContent = "حذف این تب";
+          del.addEventListener("click", function () { window.deleteUserTab(window._activeColTab); });
+          if (!$("btnEditUserTab")) {
+            var ed = document.createElement("button");
+            ed.type = "button";
+            ed.id = "btnEditUserTab";
+            ed.className = "btn btn-outline btn-sm";
+            ed.textContent = "✏️ ویرایش این تب";
+            ed.addEventListener("click", function () {
+              if (typeof window.editUserTab === "function") window.editUserTab(window._activeColTab);
+            });
+            actions.appendChild(ed);
+          }
+          actions.appendChild(del);
+        }
+      }
+    }
+  }
+
+  var origApplyOrder = window.applyCustomFieldOrderInForm;
+  if (typeof origApplyOrder === "function" && !window._v12OrderWrap) {
+    window._v12OrderWrap = true;
+    window.applyCustomFieldOrderInForm = function (entityType, containerId) {
+      if (window._layoutBusy) return;
+      try { origApplyOrder(entityType, containerId); } catch (e) {}
+    };
+  }
+
+  function boot() {
+    try {
+      if (state && !state.userTabs) state.userTabs = [];
+      if (state && !state.customRecords) state.customRecords = {};
+      (state.userTabs || []).forEach(function (t) {
+        ensureUserTabPane(t);
+        stripDefaultUserChrome(t);
+      });
+      if ((state.userTabs || []).length && typeof setupNavigationMenu === "function") setupNavigationMenu();
+    } catch (e) { console.error("v12 tabs", e); }
+
+    try { enhanceDesignerChrome(); } catch (e) {}
+
+    if (!window._palDelegate) {
+      window._palDelegate = true;
+      document.addEventListener("click", function (e) {
+        var b = e.target.closest(".col-add-widget");
+        if (!b) return;
+        if (b.closest("#manualDesignCanvas")) return;
+        e.preventDefault();
+        addWidgetToActiveTab(b.getAttribute("data-kind"), b.getAttribute("data-label"));
+      });
+    }
+
+    var origRefresh = window.refreshColumnsDesigner;
+    if (typeof origRefresh === "function") {
+      window.refreshColumnsDesigner = function () {
+        origRefresh();
+        setTimeout(enhanceDesignerChrome, 40);
+      };
+    }
+
+    document.addEventListener("click", function (e) {
+      if (e.target.closest(".col-designer-tab") || e.target.id === "btnSaveColField" || e.target.id === "btnAddColBox" || e.target.id === "btnColBackToGrid") {
+        setTimeout(enhanceDesignerChrome, 60);
+      }
+    });
+
+    var origSw = window.switchTab;
+    if (typeof origSw === "function" && !window._v12Sw) {
+      window._v12Sw = true;
+      window.switchTab = function (id) {
+        origSw(id);
+        setTimeout(function () {
+          if (id === "tab-columns-products") enhanceDesignerChrome();
+          if (isUserTab(id)) {
+            renderUserTabList(id);
+            Object.keys(userMaps).forEach(function (fid) {
+              try { if (userMaps[fid].map) userMaps[fid].map.invalidateSize(); } catch (e) {}
+            });
+          }
+        }, 140);
+      };
+    }
+
+    console.log("v12 ready");
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+
+/* ===================== (bundled from public/crm-features-v13.js) ===================== */
+// v13 — یک‌بار شدن امکانات آماده + تب طراحی دستی تب‌ها (درگ، اندازه، کپی چیدمان)
+(function () {
+  "use strict";
+
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  function ensureState() {
+    if (typeof state === "undefined" || !state) return;
+    if (!state.manualLayouts) state.manualLayouts = {};
+    if (!state.customFields) state.customFields = {};
+    if (!state.formBoxes) state.formBoxes = {};
+    if (!state.formFieldMeta) state.formFieldMeta = {};
+  }
+
+  function fieldKeyForTab(tabId) {
+    try {
+      var ut = ((state && state.userTabs) || []).filter(function (t) { return t.id === tabId; })[0];
+      if (ut && ut.key) return ut.key;
+    } catch (e) {}
+    var map = {
+      "tab-dashboard": "dashboard", "tab-pharmacies": "pharmacy", "tab-doctors": "doctor",
+      "tab-orders": "order", "tab-activity-log": "activity", "tab-overview-map": "overview",
+      "tab-live-location": "live", "tab-search-info": "search", "tab-rep-routes": "routes",
+      "tab-my-visit": "visit", "tab-rep-homes": "homes", "tab-leaves": "leave",
+      "tab-notifications": "notifications", "tab-monthly-reports": "reports",
+      "tab-sales-targets": "target", "tab-custom-fields": "additions",
+      "tab-columns-products": "products", "tab-users-permissions": "users",
+      "tab-messengers": "messengers", "tab-backup": "backup",
+      "tab-install-app": "install", "tab-troubleshooting": "diagnostics",
+      "tab-manual-design": "manualdesign"
+    };
+    return map[tabId] || String(tabId || "").replace(/^tab-/, "") || "misc";
+  }
+
+  window.dedupeTabWidgets = function (tabId) {
+    var pane = $(tabId);
+    if (!pane) return 0;
+    var seen = {};
+    var removed = 0;
+    Array.prototype.slice.call(pane.querySelectorAll(".col-widget-wrap[data-col-fid], [data-custom-field-id]")).forEach(function (el) {
+      var id = el.getAttribute("data-col-fid") || el.getAttribute("data-custom-field-id");
+      if (!id) return;
+      var group = el.classList.contains("col-widget-wrap") || el.classList.contains("form-group")
+        ? el : el.closest(".col-widget-wrap, .form-group");
+      if (!group) return;
+      if (seen[id]) {
+        if (group.parentNode) group.parentNode.removeChild(group);
+        removed += 1;
+      } else {
+        seen[id] = true;
+      }
+    });
+    return removed;
+  };
+
+  function wrapRenderCustomFields() {
+    if (typeof window.renderCustomFieldsInForm !== "function" || window._v13RenderWrap) return;
+    window._v13RenderWrap = true;
+    var orig = window.renderCustomFieldsInForm;
+    window.renderCustomFieldsInForm = function (entityType, containerId, currentValues) {
+      var container = document.getElementById(containerId);
+      var form = container ? (container.closest("form") || container.closest(".tab-pane")) : null;
+      var root = form || container;
+      if (root) {
+        ((state.customFields && state.customFields[entityType]) || []).forEach(function (f) {
+          var nodes = root.querySelectorAll('[data-custom-field-id="' + f.id + '"], [data-col-fid="' + f.id + '"]');
+          if (nodes.length > 1) {
+            Array.prototype.slice.call(nodes).slice(1).forEach(function (n) {
+              var g = n.closest(".form-group, .col-widget-wrap");
+              if (g && g.parentNode) g.parentNode.removeChild(g);
+            });
+          }
+        });
+      }
+      return orig(entityType, containerId, currentValues || {});
+    };
+  }
+
+  function wrapApplyOrderTabId() {
+    if (typeof window.applyCustomFieldOrderInForm !== "function" || window._v13OrderId) return;
+    window._v13OrderId = true;
+    var orig = window.applyCustomFieldOrderInForm;
+    window.applyCustomFieldOrderInForm = function (entityType, containerId) {
+      if (window._layoutBusy) return;
+      try { orig(entityType, containerId); } catch (e) {}
+    };
+  }
+
+  function wrapApplyLayoutDedupe() {
+    if (typeof window.applyFullFormLayout !== "function" || window._v13LayoutWrap) return;
+    window._v13LayoutWrap = true;
+    var orig = window.applyFullFormLayout;
+    window.applyFullFormLayout = function (tabId) {
+      try { window.dedupeTabWidgets(tabId); } catch (e) {}
+      var out = orig(tabId);
+      try { window.dedupeTabWidgets(tabId); } catch (e) {}
+      try { applyManualLayout(tabId); } catch (e) {}
+      return out;
+    };
+  }
+
+  function designableSections() {
+    var secs = typeof window.getAllMenuSections === "function" ? window.getAllMenuSections() : [];
+    return secs.filter(function (s) { return s.id !== "tab-manual-design"; });
+  }
+
+  function renderManualGrid() {
+    var grid = $("manualTabGrid");
+    if (!grid) return;
+    var html = "";
+    designableSections().forEach(function (sec) {
+      var n = 0;
+      try {
+        if (typeof window.getUnifiedFieldList === "function") n = 0;
+        var pane = $(sec.id);
+        if (pane) n = pane.querySelectorAll(".form-group, .stat-card, .card, .map-container, .col-user-box").length;
+      } catch (e) {}
+      var on = window._activeManualTab === sec.id ? " active" : "";
+      html += '<button type="button" class="nav-item col-designer-tab col-tab-card' + on + '" data-man-tab="' + esc(sec.id) + '">' +
+        "<span>" + (sec.icon || "📋") + " " + esc(sec.label) + "</span>" +
+        '<span class="nav-badge">' + n + "</span></button>";
+    });
+    grid.innerHTML = html;
+    Array.prototype.forEach.call(grid.querySelectorAll("[data-man-tab]"), function (btn) {
+      btn.addEventListener("click", function () {
+        openManualCanvas(btn.getAttribute("data-man-tab"));
+      });
+    });
+  }
+
+  function collectDesignTargets(root) {
+    var out = [];
+    var seen = {};
+    function take(el, kind) {
+      if (!el || el.getAttribute("data-man-skip") === "1") return;
+      if (el.closest(".man-toolbar") || el.closest("#manualTabGrid")) return;
+      if (el.closest("table") && kind === "btn") return;
+      if (el.closest(".col-ops")) return;
+      if (seen[el]) return;
+      seen[el] = true;
+      out.push({ el: el, kind: kind });
+    }
+    Array.prototype.forEach.call(root.querySelectorAll(".card"), function (el) {
+      if (el.closest(".man-toolbar") || el.closest("#manualTabGrid")) return;
+      take(el, "card");
+    });
+    Array.prototype.forEach.call(root.querySelectorAll(".stat-card"), function (el) { take(el, "stat"); });
+    Array.prototype.forEach.call(root.querySelectorAll(".col-user-box"), function (el) { take(el, "box"); });
+    Array.prototype.forEach.call(root.querySelectorAll(".form-group"), function (el) {
+      if (el.id && /CustomFieldsContainer|cfHost-/.test(el.id)) return;
+      if (el.classList.contains("extra-cf-host")) return;
+      if (el.closest && el.closest(".card-header")) return;
+      if (el.querySelector(":scope > .form-group")) return;
+      take(el, "field");
+    });
+    Array.prototype.forEach.call(root.querySelectorAll(".map-container"), function (el) {
+      if (el.closest(".form-group") && el.closest(".form-group").querySelector("input, select, textarea")) return;
+      take(el, "map");
+    });
+    Array.prototype.forEach.call(root.querySelectorAll("button.btn, .btn-toggle-option"), function (el) {
+      if (el.closest("table")) return;
+      if (el.closest(".card-header") && /صفحه اصلی|بازگشت/.test(el.textContent || "")) return;
+      if (el.closest(".man-toolbar") || el.classList.contains("man-handle")) return;
+      take(el, "btn");
+    });
+    return out;
+  }
+
+  function paletteList() {
+    return window.WIDGET_PALETTE || [];
+  }
+
+  function renderManPalette() {
+    var host = $("manWidgetPalette");
+    if (!host) return;
+    host.innerHTML = "<strong>امکانات آماده همین برنامه</strong>" +
+      "<p class='col-help'>تب را از گرید بالا انتخاب کنید. روی امکان بزنید یا آن را روی بوم بکشید. بعد جایش را با ⠿ عوض کنید.</p>" +
+      '<div class="col-widget-btns">' +
+      paletteList().map(function (w) {
+        return '<button type="button" class="btn btn-outline btn-sm col-add-widget man-pal-btn" draggable="true" data-kind="' +
+          w.kind + '" data-label="' + esc(w.label) + '">' + w.icon + " " + esc(w.label) + "</button>";
+      }).join("") + "</div>";
+    var box = $("manBoxMaker");
+    if (box && !box.dataset.ready) {
+      box.dataset.ready = "1";
+      box.innerHTML = "<strong>ساخت کادر</strong>" +
+        '<div class="form-grid" style="margin-top:.4rem">' +
+        '<div class="form-group"><label class="form-label">نام کادر</label><input id="manBoxLabel" class="form-input" placeholder="مثلاً اطلاعات تماس"></div></div>' +
+        '<button type="button" id="btnManAddBox" class="btn btn-primary btn-sm" style="background:#0d9488;margin-top:.4rem">➕ ثبت کادر روی تب فعال</button>';
+      var bb = $("btnManAddBox");
+      if (bb) bb.addEventListener("click", function () {
+        var name = (($("manBoxLabel") || {}).value || "").trim();
+        if (!name) { alert("نام کادر را بنویسید."); return; }
+        var tabId = window._activeManualTab;
+        if (!tabId) { alert("اول تب را انتخاب کنید."); return; }
+        var key = fieldKeyForTab(tabId);
+        if (!state.formBoxes) state.formBoxes = {};
+        if (!state.formBoxes[key]) state.formBoxes[key] = [];
+        state.formBoxes[key].push({ id: "box-" + key + "-" + Date.now(), label: name, fieldIds: [] });
+        if (typeof saveState === "function") saveState();
+        if (typeof window.applyFullFormLayout === "function") window.applyFullFormLayout(tabId);
+        openManualCanvas(tabId);
+        $("manBoxLabel").value = "";
+      });
+    }
+    Array.prototype.forEach.call(host.querySelectorAll(".man-pal-btn"), function (b) {
+      b.addEventListener("dragstart", function (ev) {
+        ev.dataTransfer.setData("text/plain", JSON.stringify({
+          kind: b.getAttribute("data-kind"),
+          label: b.getAttribute("data-label")
+        }));
+        ev.dataTransfer.effectAllowed = "copy";
+      });
+    });
+  }
+
+  window.refreshManualCanvas = function (tabId) {
+    if (!tabId) tabId = window._activeManualTab;
+    if (tabId && window._activeManualTab === tabId && $("manualDesignCanvas")) openManualCanvas(tabId);
+  };
+
+  window.placeFieldOnTab = function (tabId, fieldId, x, y, scope, scopeId) {
+    var lay = layoutOf(tabId);
+    lay.items[fieldId] = { x: x || 20, y: y || 20, w: 220, h: 72, abs: true, scope: scope || "form", scopeId: scopeId || "" };
+    var key = fieldKeyForTab(tabId);
+    ((state.customFields[key] || [])).forEach(function (f) {
+      if (f.id === fieldId) {
+        f.actionScope = scope || "form";
+        f.scopeId = scopeId || "";
+      }
+    });
+    if (typeof saveState === "function") saveState(false);
+    applyManualLayout(tabId);
+  };
+
+  function detectScope(el, root) {
+    var r = el.getBoundingClientRect();
+    var cx = r.left + r.width / 2;
+    var cy = r.top + r.height / 2;
+    var rows = root.querySelectorAll("tbody tr");
+    for (var i = 0; i < rows.length; i++) {
+      var rr = rows[i].getBoundingClientRect();
+      if (cx >= rr.left && cx <= rr.right && cy >= rr.top - 8 && cy <= rr.bottom + 8) {
+        return { type: "row", id: rows[i].getAttribute("data-edit") || rows[i].getAttribute("data-rid") || ("row-" + i), label: "ردیف " + (i + 1) };
+      }
+    }
+    var boxes = root.querySelectorAll(".col-user-box");
+    var best = null, bestD = 1e9;
+    for (var j = 0; j < boxes.length; j++) {
+      var br = boxes[j].getBoundingClientRect();
+      var inside = cx >= br.left && cx <= br.right && cy >= br.top && cy <= br.bottom;
+      var near = cy >= br.top - 48 && cy <= br.bottom + 48 && cx >= br.left - 24 && cx <= br.right + 24;
+      if (inside || near) {
+        var d = Math.abs(cy - (br.top + br.height / 2));
+        if (d < bestD) {
+          bestD = d;
+          best = { type: "box", id: boxes[j].id || boxes[j].getAttribute("data-man-id"), label: (boxes[j].querySelector(".col-user-box-title") || {}).textContent || "کادر" };
+        }
+      }
+    }
+    if (best) return best;
+    return { type: "form", id: "", label: "کل فرم" };
+  }
+
+  function paintScopeBadge(el, scope) {
+    if (!el) return;
+    var b = el.querySelector(":scope > .man-scope-badge");
+    if (!b) {
+      b = document.createElement("span");
+      b.className = "man-scope-badge";
+      el.appendChild(b);
+    }
+    b.className = "man-scope-badge man-scope-" + (scope.type || "form");
+    b.textContent = scope.type === "row" ? ("برای " + (scope.label || "همین ردیف")) :
+      scope.type === "box" ? ("برای کادر: " + (scope.label || "")) : "برای کل فرم";
+    el.setAttribute("data-action-scope", scope.type || "form");
+    el.setAttribute("data-scope-id", scope.id || "");
+  }
+
+  function designIdOf(el) {
+    return el.getAttribute("data-col-fid") ||
+      el.getAttribute("data-custom-field-id") ||
+      el.id ||
+      el.getAttribute("data-man-id") ||
+      "";
+  }
+
+  function ensureDesignId(el, idx) {
+    var id = designIdOf(el);
+    if (!id) {
+      id = "man-auto-" + idx;
+      el.setAttribute("data-man-id", id);
+    }
+    el.setAttribute("data-man-id", id);
+    return id;
+  }
+
+  function layoutOf(tabId) {
+    ensureState();
+    if (!state.manualLayouts[tabId]) state.manualLayouts[tabId] = { items: {} };
+    if (!state.manualLayouts[tabId].items) state.manualLayouts[tabId].items = {};
+    return state.manualLayouts[tabId];
+  }
+
+  function openManualCanvas(tabId) {
+    window._activeManualTab = tabId;
+    renderManualGrid();
+    var host = $("manualDesignCanvas");
+    var src = $(tabId);
+    var hint = $("manualDesignHint");
+    if (!host || !src) {
+      if (host) host.innerHTML = "<p class='col-help'>این تب در صفحه پیدا نشد.</p>";
+      return;
+    }
+    var sec = designableSections().filter(function (s) { return s.id === tabId; })[0] || { label: tabId, icon: "📋" };
+    if (hint) hint.innerHTML = "الان صفحهٔ «" + esc(sec.icon + " " + sec.label) + "» را می‌چینید. فیلد، کلید، نقشه و کادر را بکشید. برچسب رنگی می‌گوید این کلید برای ردیف است، کادر است یا کل فرم.";
+    var st = $("manAddStatus");
+    if (st) st.textContent = "تب فعال: " + (sec.icon || "") + " " + (sec.label || tabId);
+    renderManPalette();
+
+    host.innerHTML = "";
+    var stage = document.createElement("div");
+    stage.className = "man-stage";
+    var inner = document.createElement("div");
+    inner.className = "man-canvas-inner";
+    inner.id = "manualCanvasInner";
+    var clone = src.cloneNode(true);
+    clone.id = "man-clone-" + tabId;
+    clone.classList.add("man-clone", "tab-pane", "active", "man-design-mode");
+    clone.classList.remove("tab-pane");
+    clone.style.display = "block";
+    Array.prototype.forEach.call(clone.querySelectorAll("[id]"), function (el) {
+      el.setAttribute("data-src-id", el.id);
+      el.id = "man-" + el.id;
+    });
+    Array.prototype.forEach.call(clone.querySelectorAll(".map-container"), function (el) {
+      el.innerHTML = '<div class="man-map-ph">🗺️ نقشه (جایگاه — شکل نقشه ایران عوض نمی‌شود)</div>';
+    });
+    Array.prototype.forEach.call(clone.querySelectorAll("script"), function (el) {
+      if (el.parentNode) el.parentNode.removeChild(el);
+    });
+    inner.appendChild(clone);
+    stage.appendChild(inner);
+    host.appendChild(stage);
+
+    inner.addEventListener("dragover", function (ev) {
+      ev.preventDefault();
+      ev.dataTransfer.dropEffect = "copy";
+    });
+    inner.addEventListener("drop", function (ev) {
+      ev.preventDefault();
+      var raw = ev.dataTransfer.getData("text/plain");
+      var pack;
+      try { pack = JSON.parse(raw); } catch (e) { return; }
+      if (!pack || !pack.kind) return;
+      var cr = inner.getBoundingClientRect();
+      var x = Math.round(ev.clientX - cr.left + inner.scrollLeft);
+      var y = Math.round(ev.clientY - cr.top + inner.scrollTop);
+      var ghost = document.createElement("div");
+      ghost.style.position = "absolute";
+      ghost.style.left = x + "px";
+      ghost.style.top = y + "px";
+      ghost.style.width = "40px";
+      ghost.style.height = "40px";
+      inner.appendChild(ghost);
+      var sc = detectScope(ghost, clone);
+      if (ghost.parentNode) ghost.parentNode.removeChild(ghost);
+      if (typeof window.addWidgetToActiveTab === "function") {
+        window.addWidgetToActiveTab(pack.kind, pack.label, {
+          tabId: tabId, x: x, y: y, scope: sc.type, scopeId: sc.id
+        });
+      }
+    });
+
+    var targets = collectDesignTargets(clone);
+    targets.forEach(function (t, i) {
+      enableDesignItem(t.el, tabId, i);
+    });
+    applySavedToClone(tabId, clone);
+    fillCopySelects(tabId);
+    if (typeof window.lockManualDesigner === "function") {
+      try { window.lockManualDesigner(); } catch (eLk) {}
+    }
+  }
+
+  function enableDesignItem(el, tabId, idx) {
+    var id = ensureDesignId(el, idx);
+    el.classList.add("man-item");
+    if (!el.querySelector(":scope > .man-handle")) {
+      var h = document.createElement("span");
+      h.className = "man-handle";
+      h.textContent = "⠿";
+      h.title = "بکشید";
+      el.insertBefore(h, el.firstChild);
+    }
+    if (!el.querySelector(":scope > .man-resize")) {
+      var r = document.createElement("span");
+      r.className = "man-resize";
+      r.title = "اندازه";
+      el.appendChild(r);
+    }
+    bindDrag(el, tabId, id);
+    bindResize(el, tabId, id);
+    var saved = (layoutOf(tabId).items || {})[id] || {};
+    paintScopeBadge(el, {
+      type: el.getAttribute("data-action-scope") || saved.scope || "form",
+      id: el.getAttribute("data-scope-id") || saved.scopeId || "",
+      label: saved.scope === "box" ? "کادر" : (saved.scope === "row" ? "ردیف" : "کل فرم")
+    });
+  }
+
+  function bindDrag(el, tabId, id) {
+    var handle = el.querySelector(":scope > .man-handle") || el;
+    handle.addEventListener("pointerdown", function (ev) {
+      if (ev.target.classList && ev.target.classList.contains("man-resize")) return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      var canvas = $("manualCanvasInner");
+      if (!canvas) return;
+      var cr = canvas.getBoundingClientRect();
+      var er = el.getBoundingClientRect();
+      if (el.style.position !== "absolute") {
+        el.style.position = "absolute";
+        el.style.left = (er.left - cr.left + canvas.scrollLeft) + "px";
+        el.style.top = (er.top - cr.top + canvas.scrollTop) + "px";
+        el.style.width = er.width + "px";
+        el.style.margin = "0";
+        el.style.zIndex = "5";
+      }
+      var startX = ev.clientX;
+      var startY = ev.clientY;
+      var origL = parseFloat(el.style.left) || 0;
+      var origT = parseFloat(el.style.top) || 0;
+      function move(e2) {
+        el.style.left = (origL + (e2.clientX - startX)) + "px";
+        el.style.top = (origT + (e2.clientY - startY)) + "px";
+      }
+      function up() {
+        document.removeEventListener("pointermove", move);
+        document.removeEventListener("pointerup", up);
+        writeItemBox(tabId, id, el, canvas, null, { forceAbs: true });
+      }
+      document.addEventListener("pointermove", move);
+      document.addEventListener("pointerup", up);
+    });
+  }
+
+  function bindResize(el, tabId, id) {
+    var rz = el.querySelector(":scope > .man-resize");
+    if (!rz) return;
+    rz.addEventListener("pointerdown", function (ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
+      var canvas = $("manualCanvasInner");
+      var startX = ev.clientX;
+      var startY = ev.clientY;
+      var startW = el.offsetWidth;
+      var startH = el.offsetHeight;
+      function move(e2) {
+        var w = Math.max(80, startW - (e2.clientX - startX));
+        var h = Math.max(36, startH + (e2.clientY - startY));
+        el.style.width = w + "px";
+        el.style.height = h + "px";
+        el.style.maxWidth = w + "px";
+        var map = el.classList.contains("map-container") ? el : el.querySelector(".map-container");
+        if (map) map.style.height = Math.max(120, h - 24) + "px";
+      }
+      function up() {
+        document.removeEventListener("pointermove", move);
+        document.removeEventListener("pointerup", up);
+        writeItemBox(tabId, id, el, canvas);
+      }
+      document.addEventListener("pointermove", move);
+      document.addEventListener("pointerup", up);
+    });
+  }
+
+  function writeItemBox(tabId, id, el, canvas, scope, opts) {
+    opts = opts || {};
+    var lay = layoutOf(tabId);
+    var prev = (lay.items || {})[id] || {};
+    var host = (el && el.closest && el.closest(".card")) || canvas;
+    var cr = (host && host.getBoundingClientRect) ? host.getBoundingClientRect() : canvas.getBoundingClientRect();
+    var er = el.getBoundingClientRect();
+    scope = scope || detectScope(el, canvas);
+    var abs = opts.forceAbs ? true : !!prev.abs;
+    var srcId = ((el && el.getAttribute && el.getAttribute("data-src-id")) || id || "").replace(/^man-/, "");
+    if (!opts.forceAbs && srcId && /^(formPharmacy|formDoctor|formOrder)$/.test(srcId) && el && el.tagName === "FORM") abs = false;
+    lay.items[id] = {
+      x: Math.round(er.left - cr.left + (canvas.scrollLeft || 0)),
+      y: Math.round(er.top - cr.top + (canvas.scrollTop || 0)),
+      w: Math.round(er.width),
+      h: Math.round(er.height),
+      abs: abs,
+      scope: scope.type || "form",
+      scopeId: scope.id || "",
+      cardId: (host && host.id) || prev.cardId || ""
+    };
+    var key = fieldKeyForTab(tabId);
+    ((state.customFields && state.customFields[key]) || []).forEach(function (f) {
+      if (f.id === id) {
+        f.actionScope = scope.type || "form";
+        f.scopeId = scope.id || "";
+      }
+    });
+    if (typeof saveState === "function") saveState(false);
+  }
+
+  function applySavedToClone(tabId, clone) {
+    var items = layoutOf(tabId).items || {};
+    Object.keys(items).forEach(function (id) {
+      var box = items[id];
+      if (!box) return;
+      var el = clone.querySelector('[data-man-id="' + id + '"]') ||
+        clone.querySelector('[data-col-fid="' + id + '"]') ||
+        clone.querySelector('[data-src-id="' + id + '"]') ||
+        clone.querySelector("#man-" + id);
+      if (!el) return;
+      if (box.w) { el.style.width = box.w + "px"; el.style.maxWidth = box.w + "px"; }
+      if (box.h) el.style.height = box.h + "px";
+      if (!box.abs) return;
+      el.style.position = "absolute";
+      el.style.left = box.x + "px";
+      el.style.top = box.y + "px";
+      el.style.margin = "0";
+      el.style.zIndex = "5";
+    });
+  }
+
+  function applyManualLayout(tabId) {
+    if (!tabId || tabId === "tab-manual-design") return;
+    ensureState();
+    var pane = $(tabId);
+    var lay = (state.manualLayouts || {})[tabId];
+    if (!pane || !lay || !lay.items) return;
+    var skipId = /^(cardPhForm|cardPhList|cardDocForm|cardDocList|cardOrdForm|cardOrdList|formPharmacy|formDoctor|formOrder)$/;
+    var maxByHost = {};
+    Object.keys(lay.items).forEach(function (id) {
+      var box = lay.items[id];
+      if (!box) return;
+      if (skipId.test(id)) return;
+      var el = null;
+      try {
+        el = pane.querySelector('[data-col-fid="' + id + '"]') ||
+          (id && document.getElementById(id) && pane.contains(document.getElementById(id)) ? document.getElementById(id) : null) ||
+          pane.querySelector('[data-man-id="' + id + '"]');
+      } catch (e) { el = null; }
+      if (!el) return;
+      if (el.id && skipId.test(el.id)) return;
+      if (box.w) {
+        el.style.width = box.w + "px";
+        el.style.maxWidth = box.w + "px";
+      }
+      if (box.h) el.style.height = box.h + "px";
+      if (!box.abs) {
+        el.style.position = "";
+        el.style.left = "";
+        el.style.top = "";
+        return;
+      }
+      var host = (box.cardId && document.getElementById(box.cardId)) || el.closest(".card") || pane;
+      if (host && getComputedStyle(host).position === "static") host.style.position = "relative";
+      var hk = host.id || "_";
+      if ((box.y || 0) + (box.h || 0) > (maxByHost[hk] || 0)) maxByHost[hk] = (box.y || 0) + (box.h || 0);
+      el.style.position = "absolute";
+      el.style.left = (box.x || 0) + "px";
+      el.style.top = (box.y || 0) + "px";
+      el.style.margin = "0";
+      el.style.zIndex = "4";
+      if (el.classList.contains("map-container") || el.querySelector(".map-container")) {
+        var map = el.classList.contains("map-container") ? el : el.querySelector(".map-container");
+        if (map && box.h) {
+          map.style.height = box.h + "px";
+          try {
+            var m = null;
+            if (tabId === "tab-pharmacies" && typeof mapPharmacyForm !== "undefined") m = mapPharmacyForm;
+            if (tabId === "tab-doctors" && typeof mapDoctorForm !== "undefined") m = mapDoctorForm;
+            if (m) setTimeout(function () { try { m.invalidateSize(); } catch (e2) {} }, 80);
+          } catch (e3) {}
+        }
+      }
+    });
+    Object.keys(maxByHost).forEach(function (hk) {
+      var hostEl = hk === "_" ? pane : document.getElementById(hk);
+      if (hostEl) hostEl.style.minHeight = (maxByHost[hk] + 40) + "px";
+    });
+  }
+
+  function cssEscape(id) {
+    if (window.CSS && CSS.escape) return CSS.escape(id);
+    return String(id).replace(/[^a-zA-Z0-9_\-]/g, "\\$&");
+  }
+
+  function fillCopySelects(currentId) {
+    var from = $("manCopyFrom");
+    var to = $("manCopyTo");
+    var secs = designableSections();
+    function fill(sel, prefer) {
+      if (!sel) return;
+      var keep = sel.value;
+      sel.innerHTML = secs.map(function (s) {
+        return '<option value="' + esc(s.id) + '">' + esc((s.icon || "") + " " + s.label) + "</option>";
+      }).join("");
+      sel.value = keep || prefer || (secs[0] && secs[0].id) || "";
+    }
+    fill(from, currentId);
+    fill(to, currentId);
+  }
+
+  function copyPageToTab(fromId, toId) {
+    if (!fromId || !toId || fromId === toId) { alert("مبدأ و مقصد را جدا انتخاب کنید."); return; }
+    ensureState();
+    var fromKey = fieldKeyForTab(fromId);
+    var toKey = fieldKeyForTab(toId);
+    var copiedFields = 0;
+    var srcFields = ((state.customFields || {})[fromKey] || []);
+    if (!state.customFields[toKey]) state.customFields[toKey] = [];
+    srcFields.forEach(function (f) {
+      var dup = state.customFields[toKey].filter(function (x) {
+        return x.inputKind === f.inputKind && x.label === f.label;
+      })[0];
+      if (dup) return;
+      var neu = JSON.parse(JSON.stringify(f));
+      neu.id = "cf-" + toKey + "-" + Date.now() + "-" + Math.floor(Math.random() * 999);
+      state.customFields[toKey].push(neu);
+      copiedFields += 1;
+    });
+    if ((state.formBoxes || {})[fromKey]) {
+      if (!state.formBoxes[toKey]) state.formBoxes[toKey] = [];
+      (state.formBoxes[fromKey] || []).forEach(function (b) {
+        if (state.formBoxes[toKey].filter(function (x) { return x.label === b.label; })[0]) return;
+        state.formBoxes[toKey].push({
+          id: "box-" + toKey + "-" + Date.now(),
+          label: b.label,
+          fieldIds: [],
+          order: b.order || 1
+        });
+      });
+    }
+    var srcLay = layoutOf(fromId);
+    state.manualLayouts[toId] = { items: JSON.parse(JSON.stringify(srcLay.items || {})), copiedFrom: fromId };
+    if (typeof saveState === "function") saveState();
+    if (typeof window.applyFullFormLayout === "function") {
+      try { window.applyFullFormLayout(toId); } catch (e) {}
+    }
+    applyManualLayout(toId);
+    alert("از «" + fromId + "» به «" + toId + "» کپی شد: " + copiedFields + " فیلد/کلید + چیدمان دستی.");
+  }
+  window.copyPageToTab = copyPageToTab;
+
+  function resetLayout(tabId) {
+    ensureState();
+    if (state.manualLayouts) delete state.manualLayouts[tabId];
+    if (typeof saveState === "function") saveState();
+    var pane = $(tabId);
+    if (pane) {
+      pane.querySelectorAll(".man-item, .form-group, .map-container, .stat-card").forEach(function (el) {
+        el.style.position = "";
+        el.style.left = "";
+        el.style.top = "";
+        el.style.width = "";
+        el.style.height = "";
+        el.style.maxWidth = "";
+        el.style.flex = "";
+      });
+    }
+    if (window._activeManualTab === tabId) openManualCanvas(tabId);
+    alert("چیدمان دستی این تب پاک شد. چیدمان پیش‌فرض برگشت.");
+  }
+
+  function bindToolbar() {
+    var save = $("btnManSave");
+    var copy = $("btnManCopy");
+    var reset = $("btnManReset");
+    var open = $("btnManOpenTab");
+    if (save && !save.dataset.bound) {
+      save.dataset.bound = "1";
+      save.addEventListener("click", function () {
+        var id = window._activeManualTab;
+        if (!id) { alert("اول یک تب را از گرید انتخاب کنید."); return; }
+        if (typeof saveState === "function") saveState();
+        applyManualLayout(id);
+        alert("چیدمان ذخیره شد و روی تب اصلی اعمال شد.");
+      });
+    }
+    if (copy && !copy.dataset.bound) {
+      copy.dataset.bound = "1";
+      copy.addEventListener("click", function () {
+        (window.copyPageToTab || copyPageToTab)(($("manCopyFrom") || {}).value, ($("manCopyTo") || {}).value);
+      });
+    }
+    if (reset && !reset.dataset.bound) {
+      reset.dataset.bound = "1";
+      reset.addEventListener("click", function () {
+        if (!window._activeManualTab) return;
+        if (confirm("چیدمان دستی این تب پاک شود؟")) resetLayout(window._activeManualTab);
+      });
+    }
+    if (open && !open.dataset.bound) {
+      open.dataset.bound = "1";
+      open.addEventListener("click", function () {
+        if (window._activeManualTab && typeof switchTab === "function") switchTab(window._activeManualTab);
+      });
+    }
+  }
+
+  function scrubDuplicateWidgetsInState() {
+    ensureState();
+    var changed = false;
+    Object.keys(state.customFields || {}).forEach(function (key) {
+      var arr = state.customFields[key] || [];
+      var seen = {};
+      var next = [];
+      arr.forEach(function (f) {
+        var k = String(f.inputKind || "");
+        if (k.indexOf("widget-") === 0) {
+          if (seen[k]) { changed = true; return; }
+          seen[k] = true;
+        }
+        next.push(f);
+      });
+      state.customFields[key] = next;
+    });
+    if (changed && typeof saveState === "function") saveState(false);
+  }
+
+  function boot() {
+    try { ensureState(); } catch (e) {}
+    try { scrubDuplicateWidgetsInState(); } catch (e) {}
+    try { wrapRenderCustomFields(); } catch (e) {}
+    try { wrapApplyOrderTabId(); } catch (e) {}
+    try { wrapApplyLayoutDedupe(); } catch (e) {}
+    try { renderManualGrid(); } catch (e) {}
+    try { renderManPalette(); } catch (e) {}
+    try { bindToolbar(); } catch (e) {}
+    try {
+      (typeof window.getAllMenuSections === "function" ? window.getAllMenuSections() : []).forEach(function (s) {
+        try { window.dedupeTabWidgets(s.id); } catch (e2) {}
+        try { applyManualLayout(s.id); } catch (e2) {}
+      });
+    } catch (e) {}
+
+    var origSw = window.switchTab;
+    if (typeof origSw === "function" && !window._v13Sw) {
+      window._v13Sw = true;
+      window.switchTab = function (id) {
+        origSw(id);
+        setTimeout(function () {
+          if (id === "tab-manual-design") {
+            renderManualGrid();
+            bindToolbar();
+            if (window._activeManualTab) openManualCanvas(window._activeManualTab);
+          } else {
+            try { window.dedupeTabWidgets(id); } catch (e) {}
+            try { applyManualLayout(id); } catch (e) {}
+          }
+        }, 160);
+      };
+    }
+    console.log("v13 ready");
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+
+/* ===================== (bundled from public/crm-jalali.js) ===================== */
+// تقویم شمسی واقعی + نشانگر میلادی JAN..DEC + تقویم کنار فیلد تاریخ + افزودن لحظه‌ای
+(function () {
+  "use strict";
+
+  function div(a, b) { return ~~(a / b); }
+
+  function g2d(gy, gm, gd) {
+    var d = div((gy + div(gm - 8, 6) + 100100) * 1461, 4)
+      + div(153 * ((gm + 9) % 12) + 2, 5)
+      + gd - 34840408;
+    d = d - div(div(gy + 100100 + div(gm - 8, 6), 100) * 3, 4) + 752;
+    return d;
+  }
+
+  function d2g(jdn) {
+    var j = 4 * jdn + 139361631;
+    j = j + div(div(4 * jdn + 183187720, 146097) * 3, 4) * 4 - 3908;
+    var i = div((j % 1461), 4) * 5 + 308;
+    var gd = div((i % 153), 5) + 1;
+    var gm = (div(i, 153) % 12) + 1;
+    var gy = div(j, 1461) - 100100 + div(8 - gm, 6);
+    return { gy: gy, gm: gm, gd: gd };
+  }
+
+  function jalCal(jy) {
+    var breaks = [-61, 9, 38, 199, 426, 686, 756, 818, 1111, 1181, 1210,
+      1635, 2060, 2097, 2192, 2262, 2324, 2394, 2456, 3178];
+    var bl = breaks.length;
+    var gy = jy + 621;
+    var leapJ = -14;
+    var jp = breaks[0];
+    var jump = 0;
+    var leap, n, i;
+    if (jy < jp || jy >= breaks[bl - 1]) {
+      throw new Error("سال شمسی خارج از محدوده");
+    }
+    for (i = 1; i < bl; i += 1) {
+      var jm = breaks[i];
+      jump = jm - jp;
+      if (jy < jm) break;
+      leapJ = leapJ + div(jump, 33) * 8 + div((jump % 33), 4);
+      jp = jm;
+    }
+    n = jy - jp;
+    leapJ = leapJ + div(n, 33) * 8 + div((n % 33) + 3, 4);
+    if ((jump % 33) === 4 && jump - n === 4) leapJ += 1;
+    var leapG = div(gy, 4) - div((div(gy, 100) + 1) * 3, 4) - 150;
+    var march = 20 + leapJ - leapG;
+    if (jump - n < 6) n = n - jump + div(jump + 4, 33) * 33;
+    leap = ((((n + 1) % 33) - 1) % 4);
+    if (leap === -1) leap = 4;
+    return { leap: leap, gy: gy, march: march };
+  }
+
+  function j2d(jy, jm, jd) {
+    var r = jalCal(jy);
+    return g2d(r.gy, 3, r.march) + (jm - 1) * 31 - div(jm, 7) * (jm - 7) + jd - 1;
+  }
+
+  function d2j(jdn) {
+    var gy = d2g(jdn).gy;
+    var jy = gy - 621;
+    var r = jalCal(jy);
+    var jdn1f = g2d(gy, 3, r.march);
+    var k = jdn - jdn1f;
+    var jm, jd;
+    if (k >= 0) {
+      if (k <= 185) {
+        jm = 1 + div(k, 31);
+        jd = (k % 31) + 1;
+        return { jy: jy, jm: jm, jd: jd };
+      }
+      k -= 186;
+    } else {
+      jy -= 1;
+      k += 179;
+      if (r.leap === 1) k += 1;
+    }
+    jm = 7 + div(k, 30);
+    jd = (k % 30) + 1;
+    return { jy: jy, jm: jm, jd: jd };
+  }
+
+  function toJalaali(gy, gm, gd) { return d2j(g2d(gy, gm, gd)); }
+  function toGregorian(jy, jm, jd) { return d2g(j2d(jy, jm, jd)); }
+
+  function isLeap(jy) {
+    return jalCal(jy).leap === 0;
+  }
+
+  function monthLength(jy, jm) {
+    if (jm <= 6) return 31;
+    if (jm <= 11) return 30;
+    return isLeap(jy) ? 30 : 29;
+  }
+
+  var G_MON = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+  var J_MON = ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"];
+  var FA_NUM = "۰۱۲۳۴۵۶۷۸۹";
+  var AR_NUM = "٠١٢٣٤٥٦٧٨٩";
+
+  function toFaNum(n) {
+    return String(n).replace(/\d/g, function (d) { return FA_NUM[d]; });
+  }
+
+  function toEnDigits(s) {
+    return String(s == null ? "" : s)
+      .replace(/[۰-۹]/g, function (d) { return String(FA_NUM.indexOf(d)); })
+      .replace(/[٠-٩]/g, function (d) { return String(AR_NUM.indexOf(d)); });
+  }
+
+  function pad2(n) {
+    n = Number(n);
+    if (!isFinite(n)) n = 0;
+    return (n < 10 ? "0" : "") + n;
+  }
+
+  function tehranParts() {
+    var fmt = new Intl.DateTimeFormat("en-US", {
+      timeZone: "Asia/Tehran",
+      year: "numeric",
+      month: "numeric",
+      day: "numeric"
+    });
+    var p = fmt.formatToParts(new Date());
+    var o = { y: 2026, m: 8, d: 13 };
+    p.forEach(function (x) {
+      if (x.type === "year") o.y = parseInt(x.value, 10);
+      if (x.type === "month") o.m = parseInt(x.value, 10);
+      if (x.type === "day") o.d = parseInt(x.value, 10);
+    });
+    return o;
+  }
+
+  function todayJ() {
+    var g = tehranParts();
+    var j = toJalaali(g.y, g.m, g.d);
+    return { gy: g.y, gm: g.m, gd: g.d, jy: j.jy, jm: j.jm, jd: j.jd };
+  }
+
+  // شنبه=۰ … جمعه=۶  — هفته ایران
+  function weekdayIran(jy, jm, jd) {
+    var g = toGregorian(jy, jm, jd);
+    var dt = new Date(Date.UTC(g.gy, g.gm - 1, g.gd));
+    var sun0 = dt.getUTCDay();
+    return (sun0 + 1) % 7;
+  }
+
+  function gregorianBadgeFromG(gm, gd) {
+    return { mon: G_MON[(gm - 1)] || "AUG", day: String(parseInt(gd, 10)) };
+  }
+
+  function gregorianBadge() {
+    var t = todayJ();
+    return gregorianBadgeFromG(t.gm, t.gd);
+  }
+
+  function jalaliTodayStr() {
+    var t = todayJ();
+    return t.jy + "/" + pad2(t.jm) + "/" + pad2(t.jd);
+  }
+
+  function parseJalali(str) {
+    var s = toEnDigits(str).replace(/[-.]/g, "/").replace(/\s/g, "");
+    var m = s.match(/^(\d{4})\/(\d{1,2})(?:\/(\d{1,2}))?$/);
+    if (!m) return null;
+    var jy = parseInt(m[1], 10);
+    var jm = parseInt(m[2], 10);
+    var jd = m[3] ? parseInt(m[3], 10) : 0;
+    if (jy < 1200 || jy > 1600 || jm < 1 || jm > 12) return null;
+    if (jd && (jd < 1 || jd > 31)) return null;
+    return { jy: jy, jm: jm, jd: jd };
+  }
+
+  function formatJalali(jy, jm, jd) {
+    return jy + "/" + pad2(jm) + "/" + pad2(jd);
+  }
+
+  function badgeForInput(inp) {
+    var parsed = parseJalali(inp && inp.value);
+    if (parsed && parsed.jd) {
+      try {
+        var g = toGregorian(parsed.jy, parsed.jm, parsed.jd);
+        return gregorianBadgeFromG(g.gm, g.gd);
+      } catch (e) {}
+    }
+    return gregorianBadge();
+  }
+
+  window.CRMJalali = {
+    toJalaali: toJalaali,
+    toGregorian: toGregorian,
+    monthLength: monthLength,
+    todayJ: todayJ,
+    weekdayIran: weekdayIran,
+    gregorianBadge: gregorianBadge,
+    jalaliTodayStr: jalaliTodayStr,
+    parseJalali: parseJalali,
+    formatJalali: formatJalali,
+    toEnDigits: toEnDigits,
+    J_MON: J_MON,
+    G_MON: G_MON
+  };
+
+  function $(id) { return document.getElementById(id); }
+
+  function fillYearMonthSelects() {
+    var yearSel = $("jalaliYearSelect");
+    var monthSel = $("jalaliMonthSelect");
+    var t = todayJ();
+    if (yearSel) {
+      yearSel.innerHTML = "";
+      for (var y = t.jy - 8; y <= t.jy + 4; y++) {
+        var o = document.createElement("option");
+        o.value = String(y);
+        o.textContent = toFaNum(y);
+        if (y === t.jy) o.selected = true;
+        yearSel.appendChild(o);
+      }
+    }
+    if (monthSel) {
+      monthSel.innerHTML = "";
+      for (var m = 1; m <= 12; m++) {
+        var om = document.createElement("option");
+        om.value = pad2(m);
+        om.textContent = J_MON[m - 1];
+        if (m === t.jm) om.selected = true;
+        monthSel.appendChild(om);
+      }
+    }
+  }
+
+  function paintBadge(badge, inp) {
+    if (!badge) return;
+    var g = badgeForInput(inp);
+    var h = badge.querySelector(".jalali-badge-header");
+    var d = badge.querySelector(".jalali-badge-day");
+    if (h) h.textContent = g.mon;
+    if (d) d.textContent = g.day;
+    var parsed = parseJalali(inp && inp.value);
+    var title = "میلادی: " + g.mon + " " + g.day;
+    if (parsed && parsed.jd) title += " — شمسی: " + formatJalali(parsed.jy, parsed.jm, parsed.jd);
+    else title += " — امروز شمسی: " + jalaliTodayStr();
+    badge.title = title;
+  }
+
+  window.refreshAllDateBadges = function () {
+    document.querySelectorAll(".jalali-input-wrapper").forEach(function (w) {
+      var badge = w.querySelector(".jalali-badge");
+      var inp = w.querySelector("input");
+      paintBadge(badge, inp);
+    });
+    document.querySelectorAll(".jalali-badge").forEach(function (badge) {
+      if (badge.closest(".jalali-input-wrapper")) return;
+      paintBadge(badge, null);
+    });
+    var btn = $("jalaliTodayBtn");
+    if (btn) btn.textContent = "امروز: " + toFaNum(jalaliTodayStr());
+  };
+
+  window.renderJalaliCalendarDays = function () {
+    var grid = $("jalaliDaysGrid");
+    var monthSel = $("jalaliMonthSelect");
+    var yearSel = $("jalaliYearSelect");
+    if (!grid) return;
+    var t = todayJ();
+    var jy = yearSel ? parseInt(toEnDigits(yearSel.value), 10) : t.jy;
+    var jm = monthSel ? parseInt(toEnDigits(monthSel.value), 10) : t.jm;
+    if (!jy) jy = t.jy;
+    if (!jm) jm = t.jm;
+    var dim = monthLength(jy, jm);
+    var start = weekdayIran(jy, jm, 1);
+    var selected = parseJalali(window.activeDateInputForPicker && window.activeDateInputForPicker.value);
+    grid.innerHTML = "";
+    var i;
+    for (i = 0; i < start; i++) {
+      var empty = document.createElement("div");
+      empty.className = "jalali-day-cell empty";
+      grid.appendChild(empty);
+    }
+    for (var d = 1; d <= dim; d++) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      var isToday = (jy === t.jy && jm === t.jm && d === t.jd);
+      var isSel = selected && selected.jy === jy && selected.jm === jm && selected.jd === d;
+      btn.className = "jalali-day-cell" + (isToday ? " today" : "") + (isSel || (isToday && !selected) ? " active" : "");
+      btn.textContent = toFaNum(d);
+      btn.setAttribute("data-jday", String(d));
+      btn.setAttribute("title", formatJalali(jy, jm, d) + " — " + ["شنبه", "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه"][weekdayIran(jy, jm, d)]);
+      btn.onclick = (function (day) {
+        return function (e) {
+          e.stopPropagation();
+          var inp = window.activeDateInputForPicker;
+          if (inp) {
+            inp.value = formatJalali(jy, jm, day);
+            var wrap = inp.closest(".jalali-input-wrapper");
+            if (wrap) paintBadge(wrap.querySelector(".jalali-badge"), inp);
+            try { inp.dispatchEvent(new Event("change", { bubbles: true })); } catch (err) {}
+          }
+          var popup = $("jalaliCalendarPopup");
+          if (popup) popup.classList.remove("active");
+        };
+      })(d);
+      grid.appendChild(btn);
+    }
+  };
+
+  function openPickerFor(inp, e) {
+    if (e) e.stopPropagation();
+    var popup = $("jalaliCalendarPopup");
+    if (!popup || !inp) return;
+    window.activeDateInputForPicker = inp;
+    var t = todayJ();
+    var yearSel = $("jalaliYearSelect");
+    var monthSel = $("jalaliMonthSelect");
+    var cur = parseJalali(inp.value);
+    if (yearSel) {
+      var yv = String(cur ? cur.jy : t.jy);
+      if (!Array.prototype.some.call(yearSel.options, function (o) { return o.value === yv; })) {
+        var extra = document.createElement("option");
+        extra.value = yv;
+        extra.textContent = toFaNum(yv);
+        yearSel.appendChild(extra);
+      }
+      yearSel.value = yv;
+    }
+    if (monthSel) monthSel.value = pad2(cur ? cur.jm : t.jm);
+    window.renderJalaliCalendarDays();
+    var rect = inp.getBoundingClientRect();
+    popup.style.position = "fixed";
+    var top = rect.bottom + 6;
+    if (top + 360 > window.innerHeight) top = Math.max(8, rect.top - 360);
+    var left = rect.left;
+    if (left + 320 > window.innerWidth) left = Math.max(8, window.innerWidth - 328);
+    if (left < 8) left = 8;
+    popup.style.top = top + "px";
+    popup.style.left = left + "px";
+    popup.style.right = "auto";
+    popup.classList.add("active");
+  }
+
+  window.attachJalaliPicker = function (inp) {
+    if (!inp) return;
+    inp.classList.add("jalali-date-input");
+    inp.setAttribute("inputmode", "numeric");
+    inp.placeholder = inp.placeholder || "1405/05/22";
+    var parsed0 = parseJalali(inp.value);
+    if (parsed0 && parsed0.jd) inp.value = formatJalali(parsed0.jy, parsed0.jm, parsed0.jd);
+
+    var parent = inp.parentNode;
+    if (!parent) return;
+    var wrapper = parent.classList && parent.classList.contains("jalali-input-wrapper")
+      ? parent
+      : (inp.closest && inp.closest(".jalali-input-wrapper"));
+    if (!wrapper) {
+      wrapper = document.createElement("div");
+      wrapper.className = "jalali-input-wrapper";
+      parent.insertBefore(wrapper, inp);
+      wrapper.appendChild(inp);
+    }
+    var badge = wrapper.querySelector(".jalali-badge");
+    if (!badge) {
+      badge = document.createElement("div");
+      badge.className = "jalali-badge";
+      badge.innerHTML = '<span class="jalali-badge-header">AUG</span><span class="jalali-badge-day">13</span>';
+      wrapper.insertBefore(badge, inp);
+    }
+    paintBadge(badge, inp);
+
+    if (inp.dataset.pickerBound !== "true") {
+      inp.dataset.pickerBound = "true";
+      badge.addEventListener("click", function (ev) { openPickerFor(inp, ev); });
+      inp.addEventListener("click", function (ev) { openPickerFor(inp, ev); });
+    } else if (inp.dataset.pickerUpgraded !== "1") {
+      inp.dataset.pickerUpgraded = "1";
+      badge.addEventListener("click", function (ev) { openPickerFor(inp, ev); });
+      inp.addEventListener("click", function (ev) { openPickerFor(inp, ev); });
+    }
+
+    if (inp.dataset.slashBound !== "true") {
+      inp.dataset.slashBound = "true";
+      inp.addEventListener("input", function () {
+        var val = toEnDigits(this.value).replace(/[^0-9]/g, "");
+        if (val.length > 4 && val.length <= 6) this.value = val.slice(0, 4) + "/" + val.slice(4);
+        else if (val.length > 6) this.value = val.slice(0, 4) + "/" + val.slice(4, 6) + "/" + val.slice(6, 8);
+        else this.value = val;
+        paintBadge(badge, this);
+      });
+    }
+  };
+
+  function fieldKindOf(el) {
+    if (!el) return "";
+    if (el.getAttribute("data-kind")) return el.getAttribute("data-kind");
+    if (el.classList.contains("jalali-date-input")) return "date";
+    var id = el.getAttribute("data-custom-field-id");
+    if (!id || !window.state || !state.customFields) return "";
+    var kind = "";
+    Object.keys(state.customFields).forEach(function (k) {
+      (state.customFields[k] || []).forEach(function (f) {
+        if (f.id === id) kind = f.inputKind || f.type || "";
+      });
+    });
+    return kind;
+  }
+
+  function skipInstant(inp) {
+    if (!inp) return true;
+    if (inp.type === "number" || inp.type === "password" || inp.type === "file" || inp.type === "hidden" || inp.type === "email" || inp.type === "tel") return true;
+    if (inp.readOnly || inp.disabled) return true;
+    if (inp.classList.contains("jalali-date-input") || fieldKindOf(inp) === "date") return true;
+    if (inp.closest("#jalaliCalendarPopup") || inp.closest("#columnsDesignerHost") || inp.closest("#colDesignerPanel") || inp.closest(".modal-overlay") || inp.closest("#manualDesignCanvas") || inp.closest(".man-toolbar") || inp.closest("#formCustomField") || inp.closest("#prodFieldBar") || inp.closest("#addTabPanel")) return true;
+    if (inp.closest(".order-item-row") || inp.classList.contains("order-item-name")) return true;
+    var id = inp.id || "";
+    if (/Date|Lat|Lng|password|Password|username|Username|Search|search|Notes|notes|tgtYear|tgtCount|productPrice|productStock|productDist|cfLabel|cfOptions|colField|colNewTab|colBox|manBox|prodNewField/.test(id)) return true;
+    if (inp.closest(".geo-suggest-wrap")) return true;
+    return false;
+  }
+
+  window.attachInstantAdd = function (inp) {
+    if (!inp || inp.dataset.flyBtn === "1") return;
+    if (skipInstant(inp)) return;
+    inp.dataset.flyBtn = "1";
+    var parent = inp.parentNode;
+    if (!parent) return;
+    var row = parent.classList && parent.classList.contains("instant-add-row")
+      ? parent
+      : null;
+    if (!row) {
+      row = document.createElement("div");
+      row.className = "instant-add-row";
+      parent.insertBefore(row, inp);
+      row.appendChild(inp);
+    }
+    var btn = row.querySelector(".btn-instant-add");
+    if (!btn) {
+      btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn-instant-add";
+      btn.hidden = true;
+      btn.textContent = "➕ افزودن";
+      row.appendChild(btn);
+    }
+    var key = inp.getAttribute("data-custom-field-id") || inp.id || ("misc-" + Math.random().toString(36).slice(2, 7));
+    function knownList() {
+      if (!window.state) return [];
+      if (!state.typedOptions) state.typedOptions = {};
+      if (!state.typedOptions[key]) state.typedOptions[key] = [];
+      var extra = [];
+      if (inp.getAttribute("data-custom-field-id") && state.customFields) {
+        Object.keys(state.customFields).forEach(function (k) {
+          (state.customFields[k] || []).forEach(function (f) {
+            if (f.id === inp.getAttribute("data-custom-field-id") && f.options) extra = f.options;
+          });
+        });
+      }
+      return state.typedOptions[key].concat(extra);
+    }
+    function refresh() {
+      var v = (inp.value || "").trim();
+      var known = knownList();
+      if (v && known.indexOf(v) === -1) {
+        btn.hidden = false;
+        btn.textContent = "➕ افزودن «" + v + "»";
+      } else {
+        btn.hidden = true;
+      }
+    }
+    inp.addEventListener("input", refresh);
+    inp.addEventListener("focus", refresh);
+    btn.addEventListener("click", function (ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
+      var v = (inp.value || "").trim();
+      if (!v || !window.state) return;
+      if (!state.typedOptions) state.typedOptions = {};
+      if (!state.typedOptions[key]) state.typedOptions[key] = [];
+      if (state.typedOptions[key].indexOf(v) === -1) state.typedOptions[key].push(v);
+      var cfId = inp.getAttribute("data-custom-field-id");
+      if (cfId && state.customFields) {
+        Object.keys(state.customFields).forEach(function (k) {
+          (state.customFields[k] || []).forEach(function (f) {
+            if (f.id === cfId) {
+              if (!f.options) f.options = [];
+              if (f.options.indexOf(v) === -1) f.options.push(v);
+            }
+          });
+        });
+      }
+      var listId = inp.getAttribute("list");
+      if (!listId) {
+        listId = String(key).replace(/\W/g, "_") + "FlyList";
+        var dl = document.getElementById(listId);
+        if (!dl) {
+          dl = document.createElement("datalist");
+          dl.id = listId;
+          document.body.appendChild(dl);
+        }
+        inp.setAttribute("list", listId);
+      }
+      var dl2 = document.getElementById(listId);
+      if (dl2) {
+        var exists = false;
+        Array.prototype.forEach.call(dl2.options, function (o) { if (o.value === v) exists = true; });
+        if (!exists) {
+          var o = document.createElement("option");
+          o.value = v;
+          dl2.appendChild(o);
+        }
+      }
+      try { saveState(false); } catch (e) {}
+      btn.hidden = true;
+      var old = btn.textContent;
+      btn.hidden = false;
+      btn.textContent = "ثبت شد";
+      setTimeout(function () { btn.textContent = "➕ افزودن"; btn.hidden = true; }, 900);
+    });
+  };
+
+  function bindAllDateAndSimple() {
+    var dateSel = [
+      "#pharmacyDate", "#doctorDate", "#orderDate", "#visitDate",
+      "#leaveFromDate", "#leaveToDate"
+    ].join(",");
+    document.querySelectorAll(dateSel + ", input.jalali-date-input, input[data-kind='date']").forEach(function (el) {
+      window.attachJalaliPicker(el);
+    });
+    document.querySelectorAll("input.form-input[data-custom-field-id]").forEach(function (el) {
+      var kind = fieldKindOf(el);
+      if (kind === "date") {
+        el.classList.add("jalali-date-input");
+        window.attachJalaliPicker(el);
+      } else if (kind === "simple" || kind === "" || kind === "text") {
+        window.attachInstantAdd(el);
+      }
+    });
+    document.querySelectorAll("input.form-input[type='text'], input.form-input:not([type])").forEach(function (el) {
+      if (el.classList.contains("jalali-date-input") || el.getAttribute("data-kind") === "date") return;
+      window.attachInstantAdd(el);
+    });
+    window.refreshAllDateBadges();
+  }
+
+  function wirePopupChrome() {
+    var popup = $("jalaliCalendarPopup");
+    if (!popup) return;
+    if (popup.dataset.v1191 !== "1") {
+      popup.dataset.v1191 = "1";
+      fillYearMonthSelects();
+    }
+    var btnPrev = $("jalaliPrevMonth");
+    var btnNext = $("jalaliNextMonth");
+    var monthSel = $("jalaliMonthSelect");
+    var yearSel = $("jalaliYearSelect");
+    var btnToday = $("jalaliTodayBtn");
+    if (monthSel) monthSel.onchange = function () { window.renderJalaliCalendarDays(); };
+    if (yearSel) yearSel.onchange = function () { window.renderJalaliCalendarDays(); };
+    if (btnPrev && monthSel) {
+      btnPrev.onclick = function () {
+        var m = parseInt(toEnDigits(monthSel.value), 10) || 1;
+        var y = yearSel ? parseInt(toEnDigits(yearSel.value), 10) : todayJ().jy;
+        m -= 1;
+        if (m < 1) { m = 12; y -= 1; }
+        if (yearSel) {
+          yearSel.value = String(y);
+          if (yearSel.value !== String(y)) {
+            var o = document.createElement("option");
+            o.value = String(y);
+            o.textContent = toFaNum(y);
+            yearSel.insertBefore(o, yearSel.firstChild);
+            yearSel.value = String(y);
+          }
+        }
+        monthSel.value = pad2(m);
+        window.renderJalaliCalendarDays();
+      };
+    }
+    if (btnNext && monthSel) {
+      btnNext.onclick = function () {
+        var m = parseInt(toEnDigits(monthSel.value), 10) || 1;
+        var y = yearSel ? parseInt(toEnDigits(yearSel.value), 10) : todayJ().jy;
+        m += 1;
+        if (m > 12) { m = 1; y += 1; }
+        if (yearSel) {
+          yearSel.value = String(y);
+          if (yearSel.value !== String(y)) {
+            var o = document.createElement("option");
+            o.value = String(y);
+            o.textContent = toFaNum(y);
+            yearSel.appendChild(o);
+            yearSel.value = String(y);
+          }
+        }
+        monthSel.value = pad2(m);
+        window.renderJalaliCalendarDays();
+      };
+    }
+    if (btnToday) {
+      btnToday.textContent = "امروز: " + toFaNum(jalaliTodayStr());
+      btnToday.onclick = function () {
+        if (window.activeDateInputForPicker) {
+          window.activeDateInputForPicker.value = jalaliTodayStr();
+          var wrap = window.activeDateInputForPicker.closest(".jalali-input-wrapper");
+          if (wrap) paintBadge(wrap.querySelector(".jalali-badge"), window.activeDateInputForPicker);
+        }
+        popup.classList.remove("active");
+      };
+    }
+    if (!popup.dataset.closeBound) {
+      popup.dataset.closeBound = "1";
+      document.addEventListener("click", function (e) {
+        if (!popup.classList.contains("active")) return;
+        if (popup.contains(e.target)) return;
+        if (e.target.closest && e.target.closest(".jalali-badge")) return;
+        if (e.target === window.activeDateInputForPicker) return;
+        if (e.target.classList && e.target.classList.contains("jalali-date-input")) return;
+        popup.classList.remove("active");
+      });
+    }
+  }
+
+  function patchRenderCustom() {
+    if (typeof window.renderCustomFieldsInForm === "function" && !window._jalaliRenderPatched) {
+      window._jalaliRenderPatched = true;
+      var orig = window.renderCustomFieldsInForm;
+      window.renderCustomFieldsInForm = function (entityType, containerId, currentValues) {
+        var out = orig(entityType, containerId, currentValues || {});
+        setTimeout(bindAllDateAndSimple, 30);
+        return out;
+      };
+    }
+    if (typeof window.applyFullFormLayout === "function" && !window._jalaliLayoutPatched) {
+      window._jalaliLayoutPatched = true;
+      var origL = window.applyFullFormLayout;
+      window.applyFullFormLayout = function (tabId) {
+        var r = origL(tabId);
+        setTimeout(bindAllDateAndSimple, 50);
+        return r;
+      };
+    }
+    if (typeof window.buildDesignerWidget === "function" && !window._jalaliBuildPatched) {
+      window._jalaliBuildPatched = true;
+      var origB = window.buildDesignerWidget;
+      window.buildDesignerWidget = function (field, tabId) {
+        var el = origB(field, tabId);
+        setTimeout(function () {
+          if (!el) return;
+          var kind = (field && (field.inputKind || field.type)) || "";
+          var inp = el.querySelector("input.form-input, input[data-custom-field-id]");
+          if (!inp) return;
+          if (kind === "date") {
+            inp.classList.add("jalali-date-input");
+            inp.setAttribute("data-kind", "date");
+            window.attachJalaliPicker(inp);
+          } else if (kind === "simple" || kind === "text" || kind === "") {
+            window.attachInstantAdd(inp);
+          }
+        }, 20);
+        return el;
+      };
+    }
+  }
+
+  function boot() {
+    try { wirePopupChrome(); } catch (e) { console.error("jalali chrome", e); }
+    try { patchRenderCustom(); } catch (e) {}
+    try { bindAllDateAndSimple(); } catch (e) { console.error("jalali bind", e); }
+    window.setupJalaliCalendarPicker = function () { bindAllDateAndSimple(); };
+    window.setupJalaliDateAutoSlash = function () { bindAllDateAndSimple(); };
+    if (typeof window.setupInstantAddAll === "function") {
+      var prev = window.setupInstantAddAll;
+      window.setupInstantAddAll = function () {
+        try { prev(); } catch (e) {}
+        bindAllDateAndSimple();
+      };
+    }
+    if (typeof window.switchTab === "function" && !window._jalaliSw) {
+      window._jalaliSw = true;
+      var prevSw = window.switchTab;
+      window.switchTab = function (id) {
+        prevSw(id);
+        setTimeout(bindAllDateAndSimple, 170);
+      };
+    }
+    var t = todayJ();
+    console.log("jalali ready", jalaliTodayStr(), gregorianBadge(), "1mordad-wd", weekdayIran(t.jy, 5, 1));
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+
+/* ===================== (bundled from public/crm-features-v14.js) ===================== */
+// v14 — تب افزودن‌ها مثل ستون‌ها، گزینه کشویی با ویرایش/حذف، انتخاب داروخانه هم‌نام، فیلد کالا، ویرایش تب
+(function () {
+  "use strict";
+
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  function fieldKeyForTab(tabId) {
+    try {
+      var ut = ((state && state.userTabs) || []).filter(function (t) { return t.id === tabId; })[0];
+      if (ut && ut.key) return ut.key;
+    } catch (e) {}
+    var map = {
+      "tab-dashboard": "dashboard", "tab-pharmacies": "pharmacy", "tab-doctors": "doctor",
+      "tab-orders": "order", "tab-activity-log": "activity", "tab-overview-map": "overview",
+      "tab-live-location": "live", "tab-search-info": "search", "tab-rep-routes": "routes",
+      "tab-my-visit": "visit", "tab-rep-homes": "homes", "tab-leaves": "leave",
+      "tab-notifications": "notifications", "tab-monthly-reports": "reports",
+      "tab-sales-targets": "target", "tab-custom-fields": "additions",
+      "tab-columns-products": "products", "tab-users-permissions": "users",
+      "tab-messengers": "messengers", "tab-backup": "backup",
+      "tab-install-app": "install", "tab-troubleshooting": "diagnostics"
+    };
+    return map[tabId] || String(tabId || "").replace(/^tab-/, "") || "misc";
+  }
+
+  function allSections() {
+    return (typeof window.getAllMenuSections === "function")
+      ? window.getAllMenuSections()
+      : [];
+  }
+
+  function collectCustom(entity, containerId) {
+    if (typeof extractCustomFieldValuesFromForm === "function") {
+      try { return extractCustomFieldValuesFromForm(entity, containerId) || {}; } catch (e) {}
+    }
+    return {};
+  }
+
+  function patchRecordSaves() {
+    if (window._v14SavePatch) return;
+    window._v14SavePatch = true;
+    if (typeof setupAllFormSubmitHandlers === "function") {
+      var orig = setupAllFormSubmitHandlers;
+      window.setupAllFormSubmitHandlers = function () {
+        orig();
+        wrapPhSave();
+        wrapDocSave();
+        wrapOrdSave();
+      };
+    }
+    wrapPhSave();
+    wrapDocSave();
+    wrapOrdSave();
+    wrapProdSave();
+  }
+
+  function wrapPhSave() {
+    var form = $("formPharmacy");
+    var btn = $("btnSavePharmacy");
+    if (!form || form.dataset.v14cf === "1") return;
+    form.dataset.v14cf = "1";
+    function attach(el, prop) {
+      if (!el || !el[prop]) return;
+      var prev = el[prop];
+      el[prop] = function (e) {
+        if (e && e.preventDefault) e.preventDefault();
+        var vals = collectCustom("pharmacy", "pharmacyCustomFieldsContainer");
+        var editId = ($("pharmacyEditId") || {}).value;
+        var nameNow = (($("pharmacyName") || {}).value || "").trim();
+        var r = prev.call(this, e);
+        try {
+          var rec = editId
+            ? (state.pharmacies || []).filter(function (p) { return p.id === editId; })[0]
+            : (state.pharmacies || []).filter(function (p) { return p.name === nameNow; }).slice(-1)[0]
+              || (state.pharmacies || [])[state.pharmacies.length - 1];
+          if (rec) {
+            rec.customFields = Object.assign({}, rec.customFields || {}, vals);
+            if (typeof saveState === "function") saveState(false);
+          }
+        } catch (err) { console.error("v14 ph cf", err); }
+        return r;
+      };
+    }
+    attach(form, "onsubmit");
+    attach(btn, "onclick");
+  }
+
+  function wrapDocSave() {
+    var form = $("formDoctor");
+    var btn = $("btnSaveDoctor");
+    if (!form || form.dataset.v14cf === "1") return;
+    form.dataset.v14cf = "1";
+    function attach(el, prop) {
+      if (!el || !el[prop]) return;
+      var prev = el[prop];
+      el[prop] = function (e) {
+        if (e && e.preventDefault) e.preventDefault();
+        var vals = collectCustom("doctor", "doctorCustomFieldsContainer");
+        var editId = ($("doctorEditId") || {}).value;
+        var nameNow = (($("doctorName") || {}).value || "").trim();
+        var r = prev.call(this, e);
+        try {
+          var rec = editId
+            ? (state.doctors || []).filter(function (d) { return d.id === editId; })[0]
+            : (state.doctors || []).filter(function (d) { return d.name === nameNow; }).slice(-1)[0]
+              || (state.doctors || [])[state.doctors.length - 1];
+          if (rec) {
+            rec.customFields = Object.assign({}, rec.customFields || {}, vals);
+            if (typeof saveState === "function") saveState(false);
+          }
+        } catch (err) { console.error("v14 doc cf", err); }
+        return r;
+      };
+    }
+    attach(form, "onsubmit");
+    attach(btn, "onclick");
+  }
+
+  function wrapOrdSave() {
+    var form = $("formOrder");
+    var btn = $("btnSaveOrder");
+    if (!form || form.dataset.v14cf === "1") return;
+    form.dataset.v14cf = "1";
+    function attach(el, prop) {
+      if (!el || !el[prop]) return;
+      var prev = el[prop];
+      el[prop] = function (e) {
+        if (e && e.preventDefault) e.preventDefault();
+        var vals = collectCustom("order", "orderCustomFieldsContainer");
+        var editId = ($("orderEditId") || {}).value;
+        var phId = ($("orderPharmacyMatchedId") || {}).value || "";
+        var r = prev.call(this, e);
+        try {
+          var rec = editId
+            ? (state.orders || []).filter(function (o) { return o.id === editId; })[0]
+            : (state.orders || [])[state.orders.length - 1];
+          if (rec) {
+            rec.customFields = Object.assign({}, rec.customFields || {}, vals);
+            rec.pharmacyId = phId || rec.pharmacyId || "";
+            if (typeof saveState === "function") saveState(false);
+          }
+        } catch (err) { console.error("v14 ord cf", err); }
+        return r;
+      };
+    }
+    attach(form, "onsubmit");
+    attach(btn, "onclick");
+  }
+
+  function wrapProdSave() {
+    var form = $("formProduct");
+    if (!form || form.dataset.v14cf === "1") return;
+    form.dataset.v14cf = "1";
+    var prev = form.onsubmit;
+    form.onsubmit = function (e) {
+      if (e && e.preventDefault) e.preventDefault();
+      var r = prev ? prev.call(this, e) : undefined;
+      try {
+        var vals = collectCustom("products", "productCustomFieldsContainer");
+        var rec = (state.products || []).filter(function (p) {
+          return p.id === window._lastSavedProductId || p.name === window._lastSavedProductName;
+        })[0] || (state.products || [])[state.products.length - 1];
+        if (rec) {
+          rec.customFields = Object.assign({}, rec.customFields || {}, vals);
+          if (typeof saveState === "function") saveState(false);
+        }
+      } catch (err) {}
+      return r;
+    };
+    var btn = $("btnSaveProduct");
+    if (btn) btn.onclick = function (e) { e.preventDefault(); form.onsubmit(e); };
+  }
+
+  /* ---------- افزودن‌ها: گرید تب + کشویی‌ها با زیرمجموعه ---------- */
+  function fillCfTargets() {
+    var sel = $("cfTargetEntity");
+    if (!sel) return;
+    var secs = allSections();
+    if (!secs.length) return;
+    var keep = sel.value || (sel.options[0] && sel.options[0].value) || "pharmacy";
+    sel.innerHTML = "";
+    secs.forEach(function (sec) {
+      if (sec.id === "tab-custom-fields" || sec.id === "tab-manual-design") return;
+      var o = document.createElement("option");
+      o.value = fieldKeyForTab(sec.id);
+      o.setAttribute("data-tab", sec.id);
+      o.textContent = (sec.icon || "") + " " + sec.label;
+      sel.appendChild(o);
+    });
+    if (keep) sel.value = keep;
+    if (!sel.value && sel.options.length) sel.selectedIndex = 0;
+    sel.dataset.v14 = "1";
+  }
+
+  function hardenCustomFieldForm() {
+    var form = $("formCustomField");
+    var btn = $("btnSaveCustomField");
+    if (!form || form.dataset.v14save === "1") return;
+    form.dataset.v14save = "1";
+    function saveCf(e) {
+      if (e) e.preventDefault();
+      var targetSel = $("cfTargetEntity");
+      var target = targetSel ? targetSel.value : "pharmacy";
+      var tabId = targetSel && targetSel.selectedOptions[0]
+        ? (targetSel.selectedOptions[0].getAttribute("data-tab") || "")
+        : "";
+      var label = (($("cfLabel") || {}).value || "").trim();
+      var type = (($("cfType") || {}).value || "simple");
+      var optionsStr = (($("cfOptions") || {}).value || "").trim();
+      var allowAdd = $("cfAllowAddOption") ? $("cfAllowAddOption").checked : true;
+      var showInForm = $("cfShowInForm") ? $("cfShowInForm").checked : true;
+      var showInList = $("cfShowInList") ? $("cfShowInList").checked : true;
+      if (!label) { alert("عنوان فیلد را بنویسید."); return; }
+      if (!state.customFields) state.customFields = {};
+      if (!state.customFields[target]) state.customFields[target] = [];
+      var opts = [];
+      if (type === "select") {
+        opts = optionsStr.split(/[،,]/).map(function (s) { return s.trim(); }).filter(Boolean);
+        if (!opts.length) opts = ["گزینه اول", "گزینه دوم"];
+      }
+      var neu = {
+        id: "cf-" + target + "-" + Date.now(),
+        label: label,
+        type: type === "select" ? "select" : "simple",
+        inputKind: type,
+        options: opts,
+        allowAddOption: allowAdd,
+        showInForm: showInForm,
+        showInList: showInList,
+        order: state.customFields[target].length + 1
+      };
+      state.customFields[target].push(neu);
+      if (typeof saveState === "function") saveState();
+      if ($("cfLabel")) $("cfLabel").value = "";
+      if ($("cfOptions")) $("cfOptions").value = "";
+      if (typeof renderCustomFieldsTable === "function") renderCustomFieldsTable();
+      if (typeof renderAllCustomFieldsInFormsAndTables === "function") renderAllCustomFieldsInFormsAndTables();
+      if (tabId && typeof window.applyFullFormLayout === "function") window.applyFullFormLayout(tabId);
+      renderAddTabGrid();
+      renderAddTabPanel();
+      var st = $("cfSaveStatus");
+      if (st) st.textContent = "فیلد «" + label + "» ذخیره شد و روی فرم تب نشست.";
+      alert("فیلد «" + label + "» ذخیره شد.");
+    }
+    form.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      ev.stopImmediatePropagation();
+      saveCf(ev);
+    }, true);
+    if (btn) {
+      btn.type = "button";
+      btn.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        saveCf(ev);
+      });
+    }
+  }
+
+  function renderAddTabGrid() {
+    var grid = $("addTabGrid");
+    if (!grid) return;
+    var html = "";
+    allSections().forEach(function (sec) {
+      if (sec.id === "tab-custom-fields" || sec.id === "tab-manual-design") return;
+      var n = selectsOfTab(sec.id).length;
+      var on = window._activeAddTab === sec.id ? " active" : "";
+      html += '<button type="button" class="nav-item col-designer-tab col-tab-card' + on + '" data-add-tab="' + esc(sec.id) + '">' +
+        "<span>" + (sec.icon || "📋") + " " + esc(sec.label) + "</span>" +
+        '<span class="nav-badge">' + n + "</span></button>";
+    });
+    grid.innerHTML = html;
+    Array.prototype.forEach.call(grid.querySelectorAll("[data-add-tab]"), function (btn) {
+      btn.addEventListener("click", function () {
+        window._activeAddTab = btn.getAttribute("data-add-tab");
+        renderAddTabGrid();
+        renderAddTabPanel();
+      });
+    });
+  }
+
+  function selectsOfTab(tabId) {
+    var pane = $(tabId);
+    var out = [];
+    var seen = {};
+    function push(item) {
+      if (!item || !item.id || seen[item.id]) return;
+      seen[item.id] = true;
+      out.push(item);
+    }
+    if (pane) {
+      Array.prototype.forEach.call(pane.querySelectorAll("select.form-select, select[id]"), function (sel) {
+        if (!sel.id) return;
+        if (sel.id.indexOf("jalali") === 0) return;
+        if (sel.closest("#jalaliCalendarPopup") || sel.closest(".modal-overlay")) return;
+        var label = "";
+        var lab = pane.querySelector('label[for="' + sel.id + '"]');
+        if (lab) label = lab.textContent.replace(/\s+/g, " ").trim();
+        if (!label) {
+          var g = sel.closest(".form-group");
+          var l2 = g && g.querySelector(".form-label, label");
+          if (l2) label = l2.textContent.replace(/\s+/g, " ").trim();
+        }
+        var opts = [];
+        Array.prototype.forEach.call(sel.options, function (o) {
+          if (o.value) opts.push({ value: o.value, text: o.textContent || o.value, extra: false });
+        });
+        ((state.selectExtraOptions || {})[sel.id] || []).forEach(function (v) {
+          if (!opts.filter(function (x) { return x.value === v; }).length) {
+            opts.push({ value: v, text: v, extra: true });
+          }
+        });
+        push({ id: sel.id, label: label || sel.id, builtin: true, options: opts, tabId: tabId });
+      });
+    }
+    var key = fieldKeyForTab(tabId);
+    ((state.customFields || {})[key] || []).forEach(function (f) {
+      if ((f.inputKind || f.type) !== "select") return;
+      var opts = (f.options || []).map(function (v) { return { value: v, text: v, extra: false }; });
+      push({ id: f.id, label: f.label, builtin: false, custom: true, options: opts, tabId: tabId, field: f });
+    });
+    return out;
+  }
+
+  function renderAddTabPanel() {
+    var panel = $("addTabPanel");
+    if (!panel) return;
+    var tabId = window._activeAddTab;
+    if (!tabId) {
+      panel.innerHTML = "<p class='col-help'>یک تب را از بالا انتخاب کنید تا همه کشویی‌های همان تب با گزینه‌هایش دیده شود.</p>";
+      return;
+    }
+    var sec = allSections().filter(function (s) { return s.id === tabId; })[0] || { label: tabId, icon: "📋" };
+    var list = selectsOfTab(tabId);
+    var html = "<div class='add-panel-head'><strong>" + esc((sec.icon || "") + " " + sec.label) +
+      "</strong><span class='col-help'>هر کشویی و زیرمجموعه‌اش. روبه‌روی هر مورد ویرایش و حذف است.</span></div>";
+    if (!list.length) {
+      html += "<p class='col-help'>در این تب کشویی‌ای پیدا نشد.</p>";
+      panel.innerHTML = html;
+      return;
+    }
+    var geoIds = /Province|City|District/;
+    list.forEach(function (f) {
+      if (geoIds.test(f.id || "")) {
+        html += "<div class='add-sel-card add-sel-geo' data-sid='" + esc(f.id) + "'>";
+        html += "<div class='add-sel-head'><strong>" + esc(f.label) + "</strong>";
+        html += "<span class='col-help'>از کادر استان←شهر←منطقه بالای همین صفحه استفاده کنید</span></div></div>";
+        return;
+      }
+      html += "<div class='add-sel-card' data-sid='" + esc(f.id) + "'>";
+      html += "<div class='add-sel-head'><strong>" + esc(f.label) + "</strong>";
+      html += "<span class='col-help'>" + (f.custom ? "فیلد اضافه‌شده" : "کشویی فرم") + "</span>";
+      if (f.custom) {
+        html += "<button type='button' class='btn btn-outline btn-sm add-edit-field' data-sid='" + esc(f.id) + "'>✏️ ویرایش</button>";
+        html += "<button type='button' class='btn btn-danger btn-sm add-del-field' data-sid='" + esc(f.id) + "'>🗑️ حذف</button>";
+      }
+      html += "</div><ul class='add-opt-list add-opt-tight'>";
+      (f.options || []).forEach(function (op, i) {
+        html += "<li><span class='add-opt-name'>" + esc(op.text) + "</span><span class='add-opt-ops'>" +
+          "<button type='button' class='btn btn-outline btn-sm add-edit-opt' data-sid='" + esc(f.id) + "' data-idx='" + i + "' data-val='" + esc(op.value) + "'>✏️</button>" +
+          "<button type='button' class='btn btn-danger btn-sm add-del-opt' data-sid='" + esc(f.id) + "' data-idx='" + i + "' data-val='" + esc(op.value) + "'>🗑️</button>" +
+          "</span></li>";
+      });
+      html += "</ul><button type='button' class='btn btn-outline btn-sm add-new-opt' data-sid='" + esc(f.id) + "'>➕ گزینه جدید</button></div>";
+    });
+    panel.innerHTML = html;
+
+    Array.prototype.forEach.call(panel.querySelectorAll(".add-new-opt"), function (btn) {
+      btn.addEventListener("click", function () { addOptionToField(tabId, btn.getAttribute("data-sid")); });
+    });
+    Array.prototype.forEach.call(panel.querySelectorAll(".add-edit-opt"), function (btn) {
+      btn.addEventListener("click", function () {
+        editOptionOfField(tabId, btn.getAttribute("data-sid"), btn.getAttribute("data-val"));
+      });
+    });
+    Array.prototype.forEach.call(panel.querySelectorAll(".add-del-opt"), function (btn) {
+      btn.addEventListener("click", function () {
+        deleteOptionOfField(tabId, btn.getAttribute("data-sid"), btn.getAttribute("data-val"));
+      });
+    });
+    Array.prototype.forEach.call(panel.querySelectorAll(".add-edit-field"), function (btn) {
+      btn.addEventListener("click", function () { editCustomSelectField(tabId, btn.getAttribute("data-sid")); });
+    });
+    Array.prototype.forEach.call(panel.querySelectorAll(".add-del-field"), function (btn) {
+      btn.addEventListener("click", function () { deleteCustomSelectField(tabId, btn.getAttribute("data-sid")); });
+    });
+  }
+
+  function findCustomField(tabId, fieldId) {
+    var key = fieldKeyForTab(tabId);
+    return ((state.customFields || {})[key] || []).filter(function (f) { return f.id === fieldId; })[0] || null;
+  }
+
+  function addOptionToField(tabId, fieldId) {
+    var val = prompt("گزینه جدید:");
+    if (!val || !String(val).trim()) return;
+    val = String(val).trim();
+    var cf = findCustomField(tabId, fieldId);
+    if (cf) {
+      if (!cf.options) cf.options = [];
+      if (cf.options.indexOf(val) === -1) cf.options.push(val);
+    } else {
+      if (!state.selectExtraOptions) state.selectExtraOptions = {};
+      if (!state.selectExtraOptions[fieldId]) state.selectExtraOptions[fieldId] = [];
+      if (state.selectExtraOptions[fieldId].indexOf(val) === -1) state.selectExtraOptions[fieldId].push(val);
+      var sel = document.getElementById(fieldId);
+      if (sel) {
+        var o = document.createElement("option");
+        o.value = val;
+        o.textContent = val;
+        sel.appendChild(o);
+      }
+    }
+    if (typeof saveState === "function") saveState();
+    if (typeof window.applySelectExtraOptions === "function") window.applySelectExtraOptions();
+    renderAddTabPanel();
+    renderAddTabGrid();
+  }
+
+  function editOptionOfField(tabId, fieldId, oldVal) {
+    var nw = prompt("ویرایش گزینه:", oldVal || "");
+    if (nw == null) return;
+    nw = String(nw).trim();
+    if (!nw) { alert("خالی نباشد."); return; }
+    var cf = findCustomField(tabId, fieldId);
+    if (cf && cf.options) {
+      var i = cf.options.indexOf(oldVal);
+      if (i !== -1) cf.options[i] = nw;
+    }
+    if (state.selectExtraOptions && state.selectExtraOptions[fieldId]) {
+      var j = state.selectExtraOptions[fieldId].indexOf(oldVal);
+      if (j !== -1) state.selectExtraOptions[fieldId][j] = nw;
+    }
+    var sel = document.getElementById(fieldId);
+    if (sel) {
+      Array.prototype.forEach.call(sel.options, function (o) {
+        if (o.value === oldVal) { o.value = nw; o.textContent = nw; }
+      });
+    }
+    if (typeof saveState === "function") saveState();
+    renderAddTabPanel();
+  }
+
+  function deleteOptionOfField(tabId, fieldId, oldVal) {
+    if (!confirm("گزینه «" + oldVal + "» حذف شود؟")) return;
+    var cf = findCustomField(tabId, fieldId);
+    if (cf && cf.options) cf.options = cf.options.filter(function (v) { return v !== oldVal; });
+    if (state.selectExtraOptions && state.selectExtraOptions[fieldId]) {
+      state.selectExtraOptions[fieldId] = state.selectExtraOptions[fieldId].filter(function (v) { return v !== oldVal; });
+    }
+    if (!state.selectHiddenOptions) state.selectHiddenOptions = {};
+    if (!state.selectHiddenOptions[fieldId]) state.selectHiddenOptions[fieldId] = [];
+    if (state.selectHiddenOptions[fieldId].indexOf(oldVal) === -1) state.selectHiddenOptions[fieldId].push(oldVal);
+    var sel = document.getElementById(fieldId);
+    if (sel) {
+      Array.prototype.slice.call(sel.options).forEach(function (o) {
+        if (o.value === oldVal) o.parentNode.removeChild(o);
+      });
+    }
+    if (typeof saveState === "function") saveState();
+    renderAddTabPanel();
+  }
+
+  function editCustomSelectField(tabId, fieldId) {
+    var cf = findCustomField(tabId, fieldId);
+    if (!cf) return;
+    var name = prompt("عنوان فیلد:", cf.label || "");
+    if (name == null) return;
+    name = String(name).trim();
+    if (!name) return;
+    cf.label = name;
+    if (typeof saveState === "function") saveState();
+    if (typeof renderCustomFieldsTable === "function") renderCustomFieldsTable();
+    if (typeof window.applyFullFormLayout === "function") window.applyFullFormLayout(tabId);
+    renderAddTabPanel();
+  }
+
+  function deleteCustomSelectField(tabId, fieldId) {
+    var cf = findCustomField(tabId, fieldId);
+    if (!cf) return;
+    if (!confirm("فیلد «" + cf.label + "» حذف شود؟")) return;
+    var key = fieldKeyForTab(tabId);
+    state.customFields[key] = (state.customFields[key] || []).filter(function (f) { return f.id !== fieldId; });
+    document.querySelectorAll('[data-custom-field-id="' + fieldId + '"]').forEach(function (inp) {
+      var g = inp.closest(".form-group");
+      if (g) g.remove();
+      else inp.remove();
+    });
+    if (typeof saveState === "function") saveState();
+    if (typeof renderCustomFieldsTable === "function") renderCustomFieldsTable();
+    renderAddTabPanel();
+    renderAddTabGrid();
+  }
+
+  /* ---------- داروخانه هم‌نام در سفارش ---------- */
+  function fillPharmacyFromRec(rec) {
+    if (!rec) return;
+    if ($("orderPharmacyName")) $("orderPharmacyName").value = rec.name || "";
+    if ($("orderPharmacyMatchedId")) $("orderPharmacyMatchedId").value = rec.id || "";
+    var provEl = $("orderProvince");
+    var cityEl = $("orderCity");
+    var distEl = $("orderDistrict");
+    var addrEl = $("orderAddress");
+    if (provEl) {
+      provEl.value = rec.province || "";
+      if (typeof populateCities === "function" && cityEl) populateCities(rec.province, cityEl, rec.city);
+      if (typeof populateDistricts === "function" && distEl) populateDistricts(rec.province, rec.city, distEl, rec.district);
+    }
+    if (addrEl) addrEl.value = rec.address || "";
+    var box = $("existingPharmacyTopAlert");
+    var txt = $("existingPharmacyAlertText");
+    if (box && txt) {
+      txt.textContent = "انتخاب شد: «" + rec.name + "» | " + [rec.province, rec.city, rec.district].filter(Boolean).join(" / ") + " | " + (rec.address || "") + (rec.phone ? " | " + rec.phone : "");
+      box.style.display = "flex";
+    }
+  }
+
+  function renderPharmacyPicks(q) {
+    var host = $("orderPharmacyPickBox");
+    if (!host) return;
+    q = String(q || "").trim();
+    if (q.length < 1) {
+      host.hidden = true;
+      host.innerHTML = "";
+      return;
+    }
+    var ql = q.toLowerCase();
+    var hits = (state.pharmacies || []).filter(function (p) {
+      var blob = [p.name, p.province, p.city, p.district, p.address, p.phone, p.manager].join(" ").toLowerCase();
+      return blob.indexOf(ql) !== -1 || (p.name && p.name.indexOf(q) !== -1);
+    });
+    if (!hits.length) {
+      host.hidden = false;
+      host.innerHTML = "<div class='ph-pick-empty'>داروخانه ثبت‌شده‌ای با این مشخصات نیست. می‌توانید همین نام را تایپ کنید.</div>";
+      return;
+    }
+    host.hidden = false;
+    host.innerHTML = "<div class='ph-pick-hint'>" + hits.length + " داروخانه پیدا شد — یکی را انتخاب کنید (ممکن است چند داروخانه هم‌نام در شهرهای مختلف باشد)</div>" +
+      hits.slice(0, 30).map(function (p) {
+        return "<button type='button' class='ph-pick-card' data-pid='" + esc(p.id) + "'>" +
+          "<strong>🏥 " + esc(p.name || "") + "</strong>" +
+          "<span>" + esc([p.province, p.city, p.district].filter(Boolean).join(" / ")) + "</span>" +
+          "<span>" + esc(p.address || "بدون آدرس") + "</span>" +
+          "<span>" + esc((p.phone || "") + (p.manager ? " — مسئول: " + p.manager : "")) + "</span>" +
+          "</button>";
+      }).join("");
+    Array.prototype.forEach.call(host.querySelectorAll(".ph-pick-card"), function (btn) {
+      btn.addEventListener("click", function () {
+        var rec = (state.pharmacies || []).filter(function (p) { return p.id === btn.getAttribute("data-pid"); })[0];
+        fillPharmacyFromRec(rec);
+        host.hidden = true;
+      });
+    });
+  }
+
+  function setupPharmacyPicker() {
+    var inp = $("orderPharmacyName");
+    if (!inp || inp.dataset.v14pick === "1") return;
+    inp.dataset.v14pick = "1";
+    inp.removeAttribute("list");
+    inp.setAttribute("autocomplete", "off");
+    var host = $("orderPharmacyPickBox");
+    if (!host) {
+      host = document.createElement("div");
+      host.id = "orderPharmacyPickBox";
+      host.className = "ph-pick-box";
+      host.hidden = true;
+      var g = inp.closest(".form-group") || inp.parentNode;
+      if (g) g.appendChild(host);
+    }
+    inp.addEventListener("input", function () { renderPharmacyPicks(inp.value); });
+    inp.addEventListener("focus", function () { if ((inp.value || "").trim()) renderPharmacyPicks(inp.value); });
+    document.addEventListener("click", function (e) {
+      if (!host || host.hidden) return;
+      if (host.contains(e.target) || e.target === inp) return;
+      host.hidden = true;
+    });
+  }
+
+  /* ---------- کالا: افزودن فیلد + ویرایش ---------- */
+  function setupProductExtras() {
+    var form = $("formProduct");
+    if (!form || form.dataset.v14prod === "1") return;
+    form.dataset.v14prod = "1";
+    var grid = form.querySelector(".form-grid");
+    if (grid && !$("productCustomFieldsContainer")) {
+      var host = document.createElement("div");
+      host.id = "productCustomFieldsContainer";
+      host.className = "form-group full-width form-grid extra-cf-host";
+      host.setAttribute("data-cf-host", "products");
+      grid.appendChild(host);
+    }
+    if (!$("prodFieldBar")) {
+      var bar = document.createElement("div");
+      bar.id = "prodFieldBar";
+      bar.className = "prod-field-bar";
+      bar.innerHTML =
+        "<strong>افزودن فیلد به فرم کالا</strong>" +
+        '<input id="prodNewFieldLabel" class="form-input" placeholder="عنوان فیلد، مثلاً شکل دارویی">' +
+        '<select id="prodNewFieldType" class="form-select"><option value="simple">ساده</option><option value="select">کشویی</option><option value="date">تاریخ</option><option value="number">عددی</option></select>' +
+        '<input id="prodNewFieldOpts" class="form-input" placeholder="گزینه‌های کشویی با ویرگول" style="display:none">' +
+        '<button type="button" id="btnAddProductField" class="btn btn-primary btn-sm" style="background:#0d9488">➕ افزودن فیلد</button>';
+      form.insertBefore(bar, form.querySelector(".form-grid"));
+      var typeSel = $("prodNewFieldType");
+      if (typeSel) typeSel.addEventListener("change", function () {
+        if ($("prodNewFieldOpts")) $("prodNewFieldOpts").style.display = typeSel.value === "select" ? "" : "none";
+      });
+      var add = $("btnAddProductField");
+      if (add) add.addEventListener("click", function () {
+        var label = (($("prodNewFieldLabel") || {}).value || "").trim();
+        if (!label) { alert("عنوان فیلد کالا را بنویسید."); return; }
+        var type = (($("prodNewFieldType") || {}).value || "simple");
+        var opts = (($("prodNewFieldOpts") || {}).value || "").split(/[،,]/).map(function (s) { return s.trim(); }).filter(Boolean);
+        if (!state.customFields) state.customFields = {};
+        if (!state.customFields.products) state.customFields.products = [];
+        state.customFields.products.push({
+          id: "cf-products-" + Date.now(),
+          label: label,
+          type: type === "select" ? "select" : "simple",
+          inputKind: type,
+          options: opts,
+          showInForm: true,
+          showInList: true,
+          order: state.customFields.products.length + 1
+        });
+        if (typeof saveState === "function") saveState();
+        if ($("prodNewFieldLabel")) $("prodNewFieldLabel").value = "";
+        if (typeof renderCustomFieldsInForm === "function") renderCustomFieldsInForm("products", "productCustomFieldsContainer");
+        alert("فیلد «" + label + "» به فرم کالا اضافه و ذخیره شد.");
+      });
+    }
+    var actions = form.querySelector("div[style*='justify-content: flex-end']");
+    if (actions && !$("btnEditProductForm")) {
+      var ed = document.createElement("button");
+      ed.type = "button";
+      ed.id = "btnEditProductForm";
+      ed.className = "btn btn-outline";
+      ed.textContent = "✏️ ویرایش کالای جدول";
+      ed.addEventListener("click", function () {
+        var recs = state.products || [];
+        if (!recs.length) { alert("هنوز کالایی نیست."); return; }
+        var names = recs.map(function (p, i) { return (i + 1) + ". " + p.name; }).join("\n");
+        var n = prompt("شماره ردیف کالا برای ویرایش:\n" + names, "1");
+        var idx = parseInt(n, 10) - 1;
+        if (recs[idx] && typeof editProductCatalogItem === "function") {
+          editProductCatalogItem(recs[idx].id);
+          var cf = recs[idx].customFields || {};
+          if (typeof renderCustomFieldsInForm === "function") {
+            renderCustomFieldsInForm("products", "productCustomFieldsContainer", cf);
+          }
+        }
+      });
+      actions.insertBefore(ed, actions.firstChild);
+    }
+    if (typeof renderCustomFieldsInForm === "function" && $("productCustomFieldsContainer")) {
+      renderCustomFieldsInForm("products", "productCustomFieldsContainer");
+    }
+  }
+
+  /* ---------- ویرایش تب کنار حذف ---------- */
+  window.editUserTab = function (tabId) {
+    var tab = ((state.userTabs || []).filter(function (t) { return t.id === tabId; })[0]);
+    if (!tab) {
+      alert("ویرایش نام فقط برای تب‌هایی است که خود مدیر ساخته است.");
+      return;
+    }
+    var name = prompt("نام جدید تب:", tab.label || "");
+    if (name == null) return;
+    name = String(name).trim();
+    if (!name) { alert("نام خالی است."); return; }
+    tab.label = name;
+    if (typeof window.iconFromTabLabel === "function") tab.icon = window.iconFromTabLabel(name);
+    var ord = prompt("شماره تب در منوی اصلی:", String((state.tabOrder || {})[tab.id] || 1));
+    if (ord != null && parseInt(ord, 10) > 0) {
+      if (!state.tabOrder) state.tabOrder = {};
+      state.tabOrder[tab.id] = parseInt(ord, 10);
+    }
+    if (typeof saveState === "function") saveState();
+    var pane = $(tab.id);
+    if (pane) {
+      var title = pane.querySelector(".card-title span");
+      if (title) title.textContent = (tab.icon || "📋") + " " + tab.label;
+    }
+    if (typeof setupNavigationMenu === "function") setupNavigationMenu();
+    if (typeof window.refreshColumnsDesigner === "function") window.refreshColumnsDesigner();
+    alert("تب به «" + name + "» ویرایش شد.");
+  };
+
+  function ensureEditTabButton() {
+    var del = $("btnDeleteUserTab");
+    if (!del || $("btnEditUserTab")) return;
+    var ed = document.createElement("button");
+    ed.type = "button";
+    ed.id = "btnEditUserTab";
+    ed.className = "btn btn-outline btn-sm";
+    ed.textContent = "✏️ ویرایش این تب";
+    ed.addEventListener("click", function () { window.editUserTab(window._activeColTab); });
+    if (del.parentNode) del.parentNode.insertBefore(ed, del);
+  }
+
+  /* ---------- کپی از/به: منوی سفارشی بالای بوم ---------- */
+  function upgradeCopySelects() {
+    var from = $("manCopyFrom");
+    var to = $("manCopyTo");
+    if (!from || !to) return;
+    from.classList.add("man-copy-select");
+    to.classList.add("man-copy-select");
+    var row = from.closest(".man-toolbar-row");
+    if (row) {
+      row.classList.add("man-copy-row");
+      if (row.parentNode && row.parentNode.classList) row.parentNode.classList.add("man-toolbar-raised");
+    }
+  }
+
+  function boot() {
+    try { patchRecordSaves(); } catch (e) { console.error("v14 save", e); }
+    try { fillCfTargets(); } catch (e) {}
+    try { hardenCustomFieldForm(); } catch (e) {}
+    try { renderAddTabGrid(); } catch (e) {}
+    try { renderAddTabPanel(); } catch (e) {}
+    try { setupPharmacyPicker(); } catch (e) { console.error("v14 ph pick", e); }
+    try { setupProductExtras(); } catch (e) { console.error("v14 prod", e); }
+    try { ensureEditTabButton(); } catch (e) {}
+    try { upgradeCopySelects(); } catch (e) {}
+
+    var origSw = window.switchTab;
+    if (typeof origSw === "function" && !window._v14Sw) {
+      window._v14Sw = true;
+      window.switchTab = function (id) {
+        origSw(id);
+        setTimeout(function () {
+          if (id === "tab-custom-fields") {
+            fillCfTargets();
+            hardenCustomFieldForm();
+            renderAddTabGrid();
+            renderAddTabPanel();
+          }
+          if (id === "tab-orders") setupPharmacyPicker();
+          if (id === "tab-columns-products") {
+            setupProductExtras();
+            ensureEditTabButton();
+          }
+          if (id === "tab-manual-design") upgradeCopySelects();
+        }, 150);
+      };
+    }
+
+    document.addEventListener("click", function (e) {
+      if (e.target.closest(".col-designer-tab") || e.target.id === "btnDeleteUserTab") {
+        setTimeout(ensureEditTabButton, 80);
+      }
+    });
+
+    console.log("v14 ready");
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+
+/* ===================== (bundled from public/crm-features-v15.js) ===================== */
+// v15 — سایز واقعی فیلد، فریز سرستون+اسکرول افقی زیر آن، ذخیره افزودن، حفظ تنظیمات، طراح دستی بدون خراب کردن فرم/لیست
+(function () {
+  "use strict";
+
+  var VER = "11.11.0";
+  var BACKUP_KEY = "CRM_APP_STATE_BACKUP_BEFORE_11_11_0";
+  var PROTECTED_CARD = {
+    cardPhForm: 1, cardPhList: 1, cardDocForm: 1, cardDocList: 1,
+    cardOrdForm: 1, cardOrdList: 1, formPharmacy: 1, formDoctor: 1, formOrder: 1
+  };
+
+  function $(id) { return document.getElementById(id); }
+
+  function backupUserStateOnce() {
+    // v11.21.9: backupهای خودکار محلی منسوخ‌اند؛ وضعیت جاری تنها مرجع است.
+    return;
+  }
+
+
+  function softenBrokenAbsLayouts() {
+    // v11.21.9: هیچ layout ذخیره‌شده‌ای بدون اقدام مدیر تغییر نکند.
+    return;
+  }
+
+  function restoreProtectedCards() {
+    Object.keys(PROTECTED_CARD).forEach(function (id) {
+      var el = $(id);
+      if (!el) return;
+      el.style.position = "";
+      el.style.left = "";
+      el.style.top = "";
+      el.style.display = "block";
+      el.style.visibility = "visible";
+      el.style.opacity = "1";
+      el.style.height = "";
+      el.style.maxHeight = "";
+      el.style.overflow = "";
+      el.classList.remove("col-hide-form");
+    });
+    try {
+      if (!window.state || !state.manualLayouts) return;
+      Object.keys(state.manualLayouts).forEach(function (tabId) {
+        var items = state.manualLayouts[tabId] && state.manualLayouts[tabId].items;
+        if (!items) return;
+        Object.keys(PROTECTED_CARD).forEach(function (id) {
+          if (items[id]) delete items[id];
+        });
+      });
+    } catch (e) {}
+  }
+
+  /* ---------- سایز فیلد: مقدار ذخیره‌شده کاربر دست نخورد؛ نمایش واقعی؛ اعمال روی خود اینپوت ---------- */
+  function inferredDisplaySize(field) {
+    if (!field) return 220;
+    var saved = parseInt(field.size, 10);
+    if (saved > 40) return saved;
+    var el = document.getElementById(field.id);
+    if (el) {
+      var w = Math.round(el.getBoundingClientRect().width);
+      if (w > 60) return w;
+    }
+    if (field.full || field.place === "under" || /Address|address|Notes|notes/.test(field.id || "") || /آدرس/.test(field.label || "")) {
+      return 560;
+    }
+    return 220;
+  }
+
+  function applySizeToInput(group, size) {
+    if (!group) return;
+    var n = parseInt(size, 10);
+    if (!(n > 40)) return;
+    var inp = group.querySelector(".form-input, .form-select, .form-textarea, input:not([type=hidden]), select, textarea");
+    if (!inp) return;
+    if (inp.classList && inp.classList.contains("map-container")) return;
+    inp.style.setProperty("width", n + "px", "important");
+    inp.style.setProperty("max-width", "100%", "important");
+    inp.setAttribute("data-col-width", String(n));
+  }
+
+  function wrapPaintFieldBox() {
+    /* paintFieldBox داخل v11 است؛ بعد از applyFullFormLayout دوباره عرض اینپوت را می‌نشانیم */
+    if (typeof window.applyFullFormLayout !== "function" || window._v15Paint) return;
+    window._v15Paint = true;
+    var orig = window.applyFullFormLayout;
+    window.applyFullFormLayout = function (tabId) {
+      var out = orig(tabId);
+      try { paintSavedSizes(tabId); } catch (e) {}
+      return out;
+    };
+  }
+
+  function paintSavedSizes(tabId) {
+    if (!tabId || typeof window.getUnifiedFieldList !== "function") {
+      /* getUnifiedFieldList روی window نیست؛ از meta می‌خوانیم */
+    }
+    var pane = $(tabId);
+    if (!pane || !window.state) return;
+    var key = tabId.replace(/^tab-/, "");
+    try {
+      if (typeof window.fieldKeyForTab === "function") key = window.fieldKeyForTab(tabId);
+    } catch (e) {}
+    var map = {
+      "tab-pharmacies": "pharmacy", "tab-doctors": "doctor", "tab-orders": "order",
+      "tab-columns-products": "products"
+    };
+    key = map[tabId] || key;
+    var meta = ((state.formFieldMeta || {})[key]) || {};
+    Object.keys(meta).forEach(function (fid) {
+      var size = parseInt(meta[fid] && meta[fid].size, 10);
+      if (!(size > 40)) return;
+      var el = document.getElementById(fid) || pane.querySelector('[data-col-fid="' + fid + '"]');
+      var g = el && (el.classList && el.classList.contains("form-group") ? el : el.closest(".form-group"));
+      applySizeToInput(g || el, size);
+    });
+    ((state.customFields || {})[key] || []).forEach(function (f) {
+      var size = parseInt(f.size, 10);
+      if (!(size > 40)) return;
+      var inp = pane.querySelector('[data-custom-field-id="' + f.id + '"]');
+      var g = inp && inp.closest(".form-group");
+      applySizeToInput(g || inp, size);
+    });
+  }
+
+  function hookDesignerSizeDisplay() {
+    document.addEventListener("focusin", function (e) {
+      var t = e.target;
+      if (!t || t.id !== "colFieldSize") return;
+      if (t.dataset.v15filled === "1") return;
+      if (window._editingColField) {
+        var shown = inferredDisplaySize(window._editingColField);
+        if (!t.value || t.value === "220") t.value = String(shown);
+        t.dataset.v15filled = "1";
+      }
+    });
+    document.addEventListener("change", function (e) {
+      var t = e.target;
+      if (!t || !t.classList || !t.classList.contains("col-size-input")) return;
+      var tabId = window._activeColTab;
+      var fid = t.getAttribute("data-fid");
+      var size = parseInt(t.value, 10);
+      if (!tabId || !fid || !(size > 40)) return;
+      if (typeof window.writeFieldSize === "function") {
+        window.writeFieldSize(tabId, fid, size);
+      } else {
+        writeSizeFallback(tabId, fid, size);
+      }
+      if (typeof saveState === "function") saveState();
+      if (typeof window.applyFullFormLayout === "function") window.applyFullFormLayout(tabId);
+      paintSavedSizes(tabId);
+    });
+  }
+
+  function writeSizeFallback(tabId, fieldId, size) {
+    if (!window.state) return;
+    size = parseInt(size, 10) || 220;
+    var keyMap = {
+      "tab-pharmacies": "pharmacy", "tab-doctors": "doctor", "tab-orders": "order",
+      "tab-columns-products": "products"
+    };
+    var key = keyMap[tabId] || String(tabId || "").replace(/^tab-/, "");
+    var custom = ((state.customFields || {})[key] || []).filter(function (f) { return f.id === fieldId; })[0];
+    if (custom) { custom.size = size; return; }
+    if (!state.formFieldMeta) state.formFieldMeta = {};
+    if (!state.formFieldMeta[key]) state.formFieldMeta[key] = {};
+    if (!state.formFieldMeta[key][fieldId]) state.formFieldMeta[key][fieldId] = {};
+    state.formFieldMeta[key][fieldId].size = size;
+  }
+
+  /* ---------- فریز سرستون + اسکرول افقی چسبیده زیر سرستون ---------- */
+  function installFrozenTable(wrap) {
+    if (!wrap || wrap.dataset.v15freeze === "1") return;
+    if (wrap.closest(".tbl-freeze-shell")) return;
+    var table = wrap.querySelector("table.data-table, table");
+    if (!table || !table.tHead) return;
+    wrap.dataset.v15freeze = "1";
+
+    var shell = document.createElement("div");
+    shell.className = "tbl-freeze-shell";
+    wrap.parentNode.insertBefore(shell, wrap);
+
+    var headBar = document.createElement("div");
+    headBar.className = "tbl-freeze-head";
+    var headTable = document.createElement("table");
+    headTable.className = table.className || "data-table";
+    headTable.appendChild(table.tHead.cloneNode(true));
+    headBar.appendChild(headTable);
+
+    var xbar = document.createElement("div");
+    xbar.className = "tbl-freeze-xbar";
+    xbar.setAttribute("aria-hidden", "true");
+    var xinner = document.createElement("div");
+    xinner.className = "tbl-freeze-xbar-inner";
+    xbar.appendChild(xinner);
+
+    var body = document.createElement("div");
+    body.className = "tbl-freeze-body";
+    shell.appendChild(headBar);
+    shell.appendChild(xbar);
+    shell.appendChild(body);
+    body.appendChild(wrap);
+    table.classList.add("tbl-freeze-src");
+
+    function syncWidths() {
+      var dstTh = headTable.tHead ? headTable.tHead.querySelectorAll("th") : [];
+      var srcCells = [];
+      var firstRow = table.tBodies[0] && table.tBodies[0].rows[0];
+      if (firstRow) srcCells = firstRow.cells;
+      if (!srcCells.length && table.tHead) srcCells = table.tHead.querySelectorAll("th");
+      var total = 0;
+      for (var i = 0; i < dstTh.length; i++) {
+        var w = 80;
+        if (srcCells[i]) {
+          w = Math.ceil(srcCells[i].getBoundingClientRect().width) || srcCells[i].offsetWidth || 80;
+        }
+        if (w < 48) w = 80;
+        dstTh[i].style.width = w + "px";
+        dstTh[i].style.minWidth = w + "px";
+        if (srcCells[i] && srcCells[i].style) srcCells[i].style.minWidth = w + "px";
+        total += w;
+      }
+      var tw = Math.max(table.scrollWidth, total, 400);
+      headTable.style.width = tw + "px";
+      table.style.minWidth = tw + "px";
+      xinner.style.width = tw + "px";
+    }
+
+    var lock = false;
+    function syncX(from) {
+      if (lock) return;
+      lock = true;
+      var sl = from.scrollLeft;
+      if (from !== body) body.scrollLeft = sl;
+      if (from !== headBar) headBar.scrollLeft = sl;
+      if (from !== xbar) xbar.scrollLeft = sl;
+      lock = false;
+    }
+
+    body.addEventListener("scroll", function () { syncX(body); });
+    headBar.addEventListener("scroll", function () { syncX(headBar); });
+    xbar.addEventListener("scroll", function () { syncX(xbar); });
+    window.addEventListener("resize", function () { setTimeout(syncWidths, 40); });
+
+    var obs = new MutationObserver(function () { setTimeout(syncWidths, 30); });
+    obs.observe(table, { childList: true, subtree: true });
+    wrap._v15sync = syncWidths;
+    shell._v15sync = syncWidths;
+    setTimeout(syncWidths, 50);
+    setTimeout(syncWidths, 300);
+  }
+
+  function freezeAllTables() {
+    [
+      "colFieldList",
+      "tablePharmacies", "tableDoctors", "tableOrders",
+      "tableCustomFields", "tableProductsBody"
+    ].forEach(function (id) {
+      var el = $(id);
+      if (!el) return;
+      var wrap = el.classList && el.classList.contains("table-responsive")
+        ? el
+        : (el.closest(".table-responsive") || el.parentElement);
+      if (wrap) installFrozenTable(wrap);
+    });
+    document.querySelectorAll(".table-responsive").forEach(function (w) {
+      installFrozenTable(w);
+    });
+    document.querySelectorAll(".tbl-freeze-shell").forEach(function (s) {
+      if (typeof s._v15sync === "function") s._v15sync();
+    });
+  }
+
+  /* ---------- افزودن فیلد ساده: ذخیره قطعی ---------- */
+  function saveCustomFieldNow(ev) {
+    if (ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
+      if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+    }
+    var targetSel = $("cfTargetEntity");
+    var target = targetSel && targetSel.value ? targetSel.value : "pharmacy";
+    var tabId = "";
+    if (targetSel && targetSel.selectedOptions && targetSel.selectedOptions[0]) {
+      tabId = targetSel.selectedOptions[0].getAttribute("data-tab") || "";
+    }
+    if (!tabId) {
+      var rev = {
+        pharmacy: "tab-pharmacies", doctor: "tab-doctors", order: "tab-orders",
+        products: "tab-columns-products"
+      };
+      tabId = rev[target] || ("tab-" + target);
+    }
+    var label = (($("cfLabel") || {}).value || "").trim();
+    var type = (($("cfType") || {}).value || "simple");
+    var optionsStr = (($("cfOptions") || {}).value || "").trim();
+    var allowAdd = $("cfAllowAddOption") ? $("cfAllowAddOption").checked : true;
+    var showInForm = $("cfShowInForm") ? $("cfShowInForm").checked : true;
+    var showInList = $("cfShowInList") ? $("cfShowInList").checked : true;
+    var st = $("cfSaveStatus");
+    if (!label) {
+      if (st) st.textContent = "عنوان فیلد خالی است.";
+      alert("عنوان فیلد را بنویسید.");
+      return false;
+    }
+    if (!window.state) {
+      alert("وضعیت برنامه هنوز بارگذاری نشده. صفحه را تازه کنید.");
+      return false;
+    }
+    if (!state.customFields) state.customFields = {};
+    if (!state.customFields[target]) state.customFields[target] = [];
+    var opts = [];
+    if (type === "select") {
+      opts = optionsStr.split(/[،,]/).map(function (s) { return s.trim(); }).filter(Boolean);
+      if (!opts.length) opts = ["گزینه اول", "گزینه دوم"];
+    }
+    var neu = {
+      id: "cf-" + target + "-" + Date.now(),
+      label: label,
+      type: type === "select" ? "select" : "simple",
+      inputKind: type,
+      options: opts,
+      allowAddOption: allowAdd,
+      showInForm: showInForm,
+      showInList: showInList,
+      order: state.customFields[target].length + 1,
+      size: 220
+    };
+    state.customFields[target].push(neu);
+    try { if (typeof saveState === "function") saveState(); } catch (e) { console.error(e); }
+    if ($("cfLabel")) $("cfLabel").value = "";
+    if ($("cfOptions")) $("cfOptions").value = "";
+    try { if (typeof renderCustomFieldsTable === "function") renderCustomFieldsTable(); } catch (e) {}
+    try { if (typeof renderAllCustomFieldsInFormsAndTables === "function") renderAllCustomFieldsInFormsAndTables(); } catch (e) {}
+    try { if (tabId && typeof window.applyFullFormLayout === "function") window.applyFullFormLayout(tabId); } catch (e) {}
+    try {
+      if (typeof window.renderAddTabGrid === "function") window.renderAddTabGrid();
+      if (typeof window.renderAddTabPanel === "function") window.renderAddTabPanel();
+    } catch (e) {}
+    if (st) st.textContent = "ذخیره شد: «" + label + "» روی تب نشست.";
+    alert("فیلد «" + label + "» ذخیره شد.");
+    return false;
+  }
+
+  function bindAddFieldHard() {
+    var form = $("formCustomField");
+    var btn = $("btnSaveCustomField");
+    if (btn && btn.dataset.v15 !== "1") {
+      var neu = btn.cloneNode(true);
+      neu.type = "button";
+      neu.dataset.v15 = "1";
+      if (btn.parentNode) btn.parentNode.replaceChild(neu, btn);
+      neu.addEventListener("click", function (ev) { saveCustomFieldNow(ev); });
+    }
+    if (form && form.dataset.v15 !== "1") {
+      form.dataset.v15 = "1";
+      form.addEventListener("submit", saveCustomFieldNow, true);
+    }
+    var sel = $("cfTargetEntity");
+    if (sel && !sel.options.length) {
+      sel.innerHTML =
+        '<option value="pharmacy">🏥 داروخانه‌ها</option>' +
+        '<option value="doctor">👨‍⚕️ پزشکان</option>' +
+        '<option value="order">📦 سفارشات</option>' +
+        '<option value="products">💊 کالاها</option>';
+    }
+  }
+
+  /* ---------- انتخاب داروخانه: کادر شناور، فیلد را بزرگ نکن ---------- */
+  function shrinkPharmacyField() {
+    var inp = $("orderPharmacyName");
+    if (!inp) return;
+    var g = inp.closest(".form-group");
+    if (g && g.classList.contains("full-width")) {
+      var userPlace = null;
+      try {
+        userPlace = (((state.formFieldMeta || {}).order || {}).orderPharmacyName || {}).place;
+      } catch (e) {}
+      if (!userPlace || userPlace === "beside") {
+        g.classList.remove("full-width");
+        g.classList.remove("col-place-under");
+        g.classList.add("col-place-beside");
+        g.style.width = "";
+        g.style.maxWidth = "";
+        g.style.minWidth = "";
+        g.style.flex = "";
+      }
+    }
+    var box = $("orderPharmacyPickBox");
+    if (box) {
+      box.classList.add("ph-pick-overlay");
+      if (g) {
+        if (getComputedStyle(g).position === "static") g.style.position = "relative";
+      }
+    }
+  }
+
+  /* ---------- طراح دستی: حالت طراحی نه حالت فعال فرم ---------- */
+  function selectManItem(el) {
+    if (!el) return;
+    document.querySelectorAll(".man-item.man-selected").forEach(function (n) {
+      n.classList.remove("man-selected");
+    });
+    el.classList.add("man-selected");
+    var lab = el.querySelector(".form-label, label, h4, .card-title, .col-user-box-title");
+    var name = (lab && (lab.textContent || "").replace(/\s+/g, " ").trim()) ||
+      (el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 40) ||
+      el.id || "آیتم";
+    var w = Math.round(el.getBoundingClientRect().width);
+    var h = Math.round(el.getBoundingClientRect().height);
+    if ($("manPropName")) $("manPropName").value = name;
+    if ($("manPropW")) $("manPropW").value = String(w);
+    if ($("manPropH")) $("manPropH").value = String(h);
+    window._manSelected = el;
+    var box = $("manInspector");
+    if (box) box.hidden = false;
+  }
+
+  function applyInspector() {
+    var el = window._manSelected;
+    if (!el) { alert("اول روی یک فیلد یا کلید بزنید."); return; }
+    var name = (($("manPropName") || {}).value || "").trim();
+    var w = parseInt(($("manPropW") || {}).value, 10);
+    var h = parseInt(($("manPropH") || {}).value, 10);
+    var lab = el.querySelector(".form-label, label, h4, .card-title span, .card-title, .col-user-box-title");
+    if (name && lab && !lab.querySelector("input")) lab.textContent = name;
+    if (w > 40) {
+      el.style.width = w + "px";
+      el.style.maxWidth = w + "px";
+      applySizeToInput(el, w);
+    }
+    if (h > 20) el.style.height = h + "px";
+    var tabId = window._activeManualTab;
+    var id = el.getAttribute("data-man-id") || el.getAttribute("data-col-fid") || el.getAttribute("data-src-id") || el.id;
+    if (tabId && id && window.state) {
+      if (!state.manualLayouts) state.manualLayouts = {};
+      if (!state.manualLayouts[tabId]) state.manualLayouts[tabId] = { items: {} };
+      var prev = state.manualLayouts[tabId].items[id] || {};
+      state.manualLayouts[tabId].items[id] = {
+        x: prev.x, y: prev.y,
+        w: w > 40 ? w : prev.w,
+        h: h > 20 ? h : prev.h,
+        abs: !!prev.abs,
+        scope: prev.scope || "form",
+        scopeId: prev.scopeId || "",
+        cardId: prev.cardId || ((el.closest(".card") || {}).id || "")
+      };
+      var keyMap = { "tab-pharmacies": "pharmacy", "tab-doctors": "doctor", "tab-orders": "order" };
+      var key = keyMap[tabId] || String(tabId || "").replace(/^tab-/, "");
+      if (name) {
+        if (!state.formFieldMeta) state.formFieldMeta = {};
+        if (!state.formFieldMeta[key]) state.formFieldMeta[key] = {};
+        var fid = el.getAttribute("data-col-fid") || el.getAttribute("data-src-id") || "";
+        if (fid) {
+          if (!state.formFieldMeta[key][fid]) state.formFieldMeta[key][fid] = {};
+          state.formFieldMeta[key][fid].label = name;
+          if (w > 40) state.formFieldMeta[key][fid].size = w;
+        }
+      }
+      if (typeof saveState === "function") saveState(false);
+    }
+    alert("اندازه و نام همین مورد ذخیره شد. فرم لیست دست نخورد.");
+  }
+
+  function bindDesignerClicks() {
+    var canvas = $("manualDesignCanvas");
+    if (!canvas) return;
+    canvas.classList.add("man-design-mode");
+    if (canvas.dataset.v15insp === "1") return;
+    canvas.dataset.v15insp = "1";
+    canvas.addEventListener("click", function (e) {
+      var item = e.target.closest(".man-item");
+      if (!item) return;
+      e.preventDefault();
+      e.stopPropagation();
+      selectManItem(item);
+    }, true);
+    canvas.addEventListener("submit", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }, true);
+  }
+
+  function ensureInspectorBar() {
+    if ($("manInspector")) return;
+    var toolbar = document.querySelector("#tab-manual-design .man-toolbar");
+    if (!toolbar) return;
+    var box = document.createElement("div");
+    box.id = "manInspector";
+    box.className = "man-inspector";
+    box.innerHTML =
+      "<strong>ویرایش مورد انتخاب‌شده</strong>" +
+      '<p class="col-help">روی فیلد یا کلید بزنید. اینجا اسم و اندازه عوض می‌شود. فیلدها در این تب «فعال» نیستند.</p>' +
+      '<div class="man-toolbar-row">' +
+      '<label>اسم</label><input id="manPropName" class="form-input" style="max-width:240px">' +
+      '<label>عرض</label><input id="manPropW" class="form-input" type="number" min="80" style="max-width:90px">' +
+      '<label>ارتفاع</label><input id="manPropH" class="form-input" type="number" min="28" style="max-width:90px">' +
+      '<button type="button" id="btnManApplyProp" class="btn btn-primary btn-sm" style="background:#0d9488">اعمال روی همین مورد</button>' +
+      "</div>";
+    toolbar.appendChild(box);
+    var btn = $("btnManApplyProp");
+    if (btn) btn.addEventListener("click", applyInspector);
+  }
+
+  /* ---------- ذخیره سفارش: اگر متغیرها جا افتاده باشند ---------- */
+  function guardOrderSaveVars() {
+    /* خود handleSaveOrd در crm-app پچ می‌شود؛ اینجا فقط اطمینان از وجود فیلدها */
+    if (!$("orderTotalAmountDisplay")) {
+      var host = document.querySelector("#formOrder .order-item-head");
+      if (host && host.parentNode) {
+        var row = document.createElement("div");
+        row.style.cssText = "display:flex;justify-content:flex-end;margin-top:.75rem;font-weight:700;color:#0f172a";
+        row.innerHTML = 'مبلغ کل سفارش: <strong id="orderTotalAmountDisplay">0</strong> ریال';
+        host.parentNode.appendChild(row);
+      }
+    }
+  }
+
+  function boot() {
+    try { backupUserStateOnce(); } catch (e) {}
+    try { softenBrokenAbsLayouts(); } catch (e) {}
+    try { restoreProtectedCards(); } catch (e) {}
+    try { wrapPaintFieldBox(); } catch (e) {}
+    try { hookDesignerSizeDisplay(); } catch (e) {}
+    try { bindAddFieldHard(); } catch (e) {}
+    try { shrinkPharmacyField(); } catch (e) {}
+    try { guardOrderSaveVars(); } catch (e) {}
+    try { ensureInspectorBar(); } catch (e) {}
+    try { bindDesignerClicks(); } catch (e) {}
+    setTimeout(function () {
+      try { shrinkPharmacyField(); } catch (e) {}
+      try { restoreProtectedCards(); } catch (e) {}
+    }, 200);
+
+    var origSw = window.switchTab;
+    if (typeof origSw === "function" && !window._v15Sw) {
+      window._v15Sw = true;
+      window.switchTab = function (id) {
+        origSw(id);
+        setTimeout(function () {
+          try { restoreProtectedCards(); } catch (e) {}
+          try { bindAddFieldHard(); } catch (e) {}
+          if (id === "tab-orders") shrinkPharmacyField();
+          if (id === "tab-manual-design") {
+            ensureInspectorBar();
+            bindDesignerClicks();
+          }
+          if (id === "tab-custom-fields") bindAddFieldHard();
+          if (id === "tab-columns-products") {
+            hookDesignerSizeDisplay();
+          }
+          try { paintSavedSizes(id); } catch (e) {}
+        }, 180);
+      };
+    }
+    console.log("v15 ready", VER);
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+
+/* ===================== (bundled from public/crm-features-v16.js) ===================== */
+// v16 — کشویی قابل تایپ/جستجو، افزودن شهر بعد از استان، نام داروخانه سراسری، فریز سرستون، قفل طراح دستی
+(function () {
+  "use strict";
+
+  var VER = "11.14.0";
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  function norm(s) {
+    return String(s || "")
+      .replace(/ي/g, "ی").replace(/ك/g, "ک")
+      .replace(/‌/g, "")
+      .trim();
+  }
+
+  /* ---------- geo extras (شهر/منطقه اضافه‌شده مدیر) ---------- */
+  function geoStore() {
+    if (!window.state) return {};
+    if (!state.geoExtras) state.geoExtras = {};
+    return state.geoExtras;
+  }
+
+  function applyGeoExtrasToData() {
+    if (typeof IRAN_GEO_DATA === "undefined") return;
+    var extras = geoStore();
+    Object.keys(extras).forEach(function (prov) {
+      if (!IRAN_GEO_DATA[prov]) IRAN_GEO_DATA[prov] = {};
+      var cities = extras[prov] || {};
+      Object.keys(cities).forEach(function (city) {
+        if (!IRAN_GEO_DATA[prov][city]) IRAN_GEO_DATA[prov][city] = [];
+        (cities[city] || []).forEach(function (d) {
+          if (d && IRAN_GEO_DATA[prov][city].indexOf(d) === -1) IRAN_GEO_DATA[prov][city].push(d);
+        });
+      });
+    });
+  }
+
+  function addExtraCity(prov, city) {
+    prov = String(prov || "").trim();
+    city = String(city || "").trim();
+    if (!prov || !city) return false;
+    var extras = geoStore();
+    if (!extras[prov]) extras[prov] = {};
+    if (!extras[prov][city]) extras[prov][city] = [];
+    if (typeof IRAN_GEO_DATA !== "undefined") {
+      if (!IRAN_GEO_DATA[prov]) IRAN_GEO_DATA[prov] = {};
+      if (!IRAN_GEO_DATA[prov][city]) IRAN_GEO_DATA[prov][city] = [];
+    }
+    if (typeof saveState === "function") saveState();
+    applyGeoExtrasToData();
+    return true;
+  }
+
+  function addExtraDistrict(prov, city, dist) {
+    prov = String(prov || "").trim();
+    city = String(city || "").trim();
+    dist = String(dist || "").trim();
+    if (!prov || !city || !dist) return false;
+    addExtraCity(prov, city);
+    var extras = geoStore();
+    if (extras[prov][city].indexOf(dist) === -1) extras[prov][city].push(dist);
+    if (typeof IRAN_GEO_DATA !== "undefined" && IRAN_GEO_DATA[prov] && IRAN_GEO_DATA[prov][city]) {
+      if (IRAN_GEO_DATA[prov][city].indexOf(dist) === -1) IRAN_GEO_DATA[prov][city].push(dist);
+    }
+    if (typeof saveState === "function") saveState();
+    return true;
+  }
+
+  function wrapPopulateGeo() {
+    if (window._v16geoWrap) return;
+    window._v16geoWrap = true;
+    if (typeof window.populateProvinces === "function") {
+      var op = window.populateProvinces;
+      window.populateProvinces = function (sel, selected) {
+        applyGeoExtrasToData();
+        op(sel, selected);
+        refreshCombo(sel);
+      };
+    }
+    if (typeof window.populateCities === "function") {
+      var oc = window.populateCities;
+      window.populateCities = function (prov, sel, selected) {
+        applyGeoExtrasToData();
+        oc(prov, sel, selected);
+        refreshCombo(sel);
+      };
+    }
+    if (typeof window.populateDistricts === "function") {
+      var od = window.populateDistricts;
+      window.populateDistricts = function (prov, city, sel, selected) {
+        applyGeoExtrasToData();
+        od(prov, city, sel, selected);
+        refreshCombo(sel);
+      };
+    }
+  }
+
+  /* ---------- کشویی قابل تایپ و جستجوی لحظه‌ای ---------- */
+  function skipCombo(sel) {
+    if (!sel || sel.tagName !== "SELECT") return true;
+    if (sel.dataset.nocombo === "1") return true;
+    if (sel.closest("#jalaliCalendarPopup") || sel.closest(".modal-overlay")) return true;
+    if (sel.closest("#columnsDesignerHost") || sel.closest("#colDesignerPanel")) return true;
+    if (sel.closest("#manualDesignCanvas") || sel.closest(".man-inspector")) return true;
+    if (sel.id && sel.id.indexOf("jalali") === 0) return true;
+    if (sel.classList.contains("crm-combo-src")) return true;
+    return false;
+  }
+
+  function optionList(sel) {
+    var out = [];
+    Array.prototype.forEach.call(sel.options || [], function (o) {
+      out.push({ value: o.value, text: (o.textContent || o.value || "").trim() });
+    });
+    return out;
+  }
+
+  function filterOpts(opts, q) {
+    q = norm(q);
+    if (!q) return opts;
+    var start = [];
+    var mid = [];
+    opts.forEach(function (o) {
+      if (!o.value && !o.text) return;
+      var t = norm(o.text || o.value);
+      if (t.indexOf(q) === 0) start.push(o);
+      else if (t.indexOf(q) !== -1) mid.push(o);
+    });
+    return start.concat(mid);
+  }
+
+  function enhanceSelect(sel) {
+    if (skipCombo(sel)) return;
+    if (sel.closest(".crm-combo")) {
+      refreshCombo(sel);
+      return;
+    }
+    var parent = sel.parentNode;
+    if (!parent) return;
+    var wrap = document.createElement("div");
+    wrap.className = "crm-combo";
+    parent.insertBefore(wrap, sel);
+    wrap.appendChild(sel);
+    sel.classList.add("crm-combo-src");
+    sel.setAttribute("tabindex", "-1");
+    sel.style.position = "absolute";
+    sel.style.opacity = "0";
+    sel.style.pointerEvents = "none";
+    sel.style.width = "1px";
+    sel.style.height = "1px";
+    var inp = document.createElement("input");
+    inp.type = "text";
+    inp.className = "form-input crm-combo-input";
+    inp.setAttribute("autocomplete", "off");
+    inp.setAttribute("autocorrect", "off");
+    inp.placeholder = sel.options[0] && !sel.options[0].value ? (sel.options[0].textContent || "جستجو یا انتخاب...") : "تایپ کنید تا جستجو شود...";
+    var caret = document.createElement("button");
+    caret.type = "button";
+    caret.className = "crm-combo-caret";
+    caret.tabIndex = -1;
+    caret.textContent = "▾";
+    var list = document.createElement("div");
+    list.className = "crm-combo-list";
+    list.hidden = true;
+    wrap.appendChild(inp);
+    wrap.appendChild(caret);
+    wrap.appendChild(list);
+    var selected = sel.options[sel.selectedIndex];
+    inp.value = selected && selected.value ? (selected.textContent || selected.value) : "";
+
+    function paint(q) {
+      var opts = filterOpts(optionList(sel), q);
+      if (!opts.length) {
+        list.innerHTML = "<div class='crm-combo-empty'>موردی نیست</div>";
+        list.hidden = false;
+        return;
+      }
+      list.innerHTML = opts.slice(0, 80).map(function (o) {
+        var on = o.value === sel.value ? " on" : "";
+        return "<button type='button' class='crm-combo-item" + on + "' data-val='" + esc(o.value) + "'>" + esc(o.text || "—") + "</button>";
+      }).join("");
+      list.hidden = false;
+      Array.prototype.forEach.call(list.querySelectorAll(".crm-combo-item"), function (btn) {
+        btn.addEventListener("mousedown", function (e) { e.preventDefault(); });
+        btn.addEventListener("click", function () {
+          pick(btn.getAttribute("data-val"));
+        });
+      });
+    }
+
+    function pick(val) {
+      sel.value = val || "";
+      var lab = "";
+      Array.prototype.forEach.call(sel.options, function (o) {
+        if (o.value === sel.value) lab = o.textContent || o.value;
+      });
+      inp.value = lab;
+      list.hidden = true;
+      try { sel.dispatchEvent(new Event("change", { bubbles: true })); } catch (e) {}
+    }
+
+    function openAll() { paint(""); }
+
+    inp.addEventListener("focus", function () { openAll(); });
+    inp.addEventListener("click", function () { openAll(); });
+    caret.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (list.hidden) { inp.focus(); openAll(); }
+      else list.hidden = true;
+    });
+    inp.addEventListener("input", function () { paint(inp.value); });
+    inp.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { list.hidden = true; return; }
+      if (e.key === "Enter") {
+        e.preventDefault();
+        var first = list.querySelector(".crm-combo-item");
+        if (first) pick(first.getAttribute("data-val"));
+      }
+    });
+    wrap._crmRefresh = function () {
+      var cur = sel.options[sel.selectedIndex];
+      if (!inp.matches(":focus")) inp.value = cur && cur.value ? (cur.textContent || cur.value) : "";
+    };
+  }
+
+  function refreshCombo(sel) {
+    if (!sel) return;
+    var wrap = sel.closest && sel.closest(".crm-combo");
+    if (wrap && typeof wrap._crmRefresh === "function") wrap._crmRefresh();
+  }
+
+  function enhanceAllSelects(root) {
+    root = root || document;
+    Array.prototype.forEach.call(root.querySelectorAll("select.form-select, select[id]"), function (sel) {
+      try { enhanceSelect(sel); } catch (e) {}
+    });
+  }
+
+  document.addEventListener("click", function (e) {
+    if (e.target.closest && e.target.closest(".crm-combo")) return;
+    document.querySelectorAll(".crm-combo-list").forEach(function (l) { l.hidden = true; });
+  });
+
+  /* ---------- نام داروخانه سراسری ---------- */
+  function rememberPharmacyName(name, extra) {
+    name = String(name || "").trim();
+    if (!name || !window.state) return null;
+    if (!state.knownPharmacyNames) state.knownPharmacyNames = [];
+    if (state.knownPharmacyNames.indexOf(name) === -1) state.knownPharmacyNames.push(name);
+    if (!state.pharmacies) state.pharmacies = [];
+    var rec = state.pharmacies.filter(function (p) { return p.name === name; })[0];
+    if (!rec) {
+      rec = {
+        id: "ph-name-" + Date.now(),
+        name: name,
+        dateAdded: (typeof jalaliTodayEnglish === "function" ? jalaliTodayEnglish() : ""),
+        province: (extra && extra.province) || "",
+        city: (extra && extra.city) || "",
+        district: (extra && extra.district) || "",
+        address: (extra && extra.address) || "",
+        phone: (extra && extra.phone) || "",
+        stub: true,
+        customFields: {}
+      };
+      state.pharmacies.push(rec);
+    }
+    try { if (typeof saveState === "function") saveState(false); } catch (e) {}
+    try { if (typeof populatePharmacyDatalistInOrders === "function") populatePharmacyDatalistInOrders(); } catch (e) {}
+    try { if (typeof updateNavBadges === "function") updateNavBadges(); } catch (e) {}
+    return rec;
+  }
+
+  function isKnownPharmacy(name, exceptId) {
+    name = String(name || "").trim();
+    if (!name || !window.state) return false;
+    if ((state.pharmacies || []).some(function (p) { return p.name === name && p.id !== exceptId; })) return true;
+    return (state.knownPharmacyNames || []).indexOf(name) !== -1;
+  }
+
+  window.rememberPharmacyName = rememberPharmacyName;
+  window.isKnownPharmacy = isKnownPharmacy;
+
+  function hookPharmacyNameField() {
+    var inp = $("pharmacyName");
+    if (!inp || inp.dataset.v16ph === "1") return;
+    inp.dataset.v16ph = "1";
+    var host = $("pharmacyNamePickBox");
+    if (!host) {
+      host = document.createElement("div");
+      host.id = "pharmacyNamePickBox";
+      host.className = "ph-pick-box ph-pick-overlay";
+      host.hidden = true;
+      var g = inp.closest(".form-group") || inp.parentNode;
+      if (g) {
+        if (getComputedStyle(g).position === "static") g.style.position = "relative";
+        g.appendChild(host);
+      }
+    }
+    function show(q) {
+      q = String(q || "").trim();
+      var ql = norm(q).toLowerCase();
+      var hits = (state.pharmacies || []).filter(function (p) {
+        if (!p.name) return false;
+        if (!ql) return true;
+        return norm(p.name).toLowerCase().indexOf(ql) !== -1;
+      });
+      if (!hits.length) {
+        host.hidden = !q;
+        host.innerHTML = q ? "<div class='ph-pick-empty'>این نام هنوز ثبت نشده. با ثبت فرم یا افزودن لحظه‌ای ذخیره می‌شود.</div>" : "";
+        return;
+      }
+      host.hidden = false;
+      host.innerHTML = "<div class='ph-pick-hint'>" + hits.length + " داروخانه ذخیره‌شده</div>" +
+        hits.slice(0, 25).map(function (p) {
+          return "<button type='button' class='ph-pick-card' data-pid='" + esc(p.id) + "'>" +
+            "<strong>🏥 " + esc(p.name) + "</strong>" +
+            "<span>" + esc([p.province, p.city, p.district].filter(Boolean).join(" / ")) + "</span></button>";
+        }).join("");
+      Array.prototype.forEach.call(host.querySelectorAll(".ph-pick-card"), function (btn) {
+        btn.addEventListener("click", function () {
+          var rec = (state.pharmacies || []).filter(function (p) { return p.id === btn.getAttribute("data-pid"); })[0];
+          if (!rec) return;
+          inp.value = rec.name || "";
+          host.hidden = true;
+          if (typeof editPharmacy === "function" && rec.id && !rec.stub) {
+            /* فقط نام را می‌نشاند؛ ویرایش کامل با دکمه ویرایش لیست */
+          }
+        });
+      });
+    }
+    inp.addEventListener("input", function () { show(inp.value); });
+    inp.addEventListener("focus", function () { show(inp.value); });
+    document.addEventListener("click", function (e) {
+      if (host.hidden) return;
+      if (host.contains(e.target) || e.target === inp) return;
+      host.hidden = true;
+    });
+  }
+
+  function wrapInstantAddPharmacy() {
+    if (typeof window.attachInstantAdd !== "function" || window._v16fly) return;
+    window._v16fly = true;
+    var orig = window.attachInstantAdd;
+    window.attachInstantAdd = function (inp) {
+      orig(inp);
+      if (!inp || inp.id !== "pharmacyName") return;
+      var row = inp.closest(".instant-add-row");
+      var btn = row && row.querySelector(".btn-instant-add");
+      if (!btn || btn.dataset.v16ph === "1") return;
+      btn.dataset.v16ph = "1";
+      btn.addEventListener("click", function () {
+        var v = (inp.value || "").trim();
+        if (!v) return;
+        if (isKnownPharmacy(v)) {
+          alert("داروخانه «" + v + "» قبلاً در برنامه ذخیره شده (تکراری).");
+          return;
+        }
+        rememberPharmacyName(v);
+        alert("نام داروخانه «" + v + "» در کل برنامه ذخیره شد و در سفارشات هم می‌آید.");
+      });
+    };
+  }
+
+  function wrapPharmacySaveDup() {
+    var form = $("formPharmacy");
+    if (!form || form.dataset.v16dup === "1") return;
+    form.dataset.v16dup = "1";
+    form.addEventListener("submit", function () {
+      var name = (($("pharmacyName") || {}).value || "").trim();
+      var existing = name && (state.pharmacies || []).filter(function (p) { return p.name === name; })[0];
+      if (existing && $("pharmacyEditId") && !$("pharmacyEditId").value) {
+        $("pharmacyEditId").value = existing.id;
+      }
+      if (name) rememberPharmacyName(name, {
+        province: (($("pharmacyProvince") || {}).value) || "",
+        city: (($("pharmacyCity") || {}).value) || "",
+        district: (($("pharmacyDistrict") || {}).value) || "",
+        address: (($("pharmacyAddress") || {}).value) || "",
+        phone: (($("pharmacyPhone") || {}).value) || ""
+      });
+    }, true);
+  }
+
+  /* ---------- فریز سرستون + اسکرول افقی زیر سرستون ---------- */
+  function undoOldFreeze() {
+    document.querySelectorAll(".tbl-freeze-shell").forEach(function (shell) {
+      var body = shell.querySelector(".tbl-freeze-body");
+      var wrap = body && (body.querySelector(".table-responsive") || body.firstElementChild);
+      if (wrap && shell.parentNode) {
+        shell.parentNode.insertBefore(wrap, shell);
+        wrap.dataset.v15freeze = "";
+        var t = wrap.querySelector("table");
+        if (t) t.classList.remove("tbl-freeze-src");
+      }
+      if (shell.parentNode) shell.parentNode.removeChild(shell);
+    });
+  }
+
+  function refreshFrozenTable(box) {
+    if (!box) return;
+    var table = box.querySelector("table");
+    if (!table || !table.tHead) return;
+    box.classList.add("tbl-fz-box");
+    var old = table.querySelector("tr.tbl-x-row");
+    if (old && old.parentNode) old.parentNode.removeChild(old);
+    var colCount = table.tHead.rows[0] ? table.tHead.rows[0].cells.length : 8;
+    var tr = document.createElement("tr");
+    tr.className = "tbl-x-row";
+    var th = document.createElement("th");
+    th.colSpan = colCount;
+    th.className = "tbl-x-cell";
+    var bar = document.createElement("div");
+    bar.className = "tbl-top-x";
+    var inner = document.createElement("div");
+    inner.className = "tbl-top-x-inner";
+    bar.appendChild(inner);
+    th.appendChild(bar);
+    tr.appendChild(th);
+    table.tHead.appendChild(tr);
+    function syncW() {
+      var headH = 0;
+      if (table.tHead.rows[0]) headH = Math.ceil(table.tHead.rows[0].getBoundingClientRect().height) || 38;
+      th.style.top = headH + "px";
+      inner.style.width = Math.max(table.scrollWidth, box.scrollWidth, 400) + "px";
+    }
+    var lock = false;
+    bar.addEventListener("scroll", function () {
+      if (lock) return;
+      lock = true;
+      box.scrollLeft = bar.scrollLeft;
+      lock = false;
+    });
+    box.addEventListener("scroll", function () {
+      if (lock) return;
+      lock = true;
+      bar.scrollLeft = box.scrollLeft;
+      lock = false;
+    });
+    setTimeout(syncW, 30);
+    setTimeout(syncW, 200);
+    box._fzSync = syncW;
+  }
+  window.refreshFrozenTable = refreshFrozenTable;
+
+  function freezeKnownTables() {
+    undoOldFreeze();
+    ["colFieldList", "tablePharmacies", "tableDoctors", "tableOrders"].forEach(function (id) {
+      var el = $(id);
+      if (!el) return;
+      var box = el.classList && el.classList.contains("table-responsive")
+        ? el
+        : (el.closest(".table-responsive") || el.parentElement);
+      if (box) refreshFrozenTable(box);
+    });
+  }
+
+  window.applyFieldPixelSize = function (tabId, fieldId, size) {
+    size = parseInt(size, 10);
+    if (!(size > 40) || !fieldId) return;
+    var el = document.getElementById(fieldId);
+    var group = el && el.closest(".form-group");
+    var keepUnder = !!(group && group.classList.contains("col-place-under"));
+    try {
+      var key = tabId === "tab-pharmacies" ? "pharmacy" : tabId === "tab-doctors" ? "doctor" : tabId === "tab-orders" ? "order" : "";
+      var meta = key && window.state && state.formFieldMeta && state.formFieldMeta[key] && state.formFieldMeta[key][fieldId];
+      if (meta && meta.place === "under") keepUnder = true;
+      ((state.customFields && key && state.customFields[key]) || []).forEach(function (f) {
+        if (f.id === fieldId && f.place === "under") keepUnder = true;
+      });
+    } catch (eK) {}
+    if (group && !keepUnder) {
+      group.classList.add("col-place-beside");
+      group.style.setProperty("flex", "0 0 " + size + "px", "important");
+      group.style.setProperty("width", size + "px", "important");
+      group.style.setProperty("max-width", size + "px", "important");
+    }
+    if (el) {
+      el.style.setProperty("width", size + "px", "important");
+      el.style.setProperty("max-width", size + "px", "important");
+    }
+    var combo = el && el.closest(".crm-combo");
+    if (combo) {
+      combo.style.setProperty("width", size + "px", "important");
+      combo.style.setProperty("max-width", size + "px", "important");
+    }
+  };
+
+  /* ---------- قفل طراح دستی: فیلدها فعال نباشند ---------- */
+  window.lockManualDesigner = function () {
+    var host = $("manualDesignCanvas");
+    if (!host) return;
+    host.classList.add("man-design-mode");
+    var clone = host.querySelector(".man-clone") || host;
+    clone.classList.add("man-design-mode");
+    Array.prototype.forEach.call(clone.querySelectorAll("input, select, textarea, button.btn, .btn-toggle-option"), function (el) {
+      if (el.closest(".man-handle") || el.closest(".man-resize") || el.closest(".man-inspector") || el.closest(".man-toolbar")) return;
+      el.setAttribute("readonly", "readonly");
+      el.setAttribute("tabindex", "-1");
+      if (el.tagName === "BUTTON" || el.tagName === "SELECT") el.setAttribute("disabled", "disabled");
+      el.style.pointerEvents = "none";
+    });
+    Array.prototype.forEach.call(clone.querySelectorAll(".man-item"), function (item) {
+      if (getComputedStyle(item).position === "static") item.style.position = "relative";
+      var lock = item.querySelector(":scope > .man-lock");
+      if (!lock) {
+        lock = document.createElement("div");
+        lock.className = "man-lock";
+        item.appendChild(lock);
+      }
+      lock.onmousedown = function (e) {
+        if (e.target.closest(".man-handle") || e.target.closest(".man-resize")) return;
+        e.preventDefault();
+        e.stopPropagation();
+      };
+      lock.onclick = function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        document.querySelectorAll(".man-item.man-selected").forEach(function (n) { n.classList.remove("man-selected"); });
+        item.classList.add("man-selected");
+        if (typeof window._manPick === "function") window._manPick(item);
+        var insp = $("manInspector");
+        if (insp) {
+          insp.hidden = false;
+          var lab = item.querySelector(".form-label, label, h4, .card-title, .col-user-box-title");
+          if ($("manPropName")) $("manPropName").value = lab ? String(lab.textContent || "").replace(/\s+/g, " ").trim() : "";
+          if ($("manPropW")) $("manPropW").value = String(Math.round(item.getBoundingClientRect().width));
+          if ($("manPropH")) $("manPropH").value = String(Math.round(item.getBoundingClientRect().height));
+          window._manSelected = item;
+        }
+      };
+    });
+  };
+
+  /* ---------- تب افزودن: فشرده + استان→شهر→منطقه ---------- */
+  function fillSel(sel, items, placeholder) {
+    if (!sel) return;
+    sel.innerHTML = "<option value=''>" + (placeholder || "انتخاب...") + "</option>";
+    (items || []).forEach(function (v) {
+      var o = document.createElement("option");
+      o.value = v;
+      o.textContent = v;
+      sel.appendChild(o);
+    });
+    enhanceSelect(sel);
+  }
+
+  function provinceNames() {
+    applyGeoExtrasToData();
+    var names = typeof IRAN_GEO_DATA !== "undefined" ? Object.keys(IRAN_GEO_DATA) : [];
+    Object.keys(geoStore()).forEach(function (p) {
+      if (names.indexOf(p) === -1) names.push(p);
+    });
+    return names.sort(function (a, b) { return a.localeCompare(b, "fa"); });
+  }
+
+  function cityNames(prov) {
+    applyGeoExtrasToData();
+    var names = [];
+    if (typeof IRAN_GEO_DATA !== "undefined" && IRAN_GEO_DATA[prov]) {
+      names = Object.keys(IRAN_GEO_DATA[prov]);
+    }
+    var extra = geoStore()[prov] || {};
+    Object.keys(extra).forEach(function (c) {
+      if (names.indexOf(c) === -1) names.push(c);
+    });
+    return names.sort(function (a, b) { return a.localeCompare(b, "fa"); });
+  }
+
+  function districtNames(prov, city) {
+    applyGeoExtrasToData();
+    var names = [];
+    if (typeof IRAN_GEO_DATA !== "undefined" && IRAN_GEO_DATA[prov] && IRAN_GEO_DATA[prov][city]) {
+      names = IRAN_GEO_DATA[prov][city].slice();
+    }
+    var extra = ((geoStore()[prov] || {})[city]) || [];
+    extra.forEach(function (d) {
+      if (names.indexOf(d) === -1) names.push(d);
+    });
+    return names;
+  }
+
+  function mountGeoEditor(panel) {
+    if (!panel || $("geoAddEditor")) return;
+    var box = document.createElement("div");
+    box.id = "geoAddEditor";
+    box.className = "geo-add-editor";
+    box.innerHTML =
+      "<strong>استان ← شهر ← منطقه</strong>" +
+      "<p class='col-help'>اول استان را انتخاب کنید تا شهرهای همان استان بیاید. بعد می‌توانید شهر یا منطقه اضافه کنید.</p>" +
+      "<div class='geo-add-row'>" +
+        "<label>استان</label>" +
+        "<select id='geoEdProv' class='form-select' data-nocombo='0'></select>" +
+        "<input id='geoEdNewProv' class='form-input' placeholder='استان جدید'>" +
+        "<button type='button' id='geoEdAddProv' class='btn btn-primary btn-sm' style='background:#0d9488'>➕ استان</button>" +
+      "</div>" +
+      "<div class='geo-add-row'>" +
+        "<label>شهر این استان</label>" +
+        "<select id='geoEdCity' class='form-select'></select>" +
+        "<input id='geoEdNewCity' class='form-input' placeholder='شهر جدید برای استان انتخاب‌شده'>" +
+        "<button type='button' id='geoEdAddCity' class='btn btn-primary btn-sm' style='background:#0d9488'>➕ شهر</button>" +
+      "</div>" +
+      "<div class='geo-add-row'>" +
+        "<label>منطقه این شهر</label>" +
+        "<select id='geoEdDist' class='form-select'></select>" +
+        "<input id='geoEdNewDist' class='form-input' placeholder='منطقه جدید برای شهر انتخاب‌شده'>" +
+        "<button type='button' id='geoEdAddDist' class='btn btn-primary btn-sm' style='background:#0d9488'>➕ منطقه</button>" +
+      "</div>" +
+      "<div id='geoEdList' class='geo-ed-list'></div>";
+    var head = panel.querySelector(".add-panel-head");
+    if (head && head.nextSibling) panel.insertBefore(box, head.nextSibling);
+    else panel.insertBefore(box, panel.firstChild);
+
+    function reloadProv() {
+      fillSel($("geoEdProv"), provinceNames(), "انتخاب استان...");
+      reloadCities();
+    }
+    function reloadCities() {
+      var p = ($("geoEdProv") || {}).value || "";
+      fillSel($("geoEdCity"), p ? cityNames(p) : [], p ? "شهرهای «" + p + "»" : "اول استان را انتخاب کنید");
+      reloadDists();
+      paintList();
+    }
+    function reloadDists() {
+      var p = ($("geoEdProv") || {}).value || "";
+      var c = ($("geoEdCity") || {}).value || "";
+      fillSel($("geoEdDist"), (p && c) ? districtNames(p, c) : [], (p && c) ? "مناطق «" + c + "»" : "اول شهر را انتخاب کنید");
+    }
+    function paintList() {
+      var host = $("geoEdList");
+      if (!host) return;
+      var p = ($("geoEdProv") || {}).value || "";
+      if (!p) { host.innerHTML = "<span class='col-help'>استان را انتخاب کنید تا زیرمجموعه دیده شود.</span>"; return; }
+      var cities = cityNames(p);
+      var html = "<div class='geo-ed-now'>استان انتخاب‌شده: <strong>" + esc(p) + "</strong> — " + cities.length + " شهر</div>";
+      cities.forEach(function (c) {
+        var ds = districtNames(p, c);
+        html += "<div class='geo-ed-city'><strong>" + esc(c) + "</strong>";
+        html += "<span class='geo-ed-chips'>" + (ds.length ? ds.map(function (d) {
+          return "<em>" + esc(d) + "</em>";
+        }).join("") : "<em class='muted'>منطقه ثبت نشده</em>") + "</span></div>";
+      });
+      host.innerHTML = html;
+    }
+
+    reloadProv();
+    if ($("geoEdProv")) $("geoEdProv").addEventListener("change", reloadCities);
+    if ($("geoEdCity")) $("geoEdCity").addEventListener("change", function () { reloadDists(); paintList(); });
+
+    if ($("geoEdAddProv")) $("geoEdAddProv").onclick = function () {
+      var n = (($("geoEdNewProv") || {}).value || "").trim();
+      if (!n) { alert("نام استان را بنویسید."); return; }
+      if (typeof IRAN_GEO_DATA !== "undefined" && !IRAN_GEO_DATA[n]) IRAN_GEO_DATA[n] = {};
+      var extras = geoStore();
+      if (!extras[n]) extras[n] = {};
+      if (typeof saveState === "function") saveState();
+      if ($("geoEdNewProv")) $("geoEdNewProv").value = "";
+      reloadProv();
+      if ($("geoEdProv")) { $("geoEdProv").value = n; reloadCities(); }
+      alert("استان «" + n + "» اضافه شد.");
+    };
+    if ($("geoEdAddCity")) $("geoEdAddCity").onclick = function () {
+      var p = (($("geoEdProv") || {}).value || "").trim();
+      var n = (($("geoEdNewCity") || {}).value || "").trim();
+      if (!p) { alert("اول استان را از لیست انتخاب کنید."); return; }
+      if (!n) { alert("نام شهر را بنویسید."); return; }
+      addExtraCity(p, n);
+      if ($("geoEdNewCity")) $("geoEdNewCity").value = "";
+      reloadCities();
+      if ($("geoEdCity")) $("geoEdCity").value = n;
+      reloadDists();
+      if (typeof populateCities === "function") {
+        ["pharmacyCity", "doctorCity", "orderCity"].forEach(function (id) {
+          var s = $(id); var prov = $((id.indexOf("pharmacy") === 0 ? "pharmacy" : id.indexOf("doctor") === 0 ? "doctor" : "order") + "Province");
+          if (s && prov && prov.value === p) populateCities(p, s, s.value);
+        });
+      }
+      alert("شهر «" + n + "» زیر استان «" + p + "» ذخیره شد.");
+    };
+    if ($("geoEdAddDist")) $("geoEdAddDist").onclick = function () {
+      var p = (($("geoEdProv") || {}).value || "").trim();
+      var c = (($("geoEdCity") || {}).value || "").trim();
+      var n = (($("geoEdNewDist") || {}).value || "").trim();
+      if (!p) { alert("اول استان را انتخاب کنید."); return; }
+      if (!c) { alert("اول شهر را انتخاب کنید."); return; }
+      if (!n) { alert("نام منطقه را بنویسید."); return; }
+      addExtraDistrict(p, c, n);
+      if ($("geoEdNewDist")) $("geoEdNewDist").value = "";
+      reloadDists();
+      paintList();
+      if (typeof populateDistricts === "function") {
+        ["pharmacyDistrict", "doctorDistrict", "orderDistrict"].forEach(function (id) {
+          var s = $(id);
+          var pref = id.indexOf("pharmacy") === 0 ? "pharmacy" : id.indexOf("doctor") === 0 ? "doctor" : "order";
+          var pv = $(pref + "Province"); var cv = $(pref + "City");
+          if (s && pv && cv && pv.value === p && cv.value === c) populateDistricts(p, c, s, s.value);
+        });
+      }
+      alert("منطقه «" + n + "» زیر شهر «" + c + "» ذخیره شد.");
+    };
+  }
+
+  function tightenAddPanel() {
+    var panel = $("addTabPanel");
+    if (!panel) return;
+    panel.classList.add("add-compact");
+    var tabId = window._activeAddTab || "";
+    if (/pharmac|doctor|order/i.test(tabId)) mountGeoEditor(panel);
+    Array.prototype.forEach.call(panel.querySelectorAll(".add-opt-list li"), function (li) {
+      li.classList.add("add-opt-tight");
+    });
+  }
+
+  function watchAddPanel() {
+    var panel = $("addTabPanel");
+    if (!panel || panel.dataset.v16obs === "1") return;
+    panel.dataset.v16obs = "1";
+    var t;
+    new MutationObserver(function () {
+      clearTimeout(t);
+      t = setTimeout(tightenAddPanel, 40);
+    }).observe(panel, { childList: true, subtree: true });
+  }
+
+  function wrapListRenders() {
+    ["renderPharmaciesList", "renderDoctorsList", "renderOrdersList"].forEach(function (name) {
+      if (typeof window[name] !== "function" || window["_v16" + name]) return;
+      window["_v16" + name] = true;
+      var orig = window[name];
+      window[name] = function () {
+        var r = orig.apply(this, arguments);
+        setTimeout(freezeKnownTables, 40);
+        return r;
+      };
+    });
+  }
+
+  function boot() {
+    try { applyGeoExtrasToData(); } catch (e) {}
+    try { wrapPopulateGeo(); } catch (e) {}
+    try { wrapInstantAddPharmacy(); } catch (e) {}
+    try { hookPharmacyNameField(); } catch (e) {}
+    try { wrapPharmacySaveDup(); } catch (e) {}
+    try { enhanceAllSelects(document); } catch (e) {}
+    try { undoOldFreeze(); } catch (e) {}
+    try { freezeKnownTables(); } catch (e) {}
+    try { wrapListRenders(); } catch (e) {}
+    try { watchAddPanel(); tightenAddPanel(); } catch (e) {}
+
+    var host = $("columnsDesignerHost");
+    if (host && !host.dataset.v16fz) {
+      host.dataset.v16fz = "1";
+      var t;
+      new MutationObserver(function () {
+        clearTimeout(t);
+        t = setTimeout(function () {
+          if ($("colFieldList")) refreshFrozenTable($("colFieldList"));
+        }, 50);
+      }).observe(host, { childList: true, subtree: true });
+    }
+
+    var origSw = window.switchTab;
+    if (typeof origSw === "function" && !window._v16Sw) {
+      window._v16Sw = true;
+      window.switchTab = function (id) {
+        origSw(id);
+        setTimeout(function () {
+          try { enhanceAllSelects(document.getElementById(id) || document); } catch (e) {}
+          if (id === "tab-columns-products") freezeKnownTables();
+          if (id === "tab-pharmacies" || id === "tab-doctors" || id === "tab-orders") {
+            hookPharmacyNameField();
+            freezeKnownTables();
+          }
+          if (id === "tab-custom-fields") { watchAddPanel(); tightenAddPanel(); }
+          if (id === "tab-manual-design" && typeof window.lockManualDesigner === "function") {
+            window.lockManualDesigner();
+          }
+        }, 200);
+      };
+    }
+    console.log("v16 ready", VER);
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+
+/* ===================== (bundled from public/crm-features-v17.js) ===================== */
+// v17 — زیرهم، عرض در فرم ویرایش، اسکرول ویرایش، حذف بدون پنهان‌سازی بعدی،
+// برچسب فارسی، ستاره الزامی، داروخانه سفارش مثل پیش‌فرض، تراز یک‌خطی،
+// طراح دستی قفل‌شده روی بوم خط‌دار، خروجی اکسل تیک‌خورده
+(function () {
+  "use strict";
+
+  var VER = "11.14.0";
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;");
+  }
+  function normName(s) {
+    return String(s || "")
+      .replace(/ي/g, "ی").replace(/ك/g, "ک")
+      .replace(/‌/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase();
+  }
+
+  function findPharmacyRec(val) {
+    val = String(val || "").trim();
+    if (!val || !window.state) return null;
+    var n = normName(val);
+    if (!n) return null;
+    var list = state.pharmacies || [];
+    var exact = list.filter(function (p) { return p && p.name && normName(p.name) === n; });
+    exact.sort(function (a, b) { return (a.stub ? 1 : 0) - (b.stub ? 1 : 0); });
+    if (exact.length) return exact[0];
+    if (val.length >= 3) {
+      var part = list.filter(function (p) { return p && p.name && normName(p.name).indexOf(n) !== -1; });
+      part.sort(function (a, b) { return (a.stub ? 1 : 0) - (b.stub ? 1 : 0); });
+      if (part.length === 1) return part[0];
+    }
+    return null;
+  }
+
+  function dedupePharmacies() {
+    if (!window.state || !state.pharmacies) return;
+    var by = {};
+    var keep = [];
+    state.pharmacies.forEach(function (p) {
+      if (!p || !p.name) { keep.push(p); return; }
+      var k = normName(p.name);
+      if (!k) { keep.push(p); return; }
+      if (!by[k]) {
+        by[k] = p;
+        keep.push(p);
+        return;
+      }
+      if (by[k].stub && !p.stub) {
+        var i = keep.indexOf(by[k]);
+        if (i !== -1) keep[i] = p;
+        by[k] = p;
+      }
+    });
+    state.pharmacies = keep;
+  }
+
+  function fillOrderFromPharmacy(rec) {
+    if (!rec) return;
+    if ($("orderPharmacyName")) $("orderPharmacyName").value = rec.name || "";
+    if ($("orderPharmacyMatchedId")) $("orderPharmacyMatchedId").value = rec.id || "";
+    var provEl = $("orderProvince");
+    var cityEl = $("orderCity");
+    var distEl = $("orderDistrict");
+    var addrEl = $("orderAddress");
+    if (provEl && rec.province) {
+      provEl.value = rec.province;
+      try { provEl.dispatchEvent(new Event("change", { bubbles: true })); } catch (e) {}
+      if (typeof populateCities === "function" && cityEl) populateCities(rec.province, cityEl, rec.city);
+      if (typeof populateDistricts === "function" && distEl) populateDistricts(rec.province, rec.city, distEl, rec.district);
+    }
+    if (addrEl && rec.address) addrEl.value = rec.address;
+    var box = $("existingPharmacyTopAlert");
+    var txt = $("existingPharmacyAlertText");
+    if (box && txt) {
+      txt.textContent = "داروخانه «" + (rec.name || "") + "» | شهر: " + (rec.city || "—") +
+        " | منطقه: " + (rec.district || "—") + " | آدرس: " + (rec.address || "—") +
+        (rec.phone ? " | تلفن: " + rec.phone : "");
+      box.style.display = "flex";
+    }
+  }
+
+  function showPharmacyMatch(val, autofill) {
+    var rec = findPharmacyRec(val);
+    var box = $("existingPharmacyTopAlert");
+    var txt = $("existingPharmacyAlertText");
+    if (rec && !rec.stub) {
+      if ($("orderPharmacyMatchedId")) $("orderPharmacyMatchedId").value = rec.id || "";
+      if (txt) {
+        txt.textContent = "داروخانه «" + rec.name + "» | شهر: " + (rec.city || "—") +
+          " | منطقه: " + (rec.district || "—") + " | آدرس: " + (rec.address || "—");
+      }
+      if (box) box.style.display = "flex";
+      if (autofill) fillOrderFromPharmacy(rec);
+      return rec;
+    }
+    if ($("orderPharmacyMatchedId")) $("orderPharmacyMatchedId").value = "";
+    if (box) box.style.display = "none";
+    return null;
+  }
+
+  function refreshOrderPharmacyList() {
+    try { dedupePharmacies(); } catch (e) {}
+    try { if (typeof populatePharmacyDatalistInOrders === "function") populatePharmacyDatalistInOrders(); } catch (e) {}
+    try { if (typeof updateNavBadges === "function") updateNavBadges(); } catch (e) {}
+  }
+
+  function wrapRememberPharmacy() {
+    var prev = window.rememberPharmacyName;
+    window.rememberPharmacyName = function (name, extra) {
+      name = String(name || "").trim();
+      extra = extra || {};
+      if (!name || !window.state) return null;
+      if (!state.knownPharmacyNames) state.knownPharmacyNames = [];
+      if (state.knownPharmacyNames.indexOf(name) === -1) state.knownPharmacyNames.push(name);
+      var rec = findPharmacyRec(name);
+      if (rec) {
+        if (extra.province) rec.province = extra.province;
+        if (extra.city) rec.city = extra.city;
+        if (extra.district) rec.district = extra.district;
+        if (extra.address) rec.address = extra.address;
+        if (extra.phone) rec.phone = extra.phone;
+        if (rec.stub && (extra.address || extra.province || extra.create === false)) rec.stub = false;
+        try { if (typeof saveState === "function") saveState(false); } catch (e) {}
+        return rec;
+      }
+      if (extra.create === true && typeof prev === "function") {
+        rec = prev(name, extra);
+        refreshOrderPharmacyList();
+        return rec;
+      }
+      return null;
+    };
+  }
+
+  function bindPharmacyInstantButtons() {
+    function hook(inpId, isOrder) {
+      var inp = $(inpId);
+      if (!inp) return;
+      var row = inp.closest(".instant-add-row") || inp.parentNode;
+      var btn = row && row.querySelector(".btn-instant-add");
+      function refreshBtn() {
+        var v = (inp.value || "").trim();
+        var rec = findPharmacyRec(v);
+        if (!btn) return;
+        if (rec && !rec.stub) {
+          if (isOrder) {
+            btn.hidden = false;
+            btn.textContent = "قبلاً ثبت شده — انتخاب";
+          } else {
+            btn.hidden = true;
+          }
+        }
+      }
+      if (inp.dataset.v17phInp !== "1") {
+        inp.dataset.v17phInp = "1";
+        inp.addEventListener("input", refreshBtn);
+        inp.addEventListener("focus", refreshBtn);
+        if (isOrder) {
+          inp.addEventListener("input", function () { showPharmacyMatch(inp.value, false); });
+          inp.addEventListener("change", function () { showPharmacyMatch(inp.value, true); });
+          inp.addEventListener("blur", function () { showPharmacyMatch(inp.value, false); });
+          inp.addEventListener("focus", function () {
+            var host = $("orderPharmacyPickBox");
+            if (host && typeof window.renderPharmacyPicks !== "function") {
+              var q = (inp.value || "").trim();
+              var hits = (state.pharmacies || []).filter(function (p) {
+                if (!p || !p.name || p.stub) return !!q && p && p.name;
+                if (!q) return !p.stub;
+                var blob = [p.name, p.province, p.city, p.district, p.address, p.phone].join(" ");
+                return normName(blob).indexOf(normName(q)) !== -1;
+              }).filter(function (p) { return p && !p.stub; });
+              if (!hits.length && !q) hits = (state.pharmacies || []).filter(function (p) { return p && p.name && !p.stub; });
+              host.hidden = !hits.length;
+              if (hits.length) {
+                host.innerHTML = "<div class='ph-pick-hint'>" + hits.length + " داروخانه ثبت‌شده</div>" +
+                  hits.slice(0, 30).map(function (p) {
+                    return "<button type='button' class='ph-pick-card' data-pid='" + esc(p.id) + "'>" +
+                      "<strong>🏥 " + esc(p.name || "") + "</strong>" +
+                      "<span>" + esc([p.province, p.city, p.district].filter(Boolean).join(" / ")) + "</span>" +
+                      "<span>" + esc(p.address || "") + "</span></button>";
+                  }).join("");
+                Array.prototype.forEach.call(host.querySelectorAll(".ph-pick-card"), function (b) {
+                  b.addEventListener("click", function () {
+                    var rec = (state.pharmacies || []).filter(function (p) { return p.id === b.getAttribute("data-pid"); })[0];
+                    fillOrderFromPharmacy(rec);
+                    host.hidden = true;
+                  });
+                });
+              }
+            }
+          });
+        }
+      }
+      if (btn && btn.dataset.v17phBtn !== "1") {
+        btn.dataset.v17phBtn = "1";
+        btn.addEventListener("click", function (ev) {
+          var v = (inp.value || "").trim();
+          if (!v) return;
+          var rec = findPharmacyRec(v);
+          if (rec && !rec.stub) {
+            ev.preventDefault();
+            ev.stopImmediatePropagation();
+            if (isOrder) {
+              fillOrderFromPharmacy(rec);
+              alert("داروخانه «" + rec.name + "» قبلاً ثبت شده است. اطلاعات برای پر کردن خودکار آمد.");
+            } else {
+              alert("داروخانه «" + rec.name + "» قبلاً در برنامه ذخیره شده است.");
+            }
+            return;
+          }
+          if (!isOrder && typeof window.rememberPharmacyName === "function") {
+            ev.preventDefault();
+            ev.stopImmediatePropagation();
+            window.rememberPharmacyName(v, { create: true });
+            refreshOrderPharmacyList();
+            alert("نام داروخانه «" + v + "» ذخیره شد و در سفارشات مثل داروخانه‌های پیش‌فرض می‌آید.");
+          }
+        }, true);
+      }
+    }
+    hook("pharmacyName", false);
+    hook("orderPharmacyName", true);
+  }
+
+  function wrapPharmacySaveRefresh() {
+    function after() {
+      setTimeout(function () {
+        refreshOrderPharmacyList();
+        var name = (($("pharmacyName") || {}).value || "").trim();
+        if (name && typeof window.rememberPharmacyName === "function") {
+          window.rememberPharmacyName(name, {
+            province: (($("pharmacyProvince") || {}).value) || "",
+            city: (($("pharmacyCity") || {}).value) || "",
+            district: (($("pharmacyDistrict") || {}).value) || "",
+            address: (($("pharmacyAddress") || {}).value) || "",
+            phone: (($("pharmacyPhone") || {}).value) || "",
+            create: false
+          });
+        }
+      }, 80);
+    }
+    var form = $("formPharmacy");
+    var btn = $("btnSavePharmacy");
+    if (form && form.dataset.v17save !== "1") {
+      form.dataset.v17save = "1";
+      form.addEventListener("submit", after);
+    }
+    if (btn && btn.dataset.v17save !== "1") {
+      btn.dataset.v17save = "1";
+      btn.addEventListener("click", after);
+    }
+    if (typeof window.deletePharmacy === "function" && !window._v17delPh) {
+      window._v17delPh = true;
+      var orig = window.deletePharmacy;
+      window.deletePharmacy = function (id) {
+        var r = orig.apply(this, arguments);
+        refreshOrderPharmacyList();
+        return r;
+      };
+    }
+  }
+
+  function excelColumnsFor(entity) {
+    var out = [];
+    var seen = {};
+    var meta = ((window.state && state.formFieldMeta) || {})[entity] || {};
+    Object.keys(meta).forEach(function (id) {
+      if (!meta[id] || meta[id].exportExcel !== true) return;
+      seen[id] = true;
+      out.push({ id: id, label: meta[id].label || id, builtin: true });
+    });
+    (((window.state && state.customFields) || {})[entity] || []).forEach(function (f) {
+      if (!f || !f.exportExcel || seen[f.id]) return;
+      out.push({ id: f.id, label: f.label, builtin: false });
+    });
+    return out;
+  }
+
+  function appendExcelCols(entity, recs, hdrs, rws) {
+    var cols = excelColumnsFor(entity);
+    cols.forEach(function (c) { hdrs.push(c.label); });
+    rws.forEach(function (row, i) {
+      var rec = recs[i];
+      cols.forEach(function (c) {
+        var v = "";
+        if (c.builtin && typeof window.builtinFieldValue === "function") {
+          v = window.builtinFieldValue(entity, c.id, rec);
+        } else if (rec && rec.customFields) {
+          v = rec.customFields[c.label] != null ? rec.customFields[c.label] : (rec.customFields[c.id] || "");
+        }
+        row.push(v == null || v === "—" ? "" : v);
+      });
+    });
+  }
+
+  function rebindExcelButtons() {
+    function bind(btnId, entity, recsFn, baseHdrs, rowFn) {
+      var btn = $(btnId);
+      if (!btn || btn.dataset.v17ex === "1") return;
+      btn.dataset.v17ex = "1";
+      var clone = btn.cloneNode(true);
+      if (btn.parentNode) btn.parentNode.replaceChild(clone, btn);
+      clone.addEventListener("click", function () {
+        var recs = recsFn() || [];
+        var hdrs = baseHdrs.slice();
+        var rws = recs.map(rowFn);
+        appendExcelCols(entity, recs, hdrs, rws);
+        if (typeof downloadCSVFile === "function") {
+          downloadCSVFile(entity + "-export.csv", hdrs, rws);
+        }
+      });
+    }
+    if (!window.state) return;
+    bind("btnExportPharmaciesCSV", "pharmacy",
+      function () { return state.pharmacies || []; },
+      ["نام داروخانه", "تلفن", "استان", "شهر", "منطقه", "آدرس", "درصدی"],
+      function (p) { return [p.name, p.phone || "", p.province, p.city, p.district, p.address, p.isPercentage ? "بله" : "خیر"]; });
+    bind("btnExportDoctorsCSV", "doctor",
+      function () { return state.doctors || []; },
+      ["نام پزشک/مطب", "تخصص", "تلفن", "استان", "شهر", "منطقه", "آدرس", "درصدی"],
+      function (d) { return [d.name, d.specialty, d.phone || "", d.province, d.city, d.district, d.address, d.isPercentage ? "بله" : "خیر"]; });
+    bind("btnExportOrdersCSV", "order",
+      function () { return state.orders || []; },
+      ["نام داروخانه", "استان", "شهر", "منطقه", "نماینده", "تاریخ", "مبلغ کل (ریال)", "وضعیت"],
+      function (o) { return [o.pharmacyName, o.province, o.city, o.district, o.repName || "", o.orderDate, o.totalAmount || 0, o.status]; });
+  }
+
+  function ensureManInspector() {
+    if ($("manInspector")) return;
+    var toolbar = document.querySelector(".man-toolbar");
+    if (!toolbar) return;
+    var box = document.createElement("div");
+    box.id = "manInspector";
+    box.className = "man-inspector";
+    box.hidden = true;
+    box.innerHTML =
+      "<strong>ویرایش مورد انتخاب‌شده</strong>" +
+      "<div class='form-grid' style='margin-top:.4rem'>" +
+      "<div class='form-group'><label class='form-label'>نام</label><input id='manPropName' class='form-input' readonly></div>" +
+      "<div class='form-group'><label class='form-label'>عرض (پیکسل)</label><input id='manPropW' class='form-input' type='number' min='80'></div>" +
+      "<div class='form-group'><label class='form-label'>ارتفاع (پیکسل)</label><input id='manPropH' class='form-input' type='number' min='36'></div>" +
+      "</div>";
+    toolbar.appendChild(box);
+    function applySize() {
+      var item = window._manSelected;
+      if (!item) return;
+      var w = parseInt(($("manPropW") || {}).value, 10);
+      var h = parseInt(($("manPropH") || {}).value, 10);
+      if (w > 40) {
+        item.style.width = w + "px";
+        item.style.maxWidth = w + "px";
+      }
+      if (h > 20) item.style.height = h + "px";
+    }
+    if ($("manPropW")) $("manPropW").addEventListener("change", applySize);
+    if ($("manPropH")) $("manPropH").addEventListener("change", applySize);
+  }
+
+  function hardenManualCanvas() {
+    var host = $("manualDesignCanvas");
+    if (!host) return;
+    host.classList.add("man-design-mode");
+    var clone = host.querySelector(".man-clone");
+    if (!clone) return;
+    clone.classList.add("man-design-mode");
+    Array.prototype.forEach.call(clone.querySelectorAll(".card-header"), function (el) {
+      el.setAttribute("data-man-skip", "1");
+    });
+    Array.prototype.forEach.call(clone.querySelectorAll(".jalali-badge, .jalali-input-wrapper"), function (el) {
+      el.style.pointerEvents = "none";
+    });
+    Array.prototype.forEach.call(clone.querySelectorAll("input, select, textarea, button.btn, .btn-toggle-option"), function (el) {
+      if (el.classList.contains("man-handle") || el.classList.contains("man-resize")) return;
+      if (el.closest(".man-toolbar") || el.closest(".man-inspector")) return;
+      el.setAttribute("tabindex", "-1");
+      if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") el.setAttribute("readonly", "readonly");
+      if (el.tagName === "BUTTON" || el.tagName === "SELECT") el.setAttribute("disabled", "disabled");
+      el.style.pointerEvents = "none";
+    });
+    if (typeof window.lockManualDesigner === "function") {
+      try { window.lockManualDesigner(); } catch (e) {}
+    }
+  }
+
+  function watchManualCanvas() {
+    var host = $("manualDesignCanvas");
+    if (!host || host.dataset.v17obs === "1") return;
+    host.dataset.v17obs = "1";
+    var t;
+    new MutationObserver(function () {
+      clearTimeout(t);
+      t = setTimeout(function () {
+        ensureManInspector();
+        hardenManualCanvas();
+      }, 60);
+    }).observe(host, { childList: true, subtree: true });
+  }
+
+  function wrapAttachInstant() {
+    if (typeof window.attachInstantAdd !== "function" || window._v17fly) return;
+    window._v17fly = true;
+    var orig = window.attachInstantAdd;
+    window.attachInstantAdd = function (inp) {
+      orig(inp);
+      if (inp && (inp.id === "pharmacyName" || inp.id === "orderPharmacyName")) {
+        bindPharmacyInstantButtons();
+      }
+    };
+  }
+
+  function applyFaLabelsLive() {
+    var map = window.FA_FIELD_LABELS || {};
+    Object.keys(map).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var lab = document.querySelector('label[for="' + id + '"]');
+      if (lab && /^[A-Za-z][A-Za-z0-9_\-]*$/.test(String(lab.textContent || "").trim())) {
+        lab.textContent = map[id];
+      }
+    });
+  }
+
+  function boot() {
+    try { wrapRememberPharmacy(); } catch (e) { console.error("v17 remember", e); }
+    try { wrapPharmacySaveRefresh(); } catch (e) { console.error("v17 ph save", e); }
+    try { wrapAttachInstant(); } catch (e) {}
+    try { bindPharmacyInstantButtons(); } catch (e) { console.error("v17 ph bind", e); }
+    try { rebindExcelButtons(); } catch (e) { console.error("v17 excel", e); }
+    try { ensureManInspector(); } catch (e) {}
+    try { watchManualCanvas(); } catch (e) {}
+    try { applyFaLabelsLive(); } catch (e) {}
+    try { refreshOrderPharmacyList(); } catch (e) {}
+
+    var origSw = window.switchTab;
+    if (typeof origSw === "function" && !window._v17Sw) {
+      window._v17Sw = true;
+      window.switchTab = function (id) {
+        origSw(id);
+        setTimeout(function () {
+          bindPharmacyInstantButtons();
+          if (id === "tab-orders") {
+            refreshOrderPharmacyList();
+            showPharmacyMatch((($("orderPharmacyName") || {}).value) || "", false);
+          }
+          if (id === "tab-pharmacies") wrapPharmacySaveRefresh();
+          if (id === "tab-manual-design") {
+            ensureManInspector();
+            hardenManualCanvas();
+          }
+          if (id === "tab-columns-products") applyFaLabelsLive();
+        }, 220);
+      };
+    }
+    console.log("v17 ready", VER);
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+
+/* ===================== (bundled from public/crm-features-v18.js) ===================== */
+// v18 — ستاره چسبیده، فونت نه عرض، ترتیب فرم/لیست جدا، ارتفاع واقعی،
+// اطلاعات کادر/کلید، طراح دستی آزاد، کپی همه/انتخابی، کلید هم‌شکل با تأیید
+(function () {
+  "use strict";
+
+  var VER = "11.14.0";
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  function fieldKeyForTab(tabId) {
+    try {
+      var ut = ((state && state.userTabs) || []).filter(function (t) { return t.id === tabId; })[0];
+      if (ut && ut.key) return ut.key;
+    } catch (e) {}
+    var map = {
+      "tab-dashboard": "dashboard", "tab-pharmacies": "pharmacy", "tab-doctors": "doctor",
+      "tab-orders": "order", "tab-activity-log": "activity", "tab-overview-map": "overview",
+      "tab-live-location": "live", "tab-search-info": "search", "tab-rep-routes": "routes",
+      "tab-my-visit": "visit", "tab-rep-homes": "homes", "tab-leaves": "leave",
+      "tab-notifications": "notifications", "tab-monthly-reports": "reports",
+      "tab-sales-targets": "target", "tab-custom-fields": "additions",
+      "tab-columns-products": "products", "tab-users-permissions": "users",
+      "tab-messengers": "messengers", "tab-backup": "backup",
+      "tab-install-app": "install", "tab-troubleshooting": "diagnostics",
+      "tab-manual-design": "manualdesign"
+    };
+    return map[tabId] || String(tabId || "").replace(/^tab-/, "") || "misc";
+  }
+
+  window._v18DefaultReq = {
+    pharmacyDate: 1, pharmacyProvince: 1, pharmacyCity: 1, pharmacyDistrict: 1,
+    pharmacyName: 1, pharmacyAddress: 1,
+    doctorDate: 1, doctorName: 1, doctorSpecialty: 1, doctorProvince: 1,
+    doctorCity: 1, doctorDistrict: 1, doctorAddress: 1,
+    orderPharmacyName: 1, orderProvince: 1, orderCity: 1, orderDistrict: 1,
+    productName: 1, productDistPrice: 1, productPrice: 1
+  };
+
+  function stripAllBlackStars(root) {
+    root = root || document;
+    Array.prototype.forEach.call(root.querySelectorAll(".form-label, label"), function (lab) {
+      if (lab.closest("#columnsDesignerHost") || lab.closest("#jalaliCalendarPopup")) return;
+      if (lab.querySelector("input")) return;
+      var nodes = lab.childNodes;
+      for (var i = 0; i < nodes.length; i++) {
+        if (nodes[i].nodeType === 3) {
+          nodes[i].nodeValue = String(nodes[i].nodeValue || "")
+            .replace(/\s*\*+\s*$/g, "")
+            .replace(/\s+\*\s+/g, " ");
+        }
+      }
+    });
+  }
+
+  function disableNativeRequired() {
+    document.querySelectorAll("form").forEach(function (f) {
+      f.setAttribute("novalidate", "novalidate");
+    });
+    document.querySelectorAll("input[required], select[required], textarea[required]").forEach(function (el) {
+      el.setAttribute("data-req", "1");
+      el.removeAttribute("required");
+    });
+  }
+
+  function seedRequiredMeta() {
+    if (!window.state) return;
+    if (!state.formFieldMeta) state.formFieldMeta = {};
+    Object.keys(window._v18DefaultReq).forEach(function (id) {
+      var tab = id.indexOf("pharmacy") === 0 || id.indexOf("ph") === 0 ? "pharmacy"
+        : id.indexOf("doctor") === 0 || id.indexOf("doc") === 0 ? "doctor"
+        : id.indexOf("order") === 0 ? "order"
+        : id.indexOf("product") === 0 ? "products" : "";
+      if (!tab) return;
+      if (!state.formFieldMeta[tab]) state.formFieldMeta[tab] = {};
+      if (!state.formFieldMeta[tab][id]) state.formFieldMeta[tab][id] = {};
+      if (state.formFieldMeta[tab][id].required == null) state.formFieldMeta[tab][id].required = true;
+    });
+  }
+
+  function wrapValidate() {
+    var prev = window.validateRequiredFields;
+    window.validateRequiredFields = function (tabId) {
+      var ok = true;
+      if (typeof prev === "function") {
+        try { ok = prev(tabId); } catch (e) { ok = true; }
+      }
+      if (!ok) return false;
+      var pane = $(tabId);
+      if (!pane) return true;
+      var missing = [];
+      Array.prototype.forEach.call(pane.querySelectorAll("input[data-req='1'], select[data-req='1'], textarea[data-req='1']"), function (el) {
+        if (el.closest("#columnsDesignerHost") || el.closest(".modal-overlay") || el.closest("#manualDesignCanvas")) return;
+        if (el.type === "hidden" || el.disabled) return;
+        if (String(el.value || "").trim()) return;
+        var lab = (el.id && pane.querySelector('label[for="' + el.id + '"]')) ||
+          (el.closest(".form-group") && el.closest(".form-group").querySelector(".form-label, label"));
+        var name = lab ? String(lab.textContent || "").replace(/\*/g, "").replace(/\s+/g, " ").trim() : (el.id || "فیلد");
+        if (missing.indexOf(name) === -1) missing.push(name);
+      });
+      if (missing.length) {
+        alert(missing.map(function (n) { return "فیلد «" + n + "» خالی است و باید پر شود."; }).join("\n"));
+        return false;
+      }
+      return true;
+    };
+  }
+
+  /* ---------- کالا: ترتیب / زیرهم / پیکسل ---------- */
+  function upgradeProdFieldBar() {
+    var bar = $("prodFieldBar");
+    if (!bar) return;
+    if (!$("prodNewFieldOrder")) {
+      var extra = document.createElement("div");
+      extra.className = "prod-field-extra";
+      extra.style.cssText = "display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;width:100%;margin-top:.35rem";
+      extra.innerHTML =
+        '<input id="prodNewFieldOrder" class="form-input" type="number" min="1" placeholder="شماره ترتیب" style="max-width:120px" title="شماره ترتیب">' +
+        '<select id="prodNewFieldPlace" class="form-select" style="max-width:140px"><option value="beside">روبرو</option><option value="under">زیر هم</option></select>' +
+        '<input id="prodNewFieldSize" class="form-input" type="number" min="80" max="900" value="220" placeholder="عرض پیکسل" style="max-width:120px" title="عرض پیکسل">' +
+        '<input id="prodNewFieldHeight" class="form-input" type="number" min="24" max="400" value="42" placeholder="ارتفاع پیکسل" style="max-width:120px" title="ارتفاع پیکسل">';
+      bar.appendChild(extra);
+    }
+    var add = $("btnAddProductField");
+    if (add && add.dataset.v18 !== "1") {
+      add.dataset.v18 = "1";
+      add.addEventListener("click", function () {
+        var last = ((state.customFields || {}).products || []).slice(-1)[0];
+        if (!last) return;
+        var ord = parseInt(($("prodNewFieldOrder") || {}).value, 10);
+        if (ord > 0) last.order = ord;
+        last.place = ($("prodNewFieldPlace") || {}).value || "beside";
+        var sz = parseInt(($("prodNewFieldSize") || {}).value, 10);
+        if (sz > 40) last.size = sz;
+        var hg = parseInt(($("prodNewFieldHeight") || {}).value, 10);
+        if (hg > 20) last.height = hg;
+        if (typeof saveState === "function") saveState();
+        if (typeof window.applyFullFormLayout === "function") window.applyFullFormLayout("tab-columns-products");
+      });
+    }
+  }
+
+  /* ---------- جداول اطلاعات کادر و کلید ---------- */
+  function liveSizeOf(id) {
+    var el = document.getElementById(id);
+    if (!el) return { w: 0, h: 0 };
+    var r = el.getBoundingClientRect();
+    return { w: Math.round(r.width), h: Math.round(r.height) };
+  }
+
+  window.renderColBoxInfoTable = function (tabId, key) {
+    var host = $("colBoxInfoList");
+    if (!host) return;
+    if (!state.formBoxes) state.formBoxes = {};
+    var boxes = state.formBoxes[key] || [];
+    if (!boxes.length) {
+      host.innerHTML = "<div class='col-empty'>کادری در این تب نیست. از کشویی «کادر» یکی بسازید.</div>";
+      return;
+    }
+    var html = "<table class='data-table'><thead><tr><th>ترتیب</th><th>عنوان کادر</th><th>عرض واقعی</th><th>ارتفاع واقعی</th><th>عملیات</th></tr></thead><tbody>";
+    boxes.forEach(function (b, i) {
+      var live = liveSizeOf(b.id);
+      var w = (b.size > 40 ? b.size : (live.w || 220));
+      var h = (b.height > 20 ? b.height : (live.h || 80));
+      html += "<tr data-box='" + esc(b.id) + "'>" +
+        "<td><input type='number' min='1' class='form-input col-box-ord' data-box='" + esc(b.id) + "' value='" + (b.order || (i + 1)) + "'></td>" +
+        "<td><strong>" + esc(b.label) + "</strong></td>" +
+        "<td>" + w + "</td><td>" + h + "</td>" +
+        "<td class='col-ops'>" +
+        "<button type='button' class='btn btn-outline btn-sm col-info-edit-box' data-box='" + esc(b.id) + "'>✏️ ویرایش</button> " +
+        "<button type='button' class='btn btn-danger btn-sm col-info-del-box' data-box='" + esc(b.id) + "'>حذف</button></td></tr>";
+    });
+    html += "</tbody></table>";
+    host.innerHTML = html;
+    Array.prototype.forEach.call(host.querySelectorAll(".col-info-edit-box"), function (btn) {
+      btn.addEventListener("click", function () {
+        if (!confirm("کادر برای ویرایش باز شود؟")) return;
+        var box = boxes.filter(function (x) { return x.id === btn.getAttribute("data-box"); })[0];
+        if (!box) return;
+        if ($("colAddKind")) $("colAddKind").value = "box";
+        if ($("colFieldLabelCap")) $("colFieldLabelCap").textContent = "عنوان کادر";
+        if ($("colFieldLabel")) $("colFieldLabel").value = box.label || "";
+        if ($("colFieldSize")) $("colFieldSize").value = (box.size > 40 ? box.size : liveSizeOf(box.id).w) || 220;
+        if ($("colFieldHeight")) $("colFieldHeight").value = (box.height > 20 ? box.height : liveSizeOf(box.id).h) || 80;
+        if ($("colBoxLabel")) $("colBoxLabel").value = box.label || "";
+        window._editingBoxId = box.id;
+        if ($("colFieldLabel")) $("colFieldLabel").scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+    });
+    Array.prototype.forEach.call(host.querySelectorAll(".col-info-del-box"), function (btn) {
+      btn.addEventListener("click", function () {
+        var bid = btn.getAttribute("data-box");
+        var box = boxes.filter(function (x) { return x.id === bid; })[0];
+        if (!confirm("کادر «" + ((box && box.label) || bid) + "» حذف شود؟")) return;
+        state.formBoxes[key] = (state.formBoxes[key] || []).filter(function (x) { return x.id !== bid; });
+        var el = document.getElementById(bid);
+        if (el && el.parentNode) el.parentNode.removeChild(el);
+        if (typeof saveState === "function") saveState();
+        if (typeof window.applyFullFormLayout === "function") window.applyFullFormLayout(tabId);
+        window.renderColBoxInfoTable(tabId, key);
+      });
+    });
+    Array.prototype.forEach.call(host.querySelectorAll(".col-box-ord"), function (inp) {
+      inp.addEventListener("change", function () {
+        var box = (state.formBoxes[key] || []).filter(function (x) { return x.id === inp.getAttribute("data-box"); })[0];
+        if (box) box.order = parseInt(inp.value, 10) || 1;
+        if (typeof saveState === "function") saveState();
+      });
+    });
+  };
+
+  window.renderColBtnInfoTable = function (tabId, key) {
+    var host = $("colBtnInfoList");
+    if (!host) return;
+    var list = [];
+    try {
+      if (typeof window.getUnifiedFieldList === "function") {
+        list = window.getUnifiedFieldList(tabId).filter(function (f) {
+          return f.kind === "widget" || String(f.inputKind || f.type || "").indexOf("widget-") === 0;
+        });
+      }
+    } catch (e) {}
+    if (!list.length) {
+      host.innerHTML = "<div class='col-empty'>کلیدی در این تب نیست. از کشویی «کلید» یکی بسازید.</div>";
+      return;
+    }
+    var html = "<table class='data-table'><thead><tr><th>ترتیب</th><th>عنوان کلید</th><th>نوع</th><th>عرض واقعی</th><th>ارتفاع واقعی</th><th>عملیات</th></tr></thead><tbody>";
+    list.forEach(function (f, i) {
+      var live = liveSizeOf(f.id);
+      var w = (parseInt(f.size, 10) > 40 ? parseInt(f.size, 10) : (live.w || 120));
+      var h = (parseInt(f.height, 10) > 20 ? parseInt(f.height, 10) : (live.h || 36));
+      html += "<tr>" +
+        "<td>" + (f.order || (i + 1)) + "</td>" +
+        "<td><strong>" + esc(f.label) + "</strong></td>" +
+        "<td>" + esc(f.inputKind || f.type || "کلید") + "</td>" +
+        "<td>" + w + "</td><td>" + h + "</td>" +
+        "<td class='col-ops'>" +
+        "<button type='button' class='btn btn-outline btn-sm col-info-edit-btn' data-fid='" + esc(f.id) + "'>✏️ ویرایش</button> " +
+        "<button type='button' class='btn btn-danger btn-sm col-info-del-btn' data-fid='" + esc(f.id) + "'>حذف</button></td></tr>";
+    });
+    html += "</tbody></table>";
+    host.innerHTML = html;
+    Array.prototype.forEach.call(host.querySelectorAll(".col-info-edit-btn"), function (btn) {
+      btn.addEventListener("click", function () {
+        if (!confirm("کلید برای ویرایش باز شود؟")) return;
+        var id = btn.getAttribute("data-fid");
+        var field = list.filter(function (f) { return f.id === id; })[0];
+        if (!field) return;
+        window._editingColField = field;
+        if ($("colAddKind")) $("colAddKind").value = "button";
+        if ($("colFieldLabelCap")) $("colFieldLabelCap").textContent = "عنوان کلید";
+        if ($("colFieldLabel")) $("colFieldLabel").value = field.label || "";
+        var live = liveSizeOf(field.id);
+        if ($("colFieldSize")) $("colFieldSize").value = (parseInt(field.size, 10) > 40 ? field.size : live.w) || 120;
+        if ($("colFieldHeight")) $("colFieldHeight").value = (parseInt(field.height, 10) > 20 ? field.height : live.h) || 36;
+        if ($("colFieldLabel")) $("colFieldLabel").scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+    });
+    Array.prototype.forEach.call(host.querySelectorAll(".col-info-del-btn"), function (btn) {
+      btn.addEventListener("click", function () {
+        var id = btn.getAttribute("data-fid");
+        var field = list.filter(function (f) { return f.id === id; })[0];
+        if (!confirm("کلید «" + ((field && field.label) || id) + "» حذف شود؟")) return;
+        if (!state.customFields) state.customFields = {};
+        state.customFields[key] = (state.customFields[key] || []).filter(function (f) { return f.id !== id; });
+        document.querySelectorAll('[data-custom-field-id="' + id + '"], [data-col-fid="' + id + '"]').forEach(function (n) {
+          var g = n.closest(".form-group, .col-widget-wrap");
+          if (g && g.parentNode) g.parentNode.removeChild(g);
+        });
+        if (typeof saveState === "function") saveState();
+        if (typeof window.applyFullFormLayout === "function") window.applyFullFormLayout(tabId);
+        window.renderColBtnInfoTable(tabId, key);
+      });
+    });
+  };
+
+  function refreshExtraInfoTables() {
+    var tabId = window._activeColTab;
+    if (!tabId) return;
+    var key = fieldKeyForTab(tabId);
+    try { window.renderColBoxInfoTable(tabId, key); } catch (e) {}
+    try { window.renderColBtnInfoTable(tabId, key); } catch (e) {}
+  }
+
+  function watchDesignerPanel() {
+    var host = $("columnsDesignerHost");
+    if (!host || host.dataset.v18obs === "1") return;
+    host.dataset.v18obs = "1";
+    var t;
+    new MutationObserver(function () {
+      clearTimeout(t);
+      t = setTimeout(refreshExtraInfoTables, 80);
+    }).observe(host, { childList: true, subtree: true });
+  }
+
+  /* ---------- کلیدها: شکل یکدست + تأیید + کار حذف ردیف ---------- */
+  function classifyBtn(btn) {
+    if (!btn || btn.closest(".app-nav") || btn.closest(".side-menu-drawer") || btn.closest(".app-header")) return;
+    if (btn.classList.contains("nav-item") || btn.classList.contains("side-menu-item")) return;
+    if (btn.classList.contains("btn-toggle-option") || btn.classList.contains("launchpad-card")) return;
+    var txt = String(btn.textContent || btn.title || "");
+    if (/حذف|پاک/.test(txt) && !/برگشت|پیش‌فرض/.test(txt)) {
+      btn.classList.add("btn", "btn-danger");
+      btn.classList.remove("btn-outline", "btn-primary", "btn-success");
+    } else if (/ذخیره|ثبت اطلاعات|ثبت و ذخیره|ثبت فیلد|ثبت کادر|ثبت کلید/.test(txt)) {
+      btn.classList.add("btn", "btn-primary");
+      btn.style.background = "#0d9488";
+    } else if (/ویرایش/.test(txt)) {
+      btn.classList.add("btn", "btn-outline");
+    }
+  }
+
+  function unifyButtons(root) {
+    root = root || document;
+    Array.prototype.forEach.call(root.querySelectorAll("button.btn, button[id]"), function (b) {
+      try { classifyBtn(b); } catch (e) {}
+    });
+  }
+
+  function wrapConfirms() {
+    if (window._v18Confirm) return;
+    window._v18Confirm = true;
+    document.addEventListener("click", function (ev) {
+      var btn = ev.target.closest("button");
+      if (!btn) return;
+      if (btn.closest("#manualDesignCanvas")) return;
+      if (btn.dataset.v18ok === "1") return;
+      var txt = String(btn.textContent || "");
+      if (/حذف/.test(txt) && !btn.getAttribute("onclick") && !btn.classList.contains("col-del-field") && !btn.classList.contains("col-info-del-box") && !btn.classList.contains("col-info-del-btn") && !btn.classList.contains("col-del-box")) {
+        /* native handlers already confirm in most places */
+      }
+      if ((btn.id === "btnSavePharmacy" || btn.id === "btnSaveDoctor" || btn.id === "btnSaveOrder" || btn.id === "btnSaveProduct" || btn.id === "btnSaveColField" || btn.id === "btnManSave") && !btn.dataset.v18ask) {
+        btn.dataset.v18ask = "1";
+      }
+    }, true);
+
+    ["btnSavePharmacy", "btnSaveDoctor", "btnSaveOrder", "btnSaveProduct", "btnSaveColField", "btnManSave"].forEach(function (id) {
+      var b = $(id);
+      if (!b || b.dataset.v18save === "1") return;
+      b.dataset.v18save = "1";
+      b.addEventListener("click", function (e) {
+        if (b.dataset.v18pass === "1") { b.dataset.v18pass = ""; return; }
+        if (!confirm("اطلاعات ذخیره شود؟")) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          return false;
+        }
+      }, true);
+    });
+  }
+
+  function enhanceWidgetActions() {
+    if (typeof window.buildDesignerWidget !== "function" || window._v18Widget) return;
+    window._v18Widget = true;
+    var orig = window.buildDesignerWidget;
+    window.buildDesignerWidget = function (field, tabId) {
+      var wrap = orig(field, tabId);
+      var kind = field && (field.inputKind || field.type || "");
+      setTimeout(function () {
+        var b = wrap && wrap.querySelector("button");
+        if (!b) return;
+        if (kind === "widget-delete") {
+          b.className = "btn btn-danger btn-sm";
+          if (!b.dataset.v18row) {
+            b.dataset.v18row = "1";
+            b.addEventListener("click", function (ev) {
+              var tr = wrap.closest("tr") || (function () {
+                var r = wrap.getBoundingClientRect();
+                var rows = document.querySelectorAll((tabId ? "#" + tabId + " " : "") + "tbody tr");
+                for (var i = 0; i < rows.length; i++) {
+                  var rr = rows[i].getBoundingClientRect();
+                  if (Math.abs((rr.top + rr.bottom) / 2 - (r.top + r.bottom) / 2) < 28) return rows[i];
+                }
+                return null;
+              })();
+              if (!tr) return;
+              var del = tr.querySelector(".btn-danger, [onclick*='delete']");
+              if (del && del !== b) {
+                ev.preventDefault();
+                ev.stopPropagation();
+                del.click();
+              }
+            });
+          }
+        }
+        if (kind === "widget-save") {
+          b.className = "btn btn-primary";
+          b.style.background = "#0d9488";
+          if (!b.dataset.v18sv) {
+            b.dataset.v18sv = "1";
+            b.addEventListener("click", function (ev) {
+              if (!confirm("اطلاعات ذخیره شود؟")) {
+                ev.preventDefault();
+                ev.stopImmediatePropagation();
+              }
+            }, true);
+          }
+        }
+        if (kind === "widget-edit") {
+          b.className = "btn btn-outline btn-sm";
+          if (!b.dataset.v18ed) {
+            b.dataset.v18ed = "1";
+            b.addEventListener("click", function (ev) {
+              if (!confirm("این مورد ویرایش شود؟")) {
+                ev.preventDefault();
+                ev.stopImmediatePropagation();
+              }
+            }, true);
+          }
+        }
+      }, 40);
+      return wrap;
+    };
+  }
+
+  /* ---------- طراحی دستی: همه چیز روی بوم قابل ویرایش ---------- */
+  function unlockManualCanvas() {
+    var host = $("manualDesignCanvas");
+    if (!host) return;
+    var clone = host.querySelector(".man-clone");
+    if (!clone) return;
+    clone.classList.add("man-design-mode");
+    Array.prototype.forEach.call(clone.querySelectorAll(".jalali-badge, .jalali-input-wrapper, .jalali-helper-text"), function (el) {
+      el.style.pointerEvents = "none";
+    });
+    Array.prototype.forEach.call(clone.querySelectorAll("[data-man-skip='1']"), function (el) {
+      if (el.classList && el.classList.contains("card-header")) return;
+      el.removeAttribute("data-man-skip");
+    });
+    var targets = [];
+    function take(el) {
+      if (!el || el.getAttribute("data-man-skip") === "1") return;
+      if (el.closest(".man-toolbar") || el.closest("#manualTabGrid")) return;
+      if (targets.indexOf(el) !== -1) return;
+      targets.push(el);
+    }
+    Array.prototype.forEach.call(clone.querySelectorAll(".card, .col-user-box, .stat-card, .map-container, .form-group, button.btn, .btn-toggle-option"), function (el) {
+      if (el.classList.contains("form-group") && el.querySelector(":scope > .form-group")) return;
+      if (el.id && /CustomFieldsContainer|cfHost-/.test(el.id)) return;
+      if (el.closest && el.closest(".card-header") && el.tagName === "BUTTON" && /صفحه اصلی|بازگشت/.test(el.textContent || "")) return;
+      take(el);
+    });
+    targets.forEach(function (el, i) {
+      if (!el.classList.contains("man-item")) el.classList.add("man-item");
+      if (getComputedStyle(el).position === "static") el.style.position = "relative";
+      if (!el.querySelector(":scope > .man-handle")) {
+        var h = document.createElement("span");
+        h.className = "man-handle";
+        h.textContent = "⠿";
+        h.title = "بکشید";
+        el.insertBefore(h, el.firstChild);
+      }
+      if (!el.querySelector(":scope > .man-resize")) {
+        var r = document.createElement("span");
+        r.className = "man-resize";
+        r.title = "اندازه";
+        el.appendChild(r);
+      }
+      if (!el.getAttribute("data-man-id")) {
+        var sid = el.getAttribute("data-src-id") || el.getAttribute("data-col-fid") || el.id || ("man-auto-" + i);
+        el.setAttribute("data-man-id", String(sid).replace(/^man-/, ""));
+      }
+    });
+    if (typeof window.lockManualDesigner === "function") {
+      try { window.lockManualDesigner(); } catch (e) {}
+    }
+  }
+
+  function watchManual() {
+    var host = $("manualDesignCanvas");
+    if (!host || host.dataset.v18man === "1") return;
+    host.dataset.v18man = "1";
+    var t;
+    new MutationObserver(function () {
+      clearTimeout(t);
+      t = setTimeout(unlockManualCanvas, 80);
+    }).observe(host, { childList: true, subtree: true });
+  }
+
+  /* ---------- کپی همه / انتخابی ---------- */
+  function featureCatalog(tabId) {
+    var key = fieldKeyForTab(tabId);
+    var out = [];
+    ((state.customFields || {})[key] || []).forEach(function (f) {
+      out.push({ type: "field", id: f.id, label: (f.label || f.id) + (String(f.inputKind || "").indexOf("widget-") === 0 ? " (کلید)" : " (فیلد)") });
+    });
+    ((state.formBoxes || {})[key] || []).forEach(function (b) {
+      out.push({ type: "box", id: b.id, label: (b.label || b.id) + " (کادر)" });
+    });
+    var meta = ((state.formFieldMeta || {})[key]) || {};
+    Object.keys(meta).forEach(function (id) {
+      if (!meta[id]) return;
+      out.push({ type: "meta", id: id, label: (meta[id].label || id) + " (تنظیم فیلد ثابت)" });
+    });
+    var lay = ((state.manualLayouts || {})[tabId] || {}).items || {};
+    var n = Object.keys(lay).length;
+    if (n) out.push({ type: "layout", id: "__layout__", label: "چیدمان دستی (" + n + " مورد)" });
+    return out;
+  }
+
+  function mountCopyUi() {
+    var from = $("manCopyFrom");
+    var to = $("manCopyTo");
+    if (!from || !to) return;
+    var row = from.closest(".man-toolbar-row");
+    if (row && !$("manCopyModeAll")) {
+      var mode = document.createElement("div");
+      mode.className = "man-toolbar-row man-copy-mode-row";
+      mode.innerHTML =
+        '<label class="man-copy-opt"><input type="radio" name="manCopyMode" id="manCopyModeAll" value="all" checked> کل امکانات تب</label>' +
+        '<label class="man-copy-opt"><input type="radio" name="manCopyMode" id="manCopyModePart" value="part"> انتخاب بخشی از امکانات</label>';
+      row.parentNode.insertBefore(mode, row.nextSibling);
+    }
+    if (!$("manCopyPickList")) {
+      var pick0 = document.createElement("div");
+      pick0.id = "manCopyPickList";
+      pick0.className = "man-copy-pick";
+      pick0.hidden = true;
+      var after = $("manCopyModeAll") ? $("manCopyModeAll").closest(".man-toolbar-row") : row;
+      if (after && after.parentNode) after.parentNode.insertBefore(pick0, after.nextSibling);
+    }
+    if (from.dataset.v18copy === "1") return;
+    from.dataset.v18copy = "1";
+    function syncPick() {
+      var pick = $("manCopyPickList");
+      if (!pick) return;
+      var part = $("manCopyModePart") && $("manCopyModePart").checked;
+      pick.hidden = !part;
+      if (!part) return;
+      var src = from.value;
+      var feats = featureCatalog(src);
+      if (!feats.length) {
+        pick.innerHTML = "<p class='col-help'>در تب مبدأ فیلد/کادر/کلید سفارشی یا چیدمان دستی نیست. باز هم می‌توان کل تنظیمات و چیدمان را با گزینه «کل امکانات» کپی کرد.</p>";
+        return;
+      }
+      pick.innerHTML = "<strong>امکانات مبدأ را تیک بزنید:</strong><div class='man-copy-checks'>" +
+        feats.map(function (f) {
+          return "<label class='col-box-chk'><input type='checkbox' class='man-copy-item' data-ctype='" + esc(f.type) + "' data-cid='" + esc(f.id) + "' checked> " + esc(f.label) + "</label>";
+        }).join("") + "</div>";
+    }
+    Array.prototype.forEach.call(document.querySelectorAll("input[name='manCopyMode']"), function (r) {
+      r.addEventListener("change", syncPick);
+    });
+    from.addEventListener("change", syncPick);
+  }
+
+  function copySelected(fromId, toId) {
+    if (!fromId || !toId || fromId === toId) {
+      alert("مبدأ و مقصد را جدا انتخاب کنید.");
+      return;
+    }
+    if (!state.customFields) state.customFields = {};
+    if (!state.formBoxes) state.formBoxes = {};
+    if (!state.formFieldMeta) state.formFieldMeta = {};
+    if (!state.manualLayouts) state.manualLayouts = {};
+    var fromKey = fieldKeyForTab(fromId);
+    var toKey = fieldKeyForTab(toId);
+    var part = $("manCopyModePart") && $("manCopyModePart").checked;
+    var allow = { field: {}, box: {}, meta: {}, layout: true };
+    if (part) {
+      allow.layout = false;
+      var any = false;
+      document.querySelectorAll(".man-copy-item").forEach(function (chk) {
+        any = true;
+        if (!chk.checked) return;
+        var tp = chk.getAttribute("data-ctype");
+        var id = chk.getAttribute("data-cid");
+        if (tp === "layout") allow.layout = true;
+        else if (allow[tp]) allow[tp][id] = true;
+      });
+      if (!any) {
+        alert("حالت انتخابی است ولی فهرستی نیست. یک‌بار مبدأ را عوض کنید تا فهرست بیاید.");
+        return;
+      }
+    }
+    var copiedFields = 0, copiedBoxes = 0, copiedMeta = 0, copiedLay = 0;
+    if (!state.customFields[toKey]) state.customFields[toKey] = [];
+    ((state.customFields[fromKey] || [])).forEach(function (f) {
+      if (part && !allow.field[f.id]) return;
+      var dup = state.customFields[toKey].filter(function (x) {
+        return x.inputKind === f.inputKind && x.label === f.label;
+      })[0];
+      if (dup) return;
+      var neu = JSON.parse(JSON.stringify(f));
+      neu.id = "cf-" + toKey + "-" + Date.now() + "-" + Math.floor(Math.random() * 999);
+      state.customFields[toKey].push(neu);
+      copiedFields += 1;
+    });
+    if (!state.formBoxes[toKey]) state.formBoxes[toKey] = [];
+    ((state.formBoxes[fromKey] || [])).forEach(function (b) {
+      if (part && !allow.box[b.id]) return;
+      if (state.formBoxes[toKey].filter(function (x) { return x.label === b.label; })[0]) return;
+      state.formBoxes[toKey].push({
+        id: "box-" + toKey + "-" + Date.now() + "-" + Math.floor(Math.random() * 99),
+        label: b.label,
+        fieldIds: [],
+        order: b.order || 1,
+        size: b.size,
+        height: b.height
+      });
+      copiedBoxes += 1;
+    });
+    if (!state.formFieldMeta[toKey]) state.formFieldMeta[toKey] = {};
+    Object.keys((state.formFieldMeta[fromKey] || {})).forEach(function (id) {
+      if (part && !allow.meta[id]) return;
+      state.formFieldMeta[toKey][id] = JSON.parse(JSON.stringify(state.formFieldMeta[fromKey][id]));
+      copiedMeta += 1;
+    });
+    if (!part || allow.layout) {
+      var srcLay = ((state.manualLayouts[fromId] || {}).items) || {};
+      state.manualLayouts[toId] = { items: JSON.parse(JSON.stringify(srcLay)), copiedFrom: fromId };
+      copiedLay = Object.keys(srcLay).length;
+    }
+    if (typeof saveState === "function") saveState();
+    if (typeof window.applyFullFormLayout === "function") {
+      try { window.applyFullFormLayout(toId); } catch (e) {}
+    }
+    alert("کپی از مبدأ به مقصد انجام شد:\n• " + copiedFields + " فیلد/کلید\n• " + copiedBoxes + " کادر\n• " + copiedMeta + " تنظیم فیلد ثابت\n• " + copiedLay + " مورد چیدمان دستی");
+  }
+
+  function wrapCopy() {
+    window.copyPageToTab = function (fromId, toId) {
+      copySelected(fromId, toId);
+    };
+  }
+
+  /* ---------- لیست: مرتب‌سازی با listOrder ---------- */
+  function wrapListSort() {
+    ["renderPharmaciesList", "renderDoctorsList", "renderOrdersList"].forEach(function (name) {
+      if (typeof window[name] !== "function" || window["_v18" + name]) return;
+      window["_v18" + name] = true;
+      var orig = window[name];
+      window[name] = function () {
+        var r = orig.apply(this, arguments);
+        try {
+          var ent = name.indexOf("Pharm") !== -1 ? "pharmacy" : name.indexOf("Doc") !== -1 ? "doctor" : "order";
+          var arr = (state.customFields && state.customFields[ent]) || [];
+          arr.slice().sort(function (a, b) {
+            var ao = Number(a.listOrder != null ? a.listOrder : a.order) || 999;
+            var bo = Number(b.listOrder != null ? b.listOrder : b.order) || 999;
+            return ao - bo;
+          });
+        } catch (e) {}
+        return r;
+      };
+    });
+  }
+
+  function boot() {
+    try { disableNativeRequired(); } catch (e) {}
+    try { stripAllBlackStars(document); } catch (e) {}
+    try { seedRequiredMeta(); } catch (e) {}
+    try { wrapValidate(); } catch (e) {}
+    try { upgradeProdFieldBar(); } catch (e) {}
+    try { watchDesignerPanel(); } catch (e) {}
+    try { refreshExtraInfoTables(); } catch (e) {}
+    try { unifyButtons(document); } catch (e) {}
+    try { wrapConfirms(); } catch (e) {}
+    try { enhanceWidgetActions(); } catch (e) {}
+    try { watchManual(); } catch (e) {}
+    try { mountCopyUi(); } catch (e) {}
+    try { wrapCopy(); } catch (e) {}
+    try { wrapListSort(); } catch (e) {}
+    try {
+      if (typeof window.applyAllFormLayouts === "function") window.applyAllFormLayouts();
+    } catch (e) {}
+
+    var origSw = window.switchTab;
+    if (typeof origSw === "function" && !window._v18Sw) {
+      window._v18Sw = true;
+      window.switchTab = function (id) {
+        origSw(id);
+        setTimeout(function () {
+          stripAllBlackStars(document.getElementById(id) || document);
+          disableNativeRequired();
+          unifyButtons(document.getElementById(id) || document);
+          if (id === "tab-columns-products") {
+            upgradeProdFieldBar();
+            refreshExtraInfoTables();
+          }
+          if (id === "tab-manual-design") {
+            mountCopyUi();
+            unlockManualCanvas();
+          }
+        }, 180);
+      };
+    }
+    console.log("v18 ready", VER);
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+
+/* ===================== (bundled from public/crm-features-v19.js) ===================== */
+// v19 (11.15.0) — ستاره فقط تیک مدیر، کشویی‌های کنارهم + افزودن با تایپ،
+// حذف کادرهای اضافی افزودن‌ها، آیکون سطل/مداد، ترتیب واقعی لیست، آیکون GPS،
+// کلید پاک کردن، اطلاعات کالا + فرمول/ارزش افزوده، پشتیبان واقعی، عیب‌یابی ریز
+(function () {
+  "use strict";
+
+  var VER = "11.15.0";
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  function fieldKeyForTab(tabId) {
+    try {
+      var ut = ((state && state.userTabs) || []).filter(function (t) { return t.id === tabId; })[0];
+      if (ut && ut.key) return ut.key;
+    } catch (e) {}
+    var map = {
+      "tab-dashboard": "dashboard", "tab-pharmacies": "pharmacy", "tab-doctors": "doctor",
+      "tab-orders": "order", "tab-activity-log": "activity", "tab-overview-map": "overview",
+      "tab-live-location": "live", "tab-search-info": "search", "tab-rep-routes": "routes",
+      "tab-my-visit": "visit", "tab-rep-homes": "homes", "tab-leaves": "leave",
+      "tab-notifications": "notifications", "tab-monthly-reports": "reports",
+      "tab-sales-targets": "target", "tab-custom-fields": "additions",
+      "tab-columns-products": "products", "tab-users-permissions": "users",
+      "tab-messengers": "messengers", "tab-backup": "backup",
+      "tab-install-app": "install", "tab-troubleshooting": "diagnostics",
+      "tab-manual-design": "manualdesign"
+    };
+    return map[tabId] || String(tabId || "").replace(/^tab-/, "") || "misc";
+  }
+  function isAdmin() {
+    var role = sessionStorage.getItem("crmUserRole") || "";
+    var user = sessionStorage.getItem("crmUsername") || "";
+    return role.indexOf("مدیر") !== -1 || user === "admin";
+  }
+  function saveSoft() { try { if (typeof saveState === "function") saveState(false); } catch (e) {} }
+
+  /* ======================================================================
+     CSS
+     ====================================================================== */
+  function injectCss() {
+    if ($("v19Style")) return;
+    var st = document.createElement("style");
+    st.id = "v19Style";
+    st.textContent = `
+/* کشویی‌های هر تب کنار هم (تب افزودن‌ها) */
+#addTabPanel{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.7rem;align-items:start}
+#addTabPanel .add-panel-head{grid-column:1/-1}
+#addTabPanel .col-help{grid-column:1/-1}
+#addTabPanel .add-sel-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem;min-width:0}
+#addTabPanel .add-sel-card.add-sel-geo{grid-column:1/-1;background:#f8fafc}
+#addTabPanel .add-sel-head{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;justify-content:space-between}
+#addTabPanel .add-opt-list{max-height:180px;overflow:auto;margin:.4rem 0;padding:0;list-style:none}
+#addTabPanel .add-opt-list li{display:flex;justify-content:space-between;align-items:center;gap:.3rem;padding:.18rem 0;border-bottom:1px dashed #f1f5f9;font-size:.82rem}
+/* مخفی شدن کلید رنگی «افزودن گزینه جدید» کنار لیبل فیلدها */
+.btn-add-option{display:none!important}
+/* سطر افزودن داخل خود کشویی هنگام تایپ */
+.v19-combo-add{color:#0d9488!important;font-weight:800;border-top:1px dashed #99f6e4;background:#f0fdfa!important}
+/* آیکونی شدن کلیدهای حذف/ویرایش */
+button.v19-ic{min-width:34px;padding:.3rem .45rem;font-size:.95rem;line-height:1}
+/* کلید مسیریابی به شکل GPS */
+button.v19-gps{padding:.3rem .45rem;color:#0d9488}
+button.v19-gps svg{display:block}
+/* ردیف اقلام سفارش با ستون‌های جدید */
+.order-item-head,.order-item-row{grid-template-columns:1.9fr .6fr .7fr .95fr .95fr 34px 34px!important}
+.order-item-row .order-item-total{background:#f0fdfa;border-style:dashed;font-weight:800;color:#0f766e;text-align:center}
+@media (max-width:720px){.order-item-row{grid-template-columns:1fr 1fr 34px 34px!important}}
+/* جمع‌های سفارش */
+.v19-order-totals{display:flex;flex-direction:column;gap:.25rem;align-items:flex-end;margin-top:.75rem;font-weight:700;color:#0f172a;background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:.6rem .9rem}
+.v19-order-totals strong{color:#0d9488;font-size:1.02rem}
+.v19-ot-grand{border-top:1px solid #e2e8f0;padding-top:.3rem;color:#166534}
+.v19-ot-grand strong{color:#166534;font-size:1.1rem}
+/* کادر افزودن فیلد به فرم کالا: لیبل‌دار و فلش نزدیک فیلد */
+#prodFieldBar{display:flex;flex-wrap:wrap;gap:.5rem .7rem;align-items:flex-end;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.7rem}
+#prodFieldBar>strong{width:100%}
+#prodFieldBar .v19-mini{display:flex;flex-direction:column;gap:.15rem;font-size:.72rem;font-weight:700;color:#475569}
+#prodFieldBar .v19-mini .form-input,#prodFieldBar .v19-mini .form-select{width:auto;min-width:110px;max-width:170px;background-position:left .4rem center;padding-left:1.4rem}
+#prodFieldBar .prod-field-extra{display:flex;flex-wrap:wrap;gap:.5rem .7rem;align-items:flex-end;margin-top:0!important;width:auto}
+#prodFieldBar .prod-field-extra .form-input,#prodFieldBar .prod-field-extra .form-select{max-width:130px}
+/* پنل اطلاعات کالا */
+.v19-prod-info{background:#fff;border:1px solid #99f6e4;border-radius:12px;padding:.8rem;margin:.8rem 0}
+.v19-prod-info h4{margin:.2rem 0 .6rem;color:#0f766e;font-size:.95rem}
+.v19-prod-info table{font-size:.8rem}
+.v19-prod-info input[type=number]{max-width:70px}
+.v19-prod-info .v19-sec-title{font-weight:800;color:#0f172a;margin:.8rem 0 .35rem;font-size:.86rem}
+.v19-formula-box{display:flex;flex-wrap:wrap;gap:.7rem;align-items:flex-end;background:#f0fdfa;border:1px dashed #5eead4;border-radius:10px;padding:.6rem;margin-top:.5rem}
+.v19-formula-box .v19-mini{display:flex;flex-direction:column;gap:.15rem;font-size:.72rem;font-weight:700;color:#0f766e}
+.v19-formula-box select,.v19-formula-box input{max-width:150px}
+/* صفحه پشتیبان‌گیری: چیدمان مرتب */
+#tab-backup .form-grid{display:block!important}
+#tab-backup .form-group{margin-bottom:1rem;max-width:520px}
+#tab-backup .form-group.full-width{max-width:100%}
+.v19-bk-status{font-size:.84rem;font-weight:800;border-radius:8px;padding:.45rem .8rem;margin-top:.6rem}
+.v19-bk-ok{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
+.v19-bk-warn{background:#fffbeb;color:#92400e;border:1px solid #fde68a}
+/* عیب‌یابی ریز */
+.v19-diag-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.v19-diag-table th{background:#0f766e;color:#fff;padding:.4rem .5rem;text-align:right}
+.v19-diag-table td{border-bottom:1px solid #e2e8f0;padding:.4rem .5rem;vertical-align:top}
+.v19-diag-table .ok{color:#15803d;font-weight:800}
+.v19-diag-table .warn{color:#b45309;font-weight:800}
+.v19-diag-table .bad{color:#b91c1c;font-weight:800}
+.v19-diag-table .hint{color:#64748b;font-size:.76rem}
+/* بازگردانی فیلدهای حذف‌شده */
+.v19-restore-row{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:.5rem .7rem;margin:.5rem 0;font-size:.8rem}
+.v19-restore-row .chip{background:#fff;border:1px solid #fdba74;border-radius:999px;padding:.15rem .6rem;display:inline-flex;gap:.35rem;align-items:center}
+.v19-restore-row .chip button{border:0;background:#0d9488;color:#fff;border-radius:999px;font-size:.72rem;padding:.1rem .5rem;cursor:pointer}
+`;
+    document.head.appendChild(st);
+  }
+
+  /* ======================================================================
+     ۱) ستاره الزامی فقط همان‌هایی که مدیر تیک زده
+     ====================================================================== */
+  function fixRequiredDefaults() {
+    try { window._v18DefaultReq = { pharmacyName: 1, doctorName: 1 }; } catch (e) {}
+    if (!window.state || !state.formFieldMeta) return;
+    if (state._v19ReqFixed) return;
+    var OLD = ["pharmacyDate", "pharmacyProvince", "pharmacyCity", "pharmacyDistrict", "pharmacyAddress",
+      "doctorDate", "doctorSpecialty", "doctorProvince", "doctorCity", "doctorDistrict", "doctorAddress",
+      "orderPharmacyName", "orderProvince", "orderCity", "orderDistrict",
+      "productName", "productDistPrice", "productPrice"];
+    Object.keys(state.formFieldMeta).forEach(function (tab) {
+      OLD.forEach(function (id) {
+        var m = state.formFieldMeta[tab] && state.formFieldMeta[tab][id];
+        if (m && m.required === true) m.required = false;
+      });
+    });
+    state._v19ReqFixed = true;
+    saveSoft();
+  }
+
+  /* ======================================================================
+     ۲) تب افزودن‌ها: افزودن گزینه با تایپ داخل خود کشویی
+     ====================================================================== */
+  function findCustomFieldById(id) {
+    var out = null;
+    try {
+      Object.keys((state && state.customFields) || {}).forEach(function (k) {
+        (state.customFields[k] || []).forEach(function (f) { if (f.id === id) out = f; });
+      });
+    } catch (e) {}
+    return out;
+  }
+  function comboAllowsAdd(sel) {
+    if (!sel || !sel.id) return false;
+    if (/Province|City|District|Region|Year|Month|Rep|Representative|PharmacyName/i.test(sel.id)) return false; // این فیلدهای مرجع فقط توسط مدیر/افزودن‌ها مدیریت می‌شوند
+    var groupText=String((sel.closest(".form-group")||{}).textContent||"");if(/نماینده علمی|سال|ماه|استان|شهر|منطقه|نام داروخانه/.test(groupText))return false;
+    if (sel.closest("#columnsDesignerHost") || sel.closest(".modal-overlay") || sel.closest("#manualDesignCanvas")) return false;
+    var cf = sel.getAttribute("data-custom-field-id") || (sel.dataset && sel.dataset.customFieldId);
+    if (cf) {
+      var f = findCustomFieldById(cf);
+      return !!(f && f.allowAddOption !== false);
+    }
+    return true; // کشویی‌های ثابت فرم‌ها
+  }
+  function addTypedOptionToSelect(sel, value) {
+    value = String(value || "").trim();
+    if (!value) return;
+    var cfId = sel.getAttribute("data-custom-field-id") || (sel.dataset && sel.dataset.customFieldId);
+    var custom = cfId ? findCustomFieldById(cfId) : null;
+    if (custom) {
+      if (!custom.options) custom.options = [];
+      if (custom.options.indexOf(value) === -1) custom.options.push(value);
+    } else {
+      if (!state.selectExtraOptions) state.selectExtraOptions = {};
+      if (!state.selectExtraOptions[sel.id]) state.selectExtraOptions[sel.id] = [];
+      if (state.selectExtraOptions[sel.id].indexOf(value) === -1) state.selectExtraOptions[sel.id].push(value);
+    }
+    var exists = false;
+    Array.prototype.forEach.call(sel.options, function (o) { if (o.value === value) exists = true; });
+    if (!exists) {
+      var o = document.createElement("option");
+      o.value = value; o.textContent = value; sel.appendChild(o);
+    }
+    saveSoft();
+    try { if (typeof window.applySelectExtraOptions === "function") window.applySelectExtraOptions(); } catch (e) {}
+    try { if (typeof window.renderAllCustomFieldsInFormsAndTables === "function") window.renderAllCustomFieldsInFormsAndTables(); } catch (e) {}
+    try { if (typeof window.renderPharmaciesList === "function") window.renderPharmaciesList(); } catch (e) {}
+  }
+  function hookComboInstantAdd() {
+    if (window._v19ComboHook) return;
+    window._v19ComboHook = true;
+    document.addEventListener("input", function (ev) {
+      var inp = ev.target && ev.target.closest ? ev.target.closest(".crm-combo-input") : null;
+      if (!inp) return;
+      var wrap = inp.closest(".crm-combo");
+      if (!wrap) return;
+      var sel = wrap.querySelector("select.crm-combo-src");
+      var list = wrap.querySelector(".crm-combo-list");
+      if (!sel || !list) return;
+      var old = list.querySelector(".v19-combo-add");
+      if (old) old.parentNode.removeChild(old);
+      if (!comboAllowsAdd(sel)) return;
+      var q = String(inp.value || "").trim();
+      if (!q) return;
+      var dup = false;
+      Array.prototype.forEach.call(sel.options, function (o) {
+        if ((o.textContent || o.value || "").trim() === q) dup = true;
+      });
+      if (dup) return;
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "crm-combo-item v19-combo-add";
+      btn.textContent = "➕ افزودن «" + q + "»";
+      btn.addEventListener("mousedown", function (e) { e.preventDefault(); });
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        addTypedOptionToSelect(sel, q);
+        sel.value = q;
+        inp.value = q;
+        list.hidden = true;
+        try { sel.dispatchEvent(new Event("change", { bubbles: true })); } catch (err) {}
+      });
+      list.appendChild(btn);
+      list.hidden = false;
+    });
+  }
+
+  /* ======================================================================
+     ۳) آیکون سطل زباله / مداد برای همه کلیدهای حذف/ویرایش
+     ====================================================================== */
+  function cleanBtnText(t) {
+    return String(t || "").replace(/[✏️🗑️🖊️]/g, "").replace(/\s+/g, " ").trim();
+  }
+  function iconifyButtons(root) {
+    root = root || document;
+    Array.prototype.forEach.call(root.querySelectorAll("button"), function (b) {
+      try {
+        if (b.dataset.v19ic === "1") return;
+        if (b.closest(".app-header, .app-nav, .side-menu-drawer, #manualDesignCanvas, #tab-manual-design, .modal-overlay")) return;
+        if (b.classList.contains("nav-item") || b.classList.contains("side-menu-item")) return;
+        var t = cleanBtnText(b.textContent || "");
+        if (t === "حذف") {
+          b.dataset.v19ic = "1";
+          b.innerHTML = "🗑️";
+          b.title = "حذف";
+          b.setAttribute("aria-label", "حذف");
+          b.classList.add("v19-ic");
+        } else if (t === "ویرایش") {
+          b.dataset.v19ic = "1";
+          b.innerHTML = "✏️";
+          b.title = "ویرایش";
+          b.setAttribute("aria-label", "ویرایش");
+          b.classList.add("v19-ic");
+        }
+      } catch (e) {}
+    });
+  }
+  function watchIcons() {
+    if (window._v19IcObs) return;
+    window._v19IcObs = true;
+    var t;
+    new MutationObserver(function () {
+      clearTimeout(t);
+      t = setTimeout(function () { iconifyButtons(document); }, 120);
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+
+  /* ======================================================================
+     ۴) ترتیب واقعی ستون‌های لیست + ۶) آیکون GPS مسیریابی
+     ====================================================================== */
+  function listOrderMap(tabId) {
+    var m = {};
+    try {
+      (window.getUnifiedFieldList(tabId) || []).forEach(function (f) {
+        if (f && f.id) m[f.id] = (f.listOrder != null && f.listOrder !== "") ? Number(f.listOrder) : (Number(f.order) || 999);
+      });
+    } catch (e) {}
+    return m;
+  }
+  function shownInList(entity, id) {
+    try { return typeof window.isColShownInList !== "function" || window.isColShownInList(entity, id); }
+    catch (e) { return true; }
+  }
+  function customListFields(entity) {
+    try {
+      return (((state || {}).customFields || {})[entity] || [])
+        .filter(function (f) { return f.showInList !== false; })
+        .slice()
+        .sort(function (a, b) {
+          var ao = Number(a.listOrder != null ? a.listOrder : a.order) || 999;
+          var bo = Number(b.listOrder != null ? b.listOrder : b.order) || 999;
+          return ao - bo;
+        })
+        .map(function (f) { return { fid: f.id }; });
+    } catch (e) { return []; }
+  }
+  function extraCols(entity) {
+    try {
+      return (typeof window.extraListColumns === "function" ? window.extraListColumns(entity) : [])
+        .map(function (c) { return { fid: c.id }; });
+    } catch (e) { return []; }
+  }
+  function slotsFor(entity) {
+    if (entity === "pharmacy") {
+      var bi = ["pharmacyDate", "pharmacyProvince", "pharmacyCity", "pharmacyName", "pharmacyPhone", "pharmacyIsPercentage", "phMapSearchInput"]
+        .filter(function (id) { return shownInList("pharmacy", id); })
+        .map(function (id) { return { fid: id }; });
+      return [{ pin: "row" }, { pin: "rep" }].concat(bi, [{ pin: "route" }], extraCols("pharmacy"), customListFields("pharmacy"), [{ pin: "ops" }]);
+    }
+    if (entity === "doctor") {
+      var bj = ["doctorDate", "doctorProvince", "doctorName", "doctorSpecialty", "doctorIsPercentage", "docMapSearchInput"]
+        .map(function (id) { return { fid: id }; }); // سلول‌ها در اجرای فعلی فیلتر نمی‌شوند
+      return [{ pin: "row" }, { pin: "rep" }].concat(bj, [{ pin: "route" }], extraCols("doctor"), customListFields("doctor"), [{ pin: "ops" }]);
+    }
+    // order
+    var bo = ["orderPharmacyName", "orderProvince", "orderRepName", "orderDate"].map(function (id) { return { fid: id }; });
+    return [{ pin: "row" }].concat(bo, [{ pin: "items" }, { pin: "total" }, { fid: "orderStatus" }], extraCols("order"), customListFields("order"), [{ pin: "ops" }]);
+  }
+  function GPS_SVG() {
+    return '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 14.5 9 2.5 2.5 0 0 1 12 11.5z"/></svg>';
+  }
+  function paintRouteIcons(tbody) {
+    if (!tbody) return;
+    Array.prototype.forEach.call(tbody.querySelectorAll(".btn-route"), function (b) {
+      if (b.dataset.v19gps === "1") return;
+      b.dataset.v19gps = "1";
+      b.innerHTML = GPS_SVG();
+      b.title = "مسیریابی (GPS)";
+      b.setAttribute("aria-label", "مسیریابی");
+      b.classList.add("v19-gps");
+    });
+  }
+  function reorderOneList(entity, theadTrId, tbodyId) {
+    var theadTr = $(theadTrId), tbody = $(tbodyId);
+    if (!theadTr || !tbody) return;
+    var tabId = entity === "pharmacy" ? "tab-pharmacies" : entity === "doctor" ? "tab-doctors" : "tab-orders";
+    var slots = slotsFor(entity);
+    var orderMap = listOrderMap(tabId);
+    var headCells = theadTr.children;
+    if (headCells.length !== slots.length) return; // عدم تطابق → دست نزن
+    var repIdx = -1, fieldIdx = [], tailIdx = [];
+    slots.forEach(function (s, i) {
+      if (s.pin === "rep") repIdx = i;
+      else if (s.fid) fieldIdx.push(i);
+      else if (i !== 0) tailIdx.push(i);
+    });
+    if (entity === "order") {
+      // نام نماینده به‌عنوان ستون دوم
+      slots.forEach(function (s, i) { if (s.fid === "orderRepName") repIdx = i; });
+      fieldIdx = fieldIdx.filter(function (i) { return slots[i].fid !== "orderRepName"; });
+    }
+    fieldIdx.sort(function (a, b) {
+      var av = orderMap[slots[a].fid] != null ? orderMap[slots[a].fid] : 999;
+      var bv = orderMap[slots[b].fid] != null ? orderMap[slots[b].fid] : 999;
+      return av - bv;
+    });
+    var desired = [0];
+    if (repIdx > 0) desired.push(repIdx);
+    desired = desired.concat(fieldIdx).concat(tailIdx.filter(function (i) {
+      return desired.indexOf(i) === -1 && fieldIdx.indexOf(i) === -1;
+    }));
+    function applyTo(rowEl) {
+      var cells = rowEl.children;
+      if (cells.length !== slots.length) return;
+      var arr = Array.prototype.slice.call(cells).slice();
+      desired.forEach(function (cur) { rowEl.appendChild(arr[cur]); });
+    }
+    try { applyTo(theadTr); } catch (e) {}
+    Array.prototype.forEach.call(tbody.children, applyTo);
+    paintRouteIcons(tbody);
+    iconifyButtons(tbody);
+  }
+  function wrapListRenderers() {
+    var cfgs = [
+      ["renderPharmaciesList", "pharmacy", "tablePharmaciesHeader", "tablePharmaciesBody"],
+      ["renderDoctorsList", "doctor", "tableDoctorsHeader", "tableDoctorsBody"],
+      ["renderOrdersList", "order", "tableOrdersHeader", "tableOrdersBody"]
+    ];
+    cfgs.forEach(function (c) {
+      if (typeof window[c[0]] !== "function" || window["_v19" + c[0]]) return;
+      window["_v19" + c[0]] = true;
+      var orig = window[c[0]];
+      window[c[0]] = function () {
+        var r = orig.apply(this, arguments);
+        try { reorderOneList(c[1], c[2], c[3]); } catch (e) {}
+        return r;
+      };
+    });
+  }
+
+  /* ======================================================================
+     ۵) کلید پاک کردن برای فرم‌ها
+     ====================================================================== */
+  function addClearButtons() {
+    function mk(saveId, resetName) {
+      var btn = $(saveId);
+      if (!btn || $(saveId + "ClearV19")) return;
+      var c = document.createElement("button");
+      c.type = "button";
+      c.id = saveId + "ClearV19";
+      c.className = "btn btn-outline";
+      c.style.marginRight = ".5rem";
+      c.innerHTML = "🧹 پاک کردن";
+      c.title = "پاک کردن همه فیلدهای این فرم";
+      c.addEventListener("click", function () {
+        if (!confirm("همه فیلدهای این فرم پاک شود؟")) return;
+        try { if (typeof window[resetName] === "function") window[resetName](); } catch (e) {}
+        var form = btn.closest("form");
+        if (form) {
+          Array.prototype.forEach.call(form.querySelectorAll("input, select, textarea"), function (el) {
+            if (el.type === "button" || el.type === "submit" || el.type === "hidden") return;
+            if (el.readOnly) return;
+            if (el.type === "checkbox") { el.checked = false; return; }
+            if (el.tagName === "SELECT") {
+              el.selectedIndex = 0;
+              try { el.dispatchEvent(new Event("change", { bubbles: true })); } catch (e) {}
+            } else {
+              el.value = "";
+              try { el.dispatchEvent(new Event("input", { bubbles: true })); } catch (e) {}
+            }
+          });
+        }
+        if (saveId === "btnSaveOrder") {
+          var cont = $("orderItemsContainer");
+          if (cont) cont.innerHTML = "";
+          var hid = $("orderEditId"); if (hid) hid.value = "";
+        }
+        ["editingPharmacyId", "editingDoctorId", "_editingOrderId"].forEach(function (k) {
+          try { window[k] = ""; } catch (e) {}
+        });
+        try { if (typeof updateOrderTotalAmountDisplay === "function") updateOrderTotalAmountDisplay(); } catch (e) {}
+      });
+      btn.parentNode.insertBefore(c, btn);
+    }
+    mk("btnSavePharmacy", "resetPharmacyForm");
+    mk("btnSaveDoctor", "resetDoctorForm");
+    mk("btnSaveOrder", "resetOrderForm");
+  }
+
+  /* ======================================================================
+     ۸) بازگردانی فیلدهای حذف‌شده (پایین طراح ستون‌ها)
+     ====================================================================== */
+  function injectRestoreChips() {
+    var panel = $("colDesignerPanel");
+    if (!panel || panel.hidden) return;
+    var tabId = window._activeColTab;
+    var old = $("v19RestoreRow");
+    if (old) old.parentNode.removeChild(old);
+    if (!tabId || !window.state) return;
+    var key = fieldKeyForTab(tabId);
+    var meta = ((state.formFieldMeta || {})[key]) || {};
+    var deletedIds = Object.keys(meta).filter(function (id) { return meta[id] && meta[id].deleted; });
+    if (!deletedIds.length) return;
+    var row = document.createElement("div");
+    row.id = "v19RestoreRow";
+    row.className = "v19-restore-row";
+    row.innerHTML = "<strong>فیلدهای حذف‌شده این تب:</strong> " + deletedIds.map(function (id) {
+      var lab = (meta[id] && meta[id].label) || id;
+      return '<span class="chip">' + esc(lab) + ' <button type="button" data-rid="' + esc(id) + '">بازگردانی</button></span>';
+    }).join("");
+    var head = panel.querySelector(".col-panel-head");
+    if (head && head.parentNode) head.parentNode.insertBefore(row, head.nextSibling);
+    else panel.insertBefore(row, panel.firstChild);
+    Array.prototype.forEach.call(row.querySelectorAll("button[data-rid]"), function (b) {
+      b.addEventListener("click", function () {
+        var id = b.getAttribute("data-rid");
+        if (meta[id]) meta[id].deleted = false;
+        saveSoft();
+        alert("فیلد بازگردانی شد؛ صفحه تازه‌سازی می‌شود.");
+        location.reload();
+      });
+    });
+  }
+  function watchDesignerForChips() {
+    var host = $("columnsDesignerHost");
+    if (!host || host.dataset.v19chips === "1") return;
+    host.dataset.v19chips = "1";
+    var t;
+    new MutationObserver(function () {
+      clearTimeout(t);
+      t = setTimeout(injectRestoreChips, 150);
+    }).observe(host, { childList: true, subtree: true });
+  }
+
+  /* ======================================================================
+     ۱۱) اطلاعات کالا + فرمول مبلغ + ارزش افزوده
+     ====================================================================== */
+  function productFieldsList() {
+    var out = [];
+    try { out = (window.getUnifiedFieldList("tab-columns-products") || []).slice(); } catch (e) {}
+    return out.filter(function (f) {
+      return f && f.kind !== "box" && f.kind !== "widget" && String(f.inputKind || f.type || "").indexOf("widget-") !== 0;
+    });
+  }
+  function writeProdFieldFlag(f, flag, value) {
+    try {
+      var customs = ((state.customFields || {}).products) || [];
+      var rec = null;
+      customs.forEach(function (x) { if (x.id === f.id) rec = x; });
+      if (rec) { rec[flag] = value; saveSoft(); return; }
+      if (!state.formFieldMeta) state.formFieldMeta = {};
+      if (!state.formFieldMeta.products) state.formFieldMeta.products = {};
+      if (!state.formFieldMeta.products[f.id]) state.formFieldMeta.products[f.id] = {};
+      state.formFieldMeta.products[f.id][flag] = value;
+      saveSoft();
+    } catch (e) {}
+  }
+  function renderProdInfoPanel() {
+    var form = $("formProduct");
+    if (!form) return;
+    var host = $("v19ProdInfo");
+    if (!host) {
+      host = document.createElement("div");
+      host.id = "v19ProdInfo";
+      host.className = "v19-prod-info";
+      var bar = $("prodFieldBar");
+      form.insertBefore(host, bar ? bar.nextSibling : form.firstChild.nextSibling);
+    }
+    var fields = productFieldsList();
+    var html = "<h4>🧾 اطلاعات کالا — فیلدهای فرم کالا</h4>";
+    html += "<div class='table-responsive'><table class='data-table'><thead><tr>" +
+      "<th>ترتیب در کادر کالا</th><th>ترتیب در لیست</th><th>عنوان</th><th>نوع</th><th>عرض</th><th>ارتفاع</th><th>عملیات</th></tr></thead><tbody>";
+    fields.forEach(function (f) {
+      html += "<tr data-fid='" + esc(f.id) + "'>" +
+        "<td><input type='number' min='1' class='form-input v19-pf-ord' data-fid='" + esc(f.id) + "' value='" + (f.order || "") + "'></td>" +
+        "<td><input type='number' min='1' class='form-input v19-pf-lord' data-fid='" + esc(f.id) + "' value='" + (f.listOrder || f.order || "") + "'></td>" +
+        "<td><strong>" + esc(f.label) + "</strong>" + (f.builtin ? " <span class='col-help'>(ثابت)</span>" : "") + "</td>" +
+        "<td>" + esc(f.inputKind || f.type || "ساده") + "</td>" +
+        "<td><input type='number' min='60' max='900' class='form-input v19-pf-size' data-fid='" + esc(f.id) + "' value='" + (f.size || 220) + "'></td>" +
+        "<td><input type='number' min='24' max='400' class='form-input v19-pf-h' data-fid='" + esc(f.id) + "' value='" + (f.height || 42) + "'></td>" +
+        "<td>" + (f.builtin ? "—" : "<button type='button' class='btn btn-danger btn-sm v19-pf-del' data-fid='" + esc(f.id) + "'>🗑️</button>") + "</td></tr>";
+    });
+    html += "</tbody></table></div>";
+
+    /* فهرست کالاها با ویرایش/حذف واقعی */
+    html += "<div class='v19-sec-title'>📦 اطلاعات کالاهای ثبت‌شده</div>";
+    html += "<div class='table-responsive'><table class='data-table'><thead><tr><th>ردیف</th><th>نام کالا</th><th>قیمت پخش</th><th>قیمت داروخانه</th><th>موجودی</th><th>عملیات</th></tr></thead><tbody>";
+    ((state.products || [])).forEach(function (p, i) {
+      html += "<tr><td>" + (i + 1).toLocaleString("fa-IR") + "</td>" +
+        "<td><strong>" + esc(p.name || "—") + "</strong></td>" +
+        "<td>" + Number(p.distributorPrice || p.price || 0).toLocaleString("fa-IR") + " ریال</td>" +
+        "<td style='color:#0d9488;font-weight:800'>" + Number(p.pharmacyPrice || p.price || 0).toLocaleString("fa-IR") + " ریال</td>" +
+        "<td>" + Number(p.stock || 0).toLocaleString("fa-IR") + "</td>" +
+        "<td><button type='button' class='btn btn-outline btn-sm v19-prod-edit' data-pid='" + esc(p.id) + "'>✏️</button> " +
+        "<button type='button' class='btn btn-danger btn-sm v19-prod-del' data-pid='" + esc(p.id) + "'>🗑️</button></td></tr>";
+    });
+    html += "</tbody></table></div>";
+
+    /* فرمول مبلغ و ارزش افزوده (فقط مدیر) */
+    html += "<div class='v19-sec-title'>🧮 فرمول محاسبه مبلغ سفارش و ارزش افزوده</div>";
+    if (isAdmin()) {
+      var fm = (typeof getOrderFormula === "function") ? getOrderFormula() : { qty: "count", op: "*", price: "price", vat: 10 };
+      var fldOpts = function (cur) {
+        return "<option value='count'" + (cur === "count" ? " selected" : "") + ">تعداد کالا</option>" +
+          "<option value='gift'" + (cur === "gift" ? " selected" : "") + ">تعداد جایزه</option>" +
+          "<option value='price'" + (cur === "price" ? " selected" : "") + ">قیمت واحد</option>";
+      };
+      var opOpts = function (cur) {
+        return "<option value='*'" + (cur === "*" ? " selected" : "") + ">ضربدر (×)</option>" +
+          "<option value='/'" + (cur === "/" ? " selected" : "") + ">تقسیم بر (÷)</option>" +
+          "<option value='+'" + (cur === "+" ? " selected" : "") + ">به‌علاوه (+)</option>" +
+          "<option value='-'" + (cur === "-" ? " selected" : "") + ">منهای (−)</option>";
+      };
+      html += "<div class='v19-formula-box'>" +
+        "<span class='v19-mini'>جمع هر ردیف =</span>" +
+        "<label class='v19-mini'>فیلد اول<select id='v19FmQty' class='form-select'>" + fldOpts(fm.qty) + "</select></label>" +
+        "<label class='v19-mini'>عملگر<select id='v19FmOp' class='form-select'>" + opOpts(fm.op) + "</select></label>" +
+        "<label class='v19-mini'>فیلد دوم<select id='v19FmPrice' class='form-select'>" + fldOpts(fm.price) + "</select></label>" +
+        "<label class='v19-mini'>درصد ارزش افزوده<input id='v19FmVat' type='number' min='0' max='100' class='form-input' value='" + fm.vat + "'></label>" +
+        "<button type='button' id='v19FmSave' class='btn btn-primary btn-sm' style='background:#0d9488'>ذخیره فرمول</button>" +
+        "</div>";
+    } else {
+      html += "<p class='col-help'>تنظیم فرمول مبلغ و درصد ارزش افزوده فقط برای «مدیر سیستم» فعال است. درصد فعلی: " +
+        ((typeof getOrderFormula === "function") ? getOrderFormula().vat : 10).toLocaleString("fa-IR") + "٪</p>";
+    }
+    host.innerHTML = html;
+
+    /* اتصال رویدادها */
+    Array.prototype.forEach.call(host.querySelectorAll(".v19-pf-ord"), function (inp) {
+      inp.addEventListener("change", function () {
+        var f = fields.filter(function (x) { return x.id === inp.getAttribute("data-fid"); })[0];
+        if (!f) return;
+        writeProdFieldFlag(f, "order", parseInt(inp.value, 10) || 1);
+        try { window.applyFullFormLayout("tab-columns-products"); } catch (e) {}
+        renderProdInfoPanel();
+      });
+    });
+    Array.prototype.forEach.call(host.querySelectorAll(".v19-pf-lord"), function (inp) {
+      inp.addEventListener("change", function () {
+        var f = fields.filter(function (x) { return x.id === inp.getAttribute("data-fid"); })[0];
+        if (!f) return;
+        writeProdFieldFlag(f, "listOrder", parseInt(inp.value, 10) || 1);
+        renderProdInfoPanel();
+      });
+    });
+    Array.prototype.forEach.call(host.querySelectorAll(".v19-pf-size"), function (inp) {
+      inp.addEventListener("change", function () {
+        var f = fields.filter(function (x) { return x.id === inp.getAttribute("data-fid"); })[0];
+        if (!f) return;
+        writeProdFieldFlag(f, "size", parseInt(inp.value, 10) || 220);
+        try { window.applyFullFormLayout("tab-columns-products"); } catch (e) {}
+      });
+    });
+    Array.prototype.forEach.call(host.querySelectorAll(".v19-pf-h"), function (inp) {
+      inp.addEventListener("change", function () {
+        var f = fields.filter(function (x) { return x.id === inp.getAttribute("data-fid"); })[0];
+        if (!f) return;
+        writeProdFieldFlag(f, "height", parseInt(inp.value, 10) || 42);
+        try { window.applyFullFormLayout("tab-columns-products"); } catch (e) {}
+      });
+    });
+    Array.prototype.forEach.call(host.querySelectorAll(".v19-pf-del"), function (btn) {
+      btn.addEventListener("click", function () {
+        var id = btn.getAttribute("data-fid");
+        if (!confirm("این فیلد کاملاً از فرم کالا حذف شود؟")) return;
+        state.customFields.products = ((state.customFields || {}).products || []).filter(function (x) { return x.id !== id; });
+        document.querySelectorAll('[data-custom-field-id="' + id + '"], [data-col-fid="' + id + '"]').forEach(function (n) {
+          var g = n.closest(".form-group, .col-widget-wrap") || n;
+          if (g && g.parentNode) g.parentNode.removeChild(g);
+        });
+        saveSoft();
+        try { window.applyFullFormLayout("tab-columns-products"); } catch (e) {}
+        renderProdInfoPanel();
+      });
+    });
+    Array.prototype.forEach.call(host.querySelectorAll(".v19-prod-edit"), function (btn) {
+      btn.addEventListener("click", function () {
+        var id = btn.getAttribute("data-pid");
+        try { if (typeof editProductCatalogItem === "function") editProductCatalogItem(id); } catch (e) {}
+      });
+    });
+    Array.prototype.forEach.call(host.querySelectorAll(".v19-prod-del"), function (btn) {
+      btn.addEventListener("click", function () {
+        var id = btn.getAttribute("data-pid");
+        try { if (typeof deleteProductCatalogItem === "function") deleteProductCatalogItem(id); } catch (e) {}
+        renderProdInfoPanel();
+      });
+    });
+    var fmSave = $("v19FmSave");
+    if (fmSave) {
+      fmSave.addEventListener("click", function () {
+        if (!state.settings) state.settings = {};
+        state.settings.orderFormula = {
+          qty: ($("v19FmQty") || {}).value || "count",
+          op: ($("v19FmOp") || {}).value || "*",
+          price: ($("v19FmPrice") || {}).value || "price",
+          vat: parseInt(($("v19FmVat") || {}).value, 10) || 0
+        };
+        saveSoft();
+        try { if (typeof updateOrderTotalAmountDisplay === "function") updateOrderTotalAmountDisplay(); } catch (e) {}
+        alert("فرمول محاسبه ذخیره شد: «" +
+          ({ count: "تعداد کالا", gift: "تعداد جایزه", price: "قیمت واحد" })[state.settings.orderFormula.qty] + " " +
+          ({ "*": "×", "/": "÷", "+": "+", "-": "−" })[state.settings.orderFormula.op] + " " +
+          ({ count: "تعداد کالا", gift: "تعداد جایزه", price: "قیمت واحد" })[state.settings.orderFormula.price] +
+          "» و ارزش افزوده " + Number(state.settings.orderFormula.vat).toLocaleString("fa-IR") + "٪");
+      });
+    }
+  }
+  function upgradeProdBarV19() {
+    var bar = $("prodFieldBar");
+    if (!bar || bar.dataset.v19 === "1") return;
+    bar.dataset.v19 = "1";
+    // لیبل‌دار کردن کنترل‌ها
+    var pairs = [
+      ["prodNewFieldLabel", "عنوان فیلد"], ["prodNewFieldType", "نوع فیلد"], ["prodNewFieldOpts", "گزینه‌ها"],
+      ["prodNewFieldOrder", "شماره ترتیب در کادر کالا"], ["prodNewFieldPlace", "چینش"],
+      ["prodNewFieldSize", "عرض پیکسل"], ["prodNewFieldHeight", "ارتفاع پیکسل"]
+    ];
+    pairs.forEach(function (pr) {
+      var el = $(pr[0]);
+      if (!el || el.closest(".v19-mini")) return;
+      var w = document.createElement("label");
+      w.className = "v19-mini";
+      el.parentNode.insertBefore(w, el);
+      w.appendChild(el);
+      w.insertBefore(document.createTextNode(pr[1]), el);
+    });
+    // شماره ترتیب در لیست (کنار ترتیب کادر)
+    if (!$("prodNewFieldListOrder")) {
+      var ord = $("prodNewFieldOrder");
+      if (ord) {
+        var w2 = document.createElement("label");
+        w2.className = "v19-mini";
+        w2.innerHTML = "شماره ترتیب در لیست<input id='prodNewFieldListOrder' class='form-input' type='number' min='1' placeholder='ترتیب لیست'>";
+        var mini = ord.closest(".v19-mini");
+        if (mini && mini.parentNode) mini.parentNode.insertBefore(w2, mini.nextSibling);
+        else bar.appendChild(w2);
+      }
+    }
+    var add = $("btnAddProductField");
+    if (add && add.dataset.v19 !== "1") {
+      add.dataset.v19 = "1";
+      add.addEventListener("click", function () {
+        var last = ((state.customFields || {}).products || []).slice(-1)[0];
+        if (last) {
+          var lo = parseInt(($("prodNewFieldListOrder") || {}).value, 10);
+          if (lo > 0) last.listOrder = lo;
+          saveSoft();
+        }
+        if ($("prodNewFieldListOrder")) $("prodNewFieldListOrder").value = "";
+        setTimeout(renderProdInfoPanel, 60);
+      });
+    }
+    var ed = $("btnEditProductForm");
+    if (ed) ed.parentNode.removeChild(ed); // «ویرایش کالای جدول» حذف شد
+  }
+
+  /* ======================================================================
+     ۴) افزودن لحظه‌ای برای فیلدهای غیرکشویی (حافظه پیشنهاد)
+     ====================================================================== */
+  function attachHistoryDatalist(inp) {
+    if (!inp || inp.dataset.v19hist === "1") return;
+    var fid = inp.getAttribute("data-custom-field-id") || "";
+    if (!fid) return;
+    var f = findCustomFieldById(fid);
+    if (!f || f.allowAddOption === false) return;
+    var kind = String(f.inputKind || f.type || "simple");
+    if (kind === "select" || kind === "date") return;
+    inp.dataset.v19hist = "1";
+    var listId = "v19hist-" + fid;
+    var dl = $(listId);
+    if (!dl) {
+      dl = document.createElement("datalist");
+      dl.id = listId;
+      document.body.appendChild(dl);
+    }
+    inp.setAttribute("list", listId);
+    var hist = ((state.instantValueHistory || {})[fid]) || [];
+    dl.innerHTML = hist.map(function (v) { return "<option value='" + esc(v) + "'></option>"; }).join("");
+  }
+  function hookInstantHistory() {
+    if (window._v19Hist || !window.state) return;
+    window._v19Hist = true;
+    if (!state.instantValueHistory) state.instantValueHistory = {};
+    document.addEventListener("focusin", function (e) {
+      if (e.target && e.target.getAttribute && e.target.getAttribute("data-custom-field-id")) attachHistoryDatalist(e.target);
+    });
+    document.addEventListener("focusout", function (e) {
+      var inp = e.target;
+      if (!inp || !inp.getAttribute || !inp.getAttribute("data-custom-field-id")) return;
+      var fid = inp.getAttribute("data-custom-field-id");
+      var v = String(inp.value || "").trim();
+      if (!v) return;
+      var f = findCustomFieldById(fid);
+      if (!f || f.allowAddOption === false) return;
+      var kind = String(f.inputKind || f.type || "simple");
+      if (kind === "select" || kind === "date") return;
+      var arr = state.instantValueHistory[fid] || (state.instantValueHistory[fid] = []);
+      if (arr.indexOf(v) === -1) {
+        arr.unshift(v);
+        if (arr.length > 30) arr.length = 30;
+        saveSoft();
+      }
+    });
+  }
+
+  /* ======================================================================
+     ۱۲) پشتیبان‌گیری واقعی در پوشه انتخابی مدیر
+     ====================================================================== */
+  var bk = { file: null, dir: null };
+  function idbOpen() {
+    return new Promise(function (res, rej) {
+      if (!window.indexedDB) return rej(new Error("no idb"));
+      var rq = indexedDB.open("crmV19", 1);
+      rq.onupgradeneeded = function () { rq.result.createObjectStore("kv"); };
+      rq.onsuccess = function () { res(rq.result); };
+      rq.onerror = function () { rej(rq.error || new Error("idb err")); };
+    });
+  }
+  function idbSet(k, v) {
+    return idbOpen().then(function (db) {
+      return new Promise(function (res, rej) {
+        var tx = db.transaction("kv", "readwrite");
+        tx.objectStore("kv").put(v, k);
+        tx.oncomplete = function () { res(); };
+        tx.onerror = function () { rej(tx.error); };
+      });
+    });
+  }
+  function idbGet(k) {
+    return idbOpen().then(function (db) {
+      return new Promise(function (res, rej) {
+        var tx = db.transaction("kv", "readonly");
+        var g = tx.objectStore("kv").get(k);
+        g.onsuccess = function () { res(g.result || null); };
+        g.onerror = function () { rej(g.error); };
+      });
+    });
+  }
+  function bkStatus(msg, ok) {
+    var el = $("autoBackupHandleStatus");
+    if (el) {
+      el.textContent = msg;
+      el.className = ok ? "v19-bk-status v19-bk-ok" : "v19-bk-status v19-bk-warn";
+      el.style.cssText = "";
+    }
+  }
+  function bkWriteJson(name) {
+    var json = JSON.stringify(state, null, 2);
+    if (bk.dir) {
+      return bk.dir.getFileHandle(name, { create: true }).then(function (fh) {
+        return fh.createWritable().then(function (w) {
+          return w.write(json).then(function () { return w.close(); });
+        });
+      });
+    }
+    if (bk.file) {
+      return bk.file.createWritable().then(function (w) {
+        return w.write(json).then(function () { return w.close(); });
+      });
+    }
+    return Promise.reject(new Error("no-target"));
+  }
+  function bkHasTarget() { return !!(bk.dir || bk.file); }
+
+  function overrideAutoBackup() {
+    window.performAutoBackup = function () {
+      try {
+        if (state.settings) state.settings.lastBackupTime = new Date().toLocaleString("fa-IR");
+      } catch (e) {}
+      if (!bkHasTarget()) return Promise.resolve(false);
+      return bkWriteJson("crm-backup-latest.json").then(function () {
+        bkStatus("✅ ذخیره خودکار فعال است — آخرین: " + (state.settings && state.settings.lastBackupTime || ""), true);
+        return true;
+      }).catch(function (err) {
+        bkStatus("⚠️ خطا در نوشتن فایل پشتیبان: " + (err && err.message ? err.message : err), false);
+        return false;
+      });
+    };
+  }
+
+  function connectBackupTarget() {
+    function afterPick() {
+      idbSet("backupHandles", { file: bk.file || null, dir: bk.dir || null }).catch(function () {});
+      bkStatus("✅ متصل شد — پشتیبان‌ها در محل انتخاب‌شده ذخیره می‌شوند", true);
+    }
+    if (window.showDirectoryPicker) {
+      return window.showDirectoryPicker({ id: "crmBackupFolder" }).then(function (d) {
+        bk.dir = d; bk.file = null;
+        afterPick();
+        if (typeof window.performAutoBackup === "function") window.performAutoBackup();
+        return undefined;
+      }).catch(function () { });
+    }
+    if (window.showSaveFilePicker) {
+      return window.showSaveFilePicker({
+        suggestedName: "crm-backup-latest.json",
+        types: [{ description: "JSON CRM Backup File", accept: { "application/json": [".json"] } }]
+      }).then(function (f) {
+        bk.file = f; bk.dir = null;
+        afterPick();
+        if (typeof window.performAutoBackup === "function") window.performAutoBackup();
+        return undefined;
+      }).catch(function () { });
+    }
+    bkStatus("⚠️ این مرورگر ذخیره مستقیم در پوشه را پشتیبانی نمی‌کند؛ فایل در دانلودها ذخیره می‌شود.", false);
+    return Promise.resolve();
+  }
+
+  function manualBackupNow() {
+    function fallbackDownload() {
+      var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+      var a = document.createElement("a");
+      a.setAttribute("href", dataStr);
+      a.setAttribute("download", "crm-backup-latest.json");
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+    if (bkHasTarget()) {
+      bkWriteJson("crm-backup-latest.json").then(function () {
+        try { state.settings.lastBackupTime = new Date().toLocaleString("fa-IR"); } catch (e) {}
+        bkStatus("✅ پشتیبان دستی در محل انتخاب‌شده ذخیره شد — " + (state.settings && state.settings.lastBackupTime || ""), true);
+        alert("✅ فایل پشتیبان در همان پوشه‌ای که انتخاب کرده بودید ذخیره شد.");
+      }).catch(function (err) {
+        bkStatus("⚠️ خطا: " + (err && err.message ? err.message : err), false);
+        alert("⚠️ ذخیره در پوشه ممکن نشد؛ دوباره پوشه را انتخاب کنید.");
+      });
+      return;
+    }
+    if (window.showDirectoryPicker || window.showSaveFilePicker) {
+      connectBackupTarget().then(function () {
+        if (bkHasTarget()) alert("✅ فایل پشتیبان در پوشه انتخاب‌شده ذخیره شد.");
+      });
+      return;
+    }
+    fallbackDownload();
+  }
+
+  function restoreBackupHandles() {
+    idbGet("backupHandles").then(function (h) {
+      if (!h) {
+        bkStatus("⚠️ محل ذخیره انتخاب نشده — برای فعال شدن ذخیره خودکار یک‌بار «انتخاب پوشه/فایل» را بزنید.", false);
+        return;
+      }
+      var target = h.dir || h.file;
+      if (!target) return;
+      function ready(p) {
+        if (p === "granted") {
+          bk.dir = h.dir || null; bk.file = h.file || null;
+          bkStatus("✅ ذخیره خودکار فعال است", true);
+        } else {
+          bkStatus("⚠️ برای ادامه ذخیره خودکار، یک‌بار روی صفحه کلیک کنید تا دسترسی پوشه تأیید شود.", false);
+          var once = function () {
+            target.requestPermission({ mode: "readwrite" }).then(function (p2) {
+              if (p2 === "granted") {
+                bk.dir = h.dir || null; bk.file = h.file || null;
+                bkStatus("✅ ذخیره خودکار فعال است", true);
+              }
+            }).catch(function () {});
+            document.removeEventListener("click", once);
+          };
+          document.addEventListener("click", once);
+        }
+      }
+      try {
+        if (target.queryPermission) target.queryPermission({ mode: "readwrite" }).then(ready).catch(function () {});
+        else ready("granted");
+      } catch (e) { }
+    }).catch(function () {
+      bkStatus("⚠️ محل ذخیره انتخاب نشده است.", false);
+    });
+  }
+
+  function rewireBackupButtons() {
+    [["btnSelectAutoBackupFolder", "📁 انتخاب پوشه/فایل پشتیبان‌گیری"], ["btnManualBackupNow", null], ["btnQuickBackup", null]].forEach(function (it) {
+      var b = $(it[0]);
+      if (!b || b.dataset.v19bk === "1") return;
+      b.dataset.v19bk = "1";
+      var clone = b.cloneNode(true);
+      b.parentNode.replaceChild(clone, b);
+      if (it[1]) clone.innerHTML = "<span>" + it[1] + "</span>";
+      if (it[0] === "btnSelectAutoBackupFolder") clone.addEventListener("click", connectBackupTarget);
+      else clone.addEventListener("click", manualBackupNow);
+    });
+  }
+
+  function fixBackupPage() {
+    // موتور چیدمان نباید صفحه پشتیبان را جابه‌جا کند
+    if (typeof window.applyFullFormLayout === "function" && !window._v19BackupLayoutGuard) {
+      window._v19BackupLayoutGuard = true;
+      var prev = window.applyFullFormLayout;
+      window.applyFullFormLayout = function (tabId) {
+        if (tabId === "tab-backup") return;
+        return prev.apply(this, arguments);
+      };
+    }
+    rewireBackupButtons();
+    overrideAutoBackup();
+    restoreBackupHandles();
+  }
+
+  /* ======================================================================
+     ۱۳) عیب‌یابی ریز و دقیق
+     ====================================================================== */
+  function diagRow(name, status, detail, hint) {
+    return { name: name, status: status, detail: detail || "", hint: hint || "" };
+  }
+  function runDetailedDiagnostics() {
+    var host = $("diagnosticsVisual");
+    var box = $("diagnosticsStatusBox");
+    if (!host) return;
+    if (box) {
+      box.style.background = "#fef9c3";
+      box.style.color = "#854d0e";
+      box.textContent = "⏳ بررسی ریز به‌ریز سیستم در حال انجام است...";
+    }
+    host.innerHTML = "<table class='v19-diag-table'><thead><tr><th>بخش</th><th>وضعیت</th><th>جزئیات دقیق</th><th>راهنمای رفع</th></tr></thead><tbody id='v19DiagBody'></tbody></table>";
+    var tb = $("v19DiagBody");
+    var rows = [];
+    function push(r) {
+      rows.push(r);
+      var icon = r.status === "ok" ? "<span class='ok'>✅ سالم</span>" : r.status === "warn" ? "<span class='warn'>⚠️ هشدار</span>" : "<span class='bad'>❌ مشکل</span>";
+      var tr = document.createElement("tr");
+      tr.innerHTML = "<td><strong>" + esc(r.name) + "</strong></td><td>" + icon + "</td><td>" + r.detail + "</td><td class='hint'>" + r.hint + "</td>";
+      tb.appendChild(tr);
+    }
+
+    // همگام
+    push(diagRow("اتصال اینترنت مرورگر", navigator.onLine ? "ok" : "bad",
+      "navigator.onLine = " + navigator.onLine,
+      navigator.onLine ? "" : "اینترنت دستگاه را بررسی کنید؛ برنامه آفلاین کار می‌کند ولی همگام‌سازی نه."));
+    try {
+      var raw = localStorage.getItem("CRM_APP_STATE_V2");
+      var kb = raw ? Math.round(raw.length / 1024) : 0;
+      push(diagRow("حافظه محلی (localStorage)", raw ? "ok" : "bad",
+        "حجم داده ذخیره‌شده: " + kb.toLocaleString("fa-IR") + " کیلوبایت",
+        raw ? "" : "داده‌ای نیست؛ یک‌بار صفحه را باز و ذخیره کنید."));
+    } catch (e) {
+      push(diagRow("حافظه محلی (localStorage)", "bad", "خطا: " + esc(e.message), "حالت خصوصی/حریم مرورگرstorage را محدود کرده است."));
+    }
+    var sess = sessionStorage.getItem("crmLoggedIn") === "1";
+    push(diagRow("نشست ورود", sess ? "ok" : "warn",
+      sess ? ("کاربر: " + esc(sessionStorage.getItem("crmUserName") || "—") + " | نقش: " + esc(sessionStorage.getItem("crmUserRole") || "—")) : "ورود فعال نیست",
+      sess ? "" : "از صفحه ورود وارد شوید."));
+
+    // داده‌ها
+    if (window.state) {
+      push(diagRow("داده‌های برنامه", "ok",
+        "داروخانه: <strong>" + (state.pharmacies || []).length.toLocaleString("fa-IR") + "</strong> | پزشک: <strong>" + (state.doctors || []).length.toLocaleString("fa-IR") + "</strong> | سفارش: <strong>" + (state.orders || []).length.toLocaleString("fa-IR") + "</strong> | کالا: <strong>" + (state.products || []).length.toLocaleString("fa-IR") + "</strong> | کاربر: <strong>" + (state.users || []).length.toLocaleString("fa-IR") + "</strong>", ""));
+      var cfCount = 0;
+      try { Object.keys(state.customFields || {}).forEach(function (k) { cfCount += (state.customFields[k] || []).length; }); } catch (e) {}
+      var deletedCount = 0;
+      try {
+        Object.keys(state.formFieldMeta || {}).forEach(function (k) {
+          Object.keys(state.formFieldMeta[k] || {}).forEach(function (id) { if (state.formFieldMeta[k][id].deleted) deletedCount++; });
+        });
+      } catch (e) {}
+      push(diagRow("فیلدهای سفارشی/طراح", "ok",
+        "فیلدهای اضافه‌شده: " + cfCount.toLocaleString("fa-IR") + " | فیلدهای حذف‌شده (قابل بازگردانی): " + deletedCount.toLocaleString("fa-IR"), ""));
+      push(diagRow("آخرین پشتیبان", (state.settings && state.settings.lastBackupTime) ? "ok" : "warn",
+        "زمان: " + esc((state.settings && state.settings.lastBackupTime) || "هنوز انجام نشده"),
+        (state.settings && state.settings.lastBackupTime) ? "" : "از تب پشتیبان‌گیری، محل ذخیره را انتخاب کنید."));
+    } else {
+      push(diagRow("داده‌های برنامه", "bad", "شی state در دسترس نیست", "صفحه را کامل بارگذاری مجدد کنید (Ctrl+F5)."));
+    }
+
+    // سرویس‌ورکر و کش
+    var swSupported = "serviceWorker" in navigator;
+    if (!swSupported) push(diagRow("سرویس‌ورکر (PWA)", "warn", "مرورگر پشتیبانی نمی‌کند", "از Chrome/Edge استفاده کنید."));
+    else if (navigator.serviceWorker.controller || window.__CRM_SW_READY) push(diagRow("سرویس‌ورکر (PWA)", "ok", "ثبت، فعال و آماده کنترل صفحه است", ""));
+    else push(diagRow("سرویس‌ورکر (PWA)", "ok", "ثبت شده و فعال‌سازی کنترل‌کننده به‌صورت خودکار در حال انجام است", "نیازی به تازه‌سازی دستی نیست."));
+    if (window.caches) {
+      caches.keys().then(function (keys) {
+        push(diagRow("کش آفلاین", keys.length ? "ok" : "warn",
+          keys.length ? "کش‌ها: " + keys.map(esc).join("، ") : "کشی نیست",
+          keys.length ? "" : "یک‌بار آنلاین باز کنید تا کش ساخته شود."));
+      }).catch(function () {});
+    }
+    push(diagRow("IndexedDB / File System Access",
+      (window.indexedDB ? 1 : 0) ? (window.showDirectoryPicker || window.showSaveFilePicker ? "ok" : "warn") : "bad",
+      "IndexedDB: " + (window.indexedDB ? "دارد" : "ندارد") + " | انتخاب پوشه: " + (window.showDirectoryPicker ? "دارد" : window.showSaveFilePicker ? "فقط فایل" : "ندارد"),
+      (window.showDirectoryPicker || window.showSaveFilePicker) ? "" : "برای پشتیبان در پوشه مشخص، از Chrome/Edge استفاده کنید."));
+    push(diagRow("نقشه (Leaflet)", window.L ? "ok" : "bad",
+      window.L ? "نسخه " + esc(L.version || "?") + " بارگذاری شده" : "کتابخانه نقشه لود نشده",
+      window.L ? "" : "فایل‌های vendor/leaflet.js را بررسی کنید."));
+
+    // شبکه
+    var t0 = Date.now();
+    fetch("/api/health").then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) {
+        push(diagRow("سرور برنامه (/api/health)", r.ok ? "ok" : "bad",
+          "HTTP " + r.status + " | زمان پاسخ: " + (Date.now() - t0).toLocaleString("fa-IR") + "ms | نسخه سرور: " + esc(j.version || "—"),
+          r.ok ? "" : "سرور پاسخ غیرمنتظره داد؛ لاگ سرور را ببینید."));
+        finish();
+      });
+    }).catch(function (e) {
+      push(diagRow("سرور برنامه (/api/health)", "bad", "خطا در اتصال: " + esc(e.message || e),
+        "اتصال اینترنت/سرور را بررسی کنید؛ در حالت آفلاین طبیعی است."));
+      finish();
+    });
+    fetch("/api/state").then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) {
+        var st2 = j && j.status ? j.status : "—";
+        var isOff = st2 !== "success";
+        push(diagRow("فایل وضعیت سرور (/api/state)", "ok",
+          isOff ? "ذخیره‌سازی سروری غیرفعال است (حالت عادی برنامه)" : ("وضعیت: " + esc(st2)),
+          isOff ? "هیچ اقدامی لازم نیست؛ همه داده‌ها در حافظه محلی مرورگر ذخیره می‌شوند." : ""));
+      });
+    }).catch(function () {});
+
+    var finished = false;
+    function finish() {
+      if (finished) return;
+      finished = true;
+      setTimeout(function () {
+        var bads = rows.filter(function (r) { return r.status === "bad"; }).length;
+        var warns = rows.filter(function (r) { return r.status === "warn"; }).length;
+        if (box) {
+          if (bads) {
+            box.style.background = "#fef2f2"; box.style.color = "#b91c1c";
+            box.textContent = "❌ " + bads.toLocaleString("fa-IR") + " مشکل جدی پیدا شد — ستون «راهنمای رفع» را ببینید.";
+          } else if (warns) {
+            box.style.background = "#fffbeb"; box.style.color = "#92400e";
+            box.textContent = "⚠️ سیستم کار می‌کند ولی " + warns.toLocaleString("fa-IR") + " هشدار جزئی وجود دارد.";
+          } else {
+            box.style.background = "#f0fdf4"; box.style.color = "#166534";
+            box.textContent = "✅ همه بررسی‌ها سالم است.";
+          }
+        }
+      }, 250);
+    }
+  }
+
+  /* ======================================================================
+     ۱۴) همگام‌سازی دسترسی‌ها با امکانات جدید
+     ====================================================================== */
+  function migratePermissions() {
+    var groups = null;
+    try { groups = (typeof PERMISSION_GROUPS !== "undefined") ? PERMISSION_GROUPS : window.PERMISSION_GROUPS; } catch (e) {}
+    if (!groups || !window.state || !state.users) return;
+    var keys = [];
+    Object.keys(groups).forEach(function (g) { (groups[g] || []).forEach(function (it) { keys.push(it.key); }); });
+    var changed = false;
+    (state.users || []).forEach(function (u) {
+      if (!u.permissions) u.permissions = {};
+      keys.forEach(function (k) {
+        if (u.permissions[k] == null) { u.permissions[k] = true; changed = true; }
+      });
+    });
+    if (changed) saveSoft();
+  }
+
+  /* ======================================================================
+     بوت
+     ====================================================================== */
+  function boot() {
+    injectCss();
+    try { fixRequiredDefaults(); } catch (e) {}
+    try { hookComboInstantAdd(); } catch (e) {}
+    try { iconifyButtons(document); } catch (e) {}
+    try { watchIcons(); } catch (e) {}
+    try { wrapListRenderers(); } catch (e) {}
+    try { addClearButtons(); } catch (e) {}
+    try { watchDesignerForChips(); } catch (e) {}
+    try { injectRestoreChips(); } catch (e) {}
+    try { upgradeProdBarV19(); } catch (e) {}
+    try { renderProdInfoPanel(); } catch (e) {}
+    try { hookInstantHistory(); } catch (e) {}
+    try { fixBackupPage(); } catch (e) {}
+    try { migratePermissions(); } catch (e) {}
+    // دکمه «بررسی مجدد اتصال» به عیب‌یابی ریز واقعی وصل شود (به‌جای تست ساختگی)
+    window.testServerConnectivity = function () { try { runDetailedDiagnostics(); } catch (e) {} };
+
+    var origSw = window.switchTab;
+    if (typeof origSw === "function" && !window._v19Sw) {
+      window._v19Sw = true;
+      window.switchTab = function (id) {
+        origSw(id);
+        setTimeout(function () {
+          try { iconifyButtons(document.getElementById(id) || document); } catch (e) {}
+          try { addClearButtons(); } catch (e) {}
+          if (id === "tab-columns-products") {
+            try { upgradeProdBarV19(); renderProdInfoPanel(); } catch (e) {}
+            try { injectRestoreChips(); } catch (e) {}
+          }
+          if (id === "tab-backup") { try { fixBackupPage(); } catch (e) {} }
+          if (id === "tab-troubleshooting") { try { runDetailedDiagnostics(); } catch (e) {} }
+        }, 150);
+      };
+    }
+    // پنل اطلاعات کالا بعد از ذخیره کالا هم تازه شود
+    if (typeof window.renderColumnsProductsTable === "function" && !window._v19ProdTableWrap) {
+      window._v19ProdTableWrap = true;
+      var origP = window.renderColumnsProductsTable;
+      window.renderColumnsProductsTable = function () {
+        var r = origP.apply(this, arguments);
+        try { iconifyButtons(document.getElementById("tableProductsBody")); } catch (e) {}
+        try { renderProdInfoPanel(); } catch (e) {}
+        return r;
+      };
+    }
+    console.log("v19 ready", VER);
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+
+/* ===================== (bundled from public/crm-features-v20.js) ===================== */
+// ============================================================
+// v20 (نسخه 11.16.0) — لایه آخر؛ فقط افزودنی/بازنویسی امن، بدون حذف اسکلت
+// ۱) در دسترس بودن state برای عیب‌یابی
+// ۲) تکراری‌گیر دقیق: اطلاعات کاملاً یکسان ⇒ قفل کامل (فقط ویرایش) — نزدیک ⇒ تأیید/انصراف
+// ۳) مدیر پیشرفته کشویی‌ها در تب افزودن‌ها: زیرمجموعه‌ها زیر هم + ویرایش/حذف هرکدام
+//    + جستجوی لحظه‌ای + نام فارسی + اعمال فوری افزودن/حذف فیلد کشویی
+// ۴) زنجیره طوسی فیلدها (غیرفعال تا پر شدن والد) + تنظیم توسط مدیر + کلید کلی
+// ۵) قفل طوسی فرم سفارش تا انتخاب/جایگذاری داروخانه (فقط بخش کالا فعال می‌ماند)
+// ۶) افزودن لحظه‌ای نام داروخانه در فرم داروخانه = ذخیره خودکار رکورد
+// ۷) همگام‌سازی خودکار فیلدهای افزوده/حذف‌شده داروخانه ↔ سفارشات
+// ۸) رفع نقص ورود فیلد جدید به باکس کالا + اعمال اندازه و شماره ترتیب
+// ۹) اعمال قطعی «شماره ترتیب لیست» روی جدول‌ها (ردیف=ستون ۱، نام نماینده=ستون ۲)
+// ۱۰) دکمه «تغییر رمز» بالای همه صفحه‌ها برای هر کاربر (ثبت در سیستم ورود)
+// ۱۱) سطوح دسترسی آماده: نماینده علمی / کارشناس فروش / سرپرست
+// ۱۲) حذف فلش‌های بالا/پایین اعداد تعداد کالا و جایزه در سفارش
+// ============================================================
+(function () {
+  "use strict";
+
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  // نرمال‌سازی برای مقایسه دقیق (ارقام فارسی/عربی، یکسان‌سازی حروف، حذف فاصله و خط‌تیره)
+  function norm(v) {
+    var FA = "۰۱۲۳۴۵۶۷۸۹", AR = "٠١٢٣٤٥٦٧٨٩";
+    return String(v == null ? "" : v)
+      .replace(/[۰-۹]/g, function (c) { return String(FA.indexOf(c)); })
+      .replace(/[٠-٩]/g, function (c) { return String(AR.indexOf(c)); })
+      .replace(/[يى]/g, "ی").replace(/ك/g, "ک").replace(/‌/g, " ")
+      .replace(/[\s\-ـ]+/g, "").trim().toLowerCase();
+  }
+  function st() { return window.state || null; }
+  function installLatinNumberLaw(){if(window.__CRM_LATIN_NUMBER_LAW)return;window.__CRM_LATIN_NUMBER_LAW=true;var digits=function(v){var fa="۰۱۲۳۴۵۶۷۸۹",ar="٠١٢٣٤٥٦٧٨٩";return String(v).replace(/[۰-۹]/g,function(c){return fa.indexOf(c);}).replace(/[٠-٩]/g,function(c){return ar.indexOf(c);}).replace(/٬/g,",").replace(/٫/g,".");};var numberOld=Number.prototype.toLocaleString;Number.prototype.toLocaleString=function(locale,opts){if(typeof locale==="string"&&/^fa(?:-|$)/i.test(locale))locale="en-US";return digits(numberOld.call(this,locale,opts));};["toLocaleString","toLocaleDateString","toLocaleTimeString"].forEach(function(name){var old=Date.prototype[name];Date.prototype[name]=function(){return digits(old.apply(this,arguments));};});}
+  function installSafeBrowserGuards(){if(window.__CRM_SAFE_BROWSER_GUARDS)return;window.__CRM_SAFE_BROWSER_GUARDS=true;var oldOpen=window.open;window.open=function(url,target,features){try{var u=new URL(String(url||""),location.href);if(u.protocol!=="https:"&&u.protocol!=="http:"){console.warn("blocked unsafe navigation protocol",u.protocol);return null;}features=(features?features+",":"")+"noopener,noreferrer";return oldOpen.call(window,u.href,target||"_blank",features);}catch(e){return null;}};var allowed=/\.(?:xlsx?|csv|txt|json|png|jpe?g|webp)$/i,blocked=/\.(?:exe|msi|apk|bat|cmd|com|scr|ps1|vbs|js|jar|sh|dmg|pkg|app|iso|dll)$/i,max=32*1024*1024;document.addEventListener("input",function(e){var el=e.target;if(!el||!(el.matches&&el.matches("input:not([type=password]),textarea")))return;var clean=String(el.value||"").replace(/[<>\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,"");if(clean!==el.value)el.value=clean;},true);document.addEventListener("change",function(e){var input=e.target;if(!input||input.type!=="file"||!input.files)return;for(var i=0;i<input.files.length;i++){var f=input.files[i],name=String(f.name||"");if(f.size>max||blocked.test(name)||!allowed.test(name)){e.preventDefault();e.stopImmediatePropagation();input.value="";alert("این فایل برای امنیت دستگاه پذیرفته نشد. فقط فایل‌های داده/تصویر مجاز و حداکثر 32MB قابل ورود هستند.");return;}}},true);document.addEventListener("click",function(e){var a=e.target&&e.target.closest&&e.target.closest("a[href]");if(!a)return;var href=String(a.getAttribute("href")||"").trim();if(/^\s*(?:javascript|data|file|vbscript):/i.test(href)){e.preventDefault();e.stopImmediatePropagation();return;}if(a.target==="_blank")a.rel="noopener noreferrer";},true);document.addEventListener("dragover",function(e){if(e.dataTransfer&&e.dataTransfer.types&&Array.prototype.indexOf.call(e.dataTransfer.types,"Files")>=0)e.preventDefault();},true);document.addEventListener("drop",function(e){var files=e.dataTransfer&&e.dataTransfer.files;if(!files||!files.length)return;for(var i=0;i<files.length;i++)if(blocked.test(String(files[i].name||""))||files[i].size>max){e.preventDefault();e.stopImmediatePropagation();alert("فایل اجرایی یا بیش‌ازحد بزرگ برای حفاظت دستگاه مسدود شد.");return;}},true);}
+  function save() { try { if (typeof saveState === "function") saveState(); } catch (e) {} }
+  window.__CRM_BULK_READY = !window.indexedDB;
+  function log(m) { try { console.log("[v20]", m); } catch (e) {} }
+
+  /* ---------- ۱) state برای عیب‌یابی ---------- */
+  try {
+    Object.defineProperty(window, "state", {
+      configurable: true,
+      get: function () {
+        try { return (typeof state !== "undefined") ? state : undefined; } catch (e) { return undefined; }
+      }
+    });
+  } catch (e) {}
+
+  /* ---------- ۱۲+۴+۵) استایل‌های تزریقی ---------- */
+  (function injectCss() {
+    var css =
+      "#orderItemsContainer input[type=number]::-webkit-outer-spin-button," +
+      "#orderItemsContainer input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}" +
+      "#orderItemsContainer input[type=number]{-moz-appearance:textfield;appearance:textfield;}" +
+      ".v20-grey,.v20-grey:disabled{background:#e5e7eb!important;color:#6b7280!important;" +
+      "cursor:not-allowed!important;opacity:.85!important;border-color:#d1d5db!important;}" +
+      ".crm-combo.v20-locked{pointer-events:none;}" +
+      ".v20-grey-zone{background:transparent!important;border:0!important;border-radius:0!important;padding:0!important}.v20-grey-zone .form-label{color:inherit!important;opacity:1!important}.v20-grey-zone input:not([type=checkbox]),.v20-grey-zone select,.v20-grey-zone .crm-combo{background:#e5e7eb!important;color:#6b7280!important;border-color:#cbd5e1!important}.v20-grey-zone input[type=checkbox]{opacity:.5!important;accent-color:#94a3b8!important;filter:grayscale(1)!important}" +
+      "#addTabPanel>.v20-addmgr{grid-column:1/-1!important;width:100%!important;display:block!important;}" +
+      "#addTabPanel>.add-panel-head,#addTabPanel>.add-sel-card,#addTabPanel>p.col-help{display:none!important;}" +
+      ".v20-cards{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))!important;gap:12px;align-items:start;width:100%;}" +
+      ".v20-combo-card{min-width:0!important;width:auto!important;margin:0!important;}" +
+      "@media(max-width:620px){.v20-cards{grid-template-columns:1fr!important;}}" +
+      ".v20-local-match{position:absolute!important;top:calc(100% + 6px);right:0;z-index:80;margin:0!important;min-width:min(560px,90vw);max-width:90vw;width:max-content!important;box-sizing:border-box;box-shadow:0 5px 18px rgba(15,23,42,.16);flex-wrap:wrap;}" +
+      ".v20-visit-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin:12px 0;}" +
+      ".v20-metric{background:#f0fdfa;border:1px solid #99f6e4;border-radius:12px;padding:12px;text-align:center}.v20-metric b{display:block;font-size:1.2rem;color:#0f766e;margin-top:4px;}" +
+      ".v20-version{background:#312e81;color:#fff;border-radius:999px;padding:5px 10px;font-weight:800;white-space:nowrap;}" +
+      "#v20ChpassFab{background:#0d9488;color:#fff;border:none;border-radius:10px;padding:8px 14px;" +
+      "font-weight:700;cursor:pointer;font-family:inherit;font-size:.85rem;margin:0 6px;vertical-align:middle;}" +
+      "#v20ChpassFab:hover{background:#0f766e;}" +
+      ".v20-toast{position:fixed;bottom:24px;right:24px;background:#065f46;color:#fff;padding:12px 20px;" +
+      "border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.3);z-index:1400;font-weight:700;direction:rtl;}" +
+      ".v20-modal{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:1300;display:flex;" +
+      "align-items:center;justify-content:center;}" +
+      ".v20-modal-card{background:#fff;border-radius:14px;padding:22px;min-width:300px;max-width:92vw;" +
+      "box-shadow:0 10px 40px rgba(0,0,0,.35);direction:rtl;}" +
+      ".v20-modal-card input{width:100%;margin:6px 0;padding:9px;border:1px solid #cbd5e1;border-radius:8px;box-sizing:border-box;}" +
+      ".v20-opt-row{display:flex;align-items:center;gap:6px;padding:5px 8px;border:1px solid #e2e8f0;" +
+      "border-radius:8px;margin-top:5px;background:#fff;}" +
+      ".v20-opt-row span{flex:1;}" +
+      ".v20-opt-row button{border:1px solid #cbd5e1;background:#f8fafc;border-radius:7px;cursor:pointer;padding:2px 8px;}" +
+      ".v20-combo-card{border:1px solid #dbe2ea;border-radius:12px;padding:12px;background:#fbfdff;}" +
+      ".v20-combo-card h5{margin:0 0 8px;color:#0f172a;}" +
+      ".v20-card-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:6px;}" +
+      ".v20-card-tools input[type=text]{flex:1;min-width:140px;padding:8px;border:1px solid #cbd5e1;border-radius:8px;}" +
+      ".v20-mini{font-size:.78rem;color:#64748b;}" +
+      ".v20-tabbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;}" +
+      ".v20-tabbar button{border:1px solid #cbd5e1;background:#fff;border-radius:9px;padding:7px 14px;cursor:pointer;font-family:inherit;}" +
+      ".v20-tabbar button.v20-on{background:#0d9488;color:#fff;border-color:#0d9488;}" +
+      "button[id*='Export'],button[id*='Excel'],.btn-excel{background:#15803d!important;border-color:#15803d!important;color:#fff!important;}" +
+      "button.btn-danger,button[id*='Delete'],button[class*='-del']{background:#dc2626!important;border-color:#dc2626!important;color:#fff!important;}" +
+      "#btnPharmacyCurrentLocation:disabled,#btnDoctorCurrentLocation:disabled,#btnRepHomeCurrentLocation:disabled{opacity:.4!important;filter:grayscale(.5)!important;cursor:wait!important;}" +
+      "#tab-snapp-corporate .data-table{min-width:900px}#tab-snapp-corporate .card{overflow:visible}" +
+      ".v20-share-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:7px}.v20-share-item{display:grid;grid-template-columns:22px 1fr 58px;align-items:center;gap:6px;background:#f8fafc;border:1px solid #e2e8f0;padding:7px;border-radius:8px}.v20-share-order{width:55px;padding:4px}" +
+      "#tab-users-permissions .permission-tag-chk,#tab-users-permissions .permission-tag-chk:hover{transition:none!important;transform:none!important;box-sizing:border-box!important}#tab-users-permissions .permission-tab-group{contain:layout style;min-height:0}#tab-users-permissions #btnSaveUserInfo{display:inline-flex!important;visibility:visible!important;opacity:1!important}" +
+      ".tab-pane .form-grid,.tab-pane .form-group,.tab-pane .card{overflow:visible!important}.tab-pane .form-group:focus-within{position:relative!important;z-index:10020!important}.crm-combo:focus-within{z-index:10030!important}.crm-combo-list,.ph-pick-overlay,.v20-local-match{z-index:10040!important;isolation:isolate!important}" +
+      "#tab-snapp-corporate .form-grid,#tab-search-info .form-grid,#tab-rep-homes .form-grid,#tab-leaves .form-grid{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))!important;gap:14px!important;align-items:start}#tab-snapp-corporate .form-group,#tab-search-info .form-group,#tab-rep-homes .form-group,#tab-leaves .form-group{width:auto!important;max-width:100%!important;min-width:0!important}" +
+      "#formCustomField #cfTargetEntity{display:none!important}#formCustomField #cfTargetEntity~*{display:none!important}#formCustomField .form-group:has(#cfTargetEntity){display:none!important}" +
+      ".v35-fixed-rep{appearance:none!important;-webkit-appearance:none!important;background-image:none!important;pointer-events:none!important;color:#0f172a!important;font-weight:800!important;opacity:1!important}" +
+      ".tab-pane .form-grid>.form-group{align-self:start!important;transform:none!important;transition:none!important}.tab-pane .crm-combo,.tab-pane .crm-combo-input{transform:none!important;transition:none!important}.crm-combo-caret{z-index:5!important;pointer-events:auto!important;min-width:30px!important;min-height:30px!important;display:grid!important;place-items:center!important}" +
+      "#formOrder>.form-grid>.form-group:not(.full-width),#formPharmacy>.form-grid>.form-group:not(.full-width),#formDoctor>.form-grid>.form-group:not(.full-width){align-self:start!important}" +
+      ".table-responsive{max-height:72vh;overflow:auto!important;position:relative!important}.data-table{border-collapse:collapse!important;border-spacing:0!important}.data-table th,.data-table td{border:1px solid #94a3b8!important;padding:7px!important}.data-table thead th{position:sticky!important;top:0!important;z-index:25!important;background:#87CEEB!important;color:#000!important;box-shadow:none!important}.tbl-freeze-head{background:#87CEEB!important;border-bottom:0!important}.tbl-freeze-head th{background:#87CEEB!important;color:#000!important}.tbl-freeze-xbar,.tbl-x-row{display:none!important}" +
+      "#tab-distributor-sales #distributorActionGrid,#tab-distributor-database #distributorDatabaseGrid{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))!important;gap:10px!important}#invoiceStatusFilterGrid{display:flex!important;flex-flow:row nowrap!important;align-items:flex-start!important;gap:10px!important;overflow-x:auto!important;padding-bottom:6px!important;width:100%!important}#invoiceStatusFilterGrid>.form-group{flex:1 0 180px!important;min-width:0!important;margin:0!important}#invoiceStatusFilterGrid input:disabled,#invoiceStatusFilterGrid select:disabled{background:#e5e7eb!important;color:#6b7280!important;border-color:#cbd5e1!important;cursor:not-allowed!important}#tab-distributor-sales #distributorFilterGrid{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))!important;gap:10px!important;width:100%!important}#tab-distributor-sales #distributorFilterGrid>.form-group{grid-column:auto!important;width:auto!important;min-width:0!important;margin:0!important}#tab-distributor-sales .v20-combo-card{padding:10px!important}#tab-distributor-sales .v20-card-tools .btn{padding:7px 9px!important;font-size:.78rem!important}#tab-distributor-sales #distributorFilterGrid{display:flex!important;flex-flow:row nowrap!important;align-items:flex-start!important;overflow-x:auto!important;padding-bottom:6px!important}#tab-distributor-sales #distributorFilterGrid>.form-group{flex:1 0 180px!important;max-width:none!important}" +
+      "#representativeRoutesGrid{grid-template-columns:repeat(4,minmax(0,1fr))!important}#representativeRoutesGrid select[multiple]{min-height:150px!important}.v34-target-head{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin:12px 0}.v34-target-head label{font-weight:700}.v34-target-row{display:grid;grid-template-columns:minmax(180px,2fr) repeat(5,minmax(105px,1fr));gap:7px;align-items:center;border-bottom:1px solid #cbd5e1;padding:8px 4px}.v34-target-row>div{text-align:center}.v34-prod-name{text-align:right!important;font-weight:800}.v34-head{background:#87CEEB;color:#000;font-weight:800;position:sticky;top:0;z-index:5}.v34-target-grand{display:flex;gap:18px;justify-content:flex-end;flex-wrap:wrap;padding:12px;background:#f0fdfa;margin:10px 0}.v34-total{font-weight:800;color:#dc2626}" +
+      "@media(max-width:768px){html,body{max-width:100%!important;overflow-x:hidden!important}.app-nav{display:none!important}.btn-menu-hamburger{display:flex!important;visibility:visible!important}.header-container{padding:7px 9px!important;gap:6px!important;flex-wrap:nowrap!important}.logo-area{min-width:0!important;flex:1!important}.logo-icon{width:38px!important;height:38px!important;min-width:38px!important}.logo-text{min-width:0!important}.logo-text h1{font-size:.82rem!important;white-space:normal!important;line-height:1.35!important}.logo-text p{font-size:.65rem!important}.header-actions{gap:4px!important;flex:0 0 auto!important}.header-user-pill,.btn-header-icon,#v20VersionBadge,#v20ChpassFab{display:none!important}.btn-header-logout{padding:7px!important;font-size:.72rem!important}.main-content,.app-main,.container{width:100%!important;max-width:100%!important;padding:8px!important;margin:0!important;box-sizing:border-box!important}.tab-pane,.card{width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important}.card{padding:10px!important;margin:8px 0!important;border-radius:10px!important}.card-header{gap:8px!important;align-items:flex-start!important;flex-direction:column!important}.card-title{font-size:.95rem!important}.form-grid,.form-grid.form-grid-sized{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:10px!important;width:100%!important}.form-grid>.form-group,.form-grid.form-grid-sized>.form-group,.form-group,.full-width,.col-place-beside,.col-place-under{grid-column:1!important;width:100%!important;max-width:100%!important;min-width:0!important;margin:0!important;box-sizing:border-box!important}.form-input,.form-select,textarea,.crm-combo,.crm-combo-input,.jalali-input-wrapper{width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important}.btn,.card-header button,.card-header label.btn{max-width:100%!important;white-space:normal!important;min-height:40px!important}.table-responsive{display:block!important;width:100%!important;max-width:100%!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}.data-table{width:max-content!important;min-width:700px!important}.order-item-row{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:7px!important}.order-item-row>*{width:100%!important;max-width:100%!important}.map-container,.map-container-large{width:100%!important;height:340px!important;max-width:100%!important}.side-menu-drawer{width:min(88vw,340px)!important;max-width:88vw!important}.modal-content,.modal-card,.v20-modal-card{width:94vw!important;max-width:94vw!important;max-height:90vh!important;overflow:auto!important}.v20-visit-metrics,.stats-grid,.v20-cards{grid-template-columns:minmax(0,1fr)!important}#v20SnappActionBar{position:static!important;display:grid!important;grid-template-columns:1fr!important}#v20SnappActionBar .btn{width:100%!important;max-width:100%!important}.jalali-calendar-popup{max-width:calc(100vw - 16px)!important;left:8px!important;right:8px!important}.ph-pick-overlay,.v20-local-match{position:fixed!important;left:8px!important;right:8px!important;top:auto!important;bottom:8px!important;width:auto!important;max-width:none!important}.manual-design-canvas,.man-canvas{max-width:100%!important;overflow:auto!important}}" +
+      "@media(max-width:950px){html,body{width:100%!important;max-width:100%!important;overflow-x:hidden!important}.app-nav{display:none!important}.btn-menu-hamburger{display:flex!important}.tab-pane,.card,.card-header,.card-header>div{max-width:100%!important;min-width:0!important;box-sizing:border-box!important}.card-header>div[style*='display:flex'],.card-header>div[style*='display: flex'],.v20-card-tools,.man-toolbar-row{width:100%!important;display:flex!important;flex-wrap:wrap!important;gap:8px!important}.card-header .btn,.v20-card-tools .btn,.man-toolbar-row .btn{flex:1 1 150px!important;max-width:100%!important;min-width:0!important;white-space:normal!important;overflow-wrap:anywhere!important}#btnShowPhForm,#btnShowPhList,#btnShowDocForm,#btnShowDocList,#btnShowOrdForm,#btnShowOrdList{display:inline-flex!important;flex:1 1 calc(50% - 6px)!important;width:auto!important;min-width:0!important;justify-content:center!important}.form-input,.form-select,.btn,textarea{max-width:100%!important;box-sizing:border-box!important}#invoiceStatusFilterGrid,#distributorFilterGrid,#snappTripFilterGrid,#snappTopupFilterGrid{max-width:100%!important;overflow-x:auto!important}.modal-content{left:auto!important;right:auto!important}}" +
+      "@media(max-width:950px) and (orientation:landscape){.main-content,.app-main,.container{padding:6px!important}.form-grid:not(#invoiceStatusFilterGrid):not(#distributorFilterGrid){grid-template-columns:repeat(2,minmax(0,1fr))!important}.form-grid>.form-group{grid-column:auto!important}.form-grid>.full-width{grid-column:1/-1!important}.map-container,.map-container-large{height:260px!important}.side-menu-drawer{width:min(72vw,380px)!important;max-width:380px!important}}" +
+      "@media(max-width:950px){#representativeRoutesGrid{grid-template-columns:1fr!important}.v34-target-head{grid-template-columns:1fr!important}.v34-head{display:none!important}.v34-target-row{grid-template-columns:1fr 1fr!important;min-width:0!important;gap:8px!important;background:#fff;border:1px solid #cbd5e1;border-radius:10px;margin:8px 0;padding:10px!important}.v34-target-row .v34-prod-name,.v34-target-row .v34-target-count{grid-column:1/-1!important}.v34-target-row>div{padding:5px;background:#f8fafc;border-radius:6px}.btn-menu-hamburger{display:flex!important;visibility:visible!important;position:relative!important;z-index:1200!important;flex:0 0 44px!important;width:44px!important;min-width:44px!important}.side-menu-drawer{z-index:9000!important}.side-menu-drawer.active{transform:translateX(0)!important}.order-item-head{display:none!important}.order-item-row{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 40px 40px!important;gap:6px!important;align-items:center!important;padding:8px!important}.order-item-row>*{min-width:0!important;max-width:100%!important;width:100%!important;box-sizing:border-box!important}.order-item-row .order-item-name{grid-column:1/-1!important;grid-row:1!important}.order-item-row .order-item-count{grid-column:1!important;grid-row:2!important}.order-item-row .order-item-gift{grid-column:2!important;grid-row:2!important}.order-item-row .order-item-price{grid-column:1!important;grid-row:3!important}.order-item-row .order-item-total{grid-column:2!important;grid-row:3!important}.order-item-row .order-item-edit{grid-column:3!important;grid-row:3!important;width:40px!important;height:40px!important;min-height:40px!important;padding:4px!important}.order-item-row>.btn-danger{grid-column:4!important;grid-row:3!important;width:40px!important;height:40px!important;min-height:40px!important;padding:4px!important}#btnSaveOrderClearV19,#btnSavePharmacyClearV19,#btnSaveDoctorClearV19{flex:0 0 auto!important;width:auto!important;max-width:130px!important;min-height:38px!important;padding:7px 10px!important;font-size:.78rem!important;margin:0!important}#orderItemsContainer{width:100%!important;max-width:100%!important;overflow:visible!important}}";
+    var tag = document.createElement("style");
+    tag.id = "v20Style";
+    tag.textContent = css;
+    (document.head || document.documentElement).appendChild(tag);
+  })();
+
+  /* ---------- ۲) تکراری‌گیر دقیق ---------- */
+  function dupPairs(isDoc) {
+    return isDoc
+      ? [["name", "doctorName"], ["phone", "doctorPhone"], ["specialty", "doctorSpecialty"],
+         ["province", "doctorProvince"], ["city", "doctorCity"], ["district", "doctorDistrict"], ["address", "doctorAddress"]]
+      : [["name", "pharmacyName"], ["phone", "pharmacyPhone"], ["manager", "pharmacyManager"],
+         ["province", "pharmacyProvince"], ["city", "pharmacyCity"], ["district", "pharmacyDistrict"], ["address", "pharmacyAddress"]];
+  }
+  function gvById(id) { var e = $(id); return e ? String(e.value || "") : ""; }
+  function v20SigOf(kind) {
+    var isDoc = kind === "doctor";
+    var parts = dupPairs(isDoc).map(function (p) { return norm(gvById(p[1])); });
+    return kind + "|" + parts.join("|");
+  }
+  window.v20DupGate = function (kind) {
+    try {
+      var isDoc = kind === "doctor";
+      var S = st(); if (!S) return true;
+      var list = isDoc ? (S.doctors || []) : (S.pharmacies || []);
+      var pairs = dupPairs(isDoc);
+      var draft = {};
+      pairs.forEach(function (p) { draft[p[0]] = norm(gvById(p[1])); });
+      // رکوردی که همین الان در حال ویرایشش هستیم از بررسی تکراری خارج می‌شود
+      var editEl = $(isDoc ? "doctorEditId" : "pharmacyEditId");
+      var editingId = editEl ? String(editEl.value || "") : "";
+      var title = isDoc ? "پزشک/مطب" : "داروخانه";
+      var listFa = isDoc ? "پزشکان" : "داروخانه‌ها";
+      var exact = null, partial = false;
+      list.forEach(function (r) {
+        if (editingId && String(r.id) === editingId) return;
+        var allSame = true, anyVal = false;
+        pairs.forEach(function (p) {
+          var a = draft[p[0]];
+          var b = norm(r[p[0]] == null ? "" : r[p[0]]);
+          if (a) anyVal = true;
+          if (a !== b) allSame = false;
+        });
+        if (allSame && anyVal && draft.name) exact = r;
+        if (draft.name && norm(r.name) === draft.name) partial = true;
+        if (draft.phone && norm(r.phone || "") === draft.phone) partial = true;
+      });
+      if (exact) {
+        var sig = v20SigOf(kind);
+        if (window._v20AutoSaveSig === sig && (Date.now() - (window._v20AutoSaveT || 0)) < 120000) {
+          alert("✔ این " + title + " همین چند لحظه پیش با موفقیت ثبت شد؛ نیازی به ثبت دوباره نیست.");
+          return false;
+        }
+        alert("⛔ این " + title + " قبلاً با دقیقاً همین اطلاعات ثبت شده است" +
+          (exact.repName ? " (توسط «" + exact.repName + "»)" : "") +
+          ".\n\nثبت مجدد مجاز نیست؛ برای تغییر، از لیست «" + listFa + "» دکمه ✏️ ویرایش همان رکورد را بزنید.");
+        return false;
+      }
+      if (partial) {
+        return window.confirm("هشدار: " + title + (isDoc ? "ی" : "‌ای") + " با این نام یا تلفن قبلاً ثبت شده است.\n\nتأیید/بله = با این حال ذخیره شود  |  انصراف/خیر = ذخیره نشود");
+      }
+      return true;
+    } catch (e) {
+      return true;
+    }
+  };
+
+  /* ---------- ۳) مدیر کشویی‌های افزودن‌ها ---------- */
+  var V20_PANES = [
+    ["tab-pharmacies", "🏥 داروخانه‌ها"],
+    ["tab-doctors", "👨‍⚕️ پزشکان"],
+    ["tab-orders", "📦 سفارشات"],
+    ["tab-snapp-corporate", "🚕 اسنپ سازمانی"],
+    ["tab-columns-products", "💊 کالاها"],
+    ["tab-users-permissions", "👤 کاربران"]
+  ];
+  var v20AddPane = "tab-pharmacies";
+
+  var V20_FA_IDS = {
+    pharmacyName: "نام داروخانه", pharmacyProvince: "استان", pharmacyCity: "شهر", pharmacyDistrict: "منطقه",
+    pharmacyType: "نوع داروخانه", pharmacyCategory: "نوع داروخانه", pharmacyIsPercentage: "وضعیت درصدی داروخانه", pharmacyPhone: "تلفن داروخانه",
+    pharmacyAddress: "آدرس دقیق داروخانه", pharmacyManager: "نام مسئول داروخانه",
+    doctorName: "نام پزشک", doctorSpecialty: "تخصص پزشک", doctorProvince: "استان", doctorCity: "شهر", doctorDistrict: "منطقه",
+    doctorPhone: "تلفن پزشک", doctorAddress: "آدرس دقیق مطب", doctorIsPercentage: "وضعیت درصدی پزشک",
+    orderPharmacyName: "نام داروخانه", orderProvince: "استان", orderCity: "شهر", orderDistrict: "منطقه",
+    orderRepName: "نام نماینده", orderStatus: "وضعیت سفارش", orderDate: "تاریخ سفارش",
+    cfTargetEntity: "تب مربوطه", cfType: "نوع فیلد"
+  };
+  function faLabel(el, pane) {
+    var lab = (pane && el.id) ? pane.querySelector('label[for="' + el.id + '"]') : null;
+    var t = lab ? lab.textContent : "";
+    if (!t) {
+      var g = el.closest ? el.closest(".form-group") : null;
+      var l2 = g ? g.querySelector(".form-label, label") : null;
+      if (l2) t = l2.textContent;
+    }
+    if (!t && el.getAttribute) t = el.getAttribute("placeholder") || "";
+    t = String(t || "").replace(/\*/g, "").replace(/\(.*?\)/g, "").replace(/\s+/g, " ").trim();
+    // اگر برچسب خالی یا انگلیسی بود، از واژه‌نامه فارسی استفاده شود
+    if (!t || /^[A-Za-z0-9_\-\s]+$/.test(t)) t = V20_FA_IDS[el.id] || t;
+    return t || "";
+  }
+  function isDatePartField(id, label) {
+    if (/year|month|jyear|jmonth|روز/i.test(String(id))) return true;
+    if (/^(سال|ماه|روز)$/.test(String(label))) return true;
+    return false;
+  }
+
+  function collectCombos(paneId) {
+    var pane = $(paneId);
+    if (!pane) return [];
+    var out = [], seen = {};
+    // فقط شناسه‌های متعلق به همان تب؛ فیلد کپی‌شده از تب دیگر هرگز وارد این فهرست نشود.
+    function belongs(el) {
+      var id = String(el.id || ""), S = st() || {}, key = paneId === "tab-pharmacies" ? "pharmacy" : paneId === "tab-doctors" ? "doctor" : paneId === "tab-orders" ? "order" : paneId === "tab-snapp-corporate" ? "snapp" : paneId === "tab-columns-products" ? "products" : "users";
+      var custom = ((S.customFields || {})[key] || []).some(function (f) { return f && f.id === id; });
+      if (custom) return true;
+      if (key === "pharmacy") return /^pharmacy/.test(id);
+      if (key === "doctor") return /^(doctor|doc)/.test(id);
+      if (key === "order") return /^(order|ordm-)/.test(id);
+      if (key === "snapp") return /^snapp/.test(id);
+      if (key === "products") return /^(product|prod)/.test(id);
+      return /^user/.test(id);
+    }
+    function skipped(el) {
+      return !belongs(el) || el.closest("#columnsDesignerHost") || el.closest("#jalaliCalendarPopup") ||
+        el.closest(".modal-overlay") || el.closest("#addTabGrid") || el.closest("#addTabPanel") ||
+        el.closest("#v20PresetBar");
+    }
+    Array.prototype.forEach.call(pane.querySelectorAll("select[id]"), function (sel) {
+      if (!sel.id || seen[sel.id] || skipped(sel)) return;
+      if (sel.id.indexOf("jalali") === 0 || sel.id.indexOf("v20") === 0) return;
+      var lab = faLabel(sel, pane);
+      // برای کشویی‌های کمبووشده، برچسب از ورودی دیداری خوانده شود
+      if (!lab) {
+        var combo = sel.closest(".crm-combo");
+        var vis = combo ? combo.querySelector(".crm-combo-input") : null;
+        if (vis) lab = faLabel(vis, pane);
+      }
+      if (isDatePartField(sel.id, lab)) return; // سال/ماه تاریخ شمسی در این بخش نیاید (مثل بقیه کشویی‌ها)
+      seen[sel.id] = true;
+      var opts = [];
+      Array.prototype.forEach.call(sel.options, function (o, i) {
+        var v = String(o.value == null ? "" : o.value);
+        var t = String(o.textContent || "");
+        if (i === 0 && !v) return; // جای‌نگهدار «انتخاب کنید...»
+        opts.push({ v: v, t: t });
+      });
+      out.push({ el: sel, id: sel.id, label: lab, opts: opts });
+    });
+    // ورودی‌های متصل به datalist (کشویی تایپ‌شونده)
+    Array.prototype.forEach.call(pane.querySelectorAll("input[list][id]"), function (inp) {
+      if (seen[inp.id] || skipped(inp)) return;
+      if (inp.id.indexOf("v20") === 0) return;
+      var lab2 = faLabel(inp, pane);
+      if (isDatePartField(inp.id, lab2)) return;
+      var dl = $(inp.getAttribute("list"));
+      if (!dl) return;
+      seen[inp.id] = true;
+      var opts = [];
+      Array.prototype.forEach.call(dl.options, function (o) {
+        var v = String(o.value || o.textContent || "");
+        if (v) opts.push({ v: v, t: v });
+      });
+      out.push({ el: inp, id: inp.id, label: lab2, opts: opts, datalist: dl });
+    });
+    return out;
+  }
+
+  /* ---------- ۴-ب) منبع یکپارچه گزینه‌ها بر اساس نام لیبل در کل برنامه ---------- */
+  var globalOptionBusy=false,globalOptionObserverBound=false;
+  function globalFieldKey(el,label){
+    var l=String(label||faLabel(el,el&&el.closest&&el.closest('.tab-pane'))||"").trim(),n=norm(l);if(!n)return"";
+    if(/داروخانه/.test(l))return"داروخانه";if(/نماینده/.test(l))return"نمایندهعلمی";if(/استان/.test(l))return"استان";if(/شهر/.test(l))return"شهر";if(/منطقه|ناحیه/.test(l))return"منطقه";if(/سال/.test(l))return"سال";if(/ماه/.test(l))return"ماه";return"label:"+n;
+  }
+  function globalOptionState(){var S=st();if(!S)return{};S.settings=S.settings||{};S.settings.globalFieldOptions=S.settings.globalFieldOptions||{};return S.settings.globalFieldOptions;}
+  function globalOptionElements(){return Array.prototype.slice.call(document.querySelectorAll("select[id],input[list][id]")).filter(function(el){return!el.closest("#columnsDesignerHost,#manualDesignCanvas,#addTabPanel,.modal-overlay")&&!/^jalali/.test(el.id||"");});}
+  function globalElementOptions(el){var out=[],src=el.tagName==="SELECT"?el.options:((el.getAttribute("list")&&$(el.getAttribute("list")))||{}).options||[];Array.prototype.forEach.call(src,function(o){var v=String(o.value==null?"":o.value),t=String(o.textContent||v);if(v)out.push({value:v,text:t||v});});return out;}
+  function globalCustomFields(key){var out=[],S=st();Object.keys((S&&S.customFields)||{}).forEach(function(entity){(S.customFields[entity]||[]).forEach(function(f){if(f&&!f.deleted&&globalFieldKey(null,f.label)===key)out.push(f);});});return out;}
+  function mergeGlobalOption(list,item){if(!item||!String(item.value||"").trim())return;var v=String(item.value).trim(),at=list.findIndex(function(x){return norm(x.value)===norm(v);});if(at<0)list.push({value:v,text:String(item.text||v)});else if(!list[at].text)list[at].text=String(item.text||v);}
+  function seedGlobalOptions(key){
+    var store=globalOptionState(),rec=store[key];if(rec&&rec.initialized)return rec;rec=store[key]||(store[key]={values:[],hidden:[],initialized:true});rec.values=(rec.values||[]).map(function(x){return typeof x==="string"?{value:x,text:x}:x;});
+    globalOptionElements().forEach(function(el){if(globalFieldKey(el)===key)globalElementOptions(el).forEach(function(x){mergeGlobalOption(rec.values,x);});});globalCustomFields(key).forEach(function(f){(f.options||[]).forEach(function(v){mergeGlobalOption(rec.values,{value:v,text:v});});});
+    var S=st()||{};if(key==="داروخانه")(S.pharmacies||[]).forEach(function(p){mergeGlobalOption(rec.values,{value:p.name,text:p.name});});if(key==="نمایندهعلمی")(S.users||[]).forEach(function(u){if(u.fullName&&!/مدیر سیستم/.test(u.fullName))mergeGlobalOption(rec.values,{value:u.fullName,text:u.fullName});});
+    if(key==="سال"&&!rec.values.length){var y=Number((window.CRMJalali&&CRMJalali.jalaliTodayStr&&CRMJalali.jalaliTodayStr().slice(0,4))||1405);for(var i=y-8;i<=y+4;i++)mergeGlobalOption(rec.values,{value:String(i),text:String(i)});}
+    if(key==="ماه"&&!rec.values.length){["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند"].forEach(function(t,i){mergeGlobalOption(rec.values,{value:String(i+1).padStart(2,"0"),text:t});});}
+    return rec;
+  }
+  function applyGlobalOptionKey(key){
+    var rec=seedGlobalOptions(key),hidden=(rec.hidden||[]).map(norm),vals=(rec.values||[]).filter(function(x){return hidden.indexOf(norm(x.value))<0;});globalOptionBusy=true;
+    globalCustomFields(key).forEach(function(f){f.options=vals.map(function(x){return x.value;});});
+    globalOptionElements().forEach(function(el){if(globalFieldKey(el)!==key)return;var current=String(el.value||"");if(el.tagName==="SELECT"){var placeholder=null;Array.prototype.forEach.call(el.options,function(o){if(!String(o.value||"")&&!placeholder)placeholder={value:"",text:o.textContent||"انتخاب کنید..."};});el.innerHTML="";if(placeholder){var p=document.createElement("option");p.value="";p.textContent=placeholder.text;el.appendChild(p);}vals.forEach(function(x){var o=document.createElement("option");o.value=x.value;o.textContent=x.text||x.value;el.appendChild(o);});el.value=current;}else{var dl=$(el.getAttribute("list"));if(dl){dl.innerHTML="";vals.forEach(function(x){var o=document.createElement("option");o.value=x.value;dl.appendChild(o);});}}
+    });globalOptionBusy=false;
+  }
+  function applyGlobalFieldOptions(root){var keys={};(root&&root.querySelectorAll?Array.prototype.slice.call(root.querySelectorAll("select[id],input[list][id]")):globalOptionElements()).forEach(function(el){var k=globalFieldKey(el);if(k)keys[k]=1;});Object.keys(keys).forEach(applyGlobalOptionKey);}
+  function globalOptionChange(storeId,action,oldV,newV){var el=$(storeId),key=globalFieldKey(el);if(!key)return;var rec=seedGlobalOptions(key);rec.hidden=rec.hidden||[];var before=JSON.stringify(rec);if(action==="delete"){rec.values=(rec.values||[]).filter(function(x){return norm(x.value)!==norm(oldV);});if(rec.hidden.map(norm).indexOf(norm(oldV))<0)rec.hidden.push(oldV);}else if(action==="rename"){rec.values=(rec.values||[]).filter(function(x){return norm(x.value)!==norm(oldV);});if(rec.hidden.map(norm).indexOf(norm(oldV))<0)rec.hidden.push(oldV);rec.hidden=rec.hidden.filter(function(x){return norm(x)!==norm(newV);});mergeGlobalOption(rec.values,{value:newV,text:newV});}else{rec.hidden=rec.hidden.filter(function(x){return norm(x)!==norm(newV);});mergeGlobalOption(rec.values,{value:newV,text:newV});}if(JSON.stringify(rec)===before)return;applyGlobalOptionKey(key);save();}
+  function setupGlobalFieldOptions(){
+    applyGlobalFieldOptions(document);if(globalOptionObserverBound||!window.MutationObserver)return;globalOptionObserverBound=true;var timer;new MutationObserver(function(records){if(globalOptionBusy)return;var needs=false;records.forEach(function(r){Array.prototype.forEach.call(r.addedNodes||[],function(n){if(n.nodeType===1&&(n.matches&&n.matches("select,input[list]")||n.querySelector&&n.querySelector("select,input[list]")))needs=true;});});if(needs){clearTimeout(timer);timer=setTimeout(function(){applyGlobalFieldOptions(document);},80);}}).observe(document.body,{childList:true,subtree:true});
+    document.addEventListener("change",function(e){var el=e.target;if(!el||!(el.matches&&el.matches("select[id],input[list][id]"))||!String(el.value||"").trim())return;globalOptionChange(el.id,"add","",el.value);},true);
+  }
+
+  function persistAdd(storeId, val) {
+    var S = st(); if (!S) return;
+    S.selectExtraOptions = S.selectExtraOptions || {};
+    S.selectExtraOptions[storeId] = S.selectExtraOptions[storeId] || [];
+    if (S.selectExtraOptions[storeId].indexOf(val) === -1) S.selectExtraOptions[storeId].push(val);
+    globalOptionChange(storeId,"add","",val);save();
+  }
+  function persistRemove(storeId, val) {
+    var S = st(); if (!S) return;
+    var arr = (S.selectExtraOptions || {})[storeId];
+    if (arr) { var i = arr.indexOf(val); if (i >= 0) arr.splice(i, 1); }
+    S.v20HiddenOptions = S.v20HiddenOptions || {};
+    S.v20HiddenOptions[storeId] = S.v20HiddenOptions[storeId] || [];
+    if (S.v20HiddenOptions[storeId].indexOf(val) === -1) S.v20HiddenOptions[storeId].push(val);
+    globalOptionChange(storeId,"delete",val,"");save();
+  }
+  function persistRename(storeId, oldV, newV) {
+    var S = st(); if (!S) return;
+    var arr = (S.selectExtraOptions || {})[storeId];
+    if (arr && arr.indexOf(oldV) >= 0) { arr[arr.indexOf(oldV)] = newV; }
+    else {
+      S.v20Renames = S.v20Renames || {};
+      S.v20Renames[storeId] = S.v20Renames[storeId] || {};
+      S.v20Renames[storeId][oldV] = newV;
+    }
+    globalOptionChange(storeId,"rename",oldV,newV);save();
+  }
+
+  function optionRowsHtml(entry) {
+    var h = "";
+    entry.opts.forEach(function (o) {
+      h += "<div class='v20-opt-row' data-v='" + esc(o.v) + "'>" +
+        "<span>" + esc(o.t || o.v) + "</span>" +
+        "<button type='button' class='v20-opt-pick' data-store='" + esc(entry.id) + "' data-v='" + esc(o.v) + "' title='انتخاب و نمایش زیرمجموعه'>✅ انتخاب</button>" +
+        "<button type='button' class='v20-opt-edit' data-store='" + esc(entry.id) + "' data-v='" + esc(o.v) + "' title='ویرایش'>✏️</button>" +
+        "<button type='button' class='v20-opt-del' data-store='" + esc(entry.id) + "' data-v='" + esc(o.v) + "' title='حذف'>🗑️</button>" +
+        "</div>";
+    });
+    return h || "<div class='v20-mini'>گزینه‌ای ثبت نشده است.</div>";
+  }
+
+  function greyParentOptions(entry, paneId) {
+    var pane = $(paneId); if (!pane) return "";
+    var h = "<option value=''>— بدون زنجیره —</option>";
+    Array.prototype.forEach.call(pane.querySelectorAll("select[id], input[id]"), function (el) {
+      if (!el.id || el.id === entry.id) return;
+      if (el.closest("#addTabPanel") || el.closest("#columnsDesignerHost") || el.closest(".modal-overlay")) return;
+      if (el.id.indexOf("v20") === 0) return;
+      var lab = faLabel(el, pane) || el.id;
+      var cur = (st() && st().v20GreyMap && st().v20GreyMap[entry.id]) || "";
+      h += "<option value='" + esc(el.id) + "'" + (cur === el.id ? " selected" : "") + ">" + esc(lab) + "</option>";
+    });
+    return h;
+  }
+
+  function v20PaneEntity(){return v20AddPane==="tab-pharmacies"?"pharmacy":v20AddPane==="tab-doctors"?"doctor":v20AddPane==="tab-orders"?"order":v20AddPane==="tab-columns-products"?"products":v20AddPane==="tab-snapp-corporate"?"snapp":"users";}
+  function syncActiveAddEntity(){var sel=$("cfTargetEntity");if(sel){sel.value=v20PaneEntity();var g=sel.closest(".form-group");if(g)g.style.display="none";}}
+  window.v20RenderComboManager = function () {
+    syncActiveAddEntity();
+    var host = $("addTabPanel");
+    if (!host || !document.getElementById("tab-custom-fields")) return;
+    var entries = collectCombos(v20AddPane);
+    var S = st() || {};
+    var greyOn = !(S.settings && S.settings.v20GreyOn === false);
+    var lockOn = !(S.settings && S.settings.v20OrderLock === false);
+    var tabs = "";
+    V20_PANES.forEach(function (p) {
+      tabs += "<button type='button' class='" + (p[0] === v20AddPane ? "v20-on" : "") + "' data-pane='" + p[0] + "'>" + p[1] + "</button>";
+    });
+    var h = "<div class='v20-addmgr' style='border-top:2px solid #e2e8f0;padding-top:10px;'>" +
+      "<h4 style='margin:8px 0;color:#0f172a;'>🎛️ مدیر کشویی‌ها — هر فیلد، زیرمجموعه‌هایش دقیقاً زیر همان فیلد است</h4>" +
+      "<div class='v20-tabbar'>" + tabs + "</div>" +
+      "<div class='v20-card-tools' style='margin-bottom:4px'>" +
+      "<label class='v20-mini'><input type='checkbox' id='v20GreyOnChk'" + (greyOn ? " checked" : "") + "> حالت طوسی زنجیره‌ای فعال باشد</label>" +
+      "<label class='v20-mini'><input type='checkbox' id='v20OrderLockChk'" + (lockOn ? " checked" : "") + "> قفل طوسی فرم سفارش تا انتخاب داروخانه فعال باشد</label>" +
+      "</div>";
+    h += "<div class='v20-cards'>";
+    if (!entries.length) h += "<div class='v20-mini'>در این تب فیلد کشویی پیدا نشد.</div>";
+    entries.forEach(function (en) {
+      var parentSel = en.el.tagName === "SELECT" ? greyParentOptions(en, v20AddPane) : "";
+      h += "<div class='v20-combo-card' data-store='" + esc(en.id) + "'>" +
+        "<h5>🔽 " + esc(en.label || V20_FA_IDS[en.id] || "فیلد کشویی") + "</h5>" +
+        "<div class='v20-card-tools'>" +
+        "<input type='text' class='v20-search' placeholder='🔍 جستجوی لحظه‌ای در زیرمجموعه‌ها...'>" +
+        "<input type='text' class='v20-newopt' placeholder='گزینه جدید...' style='flex:.8'>" +
+        "<button type='button' class='v20-addopt' data-store='" + esc(en.id) + "' style='padding:7px 12px;border:1px solid #0d9488;background:#0d9488;color:#fff;border-radius:8px;cursor:pointer;'>➕ افزودن</button>" +
+        (parentSel ? "<label class='v20-mini'>طوسی تا انتخاب: <select class='v20-grey-sel' data-store='" + esc(en.id) + "'>" + parentSel + "</select></label>" : "") +
+        "</div>" +
+        "<div class='v20-opts' data-store='" + esc(en.id) + "'>" + optionRowsHtml(en) + "</div>" +
+        "</div>";
+    });
+    h += "</div>"; // پایان .v20-cards
+    h += "</div>"; // پایان .v20-addmgr
+    var old = host.querySelector(".v20-addmgr");
+    if (old) old.parentNode.removeChild(old);
+    var div = document.createElement("div");
+    div.innerHTML = h;
+    // مدیر جدید همیشه ابتدای تب دیده شود؛ کاربر مجبور به اسکرول زیر پنل قدیمی نباشد.
+    host.insertBefore(div.firstChild, host.firstChild);
+    bindManager(host);
+    v20RenderEntityManager();
+  };
+
+  function bindManager(host) {
+    Array.prototype.forEach.call(host.querySelectorAll(".v20-tabbar button"), function (b) {
+      b.addEventListener("click", function () { v20AddPane = b.getAttribute("data-pane"); window.v20RenderComboManager(); });
+    });
+    var g1 = host.querySelector("#v20GreyOnChk");
+    if (g1) g1.addEventListener("change", function () { var S = st(); if (!S) return; S.settings = S.settings || {}; S.settings.v20GreyOn = g1.checked; save(); v20ApplyGreyChains(); v20ApplyOrderLock(); });
+    var g2 = host.querySelector("#v20OrderLockChk");
+    if (g2) g2.addEventListener("change", function () { var S = st(); if (!S) return; S.settings = S.settings || {}; S.settings.v20OrderLock = g2.checked; save(); v20ApplyOrderLock(); });
+
+    Array.prototype.forEach.call(host.querySelectorAll(".v20-card-tools .v20-search"), function (inp) {
+      inp.addEventListener("input", function () {
+        var card = inp.closest(".v20-combo-card");
+        var q = norm(inp.value);
+        Array.prototype.forEach.call(card.querySelectorAll(".v20-opt-row"), function (row) {
+          row.style.display = (!q || norm(row.getAttribute("data-v")).indexOf(q) >= 0) ? "" : "none";
+        });
+      });
+    });
+    Array.prototype.forEach.call(host.querySelectorAll(".v20-addopt"), function (b) {
+      b.addEventListener("click", function () {
+        var card = b.closest(".v20-combo-card");
+        var inp = card.querySelector(".v20-newopt");
+        var val = String(inp.value || "").trim();
+        if (!val) { alert("متن گزینه جدید را بنویسید."); return; }
+        var id = b.getAttribute("data-store");
+        var el = $(id);
+        if (el && el.tagName === "SELECT") {
+          var o = document.createElement("option"); o.value = val; o.textContent = val; el.appendChild(o);
+        } else if (el && el.getAttribute("list") && $(el.getAttribute("list"))) {
+          var o2 = document.createElement("option"); o2.value = val; $(el.getAttribute("list")).appendChild(o2);
+        }
+        persistAdd(id, val);
+        log("گزینه اضافه شد: " + id + " ← " + val);
+        window.v20RenderComboManager();
+      });
+    });
+    Array.prototype.forEach.call(host.querySelectorAll(".v20-opt-pick"),function(b){b.addEventListener("click",function(){var el=$(b.getAttribute("data-store"));if(!el)return;el.value=b.getAttribute("data-v");try{el.dispatchEvent(new Event("input",{bubbles:true}));el.dispatchEvent(new Event("change",{bubbles:true}));}catch(e){}setTimeout(window.v20RenderComboManager,120);});});
+    Array.prototype.forEach.call(host.querySelectorAll(".v20-opt-edit"), function (b) {
+      b.addEventListener("click", function () {
+        var id = b.getAttribute("data-store"), oldV = b.getAttribute("data-v");
+        var nw = prompt("ویرایش زیرمجموعه:\n«" + oldV + "» به:", oldV);
+        if (nw === null) return;
+        nw = String(nw).trim();
+        if (!nw || nw === oldV) return;
+        var el = $(id);
+        if (el && el.tagName === "SELECT") {
+          Array.prototype.forEach.call(el.options, function (o) { if (String(o.value) === oldV) { o.value = nw; o.textContent = nw; } });
+        }
+        persistRename(id, oldV, nw);
+        window.v20RenderComboManager();
+      });
+    });
+    Array.prototype.forEach.call(host.querySelectorAll(".v20-opt-del"), function (b) {
+      b.addEventListener("click", function () {
+        var id = b.getAttribute("data-store"), v = b.getAttribute("data-v");
+        if (!window.confirm("زیرمجموعه «" + v + "» حذف شود؟")) return;
+        var el = $(id);
+        if (el && el.tagName === "SELECT") {
+          Array.prototype.slice.call(el.options).forEach(function (o) { if (String(o.value) === v) el.removeChild(o); });
+        } else if (el && el.getAttribute("list") && $(el.getAttribute("list"))) {
+          var dl = $(el.getAttribute("list"));
+          Array.prototype.slice.call(dl.options).forEach(function (o) { if (String(o.value) === v) dl.removeChild(o); });
+        }
+        persistRemove(id, v);
+        window.v20RenderComboManager();
+      });
+    });
+    Array.prototype.forEach.call(host.querySelectorAll(".v20-grey-sel"), function (sel) {
+      sel.addEventListener("change", function () {
+        var S = st(); if (!S) return;
+        S.v20GreyMap = S.v20GreyMap || {};
+        var id = sel.getAttribute("data-store");
+        if (sel.value) S.v20GreyMap[id] = sel.value; else delete S.v20GreyMap[id];
+        save();
+        v20ApplyGreyChains();
+      });
+    });
+  }
+
+  /* ---------- ۴) موتور زنجیره طوسی ---------- */
+  function setFieldGrey(el, grey) {
+    var y = window.scrollY;
+    try {
+      el.disabled = !!grey;
+      el.classList.toggle("v20-grey", !!grey);
+      var combo = el.closest ? el.closest(".crm-combo") : null;
+      if (combo) {
+        combo.classList.toggle("v20-locked", !!grey);
+        var inp = combo.querySelector(".crm-combo-input");
+        if (inp) { inp.disabled = !!grey; inp.classList.toggle("v20-grey", !!grey); }
+      }
+      var fg = el.closest ? el.closest(".form-group") : null;
+      if (fg) fg.classList.toggle("v20-grey-zone", !!grey);
+    } catch (e) {}
+    if (window.scrollY !== y) window.scrollTo(0, y);
+  }
+  function seedGreyDefaults() {
+    var S = st(); if (!S || S._v20GreySeeded) return;
+    S.v20GreyMap = S.v20GreyMap || {};
+    [["pharmacyCity", "pharmacyProvince"], ["pharmacyDistrict", "pharmacyCity"],
+     ["doctorCity", "doctorProvince"], ["doctorDistrict", "doctorCity"],
+     ["orderCity", "orderProvince"], ["orderDistrict", "orderCity"]].forEach(function (p) {
+      if (!(p[0] in S.v20GreyMap)) S.v20GreyMap[p[0]] = p[1];
+    });
+    S._v20GreySeeded = true;
+    save();
+  }
+  function v20ApplyGreyChains() {
+    var S = st(); if (!S) return;
+    var on = !(S.settings && S.settings.v20GreyOn === false);
+    var y = window.scrollY;
+    Object.keys(S.v20GreyMap || {}).forEach(function (id) {
+      var el = $(id); if (!el) return;
+      // قفل سفارشات مالک فیلدهای سفارش است
+      if (id.indexOf("order") === 0 && !(S.settings && S.settings.v20OrderLock === false)) return;
+      var pEl = $(S.v20GreyMap[id]);
+      var locked = on && pEl && !String(pEl.value || "").trim();
+      setFieldGrey(el, locked);
+    });
+    if (window.scrollY !== y) window.scrollTo(0, y);
+  }
+  window.v20ApplyGreyChains = v20ApplyGreyChains;
+
+  /* ---------- ۵) قفل طوسی فرم سفارش ---------- */
+  var ORDER_DESCRIPTORS = ["orderProvince", "orderCity", "orderDistrict", "orderAddress", "orderRepName"];
+  var ORDER_PRODUCT_SCOPE = "#orderItemsContainer, #orderProductCatalogBar, #orderProductCatalogList, #orderTotalsArea";
+  function orderMatched() { return !!(($("orderPharmacyMatchedId") || {}).value); }
+  function v20ApplyOrderLock() {
+    var pane = $("tab-orders"); if (!pane) return;
+    var S = st(); if (!S) return;
+    var on = !(S.settings && S.settings.v20OrderLock === false);
+    var inputs = pane.querySelectorAll("input, select, textarea");
+    var y = window.scrollY;
+    if (!on) {
+      Array.prototype.forEach.call(inputs, function (el) { setFieldGrey(el, false); });
+      return;
+    }
+    var locked = !orderMatched();
+    Array.prototype.forEach.call(inputs, function (el) {
+      if (!el.id || el.type === "hidden") return;
+      // نام داروخانه، تاریخ سفارش و همه فیلدهای بخش کالا: همیشه فعال و عادی
+      if (el.id === "orderPharmacyName" || el.id === "orderDate") { setFieldGrey(el, false); return; }
+      if (el.closest && el.closest(ORDER_PRODUCT_SCOPE)) { setFieldGrey(el, false); return; }
+      // فیلدهای توصیفی داروخانه: طوسی (اطلاعات سر جای خودش می‌نشیند)
+      if (ORDER_DESCRIPTORS.indexOf(el.id) >= 0) { setFieldGrey(el, true); return; }
+      // بقیه فیلدها: تا انتخاب/جایگذاری داروخانه طوسی‌اند
+      setFieldGrey(el, locked);
+    });
+    if (window.scrollY !== y) window.scrollTo(0, y);
+  }
+  window.v20ApplyOrderLock = v20ApplyOrderLock;
+
+  /* ---------- ۶) افزودن لحظه‌ای نام = ذخیره خودکار (بدون تکرار کاذب) ---------- */
+  function v20Toast(msg) {
+    try {
+      var d = document.createElement("div");
+      d.className = "v20-toast";
+      d.textContent = msg;
+      document.body.appendChild(d);
+      setTimeout(function () { try { d.parentNode.removeChild(d); } catch (e) {} }, 3200);
+    } catch (e) {}
+  }
+  function bindInstantAddSave() {
+    document.addEventListener("click", function (e) {
+      var b = e.target && e.target.closest ? e.target.closest("button") : null;
+      if (!b) return;
+      var t = String(b.textContent || "").trim();
+      if (t.indexOf("➕ افزودن") !== 0) return;
+      var pane = b.closest("#tab-pharmacies, #tab-doctors");
+      if (!pane) return;
+      var isDoc = pane.id === "tab-doctors";
+      setTimeout(function () {
+        var nameInp = $(isDoc ? "doctorName" : "pharmacyName");
+        var val = nameInp ? String(nameInp.value || "").trim() : "";
+        if (!val) return;
+        var kind = isDoc ? "doctor" : "pharmacy";
+        var sig = v20SigOf(kind);
+        // اگر همین رکورد لحظاتی پیش با همین امضا ذخیره شد، دوباره ذخیره نکن
+        if (window._v20AutoSaveSig === sig && (Date.now() - (window._v20AutoSaveT || 0)) < 120000) {
+          v20Toast("این رکورد همین الان ذخیره شده؛ دوباره ثبت نمی‌شود.");
+          return;
+        }
+        var S = st();
+        var before = S ? (isDoc ? (S.doctors || []).length : (S.pharmacies || []).length) : 0;
+        window._v20AutoSaveSig = sig;
+        window._v20AutoSaveT = Date.now();
+        var saveBtn = $(isDoc ? "btnSaveDoctor" : "btnSavePharmacy");
+        if (saveBtn) {
+          log("افزودن لحظه‌ای ⇒ ذخیره خودکار رکورد");
+          saveBtn.click();
+          setTimeout(function () {
+            var S2 = st();
+            var after = S2 ? (isDoc ? (S2.doctors || []).length : (S2.pharmacies || []).length) : 0;
+            if (after > before) v20Toast("✅ «" + val + "» ثبت شد.");
+          }, 240);
+        }
+      }, 90);
+    }, true);
+  }
+
+  /* ---------- ۷) همگام‌سازی فیلدهای داروخانه ↔ سفارشات ---------- */
+  function mirrorPharmacyFieldsToOrder(boot) {
+    var S = st(); if (!S) return;
+    S.customFields = S.customFields || {};
+    var ph = S.customFields.pharmacy || [];
+    S.customFields.order = S.customFields.order || [];
+    var or = S.customFields.order;
+    var moved = 0;
+    ph.forEach(function (f) {
+      if (!f || !f.id) return;
+      var mirrorId = "ordm-" + f.id;
+      var exists = or.some(function (g) { return g && (g.id === mirrorId || g.label === f.label); });
+      if (!exists) {
+        var clone = {};
+        Object.keys(f).forEach(function (k) { clone[k] = f[k]; });
+        clone.id = mirrorId;
+        or.push(clone);
+        moved++;
+      }
+    });
+    if (moved) {
+      save();
+      log("همگام فیلد داروخانه→سفارش: " + moved + " فیلد");
+      // افزودن فیلد نباید موتور مخرب چیدمان را اجرا کند؛ فقط همان بخش رسم و قفل جهانی بازگردانی می‌شود.
+      try { if (typeof window.renderExtraTabCustomFields === "function") window.renderExtraTabCustomFields("order"); } catch (e) {}
+      setTimeout(function(){try{restoreDomFieldOrder();}catch(e){}},20);
+    }
+    if (boot) S._v20MirrorBoot = true;
+  }
+  function mergeSameNameFieldInfo(){var S=st(),entity=v20PaneEntity(),arr=((S.customFields||{})[entity]||[]),fresh=arr[arr.length-1];if(!fresh||!fresh.label)return;var key=globalFieldKey(null,fresh.label),rec=seedGlobalOptions(key);(fresh.options||[]).forEach(function(v){mergeGlobalOption(rec.values,{value:v,text:v});});Object.keys(S.customFields||{}).forEach(function(k){((S.customFields[k])||[]).forEach(function(f){if(!f||f===fresh||globalFieldKey(null,f.label)!==key)return;if(!fresh.dependsOn&&f.dependsOn)fresh.dependsOn=f.dependsOn;if(!fresh.type&&f.type)fresh.type=f.type;});});applyGlobalOptionKey(key);save();}
+  function bindMirror() {
+    document.addEventListener("click", function (e) {
+      var t = e.target;
+      if (t && t.id === "btnSaveCustomField") {
+        setTimeout(function () {
+          try {
+            syncActiveAddEntity(); mergeSameNameFieldInfo();
+            var ent = ($("cfTargetEntity") || {}).value;
+            if (ent === "pharmacy") mirrorPharmacyFieldsToOrder(false);
+            if (ent === "products") renderProductExtras();
+          } catch (err) {}
+        }, 150);
+      }
+    });
+    // حذف فیلد داروخانه ⇒ حذف آینه‌ای از سفارش
+    var od = window.deleteCustomField;
+    if (typeof od === "function") {
+      window.deleteCustomField = function (entity, fieldId) {
+        var S = st();
+        var label = "";
+        if (S && S.customFields && S.customFields[entity]) {
+          (S.customFields[entity] || []).forEach(function (f) { if (f && f.id === fieldId) label = f.label || ""; });
+        }
+        var r = od.apply(this, arguments);
+        try {
+          if (entity === "pharmacy" && S) {
+            var or = (S.customFields && S.customFields.order) || [];
+            var target = null;
+            or.forEach(function (g) {
+              if (!g) return;
+              if (g.id === "ordm-" + fieldId || (label && g.label === label)) target = g.id;
+            });
+            if (target) od.call(this, "order", target);
+            setTimeout(function () {
+              try { if (typeof window.renderExtraTabCustomFields === "function") window.renderExtraTabCustomFields("order"); restoreDomFieldOrder(); } catch (e) {}
+            }, 80);
+          }
+        } catch (e2) {}
+        return r;
+      };
+    }
+  }
+
+  /* ---------- ۸) رفع نقص فیلدهای باکس کالا ---------- */
+  function renderProductExtras() {
+    var anchor = $("productName");
+    if (!anchor) return;
+    var S = st(); if (!S) return;
+    var grid = anchor.closest(".form-grid") || anchor.parentElement;
+    if (!grid) return;
+    var old = $("v20ProductExtrasHost");
+    if (old) old.parentNode.removeChild(old);
+    var fields = (S.customFields && (S.customFields.products || S.customFields.product)) || [];
+    fields = fields.filter(function (f) { return f && !f.deleted && f.showInForm !== false; });
+    fields.sort(function (a, b) { return (Number(a.order) || 999) - (Number(b.order) || 999); });
+    if (!fields.length) return;
+    var host = document.createElement("div");
+    host.id = "v20ProductExtrasHost";
+    host.style.display = "contents";
+    fields.forEach(function (f) {
+      var g = document.createElement("div");
+      g.className = "form-group";
+      var w = parseInt(f.size, 10) || 220;
+      var inner;
+      if (f.type === "select") {
+        inner = "<select class='form-select' id='v20pf_" + esc(f.id) + "' style='width:100%;max-width:" + w + "px'>" +
+          "<option value=''>انتخاب کنید...</option>" +
+          String(f.options || "").split(/[,،]/).map(function (s) { return s.trim(); }).filter(Boolean)
+            .map(function (s) { return "<option value='" + esc(s) + "'>" + esc(s) + "</option>"; }).join("") +
+          "</select>";
+      } else {
+        inner = "<input type='text' class='form-input' id='v20pf_" + esc(f.id) + "' style='width:100%;max-width:" + w + "px" +
+          (f.height ? ";height:" + parseInt(f.height, 10) + "px" : "") + "' placeholder='" + esc(f.label) + "...'>";
+      }
+      g.innerHTML = "<label class='form-label' for='v20pf_" + esc(f.id) + "'>" + esc(f.label) + "</label>" + inner;
+      host.appendChild(g);
+    });
+    grid.appendChild(host);
+    log("فیلدهای سفارشی کالا رسم شد: " + fields.length);
+  }
+  window.v20RenderProductExtras = renderProductExtras;
+
+  /* ---------- ۹) اعمال ترتیب ستون‌های لیست ---------- */
+  var LIST_TARGETS = [
+    ["renderPharmaciesList", "tab-pharmacies", "pharmacy", "tablePharmaciesHeader", "tablePharmaciesBody"],
+    ["renderDoctorsList", "tab-doctors", "doctor", "tableDoctorsHeader", "tableDoctorsBody"],
+    ["renderOrdersList", "tab-orders", "order", "tableOrdersHeader", "tableOrdersBody"]
+  ];
+  function thText(th) { return String(th.textContent || "").replace(/\s+/g, " ").replace(/[*]/g, "").trim(); }
+  function listLabelKey(v){return norm(String(v||"").replace(/نام\s*/g,"").replace(/\(.*?\)/g,"").replace(/استان\s*\/\s*شهر\s*\/\s*منطقه/g,"استانشهرمنطقه"));}
+  function v20ReorderListColumns(paneId, key, headId, bodyId) {
+    try {
+      if (typeof window.getUnifiedFieldList !== "function") return;
+      var pane = $(paneId); if (!pane) return;
+      var headRow = $(headId) || pane.querySelector("thead tr"); if (!headRow) return;
+      var table = headRow.closest("table"); if (!table) return;
+      var ths = Array.prototype.slice.call(headRow.children);
+      if (ths.length < 3) return;
+      var fields = (window.getUnifiedFieldList(paneId) || []).filter(function (f) {
+        return f && !f.deleted && f.showInList !== false;
+      }).sort(function (a, b) {
+        return (Number(a.listOrder) || Number(a.order) || 999) - (Number(b.listOrder) || Number(b.order) || 999);
+      });
+      var mapLabel = {};
+      ths.forEach(function (th, i) { mapLabel[i] = thText(th); });
+      var matched = 0;
+      var newOrder = new Array(ths.length).fill(-1);
+      var taken = {};
+      newOrder[0] = 0; taken[0] = true; // ستون اول: ردیف واقعی
+      // ستون دوم: نام نماینده
+      for (var r = 1; r < ths.length; r++) {
+        if (/نماینده/.test(mapLabel[r])) { newOrder[1] = r; taken[r] = true; break; }
+      }
+      // آخرین ستون اگر عملیات/خالی است در آخر بماند
+      var lastIdx = ths.length - 1;
+      var keepLast = (!mapLabel[lastIdx] || /عملیات|ویرایش|حذف/.test(mapLabel[lastIdx]));
+      if (keepLast) { taken[lastIdx] = true; }
+      var desiredMvids = fields.map(function (f) { return String(f.label || "").replace(/\s+/g, " ").replace(/[*]/g, "").trim(); });
+      var fillPos = 1;
+      if (newOrder[1] !== -1) fillPos = 2;
+      desiredMvids.forEach(function (lab) {
+        if (!lab) return;
+        for (var i = 1; i < ths.length; i++) {
+          if (taken[i]) continue;
+          var hk=listLabelKey(mapLabel[i]),lk=listLabelKey(lab);
+          if (mapLabel[i] === lab || hk===lk || (hk.length>3&&lk.indexOf(hk)>=0) || (lk.length>3&&hk.indexOf(lk)>=0)) {
+            while (fillPos <= lastIdx && newOrder[fillPos] !== -1 && taken[newOrder[fillPos]]) fillPos++;
+            while (fillPos <= lastIdx && newOrder[fillPos] !== -1) fillPos++;
+            if (keepLast && fillPos >= lastIdx) return;
+            if (fillPos >= ths.length) return;
+            newOrder[fillPos] = i; taken[i] = true; matched++; fillPos++;
+            break;
+          }
+        }
+      });
+      if (matched < 1) return; // حداقل یک ترتیب ذخیره‌شده معتبر پیدا شد
+      var rest = [];
+      for (var k = 1; k < ths.length; k++) if (!taken[k]) rest.push(k);
+      var pos = 1;
+      var finalOrder = [];
+      for (var p = 0; p < ths.length; p++) finalOrder.push(-1);
+      finalOrder[0] = 0;
+      if (keepLast) finalOrder[lastIdx] = lastIdx;
+      if (newOrder[1] !== -1) finalOrder[1] = newOrder[1];
+      for (var q = 0; q < ths.length; q++) if (newOrder[q] !== -1 && q !== 0 && !(q === 1)) finalOrder[q] = newOrder[q];
+      rest.forEach(function (idx) {
+        while (pos < ths.length && finalOrder[pos] !== -1) pos++;
+        if (pos < ths.length) finalOrder[pos] = idx;
+      });
+      for (var fix = 0; fix < ths.length; fix++) if (finalOrder[fix] === -1) { finalOrder[fix] = fix; }
+      function reorderRow(row) {
+        var cells = Array.prototype.slice.call(row.children);
+        if (cells.length !== finalOrder.length) return;
+        var copy = cells.slice();
+        finalOrder.forEach(function (srcIdx, i) { row.appendChild(copy[srcIdx]); });
+      }
+      reorderRow(headRow);
+      Array.prototype.forEach.call(table.querySelectorAll("tbody tr"), reorderRow);
+      log("ترتیب ستون لیست اعمال شد: " + paneId);
+    } catch (e) {}
+  }
+  function wrapListRenderers() {
+    LIST_TARGETS.forEach(function (t) {
+      var orig = window[t[0]];
+      if (typeof orig !== "function" || orig._v20wrapped) return;
+      var wrapped = function () {
+        var r = orig.apply(this, arguments);
+        var pane = t[1], key = t[2];
+        setTimeout(function () { v20ReorderListColumns(pane, key, t[3], t[4]); }, 0);
+        return r;
+      };
+      wrapped._v20wrapped = true;
+      window[t[0]] = wrapped;
+    });
+  }
+
+  function bindListOrderObserver(){LIST_TARGETS.forEach(function(t){var body=$(t[4]);if(!body||body.dataset.v20OrderObserver)return;body.dataset.v20OrderObserver="1";var timer;new MutationObserver(function(){clearTimeout(timer);timer=setTimeout(function(){v20ReorderListColumns(t[1],t[2],t[3],t[4]);},30);}).observe(body,{childList:true});v20ReorderListColumns(t[1],t[2],t[3],t[4]);});}
+
+  /* ---------- ۱۰) دکمه تغییر رمز (کنار دکمه خروج، نه روی آن) ---------- */
+  function persistPass(username, newPass) {
+    try {
+      var map = JSON.parse(localStorage.getItem("CRM_USERS_AUTH") || "{}");
+      if (!map[username]) map[username] = {};
+      map[username].password = newPass;
+      localStorage.setItem("CRM_USERS_AUTH", JSON.stringify(map));
+    } catch (e) {}
+  }
+  function bindChpassFab() {
+    if ($("v20ChpassFab")) return;
+    var b = document.createElement("button");
+    b.type = "button";
+    b.id = "v20ChpassFab";
+    b.textContent = "🔑 تغییر رمز";
+    b.addEventListener("click", function () {
+      var who = sessionStorage.getItem("crmUsername") || "";
+      var S = st();
+      var u = S ? (S.users || []).filter(function (x) { return x.username === who; })[0] : null;
+      var modal = document.createElement("div");
+      modal.className = "v20-modal";
+      modal.innerHTML =
+        "<div class='v20-modal-card'>" +
+        "<h4 style='margin:0 0 8px'>🔑 تغییر رمز عبور «" + esc(sessionStorage.getItem("crmUserName") || who) + "»</h4>" +
+        "<input type='password' id='v20p1' placeholder='رمز فعلی'>" +
+        "<input type='password' id='v20p2' placeholder='رمز جدید'>" +
+        "<input type='password' id='v20p3' placeholder='تکرار رمز جدید'>" +
+        "<div style='display:flex;gap:8px;justify-content:flex-end;margin-top:10px'>" +
+        "<button type='button' id='v20pOk' style='background:#0d9488;color:#fff;border:none;border-radius:8px;padding:8px 18px;cursor:pointer;font-weight:700;'>ثبت رمز جدید</button>" +
+        "<button type='button' id='v20pNo' style='background:#e2e8f0;border:none;border-radius:8px;padding:8px 18px;cursor:pointer;'>انصراف</button>" +
+        "</div></div>";
+      document.body.appendChild(modal);
+      modal.querySelector("#v20pNo").addEventListener("click", function () { modal.parentNode.removeChild(modal); });
+      modal.querySelector("#v20pOk").addEventListener("click", function () {
+        var p1 = modal.querySelector("#v20p1").value;
+        var p2 = String(modal.querySelector("#v20p2").value || "").trim();
+        var p3 = String(modal.querySelector("#v20p3").value || "").trim();
+        var map = {};
+        try { map = JSON.parse(localStorage.getItem("CRM_USERS_AUTH") || "{}"); } catch (e) {}
+        var cur = u ? u.password : (map[who] ? map[who].password : null);
+        if (cur != null && p1 !== cur) { alert("رمز فعلی نادرست است."); return; }
+        if (!p2) { alert("رمز جدید خالی است."); return; }
+        if (p2 !== p3) { alert("دو رمز جدید یکسان نیستند."); return; }
+        if (u) { u.password = p2; }
+        persistPass(who, p2);
+        save();
+        modal.parentNode.removeChild(modal);
+        alert("✅ رمز شما تغییر کرد و در سیستم ورود هم ثبت شد. از ورود بعدی همان رمز جدید معتبر است.");
+      });
+    });
+    // میزبانی درون هدر، درست قبل از دکمه «خروج» — اگر هدر پیدا نشد، پایینِ هدر شناور می‌شود
+    var logout = $("btnLogoutSystem");
+    if (logout && logout.parentNode) {
+      logout.parentNode.insertBefore(b, logout);
+    } else {
+      b.style.position = "fixed";
+      b.style.top = "64px";
+      b.style.left = "8px";
+      b.style.zIndex = "1100";
+      document.body.appendChild(b);
+    }
+    v20RefreshFab();
+  }
+  function v20RefreshFab() {
+    var b = $("v20ChpassFab"); if (!b) return;
+    b.style.display = sessionStorage.getItem("crmLoggedIn") === "1" ? "inline-block" : "none";
+  }
+
+  /* ---------- ۱۱) سطوح دسترسی آماده ---------- */
+  var ROLE_PRESETS = [
+    {
+      id: "rep", label: "نماینده علمی",
+      on: ["dash_login", "dash_stats", "ph_access", "ph_create", "ph_list", "ph_view_loc", "ph_create_loc",
+        "ph_percentage", "ph_send_mgr", "doc_access", "doc_create", "doc_list", "doc_view_loc", "doc_create_loc",
+        "doc_upload", "doc_send_mgr", "ord_access", "ord_create", "ord_list", "ord_view_detail", "ord_items",
+        "ord_send", "fld_visit", "fld_start_stop", "fld_pause", "fld_home_loc", "hr_leave_req", "rep_monthly",
+        "sys_install", "usr_chpass"]
+    },
+    {
+      id: "sales", label: "کارشناس فروش",
+      on: ["dash_login", "dash_stats", "dash_activity", "dash_all_reps", "dash_export",
+        "ph_access", "ph_create", "ph_list", "ph_all_reps", "ph_view_loc", "ph_create_loc", "ph_percentage",
+        "ph_send_mgr", "ph_excel", "doc_access", "doc_create", "doc_list", "doc_all_reps", "doc_view_loc",
+        "doc_create_loc", "doc_upload", "doc_print", "doc_send_mgr", "doc_excel", "ord_access", "ord_create",
+        "ord_list", "ord_all_reps", "ord_view_detail", "ord_items", "ord_send", "ord_excel",
+        "fld_visit", "fld_start_stop", "fld_pause", "fld_home_loc", "hr_leave_req",
+        "rep_monthly", "rep_all_reports", "rep_item_sales", "rep_excel", "sys_targets", "sys_notify",
+        "sys_install", "usr_chpass"]
+    },
+    {
+      id: "supervisor", label: "سرپرست",
+      on: "ALL_EXCEPT",
+      off: ["sys_users", "sys_manual_design", "sys_copy_tabs", "sys_restore", "ord_formula"]
+    }
+  ];
+  function defaultPresetPermissions(pid){var preset=ROLE_PRESETS.filter(function(p){return p.id===pid;})[0],perms=typeof getDefaultPermissionsObject==="function"?getDefaultPermissionsObject(false):{};if(!preset)return perms;if(preset.on==="ALL_EXCEPT"){perms=typeof getDefaultPermissionsObject==="function"?getDefaultPermissionsObject(true):{};(preset.off||[]).forEach(function(k){perms[k]=false;});}else(preset.on||[]).forEach(function(k){perms[k]=true;});return perms;}
+  function checklistPermissions(){var p={};document.querySelectorAll(".permission-tag-chk").forEach(function(el){p[el.dataset.key]=el.dataset.checked==="true";});return p;}
+  function applyPermissionsToChecklist(perms){document.querySelectorAll(".permission-tag-chk").forEach(function(el){var on=!perms||perms[el.dataset.key]!==false;el.dataset.checked=on?"true":"false";el.classList.toggle("unchecked",!on);var cb=el.querySelector("input[type=checkbox]");if(cb)cb.checked=on;});try{if(typeof updatePermCountBadge==="function")updatePermCountBadge();}catch(e){}}
+  function permissionTemplate(pid){var S=st();S.settings=S.settings||{};S.settings.permissionLevelTemplates=S.settings.permissionLevelTemplates||{};return S.settings.permissionLevelTemplates[pid]||defaultPresetPermissions(pid);}
+  function bindRoleTemplateSelect(){var role=$("newRole");if(!role||role.dataset.templateBound)return;role.dataset.templateBound="1";role.addEventListener("change",function(){var map={"نماینده علمی":"rep","کارشناس فروش":"sales","سرپرست":"supervisor"};applyPermissionsToChecklist(permissionTemplate(map[role.value]||"rep"));});}
+  function syncPermissionMasters(){document.querySelectorAll(".permission-tab-group").forEach(function(g){var all=g.querySelectorAll(".permission-tag-chk input[type=checkbox]"),on=g.querySelectorAll(".permission-tag-chk input[type=checkbox]:checked"),m=g.querySelector(".perm-group-master");if(m){m.checked=all.length>0&&on.length===all.length;m.indeterminate=on.length>0&&on.length<all.length;}});}
+  function renderPresetBar() {
+    var pane=$("tab-users-permissions");if(!pane)return;["v20PresetUser","v20PresetApply"].forEach(function(id){var x=$(id);if(x)x.remove();});var old=$("v20PresetBar");if(old){bindRoleTemplateSelect();return;}var S=st();if(!S)return;var card=pane.querySelector(".card")||pane,bar=document.createElement("div");bar.id="v20PresetBar";bar.style.cssText="border:1px solid #c7d2fe;background:#eef2ff;border-radius:12px;padding:12px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;min-height:58px;box-sizing:border-box;";var opts=ROLE_PRESETS.map(function(p){return"<option value='"+p.id+"'>"+p.label+"</option>";}).join("");bar.innerHTML="<strong>🎚️ سطوح دسترسی آماده:</strong><select id='v20PresetSel' class='form-select' style='min-width:180px'>"+opts+"</select><button type='button' id='v20PresetSave' class='btn btn-primary'>💾 ذخیره سطح دسترسی</button><span class='v20-mini'>تیک‌های فعلی پایین صفحه برای همین سطح ذخیره می‌شوند.</span>";card.insertBefore(bar,card.firstChild);bar.querySelector("#v20PresetSel").onchange=function(){applyPermissionsToChecklist(permissionTemplate(this.value));syncPermissionMasters();};bar.querySelector("#v20PresetSave").onclick=function(){var pid=bar.querySelector("#v20PresetSel").value;S.settings=S.settings||{};S.settings.permissionLevelTemplates=S.settings.permissionLevelTemplates||{};S.settings.permissionLevelTemplates[pid]=checklistPermissions();save();v20Toast("✅ سطح دسترسی «"+this.parentNode.querySelector("#v20PresetSel").selectedOptions[0].textContent+"» ذخیره شد.");};bindRoleTemplateSelect();}
+  function syncUsersAuthV27(){try{var auth={};(st().users||[]).forEach(function(u){auth[u.username]={password:u.password,phone:u.phone,name:u.fullName,role:u.role,id:u.id};});localStorage.setItem("CRM_USERS_AUTH",JSON.stringify(auth));}catch(e){}}
+  function saveUserV27(){var S=st(),form=$("formCreateUser"),id=String(($("userEditId")||{}).value||""),full=String(($("newFullName")||{}).value||"").trim(),user=String(($("newUsername")||{}).value||"").trim(),pass=String(($("newPassword")||{}).value||"").trim(),phone=String(($("newPhone")||{}).value||"").trim(),role=String(($("newRole")||{}).value||"نماینده علمی"),sim=String(($("newSimControl")||{}).value||"");if(!full||!user||!pass)return alert("نام، نام کاربری و رمز عبور را کامل کنید.");var duplicate=(S.users||[]).some(function(u){return u.username===user&&String(u.id)!==id;});if(duplicate)return alert("این نام کاربری قبلاً ثبت شده است.");var current=id&&(S.users||[]).filter(function(u){return String(u.id)===id;})[0],rec=current||{id:"u-"+Date.now(),phoneLock:"آزاد - اولین ورود، گوشی را قفل می‌کند",lastLogin:""};rec.fullName=full;rec.username=user;rec.password=pass;rec.phone=phone;rec.role=role;rec.simControl=sim;rec.permissions=checklistPermissions();if(!current)S.users.push(rec);save();syncUsersAuthV27();syncRepsFromUsers();applyCentralPermissions();if(form)form.reset();if($("userEditId"))$("userEditId").value="";var btn=$("btnSaveUserInfo");if(btn){btn.innerHTML="<span>➕ ایجاد کاربر</span>";btn.style.display="inline-flex";}try{if(typeof window.renderUserCardsList==="function")window.renderUserCardsList();if(typeof window.updateNavBadges==="function")window.updateNavBadges();}catch(e){}v20Toast(current?"✅ اطلاعات کاربر ذخیره شد.":"✅ کاربر جدید ایجاد شد.");}
+  function bindUserCrudV27(){var form=$("formCreateUser"),btn=$("btnSaveUserInfo"),role=$("newRole");if(role){var cur=role.value;role.innerHTML="<option value='سرپرست'>سرپرست</option><option value='نماینده علمی'>نماینده علمی</option><option value='کارشناس فروش'>کارشناس فروش</option>";if(["سرپرست","نماینده علمی","کارشناس فروش"].indexOf(cur)>=0)role.value=cur;}if(btn){btn.style.display="inline-flex";btn.hidden=false;if(!btn.dataset.v27user){btn.dataset.v27user="1";btn.addEventListener("click",function(e){e.preventDefault();e.stopImmediatePropagation();saveUserV27();},true);}}if(form&&!form.dataset.v27user){form.dataset.v27user="1";form.addEventListener("submit",function(e){e.preventDefault();e.stopImmediatePropagation();saveUserV27();},true);}window.editUserCard=function(id){var u=(st().users||[]).filter(function(x){return String(x.id)===String(id);})[0];if(!u)return;if($("userEditId"))$("userEditId").value=u.id;[["newFullName","fullName"],["newUsername","username"],["newPassword","password"],["newPhone","phone"],["newRole","role"],["newSimControl","simControl"]].forEach(function(p){if($(p[0]))$(p[0]).value=u[p[1]]||"";});applyPermissionsToChecklist(u.permissions||{});syncPermissionMasters();var b=$("btnSaveUserInfo");if(b){b.innerHTML="<span>💾 ذخیره اطلاعات کاربر</span>";b.style.display="inline-flex";b.scrollIntoView({behavior:"smooth",block:"center"});}};window.deleteUserCard=function(id){if(!confirm("آیا از حذف این کاربر اطمینان دارید؟"))return;var S=st(),removed=(S.users||[]).filter(function(u){return String(u.id)===String(id);})[0];S.settings=S.settings||{};S.settings.deletedUserTombstones=S.settings.deletedUserTombstones||[];if(removed&&!S.settings.deletedUserTombstones.some(function(t){return String(t.id)===String(removed.id)||t.username===removed.username;}))S.settings.deletedUserTombstones.push({id:removed.id,username:removed.username,fullName:removed.fullName,deletedAt:Date.now()});S.users=(S.users||[]).filter(function(u){return String(u.id)!==String(id);});save();syncUsersAuthV27();syncRepsFromUsers();syncRepresentativeSelectors();try{if(typeof window.renderUserCardsList==="function")window.renderUserCardsList();if(typeof window.updateNavBadges==="function")window.updateNavBadges();if(typeof window.renderActivityLogTable==="function")window.renderActivityLogTable();if(typeof window.renderActivityMapAndChart==="function")window.renderActivityMapAndChart();}catch(e){}v20Toast("✅ کاربر و نام او از فهرست نمایندگان و فعالیت‌های دیداری حذف شد.");};syncPermissionMasters();}
+
+
+  /* ---------- ۷-ب) همگام‌سازی «جای فیلدها» داروخانه → سفارشات ---------- */
+  var ORDER_TO_PH_CORE = { PharmacyName: "Name" };
+  function mirrorPharmacyOrderToOrders() {
+    // از نسخه ۱۱.۱۷ جای فیلدها فقط از تنظیم ذخیره‌شده مدیر خوانده می‌شود.
+    // جابه‌جایی خودکار DOM در هر بار اجرای نسخه، کد/جای فیلدها را به‌هم می‌زد.
+    return;
+    try {
+      var ph = $("tab-pharmacies"), od = $("tab-orders");
+      if (!ph || !od) return;
+      var seq = [];
+      Array.prototype.forEach.call(ph.querySelectorAll("[id^='pharmacy']"), function (el) {
+        var core = el.id.substring("pharmacy".length);
+        if (core && seq.indexOf(core) < 0) seq.push(core);
+      });
+      if (!seq.length) return;
+      var groups = [];
+      Array.prototype.forEach.call(od.querySelectorAll(".form-group"), function (g) {
+        var el = g.querySelector("[id^='order']");
+        if (el) groups.push({ g: g, core: el.id.substring("order".length), orig: groups.length });
+      });
+      if (!groups.length) return;
+      var parent = groups[0].g.parentNode;
+      var sorted = groups.slice().sort(function (a, b) {
+        var ca = ORDER_TO_PH_CORE[a.core] || a.core;
+        var cb = ORDER_TO_PH_CORE[b.core] || b.core;
+        var ia = seq.indexOf(ca), ib = seq.indexOf(cb);
+        if (ia < 0 && ib < 0) return Math.min(a.orig, b.orig) - Math.max(a.orig, b.orig);
+        if (ia < 0) return 1;
+        if (ib < 0) return -1;
+        return ia - ib;
+      });
+      sorted.forEach(function (it) { parent.appendChild(it.g); });
+    } catch (e) {}
+  }
+  function bindManagerLayoutIntent(){if(document.documentElement.dataset.managerLayoutIntent)return;document.documentElement.dataset.managerLayoutIntent="1";function arm(e){if(e.target&&e.target.closest&&e.target.closest("#columnsDesignerHost,#manualDesignCanvas")){window.__CRM_MANAGER_LAYOUT_INTENT=true;clearTimeout(window.__CRM_MANAGER_LAYOUT_TIMER);window.__CRM_MANAGER_LAYOUT_TIMER=setTimeout(function(){window.__CRM_MANAGER_LAYOUT_INTENT=false;},800);}}document.addEventListener("pointerdown",arm,true);document.addEventListener("change",arm,true);document.addEventListener("click",arm,true);}
+  function wrapAllLegacyLayouts(){["applyAllFormLayouts","applyCustomFieldOrderInForm"].forEach(function(name){var old=window[name];if(typeof old!=="function"||old._v28guard)return;var w=function(){if(!window.__CRM_MANAGER_LAYOUT_INTENT){setTimeout(restoreDomFieldOrder,0);return;}return old.apply(this,arguments);};w._v28guard=true;window[name]=w;});}
+  function wrapFormLayoutMirror() {
+    var of = window.applyFullFormLayout;
+    if (typeof of !== "function" || of._v20mirror) return;
+    var w = function (tabId) {
+      // موتور قدیمی فقط با اقدام صریح مدیر اجازه جابه‌جایی/پنهان‌سازی دارد؛ فراخوانی‌های startup خنثی هستند.
+      if(!window.__CRM_MANAGER_LAYOUT_INTENT){setTimeout(function(){try{restoreFixedFilterGrids();restoreDomFieldOrder();}catch(e){}},0);return;}
+      var r = of.apply(this, arguments);
+      if (tabId === "tab-pharmacies" || tabId === "pharmacy") setTimeout(mirrorPharmacyOrderToOrders, 60);
+      setTimeout(function(){try{restoreFixedFilterGrids();restoreDomFieldOrder();}catch(e){}},20);
+      return r;
+    };
+    w._v20mirror = true;
+    window.applyFullFormLayout = w;
+  }
+
+
+  /* ---------- ۱۲) تثبیت شناسه‌ها + مدیر نام داروخانه/پزشک و وابستگی‌ها ---------- */
+  function v20EntityRows(kind, query) {
+    var S = st() || {}, q = norm(query), list = kind === "pharmacy" ? (S.pharmacies || []) : (S.doctors || []);
+    if (q.length < 2) return "<div class='v20-mini'>برای جلوگیری از کشیده‌شدن صفحه، حداقل ۲ حرف از نام یا اطلاعات را جستجو کنید.</div>";
+    var hits = list.slice().reverse().filter(function (r) {
+      return norm([r.name, r.province, r.city, r.district, r.address, r.phone, r.specialty].join(" ")).indexOf(q) >= 0;
+    }).slice(0, 50);
+    if (!hits.length) return "<div class='v20-mini'>نتیجه‌ای پیدا نشد.</div>";
+    return hits.map(function (r) {
+      var sub = [r.province, r.city, r.district, r.address, r.phone, r.specialty].filter(Boolean).join("، ");
+      return "<div class='v20-opt-row' data-entity='" + kind + "' data-id='" + esc(r.id) + "'>" +
+        "<span><strong>" + esc(r.name || "بدون نام") + "</strong><small style='display:block;color:#64748b'>" + esc(sub || "بدون اطلاعات تکمیلی") + "</small></span>" +
+        "<button type='button' class='v20-ent-edit' title='ویرایش نام و همه وابستگی‌ها'>✏️</button>" +
+        "<button type='button' class='v20-ent-del' title='حذف رکورد و وابستگی‌ها'>🗑️</button></div>";
+    }).join("");
+  }
+  function v20EntityRecordsHtml(kind) {
+    var title = kind === "pharmacy" ? "جستجو و مدیریت نام داروخانه" : "جستجو و مدیریت نام پزشک";
+    return "<div class='v20-combo-card v20-entity-card'><h5>🗂️ " + title + "</h5>" +
+      "<div class='v20-mini'>هیچ فهرست بلندبالایی بارگذاری نمی‌شود؛ فقط نتیجه جستجو، حداکثر ۵۰ مورد، نمایش داده می‌شود.</div>" +
+      "<div class='v20-card-tools'><input class='v20-ent-search' placeholder='🔍 حداقل ۲ حرف جستجو کنید...'></div>" +
+      "<div class='v20-entity-rows'>" + v20EntityRows(kind, "") + "</div></div>";
+  }
+  function v20RenderEntityManager() {
+    var mgr = document.querySelector("#addTabPanel .v20-addmgr");
+    if (!mgr) return;
+    var old = mgr.querySelector(".v20-entity-grid"); if (old) old.remove();
+    if (v20AddPane !== "tab-pharmacies" && v20AddPane !== "tab-doctors") return;
+    var grid = document.createElement("div"); grid.className = "v20-cards v20-entity-grid"; grid.style.marginTop = "14px";
+    grid.innerHTML = v20EntityRecordsHtml(v20AddPane === "tab-pharmacies" ? "pharmacy" : "doctor");
+    mgr.appendChild(grid);
+    var search = grid.querySelector(".v20-ent-search");
+    if (search) search.addEventListener("input", function () {
+      var rows = grid.querySelector(".v20-entity-rows");
+      if (rows) rows.innerHTML = v20EntityRows(v20AddPane === "tab-pharmacies" ? "pharmacy" : "doctor", search.value);
+    });
+    grid.addEventListener("click", function (e) {
+      var row = e.target.closest && e.target.closest(".v20-opt-row"); if (!row) return;
+      var kind = row.getAttribute("data-entity"), id = row.getAttribute("data-id"), S = st();
+      var arr = kind === "pharmacy" ? S.pharmacies : S.doctors;
+      var rec = (arr || []).filter(function (x) { return String(x.id) === String(id); })[0]; if (!rec) return;
+      if (e.target.closest(".v20-ent-edit")) {
+        var nn = prompt("نام جدید را وارد کنید؛ همه اطلاعات وابسته هم اصلاح می‌شود:", rec.name || "");
+        if (nn == null || !String(nn).trim()) return; nn = String(nn).trim(); var oldName = rec.name;
+        rec.name = nn;
+        if (kind === "pharmacy") (S.orders || []).forEach(function (o) { if (String(o.pharmacyId || "") === String(id) || o.pharmacyName === oldName) { o.pharmacyName = nn; o.pharmacyId = id; } });
+        [S.visits || [], S.activityLog || [], S.repRoutes || []].forEach(function (a) { a.forEach(function (x) { if (x.doctorName === oldName) x.doctorName = nn; if (x.pharmacyName === oldName) x.pharmacyName = nn; }); });
+        save(); window.v20RenderComboManager(); v20Toast("✅ نام و همه ارجاع‌های وابسته ویرایش شد.");
+      }
+      if (e.target.closest(".v20-ent-del")) {
+        var deps = kind === "pharmacy" ? (S.orders || []).filter(function (o) { return String(o.pharmacyId || "") === String(id) || o.pharmacyName === rec.name; }).length :
+          (S.visits || []).filter(function (v) { return String(v.doctorId || "") === String(id) || v.doctorName === rec.name; }).length;
+        if (!confirm("«" + rec.name + "» و " + deps + " رکورد وابسته حذف شود؟ این کار قابل بازگشت نیست.")) return;
+        if (kind === "pharmacy") { S.pharmacies = arr.filter(function (x) { return x.id !== id; }); S.orders = (S.orders || []).filter(function (o) { return !(String(o.pharmacyId || "") === String(id) || o.pharmacyName === rec.name); }); }
+        else { S.doctors = arr.filter(function (x) { return x.id !== id; }); S.visits = (S.visits || []).filter(function (v) { return !(String(v.doctorId || "") === String(id) || v.doctorName === rec.name); }); }
+        save(); window.v20RenderComboManager(); v20Toast("✅ رکورد و اطلاعات وابسته حذف شد.");
+      }
+    });
+  }
+
+  /* ---------- ۱۳) پیام هم‌نام کنار همان فیلد + جایگذاری دقیق ---------- */
+  function v20SetValue(id, value) {
+    var el = $(id); if (!el) return;
+    el.disabled = false; el.value = value == null ? "" : value;
+    try { el.dispatchEvent(new Event("input", { bubbles: true })); el.dispatchEvent(new Event("change", { bubbles: true })); } catch (e) {}
+    var combo = el.closest && el.closest(".crm-combo"); var vis = combo && combo.querySelector(".crm-combo-input"); if (vis) vis.value = el.options && el.selectedIndex >= 0 ? el.options[el.selectedIndex].text : el.value;
+  }
+  function v20PlaceMatchNearInput() {
+    var inp = $("orderPharmacyName"), box = $("existingPharmacyTopAlert"); if (!inp || !box) return;
+    var group = inp.closest(".form-group") || inp.parentNode;
+    if (group) group.style.position = "relative";
+    if (group && box.parentNode !== group) group.appendChild(box);
+    box.classList.add("v20-local-match"); box.style.width = "";
+  }
+  function hidePlacedOrderNotices() {
+    var alertBox=$("existingPharmacyTopAlert"),pickBox=$("orderPharmacyPickBox");
+    if(alertBox){if(!alertBox.hidden)alertBox.hidden=true;if(alertBox.getAttribute("aria-hidden")!=="true")alertBox.setAttribute("aria-hidden","true");if(alertBox.style.getPropertyValue("display")!=="none"||alertBox.style.getPropertyPriority("display")!=="important")alertBox.style.setProperty("display","none","important");}
+    if(pickBox){if(!pickBox.hidden)pickBox.hidden=true;if(pickBox.getAttribute("aria-hidden")!=="true")pickBox.setAttribute("aria-hidden","true");if(pickBox.style.getPropertyValue("display")!=="none"||pickBox.style.getPropertyPriority("display")!=="important")pickBox.style.setProperty("display","none","important");if(pickBox.childNodes.length)pickBox.innerHTML="";}
+  }
+  function v20FillOrderPharmacy() {
+    var S = st(), mid = ($("orderPharmacyMatchedId") || {}).value, name = String(($("orderPharmacyName") || {}).value || "").trim();
+    var rec = ((S && S.pharmacies) || []).filter(function (p) { return String(p.id) === String(mid) || p.name === name; })[0];
+    if (!rec) { v20Toast("داروخانه انتخاب‌شده پیدا نشد."); return; }
+    var orderNameInput=$("orderPharmacyName");if(orderNameInput)orderNameInput.dataset.v20PlacedName=rec.name;
+    v20SetValue("orderPharmacyName", rec.name); v20SetValue("orderPharmacyMatchedId", rec.id);
+    v20SetValue("orderProvince", rec.province); try { if (typeof populateCities === "function") populateCities(rec.province, $("orderCity"), rec.city); } catch (e) {}
+    v20SetValue("orderCity", rec.city); try { if (typeof populateDistricts === "function") populateDistricts(rec.province, rec.city, $("orderDistrict"), rec.district); } catch (e2) {}
+    v20SetValue("orderDistrict", rec.district); v20SetValue("orderAddress", rec.address);
+    var phFields = (S.customFields && S.customFields.pharmacy) || [], orFields = (S.customFields && S.customFields.order) || [];
+    phFields.forEach(function (f) { var of = orFields.filter(function (x) { return x.id === "ordm-" + f.id || x.label === f.label; })[0]; if (of) v20SetValue(of.id, (rec.customFields || {})[f.label]); });
+    v20ApplyOrderLock();hidePlacedOrderNotices();setTimeout(hidePlacedOrderNotices,0);setTimeout(hidePlacedOrderNotices,120);v20Toast("✅ همه اطلاعات داروخانه دقیقاً در فیلدهای متناظر جایگذاری شد.");
+  }
+  function applyOrderItemRoleControls(){var manager=v20IsManager(),host=$("orderItemsContainer");if(!host)return;Array.prototype.forEach.call(host.querySelectorAll(".order-item-row"),function(row){var name=row.querySelector(".order-item-name"),total=row.querySelector(".order-item-total"),edit=row.querySelector(".order-item-edit"),del=row.querySelector(":scope > .btn-danger");if(name){name.removeAttribute("list");name.readOnly=true;name.setAttribute("aria-readonly","true");}if(total){total.style.setProperty("display","block","important");total.style.setProperty("visibility","visible","important");}if(edit)edit.style.setProperty("display",manager?"":"none","important");if(del)del.style.setProperty("display",manager?"":"none","important");});}
+  function bindOrderItemRuntime(){var host=$("orderItemsContainer");if(!host||host.dataset.v33runtime)return;host.dataset.v33runtime="1";host.addEventListener("input",function(e){if(e.target&&e.target.matches(".order-item-count,.order-item-gift,.order-item-price")){try{if(typeof window.updateOrderTotalAmountDisplay==="function")window.updateOrderTotalAmountDisplay();}catch(x){}applyOrderItemRoleControls();}},true);if(window.MutationObserver)new MutationObserver(function(){applyOrderItemRoleControls();try{if(typeof window.updateOrderTotalAmountDisplay==="function")window.updateOrderTotalAmountDisplay();}catch(e){}}).observe(host,{childList:true,subtree:true});applyOrderItemRoleControls();}
+  function bindPlacedPharmacyNoticeGuard(){var inp=$("orderPharmacyName"),alertBox=$("existingPharmacyTopAlert"),pickBox=$("orderPharmacyPickBox");if(!inp||inp.dataset.placedGuard)return;inp.dataset.placedGuard="1";function isPlaced(){return inp.dataset.v20PlacedName&&norm(inp.value)===norm(inp.dataset.v20PlacedName)&&String(($("orderPharmacyMatchedId")||{}).value||"");}function enforce(){if(isPlaced())hidePlacedOrderNotices();}inp.addEventListener("input",function(){if(inp.dataset.v20PlacedName&&norm(inp.value)!==norm(inp.dataset.v20PlacedName)){delete inp.dataset.v20PlacedName;if(alertBox){alertBox.hidden=false;alertBox.removeAttribute("aria-hidden");alertBox.style.removeProperty("display");}if(pickBox){pickBox.removeAttribute("aria-hidden");pickBox.style.removeProperty("display");}}setTimeout(enforce,0);},true);if(window.MutationObserver){if(alertBox)new MutationObserver(enforce).observe(alertBox,{attributes:true,childList:true,subtree:true});if(pickBox)new MutationObserver(enforce).observe(pickBox,{attributes:true,childList:true,subtree:true});}enforce();}
+  function bindOrderLocalMatch() {
+    v20PlaceMatchNearInput();bindPlacedPharmacyNoticeGuard();
+    var btn = $("btnTopAutoFillPharmacy"); if (btn) btn.addEventListener("click", function (e) { e.preventDefault(); e.stopImmediatePropagation(); v20FillOrderPharmacy(); }, true);
+    var inp = $("orderPharmacyName"); if (inp) inp.addEventListener("input", function () { setTimeout(v20PlaceMatchNearInput, 0); });
+  }
+
+  /* ---------- ۱۴) نسخه دقیق در هدر مدیر ---------- */
+  function v20CurrentUser(){var S=st(),id=sessionStorage.getItem("crmUserId")||"",username=sessionStorage.getItem("crmUsername")||"",name=sessionStorage.getItem("crmUserName")||"";return S&&((S.users||[]).filter(function(u){return(id&&String(u.id)===String(id))||(username&&u.username===username)||(name&&u.fullName===name);})[0])||null;}
+  function v20IsManager() {
+    var logged=sessionStorage.getItem("crmLoggedIn")==="1",u=v20CurrentUser(),username=(u&&u.username)||sessionStorage.getItem("crmUsername")||"",role=(u&&u.role)||sessionStorage.getItem("crmUserRole")||"";
+    return !logged||username==="admin"||/مدیر|admin/i.test(role);
+  }
+  function repRouteLabel(user){return String(user&&user.activityRouteLabel||[user&&user.activityCity||user&&user.activityProvince||"",user&&user.activityDistricts?("("+user.activityDistricts+")"):""].filter(Boolean).join(" ")).trim();}
+  function syncRepsFromUsers(){var S=st();if(!S)return;var old=S.reps||[],by={};old.forEach(function(r){if(r)by[String(r.userId||r.id||r.name)]=r;});var reps=(S.users||[]).filter(function(u){return u&&u.fullName&&u.username!=="admin"&&!/مدیر سیستم|مدیر کل/.test(String(u.role||u.fullName));}).map(function(u){var prev=by[String(u.id)]||old.filter(function(r){return r&&r.name===u.fullName;})[0]||{};return Object.assign({},prev,{id:u.id,userId:u.id,name:u.fullName,role:u.role||"نماینده علمی",province:u.activityProvince||"",city:u.activityCity||"",districts:u.activityDistricts||"",region:repRouteLabel(u)});});var before=JSON.stringify(old.map(function(r){return[r&&r.id,r&&r.name,r&&r.region];})),after=JSON.stringify(reps.map(function(r){return[r.id,r.name,r.region];}));S.reps=reps;if(before!==after)try{saveState(false);}catch(e){}}
+  function syncRepresentativeSelectors(){var S=st(),u=v20CurrentUser(),manager=v20IsManager(),perms=(u&&u.permissions)||{},reps=S&&S.reps||[];var keyById={orderRepName:"ord_all_reps",tgtRepSelect:"target_all_reps",leaveRepSelect:"hr_all_leaves",routeRepFilterSelect:"fld_all_routes",repHomeSelect:"fld_all_homes",liveRepSearchSelect:"live_all_reps",snappFilterRep:"sys_snapp_access",invoiceStatusRep:"dist_invoice_status_filters"};document.querySelectorAll("select[id]").forEach(function(sel){if(globalFieldKey(sel)!=="نمایندهعلمی"&&keyById[sel.id]==null)return;var allowAll=manager||/سرپرست|کارشناس فروش/.test(String(u&&u.role||""))||perms[keyById[sel.id]]===true,list=allowAll?reps:reps.filter(function(r){return u&&String(r.id)===String(u.id);}),useId=sel.id==="liveRepSearchSelect"||sel.id==="routeManagerRep",placeholder=allowAll?"همه نمایندگان":"نماینده واردشده",desired=(allowAll?[["",placeholder]]:[]).concat(list.map(function(r){return[useId?r.id:r.name,r.name+(r.region?" ("+r.region+")":"")];})),sig=JSON.stringify(desired),actual=JSON.stringify(Array.prototype.map.call(sel.options,function(o){return[o.value,o.textContent];}));if(sig===actual){sel.disabled=!allowAll;sel.classList.toggle("v35-fixed-rep",!allowAll);return;}var cur=sel.value;sel.innerHTML="";desired.forEach(function(x){var o=document.createElement("option");o.value=x[0];o.textContent=x[1];sel.appendChild(o);});if(desired.some(function(x){return x[0]===cur;}))sel.value=cur;else if(!allowAll&&desired.length)sel.value=desired[0][0];sel.disabled=!allowAll;sel.classList.toggle("v35-fixed-rep",!allowAll);});}
+  function runtimeVersion(){
+    var s=document.querySelector('script[src*="crm-features-v20.js"]'),src=s&&s.getAttribute('src')||"",m=src.match(/[?&]v=([^&]+)/);
+    return m?decodeURIComponent(m[1]):"11.38.0";
+  }
+  function renderVersionBadge() {
+    var b = $("v20VersionBadge"), actions = document.querySelector(".header-actions"); if (!actions) return;
+    if (!b) { b = document.createElement("span"); b.id = "v20VersionBadge"; b.className = "v20-version"; b.title = "نسخه دقیق برنامه نصب‌شده"; actions.insertBefore(b, actions.firstChild); }
+    b.textContent = "نسخه " + runtimeVersion();
+    b.style.display = v20IsManager() ? "inline-block" : "none";
+  }
+
+  /* ---------- ۱۵) متن ارسالی پویا، مطابق همه ستون‌های واقعی لیست ---------- */
+  var SHARE_CORE = {
+    pharmacy: [["name","نام داروخانه","name"],["repName","نام نماینده","repName"],["dateAdded","تاریخ ثبت","dateAdded"],["province","استان","province"],["city","شهر","city"],["district","منطقه","district"],["address","آدرس دقیق","address"],["phone","شماره تماس","phone"],["manager","مسئول داروخانه","manager"],["isPercentage","وضعیت درصدی","isPercentage"],["lat","عرض جغرافیایی","lat"],["lng","طول جغرافیایی","lng"]],
+    doctor: [["name","نام پزشک","name"],["repName","نام نماینده","repName"],["dateAdded","تاریخ ثبت","dateAdded"],["specialty","تخصص","specialty"],["province","استان","province"],["city","شهر","city"],["district","منطقه","district"],["address","آدرس دقیق","address"],["phone","شماره تماس","phone"],["isPercentage","وضعیت درصدی","isPercentage"],["lat","عرض جغرافیایی","lat"],["lng","طول جغرافیایی","lng"]],
+    order: [["pharmacyName","نام داروخانه","pharmacyName"],["repName","نام نماینده","repName"],["orderManager","نام مسئول سفارش","__manager"],["orderManagerPhone","شماره همراه مسئول سفارش","__managerPhone"],["orderDate","تاریخ","orderDate"],["province","استان","province"],["city","شهر","city"],["district","منطقه","district"],["address","آدرس","address"],["status","وضعیت","status"],["notes","توضیحات","notes"],["items","اقلام","items"],["totalAmount","مبلغ کل","totalAmount"]]
+  };
+  function dynamicShareFields(kind) {
+    var S = st() || {}, out = [], seen = {};
+    function add(id, label, getter) { if (!id || seen[id]) return; seen[id] = true; out.push({ id:id, label:label || id, get:getter }); }
+    (SHARE_CORE[kind] || []).forEach(function (x) { add(x[0], x[1], function (r) {
+      if (x[2] === "__manager" || x[2] === "__managerPhone") {
+        var ph = ((st().pharmacies || []).filter(function (p) { return (r.pharmacyId && p.id === r.pharmacyId) || p.name === r.pharmacyName; })[0]) || {};
+        return x[2] === "__manager" ? (r.orderManager || r.manager || ph.manager) : (r.orderManagerPhone || r.managerPhone || ph.managerPhone);
+      }
+      return r[x[2]];
+    }); });
+    // همه فیلدهای واقعی صفحه، حتی اگر در لیست اصلی مخفی باشند.
+    try {
+      var tab = kind === "pharmacy" ? "tab-pharmacies" : kind === "doctor" ? "tab-doctors" : "tab-orders";
+      if (typeof window.getUnifiedFieldList === "function") (window.getUnifiedFieldList(tab) || []).forEach(function (f) {
+        if (!f || !f.id || f.deleted || f.kind === "box" || f.kind === "widget" || f.kind === "ordercol") return;
+        add(f.id, f.label || f.id, function (r) {
+          if (r.customFields && Object.prototype.hasOwnProperty.call(r.customFields, f.label)) return r.customFields[f.label];
+          return typeof window.builtinFieldValue === "function" ? window.builtinFieldValue(kind, f.id, r) : r[f.id];
+        });
+      });
+      if (typeof window.extraListColumns === "function") (window.extraListColumns(kind) || []).forEach(function (c) {
+        add(c.id, c.label || c.title, function (r) { return typeof window.builtinFieldValue === "function" ? window.builtinFieldValue(kind, c.id, r) : r[c.id]; });
+      });
+    } catch (e) {}
+    (((S.customFields || {})[kind] || [])).filter(function (f) { return f && !f.deleted && f.showInList !== false; }).forEach(function (f) {
+      add(f.id, f.label, function (r) { return (r.customFields || {})[f.label]; });
+    });
+    return out;
+  }
+  function shareSettings() { var S = st(); S.settings = S.settings || {}; S.settings.v20ShareFields = S.settings.v20ShareFields || {}; return S.settings.v20ShareFields; }
+  function shareOrderSettings() { var S=st();S.settings=S.settings||{};S.settings.v20ShareOrder=S.settings.v20ShareOrder||{};return S.settings.v20ShareOrder; }
+  function orderedShareFields(kind, fields) { var map=shareOrderSettings()[kind]||{};return fields.slice().sort(function(a,b){var aa=Number(map[a.id]),bb=Number(map[b.id]);if(!aa)aa=fields.indexOf(a)+1;if(!bb)bb=fields.indexOf(b)+1;return aa-bb;}); }
+  function selectedShareIds(kind, fields) {
+    var cfg = shareSettings();
+    return Object.prototype.hasOwnProperty.call(cfg, kind) ? cfg[kind] : fields.map(function (f) { return f.id; });
+  }
+  function cleanItemsForShare(rec) {
+    var items = (rec.items || []).filter(function (i) { return Number(i.count) > 0; });
+    // پاکسازی امن رکوردهای ساخته‌شده با باگ قدیمی «خالی = ۱»؛ الگوی آن چند عدد ۱ کنار یک تعداد واقعی بود.
+    if (!rec.quantityValidated) {
+      var ones = items.filter(function (i) { return Number(i.count) === 1; });
+      var real = items.filter(function (i) { return Number(i.count) > 1; });
+      if (ones.length >= 2 && real.length >= 1) items = real;
+    }
+    return items;
+  }
+  function shareValue(rec, kind, f) {
+    var v = f.get(rec);
+    if (kind === "order" && f.id === "items") v = cleanItemsForShare(rec).map(function (i) { return (i.name || "کالا") + " = تعداد کالا: " + Number(i.count) + " / تعداد جایزه: " + Number(i.giftCount || 0); }).join("، ");
+    if (kind === "order" && f.id === "orderDate") { var dm=normSnappDate(v).match(/^(\d{4})\/(\d{2})\/(\d{2})$/); if(dm)v=dm[3]+"/"+dm[2]+"/"+dm[1]; }
+    if (kind === "order" && f.id === "totalAmount") {
+      var clean = cleanItemsForShare(rec);
+      if (!rec.quantityValidated) v = clean.reduce(function (sum, i) { return sum + (typeof calcOrderRowTotal === "function" ? calcOrderRowTotal(i.count, i.giftCount || 0, i.price || 0) : Number(i.count) * Number(i.price || 0)); }, 0);
+      v = Number(v || 0).toLocaleString("fa-IR") + " ریال";
+    }
+    if (typeof v === "boolean") v = v ? "بله" : "خیر";
+    if (v && typeof v === "object") v = JSON.stringify(v);
+    return v == null || v === "" ? "—" : v;
+  }
+  function orderFixedBlock(rec){var items=cleanItemsForShare(rec),noVat=0,lines=["اقلام:"];items.forEach(function(i){var row=typeof calcOrderRowTotal==="function"?calcOrderRowTotal(i.count,i.giftCount||0,i.price||0):(Number(i.count)||0)*(Number(i.price)||0);noVat+=row;lines.push((i.name||"کالا")+" = تعداد کالا: "+Number(i.count||0).toLocaleString("fa-IR")+" / تعداد جایزه: "+(Number(i.giftCount||0)>0?Number(i.giftCount).toLocaleString("fa-IR"):"")+" / جمع مبلغ: "+Number(row||0).toLocaleString("fa-IR")+" ریال");});var vat=0;try{vat=Number(getOrderFormula().vat)||0;}catch(e){}var withVat=noVat+Math.round(noVat*vat/100);lines.push("مبلغ کل بدون ارزش افزوده: "+noVat.toLocaleString("fa-IR")+" ریال");lines.push("مبلغ کل با ارزش افزوده: "+withVat.toLocaleString("fa-IR")+" ریال");return lines.join("\n");}
+  function buildLockedShare(rec, kind) {
+    var fields = dynamicShareFields(kind), enabled = selectedShareIds(kind, fields);
+    fields = orderedShareFields(kind, fields).filter(function(f){return enabled.indexOf(f.id)>=0;});
+    if(kind!=="order")return fields.map(function(f){return f.label+": "+shareValue(rec,kind,f);}).join("\n");
+    var out=[],inserted=false;fields.forEach(function(f){if(f.id==="items"||f.id==="totalAmount"||/total.*vat/i.test(f.id))return;out.push(f.label+": "+shareValue(rec,kind,f));if(f.id==="status"){out.push(orderFixedBlock(rec));inserted=true;}});if(!inserted)out.push(orderFixedBlock(rec));return out.join("\n\n");
+  }
+  function renderShareManager() {
+    var host = $("messengerTogglesBox"); if (!host) return;
+    var old = $("v20ShareManager"); if (old) old.remove();
+    var box = document.createElement("div"); box.id = "v20ShareManager"; box.style.cssText = "margin-top:16px;border-top:2px solid #cbd5e1;padding-top:12px";
+    box.innerHTML = "<h4>🔒 تعیین اطلاعات مجاز برای ارسال (فقط مدیر)</h4>" + ["pharmacy","doctor","order"].map(function (kind) {
+      var title = kind === "pharmacy" ? "داروخانه" : kind === "doctor" ? "پزشک" : "سفارش", fields = dynamicShareFields(kind), on = selectedShareIds(kind, fields), om=shareOrderSettings()[kind]||{};
+      fields=orderedShareFields(kind,fields);
+      return "<fieldset style='margin:8px 0;padding:10px;border:1px solid #cbd5e1;border-radius:10px'><legend>" + title + " — همه فیلدهای صفحه</legend><div class='v20-share-grid'>" + fields.map(function (f,i) { return "<label class='v20-share-item'><input type='checkbox' data-kind='" + kind + "' data-field='" + esc(f.id) + "' " + (on.indexOf(f.id) >= 0 ? "checked" : "") + "><span>" + esc(f.label) + "</span><input type='number' min='1' class='v20-share-order' data-kind='"+kind+"' data-field='"+esc(f.id)+"' value='"+(Number(om[f.id])||i+1)+"' title='ترتیب ارسال'></label>"; }).join("") + "</div></fieldset>";
+    }).join("") + "<div class='v20-mini'>حذف/افزودن ستون در لیست اصلی، این بخش را هم خودکار به‌روز می‌کند. تیک برداشته‌شده قطعاً از متن ارسال حذف می‌شود.</div>";
+    host.appendChild(box);
+    box.addEventListener("change", function () { var cfg = shareSettings(),ord=shareOrderSettings(); ["pharmacy","doctor","order"].forEach(function (k) { cfg[k] = Array.prototype.map.call(box.querySelectorAll("input[type=checkbox][data-kind='" + k + "']:checked"), function (i) { return i.getAttribute("data-field"); });ord[k]=ord[k]||{};Array.prototype.forEach.call(box.querySelectorAll(".v20-share-order[data-kind='"+k+"']"),function(i){ord[k][i.getAttribute("data-field")]=parseInt(i.value,10)||999;}); }); save(); v20Toast("✅ فیلدها و ترتیب ارسال ذخیره شد.");setTimeout(renderShareManager,80); });
+  }
+  function wrapShareModal() {
+    var old = window.openRowDetailsModal; if (typeof old !== "function" || old._v20share) return;
+    var w = function (rec, kind) {
+      var r = old.apply(this, arguments), text = buildLockedShare(rec, kind), detail=$("rowDetailsContentBox");if(detail)detail.innerHTML=text.split("\n").map(function(line){var p=line.indexOf(":");return"<div style='padding:5px 0;border-bottom:1px solid #e2e8f0'><strong>"+esc(p>=0?line.slice(0,p+1):"")+"</strong> "+esc(p>=0?line.slice(p+1).trim():line)+"</div>";}).join("");var map = {btnShareBale:"https://ble.ir/share?text=",btnShareEitaa:"https://eitaa.com/share/url?url=&text=",btnShareTelegram:"https://t.me/share/url?url=&text=",btnShareSoroush:"https://splus.ir/share?text=",btnShareWhatsApp:"https://api.whatsapp.com/send?text="};
+      Object.keys(map).forEach(function (id) { var b=$(id); if(b)b.onclick=function(){window.open(map[id]+encodeURIComponent(text),"_blank");}; });
+      var cp=$("btnRowCopyText"); if(cp)cp.onclick=function(){navigator.clipboard.writeText(text).then(function(){v20Toast("متن دقیقاً طبق تیک‌های مدیر کپی شد.");});}; return r;
+    };
+    w._v20share = true; window.openRowDetailsModal = w;
+  }
+
+  /* ---------- ۱۶) GPS واقعی، کارت آمار، سابقه و جستجو/اکسل رصد ---------- */
+  var v20Watch = null, v20VisitTimer = null;
+  function hav(a,b){if(!a||!b)return 0;var R=6371000,p=Math.PI/180,d1=(b.lat-a.lat)*p,d2=(b.lng-a.lng)*p,x=Math.sin(d1/2)*Math.sin(d1/2)+Math.cos(a.lat*p)*Math.cos(b.lat*p)*Math.sin(d2/2)*Math.sin(d2/2);return 2*R*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));}
+  function visitDate(){return new Date().toLocaleDateString("fa-IR",{timeZone:"Asia/Tehran"});}
+  function ensureVisitCards(){var stBox=$("visitStatusBox");if(!stBox)return null;var h=$("v20VisitMetrics");if(!h){h=document.createElement("div");h.id="v20VisitMetrics";h.className="v20-visit-metrics";stBox.parentNode.insertBefore(h,stBox.nextSibling);}return h;}
+  function refreshVisitCards(){var S=st(),v=S&&S.v20ActiveVisit,h=ensureVisitCards();if(!h)return;var dur=v?Math.max(0,Math.floor((Date.now()-v.startedAt)/1000)):0;h.innerHTML=[["مسافت طی‌شده",Math.round(v?v.distance:0)+" متر"],["مدت توقف",Math.round((v?v.stopMs:0)/60000)+" دقیقه"],["نقاط ثبت‌شده",v?(v.points||[]).length:0],["ساعت شروع",v?v.startTime:"—"]].map(function(x){return "<div class='v20-metric'>"+x[0]+"<b>"+x[1]+"</b></div>";}).join("");var sb=$("visitStatusBox");if(sb&&v)sb.textContent="GPS متصل است — مدت فعالیت: "+Math.floor(dur/60)+" دقیقه و "+(dur%60)+" ثانیه";}
+  function startV20Visit(){var S=st();if(S.v20ActiveVisit){v20Toast("یک ویزیت هم‌اکنون فعال است.");return;}if(!navigator.geolocation){alert("این دستگاه GPS یا دسترسی موقعیت مکانی ندارد.");return;}var rep=sessionStorage.getItem("crmUserName")||"نماینده";S.v20ActiveVisit={id:"route-"+Date.now(),repName:rep,date:visitDate(),startedAt:Date.now(),startTime:new Date().toLocaleTimeString("fa-IR"),points:[],distance:0,stopMs:0,lastMoveAt:Date.now()};save();
+    v20Watch=navigator.geolocation.watchPosition(function(pos){var V=st().v20ActiveVisit;if(!V)return;var p={lat:pos.coords.latitude,lng:pos.coords.longitude,t:Date.now(),acc:pos.coords.accuracy};var prev=V.points[V.points.length-1],d=hav(prev,p);if(d>=3){V.distance+=d;V.lastMoveAt=p.t;}else if(prev){V.stopMs+=Math.max(0,p.t-prev.t);}V.points.push(p);save(false);refreshVisitCards();},function(err){alert(err.code===1?"برای شروع ویزیت، اجازه موقعیت مکانی (GPS) را در مرورگر فعال کنید.":"اتصال GPS برقرار نشد؛ دوباره تلاش کنید.");},{enableHighAccuracy:true,maximumAge:0,timeout:15000});
+    clearInterval(v20VisitTimer);v20VisitTimer=setInterval(refreshVisitCards,1000);refreshVisitCards();v20Toast("✅ GPS متصل شد و ثبت مسیر آغاز شد.");}
+  function stopV20Visit(){var S=st(),V=S&&S.v20ActiveVisit;if(!V){v20Toast("ویزیت فعالی وجود ندارد.");return;}if(v20Watch!=null)navigator.geolocation.clearWatch(v20Watch);v20Watch=null;clearInterval(v20VisitTimer);V.endTime=new Date().toLocaleTimeString("fa-IR");V.endedAt=Date.now();V.durationMs=V.endedAt-V.startedAt;V.status="پایان‌یافته";V.path=(V.points||[]).map(function(p){return[p.lat,p.lng];});V.visited=(V.points||[]).length;V.pending=0;V.lastStop=V.points.length?"آخرین نقطه GPS":"بدون نقطه";S.repRoutes=S.repRoutes||[];S.repRoutes.unshift(V);S.visitTracks=S.visitTracks||[];S.visitTracks.unshift(V);S.v20ActiveVisit=null;save();refreshVisitCards();renderV20Routes();v20Toast("✅ همه فعالیت‌ها با تاریخ در رصد تردد ذخیره شد.");}
+  function bindV20Visit(){var b1=$("btnStartVisit"),b2=$("btnEndVisit");if(b1){var n1=b1.cloneNode(true);b1.parentNode.replaceChild(n1,b1);n1.addEventListener("click",startV20Visit);}if(b2){var n2=b2.cloneNode(true);b2.parentNode.replaceChild(n2,b2);n2.addEventListener("click",stopV20Visit);}refreshVisitCards();}
+  function ensureRouteTools(){var body=$("tableRepRoutesBody");if(!body)return;var table=body.closest("table"),wrap=table&&table.parentNode;if(!wrap||$("v20RouteTools"))return;var d=document.createElement("div");d.id="v20RouteTools";d.style.cssText="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;align-items:center";d.innerHTML="<input id='v20RouteSearch' class='form-input' style='max-width:360px' placeholder='🔍 جستجوی لحظه‌ای نماینده، تاریخ یا وضعیت...'><button type='button' id='v20RouteRefresh' class='btn btn-outline btn-sm'>🔄 بروزرسانی نقشه تردد</button><button type='button' id='v20RouteAll' class='btn btn-outline btn-sm'>👥 همه نمایندگان</button><button type='button' id='v20RouteClear' class='btn btn-outline btn-sm'>✖ پاک‌کردن جستجو</button><button type='button' id='v20RouteExcel' class='btn btn-primary btn-excel'>📊 خروجی اکسل</button>";wrap.insertBefore(d,table);$("v20RouteSearch").addEventListener("input",renderV20Routes);$("v20RouteExcel").addEventListener("click",exportV20Routes);$("v20RouteRefresh").addEventListener("click",function(){var b=$("btnRefreshRepRoutesMap");if(b)b.click();setTimeout(renderV20Routes,80);});$("v20RouteAll").addEventListener("click",function(){var s=$("routeRepFilterSelect");if(s)s.value="";var b=$("btnRefreshRepRoutesMap");if(b)b.click();setTimeout(renderV20Routes,80);});$("v20RouteClear").addEventListener("click",function(){$("v20RouteSearch").value="";renderV20Routes();});}
+  function renderV20Routes(){ensureRouteTools();var body=$("tableRepRoutesBody");if(!body)return;var q=String(($("v20RouteSearch")||{}).value||"").toLowerCase(),rep=String(($("routeRepFilterSelect")||{}).value||"");var rows=privacyList(((st()&&st().repRoutes)||[]),"fld_all_routes").sort(function(a,b){return Number(b.endedAt||b.startedAt||0)-Number(a.endedAt||a.startedAt||0);}).filter(function(r){return(!rep||r.repName===rep)&&(!q||[r.repName,r.date,r.status,r.startTime,r.endTime].join(" ").toLowerCase().indexOf(q)>=0);});var table=body.closest("table"),head=table&&table.querySelector("thead tr");if(head)head.innerHTML="<th>ردیف</th><th>نام نماینده</th><th>تاریخ</th><th>شروع</th><th>پایان</th><th>مسافت (متر)</th><th>توقف (دقیقه)</th><th>نقاط</th><th>وضعیت</th>";body.innerHTML=rows.map(function(r,i){return"<tr><td>"+(i+1)+"</td><td><strong>"+esc(r.repName||"—")+"</strong></td><td>"+esc(r.date||"—")+"</td><td>"+esc(r.startTime||"—")+"</td><td>"+esc(r.endTime||"—")+"</td><td>"+Math.round(r.distance||0)+"</td><td>"+Math.round((r.stopMs||0)/60000)+"</td><td>"+((r.points||[]).length||r.visited||0)+"</td><td>"+esc(r.status||"—")+"</td></tr>";}).join("");}
+  function exportV20Routes(){var rows=privacyList(((st()&&st().repRoutes)||[]),"fld_all_routes").sort(function(a,b){return Number(b.endedAt||0)-Number(a.endedAt||0);}).map(function(r,i){return[i+1,r.repName||"—",r.date||"—",r.startTime||"—",r.endTime||"—",Math.round(r.distance||0),Math.round((r.stopMs||0)/60000),(r.points||[]).length,r.status||"—"];});window.downloadCSVFile("rep-routes.xls",["ردیف","نام نماینده","تاریخ","ساعت شروع","ساعت پایان","مسافت (متر)","توقف (دقیقه)","نقاط","وضعیت"],rows);}
+
+  /* ---------- ۱۷) آدرس ریز تا کوچه/پلاک ---------- */
+  window.reverseGeocodeCoordinates = async function(lat,lng){try{var res=await fetch("/api/reverse?lat="+encodeURIComponent(lat)+"&lng="+encodeURIComponent(lng)+"&zoom=18"),d=await res.json(),a=d.address||{},parts=[a.country||"ایران",a.state,a.county,a.municipality,a.city||a.town||a.village||a.hamlet,a.city_district,a.suburb,a.neighbourhood||a.residential||a.locality,a.quarter,a.road||a.pedestrian||a.street||a.footway,a.building||a.amenity||a.shop,a.house_number?("پلاک: "+a.house_number):""].filter(Boolean),uniq=[];parts.forEach(function(x){if(uniq.indexOf(x)<0)uniq.push(x);});if(uniq.length)return uniq.join("، ");}catch(e){}return"موقعیت "+Number(lat).toFixed(6)+"، "+Number(lng).toFixed(6);};
+
+  /* ---------- ۱۸) همه لیست‌های قدیمی هم تازه‌ترین در بالا ---------- */
+  function wrapNewestTables(){["renderActivityLogTable","renderRepRoutesTable","renderRepHomesTable","renderLeavesTable","renderMonthlyReportsTable","renderNotificationsTable","renderSalesTargetsTable","renderCustomFieldsTable"].forEach(function(n){var old=window[n];if(typeof old!=="function"||old._v20newest)return;var w=function(){var r=old.apply(this,arguments);setTimeout(function(){var map={renderActivityLogTable:"tableActivityLogBody",renderRepRoutesTable:"tableRepRoutesBody",renderRepHomesTable:"tableRepHomesBody",renderLeavesTable:"tableLeavesBody",renderMonthlyReportsTable:"tableMonthlyReportsBody",renderNotificationsTable:"tableNotificationsBody",renderSalesTargetsTable:"tableSalesTargetsBody",renderCustomFieldsTable:"tableCustomFieldsBody"},tb=$(map[n]);if(tb){var rows=Array.prototype.slice.call(tb.children).reverse();rows.forEach(function(x){tb.appendChild(x);});}},0);return r;};w._v20newest=true;window[n]=w;});}
+
+  /* ---------- ۱۹) پاک‌سازی نام سفارش و ذخیره قطعی تنظیمات کالا ---------- */
+  function clearOrderPharmacyDraft() {
+    if (String(($("orderEditId") || {}).value || "")) return;
+    v20SetValue("orderPharmacyName", ""); v20SetValue("orderPharmacyMatchedId", "");
+    var box = $("existingPharmacyTopAlert"), picks = $("orderPharmacyPickBox");
+    if (box) box.style.display = "none";
+    if (picks) { picks.hidden = true; picks.innerHTML = ""; }
+    v20ApplyOrderLock();
+  }
+  function captureOrderFormSequence(){var form=$("formOrder");if(!form)return[];return Array.prototype.map.call(form.querySelectorAll(".form-grid"),function(grid,i){return{key:grid.id||("grid-"+i),ids:Array.prototype.map.call(grid.children,function(g){return groupAnchor(g);}).filter(Boolean)};});}
+  function restoreOrderFormSequence(snapshot){var form=$("formOrder");if(!form||!snapshot)return;var grids=Array.prototype.slice.call(form.querySelectorAll(".form-grid"));snapshot.forEach(function(rec,i){var grid=rec.key&&$(rec.key)||grids[i];if(!grid)return;var groups={};Array.prototype.forEach.call(grid.children,function(g){var id=groupAnchor(g);if(id)groups[id]=g;});rec.ids.forEach(function(id){if(groups[id]&&groups[id].parentNode===grid)grid.appendChild(groups[id]);});});}
+  function captureOrderLayoutSettings(){var S=st()||{};return JSON.stringify({meta:((S.formFieldMeta||{}).order)||{},custom:((S.customFields||{}).order)||[]});}
+  function restoreOrderLayoutSettings(raw){var S=st();if(!S||!raw)return;var current=captureOrderLayoutSettings();if(current===raw)return;var snap;try{snap=JSON.parse(raw);}catch(e){return;}S.formFieldMeta=S.formFieldMeta||{};S.customFields=S.customFields||{};S.formFieldMeta.order=snap.meta||{};S.customFields.order=snap.custom||[];try{saveState(false);}catch(e){}}
+  function bindOrderResetProof() {
+    var btn = $("btnSaveOrder"), reset=$("btnResetOrderForm"), form = $("formOrder");
+    if (btn&&!btn.dataset.v36saveProof){btn.dataset.v36saveProof="1";btn.addEventListener("click", function () {
+      var S = st(), before = JSON.stringify((S.orders || []).map(function (o) { return [o.id,o.pharmacyName,o.totalAmount,(o.items||[]).length]; }));
+      setTimeout(function () { var S2=st(), after=JSON.stringify((S2.orders||[]).map(function(o){return[o.id,o.pharmacyName,o.totalAmount,(o.items||[]).length];})); if(after!==before) clearOrderPharmacyDraft(); }, 350);
+    }, true);}
+    function protectReset(){var seq=captureOrderFormSequence(),settings=captureOrderLayoutSettings();if(form)form.dataset.v36Resetting="1";try{form.dispatchEvent(new CustomEvent("crm-order-layout-approved"));}catch(e){}[20,120,420,800].forEach(function(ms){setTimeout(function(){restoreOrderLayoutSettings(settings);restoreDomFieldOrder();restoreOrderFormSequence(seq);v20ApplyOrderLock();},ms);});setTimeout(function(){if(form)delete form.dataset.v36Resetting;},950);}
+    if(reset&&!reset.dataset.v36reset){reset.dataset.v36reset="1";reset.addEventListener("click",protectReset,true);}
+    if (form&&!form.dataset.v36resetProof){form.dataset.v36resetProof="1";form.addEventListener("reset", function () { protectReset();setTimeout(clearOrderPharmacyDraft, 20); });}
+  }
+  function bindOrderFormPositionLock(){var form=$("formOrder");if(!form||form.dataset.v36positionLock)return;form.dataset.v36positionLock="1";var stable=null,busy=false,timer=0;function approve(){stable=captureOrderFormSequence();}form.addEventListener("crm-order-layout-approved",approve);setTimeout(function(){restoreDomFieldOrder();approve();},1900);if(window.MutationObserver)new MutationObserver(function(records){if(busy||!stable||form.dataset.v36Resetting==="1")return;if(window.__CRM_MANAGER_LAYOUT_INTENT){clearTimeout(timer);timer=setTimeout(approve,900);return;}var moved=records.some(function(r){return r.type==="childList"&&(r.addedNodes.length||r.removedNodes.length);});if(!moved)return;clearTimeout(timer);timer=setTimeout(function(){busy=true;restoreDomFieldOrder();restoreOrderFormSequence(stable);busy=false;},0);}).observe(form,{childList:true,subtree:true});}
+
+  function productFieldRecord(id) {
+    var S=st(); S.customFields=S.customFields||{}; S.customFields.products=S.customFields.products||[];
+    var c=S.customFields.products.filter(function(f){return f&&f.id===id;})[0];
+    if(c)return c;
+    S.formFieldMeta=S.formFieldMeta||{};S.formFieldMeta.products=S.formFieldMeta.products||{};S.formFieldMeta.products[id]=S.formFieldMeta.products[id]||{};return S.formFieldMeta.products[id];
+  }
+  function applyProductSettings() {
+    var S=st(); if(!S)return; var all={}, meta=((S.formFieldMeta||{}).products)||{};
+    Object.keys(meta).forEach(function(id){all[id]=meta[id];});
+    ((((S.customFields||{}).products)||[])).forEach(function(f){if(f&&f.id)all[f.id]=f;});
+    Object.keys(all).forEach(function(id){var f=all[id]||{},el=$(id)||$("v20pf_"+id)||document.querySelector('[data-custom-field-id="'+id+'"]');if(!el)return;var g=el.closest(".form-group")||el;if(Number(f.order)>0)g.style.setProperty("order",String(Number(f.order)),"important");if(Number(f.size)>=60){el.style.setProperty("width",Number(f.size)+"px","important");el.style.setProperty("max-width","100%","important");}if(Number(f.height)>=24){el.style.setProperty("height",Number(f.height)+"px","important");el.style.setProperty("min-height",Number(f.height)+"px","important");}});
+  }
+  function bindProductPersistence() {
+    document.addEventListener("change",function(e){var t=e.target, map={"v19-pf-ord":"order","v19-pf-lord":"listOrder","v19-pf-size":"size","v19-pf-h":"height"},key="";Object.keys(map).forEach(function(c){if(t.classList&&t.classList.contains(c))key=map[c];});if(!key)return;var id=t.getAttribute("data-fid"),n=parseInt(t.value,10);if(!id||!isFinite(n))return;productFieldRecord(id)[key]=n;save();applyProductSettings();v20Toast("✅ ترتیب و اندازه کالا ذخیره شد.");},true);
+    document.addEventListener("click",function(e){if(e.target&&e.target.id==="btnAddProductField")setTimeout(function(){var S=st(),f=(((S.customFields||{}).products)||[]).slice(-1)[0];if(!f)return;var ids={order:"prodNewFieldOrder",listOrder:"prodNewFieldListOrder",size:"prodNewFieldSize",height:"prodNewFieldHeight"};Object.keys(ids).forEach(function(k){var n=parseInt((($(ids[k])||{}).value),10);if(isFinite(n)&&n>0)f[k]=n;});save();applyProductSettings();v20Toast("✅ فیلد کالا و همه تنظیماتش ذخیره شد.");},180);},true);
+    // تنظیمات کالا فقط هنگام تغییر همان تنظیم یا ورود به تب اعمال می‌شود؛
+    // اتصال آن به هر saveState (از جمله هر نقطه GPS) باعث رندر بیهوده و گیر برنامه می‌شد.
+  }
+
+  /* ---------- ۲۰) اسنپ سازمانی: ورود امن فایل، گزارش و تجمیع ---------- */
+  var SNAPP_COLS = [0,1,4,8,11,14,17,18,23], snappFilteredRows = [];
+  function enDigits(v){var fa="۰۱۲۳۴۵۶۷۸۹",ar="٠١٢٣٤٥٦٧٨٩";return String(v==null?"":v).replace(/[۰-۹]/g,function(c){return fa.indexOf(c);}).replace(/[٠-٩]/g,function(c){return ar.indexOf(c);});}
+  function faDate(d){try{var parts=new Intl.DateTimeFormat("fa-IR-u-ca-persian",{year:"numeric",month:"2-digit",day:"2-digit",timeZone:"Asia/Tehran"}).formatToParts(d),o={};parts.forEach(function(x){o[x.type]=enDigits(x.value);});return o.year+"/"+o.month.padStart(2,"0")+"/"+o.day.padStart(2,"0");}catch(e){return"";}}
+  function normSnappDate(v){var raw=enDigits(v).trim();if(/^\d+(\.\d+)?$/.test(raw)&&Number(raw)>30000){var d=new Date(Date.UTC(1899,11,30)+Number(raw)*86400000);return faDate(d);}var m=raw.match(/(1[34]\d{2})[^0-9]?(\d{1,2})[^0-9]?(\d{1,2})/);if(m)return m[1]+"/"+m[2].padStart(2,"0")+"/"+m[3].padStart(2,"0");var g=raw.match(/(20\d{2})[^0-9]?(\d{1,2})[^0-9]?(\d{1,2})/);if(g)return faDate(new Date(Number(g[1]),Number(g[2])-1,Number(g[3])));return raw;}
+  function snappNumber(v){var s=enDigits(v).replace(/[,٬،\sریالتومان]/g,"").replace(/[()]/g,function(x){return x==="("?"-":"";});var n=Number(s);return isFinite(n)?n:0;}
+  function parseDelimited(text){text=String(text||"").replace(/^\uFEFF/,"");var first=(text.split(/\r?\n/)[0]||""),ds=[["\t",(first.match(/\t/g)||[]).length],[",",(first.match(/,/g)||[]).length],[";",(first.match(/;/g)||[]).length]],del=ds.sort(function(a,b){return b[1]-a[1];})[0][0],rows=[],row=[],cell="",q=false;for(var i=0;i<text.length;i++){var c=text[i];if(c==='"'){if(q&&text[i+1]==='"'){cell+='"';i++;}else q=!q;}else if(!q&&c===del){row.push(cell);cell="";}else if(!q&&(c==='\n'||c==='\r')){if(c==='\r'&&text[i+1]==='\n')i++;row.push(cell);if(row.some(function(x){return String(x).trim();}))rows.push(row);row=[];cell="";}else cell+=c;}row.push(cell);if(row.some(function(x){return String(x).trim();}))rows.push(row);return rows;}
+  function u16(a,p){return a[p]|(a[p+1]<<8);}function u32(a,p){return (u16(a,p)|(u16(a,p+2)<<16))>>>0;}
+  async function unzipEntry(buf,name){var a=new Uint8Array(buf),e=-1;for(var i=a.length-22;i>=Math.max(0,a.length-65558);i--){if(u32(a,i)===0x06054b50){e=i;break;}}if(e<0)throw Error("ساختار ZIP اکسل پیدا نشد");var count=u16(a,e+10),pos=u32(a,e+16),dec=new TextDecoder("utf-8");for(var n=0;n<count;n++){if(u32(a,pos)!==0x02014b50)break;var method=u16(a,pos+10),size=u32(a,pos+20),nl=u16(a,pos+28),xl=u16(a,pos+30),cl=u16(a,pos+32),local=u32(a,pos+42),fn=dec.decode(a.slice(pos+46,pos+46+nl));if(fn===name){var lnl=u16(a,local+26),lxl=u16(a,local+28),data=a.slice(local+30+lnl+lxl,local+30+lnl+lxl+size);if(method===0)return dec.decode(data);if(method!==8||typeof DecompressionStream==="undefined")throw Error("مرورگر امکان بازکردن این فایل XLSX را ندارد");var stream=new Blob([data]).stream().pipeThrough(new DecompressionStream("deflate-raw"));return dec.decode(await new Response(stream).arrayBuffer());}pos+=46+nl+xl+cl;}return"";}
+  async function parseXlsx(file){var buf=await file.arrayBuffer(),ssxml=await unzipEntry(buf,"xl/sharedStrings.xml"),sheet=await unzipEntry(buf,"xl/worksheets/sheet1.xml");if(!sheet)throw Error("برگه اول اکسل پیدا نشد");var xp=new DOMParser(),shared=[];if(ssxml){var sd=xp.parseFromString(ssxml,"text/xml");Array.prototype.forEach.call(sd.querySelectorAll("si"),function(si){shared.push(Array.prototype.map.call(si.querySelectorAll("t"),function(t){return t.textContent;}).join(""));});}var doc=xp.parseFromString(sheet,"text/xml"),out=[];Array.prototype.forEach.call(doc.querySelectorAll("sheetData row"),function(r){var row=[];Array.prototype.forEach.call(r.querySelectorAll("c"),function(c){var ref=c.getAttribute("r")||"A1",letters=(ref.match(/[A-Z]+/)||["A"])[0],idx=0;for(var j=0;j<letters.length;j++)idx=idx*26+letters.charCodeAt(j)-64;idx--;var type=c.getAttribute("t"),v=(c.querySelector("v")||{}).textContent||"";if(type==="s")v=shared[Number(v)]||"";else if(type==="inlineStr")v=Array.prototype.map.call(c.querySelectorAll("t"),function(t){return t.textContent;}).join("");row[idx]=v;});out.push(row.map(function(x){return x==null?"":x;}));});return out;}
+  async function parseSnappFile(file){var ext=(file.name.split(".").pop()||"").toLowerCase();if(ext==="xlsx")return parseXlsx(file);var text=await file.text();if(ext==="xls"&&text.indexOf("<table")>=0){var doc=new DOMParser().parseFromString(text,"text/html");return Array.prototype.map.call(doc.querySelectorAll("tr"),function(tr){return Array.prototype.map.call(tr.querySelectorAll("th,td"),function(td){return td.textContent.trim();});});}return parseDelimited(text);}
+  function snappStore(){var S=st();S.snappCorporate=S.snappCorporate||{};var D=S.snappCorporate;D.headers=D.headers||[];D.rows=D.rows||[];D.files=D.files||[];D.topupHeaders=D.topupHeaders||[];D.topups=D.topups||[];D.topupFiles=D.topupFiles||[];D.tripImports=Array.isArray(D.tripImports)?D.tripImports:[];D.topupImports=Array.isArray(D.topupImports)?D.topupImports:[];D.rows=(Array.isArray(D.rows)?D.rows:Object.values(D.rows||{})).map(normalizeStoredRow).filter(function(r){return r.length;});D.topups=(Array.isArray(D.topups)?D.topups:Object.values(D.topups||{})).map(normalizeStoredRow).filter(function(r){return r.length;});var oldCount=D.rows.length+D.topups.length,seen={};D.rows=D.rows.filter(function(r){var k=rowSignature(r);if(seen[k])return false;seen[k]=1;return true;});seen={};D.topups=D.topups.filter(function(r){var k=rowSignature(r);if(seen[k])return false;seen[k]=1;return true;});if(D.rows.length+D.topups.length<oldCount)setTimeout(function(){try{saveState(false);}catch(e){}},0);return D;}
+  function snappIndexes(headers){function find(re,fb){for(var i=0;i<headers.length;i++)if(re.test(String(headers[i])))return i;return fb;}return{date:find(/تاریخ.*(سفر|درخواست|انجام)|تاریخ/,0),rep:find(/نماینده|مسافر|کارمند|درخواست.?کننده|نام و نام خانوادگی/,1),amount:find(/مبلغ.*(کل|پرداخت)|هزینه|کرایه|قیمت/,23)};}
+  function normPerson(v){return norm(String(v||"").replace(/(^|[\s،,])(سرکار\s*خانم|جناب\s*آقای?|آقای?|اقای?|آقا|اقا|خانم)(?=\s|$)/g," "));}
+  function personMatch(a,b){a=normPerson(a);b=normPerson(b);return !!a&&!!b&&(a===b||(a.length>=4&&b.indexOf(a)>=0)||(b.length>=4&&a.indexOf(b)>=0));}
+  function splitSnappDateTime(v){var s=enDigits(v).trim(),m=s.match(/(1[34]\d{2}[\/\-]\d{1,2}[\/\-]\d{1,2})\s*(.*)/);return{date:m?normSnappDate(m[1]):normSnappDate(s),time:m?(m[2]||"—"):"—"};}
+  function tripSchema(h){function ix(name,fb){for(var i=0;i<h.length;i++)if(norm(h[i])===norm(name))return i;return fb;}return{start:ix("تاریخ و ساعت شروع سفر",0),end:ix("تاریخ و ساعت پایان سفر",1),rep:ix("نام مسافر",2),origin:ix("مبدأ",3),dest:ix("مقصد",4),dest2:ix("مقصد دوم",5),service:ix("نوع سرویس",6),amount:ix("هزینه",7),city:ix("شهر",8)};}
+  function findHeaderRow(rows,type){var best=0,score=-1;for(var i=0;i<Math.min(rows.length,25);i++){var r=normalizeStoredRow(rows[i]),txt=r.join(" "),non=r.filter(function(x){return String(x).trim();}).length,s=non+(type==="topup"&&/تاریخ/.test(txt)&&/افزایش.*موجودی/.test(txt)?100:0)+(type==="trip"&&/تاریخ|مبلغ|سفر|مسافر/.test(txt)?20:0);if(s>score){score=s;best=i;}}return best;}
+  function repairSnappHeaders(D){if((!D.headers.length||D.headers.every(function(x,i){return !x||/^ستون\s*\d+/.test(String(x));}))&&D.rows.length){var hi=findHeaderRow(D.rows,"trip"),cand=D.rows[hi];if(cand&&cand.filter(Boolean).length>2){D.headers=cand.slice();D.rows.splice(hi,1);}}}
+  function temporalMode(prefix){if($(prefix+"ModeMonth")&&$(prefix+"ModeMonth").checked)return"month";if($(prefix+"ModeYear")&&$(prefix+"ModeYear").checked)return"year";if(($(prefix+"ModeFrom")&&$(prefix+"ModeFrom").checked)||($(prefix+"ModeTo")&&$(prefix+"ModeTo").checked))return"range";return"all";}
+  function snappFilters(){return{mode:temporalMode("snappTrip"),year:enDigits(($("snappFilterYear")||{}).value||""),month:enDigits(($("snappFilterMonth")||{}).value||""),rep:String(($("snappFilterRep")||{}).value||""),from:normSnappDate(($("snappFilterFrom")||{}).value||""),to:normSnappDate(($("snappFilterTo")||{}).value||"")};}
+  function datePass(d,f){d=normSnappDate(d);if(f.mode==="year")return !f.year||d.slice(0,4)===f.year;if(f.mode==="month")return (!f.year||d.slice(0,4)===f.year)&&(!f.month||d.slice(5,7)===f.month);if(f.mode==="range")return(!f.from||d>=f.from)&&(!f.to||d<=f.to);return true;}
+  function updateSnappLatestDates(D){var bar=$("snappLatestDatesBar");if(!bar)return;var ti=tripSchema(D.headers||[]),ui=topupIndexes(D.topupHeaders||[]),trip=(D.rows||[]).map(function(r){return splitSnappDateTime(r[ti.start]).date;}).filter(Boolean).sort().pop()||"—",top=(D.topups||[]).map(function(r){return splitSnappDateTime(r[ui.date]).date;}).filter(Boolean).sort().pop()||"—";bar.innerHTML="<span>📅 آخرین تاریخ فایل سفر: "+esc(trip)+"</span><span>💳 آخرین تاریخ فایل افزایش موجودی: "+esc(top)+"</span>";}
+  function renderSnappCorporate(){var D=snappStore();repairSnappHeaders(D);var h=D.headers||[],idx=tripSchema(h),f=snappFilters(),repSel=$("snappFilterRep"),cur=repSel?repSel.value:"",users=((st().users)||[]).filter(function(u){return u&&u.fullName&&!/مدیر سیستم/.test(u.fullName)&&u.username!=="admin";});if(repSel){repSel.innerHTML="<option value=''>همه نمایندگان</option>"+users.map(function(u){return"<option value='"+esc(u.fullName)+"'>"+esc(u.fullName)+"</option>";}).join("");repSel.value=cur;}
+    snappFilteredRows=(D.rows||[]).filter(function(r){var dt=splitSnappDateTime(r[idx.start]);return datePass(dt.date,f)&&(!f.rep||personMatch(r[idx.rep],f.rep));});var total=snappFilteredRows.reduce(function(sum,r){return sum+snappNumber(r[idx.amount]);},0),by={};snappFilteredRows.forEach(function(r){var raw=String(r[idx.rep]||"نامشخص"),matched=users.filter(function(u){return personMatch(u.fullName,raw);})[0],n=matched?matched.fullName:raw;by[n]=by[n]||{n:0,sum:0};by[n].n++;by[n].sum+=snappNumber(r[idx.amount]);});var cards=$("snappSummaryCards");if(cards)cards.innerHTML=[["تعداد سفر",snappFilteredRows.length.toLocaleString("fa-IR")],["جمع کل",total.toLocaleString("fa-IR")+" ریال"],["تعداد نمایندگان",Object.keys(by).length.toLocaleString("fa-IR")],["آخرین ورود",D.lastImport||"—"]].map(function(x){return"<div class='v20-metric'>"+x[0]+"<b>"+x[1]+"</b></div>";}).join("");var rb=$("snappRepSummaryBody");if(rb)rb.innerHTML=Object.keys(by).sort().map(function(n,i){return"<tr><td>"+(i+1)+"</td><td><strong>"+esc(n)+"</strong></td><td>"+by[n].n.toLocaleString("fa-IR")+"</td><td>"+by[n].sum.toLocaleString("fa-IR")+" ریال</td></tr>";}).join("")||"<tr><td colspan='4'>داده‌ای در این بازه نیست.</td></tr>";var heads=["تاریخ شروع سفر","ساعت شروع سفر","تاریخ پایان سفر","ساعت پایان سفر","نام مسافر","مبدأ","مقصد","مقصد دوم","نوع سرویس","هزینه","شهر"],hh=$("snappReportHead");if(hh)hh.innerHTML=heads.map(function(x){return"<th>"+x+"</th>";}).join("");var body=$("snappReportBody");if(body)body.innerHTML=snappFilteredRows.slice(0,2000).map(function(r){var stt=splitSnappDateTime(r[idx.start]),endt=splitSnappDateTime(r[idx.end]),vals=[stt.date,stt.time,endt.date,endt.time,r[idx.rep],r[idx.origin],r[idx.dest],r[idx.dest2],r[idx.service],r[idx.amount],r[idx.city]];return"<tr>"+vals.map(function(v){return"<td>"+esc(v||"")+"</td>";}).join("")+"</tr>";}).join("")||"<tr><td colspan='11'>فایلی وارد نشده یا نتیجه‌ای نیست.</td></tr>";var status=$("snappDailyStatus");if(status)status.textContent=D.rows.length?(D.rows.length.toLocaleString("fa-IR")+" ردیف سفر یکتا، دائمی و داخل پشتیبان ذخیره شده است."):"گزارشی وارد نشده است.";updateSnappLatestDates(D);renderSnappTopups();}
+  function normalizeStoredRow(r){if(Array.isArray(r))return r.slice();if(r==null)return[];if(typeof r==="object"){if(Array.isArray(r.cells))return r.cells.slice();if(Array.isArray(r.row))return r.row.slice();if(Array.isArray(r.data))return r.data.slice();var keys=Object.keys(r),numeric=keys.filter(function(k){return /^\d+$/.test(k);}).sort(function(a,b){return Number(a)-Number(b);});if(numeric.length)return numeric.map(function(k){return r[k];});return Object.values(r).filter(function(v){return typeof v!=="object";});}if(typeof r==="string"){try{var p=JSON.parse(r);if(Array.isArray(p))return p;}catch(e){}return[r];}return[String(r)];}
+  function rowSignature(r){var a=normalizeStoredRow(r).map(function(x){return enDigits(String(x==null?"":x)).replace(/\s+/g," ").trim();});while(a.length&&a[a.length-1]==="")a.pop();return a.join("¦");}
+  async function importSnappFiles(files){var D=snappStore(),all=[],names=[];for(var i=0;i<files.length;i++){try{var rows=await parseSnappFile(files[i]);if(rows.length){var hi=findHeaderRow(rows,"trip"),head=rows[hi]||[];if(!D.headers.length||D.headers.filter(Boolean).length<3)D.headers=head.slice();all=all.concat(rows.slice(hi+1));names.push(files[i].name);}}catch(e){alert("خطا در فایل «"+files[i].name+"»: "+e.message);}}var seen={},fresh=[];(D.rows||[]).forEach(function(r){seen[rowSignature(r)]=true;});all.forEach(function(r){while(r.length<24)r.push("");var k=rowSignature(r);if(!seen[k]&&r.some(function(x){return String(x).trim();})){seen[k]=true;fresh.push(r);}});if(fresh.length)D.tripImports.unshift({id:"trip-"+Date.now(),name:names.join(" + "),at:Date.now(),headers:D.headers.slice(),rows:fresh});D.rows=fresh.concat(D.rows||[]);D.files=(names.concat(D.files||[])).slice(0,200);D.lastImport=new Date().toLocaleString("fa-IR",{timeZone:"Asia/Tehran"});await saveBulkVault();save();renderSnappCorporate();v20Toast("✅ "+fresh.length.toLocaleString("fa-IR")+" ردیف جدید بالای آرشیو دائمی سفرها اضافه شد.");}
+  function topupIndexes(h){var di=0,ai=1;h.forEach(function(x,i){if(/تاریخ/.test(String(x)))di=i;if(/بستانکار|افزایش.*موجودی|مبلغ.*شارژ/.test(String(x)))ai=i;});return{date:di,amount:ai};}
+  function snappTopupFilters(){return{mode:temporalMode("snappTopup"),year:enDigits(($("snappTopupYear")||{}).value||""),month:enDigits(($("snappTopupMonth")||{}).value||""),from:normSnappDate(($("snappTopupFrom")||{}).value||""),to:normSnappDate(($("snappTopupTo")||{}).value||"")};}
+  async function importSnappTopups(files){var D=snappStore(),all=[],names=[];for(var i=0;i<files.length;i++){try{var rows=await parseSnappFile(files[i]);if(rows.length){var hi=findHeaderRow(rows,"topup"),head=rows[hi]||[];if(!D.topupHeaders.length)D.topupHeaders=head.slice();all=all.concat(rows.slice(hi+1));names.push(files[i].name);}}catch(e){alert("خطا در گزارش افزایش موجودی «"+files[i].name+"»: "+e.message);}}var seen={},fresh=[],ti=topupIndexes(D.topupHeaders||[]);(D.topups||[]).forEach(function(r){seen[rowSignature(r)]=1;});all.forEach(function(r){var k=rowSignature(r);if(snappNumber(r[ti.amount])>0&&!seen[k]){seen[k]=1;fresh.push(r);}});if(fresh.length)D.topupImports.unshift({id:"top-"+Date.now(),name:names.join(" + "),at:Date.now(),headers:D.topupHeaders.slice(),rows:fresh});D.topups=fresh.concat(D.topups||[]);D.topupFiles=names.concat(D.topupFiles||[]).slice(0,200);D.lastTopupImport=new Date().toLocaleString("fa-IR",{timeZone:"Asia/Tehran"});await saveBulkVault();save();renderSnappCorporate();v20Toast("✅ "+fresh.length.toLocaleString("fa-IR")+" ردیف افزایش موجودی بالای آرشیو دائمی اضافه شد.");}
+  function renderSnappTopups(){var D=snappStore(),h=D.topupHeaders||[],idx=topupIndexes(h),f=snappTopupFilters(),rows=(D.topups||[]).filter(function(r){return snappNumber(r[idx.amount])>0&&datePass(splitSnappDateTime(r[idx.date]).date,f);}),sum=rows.reduce(function(s,r){return s+snappNumber(r[idx.amount]);},0),cards=$("snappTopupSummaryCards");if(cards)cards.innerHTML=[["تعداد شارژ",rows.length.toLocaleString("fa-IR")],["جمع مبلغ شارژ",sum.toLocaleString("fa-IR")+" ریال"],["کل آرشیو",(D.topups||[]).length.toLocaleString("fa-IR")],["آخرین ورود",D.lastTopupImport||"—"]].map(function(x){return"<div class='v20-metric'>"+x[0]+"<b>"+x[1]+"</b></div>";}).join("");var head=$("snappTopupHead");if(head)head.innerHTML="<th>ردیف</th><th>تاریخ</th><th>ساعت</th><th>مبلغ شارژ</th>";var body=$("snappTopupBody");if(body)body.innerHTML=rows.slice(0,2000).map(function(r,i){var dt=splitSnappDateTime(r[idx.date]);return"<tr><td>"+(i+1)+"</td><td>"+esc(dt.date)+"</td><td>"+esc(dt.time)+"</td><td>"+snappNumber(r[idx.amount]).toLocaleString("fa-IR")+" ریال</td></tr>";}).join("")||"<tr><td colspan='4'>گزارش افزایش موجودی وارد نشده است.</td></tr>";window._v20TopupRows=rows;}
+  function showSnappArchives(kind){var D=snappStore(),host=$("snappFileArchiveViewer"),imports=kind==="trip"?D.tripImports:D.topupImports,allRows=kind==="trip"?D.rows:D.topups,allHeaders=kind==="trip"?D.headers:D.topupHeaders;if(!host)return;function paint(title,headers,rows){var originalSigs=(rows||[]).map(rowSignature);host.hidden=false;host.innerHTML="<div class='card-header'><div class='card-title'>"+esc(title)+" — "+rows.length.toLocaleString("fa-IR")+" ردیف</div><div><button class='btn btn-primary arc-save'>💾 ذخیره تغییرات</button> <button class='btn btn-outline arc-close'>بستن</button></div></div><div class='v20-card-tools'><button class='btn btn-outline arc-all'>همه دیتابیس</button>"+(imports||[]).map(function(x,i){return"<button class='btn btn-outline arc-one' data-i='"+i+"'>"+esc(x.name||("فایل "+(i+1)))+"</button>";}).join("")+"</div><div class='table-responsive'><table class='data-table'><thead><tr>"+(headers||[]).map(function(h){return"<th>"+esc(h)+"</th>";}).join("")+"</tr></thead><tbody>"+(rows||[]).slice(0,1000).map(function(r,ri){return"<tr>"+r.map(function(v,i){var show=/تاریخ/.test(String((headers||[])[i]||""))?normSnappDate(v):v;return"<td contenteditable='true' data-r='"+ri+"' data-c='"+i+"'>"+esc(show)+"</td>";}).join("")+"</tr>";}).join("")+"</tbody></table></div>";host.querySelector('.arc-close').onclick=function(){host.hidden=true;};host.querySelector('.arc-save').onclick=async function(){Array.prototype.forEach.call(host.querySelectorAll('td[data-r]'),function(td){var r=Number(td.dataset.r),c=Number(td.dataset.c);if(rows[r])rows[r][c]=td.textContent.trim();});var master=kind==='trip'?D.rows:D.topups;(rows||[]).forEach(function(row,i){var mi=master.findIndex(function(x){return rowSignature(x)===originalSigs[i];});if(mi>=0)master[mi]=row;});await saveBulkVault();save();renderSnappCorporate();v20Toast('✅ تغییرات دیتابیس اسنپ ذخیره شد.');};host.querySelector('.arc-all').onclick=function(){paint("همه دیتابیس "+(kind==="trip"?"سفر":"شارژ"),allHeaders,allRows);};Array.prototype.forEach.call(host.querySelectorAll('.arc-one'),function(b){b.onclick=function(){var x=imports[Number(b.dataset.i)];paint(x.name,x.headers,x.rows);};});host.scrollIntoView({behavior:"smooth"});}paint("همه دیتابیس "+(kind==="trip"?"سفر":"شارژ"),allHeaders,allRows);}
+  function ensureSnappActionBar(){var pane=$("tab-snapp-corporate"),card=pane&&pane.querySelector(".card");if(!card)return;var bar=$("v20SnappActionBar");if(!bar){bar=document.createElement("div");bar.id="v20SnappActionBar";bar.style.cssText="display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:#ecfeff;border:2px solid #0891b2;border-radius:12px;padding:12px;margin-bottom:14px;position:sticky;top:6px;z-index:50";card.insertBefore(bar,card.firstChild);}['btnBuildSnappReport','btnBuildSnappTopupReport'].forEach(function(id){var b=$(id);if(b&&b.parentNode!==bar){b.classList.add('btn-sm');b.style.cssText='width:auto!important;max-width:260px!important;display:inline-flex!important';bar.appendChild(b);}});if(!$("btnViewSnappTripFiles")){var vt=document.createElement("button");vt.id="btnViewSnappTripFiles";vt.className="btn btn-outline btn-sm";vt.textContent="👁 فایل‌های سفر";vt.onclick=function(){showSnappArchives("trip");};bar.appendChild(vt);}if(!$("btnViewSnappTopupFiles")){var vu=document.createElement("button");vu.id="btnViewSnappTopupFiles";vu.className="btn btn-outline btn-sm";vu.textContent="👁 فایل‌های شارژ";vu.onclick=function(){showSnappArchives("topup");};bar.appendChild(vu);}if(!$("snappLatestDatesBar")){var st=document.createElement("div");st.id="snappLatestDatesBar";st.style.cssText="width:100%;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px;font-weight:800;color:#155e75";st.innerHTML="<span>آخرین تاریخ سفر: —</span><span>آخرین تاریخ افزایش موجودی: —</span>";bar.appendChild(st);}}
+  function forceBlankSnappDates(){["snappFilterFrom","snappFilterTo","snappTopupFrom","snappTopupTo"].forEach(function(id){var e=$(id);if(!e||e.dataset.v20Blanked)return;e.dataset.v20Blanked="1";e.value="";e.addEventListener("input",function(){e.dataset.userTouched="1";});setTimeout(function(){if(e.dataset.userTouched!=="1")e.value="";},700);});}
+  function bindSnappModes(){[["snappTrip","snappFilterYear","snappFilterMonth",renderSnappCorporate],["snappTopup","snappTopupYear","snappTopupMonth",renderSnappTopups]].forEach(function(cfg){var prefix=cfg[0],year=$(cfg[1]),month=$(cfg[2]),ids=[prefix+"ModeYear",prefix+"ModeMonth",prefix+"ModeFrom",prefix+"ModeTo"];function refreshMonth(){var off=!String((year||{}).value||"").trim();if(month){month.disabled=off;if(off)month.value="";month.classList.toggle("v20-grey",off);var mc=$(prefix+"ModeMonth");if(off&&mc)mc.checked=false;var g=month.closest(".form-group");if(g)g.classList.toggle("v20-grey-zone",off);}}ids.forEach(function(id){var c=$(id);if(!c||c.dataset.bound)return;c.dataset.bound="1";c.addEventListener("change",function(){var range=id===prefix+"ModeFrom"||id===prefix+"ModeTo";if(!c.checked){if(range){var a=$(prefix+"ModeFrom"),b=$(prefix+"ModeTo");if(a)a.checked=false;if(b)b.checked=false;}refreshMonth();cfg[3]();return;}if(range){ids.forEach(function(x){var e=$(x);if(e)e.checked=(x===prefix+"ModeFrom"||x===prefix+"ModeTo");});}else ids.forEach(function(x){var e=$(x);if(e&&x!==id)e.checked=false;});refreshMonth();cfg[3]();});});if(year&&!year.dataset.modeBound){year.dataset.modeBound="1";year.addEventListener("input",function(){refreshMonth();cfg[3]();});}refreshMonth();});}
+  function bindSnappImportButtons(){var trip=$("snappReportFiles"),top=$("snappTopupFiles"),bt=$("btnImportSnappTrips"),bu=$("btnImportSnappTopups");if(bt&&trip)bt.onclick=function(){trip.click();};if(bu&&top)bu.onclick=function(){top.click();};if(trip&&!trip.dataset.robustImport){trip.dataset.robustImport="1";trip.dataset.bound="1";trip.onchange=async function(){if(!trip.files.length)return;var st=$("snappDailyStatus");if(st)st.textContent="در حال خواندن فایل سفر…";await importSnappFiles(Array.prototype.slice.call(trip.files));trip.value="";};}if(top&&!top.dataset.robustImport){top.dataset.robustImport="1";top.dataset.bound="1";top.onchange=async function(){if(!top.files.length)return;var st=$("snappDailyStatus");if(st)st.textContent="در حال خواندن فایل افزایش موجودی…";await importSnappTopups(Array.prototype.slice.call(top.files));top.value="";};}}
+  function setupSnappCorporate(){restoreFixedFilterGrids();ensureSnappActionBar();forceBlankSnappDates();bindSnappModes();bindSnappImportButtons();var open=$("btnOpenSnappCorporate"),inp=$("snappReportFiles"),top=$("snappTopupFiles"),exp=$("btnExportSnappView"),texp=$("btnExportSnappTopups"),build=$("btnBuildSnappReport");if(open&&!open.dataset.bound){open.dataset.bound="1";open.addEventListener("click",function(){window.open("https://corporate.snapp.taxi/auth/login","_blank","noopener");});}if(inp&&!inp.dataset.bound){inp.dataset.bound="1";inp.addEventListener("change",function(){if(inp.files&&inp.files.length)importSnappFiles(Array.prototype.slice.call(inp.files));inp.value="";});}if(top&&!top.dataset.bound){top.dataset.bound="1";top.addEventListener("change",function(){if(top.files&&top.files.length)importSnappTopups(Array.prototype.slice.call(top.files));top.value="";});}if(build&&!build.dataset.bound){build.dataset.bound="1";build.addEventListener("click",function(){renderSnappCorporate();var box=$("snappSummaryCards");if(box)box.scrollIntoView({behavior:"smooth",block:"center"});v20Toast(snappFilteredRows.length?"✅ گزارش نماینده تهیه شد: "+snappFilteredRows.length.toLocaleString("fa-IR")+" سفر":"⚠️ برای این فیلتر سفری پیدا نشد؛ نام نماینده یا تاریخ را بررسی کنید.");});}if(exp&&!exp.dataset.bound){exp.dataset.bound="1";exp.addEventListener("click",function(){var D=snappStore(),idx=tripSchema(D.headers||[]),heads=["تاریخ شروع سفر","ساعت شروع سفر","تاریخ پایان سفر","ساعت پایان سفر","نام مسافر","مبدأ","مقصد","مقصد دوم","نوع سرویس","هزینه","شهر"],rows=snappFilteredRows.map(function(r){var a=splitSnappDateTime(r[idx.start]),b=splitSnappDateTime(r[idx.end]);return[a.date,a.time,b.date,b.time,r[idx.rep],r[idx.origin],r[idx.dest],r[idx.dest2],r[idx.service],r[idx.amount],r[idx.city]];});window.downloadCSVFile("snapp-corporate-report.xls",heads,rows);});}if(texp&&!texp.dataset.bound){texp.dataset.bound="1";texp.addEventListener("click",function(){var D=snappStore(),idx=topupIndexes(D.topupHeaders||[]),rows=(window._v20TopupRows||[]).map(function(r,i){var d=splitSnappDateTime(r[idx.date]);return[i+1,d.date,d.time,snappNumber(r[idx.amount])];});window.downloadCSVFile("snapp-topup-report.xls",["ردیف","تاریخ","ساعت","مبلغ شارژ"],rows);});}var topBuild=$("btnBuildSnappTopupReport");if(topBuild&&!topBuild.dataset.bound){topBuild.dataset.bound="1";topBuild.addEventListener("click",function(){renderSnappTopups();var box=$("snappTopupSummaryCards");if(box)box.scrollIntoView({behavior:"smooth",block:"center"});v20Toast((window._v20TopupRows||[]).length?"✅ گزارش افزایش موجودی تهیه شد: "+(window._v20TopupRows||[]).length.toLocaleString("fa-IR")+" ردیف":"⚠️ برای این فیلتر مبلغ شارژی پیدا نشد.");});}["snappTopupYear","snappTopupMonth","snappTopupFrom","snappTopupTo"].forEach(function(id){var el=$(id);if(el&&!el.dataset.bound){if(/From|To/.test(id))el.value="";el.dataset.bound="1";el.addEventListener("input",renderSnappTopups);el.addEventListener("change",renderSnappTopups);}});["snappFilterYear","snappFilterMonth","snappFilterRep","snappFilterFrom","snappFilterTo"].forEach(function(id){var el=$(id);if(el&&!el.dataset.bound){if(/From|To/.test(id))el.value="";el.dataset.bound="1";el.addEventListener("input",renderSnappCorporate);el.addEventListener("change",renderSnappCorporate);}});renderSnappCorporate();}
+
+
+  /* ---------- ۲۱) همه نمایندگان + آدرس متنی موقعیت زنده ---------- */
+  async function updateRepTextAddress(r){if(!r||!r.lat||!r.lng)return;var key=Number(r.lat).toFixed(6)+","+Number(r.lng).toFixed(6);if(r._textAddressKey===key&&r.textAddress)return;try{r.textAddress=await window.reverseGeocodeCoordinates(r.lat,r.lng);r._textAddressKey=key;save();var cell=document.querySelector('[data-live-address="'+r.id+'"]');if(cell)cell.textContent=r.textAddress;}catch(e){}}
+  function enhanceLiveLocation(){var sel=$("liveRepSearchSelect");if(sel&&sel.options.length){sel.options[0].textContent="همه نمایندگان";sel.options[0].value="";}var table=$("tableLiveReps"),hr=table&&table.querySelector("thead tr");if(hr&&!hr.querySelector(".v20-live-address-head")){var th=document.createElement("th");th.className="v20-live-address-head";th.textContent="آدرس متنی موقعیت فعلی";hr.insertBefore(th,hr.lastElementChild);}var body=$("tableLiveRepsBody"),reps=(st()&&st().reps)||[];if(body)Array.prototype.forEach.call(body.children,function(tr,i){var r=reps[i];if(!r)return;var old=tr.querySelector("[data-live-address]");if(!old){var td=document.createElement("td");td.setAttribute("data-live-address",r.id);td.textContent=r.textAddress||"در حال دریافت آدرس…";tr.insertBefore(td,tr.lastElementChild);}updateRepTextAddress(r);});}
+  function bindLiveAll(){var btn=$("btnFindLiveRep");if(btn&&!btn.dataset.v20all){btn.dataset.v20all="1";btn.addEventListener("click",function(e){var sel=$("liveRepSearchSelect");if(sel&&sel.value)return;e.preventDefault();e.stopImmediatePropagation();if(typeof window.renderLiveLocationTab==="function")window.renderLiveLocationTab();setTimeout(function(){enhanceLiveLocation();try{var pts=((st()&&st().reps)||[]).filter(function(r){return r.lat&&r.lng;}).map(function(r){return[r.lat,r.lng];});if(typeof mapLiveReps!=="undefined"&&mapLiveReps&&pts.length)mapLiveReps.fitBounds(pts,{padding:[30,30]});}catch(x){}},80);},true);}var body=$("tableLiveRepsBody");if(body&&window.MutationObserver&&!body.dataset.v20addr){body.dataset.v20addr="1";var t;new MutationObserver(function(){clearTimeout(t);t=setTimeout(enhanceLiveLocation,40);}).observe(body,{childList:true,subtree:true});}enhanceLiveLocation();}
+
+  function migrateInvoicePermissionOnce(){var S=st();if(!S)return;S.settings=S.settings||{};if(S.settings.invoiceStatusPermissionV1130)return;(S.users||[]).forEach(function(u){u.permissions=u.permissions||{};u.permissions.dist_invoice_status_access=true;});var templates=S.settings.permissionLevelTemplates||{};Object.keys(templates).forEach(function(k){templates[k].dist_invoice_status_access=true;});S.settings.invoiceStatusPermissionV1130=true;try{saveState(false);}catch(e){}}
+  function applySnappVisibility(){migrateInvoicePermissionOnce();var manager=v20IsManager(),u=v20CurrentUser(),perms=(u&&u.permissions)||{};function toggle(id,allow){document.querySelectorAll('[data-target="'+id+'"],[data-side-target="'+id+'"]').forEach(function(b){b.style.display=allow?"":"none";});var pane=$(id);if(pane)pane.style.display=allow?"":"none";}toggle("tab-snapp-corporate",manager||perms.sys_snapp_access!==false);toggle("tab-distributor-companies",manager||perms.dist_companies_access!==false);toggle("tab-distributor-sales",manager||perms.dist_sales_access!==false);toggle("tab-distributor-invoice-status",true);toggle("tab-distributor-database",manager||perms.dist_database_access!==false);}
+
+  /* ---------- ۲۱-ب) موتور نهایی و برگشت‌پذیر دسترسی همه تب‌ها و ریزامکانات ---------- */
+  var TAB_PERMISSION_MAP={"tab-dashboard":"dash_access","tab-pharmacies":"ph_access","tab-doctors":"doc_access","tab-orders":"ord_access","tab-activity-log":"activity_access","tab-overview-map":"overview_map_access","tab-live-location":"live_access","tab-snapp-corporate":"sys_snapp_access","tab-distributor-companies":"dist_companies_access","tab-distributor-sales":"dist_sales_access","tab-distributor-invoice-status":"dist_invoice_status_access","tab-distributor-database":"dist_database_access","tab-search-info":"search_access","tab-rep-routes":"fld_track","tab-my-visit":"fld_visit","tab-rep-homes":"fld_home_loc","tab-leaves":"hr_leave_req","tab-notifications":"notify_access","tab-monthly-reports":"rep_monthly","tab-sales-targets":"sys_targets","tab-custom-fields":"sys_additions","tab-columns-products":"sys_cols","tab-manual-design":"sys_manual_design","tab-users-permissions":"sys_users","tab-messengers":"sys_msg","tab-backup":"sys_backup","tab-install-app":"sys_install","tab-troubleshooting":"sys_diag"};
+  var FEATURE_PERMISSION_MAP={ph_create:["#cardPhForm"],ph_list:["#cardPhList"],ph_excel:["#btnExportPharmaciesCSV"],ph_route:["#tablePharmaciesBody .btn-route"],ph_delete:["#tablePharmaciesBody .btn-danger"],doc_create:["#cardDocForm"],doc_list:["#cardDocList"],doc_excel:["#btnExportDoctorsCSV"],doc_route:["#tableDoctorsBody .btn-route"],doc_delete:["#tableDoctorsBody .btn-danger"],ord_create:["#cardOrdForm"],ord_list:["#cardOrdList"],ord_excel:["#btnExportOrdersCSV"],ord_delete:["#tableOrdersBody .btn-danger"],sys_snapp_import:["#btnImportSnappTrips"],sys_snapp_topup:["#btnImportSnappTopups"],sys_snapp_export:["#btnExportSnappView","#btnExportSnappTopups"],dist_company_credentials:["#distributorCompanyGrid .dist-save"],dist_open_panel:["#distributorCompanyGrid .dist-open","#distributorActionGrid .dist-login"],dist_import_pharmacies:["#distributorActionGrid .dist-ph-file"],dist_import_inventory:["#distributorActionGrid .dist-inv-file"],dist_multisheet_excel:["#btnExportDistributorReport"],dist_invoice_status_filters:["#invoiceStatusFilterGrid"],dist_invoice_status_details:["#invoiceStatusBody .inv-status-view"],dist_view_database:["#distributorDatabaseGrid .db-ph","#distributorDatabaseGrid .db-inv"],dist_database_files:["#distributorDatabaseGrid .db-files"],search_excel:["#btnExportSearchInfoCSV"],hr_leave_excel:["#btnExportLeavesCSV"],rep_excel:["#btnExportMonthlyCSV"],usr_edit_save:["#formCreateUser","#userCardsContainer"],usr_permission_templates:["#v20PresetBar"],usr_tab_permission_checkboxes:["#permissionGroupsContainer"],target_define_routes:["#representativeRoutesCard"],target_plan_products:["#v34TargetPlanner"],notify_reply:["#tableNotificationsBody .v35-reply","#tableNotificationsBody .v35-history"],notify_device_push:["#btnEnableDeviceNotifications"]};
+  function permissionAllowed(perms,key,manager){return manager||!key||perms[key]!==false;}
+  function setPermissionNodeVisible(node,allow){if(!node)return;var target=(node.matches&&node.matches("input[type=file]"))?node.closest("label"):node;if(!target)return;if(allow){if(target.dataset.permissionHidden==="1"){target.style.removeProperty("display");delete target.dataset.permissionHidden;}}else{target.style.setProperty("display","none","important");target.dataset.permissionHidden="1";}}
+  function applyCentralPermissions(){var logged=sessionStorage.getItem("crmLoggedIn")==="1",u=v20CurrentUser(),manager=v20IsManager(),perms=(u&&u.permissions)||{};if(!logged)manager=true;Object.keys(TAB_PERMISSION_MAP).forEach(function(id){var pinned=false,allow=permissionAllowed(perms,TAB_PERMISSION_MAP[id],manager);document.querySelectorAll('[data-target="'+id+'"],[data-side-target="'+id+'"]').forEach(function(n){setPermissionNodeVisible(n,allow);});var pane=$(id);if(pane){if(allow){pane.style.removeProperty("display");delete pane.dataset.permissionHidden;}else{pane.style.setProperty("display","none","important");pane.dataset.permissionHidden="1";}}});var invoice=$("tab-distributor-invoice-status"),invoiceAllowed=permissionAllowed(perms,"dist_invoice_status_access",manager);if(invoice){var card=invoice.querySelector(":scope > .card"),notice=$("invoiceStatusAccessNotice");if(!notice){notice=document.createElement("div");notice.id="invoiceStatusAccessNotice";notice.className="card";notice.style.cssText="border:2px solid #f59e0b;background:#fffbeb;color:#92400e;font-weight:800";notice.textContent="این تب برای حساب شما قابل مشاهده است، اما دسترسی اطلاعات آن توسط مدیر غیرفعال شده است.";invoice.insertBefore(notice,invoice.firstChild);}notice.style.display=invoiceAllowed?"none":"block";if(card)card.style.display=invoiceAllowed?"":"none";}Object.keys(FEATURE_PERMISSION_MAP).forEach(function(key){var allow=permissionAllowed(perms,key,manager);FEATURE_PERMISSION_MAP[key].forEach(function(sel){document.querySelectorAll(sel).forEach(function(n){setPermissionNodeVisible(n,allow);});});});var active=document.querySelector(".tab-pane.active");if(active&&active.id!=="tab-distributor-invoice-status"&&!permissionAllowed(perms,TAB_PERMISSION_MAP[active.id],manager)&&active.id!=="tab-dashboard"){try{window.switchTab("tab-dashboard");}catch(e){}}syncRepresentativeSelectors();syncNotificationRecipients();document.documentElement.classList.remove("crm-booting");}
+  function bindCentralPermissions(){if(document.body.dataset.centralPermissions)return;document.body.dataset.centralPermissions="1";window.applyUserRolePermissions=applyCentralPermissions;window.applyFieldPermissions=applyCentralPermissions;var t;new MutationObserver(function(records){var relevant=records.some(function(r){return(r.addedNodes||[]).length;});if(relevant){clearTimeout(t);t=setTimeout(applyCentralPermissions,80);}}).observe(document.body,{childList:true,subtree:true});window.addEventListener("focus",applyCentralPermissions);setTimeout(applyCentralPermissions,0);}
+
+  function pushKeyBytes(value){var pad="=".repeat((4-value.length%4)%4),base=(value+pad).replace(/-/g,"+").replace(/_/g,"/"),raw=atob(base),out=new Uint8Array(raw.length);for(var i=0;i<raw.length;i++)out[i]=raw.charCodeAt(i);return out;}
+  async function enableDeviceNotifications(){if(!("Notification" in window)||!navigator.serviceWorker||!window.PushManager){v20Toast("این مرورگر اعلان پس‌زمینه را پشتیبانی نمی‌کند.");return false;}var permission=Notification.permission;if(permission!=="granted")permission=await Notification.requestPermission();if(permission!=="granted"){v20Toast("اجازه اعلان داده نشد.");return false;}try{var reg=await navigator.serviceWorker.ready,keyData=await fetch("/api/push/public-key",{cache:"no-store"}).then(function(r){return r.json();}),sub=await reg.pushManager.getSubscription();if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:pushKeyBytes(keyData.publicKey)});var u=v20CurrentUser()||{};await fetch("/api/push/subscribe",{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1"},body:JSON.stringify({userId:u.id||sessionStorage.getItem("crmUserId")||"",username:u.username||sessionStorage.getItem("crmUsername")||"",name:u.fullName||sessionStorage.getItem("crmUserName")||"",subscription:sub.toJSON()})});v20Toast("✅ اعلان صدادار دستگاه فعال شد.");return true;}catch(e){console.warn("push subscribe",e);v20Toast("فعال‌سازی اعلان دستگاه کامل نشد.");return false;}}
+  function sendPushForNotification(nt){var recipient=String(nt.recipient||""),recipients=/همه کاربران|اعلان عمومی/.test(recipient)?["all"]:[recipient];return fetch("/api/push/send",{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1"},body:JSON.stringify({recipients:recipients,title:nt.title||"پیام جدید",body:(nt.sender?nt.sender+": ":"")+(nt.message||""),tag:nt.threadId||nt.id,url:"/panel#tab-notifications"})}).catch(function(){});}
+  function visibleNotificationsV35(){var S=st(),u=v20CurrentUser(),manager=v20IsManager(),name=(u&&u.fullName)||sessionStorage.getItem("crmUserName")||"";return(S.notifications||[]).filter(function(n){return manager||n.sender===name||n.recipient===name||/همه کاربران|اعلان عمومی/.test(String(n.recipient||""));});}
+  function renderNotificationsV35(){var body=$("tableNotificationsBody");if(!body)return;var rows=visibleNotificationsV35(),u=v20CurrentUser(),manager=v20IsManager(),name=(u&&u.fullName)||sessionStorage.getItem("crmUserName")||"";body.innerHTML=rows.map(function(n){var canDelete=manager||n.sender===name;return"<tr data-notification='"+esc(n.id)+"'><td>"+esc(n.date||"—")+"</td><td><strong>"+esc(n.title||"")+"</strong></td><td>"+esc(n.message||"")+"</td><td>"+esc((n.sender||"—")+" → "+(n.recipient||"عمومی"))+"</td><td>"+(n.isRead?"خوانده‌شد":"<button class='btn btn-outline btn-sm v35-read'>✓ خواندن</button>")+"</td><td><button class='btn btn-primary btn-sm v35-reply'>↩ پاسخ</button> <button class='btn btn-outline btn-sm v35-history'>🕘 تاریخچه</button> "+(canDelete?"<button class='btn btn-danger btn-sm v35-delete'>🗑️</button>":"")+"</td></tr>";}).join("")||"<tr><td colspan='6'>پیامی برای این کاربر وجود ندارد.</td></tr>";Array.prototype.forEach.call(body.querySelectorAll("tr[data-notification]"),function(tr){var id=tr.dataset.notification,n=(st().notifications||[]).filter(function(x){return String(x.id)===String(id);})[0];var r=tr.querySelector(".v35-read");if(r)r.onclick=function(){n.isRead=true;save();renderNotificationsV35();};var reply=tr.querySelector(".v35-reply");if(reply)reply.onclick=function(){replyNotificationV35(id);};var hist=tr.querySelector(".v35-history");if(hist)hist.onclick=function(){showNotificationThreadV35(id);};var del=tr.querySelector(".v35-delete");if(del)del.onclick=function(){if(confirm("این پیام حذف شود؟")){st().notifications=(st().notifications||[]).filter(function(x){return String(x.id)!==String(id);});save();renderNotificationsV35();}};});}
+  function replyNotificationV35(id){var S=st(),parent=(S.notifications||[]).filter(function(n){return String(n.id)===String(id);})[0];if(!parent)return;var text=prompt("متن پاسخ:");if(!text||!String(text).trim())return;var me=v20CurrentUser(),sender=(me&&me.fullName)||sessionStorage.getItem("crmUserName")||"کاربر",recipient=parent.sender===sender?parent.recipient:parent.sender,nt={id:"not-"+Date.now(),threadId:parent.threadId||parent.id,parentId:parent.id,date:new Date().toLocaleString("fa-IR"),title:/^پاسخ:/.test(parent.title||"")?parent.title:"پاسخ: "+(parent.title||"پیام"),message:String(text).trim(),sender:sender,recipient:recipient,isRead:false};S.notifications=S.notifications||[];S.notifications.unshift(nt);save();sendPushForNotification(nt);renderNotificationsV35();try{playNotificationBeep();}catch(e){}v20Toast("✅ پاسخ ارسال و در تاریخچه ثبت شد.");}
+  function showNotificationThreadV35(id){var S=st(),base=(S.notifications||[]).filter(function(n){return String(n.id)===String(id);})[0];if(!base)return;var thread=base.threadId||base.id,items=(S.notifications||[]).filter(function(n){return(n.threadId||n.id)===thread;}).slice().reverse(),old=$("v35ThreadModal");if(old)old.remove();var modal=document.createElement("div");modal.id="v35ThreadModal";modal.className="v20-modal";modal.innerHTML="<div class='v20-modal-card' style='width:min(720px,94vw);max-height:85vh;overflow:auto'><h3>تاریخچه پیام</h3>"+items.map(function(n){return"<div style='border:1px solid #cbd5e1;border-radius:9px;padding:10px;margin:7px 0'><b>"+esc(n.sender||"—")+" → "+esc(n.recipient||"—")+"</b><div>"+esc(n.message||"")+"</div><small>"+esc(n.date||"")+"</small></div>";}).join("")+"<button class='btn btn-outline v35-close'>بستن</button></div>";document.body.appendChild(modal);modal.querySelector(".v35-close").onclick=function(){modal.remove();};}
+  function syncNotificationRecipients(){var sel=$("msgRecipientSelect");if(!sel)return;var u=v20CurrentUser(),manager=v20IsManager(),perms=(u&&u.permissions)||{},users=(st().users||[]).filter(function(x){return x&&x.fullName&&(!u||String(x.id)!==String(u.id));});if(!manager){users=users.filter(function(x){var role=String(x.role||"");return /سرپرست|کارشناس فروش/.test(role)||(/^مدیر/.test(role)&&!/نماینده/.test(role));});}var cur=sel.value,opts=[["","انتخاب گیرنده..."]];if(manager||perms.notify_all_users===true)opts.push(["همه کاربران (اعلان عمومی)","همه کاربران (اعلان عمومی)"]);users.forEach(function(x){opts.push([x.fullName,x.fullName+" ("+(x.role||"کاربر")+")"]);});var actual=Array.prototype.map.call(sel.options,function(o){return[o.value,o.textContent];});if(JSON.stringify(actual)===JSON.stringify(opts))return;sel.innerHTML="";opts.forEach(function(x){var o=document.createElement("option");o.value=x[0];o.textContent=x[1];sel.appendChild(o);});if(opts.some(function(x){return x[0]===cur;}))sel.value=cur;}
+  function setupNotificationCenterV35(){var pane=$("tab-notifications"),form=$("formSendMessage");if(!pane||!form)return;syncNotificationRecipients();var header=pane.querySelector(".card-header");if(header&&!$("btnEnableDeviceNotifications")){var b=document.createElement("button");b.id="btnEnableDeviceNotifications";b.type="button";b.className="btn btn-primary btn-sm";b.textContent="🔔 فعال‌سازی اعلان صدادار دستگاه";b.onclick=enableDeviceNotifications;header.appendChild(b);}if(!form.dataset.v35bound){form.dataset.v35bound="1";form.addEventListener("submit",function(e){e.preventDefault();e.stopImmediatePropagation();var recipient=String(($("msgRecipientSelect")||{}).value||""),title=String(($("msgTitleInput")||{}).value||"").trim(),message=String(($("msgBodyInput")||{}).value||"").trim();if(!recipient||!title||!message)return alert("گیرنده، عنوان و متن پیام را کامل کنید.");var me=v20CurrentUser(),sender=(me&&me.fullName)||sessionStorage.getItem("crmUserName")||"کاربر",id="not-"+Date.now(),nt={id:id,threadId:id,date:new Date().toLocaleString("fa-IR"),title:title,message:message,sender:sender,recipient:recipient,isRead:false};st().notifications=st().notifications||[];st().notifications.unshift(nt);save();sendPushForNotification(nt);form.reset();syncNotificationRecipients();renderNotificationsV35();try{playNotificationBeep();}catch(x){}v20Toast("✅ پیام ارسال و تاریخچه آن ثبت شد.");},true);}window.renderNotificationsTable=renderNotificationsV35;renderNotificationsV35();if("Notification" in window&&Notification.permission==="granted")enableDeviceNotifications();}
+
+  /* ---------- ۳۷) حفاظت نهایی داده/انتخابگر/خانه/کشویی ---------- */
+  function enforceDeletedUserTombstonesV37(){var S=st();if(!S)return;S.settings=S.settings||{};S.settings.deletedUserTombstones=S.settings.deletedUserTombstones||[];if(!S.settings.v37LegacyRemovedUsersMigrated){[{id:"u-2",username:"Taheri",fullName:"جواد علمدار"},{id:"u-3",username:"nila",fullName:"خانم نیلا محرمی"}].forEach(function(legacy){var found=(S.users||[]).some(function(u){return String(u.id)===legacy.id&&u.username===legacy.username&&u.fullName===legacy.fullName;});if(found&&!S.settings.deletedUserTombstones.some(function(t){return String(t.id)===legacy.id;}))S.settings.deletedUserTombstones.push({id:legacy.id,username:legacy.username,fullName:legacy.fullName,deletedAt:Date.now(),reason:"legacy-sample-removed-by-manager"});});S.settings.v37LegacyRemovedUsersMigrated=true;}var tomb=S.settings.deletedUserTombstones||[];if(!tomb.length)return;var ids={},names={},users={};tomb.forEach(function(t){if(t.id)ids[String(t.id)]=1;if(t.fullName)names[norm(t.fullName)]=1;if(t.username)users[String(t.username)]=1;});var before=(S.users||[]).length;S.users=(S.users||[]).filter(function(u){return u&&!ids[String(u.id)]&&!names[norm(u.fullName)]&&!users[String(u.username)];});if(S.users.length!==before){syncUsersAuthV27();syncRepsFromUsers();try{saveState(false);}catch(e){}}}
+  function installPersianBuiltinLabelGuardV37(){var old=window.getUnifiedFieldList;if(typeof old!=="function"||old._v37fa)return;var w=function(tabId){var list=old.apply(this,arguments)||[];list.forEach(function(f){if(!f||!f.builtin||!/^[A-Za-z][A-Za-z0-9_-]*$/.test(String(f.label||"").trim()))return;var el=$(f.id),lab=el&&document.querySelector('label[for="'+f.id+'"]');if(!lab&&el){var g=el.closest(".form-group");lab=g&&g.querySelector(".form-label,label");}var text=lab&&String(lab.textContent||"").replace(/\s+/g," ").trim(),mapped=(window.FA_FIELD_LABELS||{})[f.id];f.label=(mapped||(!/^[A-Za-z][A-Za-z0-9_-]*$/.test(text||"")&&text)||"فیلد برنامه");});return list;};w._v37fa=true;window.getUnifiedFieldList=w;}
+  function pinRepresentativeRouteFieldsV37(){var card=$("representativeRoutesCard");if(!card||!v20IsManager())return;card.style.setProperty("display","block","important");["routeManagerRep","routeManagerProvince","routeManagerCity","routeManagerDistrict","btnSaveRepresentativeRoute"].forEach(function(id){var el=$(id),g=el&&el.closest(".form-group");if(g){g.classList.remove("col-hide-form");g.removeAttribute("data-col-hidden");g.style.setProperty("display","block","important");}if(el){el.hidden=false;el.style.removeProperty("visibility");}});}
+  function unwrapPlainSelectV37(sel){if(!sel)return;sel.dataset.nocombo="1";var wrap=sel.closest&&sel.closest(".crm-combo");if(wrap){wrap.parentNode.insertBefore(sel,wrap);wrap.remove();}sel.classList.remove("crm-combo-src");sel.removeAttribute("tabindex");["position","opacity","pointer-events","width","height"].forEach(function(p){sel.style.removeProperty(p);});}
+  function setupPlainRecipientV37(){var sel=$("msgRecipientSelect");if(!sel)return;unwrapPlainSelectV37(sel);sel.setAttribute("aria-label","گیرنده پیام");}
+  function bindComboCaretFixV37(){if(document.documentElement.dataset.v37caret)return;document.documentElement.dataset.v37caret="1";document.addEventListener("click",function(e){var caret=e.target&&e.target.closest&&e.target.closest(".crm-combo-caret");if(!caret)return;e.preventDefault();e.stopImmediatePropagation();var wrap=caret.closest(".crm-combo"),list=wrap&&wrap.querySelector(".crm-combo-list"),inp=wrap&&wrap.querySelector(".crm-combo-input");if(!list||!inp)return;if(!list.hidden){list.hidden=true;return;}inp.focus();if(list.hidden)inp.dispatchEvent(new Event("click",{bubbles:false}));},true);}
+  function selectOrderPharmacyCardV37(card){var S=st(),id=card&&card.getAttribute("data-pid"),rec=((S&&S.pharmacies)||[]).filter(function(p){return String(p.id)===String(id);})[0];if(!rec){try{v20Toast("⚠️ رکورد این داروخانه در سوابق پیدا نشد؛ نام را دستی تکمیل کنید.");}catch(e){}return false;}v20SetValue("orderPharmacyName",rec.name||"");v20SetValue("orderPharmacyMatchedId",rec.id||"");var inp=$("orderPharmacyName");if(inp)inp.dataset.v20PlacedName=rec.name||"";v20FillOrderPharmacy();hidePlacedOrderNotices();window.__v40LastPick=Date.now();try{v20Toast("✅ داروخانه «"+(rec.name||"")+"» جایگذاری شد.");}catch(e){}return true;}
+  function bindOrderPharmacyCardV37(){if(document.documentElement.dataset.v37phcards)return;document.documentElement.dataset.v37phcards="1";document.addEventListener("click",function(e){var card=e.target&&e.target.closest&&e.target.closest("#orderPharmacyPickBox .ph-pick-card");if(!card)return;e.preventDefault();e.stopImmediatePropagation();if(Date.now()-(window.__v40LastPick||0)>400)selectOrderPharmacyCardV37(card);},true);document.addEventListener("mousedown",function(e){var card=e.target&&e.target.closest&&e.target.closest("#orderPharmacyPickBox .ph-pick-card");if(!card)return;if(Date.now()-(window.__v40LastPick||0)>400)selectOrderPharmacyCardV37(card);},true);document.addEventListener("pointerdown",function(e){var card=e.target&&e.target.closest&&e.target.closest("#orderPharmacyPickBox .ph-pick-card");if(!card)return;if(Date.now()-(window.__v40LastPick||0)>400)selectOrderPharmacyCardV37(card);},true);}
+  function visibleRepHomesV37(){var S=st(),u=v20CurrentUser(),manager=v20IsManager(),activeNames={},activeIds={};((S&&S.users)||[]).forEach(function(x){if(x&&x.id)activeIds[String(x.id)]=1;if(x&&x.fullName)activeNames[norm(x.fullName)]=1;});var rows=((S&&S.repHomes)||[]).filter(function(h){var id=String(h&&h.repId||h&&h.userId||""),name=norm(h&&h.repName||"");return(id&&activeIds[id])||(!id&&activeNames[name]);});if(manager)return rows;return rows.filter(function(h){return u&&((h.repId&&String(h.repId)===String(u.id))||(h.userId&&String(h.userId)===String(u.id))||norm(h.repName||"")===norm(u.fullName||""));});}
+  function paintRepHomesMapV37(rows){var map=window._mapRepHomes;if(!map||typeof L==="undefined")return;try{map.eachLayer(function(layer){if(!(layer instanceof L.TileLayer))map.removeLayer(layer);});var pts=[];(rows||[]).forEach(function(h){if(!h.lat||!h.lng)return;var marker=typeof window.createCustomMarker==="function"?window.createCustomMarker(h.lat,h.lng,"rep","منزل "+(h.repName||"نماینده"),map):L.marker([h.lat,h.lng]).bindTooltip("منزل "+(h.repName||"نماینده")).addTo(map);pts.push([h.lat,h.lng]);});if(pts.length===1)map.setView(pts[0],16);else if(pts.length>1)map.fitBounds(pts,{padding:[40,40]});}catch(e){}}
+  function renderRepHomesV37(){var body=$("tableRepHomesBody");if(!body)return;var rows=visibleRepHomesV37(),manager=v20IsManager();body.innerHTML=rows.map(function(h){var ops="<button class='btn btn-outline btn-sm v37-home-show' data-id='"+esc(h.id)+"'>📍 نمایش</button> <button class='btn btn-outline btn-sm v37-home-edit' data-id='"+esc(h.id)+"'>✏️ ویرایش</button> <button class='btn btn-danger btn-sm v37-home-delete' data-id='"+esc(h.id)+"'>🗑️ حذف</button>";return"<tr><td><strong>"+esc(h.repName||"—")+"</strong></td><td>"+esc(h.address||"—")+"</td><td style='direction:ltr'>"+esc((h.lat||"—")+", "+(h.lng||"—"))+"</td><td>"+ops+"</td></tr>";}).join("")||"<tr><td colspan='4'>لوکیشن منزلی برای این حساب ثبت نشده است.</td></tr>";Array.prototype.forEach.call(body.querySelectorAll(".v37-home-show"),function(b){b.onclick=function(){var h=rows.filter(function(x){return String(x.id)===String(b.dataset.id);})[0];if(h&&window._mapRepHomes&&h.lat&&h.lng)window._mapRepHomes.setView([h.lat,h.lng],16);};});Array.prototype.forEach.call(body.querySelectorAll(".v37-home-edit"),function(b){b.onclick=function(){if(typeof window.editRepHome==="function")window.editRepHome(b.dataset.id);};});Array.prototype.forEach.call(body.querySelectorAll(".v37-home-delete"),function(b){b.onclick=function(){if(typeof window.deleteRepHome==="function")window.deleteRepHome(b.dataset.id);};});setTimeout(function(){paintRepHomesMapV37(rows);},50);}
+  
+  /* ---------- v11.41 / turn 73: تب «تغییرات در نسخه جدید» + گزارش اعمال‌نشده‌ها ---------- */
+  var V41_CHANGES=[
+    ["تب تغییرات در نسخه جدید (همین تب) با چک‌باکس اعمال‌نشده و ارسال گزارش","applied"],
+    ["لیبل فیلد «نماینده علمی» به «نماینده» در کل برنامه","applied"],
+    ["سرستون کامل «شماره همراه مسئول سفارش» در لیست داروخانه‌ها","applied"],
+    ["تب وضعیت فاکتور پخش‌ها برای کاربر بی‌مجوز کاملاً مخفی شود","applied"],
+    ["داروخانه: فیلدهای پلاک و طبقه زیر آدرس + نوع داروخانه (شبانه‌روزی/روزانه/بیمارستانی/نیمه‌وقت)","applied"],
+    ["داروخانه: تایید بله/خیر هنگام ذخیره + جلوگیری ثبت تکراری (استان/شهر/منطقه/مسئول/همراه/ثابت یکسان)","applied"],
+    ["داروخانه/پزشک: خالی‌شدن خودکار فرم هنگام خروج و بازگشت به تب + کلید پاک کردن در بالای صفحه","applied"],
+    ["ستون شماره همراه لیست داروخانه مقدار درست (همراه مسئول) نشان دهد","partial"],
+    ["پزشکان: عیناً همان اصلاحات تب داروخانه","pending"],
+    ["سفارشات: فیلد اولویت ارسال (عادی/فوری) + فعال‌بودن فقط تاریخ/داروخانه/اولویت و بقیه طوسی غیرفعال ساده","pending"],
+    ["سفارشات: کادر جستجوی داروخانه با کلید «انتخاب» برای هر نتیجه در بالای صفحه","pending"],
+    ["فعالیت لحظه‌ای: بروزرسانی خودکار + فیلتر نماینده/سال/ماه/از-تا تاریخ با چک‌باکس + نقشه کامل باز شود","pending"],
+    ["فعالیت/رصد/موقعیت زنده/اسنپ: فیلد کشویی نام نماینده — نماینده: ثابت؛ سرپرست/کارشناس: کشویی با «همه نمایندگان»","applied"],
+    ["نقشه جامع: حذف افزودن لحظه‌ای استان/شهر/منطقه + ۵ چک‌باکس (همه/داروخانه/پزشک/بیمارستان/درمانگاه) + ۵ کلید ورودی فایل","pending"],
+    ["اسنپ: رفع فلش سال و چک‌باکس‌های خراب","pending"],
+    ["شرکت‌ها: ماندن اطلاعات در فیلدها + قابل ویرایش + نمایش/پنهان رمزها در کل برنامه","pending"],
+    ["جستجوی اطلاعات: زیرمجموعه همه داروخانه/پزشک/بیمارستان + نمایش نقطه روی نقشه","pending"],
+    ["فروش پخش‌ها: فیلترها در یک سطر قفل‌شده","applied"],
+    ["رصد تردد: فیلتر سال/ماه/تاریخ + نشانگر سبز/قرمز ویزیت + مدت توقف‌ها + ثبت آفلاین و ارسال خودکار","pending"],
+    ["شروع/پایان ویزیت: ثبت اطلاعات + کادر ساعت پایان","pending"],
+    ["منزل نمایندگان: حذف افزودن لحظه‌ای + پلاک/طبقه در فرم و لیست","pending"],
+    ["مرخصی: لیبل فارسی leaveTypeSelect + از ساعت/تا ساعت فیلدهای ۵ و ۶ بدون ثانیه","partial"],
+    ["اعلان: ریسه فیلدها و پرش صفحه","applied"],
+    ["تارگت: مسیرهای ثبت‌شده جلو نام نماینده در کل سیستم + فیلتر استان بر اساس مسیر کاربر","pending"],
+    ["قانون حذف‌نشدن داده‌ها و بازنگشتن داده‌های حذف‌شده","applied"]
+  ];
+  function renderChangeLogV41(){var host=$("v41ChangeHost");if(!host)return;host.innerHTML=V41_CHANGES.map(function(c,i){var st=c[1]==="applied"?"<span style='color:#059669;font-weight:700'>✅ اعمال شد در 11.41.0</span>":(c[1]==="partial"?"<span style='color:#d97706;font-weight:700'>🟡 بخشی اعمال شد</span>":"<span style='color:#64748b'>⏳ در صف پیاده‌سازی (نسخه‌های بعدی)</span>");return "<div style='border:1px solid #cbd5e1;border-radius:8px;padding:8px;margin:6px 0;display:flex;justify-content:space-between;gap:10px;align-items:center'><div>"+(i+1)+". "+esc(c[0])+"</div><div style='display:flex;gap:10px;align-items:center;white-space:nowrap'>"+st+"<label style='font-size:12px'><input type='checkbox' class='v41-unapplied' data-i='"+i+"'> اعمال نشده</label></div></div>";}).join("");}
+  function collectUnappliedV41(){var v="11.42.0";try{var m=document.querySelector('script[src*="crm-features-v20.js?v="]');if(m&&m.src.split("?v=")[1])v=m.src.split("?v=")[1];}catch(e){}var out={version:v,at:new Date().toISOString(),unapplied:[]};document.querySelectorAll(".v41-unapilled, .v41-unapplied").forEach(function(cb){if(cb.checked)out.unapplied.push({index:Number(cb.dataset.i)+1,title:V41_CHANGES[Number(cb.dataset.i)][0]});});out.appliedCount=V41_CHANGES.filter(function(c){return c[1]==="applied";}).length;out.pendingCount=V41_CHANGES.filter(function(c){return c[1]==="pending";}).length;return out;}
+  function sendUnappliedReportV41(){var r=collectUnappliedV41();fetch("/api/feedback",{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1"},body:JSON.stringify(r)}).then(function(res){var box=$("v41ReportStatus");if(box)box.textContent=res.ok?("✅ گزارش ذخیره شد ("+r.unapplied.length+" بند اعمال‌نشده) — هوش مصنوعی جلسه بعد آن را می‌خواند."):"⚠️ خطا در ارسال";}).catch(function(){var box=$("v41ReportStatus");if(box)box.textContent="⚠️ ارسال نشد؛ فایل دانلودی را برای پشتیبانی بفرستید.";});}
+  /* v11.43 / turn 75: موتور تشخیص «چرا تغییرات اعمال نمی‌شود» */
+  function runApplyDiagnosisV43(){var host=$("v41DiagHost"),btnD=$("btnRunDiagnosis"),problems=[],acts=[],html="";if(btnD){btnD.disabled=true;btnD.style.opacity="0.5";btnD.textContent="⏳ موتور در حال بررسی…";}if(host)host.innerHTML="<div style='color:#0f766e;font-weight:700;padding:6px'>⏳ موتور تشخیص در حال اجراست…</div>";
+  function h(t,v,ok){return "<div class='v20-metric'>"+esc(t)+"<b style='color:"+(ok?"#059669":"#dc2626")+"'>"+esc(v)+"</b></div>";}
+  var buildLocal="نامشخص";try{var m=document.querySelector('script[src*="crm-features-v20.js?v="]');buildLocal=m?String(m.src.split("?v=")[1]):"?";}catch(e){}
+  var featOk=!!$("pharmacyType");
+  html+=h("نسخه اسکریپت لودشده",buildLocal,true);
+  html+=h("فیلد جدید «نوع داروخانه»",featOk?"موجود":"غایب!",featOk);
+  var errs=(window.__CRM_ERRS||[]).slice(0,8);
+  html+=h("خطاهای runtime این نشست",errs.length?errs.length+" مورد":"صفر",!errs.length);
+  fetch("/api/health?__diag="+Date.now(),{cache:"no-store"}).then(function(r){return r.json();}).then(function(j){
+  var srv=j.version||"?";html+=h("نسخه سرور",srv,true);
+  var stale=(buildLocal!==srv)||!featOk;
+  function report(){try{fetch("/api/feedback",{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1"},body:JSON.stringify({type:"apply-diagnosis",version:buildLocal,server:srv,featureMissing:!featOk,errors:errs,problems:problems,actions:acts,at:new Date().toISOString()})}).catch(function(){});}catch(e){}}
+  if(stale){problems.push("کد اجراشده در مرورگر با نسخه سرور هم‌خوان نیست — کش/SW قدیمی یا خطای بارگذاری.");acts.push("پاک‌سازی خودکار کش/SW و بارگذاری مجدد اجباری + ارسال علت برای هوش مصنوعی.");host.innerHTML=html+"<div style='margin-top:8px;color:#b91c1c;font-weight:700'>✅ موتور تمام شد — تشخیص: نسخه مرورگر قدیمی؛ الان خودکار اصلاح می‌شود…</div>";if(btnD){btnD.disabled=false;btnD.style.opacity="1";btnD.textContent="🩺 اجرای موتور تشخیص";}report();setTimeout(function(){location.replace("/cache-reset?to=/panel");},1200);return;}
+  if(errs.length){problems.push("خطای runtime — احتمالاً اسکریپتی نیمه‌کار مانده.");acts.push("خطاها برای هوش مصنوعی ارسال شد.");report();}
+  if(!problems.length){problems.push("ناسازگاری پیدا نشد — کد جدید سالم اجرا می‌شود.");acts.push("بندهای اعمال‌نشده را تیک بزنید و گزارش بفرستید.");}
+  if(btnD){btnD.disabled=false;btnD.style.opacity="1";btnD.textContent="🩺 اجرای موتور تشخیص";}var lis=problems.map(function(x){return "<li>"+esc(x)+"</li>";}).join("");var ais=acts.map(function(x){return "<li>"+esc(x)+"</li>";}).join("");host.innerHTML=html+"<div style='margin-top:10px;text-align:right;border-top:1px solid #cbd5e1;padding-top:8px'><b style='color:#0f766e'>✅ موتور تشخیص تمام شد</b><br><b>مشکل‌ها:</b><ul style='margin:4px 0'>"+lis+"</ul><b>اقدام انجام‌شده:</b><ul style='margin:4px 0'>"+ais+"</ul></div>";
+  }).catch(function(){if(btnD){btnD.disabled=false;btnD.style.opacity="1";btnD.textContent="🩺 اجرای موتور تشخیص";}host.innerHTML=html+"<div style='color:#b91c1c;font-weight:700'>✅ موتور تمام شد — سرور پاسخ نداد؛ اینترنت را بررسی کنید.</div>";});}
+  function setupChangeLogTabV41(){renderChangeLogV41();var sb=$("btnSendUnappliedReport"),dl=$("btnDownloadUnappliedReport"),db=$("btnRunDiagnosis");
+  if(sb&&!sb.dataset.b){sb.dataset.b="1";sb.onclick=sendUnappliedReportV41;}
+  if(dl&&!dl.dataset.b){dl.dataset.b="1";dl.onclick=function(){var r=collectUnappliedV41();var b=new Blob([JSON.stringify(r,null,2)],{type:"application/json"});var u=URL.createObjectURL(b),a2=document.createElement("a");a2.href=u;a2.download="unapplied-report.json";a2.click();URL.revokeObjectURL(u);};}
+  if(db&&!db.dataset.b){db.dataset.b="1";db.onclick=runApplyDiagnosisV43;}
+  try{runApplyDiagnosisV43();}catch(e){}}
+  function v42ConfirmDupGuard(){if(window.__V42CD)return;window.__V42CD=1;
+  document.addEventListener("click",function(e){var b=e.target&&e.target.closest&&e.target.closest("#btnSavePharmacy");if(!b)return;
+  var editId=($("pharmacyEditId")||{}).value;var name=(($("pharmacyName")||{}).value||"").trim();if(!name)return;
+  if(!confirm("آیا از "+(editId?"ویرایش":"ثبت")+" داروخانه «"+name+"» مطمئن هستید؟")){e.preventDefault();e.stopImmediatePropagation();return;}
+  if(editId)return;var S=st(),prov=($("pharmacyProvince")||{}).value||"",city=($("pharmacyCity")||{}).value||"",dis=($("pharmacyDistrict")||{}).value||"",mgr=(($("pharmacyManager")||{}).value||"").trim(),mp=(($("pharmacyManagerPhone")||{}).value||"").trim(),ph=($("pharmacyPhone")||{}).value||"";
+  var dup=(S.pharmacies||[]).filter(function(x){return String(x.province)===String(prov)&&String(x.city)===String(city)&&String(x.district)===String(dis)&&String(x.manager||"").trim()===mgr&&String(x.managerPhone||"").trim()===mp&&String(x.phone||"")===ph;})[0];
+  if(dup){e.preventDefault();e.stopImmediatePropagation();alert("⚠️ این داروخانه قبلاً ثبت شده است:\n«"+dup.name+"» — "+[dup.province,dup.city,dup.district].join(" / ")+"\nمسئول: "+(dup.manager||"—")+"\nثبت تکراری مجاز نیست؛ از لیست ویرایش کنید.");}},true);}
+  function v42ClearOnLeave(){var last=v20LastTab;document.addEventListener("click",function(e){var t=e.target&&e.target.closest&&e.target.closest("[data-target]");if(!t)return;var to=t.getAttribute("data-target");if(last==="tab-pharmacies"&&to!=="tab-pharmacies"&&typeof resetPharmacyForm==="function"){try{resetPharmacyForm();}catch(x){}}if(last==="tab-doctors"&&to!=="tab-doctors"&&typeof resetDoctorForm==="function"){try{resetDoctorForm();}catch(x){}}},true);}
+  function v42ClearButtons(){[["tab-pharmacies",typeof resetPharmacyForm!=="undefined"?"resetPharmacyForm":""],["tab-doctors",typeof resetDoctorForm!=="undefined"?"resetDoctorForm":""]].forEach(function(cfg){if(!cfg[1])return;var pane=$(cfg[0]);if(!pane||$("v42clear-"+cfg[0]))return;var card=pane.querySelector(".card-header");if(!card)return;var b=document.createElement("button");b.type="button";b.id="v42clear-"+cfg[0];b.className="btn btn-outline btn-sm";b.textContent="🧹 پاک کردن";b.style.background="#e2e8f0";b.onclick=function(){try{window[cfg[1]]();}catch(x){}};card.appendChild(b);});}
+  function v42Styles(){if(window.__V42CSS)return;window.__V42CSS=1;var st=document.createElement("style");st.textContent="#distributorFilterGrid{display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;gap:8px!important}#distributorFilterGrid>*{min-width:150px}";document.head.appendChild(st);}
+  function setupV42Guards(){v42ConfirmDupGuard();v42ClearOnLeave();v42Styles();setTimeout(v42ClearButtons,900);}
+
+  /* v11.43.1 / turn 76: نگهبان نسخه — کش قدیمی هرگز دیگر جلوی تغییرات را نمی‌گیرد */
+  function loadedBuildVersion(){try{var m=document.querySelector('script[src*="crm-features-v20.js?v="]');return m?String(m.src.split("?v=")[1]):"";}catch(e){return "";}}
+  function versionWatchdogTick(){if(window.__CRM_RESCUING)return;fetch("/api/health?__wd="+Date.now(),{cache:"no-store"}).then(function(r){return r.json();}).then(function(j){var srv=String(j.version||""),loc=loadedBuildVersion();if(srv&&loc&&srv!==loc){window.__CRM_RESCUING=true;try{navigator.serviceWorker&&navigator.serviceWorker.controller&&navigator.serviceWorker.controller.postMessage("CRM_FORCE_REFRESH");}catch(e){}location.replace("/cache-reset?to="+(location.pathname==="/login"||location.pathname==="/login.html"?"/login":"/panel"));}}).catch(function(){});}
+  function installVersionWatchdog(){if(window.__CRM_WD)return;window.__CRM_WD=1;setInterval(versionWatchdogTick,180000);document.addEventListener("visibilitychange",function(){if(!document.hidden)setTimeout(versionWatchdogTick,800);});}
+  /* v11.40 / turn 67 - reference fields: no instant-add for non-managers */
+  function installReferenceInstantAddGuardV40(){if(window.__V40_REFADD)return;window.__V40_REFADD=1;var REF=/نماینده|سال|ماه|استان|شهر|منطقه|داروخانه/;function refInput(inp){if(!inp)return false;var id=String(inp.id||"");if(/(Rep(Select|Name|Filter)?|Year|Month|Province|City|District|PharmacyName)$/i.test(id))return true;var g=inp.closest&&inp.closest(".form-group");var lab=g&&g.querySelector(".form-label");return !!(lab&&REF.test(String(lab.textContent||"")));}document.addEventListener("click",function(e){var b=e.target&&e.target.closest&&e.target.closest(".btn-instant-add,.v20-addopt");if(!b)return;var wrap=b.closest(".instant-add-add-row,.instant-add-row")||b.closest(".crm-combo")||b.closest(".form-group")||b.parentNode;var inp=wrap&&wrap.querySelector("input,select");if(!inp)return;if(refInput(inp)&&!v20IsManager()){e.preventDefault();e.stopImmediatePropagation();try{v20Toast("افزودن گزینه برای فیلدهای مرجع فقط توسط مدیر ممکن است.");}catch(x){}}},true);document.addEventListener("input",function(e){var inp=e.target;if(!inp||!inp.matches||!inp.matches("input"))return;if(refInput(inp)&&!v20IsManager()){var row=inp.closest(".instant-add-row");var b=row&&row.querySelector(".btn-instant-add");if(b)b.hidden=true;}},true);}
+  function setupV37FinalGuards(){installVersionWatchdog();setupV42Guards();setupChangeLogTabV41();enforceDeletedUserTombstonesV37();enforceRemovedIdentitiesV40();installReferenceInstantAddGuardV40();installPersianBuiltinLabelGuardV37();setupPlainRecipientV37();bindComboCaretFixV37();bindOrderPharmacyCardV37();pinRepresentativeRouteFieldsV37();window.renderRepHomesTable=renderRepHomesV37;renderRepHomesV37();}
+
+  function privacyList(list,permissionKey){var S=st(),u=v20CurrentUser(),manager=v20IsManager(),perms=(u&&u.permissions)||{},activeNames={},activeIds={};((S&&S.users)||[]).forEach(function(x){if(x&&x.fullName)activeNames[norm(x.fullName)]=1;if(x&&x.id)activeIds[String(x.id)]=1;});var clean=(list||[]).filter(function(r){var n=String(r&&r.repName||r&&r.name||""),id=String(r&&r.repId||r&&r.userId||"");return(!n&&!id)||/مدیر سیستم/.test(n)||(id&&activeIds[id])||activeNames[norm(n)];});if(manager||perms[permissionKey]===true)return clean.slice();return clean.filter(function(r){return u&&((r.repId&&String(r.repId)===String(u.id))||(r.userId&&String(r.userId)===String(u.id))||norm(r.repName||r.name||"")===norm(u.fullName||""));});}
+  function visibleActivityRowsV36(){var S=st(),u=v20CurrentUser(),manager=v20IsManager(),activeNames={},activeIds={};((S&&S.users)||[]).forEach(function(x){if(!x)return;if(x.id)activeIds[String(x.id)]=1;if(x.fullName)activeNames[norm(x.fullName)]=1;});var rows=((S&&S.activityLog)||[]).filter(function(r){var id=String(r&&r.repId||r&&r.userId||""),name=norm(r&&r.repName||r&&r.name||"");return(id&&activeIds[id])||(!id&&name&&activeNames[name]);});if(manager)return rows.slice();return rows.filter(function(r){return u&&((r.repId&&String(r.repId)===String(u.id))||(r.userId&&String(r.userId)===String(u.id))||norm(r.repName||r.name||"")===norm(u.fullName||""));});}
+  function renderActivityLogV36(){var body=$("tableActivityLogBody");if(!body)return;var rows=visibleActivityRowsV36();body.innerHTML=rows.map(function(act){return"<tr><td>"+esc(act.time||"—")+"</td><td><strong style='color:#0f172a'>"+esc(act.repName||act.name||"—")+"</strong></td><td>"+esc(act.action||"—")+"</td><td><span class='badge-status-online'>ثبت شد</span></td></tr>";}).join("")||"<tr><td colspan='4'>فعالیتی برای نمایندگان فعال وجود ندارد.</td></tr>";}
+  /* v11.40 / turn 67 - permanently removed identities (manager-mandated) + record projection */
+  function permanentlyRemovedNamesV40(){/* v11.40.1: فقط تطابق دقیق id+username نمونه قدیمی؛ نام واقعی افراد هرگز حذف نمی‌شود */var ids={"u-2":1,"u-3":1},usern={"taheri":1,"nila":1};((st()&&st().settings&&st().settings.deletedUserTombstones)||[]).forEach(function(x){if(x&&x.id&&(x.id==="u-2"||x.id==="u-3"))ids[x.id]=1;if(x&&x.username){var u=String(x.username).toLowerCase();if(u==="taheri"||u==="nila")usern[u]=1;}});return{ids:ids,usern:usern,names:{}};}
+  function enforceRemovedIdentitiesV40(){var S=st();if(!S)return;var m=permanentlyRemovedNamesV40(),before=(S.users||[]).length;S.users=(S.users||[]).filter(function(u){var id=String(u&&u.id||""),un=String(u&&u.username||"").toLowerCase();return !(m.ids[id]&&m.usern[un]);});if(S.users.length!==before){try{syncUsersAuthV27();syncRepsFromUsers();saveState(false);}catch(e){}}}
+  function dropRemovedUserRowsV40(rows){var m=permanentlyRemovedNamesV40();/* m.names همیشه خالی است — ردیف‌های اشخاص واقعی هرگز پنهان نمی‌شوند */return (rows||[]).filter(function(r){var n=norm(r&&(r.repName||r.name||r.rep||""));return !n||!m.names[n];});}
+  function bindPrivacyRenderers(){if(document.body.dataset.privacyRenderers)return;document.body.dataset.privacyRenderers="1";[["renderLeavesTable","leaves","hr_all_leaves"],["renderRepRoutesTable","repRoutes","fld_all_routes"],["renderRepHomesTable","repHomes","fld_all_homes"],["renderSalesTargetsTable","salesTargets","target_all_reps"]].forEach(function(cfg){var old=window[cfg[0]];if(typeof old!=="function")return;window[cfg[0]]=function(){var S=st(),all=S[cfg[1]],filtered=dropRemovedUserRowsV40(privacyList(all,cfg[2]));S[cfg[1]]=filtered;try{return old.apply(this,arguments);}finally{S[cfg[1]]=all;}};});window.renderActivityLogTable=renderActivityLogV36;var activityMap=window.renderActivityMapAndChart;if(typeof activityMap==="function")window.renderActivityMapAndChart=function(){var S=st(),all=S.activityLog;S.activityLog=visibleActivityRowsV36();try{return activityMap.apply(this,arguments);}finally{S.activityLog=all;}};var monthly=window.renderMonthlyReportsTable;if(typeof monthly==="function")window.renderMonthlyReportsTable=function(){var S=st(),reps=S.reps,visits=S.visits,orders=S.orders;S.reps=dropRemovedUserRowsV40(privacyList(reps,"rep_all_reports"));S.visits=dropRemovedUserRowsV40(privacyList(visits,"rep_all_reports"));S.orders=dropRemovedUserRowsV40(privacyList(orders,"rep_all_reports"));try{return monthly.apply(this,arguments);}finally{S.reps=reps;S.visits=visits;S.orders=orders;}};renderActivityLogV36();}
+  function renderSecurityStatus(){var pane=$("tab-troubleshooting");if(!pane)return;var box=$("v32SecurityStatus");if(!box){box=document.createElement("div");box.id="v32SecurityStatus";box.className="card";pane.insertBefore(box,pane.firstChild);}var https=location.protocol==="https:"||/^(localhost|127\.0\.0\.1)$/.test(location.hostname);box.innerHTML="<div class='card-header'><div class='card-title'>🛡️ وضعیت حفاظت دستگاه و داده</div></div><div class='v20-visit-metrics'><div class='v20-metric'>ارتباط امن HTTPS<b>"+(https?"فعال":"فقط محیط محلی")+"</b></div><div class='v20-metric'>دسترسی دوربین و میکروفون<b>مسدود</b></div><div class='v20-metric'>فایل اجرایی و بیش از 32MB<b>مسدود</b></div><div class='v20-metric'>لینک خطرناک و پنجره بدون حفاظت<b>مسدود</b></div></div><p class='col-help'>این وب‌اپ داخل محیط ایزوله مرورگر اجرا می‌شود، فرمان سیستم‌عامل اجرا نمی‌کند و فقط موقعیت مکانی را پس از اجازه مستقیم شما می‌خواند.</p>";}
+
+  /* ---------- ۲۲) تارگت کامل: تعداد، ریال پخش/داروخانه و جمع نمایندگان ---------- */
+  function targetMoney(t){var p=((st().products||[]).filter(function(x){return x.name===t.productName||x.id===t.productId;})[0])||{},n=Number(t.targetCount||0),dp=Number(p.distributorPrice||p.distPrice||p.price||0),hp=Number(p.pharmacyPrice||p.price||0);return{count:n,distPrice:dp,phPrice:hp,distTotal:n*dp,phTotal:n*hp};}
+  function renderTargetsV20(){var S=st(),body=$("tableSalesTargetsBody");if(!S||!body)return;var table=body.closest("table"),head=table&&table.querySelector("thead tr"),list=privacyList((S.salesTargets||[]),"target_all_reps").reverse(),by={},grand={count:0,dist:0,ph:0};if(head)head.innerHTML="<th>ردیف</th><th>نام نماینده</th><th>کالا</th><th>تعداد کالا</th><th>ریال واحد پخش</th><th>ریال واحد داروخانه</th><th>جمع ریال پخش</th><th>جمع ریال داروخانه</th><th>ماه/سال</th><th>عملیات</th>";body.innerHTML=list.map(function(t,i){var m=targetMoney(t),n=t.repName||"نامشخص";by[n]=by[n]||{count:0,dist:0,ph:0};by[n].count+=m.count;by[n].dist+=m.distTotal;by[n].ph+=m.phTotal;grand.count+=m.count;grand.dist+=m.distTotal;grand.ph+=m.phTotal;return"<tr><td>"+(i+1)+"</td><td><strong>"+esc(n)+"</strong></td><td>"+esc(t.productName||"—")+"</td><td>"+m.count.toLocaleString("fa-IR")+"</td><td>"+m.distPrice.toLocaleString("fa-IR")+"</td><td>"+m.phPrice.toLocaleString("fa-IR")+"</td><td><strong>"+m.distTotal.toLocaleString("fa-IR")+"</strong></td><td><strong>"+m.phTotal.toLocaleString("fa-IR")+"</strong></td><td>"+esc(t.month||"—")+"</td><td><button type='button' class='btn btn-danger btn-sm v20-target-del' data-id='"+esc(t.id)+"'>🗑️ حذف</button></td></tr>";}).join("")||"<tr><td colspan='10'>تارگتی ثبت نشده است.</td></tr>";var box=$("tgtSummaryBox");if(box)box.innerHTML="<div class='v20-visit-metrics'><div class='v20-metric'>جمع تعداد همه نمایندگان<b>"+grand.count.toLocaleString("fa-IR")+"</b></div><div class='v20-metric'>جمع کل ریال پخش<b>"+grand.dist.toLocaleString("fa-IR")+"</b></div><div class='v20-metric'>جمع کل ریال داروخانه<b>"+grand.ph.toLocaleString("fa-IR")+"</b></div><div class='v20-metric'>تعداد نمایندگان<b>"+Object.keys(by).length.toLocaleString("fa-IR")+"</b></div></div><div class='table-responsive'><table class='data-table'><thead><tr><th>ردیف</th><th>نماینده</th><th>جمع تعداد</th><th>جمع ریال پخش</th><th>جمع ریال داروخانه</th></tr></thead><tbody>"+Object.keys(by).sort().map(function(n,i){return"<tr><td>"+(i+1)+"</td><td><strong>"+esc(n)+"</strong></td><td>"+by[n].count.toLocaleString("fa-IR")+"</td><td>"+by[n].dist.toLocaleString("fa-IR")+"</td><td>"+by[n].ph.toLocaleString("fa-IR")+"</td></tr>";}).join("")+"</tbody></table></div>";Array.prototype.forEach.call(body.querySelectorAll(".v20-target-del"),function(b){b.addEventListener("click",function(){if(!confirm("این تارگت حذف شود؟"))return;S.salesTargets=(S.salesTargets||[]).filter(function(t){return String(t.id)!==String(b.getAttribute("data-id"));});save();renderTargetsV20();});});}
+  function bindTargetsV20(){var f=$("formSalesTarget");if(f&&!f.dataset.v20target){f.dataset.v20target="1";f.addEventListener("submit",function(){setTimeout(renderTargetsV20,180);});}renderTargetsV20();}
+
+  /* ---------- ۲۲-ب) تعریف چندمسیره نمایندگان در بالای تارگت ---------- */
+  function routeSelected(sel){return sel?Array.prototype.filter.call(sel.options,function(o){return o.selected;}).map(function(o){return o.value;}):[];}
+  function routeFill(sel,values,selected){if(!sel)return;var set={};(selected||[]).forEach(function(x){set[norm(x)]=1;});sel.innerHTML="";(values||[]).forEach(function(v){var o=document.createElement("option");o.value=v;o.textContent=v;o.selected=!!set[norm(v)];sel.appendChild(o);});}
+  function routeGeoValues(kind,parents,cities){var out=[],geo=typeof IRAN_GEO_DATA!=="undefined"?IRAN_GEO_DATA:{},extra=(st()&&st().geoExtras)||{};function add(v){if(v&&out.indexOf(v)<0)out.push(v);}if(kind==="province"){Object.keys(geo).forEach(add);Object.keys(extra).forEach(add);}else if(kind==="city"){(parents||[]).forEach(function(p){Object.keys(geo[p]||{}).forEach(add);Object.keys(extra[p]||{}).forEach(add);});}else{(parents||[]).forEach(function(p){(cities||[]).forEach(function(c){((geo[p]||{})[c]||[]).forEach(add);((extra[p]||{})[c]||[]).forEach(add);});});}var key=kind==="province"?"استان":kind==="city"?"شهر":"منطقه",rec=seedGlobalOptions(key);(rec.values||[]).forEach(function(x){add(x.value);});return out.sort(function(a,b){return String(a).localeCompare(String(b),"fa");});}
+  function routeLabelFromUser(u){var base=(u.activityCities||[]).length?u.activityCities:(u.activityProvinces||[]),districts=u.activityDistrictList||[];return base.join("، ")+(districts.length?(" ("+districts.join("، ")+")"):"");}
+  function setupRepresentativeRoutes(){var card=$("representativeRoutesCard");if(!card)return;card.style.display=v20IsManager()?"":"none";if(!v20IsManager())return;var rep=$("routeManagerRep"),ps=$("routeManagerProvince"),cs=$("routeManagerCity"),ds=$("routeManagerDistrict"),btn=$("btnSaveRepresentativeRoute"),S=st(),users=(S.users||[]).filter(function(u){return u.username!=="admin"&&!/مدیر/.test(String(u.role||""));}),cur=rep&&rep.value;routeFill(rep,users.map(function(u){return u.id;}),[cur]);Array.prototype.forEach.call(rep.options,function(o){var u=users.filter(function(x){return String(x.id)===String(o.value);})[0];if(u)o.textContent=u.fullName+(u.activityRouteLabel?(" ("+u.activityRouteLabel+")"):"");});if(cur&&users.some(function(u){return String(u.id)===String(cur);}))rep.value=cur;else if(rep.options.length)rep.selectedIndex=0;function load(){var u=users.filter(function(x){return String(x.id)===String(rep.value);})[0];if(!u)return;var prov=(u.activityProvinces||[]).concat(u.activityProvince||[]).filter(Boolean),cities=(u.activityCities||[]).concat(u.activityCity||[]).filter(Boolean),districts=(u.activityDistrictList||[]).concat(u.activityDistricts?String(u.activityDistricts).split(/[,،]/):[]).map(function(x){return String(x).trim();}).filter(Boolean);routeFill(ps,routeGeoValues("province"),prov);routeFill(cs,routeGeoValues("city",prov),cities);routeFill(ds,routeGeoValues("district",prov,cities),districts);}if(!card.dataset.bound){card.dataset.bound="1";rep.onchange=load;ps.onchange=function(){var prov=routeSelected(ps);routeFill(cs,routeGeoValues("city",prov),routeSelected(cs));routeFill(ds,routeGeoValues("district",prov,routeSelected(cs)),routeSelected(ds));};cs.onchange=function(){routeFill(ds,routeGeoValues("district",routeSelected(ps),routeSelected(cs)),routeSelected(ds));};btn.onclick=function(){var u=(st().users||[]).filter(function(x){return String(x.id)===String(rep.value);})[0];if(!u)return alert("نماینده را انتخاب کنید.");u.activityProvinces=routeSelected(ps);u.activityCities=routeSelected(cs);u.activityDistrictList=routeSelected(ds);u.activityProvince=u.activityProvinces[0]||"";u.activityCity=u.activityCities[0]||"";u.activityDistricts=u.activityDistrictList.join("، ");u.activityRouteLabel=routeLabelFromUser(u);save();syncRepsFromUsers();syncRepresentativeSelectors();try{window.renderUserCardsList();}catch(e){}setupRepresentativeRoutes();v20Toast("✅ مسیرهای نماینده ذخیره شد.");};}load();}
+
+  /* ---------- ۲۲-ج) برنامه‌ریز جدولی تارگت بر پایه کالاهای ثابت ---------- */
+  function targetPeriodMatch(t,rep,year,month){var ty=String(t.year||String(t.month||"").split("/")[1]||""),tm=String(t.monthName||String(t.month||"").split("/")[0]||t.month||"");return(!rep||t.repName===rep)&&(!year||!ty||ty===String(year))&&(!month||!tm||tm===String(month));}
+  function targetPlanRows(){var rep=String(($("v34TargetRep")||{}).value||""),year=String(($("v34TargetYear")||{}).value||""),month=String(($("v34TargetMonth")||{}).value||""),S=st();return(S.products||[]).map(function(p){var t=(S.salesTargets||[]).filter(function(x){return targetPeriodMatch(x,rep,year,month)&&norm(x.productName)===norm(p.name);})[0];return{product:p,target:t,count:Number(t&&t.targetCount||0)};});}
+  function paintTargetPlanRows(){var host=$("v34TargetProductRows");if(!host)return;host.innerHTML=targetPlanRows().map(function(x){var p=x.product,dp=Number(p.distributorPrice||p.distPrice||p.price||0),hp=Number(p.pharmacyPrice||p.price||0),n=x.count;return"<div class='v34-target-row' data-product='"+esc(p.id||p.name)+"'><div class='v34-prod-name'>"+esc(p.name)+"</div><input class='form-input v34-target-count' type='number' min='0' value='"+(n||"")+"' placeholder='تعداد تارگت'><div><small>قیمت پخش</small><br>"+dp.toLocaleString("en-US")+"</div><div><small>قیمت داروخانه</small><br>"+hp.toLocaleString("en-US")+"</div><div class='v34-dist-total' data-label='جمع پخش'>"+(n*dp).toLocaleString("en-US")+"</div><div class='v34-ph-total' data-label='جمع داروخانه'>"+(n*hp).toLocaleString("en-US")+"</div></div>";}).join("")||"<p>ابتدا کالاها را در تب ستون‌ها و کالاها ثبت کنید.</p>";host.querySelectorAll(".v34-target-count").forEach(function(inp){inp.oninput=function(){var row=inp.closest(".v34-target-row"),x=targetPlanRows().filter(function(a){return String(a.product.id||a.product.name)===String(row.dataset.product);})[0],n=Number(inp.value)||0,dp=Number(x.product.distributorPrice||x.product.price||0),hp=Number(x.product.pharmacyPrice||x.product.price||0);row.querySelector(".v34-dist-total").textContent=(n*dp).toLocaleString("en-US");row.querySelector(".v34-ph-total").textContent=(n*hp).toLocaleString("en-US");updateTargetPlanGrand();};});updateTargetPlanGrand();}
+  function updateTargetPlanGrand(){var dist=0,ph=0;document.querySelectorAll("#v34TargetProductRows .v34-target-row").forEach(function(r){var vals=r.querySelectorAll("div"),d=Number(String(r.querySelector(".v34-dist-total").textContent).replace(/,/g,""))||0,h=Number(String(r.querySelector(".v34-ph-total").textContent).replace(/,/g,""))||0;dist+=d;ph+=h;});if($("v34TargetGrandDist"))$("v34TargetGrandDist").textContent=dist.toLocaleString("en-US");if($("v34TargetGrandPh"))$("v34TargetGrandPh").textContent=ph.toLocaleString("en-US");}
+  function targetReportTable(title,records){var products={},S=st();records.forEach(function(t){var k=norm(t.productName),p=(S.products||[]).filter(function(x){return norm(x.name)===k;})[0]||{},m=products[k]||(products[k]={name:t.productName,target:0,achieved:0,dp:Number(p.distributorPrice||p.price||0),hp:Number(p.pharmacyPrice||p.price||0)});m.target+=Number(t.targetCount||0);m.achieved+=Number(t.achievedCount||0);});var rows=Object.keys(products).map(function(k){var m=products[k],remain=Math.max(0,m.target-m.achieved);return[m.name,m.target,m.achieved,remain,m.dp,m.hp,m.target*m.dp,m.target*m.hp];}),td=rows.reduce(function(a,r){a[0]+=r[1];a[1]+=r[2];a[2]+=r[3];a[3]+=r[6];a[4]+=r[7];return a;},[0,0,0,0,0]);return"<div class='card'><div class='card-title'>"+esc(title)+"</div><div class='table-responsive'><table class='data-table'><thead><tr><th>نام کالا</th><th>تعداد تارگت</th><th>محقق‌شده</th><th>مانده تارگت</th><th>قیمت پخش</th><th>قیمت داروخانه</th><th>جمع مبلغ پخش</th><th>جمع مبلغ داروخانه</th></tr></thead><tbody>"+rows.map(function(r){return"<tr>"+r.map(function(v,i){return"<td>"+(i?Number(v).toLocaleString("en-US"):esc(v))+"</td>";}).join("")+"</tr>";}).join("")+"<tr class='v34-total'><td>جمع کل</td><td>"+td[0].toLocaleString("en-US")+"</td><td>"+td[1].toLocaleString("en-US")+"</td><td>"+td[2].toLocaleString("en-US")+"</td><td>—</td><td>—</td><td>"+td[3].toLocaleString("en-US")+"</td><td>"+td[4].toLocaleString("en-US")+"</td></tr></tbody></table></div></div>";}
+  function renderTargetReportsV34(){var host=$("v34TargetReports");if(!host)return;var S=st(),year=String(($("v34TargetYear")||{}).value||""),month=String(($("v34TargetMonth")||{}).value||""),records=privacyList((S.salesTargets||[]),"target_all_reps").filter(function(t){return targetPeriodMatch(t,"",year,month);}),by={};records.forEach(function(t){(by[t.repName]||(by[t.repName]=[])).push(t);});host.innerHTML=targetReportTable("جمع همه تارگت نمایندگان به تفکیک کالا",records)+Object.keys(by).sort().map(function(n){return targetReportTable("تارگت‌های "+n,by[n]);}).join("");}
+  function setupTargetPlannerV34(){var pane=$("tab-sales-targets");if(!pane)return;setupRepresentativeRoutes();var old=$("formSalesTarget");if(old)old.style.display="none";var oldTable=$("tableSalesTargetsBody");if(oldTable&&oldTable.closest(".table-responsive"))oldTable.closest(".table-responsive").style.display="none";if($("tgtSummaryBox"))$("tgtSummaryBox").style.display="none";var host=$("v34TargetPlanner");if(!host){host=document.createElement("div");host.id="v34TargetPlanner";host.className="card";host.innerHTML="<div class='card-title'>🎯 تعریف تارگت کالاها</div><div class='v34-target-head'><label>نماینده علمی<select id='v34TargetRep' class='form-select'></select></label><label>سال<input id='v34TargetYear' class='form-input' value='1405'></label><label>ماه<select id='v34TargetMonth' class='form-select'>"+["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند"].map(function(m){return"<option>"+m+"</option>";}).join("")+"</select></label></div><div class='v34-target-row v34-head'><div>نام کالا</div><div>تعداد تارگت</div><div>قیمت پخش</div><div>قیمت داروخانه</div><div>جمع مبلغ پخش</div><div>جمع مبلغ داروخانه</div></div><div id='v34TargetProductRows'></div><div class='v34-target-grand'><b>جمع کل مبلغ پخش: <span id='v34TargetGrandDist'>0</span></b><b>جمع کل مبلغ داروخانه: <span id='v34TargetGrandPh'>0</span></b></div><button type='button' id='v34SaveTargets' class='btn btn-primary'>💾 ذخیره تارگت‌ها</button><div id='v34TargetReports'></div>";pane.appendChild(host);}syncRepresentativeSelectors();var rep=$("v34TargetRep"),users=(st().reps||[]),current=rep.value;routeFill(rep,users.map(function(r){return r.name;}),[current]);Array.prototype.forEach.call(rep.options,function(o){var r=users.filter(function(x){return x.name===o.value;})[0];if(r)o.textContent=r.name+(r.region?(" ("+r.region+")"):"");});if(!v20IsManager()){var u=v20CurrentUser();routeFill(rep,u?[u.fullName]:[],u?[u.fullName]:[]);rep.disabled=true;}if(!host.dataset.bound){host.dataset.bound="1";[rep,$("v34TargetYear"),$("v34TargetMonth")].forEach(function(e){if(e)e.onchange=function(){paintTargetPlanRows();renderTargetReportsV34();};});$("v34SaveTargets").onclick=function(){var S=st(),rname=rep.value,year=$("v34TargetYear").value,month=$("v34TargetMonth").value;if(!rname)return alert("نماینده را انتخاب کنید.");var keep=[];(S.salesTargets||[]).forEach(function(t){if(!targetPeriodMatch(t,rname,year,month))keep.push(t);});document.querySelectorAll("#v34TargetProductRows .v34-target-row").forEach(function(row){var n=Number(row.querySelector(".v34-target-count").value)||0;if(!n)return;var p=(S.products||[]).filter(function(x){return String(x.id||x.name)===String(row.dataset.product);})[0];if(!p)return;var previous=(S.salesTargets||[]).filter(function(t){return targetPeriodMatch(t,rname,year,month)&&norm(t.productName)===norm(p.name);})[0]||{};keep.push(Object.assign({},previous,{id:previous.id||("tgt-"+Date.now()+"-"+Math.random()),repName:rname,productName:p.name,productId:p.id,targetCount:n,year:year,monthName:month,month:month+"/"+year,targetAmount:n*Number(p.pharmacyPrice||p.price||0)}));});S.salesTargets=keep;save();paintTargetPlanRows();renderTargetReportsV34();v20Toast("✅ تارگت‌های نماینده ذخیره شد.");};}paintTargetPlanRows();renderTargetReportsV34();}
+
+  /* ---------- ۲۳) ارسال واقعی پشتیبان به ایمیل از مسیر امن سرور ---------- */
+  function bindEmailBackup(){var old=window.performAutoBackup;if(typeof old!=="function"||old._v20email)return;var w=function(){var args=arguments;return Promise.resolve(old.apply(this,args)).then(function(localOk){var S=st(),to=((S.settings||{}).backupEmail)||"";if(!to)return localOk;return fetch("/api/backup/email",{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1"},body:JSON.stringify({to:to,state:S})}).then(async function(r){var d={};try{d=await r.json();}catch(e){}if(!r.ok)throw new Error(d.message||("HTTP "+r.status));S.settings.lastBackupEmailSend=new Date().toLocaleString("fa-IR");var el=$("autoBackupHandleStatus");if(el)el.textContent="✅ پشتیبان فایل و ایمیل ارسال شد — "+S.settings.lastBackupEmailSend;return true;}).catch(function(e){var el=$("autoBackupHandleStatus");if(el)el.textContent="⚠️ فایل ذخیره شد، اما ایمیل ارسال نشد: "+e.message;return localOk;});});};w._v20email=true;window.performAutoBackup=w;}
+
+  /* ---------- ۲۴) نمایش سه‌رقمی اعداد در خروجی‌های دیداری ---------- */
+  function latinizeDigits(v){return enDigits(v).replace(/٬/g,",").replace(/٫/g,".");}
+  function formatVisibleNumbers(root){if(!root||!document.createTreeWalker)return;var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),nodes=[],n;while(n=w.nextNode())nodes.push(n);nodes.forEach(function(t){var p=t.parentElement;if(!p||/^(SCRIPT|STYLE|INPUT|TEXTAREA|SELECT)$/.test(p.tagName))return;var old=t.nodeValue,latin=latinizeDigits(old),context=latinizeDigits(String(p.textContent||""));if(p.closest('[data-no-number-group]')||/تاریخ|سال|ماه|تلفن|همراه|مختصات|عرض جغرافیایی|طول جغرافیایی|کد|پلاک/.test(context)){if(latin!==old)t.nodeValue=latin;return;}var nw=latin.replace(/\d{4,}/g,function(x,off,all){if(all[off-1]==="/"||all[off+x.length]==="/"||all[off-1]==="."||all[off+x.length]==="."||(/^0\d{9,}$/.test(x))||(/^1[34]\d{6}$/.test(x)))return x;var v=Number(x);return isFinite(v)?v.toLocaleString("en-US"):x;});if(nw!==old)t.nodeValue=nw;});Array.prototype.forEach.call(root.querySelectorAll("input,textarea"),function(el){if(el.placeholder)el.placeholder=latinizeDigits(el.placeholder);if(el.type==="password"||el.dataset.latinBound==="1")return;el.dataset.latinBound="1";var fix=function(){var v=latinizeDigits(el.value);if(v!==el.value){var pos=el.selectionStart;el.value=v;try{el.setSelectionRange(pos,pos);}catch(e){}}};fix();el.addEventListener("input",fix);});Array.prototype.forEach.call(root.querySelectorAll("[title]"),function(el){el.title=latinizeDigits(el.title);});}
+
+  function bindNumberFormatting(){
+    formatVisibleNumbers(document.body);
+    if(!window.MutationObserver)return;
+    var pending=[],timer=0;
+    new MutationObserver(function(records){
+      records.forEach(function(rec){
+        Array.prototype.forEach.call(rec.addedNodes||[],function(node){
+          var root=node.nodeType===1?node:node.parentElement;
+          if(root&&pending.indexOf(root)<0)pending.push(root);
+        });
+      });
+      if(!pending.length)return;
+      clearTimeout(timer);timer=setTimeout(function(){
+        var batch=pending.splice(0,80);
+        batch.forEach(function(root){if(root&&root.isConnected)formatVisibleNumbers(root);});
+      },60);
+    }).observe(document.body,{childList:true,subtree:true});
+  }
+
+  /* ---------- ۲۵) ماندگاری نسخه‌ای: محلی + سرور، بدون جایگزینی با نمونه ---------- */
+  function bindDurableServerState(){var old=window.saveState;if(typeof old!=="function"||old._v20durable)return;var timer;var w=function(){var r=old.apply(this,arguments);clearTimeout(timer);timer=setTimeout(function(){var S=st();if(!S)return;fetch("/api/state",{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1"},body:(typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(S):JSON.stringify(S))}).catch(function(){});},1500);return r;};w._v20durable=true;window.saveState=w;/* عمداً GET/merge خودکار وجود ندارد؛ سرور حق بازنویسی state فعلی را ندارد. */}
+
+  /* اعمال همان‌لحظه ثبت‌های کاربر، بدون رندر سراسری و بدون درگیرکردن ذخیره‌های GPS */
+  function refreshActiveView(){
+    var pane=document.querySelector('.tab-pane.active'),id=pane&&pane.id,map={
+      'tab-pharmacies':['renderPharmaciesList'],'tab-doctors':['renderDoctorsList'],
+      'tab-orders':['renderOrdersList','renderSalesTargetsTable'],'tab-leaves':['renderLeavesTable'],
+      'tab-notifications':['renderNotificationsTable'],'tab-monthly-reports':['renderMonthlyReportsTable'],
+      'tab-sales-targets':['renderSalesTargetsTable'],'tab-users-permissions':['renderUserCardsList'],
+      'tab-columns-products':['renderColumnsProductsTable'],'tab-rep-homes':['renderRepHomesTable'],
+      'tab-rep-routes':['renderRepRoutesTable'],'tab-activity-log':['renderActivityLogTable']
+    };
+    (map[id]||[]).forEach(function(name){try{if(typeof window[name]==='function')window[name]();}catch(e){}});
+    try{if(id==='tab-custom-fields'&&typeof window.renderAllCustomFieldsInFormsAndTables==='function')window.renderAllCustomFieldsInFormsAndTables();}catch(e){}
+  }
+  function bindInstantUiRefresh(){
+    if(document.body.dataset.v20InstantRefresh)return;document.body.dataset.v20InstantRefresh='1';
+    var lastUserAction=0,timer=0;
+    ['pointerdown','keydown','change','submit'].forEach(function(type){document.addEventListener(type,function(){lastUserAction=Date.now();},true);});
+    var old=window.saveState;if(typeof old!=='function'||old._v20instant)return;
+    var w=function(){var r=old.apply(this,arguments);if(Date.now()-lastUserAction<1200){clearTimeout(timer);timer=setTimeout(refreshActiveView,0);}return r;};
+    w._v20instant=true;window.saveState=w;
+  }
+
+  /* ---------- ۲۷) شرکت‌های پخش و گزارش تجمیعی فروش/موجودی ---------- */
+  var DIST_DEFS=[["daya","دایا دارو"],["shafaarad","شفاآراد"],["tivan","تیوان"],["mashateb","مشاطب"]],DIST_HEADERS=["نام کالا","فروش تعدادی","فروش ریالی به قیمت پخش","فروش ریالی به قیمت داروخانه","تعداد جایزه","ریال جایزه","درصد جایزه به فروش","تعداد مرجوعی کالا","ریال مرجوعی کالا","درصد مرجوعی به فروش","تعداد مرجوعی جایزه","ریال مرجوعی جایزه","درصد مرجوعی به جایزه","تعداد داروخانه","تعداد فاکتور","درصد فروش به‌تفکیک کالا","موجودی تعدادی","موجودی ریالی به قیمت پخش","موجودی ریالی به قیمت داروخانه"],distReportCache={};
+  function ensureShafaInventoryDerived(d){if(!d||d.id!=="shafaarad")return;d.inventoryHeaders=Array.isArray(d.inventoryHeaders)?d.inventoryHeaders.slice():[];while(d.inventoryHeaders.length<10)d.inventoryHeaders.push("");d.inventoryHeaders[9]="جمع تعداد موجودی";d.inventoryRows=(Array.isArray(d.inventoryRows)?d.inventoryRows:[]).map(function(raw){var r=normalizeStoredRow(raw);while(r.length<10)r.push("");r[9]=snappNumber(r[5])+snappNumber(r[7]);return r;});}
+  function distStore(){var S=st();S.distributorCompanies=S.distributorCompanies||{};DIST_DEFS.forEach(function(x){var d=S.distributorCompanies[x[0]]||(S.distributorCompanies[x[0]]={});d.id=x[0];d.name=x[1];d.url=d.url||"";d.username=d.username||"";d.pharmacyHeaders=d.pharmacyHeaders||[];d.pharmacyRows=d.pharmacyRows||[];d.pharmacyImports=d.pharmacyImports||[];d.inventoryHeaders=d.inventoryHeaders||[];d.inventoryRows=d.inventoryRows||[];ensureShafaInventoryDerived(d);});return S.distributorCompanies;}
+  function renderDistributorCompanies(){var host=$("distributorCompanyGrid");if(!host)return;var ds=distStore();host.innerHTML=DIST_DEFS.map(function(x){var d=ds[x[0]],pass=sessionStorage.getItem("distPass_"+x[0])||"";return"<div class='v20-combo-card' data-dist='"+x[0]+"'><h4>🏢 "+x[1]+"</h4><div class='form-group'><label class='form-label'>آدرس پنل پخش</label><input class='form-input dist-url' value='"+esc(d.url)+"' placeholder='https://...'></div><div class='form-group'><label class='form-label'>نام کاربری</label><input class='form-input dist-user' value='"+esc(d.username)+"'></div><div class='form-group'><label class='form-label'>رمز ورود (فقط نشست جاری)</label><input type='password' class='form-input dist-pass' value='"+esc(pass)+"' autocomplete='new-password'></div><div style='display:flex;gap:7px;flex-wrap:wrap;margin-top:8px'><button type='button' class='btn btn-primary dist-save'>💾 ثبت امن اطلاعات</button><button type='button' class='btn btn-outline dist-open'>🔐 بازکردن پنل</button></div></div>";}).join("");host.onclick=function(e){var card=e.target.closest&&e.target.closest("[data-dist]");if(!card)return;var id=card.dataset.dist,d=ds[id];if(e.target.closest(".dist-save")){var safeUrl=card.querySelector(".dist-url").value.trim();if(safeUrl){try{var parsedUrl=new URL(safeUrl);if(parsedUrl.protocol!=="https:")throw Error("https only");safeUrl=parsedUrl.href;}catch(err){alert("برای امنیت دستگاه فقط آدرس معتبر https مجاز است.");return;}}d.url=safeUrl;d.username=card.querySelector(".dist-user").value.trim().replace(/[<>]/g,"");sessionStorage.setItem("distPass_"+id,card.querySelector(".dist-pass").value);save();v20Toast("✅ اطلاعات "+d.name+" ذخیره شد؛ رمز فقط در این نشست است.");}if(e.target.closest(".dist-open")){if(!d.url){alert("ابتدا آدرس پنل این پخش را ثبت کنید.");return;}window.open(d.url,"_blank","noopener");}};}
+  function slashOnlyPersianDate(v){var original=String(v==null?"":v).trim(),raw=enDigits(original);if(/^1[34]\d{6}$/.test(raw))return raw.slice(0,4)+"/"+raw.slice(4,6)+"/"+raw.slice(6,8);var m=raw.match(/^(1[34]\d{2})[\/\-.](\d{1,2})[\/\-.](\d{1,2})$/);if(m)return m[1]+"/"+m[2].padStart(2,"0")+"/"+m[3].padStart(2,"0");return original;}
+  function distLastDate(rows,headers,id){var ix=id==="daya"?13:(id==="shafaarad"?6:findDistIndex(headers,/تاریخ/,0)),list=rows||[];for(var i=list.length-1;i>=0;i--){var d=slashOnlyPersianDate(normalizeStoredRow(list[i])[ix]);if(/^1[34]\d{2}\//.test(d))return d;}return"—";}
+  function renderDistributorActions(){var host=$("distributorActionGrid");if(!host)return;var ds=distStore();host.innerHTML=DIST_DEFS.map(function(x){var d=ds[x[0]];return"<div class='v20-combo-card' data-dist='"+x[0]+"'><h4>📦 "+x[1]+"</h4><div class='v20-mini'>آخرین تاریخ داروخانه: <b>"+esc((distLastDate(d.pharmacyRows,d.pharmacyHeaders,d.id)!=="—"?distLastDate(d.pharmacyRows,d.pharmacyHeaders,d.id):(d.pharmacyImports&&d.pharmacyImports[0]&&d.pharmacyImports[0].at?faDate(new Date(d.pharmacyImports[0].at)):"—")))+"</b></div><div class='v20-mini'>آخرین تاریخ موجودی: <b>"+esc((distLastDate(d.inventoryRows,d.inventoryHeaders,d.id)!=="—"?distLastDate(d.inventoryRows,d.inventoryHeaders,d.id):(d.inventoryImport&&d.inventoryImport.at?faDate(new Date(d.inventoryImport.at)):"—")))+"</b></div><div class='v20-card-tools' style='margin-top:8px'><button class='btn btn-outline dist-login'>🔐 ورود اطلاعات / پنل</button><label class='btn btn-primary btn-excel'>📊 ورود فایل داروخانه<input type='file' class='dist-ph-file' accept='.xlsx,.xls,.csv' hidden></label><label class='btn btn-primary btn-excel'>📦 ورود فایل موجودی<input type='file' class='dist-inv-file' accept='.xlsx,.xls,.csv' hidden></label></div></div>";}).join("");host.onclick=function(e){var c=e.target.closest&&e.target.closest("[data-dist]");if(!c)return;var d=ds[c.dataset.dist];if(e.target.closest(".dist-login")){if(!d.url)return alert("آدرس پنل را در تب اطلاعات شرکت‌ها ثبت کنید.");window.open(d.url,"_blank","noopener");}if(e.target.closest(".dist-view-ph"))showDistributorRaw(d,"pharmacy");if(e.target.closest(".dist-view-inv"))showDistributorRaw(d,"inventory");};Array.prototype.forEach.call(host.querySelectorAll(".dist-ph-file,.dist-inv-file"),function(inp){inp.onchange=function(){var c=inp.closest("[data-dist]"),kind=inp.classList.contains("dist-ph-file")?"pharmacy":"inventory";if(inp.files[0])importDistributorFile(c.dataset.dist,kind,inp.files[0]);inp.value="";};});}
+  function renderDistributorDatabase(){var host=$("distributorDatabaseGrid");if(!host)return;var ds=distStore();host.innerHTML=DIST_DEFS.map(function(x){var d=ds[x[0]];return"<div class='v20-combo-card' data-dist='"+x[0]+"'><h4>🗄️ "+x[1]+"</h4><div>آخرین تاریخ داروخانه: <strong>"+esc((distLastDate(d.pharmacyRows,d.pharmacyHeaders,d.id)!=="—"?distLastDate(d.pharmacyRows,d.pharmacyHeaders,d.id):(d.pharmacyImports&&d.pharmacyImports[0]&&d.pharmacyImports[0].at?faDate(new Date(d.pharmacyImports[0].at)):"—")))+"</strong></div><div>آخرین تاریخ موجودی: <strong>"+esc((distLastDate(d.inventoryRows,d.inventoryHeaders,d.id)!=="—"?distLastDate(d.inventoryRows,d.inventoryHeaders,d.id):(d.inventoryImport&&d.inventoryImport.at?faDate(new Date(d.inventoryImport.at)):"—")))+"</strong></div><div class='v20-mini'>"+(d.pharmacyRows||[]).length.toLocaleString("fa-IR")+" ردیف داروخانه / "+(d.inventoryRows||[]).length.toLocaleString("fa-IR")+" ردیف موجودی / "+(d.pharmacyImports||[]).length.toLocaleString("fa-IR")+" فایل آرشیوی</div><div class='v20-card-tools' style='margin-top:10px'><button class='btn btn-outline db-ph'>👁 دیتابیس داروخانه</button><button class='btn btn-outline db-inv'>👁 موجودی فعلی</button><button class='btn btn-outline db-files'>📁 ریز فایل‌های داروخانه</button></div></div>";}).join("");host.onclick=function(e){var c=e.target.closest&&e.target.closest("[data-dist]");if(!c)return;var d=ds[c.dataset.dist];if(e.target.closest(".db-ph")||e.target.closest(".db-files"))showDistributorRaw(d,"pharmacy");if(e.target.closest(".db-inv"))showDistributorRaw(d,"inventory");};}
+  function alignDistributorHeaders(id,kind,headers,data){var h=(headers||[]).slice(),row=(data||[]).map(normalizeStoredRow).filter(function(r){return r.some(function(x){return String(x).trim();});})[0]||[],first=function(a){for(var i=0;i<a.length;i++)if(String(a[i]||"").trim())return i;return 0;};if(id==="daya"&&kind==="inventory"){var hs=first(h),rs=first(row);if(h.length===row.length+1||hs===rs+1)h=h.slice(1);else if(row.length===h.length+1||rs===hs+1)h=[""].concat(h);}return h;}
+  async function importDistributorFile(id,kind,file){var d=distStore()[id];try{var rows=await parseSnappFile(file),hi=findHeaderRow(rows,"trip"),headers=rows[hi]||[],data=rows.slice(hi+1).map(normalizeStoredRow).filter(function(r){return r.some(function(x){return String(x).trim();});});headers=alignDistributorHeaders(id,kind,headers,data);if(kind==="pharmacy"){var seen={};d.pharmacyRows.forEach(function(r){seen[rowSignature(r)]=1;});var fresh=data.filter(function(r){var k=rowSignature(r);if(seen[k])return false;seen[k]=1;return true;});d.pharmacyHeaders=headers.slice();d.pharmacyRows=d.pharmacyRows.concat(fresh);d.pharmacyImports.unshift({id:"imp-"+Date.now(),name:file.name,at:Date.now(),lastDate:distLastDate(fresh,headers,d.id),headers:headers.slice(),rows:fresh});v20Toast("✅ "+fresh.length.toLocaleString("fa-IR")+" ردیف جدید داروخانه به انتهای "+d.name+" اضافه شد.");}else{d.inventoryHeaders=headers.slice();d.inventoryRows=data;d.inventoryImport={name:file.name,at:Date.now(),lastDate:distLastDate(data,headers,d.id),headers:headers.slice(),rows:data};v20Toast("✅ موجودی "+d.name+" با "+data.length.toLocaleString("fa-IR")+" ردیف جایگزین شد.");}ensureShafaInventoryDerived(d);await saveBulkVault();save();renderDistributorActions();renderDistributorDatabase();renderDistributorReport();invoiceStatusBaseCache=null;if($("tab-distributor-invoice-status")&&$("tab-distributor-invoice-status").classList.contains("active"))renderInvoiceStatus();}catch(e){alert("خطا در فایل "+file.name+": "+e.message);}}
+  function showDistributorRaw(d,kind){var host=$("distributorRawViewer");function paint(title,headers,rows){var originalSigs=(rows||[]).map(rowSignature);host.hidden=false;var archive=kind==="pharmacy"?(d.pharmacyImports||[]):[];host.innerHTML="<div class='card-header'><div class='card-title'>👁 "+esc(d.name+" — "+title)+" ("+rows.length.toLocaleString("fa-IR")+" ردیف)</div><div><button class='btn btn-primary raw-save'>💾 ذخیره تغییرات</button> <button class='btn btn-outline raw-close'>بستن</button></div></div>"+(archive.length?"<div class='v20-card-tools'><button class='btn btn-outline raw-all'>همه دیتابیس</button>"+archive.map(function(x,i){return"<button class='btn btn-outline raw-batch' data-i='"+i+"'>"+esc(x.name+" — "+x.lastDate)+"</button>";}).join("")+"</div>":"")+"<div class='table-responsive'><table class='data-table'><thead><tr>"+(headers||[]).map(function(h){return"<th>"+esc(h)+"</th>";}).join("")+"</tr></thead><tbody>"+(rows||[]).slice(0,1000).map(function(r,ri){return"<tr>"+r.map(function(v,i){var show=/تاریخ/.test(String((headers||[])[i]||""))?slashOnlyPersianDate(v):v;return"<td contenteditable='true' data-r='"+ri+"' data-c='"+i+"'>"+esc(show)+"</td>";}).join("")+"</tr>";}).join("")+"</tbody></table></div>";host.querySelector('.raw-close').onclick=function(){host.hidden=true;};host.querySelector('.raw-save').onclick=async function(){Array.prototype.forEach.call(host.querySelectorAll('td[data-r]'),function(td){var r=Number(td.dataset.r),c=Number(td.dataset.c);if(rows[r])rows[r][c]=td.textContent.trim();});var master=kind==='pharmacy'?d.pharmacyRows:d.inventoryRows;(rows||[]).forEach(function(row,i){var mi=master.findIndex(function(x){return rowSignature(x)===originalSigs[i];});if(mi>=0)master[mi]=row;});await saveBulkVault();save();renderDistributorActions();renderDistributorDatabase();renderDistributorReport();v20Toast('✅ تغییرات دیتابیس پخش ذخیره شد.');};var all=host.querySelector('.raw-all');if(all)all.onclick=function(){paint("همه دیتابیس داروخانه",d.pharmacyHeaders,d.pharmacyRows);};Array.prototype.forEach.call(host.querySelectorAll('.raw-batch'),function(b){b.onclick=function(){var x=archive[Number(b.dataset.i)];paint("فایل "+x.name,x.headers||d.pharmacyHeaders,Array.isArray(x.rows)?x.rows:[]);};});host.scrollIntoView({behavior:"smooth"});}if(kind==="pharmacy")paint("همه دیتابیس داروخانه",d.pharmacyHeaders,d.pharmacyRows);else paint("موجودی فعلی — "+((d.inventoryImport||{}).name||""),d.inventoryHeaders,d.inventoryRows);}
+  function findDistIndex(h,re,fb){for(var i=0;i<(h||[]).length;i++)if(re.test(String(h[i])))return i;return fb==null?-1:fb;}
+  function distSchema(h,id){var x={date:findDistIndex(h,/تاریخ/,0),code:findDistIndex(h,/کد.*کالا|کد.*محصول/,-1),product:findDistIndex(h,/نام.*(کالا|محصول)|کالا|محصول/,1),qty:findDistIndex(h,/فروش.*تعداد|تعداد.*فروش/,2),dist:findDistIndex(h,/فروش.*ریال.*پخش|مبلغ.*پخش/,3),ph:findDistIndex(h,/فروش.*ریال.*داروخانه|مبلغ.*داروخانه/,4),giftQty:findDistIndex(h,/تعداد.*جایزه(?!.*مرجوع)/,5),giftRial:findDistIndex(h,/ریال.*جایزه(?!.*مرجوع)|مبلغ.*جایزه(?!.*مرجوع)/,6),retQty:findDistIndex(h,/تعداد.*مرجوع(?!.*جایزه)/,7),retRial:findDistIndex(h,/ریال.*مرجوع(?!.*جایزه)|مبلغ.*مرجوع(?!.*جایزه)/,8),retGiftQty:findDistIndex(h,/تعداد.*مرجوع.*جایزه/, -1),retGiftRial:findDistIndex(h,/ریال.*مرجوع.*جایزه|مبلغ.*مرجوع.*جایزه/,-1),pharmacy:findDistIndex(h,/نام.*داروخانه|داروخانه/,9),province:findDistIndex(h,/استان/,-1),city:findDistIndex(h,/شهر/,-1),district:findDistIndex(h,/منطقه/,-1),address:findDistIndex(h,/آدرس/,-1),invoice:findDistIndex(h,/شماره.*فاکتور|فاکتور/,10),visitor:findDistIndex(h,/نام.*ویزیتور|ویزیتور|بازاریاب|نماینده.*فروش/,-1)};if(id==="daya"){x.date=13;x.invoice=12;x.code=15;x.qty=4;x.giftQty=3;x.retQty=7;x.retGiftQty=6;x.pharmacy=21;x.dist=-1;x.ph=-1;x.giftRial=-1;x.retRial=-1;x.retGiftRial=-1;}else if(id==="shafaarad"){x.date=6;x.invoice=5;x.qty=7;x.retQty=9;x.pharmacy=3;x.giftQty=-1;x.retGiftQty=-1;x.dist=-1;x.ph=-1;x.giftRial=-1;x.retRial=-1;x.retGiftRial=-1;}return x;}
+  function findDistExact(h,title){var n=norm(title);for(var i=0;i<(h||[]).length;i++)if(norm(h[i])===n)return i;return-1;}
+  function invSchema(h,id){var code=findDistExact(h,"کد کالا"),product=findDistExact(h,"نام کالا"),qty=findDistExact(h,"موجودی");if(id==="shafaarad"&&code<0)code=findDistExact(h,"کالا");return{code:code>=0?code:findDistIndex(h,/کد.*کالا|کد.*محصول/,-1),product:product>=0?product:findDistIndex(h,/نام.*(کالا|محصول)/,0),qty:id==="shafaarad"?(findDistExact(h,"جمع تعداد موجودی")>=0?findDistExact(h,"جمع تعداد موجودی"):9):(qty>=0?qty:(id==="daya"?2:findDistIndex(h,/موجودی.*تعداد|تعداد.*موجودی/,1))),rial:findDistIndex(h,/موجودی.*ریال|ریال.*موجودی/,-1)};}
+  function distFilter(){var mode=$("distModeDay").checked?"day":$("distModeMonth").checked?"month":$("distModeYear").checked?"year":($("distModeFrom").checked||$("distModeTo").checked)?"range":"all";return{mode:mode,year:enDigits($("distFilterYear").value),month:enDigits($("distFilterMonth").value),day:enDigits($("distFilterDay").value).padStart(2,"0"),from:normSnappDate($("distFilterFrom").value),to:normSnappDate($("distFilterTo").value)};}
+  function distDatePass(v,f){var d=slashOnlyPersianDate(v);if(f.mode==="year")return!f.year||d.slice(0,4)===f.year;if(f.mode==="month")return(!f.year||d.slice(0,4)===f.year)&&(!f.month||d.slice(5,7)===f.month);if(f.mode==="day")return(!f.year||d.slice(0,4)===f.year)&&(!f.month||d.slice(5,7)===f.month)&&(!f.day||d.slice(8,10)===f.day);if(f.mode==="range")return(!f.from||d>=f.from)&&(!f.to||d<=f.to);return true;}
+  function normalizeDbCode(v){var s=enDigits(String(v==null?"":v)).replace(/[,٬\s]/g,"").trim(),n=Number(s);return isFinite(n)&&n>0?String(Math.trunc(n)):s.replace(/\.0+$/,"");}
+  function findKnownCodeInRow(row,distId){var known={};((st().products)||[]).forEach(function(p){var c=distId==="daya"?(p.dayaDbCode||(p.code?1111000+Number(p.code):"")):(p.shafaDbCode||SHAFA_CODE_MAP[p.code]||"");if(c)known[String(c)]=1;});var r=normalizeStoredRow(row);for(var i=0;i<r.length;i++){var c=normalizeDbCode(r[i]);if(known[c])return c;}return"";}
+  function canonicalProduct(raw,dbCode,distId){var name=String(raw||"").trim(),n=norm(name),code=normalizeDbCode(dbCode);if((distId==="daya"||distId==="shafaarad")&&(!name||n===norm("نامشخص")))return null;var p=((st().products)||[]).filter(function(x){if(distId==="daya"&&code&&String(x.dayaDbCode||((x.code)?1111000+Number(x.code):""))===code)return true;if(distId==="shafaarad"&&code&&String(x.shafaDbCode||SHAFA_CODE_MAP[x.code]||"")===code)return true;var q=norm(x.name);return q===n||(q.length>=4&&n.indexOf(q)>=0)||(n.length>=4&&q.indexOf(n)>=0);})[0];if(p)return p.name;return (distId==="daya"||distId==="shafaarad")?null:(name||"نامشخص");}
+  function productPrice(name,key){var p=((st().products)||[]).filter(function(x){return norm(x.name)===norm(name);})[0]||{};return Number(key==="dist"?(p.distributorPrice||p.distPrice||p.price||0):(p.pharmacyPrice||p.price||0));}
+  function emptyMetric(){return{qty:0,dist:0,ph:0,giftQty:0,giftRial:0,retQty:0,retRial:0,retGiftQty:0,retGiftRial:0,pharmacies:{},invoices:{},invQty:0,invDist:0,invPh:0};}
+  function calculateDayaAmounts(qty,gift,ret,retGift,distPrice,pharmacyPrice){return{dist:qty*distPrice,ph:qty*pharmacyPrice,giftRial:gift*distPrice,retRial:ret*distPrice,retGiftRial:retGift*distPrice,giftPct:qty?gift/qty*100:0,retPct:qty?ret/qty*100:0,retGiftPct:ret?retGift/ret*100:0};}
+  function distributorMetrics(d){var f=distFilter(),sc=distSchema(d.pharmacyHeaders,d.id),is=invSchema(d.inventoryHeaders,d.id),map={};(d.pharmacyRows||[]).forEach(function(raw){var r=normalizeStoredRow(raw);if(!distDatePass(r[sc.date],f))return;var dbCode=(d.id==="daya"||d.id==="shafaarad")?findKnownCodeInRow(r,d.id):(sc.code>=0?r[sc.code]:"");var n=canonicalProduct(r[sc.product],dbCode,d.id);if(!n)return;var m=map[n]||(map[n]=emptyMetric()),qty=snappNumber(r[sc.qty]),gift=snappNumber(r[sc.giftQty]),ret=snappNumber(r[sc.retQty]),retGift=snappNumber(r[sc.retGiftQty]),dp=productPrice(n,"dist"),pp=productPrice(n,"ph");m.qty+=qty;m.giftQty+=gift;m.retQty+=ret;m.retGiftQty+=retGift;if(d.id==="daya"||d.id==="shafaarad"){var da=calculateDayaAmounts(qty,gift,ret,retGift,dp,pp);m.dist+=da.dist;m.ph+=da.ph;m.giftRial+=da.giftRial;m.retRial+=da.retRial;m.retGiftRial+=da.retGiftRial;}else{var dr=sc.dist>=0?snappNumber(r[sc.dist]):0,pr=sc.ph>=0?snappNumber(r[sc.ph]):0,gr=sc.giftRial>=0?snappNumber(r[sc.giftRial]):0,rr=sc.retRial>=0?snappNumber(r[sc.retRial]):0,rgr=sc.retGiftRial>=0?snappNumber(r[sc.retGiftRial]):0;m.dist+=dr||qty*dp;m.ph+=pr||qty*pp||qty*dp;m.giftRial+=gr||gift*dp;m.retRial+=rr||ret*dp;m.retGiftRial+=rgr||retGift*dp;}if(qty>0){var pk=d.id==="daya"?norm(r[21]):(d.id==="shafaarad"?norm(r[3]):[sc.pharmacy,sc.province,sc.city,sc.district,sc.address].map(function(i){return i>=0?norm(r[i]):"";}).join("|"));if(pk&&pk.replace(/\|/g,""))m.pharmacies[pk]=1;if(sc.invoice>=0&&r[sc.invoice]&&!(ret&&ret===qty))m.invoices[String(r[sc.invoice])]=1;}});(d.inventoryRows||[]).forEach(function(raw){var r=normalizeStoredRow(raw),dbCode=(d.id==="daya"||d.id==="shafaarad")?findKnownCodeInRow(r,d.id):(is.code>=0?r[is.code]:""),n=canonicalProduct(r[is.product],dbCode,d.id);if(!n)return;var m=map[n]||(map[n]=emptyMetric()),q=snappNumber(r[is.qty]);m.invQty+=q;m.invDist+=q*productPrice(n,"dist");m.invPh+=q*productPrice(n,"ph");});((st().products)||[]).forEach(function(p){var n=String(p.name||"").trim();if(n&&norm(n)!==norm("نامشخص")&&!map[n])map[n]=emptyMetric();});Object.keys(map).forEach(function(n){if(norm(n)===norm("نامشخص"))delete map[n];});return map;}
+  function mergeMetricMaps(target,src){Object.keys(src).forEach(function(n){var a=target[n]||(target[n]=emptyMetric()),b=src[n];["qty","dist","ph","giftQty","giftRial","retQty","retRial","retGiftQty","retGiftRial","invQty","invDist","invPh"].forEach(function(k){a[k]+=b[k]||0;});Object.assign(a.pharmacies,b.pharmacies);Object.assign(a.invoices,b.invoices);});return target;}
+
+  function metricRows(map){var totalSales=Object.values(map).reduce(function(s,m){return s+m.qty;},0),allPh={},allInv={};Object.keys(map).forEach(function(n){Object.assign(allPh,map[n].pharmacies);Object.assign(allInv,map[n].invoices);});var order={};((st().products)||[]).forEach(function(p,i){order[norm(p.name)]=i;});var rows=Object.keys(map).sort(function(a,b){var ai=order[norm(a)],bi=order[norm(b)];if(ai==null)ai=999999;if(bi==null)bi=999999;return ai-bi||String(a).localeCompare(String(b),'fa');}).map(function(n){var m=map[n],giftPct=m.qty?m.giftQty/m.qty*100:0,retPct=m.qty?m.retQty/m.qty*100:0,retGiftPct=m.retQty?m.retGiftQty/m.retQty*100:0,share=totalSales?m.qty/totalSales*100:0;return[n,m.qty,m.dist,m.ph,m.giftQty,m.giftRial,giftPct,m.retQty,m.retRial,retPct,m.retGiftQty,m.retGiftRial,retGiftPct,Object.keys(m.pharmacies).length,Object.keys(m.invoices).length,share,m.invQty,m.invDist,m.invPh];});rows._uniquePharmacies=Object.keys(allPh).length;rows._uniqueInvoices=Object.keys(allInv).length;return rows;}
+  function totalMetricRow(rows){var t=["جمع کل"];for(var c=1;c<19;c++){if(c===13){t[c]=Number(rows._uniquePharmacies||0);continue;}if(c===14){t[c]=Number(rows._uniqueInvoices||0);continue;}if([6,9,12,15].indexOf(c)>=0){if(c===6){var a=rows.reduce(function(s,r){return s+Number(r[4]||0);},0),b=rows.reduce(function(s,r){return s+Number(r[1]||0);},0);t[c]=b?a/b*100:0;}else if(c===9){var a=rows.reduce(function(s,r){return s+Number(r[7]||0);},0),b=rows.reduce(function(s,r){return s+Number(r[1]||0);},0);t[c]=b?a/b*100:0;}else if(c===12){var a=rows.reduce(function(s,r){return s+Number(r[10]||0);},0),b=rows.reduce(function(s,r){return s+Number(r[7]||0);},0);t[c]=b?a/b*100:0;}else t[c]=rows.length?100:0;}else t[c]=rows.reduce(function(s,r){return s+Number(r[c]||0);},0);}return t;}
+  function displayMetric(v,i){if(i===0)return esc(v);if([6,9,12,15].indexOf(i)>=0)return Number(v||0).toLocaleString("fa-IR",{maximumFractionDigits:2})+"٪";return Number(v||0).toLocaleString("fa-IR");}
+
+  function reportTableHtml(title,rows){var all=rows.concat([totalMetricRow(rows)]);return"<div class='card'><div class='card-header'><div class='card-title'>"+esc(title)+"</div></div><div class='table-responsive'><table class='data-table'><thead><tr>"+DIST_HEADERS.map(function(h){return"<th>"+h+"</th>";}).join("")+"</tr></thead><tbody>"+all.map(function(r){return"<tr>"+r.map(function(v,i){return"<td>"+displayMetric(v,i)+"</td>";}).join("")+"</tr>";}).join("")+"</tbody></table></div></div>";}
+  function renderDistributorReport(){var ds=distStore(),all={};distReportCache={};DIST_DEFS.forEach(function(x){var map=distributorMetrics(ds[x[0]]);mergeMetricMaps(all,map);distReportCache[x[0]]=metricRows(map);});distReportCache.all=metricRows(all);var host=$("distributorReportTables");if(host)host.innerHTML=reportTableHtml("همه پخش‌ها",distReportCache.all)+DIST_DEFS.map(function(x){return reportTableHtml(x[1],distReportCache[x[0]]);}).join("");var s=$("distributorReportSummary"),tot=totalMetricRow(distReportCache.all);if(s)s.innerHTML=[["جمع فروش تعدادی",tot[1]],["جمع ریال پخش",tot[2]],["جمع ریال داروخانه",tot[3]],["موجودی تعدادی",tot[16]]].map(function(x){return"<div class='v20-metric'>"+x[0]+"<b>"+Number(x[1]||0).toLocaleString("fa-IR")+"</b></div>";}).join("");}
+  function jalaliMonthName(v){var names=["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند"],n=parseInt(enDigits(v),10);return n>=1&&n<=12?names[n-1]:String(v||"");}
+  function periodRows(){var f=distFilter();if(f.mode==="year")return[["سال",f.year]];if(f.mode==="month")return[["سال",f.year],["ماه",jalaliMonthName(f.month)]];if(f.mode==="day")return[["سال",f.year],["ماه",jalaliMonthName(f.month)],["روز",f.day]];if(f.mode==="range")return[["از تاریخ",f.from],["تا تاریخ",f.to]];return[["بازه","همه اطلاعات"]];}
+  function xmlEsc(v){return String(v==null?"":v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+  function excelDistributorCell(v,i,isTotal){var pre=isTotal?"Total":"";if(i===0)return'<Cell ss:StyleID="'+pre+'Text"><Data ss:Type="String">'+xmlEsc(v)+'</Data></Cell>';if([6,9,12,15].indexOf(i)>=0)return'<Cell ss:StyleID="'+pre+'PercentText"><Data ss:Type="String">'+xmlEsc(Number(v||0).toLocaleString("en-US",{maximumFractionDigits:2})+"%")+'</Data></Cell>';return'<Cell ss:StyleID="'+pre+'Number"><Data ss:Type="Number">'+xmlEsc(Number(v||0))+'</Data></Cell>';}
+  function downloadDistributorWorkbook(){renderDistributorReport();var sheets=[["همه پخش‌ها",distReportCache.all]].concat(DIST_DEFS.map(function(x){return[x[1],distReportCache[x[0]]];})),border='<Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/></Borders>',xml='<?xml version="1.0"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"><Styles><Style ss:ID="Default" ss:Name="Normal"></Style><Style ss:ID="Header"><Font ss:Bold="1" ss:Color="#000000"/><Interior ss:Color="#87CEEB" ss:Pattern="Solid"/>'+border+'</Style><Style ss:ID="Text">'+border+'</Style><Style ss:ID="PercentText">'+border+'</Style><Style ss:ID="Number"><NumberFormat ss:Format="#,##0"/>'+border+'</Style><Style ss:ID="TotalText"><Font ss:Bold="1" ss:Color="#DC2626"/>'+border+'</Style><Style ss:ID="TotalPercentText"><Font ss:Bold="1" ss:Color="#DC2626"/>'+border+'</Style><Style ss:ID="TotalNumber"><Font ss:Bold="1" ss:Color="#DC2626"/><NumberFormat ss:Format="#,##0"/>'+border+'</Style></Styles>';sheets.forEach(function(sh){xml+='<Worksheet ss:Name="'+xmlEsc(sh[0])+'"><Table>';periodRows().forEach(function(r){xml+='<Row><Cell ss:StyleID="Header"><Data ss:Type="String">'+xmlEsc(r[0])+'</Data></Cell><Cell ss:StyleID="Text"><Data ss:Type="String">'+xmlEsc(r[1])+'</Data></Cell></Row>';});xml+='<Row>'+DIST_HEADERS.map(function(h){return'<Cell ss:StyleID="Header"><Data ss:Type="String">'+xmlEsc(h)+'</Data></Cell>';}).join('')+'</Row>';sh[1].forEach(function(r){xml+='<Row>'+r.map(function(v,i){return excelDistributorCell(v,i,false);}).join('')+'</Row>';});var total=totalMetricRow(sh[1]);xml+='<Row>'+total.map(function(v,i){return excelDistributorCell(v,i,true);}).join('')+'</Row>';xml+='</Table></Worksheet>';});xml+='</Workbook>';var blob=new Blob([xml],{type:'application/vnd.ms-excel'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='گزارش-فروش-پخش‌ها.xls';a.click();setTimeout(function(){URL.revokeObjectURL(a.href);},1000);}
+
+  /* ---------- ۲۸) وضعیت فاکتور پخش‌ها: تطبیق سفارش با فاکتور در بازه ±۳ روز ---------- */
+  var invoiceStatusCache=[],invoiceStatusBaseCache=null;
+  function invoiceStatusDate(v){
+    var raw=enDigits(String(v==null?"":v)).trim(),rev=raw.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](1[34]\d{2})$/);
+    if(rev)return rev[3]+"/"+rev[2].padStart(2,"0")+"/"+rev[1].padStart(2,"0");
+    return slashOnlyPersianDate(normSnappDate(raw));
+  }
+  function invoiceStatusDay(v){
+    var d=invoiceStatusDate(v),m=d.match(/^(1[34]\d{2})\/(\d{2})\/(\d{2})$/);if(!m)return NaN;
+    try{var g=window.CRMJalali&&window.CRMJalali.toGregorian(Number(m[1]),Number(m[2]),Number(m[3]));if(g)return Math.floor(Date.UTC(g.gy,g.gm-1,g.gd)/86400000);}catch(e){}
+    return Number(m[1])*372+Number(m[2])*31+Number(m[3]);
+  }
+  function invoiceStatusNameMatch(a,b){
+    var stop={"داروخانه":1,"دکتر":1,"شبانه":1,"روزی":1,"مرکز":1,"پزشکی":1,"آقای":1,"خانم":1};
+    function words(v){return String(v||"").replace(/[‌\-_.,،()]/g," ").split(/\s+/).map(norm).filter(function(x){return x.length>=3&&!stop[x];});}
+    var aa=words(a),bb=words(b),ac=aa.join(""),bc=bb.join("");if(!ac||!bc)return false;
+    if((ac.length>=4&&bc.indexOf(ac)>=0)||(bc.length>=4&&ac.indexOf(bc)>=0))return true;
+    return aa.some(function(x){return bb.some(function(y){return x===y||(x.length>=4&&y.indexOf(x)>=0)||(y.length>=4&&x.indexOf(y)>=0);});});
+  }
+  function invoiceStatusPlaceMatch(want,got,row){
+    var a=norm(want);if(!a)return true;var b=norm(got);if(b&&(a===b||a.indexOf(b)>=0||b.indexOf(a)>=0))return true;
+    return normalizeStoredRow(row).some(function(x){var q=norm(x);return q===a||(a.length>=3&&q.indexOf(a)>=0);});
+  }
+  function buildInvoiceStatusGroups(){
+    var ds=distStore(),groups={},byDay={};
+    DIST_DEFS.forEach(function(def){var d=ds[def[0]],sc=distSchema(d.pharmacyHeaders,d.id);(d.pharmacyRows||[]).forEach(function(raw){
+      var r=normalizeStoredRow(raw),date=invoiceStatusDate(r[sc.date]),day=invoiceStatusDay(date),ph=String(r[sc.pharmacy]||"").trim();if(!isFinite(day)||!ph)return;
+      var inv=String(sc.invoice>=0?r[sc.invoice]:"").trim(),key=d.id+"|"+(inv||date)+"|"+date+"|"+norm(ph),g=groups[key];
+      if(!g){g=groups[key]={key:key,distId:d.id,distName:d.name,date:date,day:day,invoice:inv,pharmacy:ph,province:sc.province>=0?r[sc.province]:"",city:sc.city>=0?r[sc.city]:"",district:sc.district>=0?r[sc.district]:"",visitor:sc.visitor>=0?r[sc.visitor]:"",schema:sc,rows:[]};(byDay[day]||(byDay[day]=[])).push(g);}
+      g.rows.push(r);if(!g.visitor&&sc.visitor>=0)g.visitor=r[sc.visitor]||"";
+    });});return byDay;
+  }
+  function invoiceStatusDetailRows(order,g){
+    var ordered={},factored={},sc=g.schema;
+    (order.items||[]).forEach(function(i){var n=String(i.name||i.productName||"").trim();if(!n)return;var k=norm(n),x=ordered[k]||(ordered[k]={name:n,qty:0,gift:0});x.qty+=snappNumber(i.count||i.quantity);x.gift+=snappNumber(i.giftCount||i.giftQty);});
+    g.rows.forEach(function(r){var code=(g.distId==="daya"||g.distId==="shafaarad")?findKnownCodeInRow(r,g.distId):(sc.code>=0?r[sc.code]:""),n=canonicalProduct(sc.product>=0?r[sc.product]:"",code,g.distId);if(!n)return;var k=norm(n),x=factored[k]||(factored[k]={name:n,qty:0,gift:0});x.qty+=snappNumber(r[sc.qty]);x.gift+=snappNumber(r[sc.giftQty]);});
+    var keys={};Object.keys(ordered).forEach(function(k){keys[k]=1;});Object.keys(factored).forEach(function(k){keys[k]=1;});
+    return Object.keys(keys).map(function(k){var o=ordered[k]||{name:(factored[k]||{}).name||k,qty:0,gift:0},f=factored[k]||{qty:0,gift:0};return{name:o.name,orderQty:o.qty,orderGift:o.gift,invoiceQty:f.qty,invoiceGift:f.gift,qtyDiff:f.qty-o.qty,giftDiff:f.gift-o.gift};});
+  }
+  function buildInvoiceStatusMatches(){
+    var S=st(),byDay=buildInvoiceStatusGroups(),out=[];(S.orders||[]).forEach(function(o){var od=invoiceStatusDate(o.orderDate||o.dateAdded),day=invoiceStatusDay(od);if(!isFinite(day))return;
+      for(var n=day-3;n<=day+3;n++)(byDay[n]||[]).forEach(function(g){if(!invoiceStatusNameMatch(o.pharmacyName,g.pharmacy))return;if(!invoiceStatusPlaceMatch(o.province,g.province,g.rows[0])||!invoiceStatusPlaceMatch(o.city,g.city,g.rows[0])||!invoiceStatusPlaceMatch(o.district,g.district,g.rows[0]))return;out.push({order:o,group:g,rep:o.repName||"—",pharmacy:g.pharmacy,province:o.province||g.province||"—",city:o.city||g.city||"—",district:o.district||g.district||"—",dist:g.distName,orderDate:od,invoiceDate:g.date,diff:g.day-day,visitor:g.visitor||"—",details:invoiceStatusDetailRows(o,g)});});
+    });return out.sort(function(a,b){return String(b.orderDate).localeCompare(String(a.orderDate))||Math.abs(a.diff)-Math.abs(b.diff);});
+  }
+  function invoiceStatusFilters(){return{rep:String(($("invoiceStatusRep")||{}).value||""),year:enDigits(String(($("invoiceStatusYear")||{}).value||"")).trim(),month:String(($("invoiceStatusMonth")||{}).value||""),from:invoiceStatusDate(($("invoiceStatusFrom")||{}).value||""),to:invoiceStatusDate(($("invoiceStatusTo")||{}).value||""),search:norm(($("invoiceStatusSearch")||{}).value||""),yearOn:!!(($("invoiceStatusModeYear")||{}).checked),monthOn:!!(($("invoiceStatusModeMonth")||{}).checked),rangeOn:!!(($("invoiceStatusModeFrom")||{}).checked||($("invoiceStatusModeTo")||{}).checked)};}
+  function showInvoiceStatusDetails(i){
+    var x=invoiceStatusCache[i];if(!x)return;var old=$("invoiceStatusModal");if(old)old.remove();var modal=document.createElement("div");modal.id="invoiceStatusModal";modal.className="modal-overlay active";modal.innerHTML="<div class='modal-content' style='max-width:980px'><div class='card-header'><div class='card-title'>جزئیات فاکتور "+esc(x.pharmacy+" — "+x.dist)+"</div><button type='button' class='btn btn-outline inv-close'>✕ بستن</button></div><div class='table-responsive'><table class='data-table'><thead><tr><th>نام کالا</th><th>تعداد کالای سفارش</th><th>تعداد جایزه سفارش</th><th>تعداد کالای فاکتور شده</th><th>تعداد جایزه فاکتور شده</th><th>اختلاف تعداد</th><th>اختلاف جایزه</th></tr></thead><tbody>"+(x.details.length?x.details.map(function(r){return"<tr><td>"+esc(r.name)+"</td><td>"+r.orderQty+"</td><td>"+r.orderGift+"</td><td>"+r.invoiceQty+"</td><td>"+r.invoiceGift+"</td><td>"+(r.qtyDiff>0?"+":"")+r.qtyDiff+"</td><td>"+(r.giftDiff>0?"+":"")+r.giftDiff+"</td></tr>";}).join(""):"<tr><td colspan='7'>کالای قابل تطبیقی در ردیف‌های این فاکتور پیدا نشد.</td></tr>")+"</tbody></table></div></div>";document.body.appendChild(modal);modal.querySelector('.inv-close').onclick=function(){modal.remove();};modal.onclick=function(e){if(e.target===modal)modal.remove();};
+  }
+  function renderInvoiceStatus(){
+    var body=$("invoiceStatusBody");if(!body)return;var f=invoiceStatusFilters(),all=invoiceStatusBaseCache||(invoiceStatusBaseCache=buildInvoiceStatusMatches()),rows=all.filter(function(x){if(f.rep&&x.rep!==f.rep)return false;if(f.rangeOn&&((f.from&&x.orderDate<f.from)||(f.to&&x.orderDate>f.to)))return false;if(!f.rangeOn&&f.yearOn&&f.year&&x.orderDate.slice(0,4)!==f.year)return false;if(!f.rangeOn&&f.monthOn&&f.month&&x.orderDate.slice(5,7)!==f.month)return false;if(f.search&&norm([x.pharmacy,x.province,x.city,x.district,x.dist,x.rep].join(" ")).indexOf(f.search)<0)return false;return true;});invoiceStatusCache=rows;
+    body.innerHTML=rows.length?rows.map(function(x,i){return"<tr><td>"+esc(x.rep)+"</td><td><strong>"+esc(x.pharmacy)+"</strong></td><td>"+esc(x.province)+"</td><td>"+esc(x.city)+"</td><td>"+esc(x.district)+"</td><td>"+esc(x.dist)+"</td><td>"+esc(x.orderDate)+"</td><td>"+esc(x.invoiceDate)+"</td><td>"+(x.diff>0?"+":"")+x.diff+"</td><td><button type='button' class='btn btn-outline btn-sm inv-status-view' data-i='"+i+"'>مشاهده</button></td><td>"+esc(x.visitor)+"</td></tr>";}).join(""):"<tr><td colspan='11'>فاکتور منطبق با شرایط نام، استان، شهر، منطقه و بازه ±۳ روز پیدا نشد.</td></tr>";
+    var summary=$("invoiceStatusSummary"),orders={};rows.forEach(function(x){orders[x.order.id||x.orderDate+"|"+x.order.pharmacyName]=1;});if(summary)summary.innerHTML="<div class='v20-metric'>فاکتورهای منطبق<b>"+rows.length.toLocaleString("fa-IR")+"</b></div><div class='v20-metric'>سفارش‌های دارای فاکتور<b>"+Object.keys(orders).length.toLocaleString("fa-IR")+"</b></div>";Array.prototype.forEach.call(body.querySelectorAll('.inv-status-view'),function(b){b.onclick=function(){showInvoiceStatusDetails(Number(b.dataset.i));};});
+  }
+  function refreshInvoiceStatusLocks(){
+    var y=$("invoiceStatusYear"),m=$("invoiceStatusMonth"),from=$("invoiceStatusFrom"),to=$("invoiceStatusTo"),yearOn=!!($("invoiceStatusModeYear")||{}).checked,monthOn=!!($("invoiceStatusModeMonth")||{}).checked,rangeOn=!!(($("invoiceStatusModeFrom")||{}).checked||($("invoiceStatusModeTo")||{}).checked);if(y)y.disabled=!yearOn||rangeOn;if(m)m.disabled=!monthOn||rangeOn||!String((y||{}).value||"").trim();if(from)from.disabled=!rangeOn;if(to)to.disabled=!rangeOn;
+  }
+  function setupInvoiceStatus(){
+    var pane=$("tab-distributor-invoice-status");if(!pane)return;invoiceStatusBaseCache=null;var rep=$("invoiceStatusRep"),selected=rep&&rep.value,names={};((st().orders)||[]).forEach(function(o){if(o.repName)names[o.repName]=1;});if(rep){rep.innerHTML="<option value=''>همه نمایندگان</option>"+Object.keys(names).sort().map(function(n){return"<option>"+esc(n)+"</option>";}).join("");rep.value=selected||"";}
+    if(!pane.dataset.invoiceBound){pane.dataset.invoiceBound="1";var year=$("invoiceStatusModeYear"),month=$("invoiceStatusModeMonth"),from=$("invoiceStatusModeFrom"),to=$("invoiceStatusModeTo");if(year)year.onchange=function(){if(year.checked){from.checked=to.checked=false;}else if(month)month.checked=false;refreshInvoiceStatusLocks();renderInvoiceStatus();};if(month)month.onchange=function(){if(month.checked){year.checked=true;from.checked=to.checked=false;}refreshInvoiceStatusLocks();renderInvoiceStatus();};[from,to].forEach(function(c){if(c)c.onchange=function(){var on=c.checked;from.checked=to.checked=on;if(on){year.checked=month.checked=false;}refreshInvoiceStatusLocks();renderInvoiceStatus();};});["invoiceStatusRep","invoiceStatusYear","invoiceStatusMonth","invoiceStatusFrom","invoiceStatusTo","invoiceStatusSearch"].forEach(function(id){var e=$(id);if(!e)return;e.addEventListener(e.tagName==="SELECT"?"change":"input",function(){refreshInvoiceStatusLocks();renderInvoiceStatus();});});[from,to].forEach(function(e){var input=e&&$(e.id.replace("Mode",""));if(input&&typeof window.attachJalaliPicker==="function")window.attachJalaliPicker(input);});}
+    refreshInvoiceStatusLocks();renderInvoiceStatus();
+  }
+
+  function bindDistributorFilters(){var ids=["distModeYear","distModeMonth","distModeDay","distModeFrom","distModeTo"];ids.forEach(function(id){var c=$(id);if(!c||c.dataset.bound)return;c.dataset.bound="1";c.onchange=function(){var range=/From|To/.test(id);if(c.checked){ids.forEach(function(x){var e=$(x);if(e)e.checked=range?/From|To/.test(x):x===id;});}else if(range){$("distModeFrom").checked=$("distModeTo").checked=false;}refreshDistFilterLock();};});["distFilterYear","distFilterMonth"].forEach(function(id){var e=$(id);if(e)e.oninput=refreshDistFilterLock;});["distFilterFrom","distFilterTo"].forEach(function(id){var e=$(id);if(e&&typeof window.attachJalaliPicker==="function")window.attachJalaliPicker(e);});refreshDistFilterLock();}
+  function refreshDistFilterLock(){var y=String(($("distFilterYear")||{}).value||"").trim(),m=$("distFilterMonth"),day=$("distFilterDay");if(m){m.disabled=!y;m.classList.toggle("v20-grey",!y);var mg=m.closest(".form-group");if(mg)mg.classList.toggle("v20-grey-zone",!y);if(!y){m.value="";$("distModeMonth").checked=false;}}var off=!y||!String((m||{}).value||"");if(day){day.disabled=off;day.classList.toggle("v20-grey",off);var dg=day.closest(".form-group");if(dg)dg.classList.toggle("v20-grey-zone",off);if(off){day.value="";$("distModeDay").checked=false;}}}
+  function restoreFixedFilterGrids(){var dg=$("distributorFilterGrid");if(dg)["distFilterYear","distFilterMonth","distFilterDay","distFilterFrom","distFilterTo"].forEach(function(id){var e=$(id),g=e&&e.closest(".form-group");if(g&&g.parentNode!==dg)dg.appendChild(g);});var sg=$("snappTripFilterGrid");if(sg)["snappFilterYear","snappFilterMonth","snappFilterRep","snappFilterFrom","snappFilterTo"].forEach(function(id){var e=$(id),g=e&&e.closest(".form-group");if(g&&g.parentNode!==sg)sg.appendChild(g);});var tg=$("snappTopupFilterGrid");if(tg)["snappTopupYear","snappTopupMonth","snappTopupFrom","snappTopupTo"].forEach(function(id){var e=$(id),g=e&&e.closest(".form-group");if(g&&g.parentNode!==tg)tg.appendChild(g);});}
+  function bindFixedGridObserver(){if(document.body.dataset.fixedGridObserver)return;document.body.dataset.fixedGridObserver="1";var t;new MutationObserver(function(){clearTimeout(t);t=setTimeout(function(){var y=$("distFilterYear"),g=$("distributorFilterGrid");if(y&&g&&y.closest(".form-grid")!==g)restoreFixedFilterGrids();},40);}).observe(document.body,{childList:true,subtree:true});}
+  function setupDistributorSales(){restoreFixedFilterGrids();bindFixedGridObserver();renderDistributorActions();bindDistributorFilters();var b=$("btnBuildDistributorReport"),e=$("btnExportDistributorReport");if(b&&!b.dataset.bound){b.dataset.bound="1";b.onclick=function(){renderDistributorReport();$("distributorReportSummary").scrollIntoView({behavior:"smooth"});};}if(e&&!e.dataset.bound){e.dataset.bound="1";e.onclick=downloadDistributorWorkbook;}renderDistributorReport();}
+
+  /* ---------- ۲۸) CRUD قطعی کالا در آخرین لایه ---------- */
+  var PRODUCT_CODE_SEED={"سافتژلامگا3":1001,"سافتژلامگا5":1002,"سافتژلامگا3,5":1003,"سافتژلامگامولتی(3,5,6,9)":1004,"سافتژلامگاوومن":1005,"سافتژلامگامن":1006,"کپسولملاتونین":1007},SHAFA_CODE_MAP={1001:1391911001,1002:1391911002,1003:1391911003,1004:1391911004,1005:1391911006,1006:1391911005,1007:1391902006};
+  function ensureProductCodes(){var S=st(),changed=false;(S.products||[]).forEach(function(p){if(!p.code){var code=PRODUCT_CODE_SEED[norm(p.name)];if(code){p.code=code;changed=true;}}if(p.code&&!p.dayaDbCode){p.dayaDbCode=1111000+Number(p.code);changed=true;}if(p.code&&SHAFA_CODE_MAP[p.code]&&String(p.shafaDbCode||"")!==String(SHAFA_CODE_MAP[p.code])){p.shafaDbCode=SHAFA_CODE_MAP[p.code];changed=true;}});if(changed)save();}
+
+  function resetProductV20(){window._editingProductId="";var f=$("formProduct");if(f)f.reset();var n=$("productName");if(n){n.value="";n.focus();}var b=$("productSavedBanner");if(b)b.hidden=true;}
+  function saveProductV20(){var S=st(),name=String(($("productName")||{}).value||"").trim(),code=parseInt(($("productCode")||{}).value,10)||0;if(!code)return alert("کد کالا را وارد کنید.");if(!name)return alert("نام کالا را وارد کنید.");var id=window._editingProductId||"",idx=(S.products||[]).findIndex(function(p){return(id&&p.id===id)||(!id&&norm(p.name)===norm(name));}),rec=idx>=0?S.products[idx]:{id:"prod-"+Date.now()};rec.name=name;rec.code=code;rec.dayaDbCode=1111000+code;if(SHAFA_CODE_MAP[code])rec.shafaDbCode=SHAFA_CODE_MAP[code];rec.distributorPrice=parseInt(($("productDistPrice")||{}).value,10)||0;rec.pharmacyPrice=parseInt(($("productPrice")||{}).value,10)||0;rec.stock=parseInt(($("productStock")||{}).value,10)||0;if(idx<0)S.products.push(rec);save();window._editingProductId="";try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}v20Toast("✅ کالا «"+name+"» "+(idx<0?"اضافه":"ویرایش")+" شد.");resetProductV20();}
+  function bindProductCrudV20(){var form=$("formProduct"),btn=$("btnSaveProduct");if(btn&&!btn.dataset.v20crud){btn.dataset.v20crud="1";btn.addEventListener("click",function(e){e.preventDefault();e.stopImmediatePropagation();saveProductV20();},true);}if(form&&!form.dataset.v20crud){form.dataset.v20crud="1";form.addEventListener("submit",function(e){e.preventDefault();e.stopImmediatePropagation();saveProductV20();},true);}var pane=$("tab-columns-products"),head=pane&&pane.querySelector("#formProduct")&&pane.querySelector("#formProduct").closest(".card").querySelector(".card-header");if(head&&!$("v20NewProduct")){var n=document.createElement("button");n.id="v20NewProduct";n.type="button";n.className="btn btn-outline btn-sm";n.textContent="➕ کالای جدید";n.onclick=resetProductV20;head.appendChild(n);}window.editProductCatalogItem=function(id){var p=(st().products||[]).filter(function(x){return String(x.id)===String(id);})[0];if(!p)return;window._editingProductId=p.id;if($("productCode"))$("productCode").value=p.code||"";if($("productName"))$("productName").value=p.name||"";if($("productDistPrice"))$("productDistPrice").value=p.distributorPrice||p.price||"";if($("productPrice"))$("productPrice").value=p.pharmacyPrice||p.price||"";if($("productStock"))$("productStock").value=p.stock||"";$("productName").scrollIntoView({behavior:"smooth",block:"center"});};function patchCodes(){var body=$("tableProductsBody"),S=st();if(!body)return;Array.prototype.forEach.call(body.children,function(tr,i){if(tr.querySelector('.v20-product-code'))return;var td=document.createElement('td');td.className='v20-product-code';td.setAttribute('data-no-number-group','1');td.innerHTML='<strong>'+esc(((S.products||[])[i]||{}).code||'—')+'</strong>';tr.insertBefore(td,tr.children[1]||null);});}if(typeof window.renderColumnsProductsTable==='function'&&!window.renderColumnsProductsTable._v20code){var rr=window.renderColumnsProductsTable,w=function(){var x=rr.apply(this,arguments);patchCodes();return x;};w._v20code=true;window.renderColumnsProductsTable=w;}patchCodes();var old=window.deleteProductCatalogItem;window.deleteProductCatalogItem=function(id){var S=st(),p=(S.products||[]).filter(function(x){return String(x.id)===String(id);})[0];if(!p)return;if(!confirm("کالای «"+(p.name||"")+"» حذف شود؟"))return;S.products=(S.products||[]).filter(function(x){return String(x.id)!==String(id);});S.salesTargets=(S.salesTargets||[]).filter(function(t){return norm(t.productName)!==norm(p.name);});(S.orders||[]).forEach(function(o){o.items=(o.items||[]).filter(function(i){return norm(i.name)!==norm(p.name);});});Array.prototype.forEach.call(document.querySelectorAll('.order-item-row'),function(r){var n=r.querySelector('.order-item-name');if(n&&norm(n.value)===norm(p.name))r.remove();});save();try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}v20Toast("✅ کالا حذف شد.");};}
+
+  /* ---------- ۲۹) IndexedDB برای ماندگاری فایل‌های حجیم اکسل ---------- */
+  function bulkDb(){return new Promise(function(res,rej){var q=indexedDB.open("crmBulkData",1);q.onupgradeneeded=function(){if(!q.result.objectStoreNames.contains("kv"))q.result.createObjectStore("kv");};q.onsuccess=function(){res(q.result);};q.onerror=function(){rej(q.error);};});}
+  function bulkPut(key,val){return bulkDb().then(function(db){return new Promise(function(res,rej){var tx=db.transaction("kv","readwrite");tx.objectStore("kv").put(val,key);tx.oncomplete=function(){res();};tx.onerror=function(){rej(tx.error);};});});}
+  function bulkGet(key){return bulkDb().then(function(db){return new Promise(function(res,rej){var q=db.transaction("kv","readonly").objectStore("kv").get(key);q.onsuccess=function(){res(q.result||null);};q.onerror=function(){rej(q.error);};});});}
+  function captureBulkState(){var S=st(),sc=S.snappCorporate||{},dc=S.distributorCompanies||{},dist={};Object.keys(dc).forEach(function(id){var d=dc[id]||{};dist[id]={pharmacyRows:d.pharmacyRows||[],pharmacyImports:d.pharmacyImports||[],inventoryRows:d.inventoryRows||[]};});return{snapp:{rows:sc.rows||[],topups:sc.topups||[],tripImports:sc.tripImports||[],topupImports:sc.topupImports||[]},distributors:dist,savedAt:Date.now()};}
+  function hasBulk(b){return b&&((b.snapp&&((b.snapp.rows||[]).length||(b.snapp.topups||[]).length))||Object.keys(b.distributors||{}).some(function(id){var d=b.distributors[id];return(d.pharmacyRows||[]).length||(d.inventoryRows||[]).length;}));}
+  function applyBulkState(b){if(!hasBulk(b))return false;var S=st();S.snappCorporate=S.snappCorporate||{};["rows","topups","tripImports","topupImports"].forEach(function(k){if((b.snapp[k]||[]).length)S.snappCorporate[k]=b.snapp[k];});S.distributorCompanies=S.distributorCompanies||{};Object.keys(b.distributors||{}).forEach(function(id){var to=S.distributorCompanies[id]||(S.distributorCompanies[id]={id:id}),from=b.distributors[id];["pharmacyRows","pharmacyImports","inventoryRows"].forEach(function(k){if((from[k]||[]).length)to[k]=from[k];});});return true;}
+  function saveBulkVault(){var data=captureBulkState(),local=window.indexedDB?bulkPut("bulk-v1",data).then(function(){return true;}).catch(function(){return false;}):Promise.resolve(false),remote=fetch("/api/bulk",{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1"},body:JSON.stringify(data)}).then(function(r){return r.ok;}).catch(function(){return false;});return Promise.all([local,remote]).then(function(x){return x[0]||x[1];});}
+  function paintHydratedBulk(message){try{saveState(false);}catch(e){}renderSnappCorporate();renderDistributorActions();renderDistributorDatabase();renderDistributorReport();invoiceStatusBaseCache=null;if(message)v20Toast(message);}
+  function fetchServerBulk(){return fetch("/api/bulk",{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){return j&&j.status==="success"?j.data:null;}).catch(function(){return null;});}
+  function initBulkVault(){var now=captureBulkState();if(hasBulk(now))return saveBulkVault().then(function(){window.__CRM_BULK_READY=true;return true;});var local=window.indexedDB?bulkGet("bulk-v1").catch(function(){return null;}):Promise.resolve(null);return local.then(function(b){if(hasBulk(b)){if(applyBulkState(b))paintHydratedBulk("✅ دیتابیس‌های اکسل از حافظه پایدار بازیابی شدند.");return b;}return fetchServerBulk().then(function(remote){if(hasBulk(remote)&&applyBulkState(remote)){paintHydratedBulk("✅ دیتابیس‌های اکسل از حافظه مشترک لینک برنامه بازیابی شدند.");if(window.indexedDB)return bulkPut("bulk-v1",remote).then(function(){return remote;});}return remote;});}).then(function(){window.__CRM_BULK_READY=true;return true;}).catch(function(){window.__CRM_BULK_READY=true;return false;});}
+
+  /* ---------- ۳۰) عنوان واقعی لیبل در جدول اطلاعات کالا ---------- */
+  function fixProductInfoLabels(){var host=$("v19ProdInfo");if(!host)return;var dict={productCode:"کد کالا",productName:"نام کالا",productDistPrice:"قیمت پخش",productPrice:"قیمت داروخانه",productStock:"موجودی انبار"};Array.prototype.forEach.call(host.querySelectorAll("tr[data-fid]"),function(tr){var id=tr.getAttribute("data-fid"),el=$(id)||$("v20pf_"+id),label=dict[id]||"";if(!label&&el){var l=document.querySelector('label[for="'+el.id+'"]')||(el.closest('.form-group')&&el.closest('.form-group').querySelector('label'));if(l)label=String(l.textContent||"").replace(/\*/g,"").trim();}var strong=tr.children[2]&&tr.children[2].querySelector('strong');if(strong&&label&&strong.textContent!==label)strong.textContent=label;});}
+  function bindProductLabelFix(){fixProductInfoLabels();var host=$("v19ProdInfo");if(host&&window.MutationObserver&&!host.dataset.labelFix){host.dataset.labelFix="1";var t;new MutationObserver(function(){clearTimeout(t);t=setTimeout(fixProductInfoLabels,50);}).observe(host,{childList:true,subtree:true});}}
+
+  /* ---------- ۳۱) محافظت آدرس متنی و نمایش کامل ---------- */
+  function bindAddressFieldGuard(){["pharmacyAddress","doctorAddress","orderAddress"].forEach(function(id){var el=$(id);if(!el||el.dataset.addressGuard)return;el.dataset.addressGuard="1";var memory=String(el.value||"");el.addEventListener("input",function(){if(String(el.value||"").trim())memory=el.value;});el.addEventListener("focus",function(){memory=String(el.value||"")||memory;setTimeout(function(){if(!String(el.value||"").trim()&&memory)el.value=memory;},0);});el.addEventListener("click",function(){var before=String(el.value||"")||memory;setTimeout(function(){if(!String(el.value||"").trim()&&before)el.value=before;},0);});});}
+
+  /* ---------- ۳۲) قفل مستقل ترتیب واقعی فرم‌ها بین Refresh ---------- */
+  var MANAGER_ORDER_KEY="CRM_MANAGER_GRID_ORDER_V2",domOrderBusy=false;
+  function mainFormGrid(form){if(!form)return null;for(var i=0;i<form.children.length;i++)if(form.children[i].classList&&form.children[i].classList.contains("form-grid"))return form.children[i];return form.querySelector(".form-grid");}
+  function groupAnchor(g){var e=g&&g.querySelector("input[id],select[id],textarea[id],button[id]");return e?e.id:((g&&g.id)||"");}
+  function lockableGrids(){var out=[];Array.prototype.forEach.call(document.querySelectorAll(".tab-pane .form-grid"),function(grid){var groups=Array.prototype.filter.call(grid.children,function(g){return g.classList&&g.classList.contains("form-group")&&groupAnchor(g);});if(groups.length<2)return;if(out.indexOf(grid)<0)out.push(grid);});return out;}
+  function gridLockKey(grid,index){var form=grid.closest("form[id]"),pane=grid.closest(".tab-pane");return grid.id?("grid:"+grid.id):(form?("form:"+form.id):("pane:"+((pane&&pane.id)||"unknown")+":"+index));}
+  // فقط اقدام صریح مدیر snapshot می‌سازد؛ شروع نسخه/رفرش هرگز ترتیب تازه‌ای را خودکار ضبط نمی‌کند.
+  function captureDomFieldOrder(){if(domOrderBusy)return;var out={};lockableGrids().forEach(function(grid,i){out[gridLockKey(grid,i)]=Array.prototype.filter.call(grid.children,function(g){return g.classList&&g.classList.contains("form-group");}).map(groupAnchor).filter(Boolean);});try{localStorage.setItem(MANAGER_ORDER_KEY,JSON.stringify(out));}catch(e){}}
+  function restoreDomFieldOrder(){var explicit={};try{explicit=JSON.parse(localStorage.getItem(MANAGER_ORDER_KEY)||"{}");}catch(e){}domOrderBusy=true;lockableGrids().forEach(function(grid,i){var seq=explicit[gridLockKey(grid,i)];if(!Array.isArray(seq)||!seq.length)return;var groups={};Array.prototype.forEach.call(grid.children,function(g){var id=groupAnchor(g);if(id)groups[id]=g;});seq.forEach(function(id){if(groups[id])grid.appendChild(groups[id]);});});domOrderBusy=false;}
+  /* v11.39 / turn 65 - one-time canonical orders-form reset (date first) per explicit manager request */
+  function v39OrdersCanonicalReset(){try{if(localStorage.getItem("CRM_V39_ORDER_CANONICAL_RESET")==="1")return;var raw={};try{raw=JSON.parse(localStorage.getItem(MANAGER_ORDER_KEY)||"{}");}catch(e){raw={};}var form=$("formOrder"),grid=form&&mainFormGrid(form);if(grid){var seq=Array.prototype.filter.call(grid.children,function(g){return g&&g.classList&&g.classList.contains("form-group");}).map(groupAnchor).filter(Boolean);if(seq.length>1){raw["form:formOrder"]=seq;lockableGrids().forEach(function(pg,i){var k=gridLockKey(pg,i);if(pg===grid&&k!=="form:formOrder")raw[k]=seq;});try{localStorage.setItem(MANAGER_ORDER_KEY,JSON.stringify(raw));}catch(e){}}}localStorage.setItem("CRM_V39_ORDER_CANONICAL_RESET","1");}catch(e){}}
+  function restoreConfiguredFieldVisibility(root){var panes=root&&root.classList&&root.classList.contains("tab-pane")?[root]:Array.prototype.slice.call(document.querySelectorAll(".tab-pane"));panes.forEach(function(pane){var fields=typeof window.getUnifiedFieldList==="function"?window.getUnifiedFieldList(pane.id):[];(fields||[]).forEach(function(f){if(!f||!f.id)return;var el=$(f.id)||pane.querySelector('[data-custom-field-id="'+f.id+'"]'),g=el&&el.closest&&el.closest(".form-group");if(!g)return;var show=!f.deleted&&f.showInForm!==false;if(show){g.classList.remove("col-hide-form");g.removeAttribute("data-col-hidden");if(g.dataset.permissionHidden!=="1")g.style.removeProperty("display");}else{g.style.setProperty("display","none","important");g.setAttribute("data-col-hidden","1");}});});}
+  function bindDomOrderLock(){document.addEventListener("change",function(e){if(e.target&&e.target.closest&&e.target.closest("#columnsDesignerHost,#manualDesignCanvas,.col-order-input,.col-listorder-input"))setTimeout(captureDomFieldOrder,250);},true);try{v39OrdersCanonicalReset();}catch(e){}document.addEventListener("click",function(e){if(e.target&&e.target.closest&&e.target.closest("#btnManSave"))setTimeout(captureDomFieldOrder,350);},true);setTimeout(function(){restoreConfiguredFieldVisibility(document);restoreDomFieldOrder();},250);setTimeout(function(){restoreConfiguredFieldVisibility(document);restoreDomFieldOrder();},1600);setTimeout(function(){restoreConfiguredFieldVisibility(document);restoreDomFieldOrder();},2800);}
+
+  /* ---------- ۳۳) ترتیب اتمی فرم و لیست بدون ناپدیدشدن فیلد ---------- */
+  function orderEntityKey(tabId){return tabId==="tab-pharmacies"?"pharmacy":tabId==="tab-doctors"?"doctor":tabId==="tab-orders"?"order":tabId==="tab-columns-products"?"products":String(tabId||"").replace(/^tab-/,"");}
+  function writeSafeOrder(tabId,id,flag,value){var S=st(),key=orderEntityKey(tabId),arr=((S.customFields||{})[key]||[]),f=arr.filter(function(x){return x&&x.id===id;})[0];if(f)f[flag]=value;else{S.formFieldMeta=S.formFieldMeta||{};S.formFieldMeta[key]=S.formFieldMeta[key]||{};S.formFieldMeta[key][id]=S.formFieldMeta[key][id]||{};S.formFieldMeta[key][id][flag]=value;}}
+  function safeOrderFields(tabId,id,rowNum,isList){var fields=(typeof window.getUnifiedFieldList==="function"?window.getUnifiedFieldList(tabId):[]).filter(function(f){return f&&f.id&&!f.deleted;}),flag=isList?"listOrder":"order";fields.sort(function(a,b){return(Number(a[flag])||Number(a.order)||999)-(Number(b[flag])||Number(b.order)||999);});var ids=fields.map(function(f){return f.id;}),from=ids.indexOf(id);if(from<0)return;rowNum=Math.max(1,Math.min(ids.length,parseInt(rowNum,10)||1));ids.splice(from,1);ids.splice(rowNum-1,0,id);ids.forEach(function(fid,i){writeSafeOrder(tabId,fid,flag,i+1);});saveState(false);if(isList){var target=LIST_TARGETS.filter(function(t){return t[1]===tabId;})[0];if(target){try{var fn=window[target[0]];if(typeof fn==="function")fn();}catch(e){}setTimeout(function(){v20ReorderListColumns(target[1],target[2],target[3],target[4]);},30);}}else{var moved=$(id),grid=moved&&moved.closest(".form-grid");if(grid)ids.forEach(function(fid){var el=$(fid),g=el&&el.closest(".form-group");if(g&&g.parentNode===grid)grid.appendChild(g);});captureDomFieldOrder();}document.querySelectorAll(isList?".col-listorder-input":".col-order-input").forEach(function(inp){var i=ids.indexOf(inp.dataset.fid);if(i>=0)inp.value=i+1;});v20Toast("✅ ترتیب "+(isList?"لیست":"فرم")+" ذخیره و اعمال شد.");}
+  function bindSafeOrderControls(){if(document.body.dataset.safeOrderBound)return;document.body.dataset.safeOrderBound="1";document.addEventListener("change",function(e){var t=e.target;if(!t||!t.classList)return;var list=t.classList.contains("col-listorder-input"),form=t.classList.contains("col-order-input");if(!list&&!form)return;e.stopImmediatePropagation();safeOrderFields(window._activeColTab||"tab-pharmacies",t.dataset.fid,t.value,list);},true);document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".col-move-up,.col-move-down");if(!b)return;e.preventDefault();e.stopImmediatePropagation();var id=b.dataset.fid,field=(window.getUnifiedFieldList(window._activeColTab)||[]).filter(function(f){return f.id===id;})[0],cur=Number(field&&field.order)||1;safeOrderFields(window._activeColTab,id,cur+(b.classList.contains("col-move-up")?-1:1),false);},true);}
+
+  /* ---------- هُوک رفتن به تب‌ها ---------- */
+  var v20LastTab = (document.querySelector(".tab-pane.active") || {}).id || "";
+  function onTabChanged(id) {
+    if (v20LastTab === "tab-orders" && id !== "tab-orders") clearOrderPharmacyDraft();
+    if (id === "tab-orders" && v20LastTab !== "tab-orders") clearOrderPharmacyDraft();
+    v20LastTab = id;
+    v20RefreshFab();
+    renderVersionBadge();
+    applySnappVisibility();
+    applyCentralPermissions();
+    v20ApplyGreyChains();
+    if (id === "tab-orders") { v20ApplyOrderLock(); bindOrderItemRuntime(); bindOrderPharmacyCardV37(); setTimeout(function(){v20PlaceMatchNearInput();applyOrderItemRoleControls();restoreDomFieldOrder();if(typeof window.updateOrderTotalAmountDisplay==="function")window.updateOrderTotalAmountDisplay();},60); }
+    if (id === "tab-custom-fields") setTimeout(window.v20RenderComboManager, 60);
+    if (id === "tab-columns-products") setTimeout(function(){ renderProductExtras(); applyProductSettings(); bindProductCrudV20(); bindProductLabelFix(); }, 80);
+    if (id === "tab-users-permissions") setTimeout(function(){renderPresetBar();bindUserCrudV27();syncPermissionMasters();},60);
+    if (id === "tab-messengers") setTimeout(renderShareManager, 60);
+    if (id === "tab-snapp-corporate") setTimeout(setupSnappCorporate, 60);
+    if (id === "tab-distributor-companies") setTimeout(renderDistributorCompanies, 60);
+    if (id === "tab-distributor-sales") setTimeout(setupDistributorSales, 60);
+    if (id === "tab-distributor-invoice-status") setTimeout(setupInvoiceStatus, 60);
+    if (id === "tab-distributor-database") setTimeout(renderDistributorDatabase, 60);
+    if (id === "tab-live-location") setTimeout(enhanceLiveLocation, 120);
+    if (id === "tab-my-visit") setTimeout(refreshVisitCards, 60);
+    if (id === "tab-rep-routes") setTimeout(function(){if(typeof window.renderRepRoutesTable==="function")window.renderRepRoutesTable();renderV20Routes();},80);
+    if (id === "tab-activity-log") setTimeout(function(){if(typeof window.renderActivityLogTable==="function")window.renderActivityLogTable();},80);
+    if (id === "tab-leaves") setTimeout(function(){if(typeof window.renderLeavesTable==="function")window.renderLeavesTable();},80);
+    if (id === "tab-rep-homes") setTimeout(function(){window.renderRepHomesTable=renderRepHomesV37;renderRepHomesV37();},80);
+    if (id === "tab-monthly-reports") setTimeout(function(){if(typeof window.renderMonthlyReportsTable==="function")window.renderMonthlyReportsTable();},80);
+    if (id === "tab-notifications") setTimeout(function(){setupNotificationCenterV35();setupPlainRecipientV37();},80);
+    if (id === "tab-sales-targets") setTimeout(function(){setupRepresentativeRoutes();pinRepresentativeRouteFieldsV37();setupTargetPlannerV34();setTimeout(pinRepresentativeRouteFieldsV37,180);},120);
+    if (id === "tab-troubleshooting") setTimeout(renderSecurityStatus, 60);
+    setTimeout(function(){try{applyGlobalFieldOptions($(id)||document);restoreConfiguredFieldVisibility($(id));restoreDomFieldOrder();applyCentralPermissions();}catch(e){}},180);
+  }
+  function wrapSwitchTab() {
+    var os = window.switchTab;
+    if (typeof os !== "function" || os._v20wrapped) return;
+    var w = function (id) {
+      var r = os.apply(this, arguments);
+      try { onTabChanged(id); } catch (e) {}
+      return r;
+    };
+    w._v20wrapped = true;
+    window.switchTab = w;
+  }
+
+  /* ---------- شنونده‌های زنده ---------- */
+  function bindLive() {
+    // بعد از جایگذاری خودکار داروخانه در سفارش، قفل/بازشدن فیلدها
+    document.addEventListener("click", function (e) {
+      if (e.target && e.target.closest && e.target.closest("#tab-orders")) {
+        setTimeout(v20ApplyOrderLock, 70);
+      }
+    });
+    document.addEventListener("change", function () {
+      setTimeout(v20ApplyGreyChains, 30);
+      var pn = $("orderPharmacyName");
+      if (document.activeElement === pn || (pn && !String(pn.value || "").trim())) setTimeout(v20ApplyOrderLock, 40);
+    });
+    document.addEventListener("input", function (e) {
+      if (e.target && e.target.id === "orderPharmacyName" && !String(e.target.value || "").trim()) {
+        setTimeout(v20ApplyOrderLock, 40);
+      }
+    });
+    // اعمال فوری تغییرات کشویی‌ها در مدیر افزودن‌ها
+    var pane = $("tab-custom-fields");
+    if (pane && window.MutationObserver) {
+      var t = null;
+      new MutationObserver(function () {
+        clearTimeout(t);
+        t = setTimeout(function () {
+          var host = $("addTabPanel");
+          if (host && !host.querySelector(".v20-addmgr")) window.v20RenderComboManager();
+        }, 300);
+      }).observe(pane, { childList: true, subtree: true });
+    }
+    // رسم مجدد مدیر کشویی‌ها بعد از هر ذخیره وضعیت (بدون حلقه)
+    var osv = window.saveState;
+    if (typeof osv === "function") {
+      window.saveState = function () {
+        var r = osv.apply(this, arguments);
+        try {
+          var cf = $("tab-custom-fields");
+          if (cf && cf.classList.contains("active") && !window._v20Rendering) {
+            window._v20Rendering = true;
+            setTimeout(function () { window._v20Rendering = false; window.v20RenderComboManager(); }, 350);
+          }
+        } catch (e) {}
+        return r;
+      };
+    }
+  }
+
+  /* ---------- شروع ---------- */
+  function bindOriginSaveGate(){var old=window.saveState;if(typeof old!=="function"||old._originGate)return;var w=function(){if(window.__CRM_HAD_SAVED_STATE===false&&!window.__CRM_ORIGIN_BOOTSTRAP_CHECKED)return;return old.apply(this,arguments);};w._originGate=true;window.saveState=w;}
+  function bootstrapEmptyOriginFromServer(){if(window.__CRM_HAD_SAVED_STATE!==false)return Promise.resolve(false);return fetch("/api/state",{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){var data=j&&j.status==="success"&&j.data;if(!data||typeof data!=="object")return false;var meaningful=["users","pharmacies","doctors","orders","products"].some(function(k){return Array.isArray(data[k])&&data[k].length;});if(!meaningful)return false;localStorage.setItem("CRM_APP_STATE_V2",typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(data):JSON.stringify(data));sessionStorage.setItem("crmOriginBootstrapDone","1");location.reload();return true;}).catch(function(){return false;});}
+  var v20InitDone=false;
+  function init() {
+    if(v20InitDone)return;if(!window.__CRM_ORIGIN_BOOTSTRAP_CHECKED){window.__CRM_ORIGIN_BOOTSTRAP_CHECKED=true;bootstrapEmptyOriginFromServer().then(function(reloaded){if(!reloaded)init();});return;}v20InitDone=true;
+    try { installLatinNumberLaw(); installSafeBrowserGuards(); initBulkVault(); } catch (e) {}
+    try { seedGreyDefaults(); } catch (e) {}
+    try { wrapSwitchTab(); } catch (e) {}
+    try { wrapListRenderers(); bindListOrderObserver(); } catch (e) {}
+    try { bindInstantAddSave(); } catch (e) {}
+    try { bindMirror(); } catch (e) {}
+    try { bindManagerLayoutIntent(); wrapFormLayoutMirror(); wrapAllLegacyLayouts(); } catch (e) {}
+    try { bindLive(); } catch (e) {}
+    try { bindChpassFab(); } catch (e) {}
+    try { bindOrderLocalMatch(); bindOrderItemRuntime(); } catch (e) {}
+    try { bindOrderResetProof(); bindOrderFormPositionLock(); } catch (e) {}
+    try { ensureProductCodes(); bindProductPersistence(); applyProductSettings(); bindProductCrudV20(); bindProductLabelFix(); } catch (e) {}
+    try { syncRepsFromUsers(); renderVersionBadge(); renderPresetBar(); bindUserCrudV27(); } catch (e) {}
+    try { wrapShareModal(); setupNotificationCenterV35(); } catch (e) {}
+    try { renderShareManager(); } catch (e) {}
+    try { bindV20Visit(); } catch (e) {}
+    try { bindLiveAll(); } catch (e) {}
+    try { setupSnappCorporate(); applySnappVisibility(); bindCentralPermissions(); } catch (e) {}
+    try { renderDistributorCompanies(); setupDistributorSales(); renderDistributorDatabase(); } catch (e) {}
+    try { bindEmailBackup(); } catch (e) {}
+    try { bindTargetsV20(); setupRepresentativeRoutes(); setupTargetPlannerV34(); } catch (e) {}
+    try { bindNumberFormatting(); } catch (e) {}
+    try { setupGlobalFieldOptions(); } catch (e) {}
+    try { bindGlobalDateLaw(); } catch (e) {}
+    try { bindAddressFieldGuard(); } catch (e) {}
+    try { bindDomOrderLock(); bindSafeOrderControls(); bindPrivacyRenderers(); } catch (e) {}
+    try { bindDurableServerState(); bindInstantUiRefresh(); } catch (e) {}
+    try { wrapNewestTables(); setupV37FinalGuards(); } catch (e) {}
+    // اجرای دوباره امن پس از تکمیل loadState؛ در اجرای خیلی زود state هنوز null بود و کلیدهای اسنپ/پخش bind نمی‌شدند.
+    // فقط یک تلاش تأخیری کافی است؛ تکرار چندباره همین رندرها عامل مکث محسوس شروع برنامه بود.
+    setTimeout(reliableFeatureBoot,700);
+    // هیچ فیلد/کادر/کلیدی در شروع نسخه خودکار کم یا زیاد نشود؛ تغییر ساختار فقط با اقدام مدیر.
+    // اعمال اولیه موتورها روی تب فعال
+    setTimeout(function () {
+      try {
+        v20ApplyGreyChains();
+        v20ApplyOrderLock();
+        mirrorPharmacyOrderToOrders();
+        var active = document.querySelector(".tab-pane.active");
+        if (active) onTabChanged(active.id);
+      } catch (e) {}
+    }, 250);
+  }
+  function reliableFeatureBoot(){try{setupSnappCorporate();applySnappVisibility();applyCentralPermissions();renderDistributorCompanies();setupDistributorSales();renderDistributorDatabase();if($("tab-distributor-invoice-status")&&$("tab-distributor-invoice-status").classList.contains("active"))setupInvoiceStatus();if($("tab-sales-targets")&&$("tab-sales-targets").classList.contains("active")){setupRepresentativeRoutes();pinRepresentativeRouteFieldsV37();}setupV37FinalGuards();bindOrderLocalMatch();bindOrderResetProof();bindOrderFormPositionLock();bindProductCrudV20();bindProductLabelFix();bindAddressFieldGuard();bindUserCrudV27();wrapListRenderers();bindListOrderObserver();restoreDomFieldOrder();}catch(e){try{console.error("reliable feature boot",e);}catch(x){}}}
+  window.v20SetupSnappCorporate=reliableFeatureBoot;
+  // اتصال هم‌زمان دکمه‌های فایل، مستقل از زمان loadState؛ عملیات واقعی هنگام انتخاب فایل state را می‌خواند.
+  try{installLatinNumberLaw();installSafeBrowserGuards();bindOriginSaveGate();bindManagerLayoutIntent();wrapFormLayoutMirror();wrapAllLegacyLayouts();bindSnappImportButtons();bindProductCrudV20();bindSafeOrderControls();}catch(e){}
+  document.addEventListener("click",function(e){var n=e.target&&e.target.closest&&e.target.closest('[data-target],[data-side-target]');if(!n)return;var id=n.getAttribute('data-target')||n.getAttribute('data-side-target');if(id==='tab-snapp-corporate'||id==='tab-distributor-sales'||id==='tab-distributor-invoice-status'||id==='tab-distributor-database'||id==='tab-columns-products'||id==='tab-users-permissions')setTimeout(reliableFeatureBoot,0);},true);
+  window.addEventListener("load",function(){setTimeout(init,60);});
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { setTimeout(init,60); });
+  else setTimeout(init,60);
+})();

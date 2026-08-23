@@ -4,13 +4,13 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 
 const read = p => fs.readFileSync(new URL(p, import.meta.url), 'utf8');
-const v9 = read('../public/crm-features-v9.js');
-const v11 = read('../public/crm-features-v11.js');
-const v20 = read('../public/crm-features-v20.js');
+const v9 = read('../public/crm-bundle.js');
+const v11 = read('../public/crm-bundle.js');
+const v20 = read('../public/crm-bundle.js');
 const html = read('../public/index.html');
 const data = read('../public/crm-data.js');
 const app = read('../public/crm-app.js');
-const v19 = read('../public/crm-features-v19.js');
+const v19 = read('../public/crm-bundle.js');
 const sw = read('../public/sw.js');
 const server = read('../server.js');
 const gitignore = read('../.gitignore');
@@ -317,7 +317,7 @@ test('multi-part prompts require a real acceptance checklist before ZIP delivery
 });
 
 test('next-chat GitHub handoff records exact publish truth and engine map', () => {
-  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.43\.2/);
+  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.44.0/);
   assert.match(githubHandoff,/4984d17/);assert.match(githubHandoff,/Resource not accessible by integration/);
   assert.match(githubHandoff,/Production[\s\S]*11\.20\.0/);
   assert.match(githubHandoff,/موتور پاک‌سازی خودکار کش/);assert.match(githubHandoff,/موتورهای پایداری داده/);
@@ -354,7 +354,7 @@ test('placed pharmacy notice guard is loop-safe and home representative stays re
 });
 
 test('new build clears only old asset caches before revealing app and prevents manager-screen flash', () => {
-  assert.match(html,/var BUILD="11\.43\.2",key="CRM_ASSET_BUILD"/);
+  assert.match(html,/var BUILD="11\.44.0",key="CRM_ASSET_BUILD"/);
   assert.match(html,/document\.documentElement\.classList\.add\("crm-booting"\)/);
   assert.match(html,/\/cache-reset\?to=/);
   assert.match(server,/caches\.keys\(\)/);
@@ -369,7 +369,7 @@ test('new build clears only old asset caches before revealing app and prevents m
 test('v38 cache rescue automatically forces a fresh build without deleting CRM data', () => {
   const login = read('../public/login.html');
   assert.match(server,/pathname === "\/cache-reset"/);assert.match(server,/"Clear-Site-Data": '\"cache\"'/);
-  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.43\.2"/);
+  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.44.0"/);
   assert.match(html,/\/api\/health\?__crm_nocache=/);assert.match(html,/\/cache-reset\?to=/);assert.match(html,/d\.version!==BUILD/);
   assert.match(login,/CRM_CACHE_RESCUED_/);assert.match(login,/\/cache-reset\?to=/);
   assert.match(sw,/function purgeEveryCache/);assert.match(sw,/CRM_BUILD_ACTIVE/);assert.match(sw,/cache: "reload"/);
@@ -379,7 +379,7 @@ test('v38 cache rescue automatically forces a fresh build without deleting CRM d
     assert.doesNotMatch(source,/indexedDB\.deleteDatabase\s*\(/);
     assert.doesNotMatch(source,/removeItem\(["']CRM_APP_STATE_V2/);
   }
-  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.43\.2'/);
+  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.44.0'/);
 });
 
 test('security hardening blocks dangerous device APIs, cross-origin writes, executables and formula injection', () => {
@@ -394,7 +394,7 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.43\.2', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.44.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
@@ -416,7 +416,7 @@ test('GPS quality rule remains stable and full address parts stay Iran-first wit
 
 test('v11.39 orders form canonical order (date first), one-time reset and dynamic endpoints', () => {
   const html = read('../public/index.html');
-  const v20 = read('../public/crm-features-v20.js');
+  const v20 = read('../public/crm-bundle.js');
   const data = read('../public/crm-data.js');
   const app = read('../public/crm-app.js');
   const form = html.slice(html.indexOf('id="formOrder"'), html.indexOf('</form>', html.indexOf('id="formOrder"')));
@@ -432,7 +432,7 @@ test('v11.39 orders form canonical order (date first), one-time reset and dynami
 });
 
 test('v11.40 removed identities, role-aware recipients, pharmacy pick feedback and reference instant-add guard', () => {
-  const v20 = read('../public/crm-features-v20.js');
+  const v20 = read('../public/crm-bundle.js');
   const html = read('../public/index.html');
   // A) permanently removed identities + projection in every list
   assert.match(v20, /function permanentlyRemovedNamesV40\(/);
@@ -455,7 +455,7 @@ test('v11.40 removed identities, role-aware recipients, pharmacy pick feedback a
   assert.match(v20, /representativeRoutesCard/); assert.match(v20, /btnSaveRepresentativeRoute/);
 });
 test('v11.42 user-report fixes: pharmacy fields, dup guard, role law, notifications plain', () => {
-  const v20 = read('../public/crm-features-v20.js');
+  const v20 = read('../public/crm-bundle.js');
   const app = read('../public/crm-app.js');
   const html = read('../public/index.html');
   assert.match(html,/id="pharmacyType"[\s\S]*?شبانه‌روزی[\s\S]*?نیمه‌وقت/);
@@ -472,13 +472,13 @@ test('v11.42 user-report fixes: pharmacy fields, dup guard, role law, notificati
 });
 
 test('v11.43 changelog is a main tab + diagnosis engine + error collector', () => {
-  const app = read('../public/crm-app.js'); const html = read('../public/index.html'); const v20 = read('../public/crm-features-v20.js');
+  const app = read('../public/crm-app.js'); const html = read('../public/index.html'); const v20 = read('../public/crm-bundle.js');
   assert.match(app,/tab-changelog/); assert.match(html,/id="tab-changelog"/);
   assert.match(html,/window\.__CRM_ERRS/); assert.match(v20,/function runApplyDiagnosisV43\(/);
 });
 
 test('v11.43.1 engine button feedback + permanent version watchdog', () => {
-  const v20 = read('../public/crm-features-v20.js');
+  const v20 = read('../public/crm-bundle.js');
   assert.match(v20,/btnD.disabled=true/);
   assert.match(v20,/موتور تشخیص تمام شد/);
   assert.match(v20,/function installVersionWatchdog\(/);
@@ -486,9 +486,9 @@ test('v11.43.1 engine button feedback + permanent version watchdog', () => {
   assert.match(v20,/visibilitychange/);
 });
 
-test('v11.43.2 safe cache-hardening', () => {
+test('v11.44.0 safe cache-hardening', () => {
   const html = read('../public/index.html'); const app = read('../public/crm-app.js');
   assert.match(html,/http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/);
-  assert.match(app,/CRM_APP_VERSION = "11.43.2"/);
+  assert.match(app,/CRM_APP_VERSION = "11.44.0"/);
   assert.match(app,/بارگذاری شد/);
 });

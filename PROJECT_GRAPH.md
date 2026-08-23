@@ -10,31 +10,22 @@
 1. `vendor/leaflet.js`
 2. `crm-data.js`
 3. `crm-app.js`
-4. `crm-features-v9.js`
-5. `iran-facilities.js`
-6. `crm-features-v10.js`
-7. `crm-features-v11.js`
-8. `crm-features-v12.js`
-9. `crm-features-v13.js`
-10. `crm-jalali.js`
-11. `crm-features-v14.js`
-12. `crm-features-v15.js`
-13. `crm-features-v16.js`
-14. `crm-features-v17.js`
-15. `crm-features-v18.js`
-16. `crm-features-v19.js`
-17. `crm-features-v20.js`
+4. `crm-bundle.js`
 
 ## ب) کارت فایل‌ها (نقش + توابع + نام‌های window که می‌سازد)
 
-### `server.js` (23357 بایت)
+### `server.js` (24389 بایت)
 - نقش: سرور سبک Node.js برای Render — ورود جدا، gzip، health، ژئوکد، محدودیت نرخ
 - تعداد توابع داخلی: 15
-- endpointهای سرور: `/api/backup`, `/api/backup/email`, `/api/bulk`, `/api/bulk`, `/api/push/public-key`, `/api/push/send`, `/api/push/subscribe`, `/api/state`, `/api/state`
+- endpointهای سرور: `/api/backup`, `/api/backup/email`, `/api/bulk`, `/api/bulk`, `/api/feedback`, `/api/feedback`, `/api/push/public-key`, `/api/push/send`, `/api/push/subscribe`, `/api/state`, `/api/state`
 
 ### `scripts/build-sw.mjs` (2656 بایت)
 - نقش: #!/usr/bin/env node
 - تعداد توابع داخلی: 2
+
+### `scripts/build.js` (720 بایت)
+- نقش: #!/usr/bin/env node
+- تعداد توابع داخلی: 0
 
 ### `scripts/clean-extra-files.mjs` (7278 بایت)
 - نقش: #!/usr/bin/env node
@@ -56,91 +47,26 @@
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (176390 بایت)
+### `public/crm-app.js` (177840 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 169
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
 
+### `public/crm-bundle.js` (812845 بایت)
+- نقش: * crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
+- تعداد توابع داخلی: 846
+- نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `WIDGET_PALETTE`, `__CRM_BULK_READY`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_RESCUING`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__lastHealth`, `__v40LastPick`, `_actMap`, `_actMarks`, `_activeAddTab`, `_activeColTab`, `_activeManualTab`, `_colDelPatched`, `_colEditScroll`, `_editingBoxId`, `_editingColField`, `_editingProductId`, `_jalaliBuildPatched`, `_jalaliLayoutPatched`, `_jalaliRenderPatched`, `_jalaliSw`, `_layoutBusy`, `_manPick`, `_manSelected`, `_palDelegate`, `_v12OrderWrap`, `_v12Sw`, `_v13LayoutWrap`, `_v13OrderId`
+
 ### `public/crm-data.js` (63491 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 1
-
-### `public/crm-features-v10.js` (13643 بایت)
-- نقش: v10 — ورود جدا، ویجت داشبورد، تارگت، عیب‌یابی تصویری، افزودن لحظه‌ای، پنهان‌سازی دسترسی
-- تعداد توابع داخلی: 22
-- نام‌های window که تعریف/بازنویسی می‌کند: `__lastHealth`, `switchTab`
-
-### `public/crm-features-v11.js` (109491 بایت)
-- نقش: v11 — تغییر رمز، ردیف واقعی، اکسل خط‌کشی، ویزیت زنده، تارگت، ستون‌ها، دسترسی ریز
-- تعداد توابع داخلی: 101
-- نام‌های window که تعریف/بازنویسی می‌کند: `FA_FIELD_LABELS`, `_actMap`, `_actMarks`, `_activeColTab`, `_colDelPatched`, `_colEditScroll`, `_editingBoxId`, `_editingColField`, `_layoutBusy`, `_visitKeepAlive`, `addWidgetToActiveTab`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `applyFullFormLayout`, `applySelectExtraOptions`, `builtinFieldValue`, `changeUserPassword`, `cleanupOrphanCustomFields`, `deleteCustomField`, `downloadCSVFile`, `extraListColumns`, `getAllMenuSections`, `getMainGrid`, `getUnifiedFieldList`, `groupIsShared`, `isColShownInList`, `paintFieldBox`, `paintRequiredStar`, `refreshColumnsDesigner`, `renderAllSystemSelects`, `renderColBoxInfoTable`, `renderColBoxList`, `renderColBtnInfoTable`, `renderExtraTabCustomFields`, `renderUserCardsList`, `switchTab`, `validateRequiredFields`, `writeFieldSize`
-
-### `public/crm-features-v12.js` (44613 بایت)
-- نقش: v12 — نشستن فیلد روی تب اصلی، ویرایش کادر، کلیدهای اصلی در طراح، تب ساز مدیر
-- تعداد توابع داخلی: 37
-- نام‌های window که تعریف/بازنویسی می‌کند: `WIDGET_PALETTE`, `_activeColTab`, `_activeManualTab`, `_editingBoxId`, `_palDelegate`, `_v12OrderWrap`, `_v12Sw`, `addWidgetToActiveTab`, `applyCustomFieldOrderInForm`, `applyFullFormLayout`, `buildDesignerWidget`, `createUserTab`, `deleteUserTab`, `editUserTab`, `getAllMenuSections`, `iconFromTabLabel`, `placeFieldOnTab`, `refreshColumnsDesigner`, `refreshManualCanvas`, `renderColBoxList`, `switchTab`, `validateRequiredFields`
-
-### `public/crm-features-v13.js` (32088 بایت)
-- نقش: v13 — یک‌بار شدن امکانات آماده + تب طراحی دستی تب‌ها (درگ، اندازه، کپی چیدمان)
-- تعداد توابع داخلی: 44
-- نام‌های window که تعریف/بازنویسی می‌کند: `_activeManualTab`, `_v13LayoutWrap`, `_v13OrderId`, `_v13RenderWrap`, `_v13Sw`, `addWidgetToActiveTab`, `applyCustomFieldOrderInForm`, `applyFullFormLayout`, `copyPageToTab`, `dedupeTabWidgets`, `getAllMenuSections`, `getUnifiedFieldList`, `lockManualDesigner`, `placeFieldOnTab`, `refreshManualCanvas`, `renderCustomFieldsInForm`, `switchTab`
-
-### `public/crm-features-v14.js` (34125 بایت)
-- نقش: v14 — تب افزودن‌ها مثل ستون‌ها، گزینه کشویی با ویرایش/حذف، انتخاب داروخانه هم‌نام، فیلد کالا، ویرایش تب
-- تعداد توابع داخلی: 42
-- نام‌های window که تعریف/بازنویسی می‌کند: `_activeAddTab`, `_v14SavePatch`, `_v14Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `editUserTab`, `getAllMenuSections`, `iconFromTabLabel`, `refreshColumnsDesigner`, `setupAllFormSubmitHandlers`, `switchTab`
-
-### `public/crm-features-v15.js` (23014 بایت)
-- نقش: v15 — سایز واقعی فیلد، فریز سرستون+اسکرول افقی زیر آن، ذخیره افزودن، حفظ تنظیمات، طراح دستی بدون خراب کردن فرم/لیست
-- تعداد توابع داخلی: 29
-- نام‌های window که تعریف/بازنویسی می‌کند: `_manSelected`, `_v15Paint`, `_v15Sw`, `applyFullFormLayout`, `fieldKeyForTab`, `renderAddTabGrid`, `renderAddTabPanel`, `switchTab`, `writeFieldSize`
-
-### `public/crm-features-v16.js` (32795 بایت)
-- نقش: v16 — کشویی قابل تایپ/جستجو، افزودن شهر بعد از استان، نام داروخانه سراسری، فریز سرستون، قفل طراح دستی
-- تعداد توابع داخلی: 48
-- نام‌های window که تعریف/بازنویسی می‌کند: `_manPick`, `_manSelected`, `_v16Sw`, `_v16fly`, `_v16geoWrap`, `applyFieldPixelSize`, `attachInstantAdd`, `isKnownPharmacy`, `lockManualDesigner`, `populateCities`, `populateDistricts`, `populateProvinces`, `refreshFrozenTable`, `rememberPharmacyName`, `switchTab`
-
-### `public/crm-features-v17.js` (19662 بایت)
-- نقش: v17 — زیرهم، عرض در فرم ویرایش، اسکرول ویرایش، حذف بدون پنهان‌سازی بعدی،
-- تعداد توابع داخلی: 31
-- نام‌های window که تعریف/بازنویسی می‌کند: `_v17Sw`, `_v17delPh`, `_v17fly`, `attachInstantAdd`, `builtinFieldValue`, `deletePharmacy`, `lockManualDesigner`, `rememberPharmacyName`, `switchTab`
-
-### `public/crm-features-v18.js` (33040 بایت)
-- نقش: v18 — ستاره چسبیده، فونت نه عرض، ترتیب فرم/لیست جدا، ارتفاع واقعی،
-- تعداد توابع داخلی: 35
-- نام‌های window که تعریف/بازنویسی می‌کند: `_editingBoxId`, `_editingColField`, `_v18Confirm`, `_v18DefaultReq`, `_v18Sw`, `_v18Widget`, `applyAllFormLayouts`, `applyFullFormLayout`, `buildDesignerWidget`, `copyPageToTab`, `getUnifiedFieldList`, `lockManualDesigner`, `renderColBoxInfoTable`, `renderColBtnInfoTable`, `switchTab`, `validateRequiredFields`
-
-### `public/crm-features-v19.js` (61295 بایت)
-- نقش: v19 (11.15.0) — ستاره فقط تیک مدیر، کشویی‌های کنارهم + افزودن با تایپ،
-- تعداد توابع داخلی: 65
-- نام‌های window که تعریف/بازنویسی می‌کند: `_v18DefaultReq`, `_v19BackupLayoutGuard`, `_v19ComboHook`, `_v19Hist`, `_v19IcObs`, `_v19ProdTableWrap`, `_v19Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `extraListColumns`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderPharmaciesList`, `switchTab`, `testServerConnectivity`
-
-### `public/crm-features-v20.js` (283655 بایت)
-- نقش: ============================================================
-- تعداد توابع داخلی: 321
-- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__V40_REFADD`, `__v40LastPick`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFieldPermissions`, `applyFullFormLayout`, `applyUserRolePermissions`, `attachJalaliPicker`, `builtinFieldValue`, `createCustomMarker`, `deleteCustomField`, `deleteProductCatalogItem`, `deleteRepHome`, `deleteUserCard`, `editProductCatalogItem`, `editRepHome`, `editUserCard`, `extraListColumns`, `getUnifiedFieldList`, `open`, `openRowDetailsModal`, `performAutoBackup`, `renderActivityLogTable`, `renderActivityMapAndChart`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderExtraTabCustomFields`, `renderLeavesTable`, `renderLiveLocationTab`, `renderMonthlyReportsTable`
-
-### `public/crm-features-v9.js` (72007 بایت)
-- نقش: ===========================================================================
-- تعداد توابع داخلی: 104
-- نام‌های window که تعریف/بازنویسی می‌کند: `builtinFieldValue`, `downloadCSVFile`, `getOrderItemsFromUI`, `isColShownInList`, `renderDoctorsList`, `renderLiveLocationTab`, `renderOrdersList`, `renderPharmaciesList`, `setupLiveLocationTab`, `setupRepsTab`, `switchTab`, `validateRequiredFields`
-
-### `public/crm-jalali.js` (25683 بایت)
-- نقش: تقویم شمسی واقعی + نشانگر میلادی JAN..DEC + تقویم کنار فیلد تاریخ + افزودن لحظه‌ای
-- تعداد توابع داخلی: 38
-- نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `_jalaliBuildPatched`, `_jalaliLayoutPatched`, `_jalaliRenderPatched`, `_jalaliSw`, `activeDateInputForPicker`, `applyFullFormLayout`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `refreshAllDateBadges`, `renderCustomFieldsInForm`, `renderJalaliCalendarDays`, `setupInstantAddAll`, `setupJalaliCalendarPicker`, `setupJalaliDateAutoSlash`, `switchTab`
-
-### `public/iran-facilities.js` (11799 بایت)
-- نقش: پایگاه مرجع مراکز درمان ایران — مراکز شاخص هر استان (نه تک‌تک داروخانه‌های کشور)
-- تعداد توابع داخلی: 0
-- نام‌های window که تعریف/بازنویسی می‌کند: `IRAN_FACILITIES`
 
 ### `public/sw-template.js` (13719 بایت)
 - نقش: * ============================================================
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (3742 بایت)
-- نقش: const BUILD = "11.40.1";
+- نقش: const BUILD = "11.44.0";
 - تعداد توابع داخلی: 3
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -150,273 +76,175 @@
 
 ## ج) گراف بازنویسی نام‌های window (چه فایلی روی چه فایلی سوار می‌شود)
 
-- `__CRM_HAD_SAVED_STATE`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-features-v20.js`
-- `_activeColTab`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v11.js` ← `public/crm-features-v12.js`
-- `_activeManualTab`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v12.js` ← `public/crm-features-v13.js`
-- `_editingBoxId`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v11.js` ← `public/crm-features-v12.js` ← `public/crm-features-v18.js`
-- `_editingColField`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v11.js` ← `public/crm-features-v18.js`
-- `_editingProductId`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-features-v20.js`
-- `_manSelected`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v15.js` ← `public/crm-features-v16.js`
-- `_v18DefaultReq`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v18.js` ← `public/crm-features-v19.js`
-- `activeDateInputForPicker`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-jalali.js`
-- `addWidgetToActiveTab`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v11.js` ← `public/crm-features-v12.js` ← `public/crm-features-v13.js`
-- `applyAllFormLayouts`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-features-v11.js` ← `public/crm-features-v18.js`
-- `applyCustomFieldOrderInForm`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-features-v11.js` ← `public/crm-features-v12.js` ← `public/crm-features-v13.js`
-- `applyFullFormLayout`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v11.js` ← `public/crm-features-v12.js` ← `public/crm-features-v13.js` ← `public/crm-jalali.js` ← `public/crm-features-v14.js` ← `public/crm-features-v15.js` ← `public/crm-features-v18.js` ← `public/crm-features-v19.js` ← `public/crm-features-v20.js`
-- `applySelectExtraOptions`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v11.js` ← `public/crm-features-v14.js` ← `public/crm-features-v19.js`
-- `attachInstantAdd`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-jalali.js` ← `public/crm-features-v16.js` ← `public/crm-features-v17.js`
-- `attachJalaliPicker`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-jalali.js` ← `public/crm-features-v20.js`
-- `buildDesignerWidget`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-features-v12.js` ← `public/crm-jalali.js` ← `public/crm-features-v18.js`
-- `builtinFieldValue`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v9.js` ← `public/crm-features-v11.js` ← `public/crm-features-v17.js` ← `public/crm-features-v20.js`
-- `cleanupOrphanCustomFields`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-features-v11.js`
-- `copyPageToTab`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v13.js` ← `public/crm-features-v18.js`
-- `deleteCustomField`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v11.js` ← `public/crm-features-v20.js`
-- `downloadCSVFile`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v9.js` ← `public/crm-features-v11.js`
-- `editUserTab`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v12.js` ← `public/crm-features-v14.js`
-- `extraListColumns`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v11.js` ← `public/crm-features-v19.js` ← `public/crm-features-v20.js`
-- `getAllMenuSections`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-features-v11.js` ← `public/crm-features-v12.js` ← `public/crm-features-v13.js` ← `public/crm-features-v14.js`
-- `getUnifiedFieldList`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v11.js` ← `public/crm-features-v13.js` ← `public/crm-features-v18.js` ← `public/crm-features-v20.js`
-- `iconFromTabLabel`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v12.js` ← `public/crm-features-v14.js`
-- `isColShownInList`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v9.js` ← `public/crm-features-v11.js`
-- `lockManualDesigner`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v13.js` ← `public/crm-features-v16.js` ← `public/crm-features-v17.js` ← `public/crm-features-v18.js`
-- `performAutoBackup`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v19.js` ← `public/crm-features-v20.js`
-- `placeFieldOnTab`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v12.js` ← `public/crm-features-v13.js`
-- `refreshColumnsDesigner`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v11.js` ← `public/crm-features-v12.js` ← `public/crm-features-v14.js`
-- `refreshManualCanvas`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v12.js` ← `public/crm-features-v13.js`
-- `rememberPharmacyName`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-features-v16.js` ← `public/crm-features-v17.js`
-- `renderAllCustomFieldsInFormsAndTables`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v19.js` ← `public/crm-features-v20.js`
-- `renderColBoxInfoTable`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v11.js` ← `public/crm-features-v18.js`
-- `renderColBoxList`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v11.js` ← `public/crm-features-v12.js`
-- `renderColBtnInfoTable`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v11.js` ← `public/crm-features-v18.js`
-- `renderColumnsProductsTable`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v19.js` ← `public/crm-features-v20.js`
-- `renderCustomFieldsInForm`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v13.js` ← `public/crm-jalali.js`
-- `renderExtraTabCustomFields`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-features-v11.js` ← `public/crm-features-v20.js`
-- `renderLiveLocationTab`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v9.js` ← `public/crm-features-v20.js`
-- `renderPharmaciesList`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v9.js` ← `public/crm-features-v19.js`
-- `renderUserCardsList`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v11.js` ← `public/crm-features-v20.js`
-- `switchTab`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v9.js` ← `public/crm-features-v10.js` ← `public/crm-features-v11.js` ← `public/crm-features-v12.js` ← `public/crm-features-v13.js` ← `public/crm-jalali.js` ← `public/crm-features-v14.js` ← `public/crm-features-v15.js` ← `public/crm-features-v16.js` ← `public/crm-features-v17.js` ← `public/crm-features-v18.js` ← `public/crm-features-v19.js` ← `public/crm-features-v20.js`
-- `validateRequiredFields`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-features-v9.js` ← `public/crm-features-v11.js` ← `public/crm-features-v12.js` ← `public/crm-features-v18.js`
-- `writeFieldSize`: تعریف/بازنویسی به ترتیب لود → `public/crm-features-v11.js` ← `public/crm-features-v15.js`
+- `__CRM_HAD_SAVED_STATE`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
+- `_editingProductId`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
+- `activeDateInputForPicker`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
+- `applyAllFormLayouts`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
+- `applyCustomFieldOrderInForm`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
+- `attachInstantAdd`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
+- `attachJalaliPicker`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
+- `buildDesignerWidget`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
+- `cleanupOrphanCustomFields`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
+- `getAllMenuSections`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
+- `rememberPharmacyName`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
+- `renderExtraTabCustomFields`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
+- `validateRequiredFields`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
 
 ## د) گراف API (سرویس api ↔ مصرف‌کننده‌ها)
 
 - `/api/backup` [GET] — مصرف‌کننده: —
-- `/api/backup/email` [POST] — مصرف‌کننده: `public/crm-features-v20.js`
-- `/api/bulk` [GET] — مصرف‌کننده: `public/crm-features-v20.js`
+- `/api/backup/email` [POST] — مصرف‌کننده: `public/crm-bundle.js`
+- `/api/bulk` [GET] — مصرف‌کننده: `public/crm-bundle.js`
+- `/api/feedback` [GET] — مصرف‌کننده: `public/crm-bundle.js`
 - `/api/geocode?q=` [؟] — مصرف‌کننده: `public/crm-app.js`
-- `/api/health` [؟] — مصرف‌کننده: `public/crm-features-v10.js`, `public/crm-features-v19.js`
-- `/api/push/public-key` [GET] — مصرف‌کننده: `public/crm-features-v20.js`
-- `/api/push/send` [POST] — مصرف‌کننده: `public/crm-features-v20.js`
-- `/api/push/subscribe` [POST] — مصرف‌کننده: `public/crm-features-v20.js`
-- `/api/reverse?lat=` [؟] — مصرف‌کننده: `public/crm-app.js`, `public/crm-features-v20.js`
-- `/api/state` [GET] — مصرف‌کننده: `public/crm-features-v19.js`, `public/crm-features-v20.js`
+- `/api/health` [؟] — مصرف‌کننده: `public/crm-bundle.js`
+- `/api/health?__diag=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
+- `/api/health?__wd=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
+- `/api/push/public-key` [GET] — مصرف‌کننده: `public/crm-bundle.js`
+- `/api/push/send` [POST] — مصرف‌کننده: `public/crm-bundle.js`
+- `/api/push/subscribe` [POST] — مصرف‌کننده: `public/crm-bundle.js`
+- `/api/reverse?lat=` [؟] — مصرف‌کننده: `public/crm-app.js`, `public/crm-bundle.js`
+- `/api/state` [GET] — مصرف‌کننده: `public/crm-bundle.js`
 
 ## هـ) گراف حافظه مرورگر (کلید ↔ فایل‌های دست‌زننده)
 
 - `CRM_APP_STATE_CORRUPT_ARCHIVE_` ← localStorage: `public/crm-app.js`
-- `CRM_APP_STATE_V2` ← localStorage: `public/crm-features-v10.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`
+- `CRM_APP_STATE_V2` ← localStorage: `public/crm-bundle.js`
 - `CRM_ASSET_BUILD` ← localStorage: `server.js`
 - `CRM_CACHE_RESCUED_` ← sessionStorage: `server.js`
-- `CRM_DIAG_LOG` ← localStorage: `public/crm-features-v11.js`
-- `CRM_LAST_GPS` ← localStorage: `public/crm-features-v11.js`
-- `CRM_USERS_AUTH` ← localStorage: `public/crm-app.js`, `public/crm-features-v11.js`, `public/crm-features-v20.js`
-- `CRM_V39_ORDER_CANONICAL_RESET` ← localStorage: `public/crm-features-v20.js`
-- `crmLoggedIn` ← sessionStorage: `public/crm-app.js`, `public/crm-features-v10.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`
-- `crmOriginBootstrapDone` ← sessionStorage: `public/crm-features-v20.js`
-- `crmUserId` ← sessionStorage: `public/crm-features-v20.js`, `public/crm-features-v9.js`
-- `crmUserName` ← sessionStorage: `public/crm-features-v10.js`, `public/crm-features-v11.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`
-- `crmUserRole` ← sessionStorage: `public/crm-features-v10.js`, `public/crm-features-v11.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`
-- `crmUsername` ← sessionStorage: `public/crm-features-v19.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`
-- `distPass_` ← sessionStorage: `public/crm-features-v20.js`
+- `CRM_DIAG_LOG` ← localStorage: `public/crm-bundle.js`
+- `CRM_LAST_GPS` ← localStorage: `public/crm-bundle.js`
+- `CRM_USERS_AUTH` ← localStorage: `public/crm-app.js`, `public/crm-bundle.js`
+- `CRM_V39_ORDER_CANONICAL_RESET` ← localStorage: `public/crm-bundle.js`
+- `crmLoggedIn` ← sessionStorage: `public/crm-app.js`, `public/crm-bundle.js`
+- `crmOriginBootstrapDone` ← sessionStorage: `public/crm-bundle.js`
+- `crmUserId` ← sessionStorage: `public/crm-bundle.js`
+- `crmUserName` ← sessionStorage: `public/crm-bundle.js`
+- `crmUserRole` ← sessionStorage: `public/crm-bundle.js`
+- `crmUsername` ← sessionStorage: `public/crm-bundle.js`
+- `distPass_` ← sessionStorage: `public/crm-bundle.js`
 
 ## و) گراف تب‌ها (تب ↔ فایل‌هایی که با المان‌هایش کار می‌کنند)
 
 ### tab-activity-log «⏱️ فعالیت لحظه‌ای»
 - `public/crm-app.js` → 2 شناسه (مثل: `btnRefreshActivity`, `tableActivityLogBody`)
-- `public/crm-features-v11.js` → 2 شناسه (مثل: `activityChartBox`, `map-activity-log`)
-- `public/crm-features-v20.js` → 1 شناسه (مثل: `tableActivityLogBody`)
-- `public/crm-features-v9.js` → 1 شناسه (مثل: `activityChartBox`)
+- `public/crm-bundle.js` → 3 شناسه (مثل: `activityChartBox`, `map-activity-log`, `tableActivityLogBody`)
 
 ### tab-backup «💾 پشتیبان‌گیری»
 - `public/crm-app.js` → 14 شناسه (مثل: `autoBackupHandleStatus`, `btnCancelRestore`, `btnConfirmRestore`, `btnManualBackupNow`, `btnSelectAutoBackupFolder`, `chkAutoBackupEnabled`, `dropzoneRestore`, `fileInputRestore`)
-- `public/crm-features-v19.js` → 1 شناسه (مثل: `autoBackupHandleStatus`)
-- `public/crm-features-v20.js` → 1 شناسه (مثل: `autoBackupHandleStatus`)
-- `public/crm-features-v9.js` → 2 شناسه (مثل: `backupEmailInput`, `backupIntervalSelect`)
+- `public/crm-bundle.js` → 3 شناسه (مثل: `autoBackupHandleStatus`, `backupEmailInput`, `backupIntervalSelect`)
+
+### tab-changelog «»
+- `public/crm-bundle.js` → 6 شناسه (مثل: `btnDownloadUnappliedReport`, `btnRunDiagnosis`, `btnSendUnappliedReport`, `v41ChangeHost`, `v41DiagHost`, `v41ReportStatus`)
 
 ### tab-columns-products «🧱 ستون‌ها و کالاها»
 - `public/crm-app.js` → 8 شناسه (مثل: `btnSaveProduct`, `formProduct`, `productDistPrice`, `productName`, `productPrice`, `productSavedBanner`, `productStock`, `tableProductsBody`)
-- `public/crm-features-v11.js` → 1 شناسه (مثل: `columnsDesignerHost`)
-- `public/crm-features-v12.js` → 1 شناسه (مثل: `columnsDesignerHost`)
-- `public/crm-features-v14.js` → 2 شناسه (مثل: `btnSaveProduct`, `formProduct`)
-- `public/crm-features-v16.js` → 1 شناسه (مثل: `columnsDesignerHost`)
-- `public/crm-features-v18.js` → 1 شناسه (مثل: `columnsDesignerHost`)
-- `public/crm-features-v19.js` → 3 شناسه (مثل: `columnsDesignerHost`, `formProduct`, `tableProductsBody`)
-- `public/crm-features-v20.js` → 9 شناسه (مثل: `btnSaveProduct`, `formProduct`, `productCode`, `productDistPrice`, `productName`, `productPrice`, `productSavedBanner`, `productStock`)
+- `public/crm-bundle.js` → 10 شناسه (مثل: `btnSaveProduct`, `columnsDesignerHost`, `formProduct`, `productCode`, `productDistPrice`, `productName`, `productPrice`, `productSavedBanner`)
 
 ### tab-custom-fields «➕ افزودن‌ها»
 - `public/crm-app.js` → 9 شناسه (مثل: `cfAllowAddOption`, `cfLabel`, `cfOptions`, `cfOptionsWrapper`, `cfShowInForm`, `cfShowInList`, `cfTargetEntity`, `cfType`)
-- `public/crm-features-v14.js` → 12 شناسه (مثل: `addTabGrid`, `addTabPanel`, `btnSaveCustomField`, `cfAllowAddOption`, `cfLabel`, `cfOptions`, `cfSaveStatus`, `cfShowInForm`)
-- `public/crm-features-v15.js` → 10 شناسه (مثل: `btnSaveCustomField`, `cfAllowAddOption`, `cfLabel`, `cfOptions`, `cfSaveStatus`, `cfShowInForm`, `cfShowInList`, `cfTargetEntity`)
-- `public/crm-features-v16.js` → 1 شناسه (مثل: `addTabPanel`)
-- `public/crm-features-v20.js` → 2 شناسه (مثل: `addTabPanel`, `cfTargetEntity`)
+- `public/crm-bundle.js` → 12 شناسه (مثل: `addTabGrid`, `addTabPanel`, `btnSaveCustomField`, `cfAllowAddOption`, `cfLabel`, `cfOptions`, `cfSaveStatus`, `cfShowInForm`)
 
 ### tab-dashboard «📊 داشبورد»
 - `public/crm-app.js` → 2 شناسه (مثل: `dashboardLaunchpadGrid`, `map-dashboard-overview`)
-- `public/crm-features-v10.js` → 4 شناسه (مثل: `btnAddDashWidget`, `dashboardChartsWidget`, `dashboardWidgetPicker`, `dashboardWidgetsHost`)
-- `public/crm-features-v9.js` → 1 شناسه (مثل: `dashboardChartsWidget`)
+- `public/crm-bundle.js` → 4 شناسه (مثل: `btnAddDashWidget`, `dashboardChartsWidget`, `dashboardWidgetPicker`, `dashboardWidgetsHost`)
 
 ### tab-distributor-companies «🏢 اطلاعات شرکت‌ها»
-- `public/crm-features-v20.js` → 1 شناسه (مثل: `distributorCompanyGrid`)
+- `public/crm-bundle.js` → 1 شناسه (مثل: `distributorCompanyGrid`)
 
 ### tab-distributor-database «🗄️ دیتابیس پخش‌ها»
-- `public/crm-features-v20.js` → 2 شناسه (مثل: `distributorDatabaseGrid`, `distributorRawViewer`)
+- `public/crm-bundle.js` → 2 شناسه (مثل: `distributorDatabaseGrid`, `distributorRawViewer`)
 
 ### tab-distributor-invoice-status «🧾 وضعیت فاکتور پخش‌ها»
-- `public/crm-features-v20.js` → 12 شناسه (مثل: `invoiceStatusBody`, `invoiceStatusFrom`, `invoiceStatusModeFrom`, `invoiceStatusModeMonth`, `invoiceStatusModeTo`, `invoiceStatusModeYear`, `invoiceStatusMonth`, `invoiceStatusRep`)
+- `public/crm-bundle.js` → 12 شناسه (مثل: `invoiceStatusBody`, `invoiceStatusFrom`, `invoiceStatusModeFrom`, `invoiceStatusModeMonth`, `invoiceStatusModeTo`, `invoiceStatusModeYear`, `invoiceStatusMonth`, `invoiceStatusRep`)
 
 ### tab-distributor-sales «📦 اطلاعات فروش پخش‌ها»
-- `public/crm-features-v20.js` → 16 شناسه (مثل: `btnBuildDistributorReport`, `btnExportDistributorReport`, `distFilterDay`, `distFilterFrom`, `distFilterMonth`, `distFilterTo`, `distFilterYear`, `distModeDay`)
+- `public/crm-bundle.js` → 16 شناسه (مثل: `btnBuildDistributorReport`, `btnExportDistributorReport`, `distFilterDay`, `distFilterFrom`, `distFilterMonth`, `distFilterTo`, `distFilterYear`, `distModeDay`)
 
 ### tab-doctors «👨‍⚕️ پزشکان»
 - `public/crm-app.js` → 27 شناسه (مثل: `btnDocMapSearch`, `btnDocPercentageNo`, `btnDocPercentageYes`, `btnDoctorCurrentLocation`, `btnDoctorGetAddressFromPoint`, `btnExportDoctorsCSV`, `btnSaveDoctor`, `docFileDisplay`)
-- `public/crm-features-v14.js` → 4 شناسه (مثل: `btnSaveDoctor`, `doctorEditId`, `doctorName`, `formDoctor`)
-- `public/crm-features-v9.js` → 9 شناسه (مثل: `btnDocMapSearch`, `btnDoctorCurrentLocation`, `btnDoctorGetAddressFromPoint`, `cardDocList`, `docFileInput`, `formDoctor`, `searchDoctorInput`, `tableDoctorsBody`)
+- `public/crm-bundle.js` → 12 شناسه (مثل: `btnDocMapSearch`, `btnDoctorCurrentLocation`, `btnDoctorGetAddressFromPoint`, `btnSaveDoctor`, `cardDocList`, `docFileInput`, `doctorEditId`, `doctorName`)
 
 ### tab-install-app «📲 نصب اپ»
-- `public/crm-features-v9.js` → 3 شناسه (مثل: `btnInstallAndroid`, `btnInstallIos`, `btnInstallWindows`)
+- `public/crm-bundle.js` → 3 شناسه (مثل: `btnInstallAndroid`, `btnInstallIos`, `btnInstallWindows`)
 
 ### tab-leaves «📝 مرخصی‌ها»
 - `public/crm-app.js` → 12 شناسه (مثل: `btnExportLeavesCSV`, `formLeaveRequest`, `leaveFromDate`, `leaveFromTime`, `leaveHoursGroup`, `leaveHoursInput`, `leaveReasonInput`, `leaveRepSelect`)
 
 ### tab-live-location «📍 موقعیت زنده»
 - `public/crm-app.js` → 1 شناسه (مثل: `map-live-reps`)
-- `public/crm-features-v20.js` → 4 شناسه (مثل: `btnFindLiveRep`, `liveRepSearchSelect`, `tableLiveReps`, `tableLiveRepsBody`)
-- `public/crm-features-v9.js` → 5 شناسه (مثل: `btnFindLiveRep`, `btnRefreshLiveMap`, `btnSimulateLiveMovement`, `liveRepSearchSelect`, `tableLiveRepsBody`)
+- `public/crm-bundle.js` → 6 شناسه (مثل: `btnFindLiveRep`, `btnRefreshLiveMap`, `btnSimulateLiveMovement`, `liveRepSearchSelect`, `tableLiveReps`, `tableLiveRepsBody`)
 
 ### tab-manual-design «🎨 طراحی دستی تب‌ها»
-- `public/crm-features-v12.js` → 1 شناسه (مثل: `manAddStatus`)
-- `public/crm-features-v13.js` → 12 شناسه (مثل: `btnManCopy`, `btnManOpenTab`, `btnManReset`, `btnManSave`, `manAddStatus`, `manBoxMaker`, `manCopyFrom`, `manCopyTo`)
-- `public/crm-features-v14.js` → 2 شناسه (مثل: `manCopyFrom`, `manCopyTo`)
-- `public/crm-features-v15.js` → 1 شناسه (مثل: `manualDesignCanvas`)
-- `public/crm-features-v16.js` → 1 شناسه (مثل: `manualDesignCanvas`)
-- `public/crm-features-v17.js` → 1 شناسه (مثل: `manualDesignCanvas`)
-- `public/crm-features-v18.js` → 6 شناسه (مثل: `manCopyFrom`, `manCopyModeAll`, `manCopyModePart`, `manCopyPickList`, `manCopyTo`, `manualDesignCanvas`)
+- `public/crm-bundle.js` → 15 شناسه (مثل: `btnManCopy`, `btnManOpenTab`, `btnManReset`, `btnManSave`, `manAddStatus`, `manBoxMaker`, `manCopyFrom`, `manCopyModeAll`)
 
 ### tab-messengers «💬 پیام‌رسان‌ها»
-- `public/crm-features-v20.js` → 1 شناسه (مثل: `messengerTogglesBox`)
-- `public/crm-features-v9.js` → 1 شناسه (مثل: `messengerTogglesBox`)
+- `public/crm-bundle.js` → 1 شناسه (مثل: `messengerTogglesBox`)
 
 ### tab-monthly-reports «📈 گزارش ماهانه»
 - `public/crm-app.js` → 2 شناسه (مثل: `btnExportMonthlyCSV`, `tableMonthlyReportsBody`)
 
 ### tab-my-visit «▶️ شروع/پایان ویزیت»
-- `public/crm-features-v11.js` → 4 شناسه (مثل: `btnEndVisit`, `btnStartVisit`, `map-my-visit`, `visitStatusBox`)
-- `public/crm-features-v20.js` → 3 شناسه (مثل: `btnEndVisit`, `btnStartVisit`, `visitStatusBox`)
+- `public/crm-bundle.js` → 4 شناسه (مثل: `btnEndVisit`, `btnStartVisit`, `map-my-visit`, `visitStatusBox`)
 
 ### tab-notifications «🔔 اعلان‌ها»
 - `public/crm-app.js` → 5 شناسه (مثل: `formSendMessage`, `msgBodyInput`, `msgRecipientSelect`, `msgTitleInput`, `tableNotificationsBody`)
-- `public/crm-features-v20.js` → 5 شناسه (مثل: `formSendMessage`, `msgBodyInput`, `msgRecipientSelect`, `msgTitleInput`, `tableNotificationsBody`)
+- `public/crm-bundle.js` → 5 شناسه (مثل: `formSendMessage`, `msgBodyInput`, `msgRecipientSelect`, `msgTitleInput`, `tableNotificationsBody`)
 
 ### tab-orders «📦 سفارشات»
-- `public/crm-app.js` → 30 شناسه (مثل: `btnAddOrderItemRow`, `btnExportOrdersCSV`, `btnResetOrderForm`, `btnSaveOrder`, `btnTopAutoFillPharmacy`, `existingPharmacyAlertText`, `existingPharmacyTopAlert`, `formOrder`)
-- `public/crm-features-v11.js` → 1 شناسه (مثل: `orderItemsContainer`)
-- `public/crm-features-v14.js` → 12 شناسه (مثل: `btnSaveOrder`, `existingPharmacyAlertText`, `existingPharmacyTopAlert`, `formOrder`, `orderAddress`, `orderCity`, `orderDistrict`, `orderEditId`)
-- `public/crm-features-v15.js` → 3 شناسه (مثل: `orderPharmacyName`, `orderPharmacyPickBox`, `orderTotalAmountDisplay`)
-- `public/crm-features-v17.js` → 9 شناسه (مثل: `existingPharmacyAlertText`, `existingPharmacyTopAlert`, `orderAddress`, `orderCity`, `orderDistrict`, `orderPharmacyMatchedId`, `orderPharmacyName`, `orderPharmacyPickBox`)
-- `public/crm-features-v19.js` → 2 شناسه (مثل: `orderEditId`, `orderItemsContainer`)
-- `public/crm-features-v20.js` → 12 شناسه (مثل: `btnResetOrderForm`, `btnSaveOrder`, `btnTopAutoFillPharmacy`, `existingPharmacyTopAlert`, `formOrder`, `orderCity`, `orderDistrict`, `orderEditId`)
-- `public/crm-features-v9.js` → 7 شناسه (مثل: `cardOrdList`, `formOrder`, `ordListCountBadge`, `orderItemsContainer`, `searchOrderInput`, `tableOrdersBody`, `tableOrdersHeader`)
+- `public/crm-app.js` → 31 شناسه (مثل: `btnAddOrderItemRow`, `btnExportOrdersCSV`, `btnResetOrderForm`, `btnSaveOrder`, `btnTopAutoFillPharmacy`, `existingPharmacyAlertText`, `existingPharmacyTopAlert`, `formOrder`)
+- `public/crm-bundle.js` → 22 شناسه (مثل: `btnResetOrderForm`, `btnSaveOrder`, `btnTopAutoFillPharmacy`, `cardOrdList`, `existingPharmacyAlertText`, `existingPharmacyTopAlert`, `formOrder`, `ordListCountBadge`)
 
 ### tab-overview-map «🗺️ نقشه جامع»
 - `public/crm-app.js` → 4 شناسه (مثل: `btnFocusMapRegion`, `map-full-overview`, `mapFilterCity`, `mapFilterProvince`)
-- `public/crm-features-v11.js` → 5 شناسه (مثل: `btnFocusMapRegion`, `mapFilterCity`, `mapFilterDistrict`, `mapFilterProvince`, `overviewResultsTableWrap`)
-- `public/crm-features-v9.js` → 8 شناسه (مثل: `btnExportOverviewMapCSV`, `btnFocusMapRegion`, `cntOverviewDoctors`, `cntOverviewHospitals`, `cntOverviewPharmacies`, `mapFilterCity`, `mapFilterDistrict`, `mapFilterProvince`)
+- `public/crm-bundle.js` → 9 شناسه (مثل: `btnExportOverviewMapCSV`, `btnFocusMapRegion`, `cntOverviewDoctors`, `cntOverviewHospitals`, `cntOverviewPharmacies`, `mapFilterCity`, `mapFilterDistrict`, `mapFilterProvince`)
 
 ### tab-pharmacies «🏥 داروخانه‌ها»
-- `public/crm-app.js` → 29 شناسه (مثل: `btnExportPharmaciesCSV`, `btnPhMapSearch`, `btnPhPercentageNo`, `btnPhPercentageYes`, `btnPharmacyCurrentLocation`, `btnPharmacyGetAddressFromPoint`, `btnSavePharmacy`, `formPharmacy`)
-- `public/crm-features-v11.js` → 1 شناسه (مثل: `phMapSearchInput`)
-- `public/crm-features-v14.js` → 4 شناسه (مثل: `btnSavePharmacy`, `formPharmacy`, `pharmacyEditId`, `pharmacyName`)
-- `public/crm-features-v16.js` → 8 شناسه (مثل: `formPharmacy`, `pharmacyAddress`, `pharmacyCity`, `pharmacyDistrict`, `pharmacyEditId`, `pharmacyName`, `pharmacyPhone`, `pharmacyProvince`)
-- `public/crm-features-v17.js` → 8 شناسه (مثل: `btnSavePharmacy`, `formPharmacy`, `pharmacyAddress`, `pharmacyCity`, `pharmacyDistrict`, `pharmacyName`, `pharmacyPhone`, `pharmacyProvince`)
-- `public/crm-features-v9.js` → 11 شناسه (مثل: `btnPhMapSearch`, `btnPharmacyCurrentLocation`, `btnPharmacyGetAddressFromPoint`, `cardPhList`, `formPharmacy`, `phFileInput`, `phListCountBadge`, `phTableCountBadge`)
+- `public/crm-app.js` → 32 شناسه (مثل: `btnExportPharmaciesCSV`, `btnPhMapSearch`, `btnPhPercentageNo`, `btnPhPercentageYes`, `btnPharmacyCurrentLocation`, `btnPharmacyGetAddressFromPoint`, `btnSavePharmacy`, `formPharmacy`)
+- `public/crm-bundle.js` → 22 شناسه (مثل: `btnPhMapSearch`, `btnPharmacyCurrentLocation`, `btnPharmacyGetAddressFromPoint`, `btnSavePharmacy`, `cardPhList`, `formPharmacy`, `phFileInput`, `phListCountBadge`)
 
 ### tab-rep-homes «🏠 منزل نمایندگان»
 - `public/crm-app.js` → 3 شناسه (مثل: `repHomeAddressInput`, `repHomeSelect`, `tableRepHomesBody`)
-- `public/crm-features-v20.js` → 1 شناسه (مثل: `tableRepHomesBody`)
-- `public/crm-features-v9.js` → 2 شناسه (مثل: `btnRepHomeCurrentLocation`, `repHomeSelect`)
+- `public/crm-bundle.js` → 3 شناسه (مثل: `btnRepHomeCurrentLocation`, `repHomeSelect`, `tableRepHomesBody`)
 
 ### tab-rep-routes «🛣️ رصد تردد»
 - `public/crm-app.js` → 1 شناسه (مثل: `tableRepRoutesBody`)
-- `public/crm-features-v20.js` → 3 شناسه (مثل: `btnRefreshRepRoutesMap`, `routeRepFilterSelect`, `tableRepRoutesBody`)
-- `public/crm-features-v9.js` → 3 شناسه (مثل: `btnRefreshRepRoutesMap`, `routeRepFilterSelect`, `tableRepRoutesBody`)
+- `public/crm-bundle.js` → 3 شناسه (مثل: `btnRefreshRepRoutesMap`, `routeRepFilterSelect`, `tableRepRoutesBody`)
 
 ### tab-sales-targets «🎯 تارگت فروش»
 - `public/crm-app.js` → 9 شناسه (مثل: `formSalesTarget`, `tableSalesTargetsBody`, `tgtCalcDistPrice`, `tgtCalcPhPrice`, `tgtCountInput`, `tgtMonthSelect`, `tgtProductSelect`, `tgtRepSelect`)
-- `public/crm-features-v10.js` → 6 شناسه (مثل: `tgtCalcDistPrice`, `tgtCalcPhPrice`, `tgtCountInput`, `tgtProductSelect`, `tgtSummaryBox`, `tgtYearInput`)
-- `public/crm-features-v20.js` → 9 شناسه (مثل: `btnSaveRepresentativeRoute`, `formSalesTarget`, `representativeRoutesCard`, `routeManagerCity`, `routeManagerDistrict`, `routeManagerProvince`, `routeManagerRep`, `tableSalesTargetsBody`)
+- `public/crm-bundle.js` → 14 شناسه (مثل: `btnSaveRepresentativeRoute`, `formSalesTarget`, `representativeRoutesCard`, `routeManagerCity`, `routeManagerDistrict`, `routeManagerProvince`, `routeManagerRep`, `tableSalesTargetsBody`)
 
 ### tab-search-info «🔍 جستجوی اطلاعات»
 - `public/crm-app.js` → 38 شناسه (مثل: `btnExportSearchInfoCSV`, `btnNavBalad`, `btnNavGoogle`, `btnNavNeshan`, `btnNavWaze`, `btnRowCopyText`, `btnRowDelete`, `btnRowEdit`)
-- `public/crm-features-v20.js` → 2 شناسه (مثل: `btnRowCopyText`, `rowDetailsContentBox`)
-- `public/crm-features-v9.js` → 3 شناسه (مثل: `formLoginModal`, `jalaliCalendarPopup`, `jalaliTodayBtn`)
-- `public/crm-jalali.js` → 7 شناسه (مثل: `jalaliCalendarPopup`, `jalaliDaysGrid`, `jalaliMonthSelect`, `jalaliNextMonth`, `jalaliPrevMonth`, `jalaliTodayBtn`, `jalaliYearSelect`)
+- `public/crm-bundle.js` → 10 شناسه (مثل: `btnRowCopyText`, `formLoginModal`, `jalaliCalendarPopup`, `jalaliDaysGrid`, `jalaliMonthSelect`, `jalaliNextMonth`, `jalaliPrevMonth`, `jalaliTodayBtn`)
 
 ### tab-snapp-corporate «🚕 اسنپ سازمانی»
-- `public/crm-features-v20.js` → 29 شناسه (مثل: `btnBuildSnappReport`, `btnBuildSnappTopupReport`, `btnExportSnappTopups`, `btnExportSnappView`, `btnImportSnappTopups`, `btnImportSnappTrips`, `btnOpenSnappCorporate`, `snappDailyStatus`)
+- `public/crm-bundle.js` → 29 شناسه (مثل: `btnBuildSnappReport`, `btnBuildSnappTopupReport`, `btnExportSnappTopups`, `btnExportSnappView`, `btnImportSnappTopups`, `btnImportSnappTrips`, `btnOpenSnappCorporate`, `snappDailyStatus`)
 
 ### tab-troubleshooting «🛠️ عیب‌یابی»
 - `public/crm-app.js` → 1 شناسه (مثل: `diagnosticsStatusBox`)
-- `public/crm-features-v10.js` → 2 شناسه (مثل: `diagnosticsStatusBox`, `diagnosticsVisual`)
-- `public/crm-features-v11.js` → 1 شناسه (مثل: `diagnosticsOpsLog`)
-- `public/crm-features-v19.js` → 2 شناسه (مثل: `diagnosticsStatusBox`, `diagnosticsVisual`)
+- `public/crm-bundle.js` → 3 شناسه (مثل: `diagnosticsOpsLog`, `diagnosticsStatusBox`, `diagnosticsVisual`)
 
 ### tab-users-permissions «👤 کاربران و دسترسی»
 - `public/crm-app.js` → 16 شناسه (مثل: `btnExportUsersCSV`, `btnPermSelectAll`, `btnPermSelectNone`, `btnSaveUserInfo`, `btnToggleShowAllPasswords`, `formCreateUser`, `newFullName`, `newPassword`)
-- `public/crm-features-v20.js` → 9 شناسه (مثل: `btnSaveUserInfo`, `formCreateUser`, `newFullName`, `newPassword`, `newPhone`, `newRole`, `newSimControl`, `newUsername`)
+- `public/crm-bundle.js` → 9 شناسه (مثل: `btnSaveUserInfo`, `formCreateUser`, `newFullName`, `newPassword`, `newPhone`, `newRole`, `newSimControl`, `newUsername`)
 
 ## ز) نام‌های تابع تکراری در چند فایل (نقاط حساس بازنویسی)
 
-- `$` ← `public/crm-features-v10.js`, `public/crm-features-v11.js`, `public/crm-features-v12.js`, `public/crm-features-v13.js`, `public/crm-features-v14.js`, `public/crm-features-v15.js`, `public/crm-features-v16.js`, `public/crm-features-v17.js`, `public/crm-features-v18.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`, `public/crm-jalali.js`
-- `apply` ← `public/crm-app.js`, `public/crm-features-v12.js`
-- `arr` ← `public/crm-features-v18.js`, `public/crm-features-v20.js`
-- `attach` ← `public/crm-features-v14.js`, `public/crm-features-v9.js`
-- `boot` ← `public/crm-features-v10.js`, `public/crm-features-v11.js`, `public/crm-features-v12.js`, `public/crm-features-v13.js`, `public/crm-features-v14.js`, `public/crm-features-v15.js`, `public/crm-features-v16.js`, `public/crm-features-v17.js`, `public/crm-features-v18.js`, `public/crm-features-v19.js`, `public/crm-features-v9.js`, `public/crm-jalali.js`
-- `c` ← `public/crm-features-v11.js`, `public/crm-features-v16.js`
-- `custom` ← `public/crm-features-v15.js`, `public/crm-features-v20.js`
-- `customs` ← `public/crm-features-v11.js`, `public/crm-features-v19.js`
-- `doc` ← `public/crm-app.js`, `public/crm-features-v10.js`
-- `esc` ← `public/crm-features-v11.js`, `public/crm-features-v12.js`, `public/crm-features-v13.js`, `public/crm-features-v14.js`, `public/crm-features-v16.js`, `public/crm-features-v17.js`, `public/crm-features-v18.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`
-- `fieldKeyForTab` ← `public/crm-features-v11.js`, `public/crm-features-v13.js`, `public/crm-features-v14.js`, `public/crm-features-v18.js`, `public/crm-features-v19.js`
-- `fields` ← `public/crm-app.js`, `public/crm-features-v11.js`, `public/crm-features-v12.js`, `public/crm-features-v20.js`
-- `fill` ← `public/crm-features-v10.js`, `public/crm-features-v13.js`
-- `finish` ← `public/crm-features-v19.js`, `public/crm-features-v9.js`
-- `hits` ← `public/crm-features-v14.js`, `public/crm-features-v16.js`, `public/crm-features-v17.js`
-- `lab` ← `public/crm-features-v11.js`, `public/crm-features-v18.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`
-- `label` ← `public/crm-features-v11.js`, `public/crm-features-v14.js`, `public/crm-features-v15.js`
-- `last` ← `public/crm-features-v18.js`, `public/crm-features-v19.js`
-- `lay` ← `public/crm-features-v13.js`, `public/crm-features-v18.js`
+- `apply` ← `public/crm-app.js`, `public/crm-bundle.js`
+- `doc` ← `public/crm-app.js`, `public/crm-bundle.js`
+- `fields` ← `public/crm-app.js`, `public/crm-bundle.js`
 - `main` ← `scripts/build-sw.mjs`, `scripts/clean-extra-files.mjs`, `scripts/generate-assets.mjs`, `scripts/start.mjs`
-- `meta` ← `public/crm-features-v11.js`, `public/crm-features-v15.js`, `public/crm-features-v17.js`, `public/crm-features-v18.js`, `public/crm-features-v19.js`
-- `name` ← `public/crm-app.js`, `public/crm-features-v11.js`, `public/crm-features-v12.js`, `public/crm-features-v13.js`, `public/crm-features-v15.js`, `public/crm-features-v16.js`, `public/crm-features-v17.js`
-- `norm` ← `scripts/clean-extra-files.mjs`, `public/crm-features-v16.js`, `public/crm-features-v20.js`
-- `optionsStr` ← `public/crm-features-v14.js`, `public/crm-features-v15.js`
-- `opts` ← `public/crm-features-v11.js`, `public/crm-features-v14.js`
-- `p` ← `public/cloudflare-worker.js`, `public/crm-features-v10.js`, `public/crm-features-v11.js`, `public/crm-features-v16.js`
-- `ph` ← `public/crm-app.js`, `public/crm-features-v10.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`
-- `prod` ← `public/crm-app.js`, `public/crm-features-v9.js`
-- `push` ← `public/crm-features-v14.js`, `public/crm-features-v19.js`
-- `q` ← `public/crm-features-v17.js`, `public/crm-features-v9.js`
-- `rec` ← `scripts/clean-extra-files.mjs`, `public/crm-features-v12.js`, `public/crm-features-v14.js`, `public/crm-features-v16.js`, `public/crm-features-v17.js`, `public/crm-features-v20.js`
-- `tab` ← `public/crm-features-v12.js`, `public/crm-features-v14.js`
-- `take` ← `public/crm-features-v13.js`, `public/crm-features-v18.js`
-- `tgt` ← `public/crm-app.js`, `public/crm-features-v9.js`
-- `type` ← `public/crm-features-v14.js`, `public/crm-features-v15.js`
-- `users` ← `public/crm-app.js`, `public/crm-features-v9.js`
-- `ut` ← `public/crm-features-v11.js`, `public/crm-features-v12.js`, `public/crm-features-v13.js`, `public/crm-features-v14.js`, `public/crm-features-v18.js`, `public/crm-features-v19.js`
-- `v` ← `public/crm-features-v12.js`, `public/crm-features-v16.js`, `public/crm-features-v17.js`, `public/crm-jalali.js`
-- `val` ← `public/crm-app.js`, `public/crm-features-v9.js`
-- `w` ← `public/crm-features-v18.js`, `public/crm-features-v20.js`
-- `wrapListRenderers` ← `public/crm-features-v19.js`, `public/crm-features-v20.js`
+- `name` ← `public/crm-app.js`, `public/crm-bundle.js`
+- `norm` ← `scripts/clean-extra-files.mjs`, `public/crm-bundle.js`
+- `p` ← `public/cloudflare-worker.js`, `public/crm-bundle.js`
+- `ph` ← `public/crm-app.js`, `public/crm-bundle.js`
+- `prod` ← `public/crm-app.js`, `public/crm-bundle.js`
+- `rec` ← `scripts/clean-extra-files.mjs`, `public/crm-bundle.js`
+- `tgt` ← `public/crm-app.js`, `public/crm-bundle.js`
+- `users` ← `public/crm-app.js`, `public/crm-bundle.js`
+- `val` ← `public/crm-app.js`, `public/crm-bundle.js`
 
 ## ح) هشدارهای دائمی معماری
 
@@ -426,7 +254,7 @@
 
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
-- نسخه سورس package: `11.40.1`
+- نسخه سورس package: `11.44.0`
 - مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a0262d-javad-test1`؛ push/PR فقط از همین شاخه.
 - Production فعال: `https://javad-test1.onrender.com` — در 2026-08-21T21:24Z نسخه `11.38.0` را سرو کرد؛ سرویس قدیمی `namayandeelmi-javad.onrender.com` هنوز `11.20.0` است.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.

@@ -36,7 +36,7 @@ test('automated app entry loads health, HTML, all scripts and critical UI', asyn
     assert.match(html, new RegExp(`id=["']${id}["']`), `missing critical UI #${id}`);
   }
   const scripts = [...html.matchAll(/<script[^>]+src=["']([^"']+\.js(?:\?[^"']*)?)["']/g)].map(m => m[1]);
-  assert.ok(scripts.length >= 17, `expected complete script chain, got ${scripts.length}`);
+  assert.ok(scripts.length >= 4, `expected complete script chain, got ${scripts.length}`);
   for (const src of scripts) {
     const res = await fetch(new URL(src, base + '/'));
     assert.equal(res.status, 200, `failed asset ${src}`);

@@ -4,9 +4,9 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 
 const appSource = fs.readFileSync(new URL('../public/crm-app.js', import.meta.url), 'utf8');
-const v9Source = fs.readFileSync(new URL('../public/crm-features-v9.js', import.meta.url), 'utf8');
-const v11Source = fs.readFileSync(new URL('../public/crm-features-v11.js', import.meta.url), 'utf8');
-const v20Source = fs.readFileSync(new URL('../public/crm-features-v20.js', import.meta.url), 'utf8');
+const v9Source = fs.readFileSync(new URL('../public/crm-bundle.js', import.meta.url), 'utf8');
+const v11Source = fs.readFileSync(new URL('../public/crm-bundle.js', import.meta.url), 'utf8');
+const v20Source = fs.readFileSync(new URL('../public/crm-bundle.js', import.meta.url), 'utf8');
 const serverSource = fs.readFileSync(new URL('../server.js', import.meta.url), 'utf8');
 const gitignoreSource = fs.readFileSync(new URL('../.gitignore', import.meta.url), 'utf8');
 
