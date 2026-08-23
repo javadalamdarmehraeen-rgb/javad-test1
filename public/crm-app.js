@@ -25,7 +25,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "11.44.4";
+const CRM_APP_VERSION = "11.45.0";
 try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
@@ -1337,6 +1337,8 @@ function setupDoctorTab() {
       const city = document.getElementById("doctorCity").value;
       const district = document.getElementById("doctorDistrict").value;
       const address = document.getElementById("doctorAddress").value.trim();
+      const docPlate = document.getElementById("docPlate") ? document.getElementById("docPlate").value.trim() : "";
+      const docFloor = document.getElementById("docFloor") ? document.getElementById("docFloor").value.trim() : "";
       const lat = parseFloat(document.getElementById("doctorLat").value) || 35.7580;
       const lng = parseFloat(document.getElementById("doctorLng").value) || 51.4400;
       const isPercentage = hiddenIsPerc.value === "true";
@@ -1350,7 +1352,7 @@ function setupDoctorTab() {
         if (idx !== -1) {
           state.doctors[idx] = {
             ...state.doctors[idx],
-            dateAdded, name, specialty, phone, province, city, district, address, lat, lng,
+            dateAdded, name, specialty, phone, province, city, district, address, docPlate, docFloor, lat, lng,
             isPercentage, fileName: fileName || state.doctors[idx].fileName,
             customFields: customFieldsVals
           };
@@ -1359,7 +1361,7 @@ function setupDoctorTab() {
       } else {
         const newDoc = {
           id: "doc-" + Date.now(),
-          dateAdded, name, specialty, phone, province, city, district, address, lat, lng,
+          dateAdded, name, specialty, phone, province, city, district, address, docPlate, docFloor, lat, lng,
           isPercentage, fileName,
           repName: "جواد علمدار",
           customFields: customFieldsVals
@@ -1378,6 +1380,7 @@ function setupDoctorTab() {
 }
 
 function resetDoctorForm() {
+  ["docPlate","docFloor"].forEach(function(id){var el=document.getElementById(id);if(el)el.value="";});
   document.getElementById("doctorEditId").value = "";
   document.getElementById("doctorDate").value = jalaliTodayEnglish();
   document.getElementById("doctorName").value = "";
@@ -2196,6 +2199,7 @@ function setupOrdersTab() {
       const repName = document.getElementById("orderRepName").value;
       const orderDate = document.getElementById("orderDate").value.trim() || jalaliTodayEnglish();
       const status = document.getElementById("orderStatus").value;
+      const priority = (document.getElementById("orderPriority")||{}).value || "عادی";
       const notes = document.getElementById("orderNotes").value.trim();
       const customFieldsVals = extractCustomFieldValuesFromForm("order", "orderCustomFieldsContainer");
 
@@ -2218,7 +2222,7 @@ function setupOrdersTab() {
           state.orders[idx] = {
             ...state.orders[idx],
             pharmacyName, orderManager: orderManagerRec.manager || "", orderManagerPhone: orderManagerRec.managerPhone || "", province, city, district, address,
-            repName, orderDate, status, notes, items, quantityValidated: true, totalAmount, vatAmount, totalAmountWithVat,
+            repName, orderDate, status, priority, notes, items, quantityValidated: true, totalAmount, vatAmount, totalAmountWithVat,
             customFields: customFieldsVals
           };
         }
@@ -2227,7 +2231,7 @@ function setupOrdersTab() {
         const newOrder = {
           id: "ord-" + Date.now(),
           pharmacyName, orderManager: orderManagerRec.manager || "", orderManagerPhone: orderManagerRec.managerPhone || "", province, city, district, address,
-          repName, orderDate, status, notes, items, quantityValidated: true, totalAmount, vatAmount, totalAmountWithVat,
+          repName, orderDate, status, priority, notes, items, quantityValidated: true, totalAmount, vatAmount, totalAmountWithVat,
           customFields: customFieldsVals
         };
         state.orders.push(newOrder);
@@ -2594,6 +2598,7 @@ function editOrder(id) {
   document.getElementById("orderRepName").value = ord.repName || "";
   document.getElementById("orderDate").value = ord.orderDate || "";
   document.getElementById("orderStatus").value = ord.status || "تایید شده";
+  if(document.getElementById("orderPriority"))document.getElementById("orderPriority").value=ord.priority||"عادی";
   document.getElementById("orderNotes").value = ord.notes || "";
 
   const provEl = document.getElementById("orderProvince");
@@ -2993,7 +2998,7 @@ function downloadCSVFile(filename, headers, rows) {
 // ----------------------------------------------------------------------------
 function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
-  const build = "11.44.4";
+  const build = "11.45.0";
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'CRM_BUILD_ACTIVE' && event.data.build !== build) {
@@ -3002,7 +3007,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.44.4', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.45.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -3413,6 +3418,7 @@ function setupAllFormSubmitHandlers() {
     const repName = document.getElementById("orderRepName").value || currentUserName;
     const orderDate = document.getElementById("orderDate").value.trim() || jalaliTodayEnglish();
     const status = document.getElementById("orderStatus").value;
+      const priority = (document.getElementById("orderPriority")||{}).value || "عادی";
     const notes = document.getElementById("orderNotes").value.trim();
     const pharmacyId = ((document.getElementById("orderPharmacyMatchedId") || {}).value) || "";
     const customFieldsVals = (typeof extractCustomFieldValuesFromForm === "function")
@@ -3445,13 +3451,13 @@ function setupAllFormSubmitHandlers() {
     if (editId) {
       const idx = state.orders.findIndex(o => o.id === editId);
       if (idx !== -1) {
-        state.orders[idx] = { ...state.orders[idx], pharmacyName, pharmacyId, orderManager: orderManagerRec.manager || "", orderManagerPhone: orderManagerRec.managerPhone || "", province, city, district, address, repName, orderDate, status, notes, items, quantityValidated: true, totalAmount, vatAmount, totalAmountWithVat, customFields: customFieldsVals };
+        state.orders[idx] = { ...state.orders[idx], pharmacyName, pharmacyId, orderManager: orderManagerRec.manager || "", orderManagerPhone: orderManagerRec.managerPhone || "", province, city, district, address, repName, orderDate, status, priority, notes, items, quantityValidated: true, totalAmount, vatAmount, totalAmountWithVat, customFields: customFieldsVals };
       }
       alert(`✅ سفارش داروخانه «${pharmacyName}» ویرایش شد.`);
     } else {
       state.orders.push({
         id: "ord-" + Date.now(),
-        pharmacyName, pharmacyId, orderManager: orderManagerRec.manager || "", orderManagerPhone: orderManagerRec.managerPhone || "", province, city, district, address, repName, orderDate, status, notes, items, quantityValidated: true, totalAmount, vatAmount, totalAmountWithVat,
+        pharmacyName, pharmacyId, orderManager: orderManagerRec.manager || "", orderManagerPhone: orderManagerRec.managerPhone || "", province, city, district, address, repName, orderDate, status, priority, notes, items, quantityValidated: true, totalAmount, vatAmount, totalAmountWithVat,
         customFields: customFieldsVals
       });
       alert(`✅ سفارش جدید برای داروخانه «${pharmacyName}» ثبت شد. از باقیمانده تارگت نماینده کسر گردید.`);

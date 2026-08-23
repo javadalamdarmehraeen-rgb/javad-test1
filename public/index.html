@@ -19,7 +19,7 @@
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.44.4",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="11.45.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       document.documentElement.classList.add("crm-booting");
       function target(){return location.pathname+location.search+location.hash;}
       function rescue(serverBuild){if(__justRescued)return;var u="/cache-reset?to="+encodeURIComponent(target())+"&build="+encodeURIComponent(serverBuild||BUILD)+"&t="+Date.now();location.replace(u);}
@@ -43,7 +43,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.44.4" />
+  <link rel="stylesheet" href="style.css?v=11.45.0" />
 </head>
 <body>
 
@@ -590,6 +590,14 @@
                 <button type="button" id="btnDocPercentageNo" class="btn-toggle-option active">خیر</button>
                 <button type="button" id="btnDocPercentageYes" class="btn-toggle-option">بله</button>
               </div>
+            <div class="form-group">
+              <label class="form-label" for="docPlate">پلاک</label>
+              <input type="text" id="docPlate" class="form-input" placeholder="مثلاً 12" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="docFloor">طبقه</label>
+              <input type="text" id="docFloor" class="form-input" placeholder="مثلاً 3" />
+            </div>
               <input type="hidden" id="doctorIsPercentage" value="false" />
             </div>
 
@@ -806,6 +814,13 @@
                   <span>➕ افزودن قلم دارویی</span>
                 </button>
               </div>
+            <div class="form-group">
+              <label class="form-label" for="orderPriority">اولویت ارسال</label>
+              <select id="orderPriority" class="form-select" data-nocombo="1">
+                <option value="عادی" selected>عادی</option>
+                <option value="فوری">فوری</option>
+              </select>
+            </div>
               <div id="orderProductCatalogBar" class="order-catalog-bar"></div>
               <div class="order-item-head">
                 <span>نام کالا</span>
@@ -2254,9 +2269,9 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.44.4"></script>
-  <script src="crm-app.js?v=11.44.4"></script>
-          <script src="crm-bundle.js?v=11.44.4"></script>
+  <script src="crm-data.js?v=11.45.0"></script>
+  <script src="crm-app.js?v=11.45.0"></script>
+          <script src="crm-bundle.js?v=11.45.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />

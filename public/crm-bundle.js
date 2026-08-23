@@ -785,7 +785,7 @@
         tdVis("pharmacy", "pharmacyProvince", "<td>" + (ph.province || "—") + "</td>") +
         tdVis("pharmacy", "pharmacyCity", "<td>" + (ph.city || "—") + "</td>") +
         tdVis("pharmacy", "pharmacyName", "<td><strong style='color:#0d9488'>" + ph.name + "</strong></td>") +
-        tdVis("pharmacy", "pharmacyPhone", "<td style='direction:ltr'>" + (ph.phone || "—") + "</td>") +
+        tdVis("pharmacy", "pharmacyPhone", "<td style='direction:ltr'>" + (ph.managerPhone || ph.phone || "—") + "</td>") +
         tdVis("pharmacy", "pharmacyIsPercentage", "<td>" + (ph.isPercentage ? "بله" : "خیر") + "</td>") +
         tdVis("pharmacy", "phMapSearchInput", "<td>" + locCell(ph) + "</td>") +
         "<td><button type='button' class='btn btn-outline btn-sm btn-route'>مسیریابی</button></td>" +
@@ -12327,6 +12327,12 @@ button.v19-gps svg{display:block}
   if(db&&!db.dataset.b){db.dataset.b="1";db.onclick=runApplyDiagnosisV43;}
   try{runApplyDiagnosisV43();}catch(e){}}
   function v42ConfirmDupGuard(){if(window.__V42CD)return;window.__V42CD=1;
+  document.addEventListener("click",function(e){var b=e.target&&e.target.closest&&e.target.closest("#btnSaveDoctor");if(!b)return;
+  var editId=($("doctorEditId")||{}).value;var name=(($("doctorName")||{}).value||"").trim();if(!name)return;
+  if(!confirm("آیا از "+(editId?"ویرایش":"ثبت")+" پزشک «"+name+"» مطمئن هستید؟")){e.preventDefault();e.stopImmediatePropagation();return;}
+  if(editId)return;var S=st(),spec=(($("doctorSpecialty")||{}).value||"").trim(),prov=($("doctorProvince")||{}).value||"",city=($("doctorCity")||{}).value||"",dis=($("doctorDistrict")||{}).value||"";
+  var dup=(S.doctors||[]).filter(function(x){return String(x.name).trim()===name&&String(x.specialty||"").trim()===spec&&String(x.province)===prov&&String(x.city)===city&&String(x.district)===dis;})[0];
+  if(dup){e.preventDefault();e.stopImmediatePropagation();alert("⚠️ این پزشک قبلاً ثبت شده است:\n«"+dup.name+"» — "+[dup.specialty,dup.province,dup.city,dup.district].filter(Boolean).join(" / ")+"\nثبت تکراری مجاز نیست.");}},true);
   document.addEventListener("click",function(e){var b=e.target&&e.target.closest&&e.target.closest("#btnSavePharmacy");if(!b)return;
   var editId=($("pharmacyEditId")||{}).value;var name=(($("pharmacyName")||{}).value||"").trim();if(!name)return;
   if(!confirm("آیا از "+(editId?"ویرایش":"ثبت")+" داروخانه «"+name+"» مطمئن هستید؟")){e.preventDefault();e.stopImmediatePropagation();return;}
