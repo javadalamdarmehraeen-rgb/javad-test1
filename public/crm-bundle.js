@@ -12298,7 +12298,8 @@ button.v19-gps svg{display:block}
     ["مرخصی: از ساعت/تا ساعت فیلدهای ۵ و ۶ بدون ثانیه — اعمال‌شده (11.37)؛ گارد لیبل فارسی فعال","applied"],
     ["اعلان: ریسه فیلدها و پرش صفحه","applied"],
     ["تارگت: مسیرها جلو نام نماینده در سلکتورها — اعمال‌شده در 11.51.0؛ فیلتر استان بر اساس مسیر در صف","partial"],
-    ["قانون حذف‌نشدن داده‌ها و بازنگشتن داده‌های حذف‌شده","applied"]
+    ["قانون حذف‌نشدن داده‌ها و بازنگشتن داده‌های حذف‌شده","applied"],
+    ["همگام‌سازی چند-سیستمی (merge+ارسال خودکار) + دکمه مخفی‌کردن فیلد + اصلاح پاک‌کردن + تطبیق هم‌نام داروخانه — اعمال‌شده در 11.59.0","applied"]
   ];
   function renderChangeLogV41(){var host=$("v41ChangeHost");if(!host)return;host.innerHTML=V41_CHANGES.map(function(c,i){var st=c[1]==="applied"?"<span style='color:#059669;font-weight:700'>✅ اعمال شد در 11.41.0</span>":(c[1]==="partial"?"<span style='color:#d97706;font-weight:700'>🟡 بخشی اعمال شد</span>":"<span style='color:#64748b'>⏳ در صف پیاده‌سازی (نسخه‌های بعدی)</span>");return "<div style='border:1px solid #cbd5e1;border-radius:8px;padding:8px;margin:6px 0;display:flex;justify-content:space-between;gap:10px;align-items:center'><div>"+(i+1)+". "+esc(c[0])+"</div><div style='display:flex;gap:10px;align-items:center;white-space:nowrap'>"+st+"<label style='font-size:12px'><input type='checkbox' class='v41-unapplied' data-i='"+i+"'> اعمال نشده</label></div></div>";}).join("");}
   function collectUnappliedV41(){var v="11.42.0";try{var m=document.querySelector('script[src*="crm-bundle.js?v="]');if(m&&m.src.split("?v=")[1])v=m.src.split("?v=")[1];}catch(e){}var out={version:v,at:new Date().toISOString(),unapplied:[]};document.querySelectorAll(".v41-unapilled, .v41-unapplied").forEach(function(cb){if(cb.checked)out.unapplied.push({index:Number(cb.dataset.i)+1,title:V41_CHANGES[Number(cb.dataset.i)][0]});});out.appliedCount=V41_CHANGES.filter(function(c){return c[1]==="applied";}).length;out.pendingCount=V41_CHANGES.filter(function(c){return c[1]==="pending";}).length;return out;}
@@ -13261,4 +13262,129 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(v58bind,1500);});else setTimeout(v58bind,1500);
   document.addEventListener("click",function(e){if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-snapp-corporate"]'))setTimeout(v58bind,300);},true);
   setInterval(v58UnwrapSnappCombos,4000);
+})();
+
+/* v11.59 / نوبت جدید: همگام‌سازی چند-سیستمی + مخفی‌کردن فیلد + اصلاح پاک‌کردن + تطبیق هم‌نام داروخانه */
+(function(){
+  /* ---------- ۱) همگام‌سازی چند-سیستمی: merge اتصالی + ارسال خودکار ---------- */
+  var V60_ARRAYS=["pharmacies","doctors","orders","products","users","reps","leaves","visits","repRoutes","repHomes","hospitals","notifications","salesTargets","activityLog"];
+  function v60norm(x){return String(x||"").replace(/[\u200c\s]/g,"").toLowerCase();}
+  function v60UnionById(localArr,remoteArr){
+    var out=Array.isArray(localArr)?localArr.slice():[],idx={};
+    out.forEach(function(r){if(r&&r.id!==undefined)idx[String(r.id)]=1;});
+    (Array.isArray(remoteArr)?remoteArr:[]).forEach(function(r){
+      if(!r)return;
+      if(r.id!==undefined&&idx[String(r.id)])return; /* نسخه محلی برنده — داده‌ای حذف نمی‌شود */
+      out.push(r);if(r.id!==undefined)idx[String(r.id)]=1;
+    });
+    return out;
+  }
+  function v60MergeRemote(remote){
+    try{
+      var S=window.state;if(!S||!remote||typeof remote!=="object")return false;
+      var changed=false;
+      V60_ARRAYS.forEach(function(k){
+        if(Array.isArray(remote[k])){
+          var before=(S[k]||[]).length,merged=v60UnionById(S[k],remote[k]);
+          if(merged.length!==before){S[k]=merged;changed=true;}
+        }
+      });
+      /* اتصال گزینه‌های سراسری کشویی (بدون حذف hidden) */
+      try{
+        var rg=remote.settings&&remote.settings.globalFieldOptions,lg=S.settings=S.settings||{};
+        if(rg&&typeof rg==="object"){lg.globalFieldOptions=lg.globalFieldOptions||{};
+          Object.keys(rg).forEach(function(lbl){
+            var L=lg.globalFieldOptions[lbl];if(!L){lg.globalFieldOptions[lbl]=rg[lbl];changed=true;return;}
+            var have={};(L.values||[]).forEach(function(v){have[v60norm(v.value||v.text||v)]=1;});
+            (rg[lbl].values||[]).forEach(function(v){var n=v60norm(v.value||v.text||v);if(!have[n]){L.values=L.values||[];L.values.push(v);changed=true;}});
+            ((rg[lbl].hidden||[]).forEach(function(h){if((L.hidden||[]).indexOf(h)===-1){L.hidden=L.hidden||[];L.hidden.push(h);}}));
+          });}
+      }catch(e){}
+      return changed;
+    }catch(e){return false;}
+  }
+  function v60CrossDeviceSync(){
+    if(!navigator.onLine)return;
+    fetch("/api/state?__v60="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+      var remote=j&&j.data;if(!remote)return;
+      if(v60MergeRemote(remote)){
+        if(window.saveState)try{window.saveState(false);}catch(e){}
+        try{console.log("✅ همگام‌سازی چند-سیستمی: داده‌های جدید از سرور ادغام شد.");}catch(e){}
+      }
+    }).catch(function(){});
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(v60CrossDeviceSync,4000);});else setTimeout(v60CrossDeviceSync,4000);
+  setInterval(v60CrossDeviceSync,300000);
+  window.addEventListener("online",function(){setTimeout(v60CrossDeviceSync,2500);});
+
+  /* ---------- ۲) دکمه مخفی‌کردن فیلد در طراح ستون‌ها ---------- */
+  function v60EntityKey(tabId){tabId=String(tabId||"");return tabId==="tab-pharmacies"?"pharmacy":tabId==="tab-doctors"?"doctor":tabId==="tab-orders"?"order":tabId==="tab-columns-products"?"products":tabId.replace(/^tab-/,"");}
+  function v60HideField(fid,tabId){
+    var S=window.state;if(!S)return;var key=v60EntityKey(tabId);
+    var cf=(S.customFields=S.customFields||{})[key]=S.customFields[key]||[];
+    var f=cf.filter(function(x){return x&&x.id===fid;})[0];
+    if(f){f.showInForm=false;f.showInList=false;}
+    else{var m=(S.formFieldMeta=S.formFieldMeta||{})[key]=S.formFieldMeta[key]||{};m[fid]=m[fid]||{};m[fid].showInForm=false;m[fid].showInList=false;}
+    if(window.saveState)try{window.saveState(false);}catch(e){}
+    if(typeof window.refreshColumnsDesigner==="function")try{window.refreshColumnsDesigner();}catch(e){}
+    if(typeof window.applyAllFormLayouts==="function")try{window.applyAllFormLayouts();}catch(e){}
+  }
+  function v60AddHideButtons(){
+    var host=document.getElementById("columnsDesignerHost");if(!host)return;
+    host.querySelectorAll("[data-fid]").forEach(function(el){
+      var row=el.closest("tr")||el.closest("div");if(!row||row.querySelector(".v60hide"))return;
+      var b=document.createElement("button");b.type="button";b.className="btn btn-outline btn-sm v60hide";
+      b.textContent="🙈 مخفی";b.title="مخفی‌شدن از تب اصلی بدون حذف از برنامه";
+      b.onclick=function(){v60HideField(el.getAttribute("data-fid"),window._activeColTab||"tab-pharmacies");};
+      row.appendChild(b);
+    });
+  }
+  setInterval(v60AddHideButtons,2000);
+
+  /* ---------- ۳) اصلاح کلید پاک کردن (بدون ظاهرشدن دکمه اضافه) ---------- */
+  function v60RealClear(paneId,formId){
+    var form=document.getElementById(formId);if(form){
+      form.querySelectorAll("input:not([type=hidden]):not([type=file]), select, textarea").forEach(function(el){
+        if(el.type==="checkbox"||el.type==="radio")return;
+        try{el.value="";}catch(e){}
+      });
+    }
+    var pane=document.getElementById(paneId);
+    if(pane)pane.querySelectorAll("button, .btn").forEach(function(b){
+      var t=String(b.textContent||"").trim();
+      if(t.indexOf("بازنشانی")!==-1||t.indexOf("انصراف")!==-1){b.style.display="none";}
+    });
+    if(paneId==="tab-pharmacies"&&typeof resetPharmacyForm==="function"){try{resetPharmacyForm();}catch(e){}}
+    if(paneId==="tab-doctors"&&typeof resetDoctorForm==="function"){try{resetDoctorForm();}catch(e){}}
+    setTimeout(function(){
+      var pane2=document.getElementById(paneId);
+      if(pane2)pane2.querySelectorAll("button, .btn").forEach(function(b){var t=String(b.textContent||"").trim();if(t.indexOf("بازنشانی")!==-1)b.style.display="none";});
+    },100);
+  }
+  function v60RewireClearButtons(){
+    ["v42clear-tab-pharmacies","v42clear-tab-doctors"].forEach(function(id){
+      var b=document.getElementById(id);if(!b||b.dataset.v60)return;b.dataset.v60="1";
+      b.onclick=function(){v60RealClear(id.replace("v42clear-",""),id.indexOf("pharmacies")!==-1?"formPharmacy":"formDoctor");};
+    });
+  }
+  setInterval(v60RewireClearButtons,3000);setTimeout(v60RewireClearButtons,2000);
+
+  /* ---------- ۴) تطبیق فقط هم‌نام در کادر داروخانه سفارشات ---------- */
+  if(typeof window.renderPharmacyPicks==="function"){
+    var origPick=window.renderPharmacyPicks;
+    window.renderPharmacyPicks=function(q){
+      q=String(q||"").trim();
+      var host=document.getElementById("orderPharmacyPickBox");if(!host)return;
+      if(q.length<2){host.hidden=true;host.innerHTML="";return;}
+      var nq=v60norm(q);
+      var hits=(((window.state||{}).pharmacies)||[]).filter(function(p){
+        var n=v60norm(p&&p.name||"");if(!n)return false;
+        return n.indexOf(nq)!==-1||nq.indexOf(n)!==-1;
+      }).slice(0,12);
+      if(!hits.length){host.hidden=false;host.innerHTML="<div class='ph-pick-empty'>داروخانه هم‌نامی با «"+q+"» پیدا نشد.</div>";return;}
+      host.hidden=false;
+      host.innerHTML="<div class='ph-pick-hint'>"+hits.length+" داروخانه هم‌نام — انتخاب کنید (با تمام جزئیات)</div>"+
+        hits.map(function(p){return "<button type='button' class='ph-pick-card' data-pid='"+String(p.id||"")+"'><strong>🏥 "+String(p.name||"")+"</strong><span>"+[p.province,p.city,p.district].filter(Boolean).join(" / ")+"</span><span>"+String(p.address||"")+(p.phone?(" — "+p.phone):"")+"</span></button>";}).join("");
+    };
+  }
 })();
