@@ -12814,3 +12814,31 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",v48bind);else v48bind();
   document.addEventListener("click",function(e){if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-orders"]'))setTimeout(v48bind,200);},true);
 })();
+
+/* v11.49 / بند ۱۰: فقط تاریخ/داروخانه/اولویت ارسال فعال؛ بقیه فیلدهای اطلاعات داروخانه در سفارشات طوسیِ غیرفعالِ ساده */
+(function(){
+  var KEEP=["orderDate","orderPharmacyName","orderPriority","orderEditId","orderPharmacyMatchedId"];
+  function v49GreyOrderFields(){
+    var form=document.getElementById("formOrder");if(!form)return;
+    var fields=form.querySelectorAll("input[id^=order], select[id^=order], textarea[id^=order]");
+    fields.forEach(function(el){
+      if(KEEP.indexOf(el.id)!==-1)return;
+      if(el.id==="orderItemsContainer"||el.closest("#orderItemsContainer"))return;
+      if(el.type==="hidden")return;
+      el.disabled=true;el.readOnly=true;
+      el.style.background="#e2e8f0";el.style.color="#64748b";el.style.borderColor="#cbd5e1";el.style.opacity="0.85";
+      el.title="این فیلد با انتخاب داروخانه خودکار پر می‌شود";
+    });
+  }
+  function v49bind(){
+    v49GreyOrderFields();
+    var form=document.getElementById("formOrder");
+    if(form&&!form.dataset.v49obs&&window.MutationObserver){
+      form.dataset.v49obs="1";
+      new MutationObserver(function(){setTimeout(v49GreyOrderFields,50);}).observe(form,{childList:true,subtree:false});
+    }
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",v49bind);else v49bind();
+  document.addEventListener("click",function(e){if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-orders"]'))setTimeout(v49bind,250);},true);
+  setInterval(v49GreyOrderFields,4000);
+})();
