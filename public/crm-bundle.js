@@ -12283,9 +12283,9 @@ button.v19-gps svg{display:block}
     ["داروخانه/پزشک: خالی‌شدن خودکار فرم هنگام خروج و بازگشت به تب + کلید پاک کردن در بالای صفحه","applied"],
     ["ستون شماره همراه لیست داروخانه مقدار درست (همراه مسئول) نشان دهد — اعمالشده در 11.45.0","applied"],
     ["پزشکان: پلاک/طبقه + تایید ثبت + جلوگیری تکراری — اعمال‌شده در 11.45.0 (نوع مطب در صف)","applied"],
-    ["سفارشات: فیلد اولویت ارسال (عادی/فوری) اعمال‌شده در 11.45.0؛ طوسی‌کردن بقیه فیلدها در صف","partial"],
+    ["سفارشات: فقط تاریخ/داروخانه/اولویت فعال؛ بقیه طوسیِ غیرفعالِ ساده — اعمال‌شده در 11.49.0","applied"],
     ["سفارشات: کادر انتخاب داروخانه در بالای فرم با کلید «انتخاب» — اعمال‌شده در 11.48.0","applied"],
-    ["فعالیت لحظه‌ای: بروزرسانی خودکار + فیلتر نماینده/سال/ماه/از-تا تاریخ با چک‌باکس + نقشه کامل باز شود","pending"],
+    ["فعالیت لحظه‌ای: بروزرسانی خودکار هر ۳۰ ثانیه — اعمال‌شده در 11.50.0؛ فیلترها و نقشه کامل در صف","partial"],
     ["فعالیت/رصد/موقعیت زنده/اسنپ: فیلد کشویی نام نماینده — نماینده: ثابت؛ سرپرست/کارشناس: کشویی با «همه نمایندگان»","applied"],
     ["نقشه جامع: حذف افزودن لحظه‌ای استان/شهر/منطقه + ۵ چک‌باکس (همه/داروخانه/پزشک/بیمارستان/درمانگاه) + ۵ کلید ورودی فایل","pending"],
     ["اسنپ: رفع فلش سال و چک‌باکس‌های خراب","pending"],
@@ -12841,4 +12841,17 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",v49bind);else v49bind();
   document.addEventListener("click",function(e){if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-orders"]'))setTimeout(v49bind,250);},true);
   setInterval(v49GreyOrderFields,4000);
+})();
+
+/* v11.50 / بند ۱۲(نیمه اول): بروزرسانی خودکار فعالیت لحظه‌ای */
+(function(){
+  function v50ActivityAutoRefresh(){
+    var pane=document.getElementById("tab-activity-log");
+    if(!pane)return;
+    var visible=pane.classList&&pane.classList.contains("active");
+    if(!visible)return;
+    try{if(typeof window.renderActivityLogTable==="function")window.renderActivityLogTable();}catch(e){}
+    try{if(typeof window.renderActivityMapAndChart==="function")window.renderActivityMapAndChart();}catch(e){}
+  }
+  setInterval(v50ActivityAutoRefresh,30000);
 })();
