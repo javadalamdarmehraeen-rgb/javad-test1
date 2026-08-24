@@ -12297,7 +12297,7 @@ button.v19-gps svg{display:block}
     ["منزل نمایندگان: پلاک/طبقه در فرم و لیست — اعمال‌شده در 11.47.0","applied"],
     ["مرخصی: از ساعت/تا ساعت فیلدهای ۵ و ۶ بدون ثانیه — اعمال‌شده (11.37)؛ گارد لیبل فارسی فعال","applied"],
     ["اعلان: ریسه فیلدها و پرش صفحه","applied"],
-    ["تارگت: مسیرهای ثبت‌شده جلو نام نماینده در کل سیستم + فیلتر استان بر اساس مسیر کاربر","pending"],
+    ["تارگت: مسیرها جلو نام نماینده در سلکتورها — اعمال‌شده در 11.51.0؛ فیلتر استان بر اساس مسیر در صف","partial"],
     ["قانون حذف‌نشدن داده‌ها و بازنگشتن داده‌های حذف‌شده","applied"]
   ];
   function renderChangeLogV41(){var host=$("v41ChangeHost");if(!host)return;host.innerHTML=V41_CHANGES.map(function(c,i){var st=c[1]==="applied"?"<span style='color:#059669;font-weight:700'>✅ اعمال شد در 11.41.0</span>":(c[1]==="partial"?"<span style='color:#d97706;font-weight:700'>🟡 بخشی اعمال شد</span>":"<span style='color:#64748b'>⏳ در صف پیاده‌سازی (نسخه‌های بعدی)</span>");return "<div style='border:1px solid #cbd5e1;border-radius:8px;padding:8px;margin:6px 0;display:flex;justify-content:space-between;gap:10px;align-items:center'><div>"+(i+1)+". "+esc(c[0])+"</div><div style='display:flex;gap:10px;align-items:center;white-space:nowrap'>"+st+"<label style='font-size:12px'><input type='checkbox' class='v41-unapplied' data-i='"+i+"'> اعمال نشده</label></div></div>";}).join("");}
@@ -12854,4 +12854,40 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     try{if(typeof window.renderActivityMapAndChart==="function")window.renderActivityMapAndChart();}catch(e){}
   }
   setInterval(v50ActivityAutoRefresh,30000);
+})();
+
+/* v11.51 / بند ۲۴ (نیمه اول): مسیرهای ثبت‌شده جلو نام نماینده در سلکتورها */
+(function(){
+  function v51routes(repName){
+    try{
+      var S=window.state;if(!S)return "";
+      var rs=(S.settings&&S.settings.representativeRoutes)||S.representativeRoutes||[];
+      for(var i=0;i<rs.length;i++){
+        var r=rs[i]||{};
+        var nm=String(r.repName||r.rep||r.name||"");
+        if(nm&&repName&&(nm===repName||nm.indexOf(repName)!==-1||repName.indexOf(nm)!==-1)){
+          var prov=[];
+          if(r.provinces&&r.provinces.length)prov=prov.concat(r.provinces);
+          if(typeof r.province==="string"&&r.province)prov.push(r.province);
+          if(r.cities&&r.cities.length)prov=prov.concat(r.cities.slice(0,2));
+          prov=prov.filter(function(x){return x;});
+          if(prov.length)return " (مسیر: "+prov.slice(0,3).join("،")+(prov.length>3?"…":"")+")";
+        }
+      }
+      return "";
+    }catch(e){return "";}
+  }
+  function v51RouteLabels(){
+    document.querySelectorAll("select[id]").forEach(function(sel){
+      Array.prototype.forEach.call(sel.options,function(o){
+        if(!o.value||o.value==="همه نمایندگان")return;
+        var base=String(o.getAttribute("data-base")||o.textContent.split(" (مسیر:")[0]);
+        o.setAttribute("data-base",base);
+        var label=base.replace(/ \(مسیر:[^)]*\)/,"")+v51routes(base);
+        if(o.textContent!==label)o.textContent=label;
+      });
+    });
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(v51RouteLabels,2500);});else setTimeout(v51RouteLabels,2500);
+  setInterval(v51RouteLabels,8000);
 })();
