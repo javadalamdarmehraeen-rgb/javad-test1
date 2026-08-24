@@ -12862,19 +12862,17 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   function v51routes(repName){
     try{
       var S=window.state;if(!S)return "";
-      var rs=(S.settings&&S.settings.representativeRoutes)||S.representativeRoutes||[];
-      for(var i=0;i<rs.length;i++){
-        var r=rs[i]||{};
-        var nm=String(r.repName||r.rep||r.name||"");
-        if(nm&&repName&&(nm===repName||nm.indexOf(repName)!==-1||repName.indexOf(nm)!==-1)){
-          var prov=[];
-          if(r.provinces&&r.provinces.length)prov=prov.concat(r.provinces);
-          if(typeof r.province==="string"&&r.province)prov.push(r.province);
-          if(r.cities&&r.cities.length)prov=prov.concat(r.cities.slice(0,2));
-          prov=prov.filter(function(x){return x;});
-          if(prov.length)return " (مسیر: "+prov.slice(0,3).join("،")+(prov.length>3?"…":"")+")";
-        }
-      }
+      var users=(S.users||[]);
+      var u=users.filter(function(x){return x&&repName&&String(x.fullName||"")===repName;})[0];
+      if(!u)u=users.filter(function(x){return x&&repName&&(String(x.fullName||"").indexOf(repName)!==-1||repName.indexOf(String(x.fullName||""))!==-1);})[0];
+      if(!u)return "";
+      var prov=[];
+      if(u.activityProvinces&&u.activityProvinces.length)prov=prov.concat(u.activityProvinces);
+      else if(u.activityProvince)prov.push(u.activityProvince);
+      if(u.activityCities&&u.activityCities.length)prov=prov.concat(u.activityCities.slice(0,2));
+      else if(u.activityCity)prov.push(u.activityCity);
+      prov=prov.filter(function(x){return x;});
+      if(prov.length)return " (مسیر: "+prov.slice(0,3).join("،")+(prov.length>3?"…":"")+")";
       return "";
     }catch(e){return "";}
   }
@@ -13387,4 +13385,34 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         hits.map(function(p){return "<button type='button' class='ph-pick-card' data-pid='"+String(p.id||"")+"'><strong>🏥 "+String(p.name||"")+"</strong><span>"+[p.province,p.city,p.district].filter(Boolean).join(" / ")+"</span><span>"+String(p.address||"")+(p.phone?(" — "+p.phone):"")+"</span></button>";}).join("");
     };
   }
+})();
+
+/* v11.60: پشتیبان داده جغرافیایی کادر مسیرها از IRAN_GEO_DATA + به‌روزرسانی فوری برچسب‌ها پس از ذخیره */
+(function(){
+  function v60geo(){return window.IRAN_GEO_DATA||null;}
+  function v60selFill(id,arr,selected){
+    var el=document.getElementById(id);if(!el||!arr||!arr.length)return;
+    if(el.options.length>=arr.length)return;
+    el.innerHTML=arr.map(function(v){return "<option"+((selected||[]).indexOf(v)!==-1?" selected":"")+">"+String(v).replace(/[<>]/g,"")+"</option>";}).join("");
+  }
+  function v60RouteGeoFallback(){
+    var g=v60geo();if(!g)return;
+    var ps=document.getElementById("routeManagerProvince");if(!ps)return;
+    v60selFill("routeManagerProvince",Object.keys(g),Array.prototype.map.call(ps.selectedOptions||[],function(o){return o.value;}));
+    var prov=Array.prototype.map.call(ps.selectedOptions||[],function(o){return o.value;}).filter(Boolean);
+    if(prov.length){
+      var cities=[];prov.forEach(function(p){if(g[p])cities=cities.concat(Object.keys(g[p]));});
+      var cs=document.getElementById("routeManagerCity");
+      var csel=Array.prototype.map.call(cs&&cs.selectedOptions||[],function(o){return o.value;});
+      v60selFill("routeManagerCity",cities,csel);
+      var districts=[];prov.forEach(function(p){if(g[p])Object.keys(g[p]).forEach(function(c){districts=districts.concat(g[p][c]||[]);});});
+      var ds=document.getElementById("routeManagerDistrict");
+      var dsel=Array.prototype.map.call(ds&&ds.selectedOptions||[],function(o){return o.value;});
+      v60selFill("routeManagerDistrict",districts,dsel);
+    }
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(v60RouteGeoFallback,2000);});else setTimeout(v60RouteGeoFallback,2000);
+  document.addEventListener("click",function(e){if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-sales-targets"]'))setTimeout(v60RouteGeoFallback,500);},true);
+  var sb=document.getElementById("btnSaveRepresentativeRoute");
+  if(sb&&!sb.dataset.v60lbl){sb.dataset.v60lbl="1";sb.addEventListener("click",function(){setTimeout(function(){try{if(typeof v51RouteLabels==="function")v51RouteLabels();}catch(e){}},400);});}
 })();
