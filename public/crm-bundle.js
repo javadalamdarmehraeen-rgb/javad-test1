@@ -12284,7 +12284,7 @@ button.v19-gps svg{display:block}
     ["ستون شماره همراه لیست داروخانه مقدار درست (همراه مسئول) نشان دهد — اعمالشده در 11.45.0","applied"],
     ["پزشکان: پلاک/طبقه + تایید ثبت + جلوگیری تکراری — اعمال‌شده در 11.45.0 (نوع مطب در صف)","applied"],
     ["سفارشات: فیلد اولویت ارسال (عادی/فوری) اعمال‌شده در 11.45.0؛ طوسی‌کردن بقیه فیلدها در صف","partial"],
-    ["سفارشات: کادر جستجوی داروخانه با کلید «انتخاب» برای هر نتیجه در بالای صفحه","pending"],
+    ["سفارشات: کادر انتخاب داروخانه در بالای فرم با کلید «انتخاب» — اعمال‌شده در 11.48.0","applied"],
     ["فعالیت لحظه‌ای: بروزرسانی خودکار + فیلتر نماینده/سال/ماه/از-تا تاریخ با چک‌باکس + نقشه کامل باز شود","pending"],
     ["فعالیت/رصد/موقعیت زنده/اسنپ: فیلد کشویی نام نماینده — نماینده: ثابت؛ سرپرست/کارشناس: کشویی با «همه نمایندگان»","applied"],
     ["نقشه جامع: حذف افزودن لحظه‌ای استان/شهر/منطقه + ۵ چک‌باکس (همه/داروخانه/پزشک/بیمارستان/درمانگاه) + ۵ کلید ورودی فایل","pending"],
@@ -12769,4 +12769,48 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",v46home);else v46home();
   document.addEventListener("click",function(e){if(e.target&&e.target.closest&&e.target.closest("#tab-rep-homes"))setTimeout(v46home,400);},true);
+})();
+
+/* v11.48 / بند ۱۱: کادر «داروخانه‌های ثبت‌شده مشابه» در بالای فرم سفارشات با کلید انتخاب */
+(function(){
+  function v48mirror(){
+    var src=document.getElementById("orderPharmacyPickBox");
+    var form=document.getElementById("formOrder");
+    if(!src||!form)return;
+    var host=document.getElementById("v48TopPickBox");
+    if(!host){host=document.createElement("div");host.id="v48TopPickBox";host.style.cssText="margin:0 0 10px";form.parentNode.insertBefore(host,form);}
+    var cards=src.querySelectorAll(".ph-pick-card");
+    if(src.hidden||!cards.length){if(host.innerHTML)host.innerHTML="";host.dataset.sig="";return;}
+    var sig=cards.length+":"+(cards[0]&&cards[0].getAttribute("data-pid")||"");
+    if(host.dataset.sig===sig)return;host.dataset.sig=sig;
+    var btns=Array.prototype.map.call(cards,function(c){
+      var pid=c.getAttribute("data-pid")||"";
+      var nm=c.querySelector("strong");nm=nm?nm.textContent.replace(/^🏥\s*/,""):"—";
+      var det=c.querySelectorAll("span");
+      var loc=det&&det[0]?det[0].textContent:"";
+      return "<button type='button' class='btn btn-outline btn-sm v48pick' data-pid='"+String(pid).replace(/'/g,"")+"' style='margin:3px;text-align:right'>✅ انتخاب — "+nm+(loc?"<small style='display:block;color:#64748b'>"+loc+"</small>":"")+"</button>";
+    }).join("");
+    host.innerHTML="<div style='border:2px solid #0d9488;border-radius:12px;padding:10px 12px;background:#f0fdfa'><b style='color:#0f766e'>🏥 داروخانه ثبت‌شده مشابه پیدا شد — برای جایگذاری خودکار، «انتخاب» را بزنید:</b><div style='margin-top:6px'>"+btns+"</div></div>";
+  }
+  document.addEventListener("click",function(e){
+    var b=e.target&&e.target.closest&&e.target.closest(".v48pick");
+    if(!b)return;
+    var S=window.state||{};
+    var rec=(S.pharmacies||[]).filter(function(p){return String(p.id)===String(b.getAttribute("data-pid"));})[0];
+    if(!rec)return;
+    var set=function(id,v){var el=document.getElementById(id);if(el)el.value=v;};
+    set("orderPharmacyName",rec.name||"");set("orderPharmacyMatchedId",rec.id||"");
+    var inp=document.getElementById("orderPharmacyName");if(inp)inp.dataset.v20PlacedName=rec.name||"";
+    var pb=document.getElementById("orderPharmacyPickBox");if(pb){pb.hidden=true;pb.innerHTML="";}
+    var host=document.getElementById("v48TopPickBox");if(host){host.innerHTML="";host.dataset.sig="";}
+    try{if(typeof window.v20FillOrderPharmacy==="function")window.v20FillOrderPharmacy();}catch(x){}
+    try{if(typeof window.hidePlacedOrderNotices==="function")window.hidePlacedOrderNotices();}catch(x){}
+  },true);
+  function v48bind(){
+    var s=document.getElementById("orderPharmacyPickBox");
+    if(s&&window.MutationObserver&&!s.dataset.v48obs){s.dataset.v48obs="1";new MutationObserver(v48mirror).observe(s,{childList:true,attributes:true});}
+    v48mirror();
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",v48bind);else v48bind();
+  document.addEventListener("click",function(e){if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-orders"]'))setTimeout(v48bind,200);},true);
 })();
