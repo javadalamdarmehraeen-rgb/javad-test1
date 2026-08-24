@@ -317,7 +317,7 @@ test('multi-part prompts require a real acceptance checklist before ZIP delivery
 });
 
 test('next-chat GitHub handoff records exact publish truth and engine map', () => {
-  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.51.0/);
+  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.58.0/);
   assert.match(githubHandoff,/4984d17/);assert.match(githubHandoff,/Resource not accessible by integration/);
   assert.match(githubHandoff,/Production[\s\S]*11\.20\.0/);
   assert.match(githubHandoff,/موتور پاک‌سازی خودکار کش/);assert.match(githubHandoff,/موتورهای پایداری داده/);
@@ -369,7 +369,7 @@ test('new build clears only old asset caches before revealing app and prevents m
 test('v38 cache rescue automatically forces a fresh build without deleting CRM data', () => {
   const login = read('../public/login.html');
   assert.match(server,/pathname === "\/cache-reset"/);assert.match(server,/"Clear-Site-Data": '\"cache\"'/);
-  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.51.0"/);
+  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.58.0"/);
   assert.match(html,/\/api\/health\?__crm_nocache=/);assert.match(html,/\/cache-reset\?to=/);assert.match(html,/d\.version!==BUILD/);
   assert.match(login,/CRM_CACHE_RESCUED_/);assert.match(login,/\/cache-reset\?to=/);
   assert.match(sw,/function purgeEveryCache/);assert.match(sw,/CRM_BUILD_ACTIVE/);assert.match(sw,/cache: "reload"/);
@@ -379,7 +379,7 @@ test('v38 cache rescue automatically forces a fresh build without deleting CRM d
     assert.doesNotMatch(source,/indexedDB\.deleteDatabase\s*\(/);
     assert.doesNotMatch(source,/removeItem\(["']CRM_APP_STATE_V2/);
   }
-  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.51.0'/);
+  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.58.0'/);
 });
 
 test('security hardening blocks dangerous device APIs, cross-origin writes, executables and formula injection', () => {
@@ -394,7 +394,7 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.51.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.58.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
@@ -486,10 +486,10 @@ test('v11.43.1 engine button feedback + permanent version watchdog', () => {
   assert.match(v20,/visibilitychange/);
 });
 
-test('v11.51.0 safe cache-hardening', () => {
+test('v11.58.0 safe cache-hardening', () => {
   const html = read('../public/index.html'); const app = read('../public/crm-app.js');
   assert.match(html,/http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/);
-  assert.match(app,/CRM_APP_VERSION = "11.51.0"/);
+  assert.match(app,/CRM_APP_VERSION = "11.58.0"/);
   assert.match(app,/بارگذاری شد/);
 });
 
@@ -540,4 +540,58 @@ test('v11.51 route labels beside rep names', () => {
   const b = read('../public/crm-bundle.js');
   assert.match(b,/v51RouteLabels/);
   assert.match(b,/representativeRoutes/);
+});
+
+test('v11.52 hospital search in search-info tab', () => {
+  const app = read('../public/crm-app.js');
+  assert.match(app,/جستجو در بیمارستان‌ها و درمانگاه‌ها/);
+  assert.match(app,/entityType: "hospital"/);
+  assert.match(app,/qHosp/);
+});
+
+test('v11.53 activity tab filters + map height', () => {
+  const b = read('../public/crm-bundle.js');
+  assert.match(b,/v53ActivityFilters/);
+  assert.match(b,/v53fRepOn/);
+  assert.match(b,/v53fMonthOn/);
+  assert.match(b,/v53MapFix/);
+  assert.match(b,/minHeight="360px"/);
+});
+
+test('v11.54 overview map checkboxes + file imports', () => {
+  const b = read('../public/crm-bundle.js');
+  assert.match(b,/v54OverviewBar/);
+  assert.match(b,/ورودی فایل داروخانه‌ها/);
+  assert.match(b,/ورودی فایل درمانگاه‌ها/);
+  assert.match(b,/v54import/);
+});
+
+test('v11.55 routes stops/durations + date filters', () => {
+  const b = read('../public/crm-bundle.js');
+  assert.match(b,/v55RoutesEnhance/);
+  assert.match(b,/توقف‌ها و مدت هر توقف/);
+  assert.match(b,/v55RouteFilters/);
+  assert.match(b,/v55fMonthOn/);
+});
+
+test('v11.56 province/city filtered by user routes', () => {
+  const b = read('../public/crm-bundle.js');
+  assert.match(b,/v56routeGeoFilter/);
+  assert.match(b,/representativeRoutes/);
+  assert.match(b,/populateProvinces/);
+});
+
+test('v11.57 offline sync engine + red unvisited markers', () => {
+  const b = read('../public/crm-bundle.js');
+  assert.match(b,/v57OfflineSync/);
+  assert.match(b,/window.addEventListener\("online"/);
+  assert.match(b,/"#dc2626"/);
+  assert.match(b,/🔴 /);
+});
+
+test('v11.58 snapp filter fields free of combo overlay', () => {
+  const html = read('../public/index.html'); const b = read('../public/crm-bundle.js');
+  assert.match(html,/id="snappFilterYear" data-nocombo="1"/);
+  assert.match(html,/id="snappTopupMonth" data-nocombo="1"/);
+  assert.match(b,/v58UnwrapSnappCombos/);
 });

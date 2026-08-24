@@ -25,7 +25,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "11.51.0";
+const CRM_APP_VERSION = "11.58.0";
 try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
@@ -2998,7 +2998,7 @@ function downloadCSVFile(filename, headers, rows) {
 // ----------------------------------------------------------------------------
 function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
-  const build = "11.51.0";
+  const build = "11.58.0";
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'CRM_BUILD_ACTIVE' && event.data.build !== build) {
@@ -3007,7 +3007,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.51.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.58.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -3761,6 +3761,24 @@ function setupSearchInfoTab() {
       });
     });
 
+    // جستجو در بیمارستان‌ها و درمانگاه‌ها (v11.52 / بند ۱۷)
+    (state.hospitals || []).forEach((h, idx) => {
+      if (qHosp && !(String(h.name || "").toLowerCase().includes(qHosp) || String(h.type || "").toLowerCase().includes(qHosp) || String(h.specialty || "").toLowerCase().includes(qHosp))) return;
+      if (!qHosp) return; // بیمارستان‌ها فقط وقتی فیلتر بیمارستان فعال است
+      results.push({
+        index: results.length + 1,
+        repName: "—",
+        type: String(h.type || "بیمارستان").indexOf("درمانگاه") !== -1 ? "درمانگاه 🏥" : "بیمارستان 🏥",
+        name: h.name,
+        city: `${h.province || ""} / ${h.city || ""}`,
+        address: h.address || "",
+        lat: h.lat,
+        lng: h.lng,
+        raw: h,
+        entityType: "hospital"
+      });
+    });
+
     renderSearchInfoResults(results);
   };
 
@@ -3775,6 +3793,7 @@ function setupSearchInfoTab() {
       const rws = [];
       state.pharmacies.forEach((p, idx) => rws.push([idx + 1, p.repName || "-", "داروخانه", p.name, p.city, p.address]));
       state.doctors.forEach((d, idx) => rws.push([idx + 1, d.repName || "-", "پزشک", d.name, d.city, d.address]));
+      (state.hospitals || []).forEach((h, idx) => rws.push([rws.length + 1, "-", h.type || "بیمارستان", h.name, h.city || "", h.address || ""]));
       downloadCSVFile("search-info-export.csv", hdrs, rws);
     });
   }

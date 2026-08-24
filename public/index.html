@@ -32,7 +32,7 @@
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.51.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="11.58.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       document.documentElement.classList.add("crm-booting");
       function target(){return location.pathname+location.search+location.hash;}
       function rescue(serverBuild){if(__justRescued)return;var u="/cache-reset?to="+encodeURIComponent(target())+"&build="+encodeURIComponent(serverBuild||BUILD)+"&t="+Date.now();location.replace(u);}
@@ -56,7 +56,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.51.0" />
+  <link rel="stylesheet" href="style.css?v=11.58.0" />
 </head>
 <body>
 
@@ -1067,11 +1067,11 @@
         <div id="snappDailyStatus" class="col-add-status">هنوز گزارشی وارد نشده است.</div>
         <div id="snappFileArchiveViewer" class="card" hidden></div>
         <div class="form-grid" id="snappTripFilterGrid" style="margin-top:1rem">
-          <div class="form-group"><label class="form-label" for="snappFilterYear"><input type="checkbox" id="snappTripModeYear"> گزارش سال</label><input id="snappFilterYear" class="form-input" inputmode="numeric" placeholder="مثال: ۱۴۰۵"></div>
-          <div class="form-group"><label class="form-label" for="snappFilterMonth"><input type="checkbox" id="snappTripModeMonth"> گزارش ماه</label><select id="snappFilterMonth" class="form-select"><option value="">همه ماه‌ها</option><option value="01">فروردین</option><option value="02">اردیبهشت</option><option value="03">خرداد</option><option value="04">تیر</option><option value="05">مرداد</option><option value="06">شهریور</option><option value="07">مهر</option><option value="08">آبان</option><option value="09">آذر</option><option value="10">دی</option><option value="11">بهمن</option><option value="12">اسفند</option></select></div>
-          <div class="form-group"><label class="form-label" for="snappFilterRep">نماینده / مسافر</label><select id="snappFilterRep" class="form-select"><option value="">همه نمایندگان</option></select></div>
-          <div class="form-group"><label class="form-label" for="snappFilterFrom"><input type="checkbox" id="snappTripModeFrom"> بازه از تاریخ</label><input id="snappFilterFrom" class="form-input" autocomplete="off" data-no-autofill="1" placeholder="۱۴۰۵/۰۵/۲۵"></div>
-          <div class="form-group"><label class="form-label" for="snappFilterTo"><input type="checkbox" id="snappTripModeTo"> بازه تا تاریخ</label><input id="snappFilterTo" class="form-input" autocomplete="off" data-no-autofill="1" placeholder="۱۴۰۵/۰۵/۲۵"></div>
+          <div class="form-group"><label class="form-label" for="snappFilterYear"><input type="checkbox" id="snappTripModeYear"> گزارش سال</label><input id="snappFilterYear" data-nocombo="1" class="form-input" inputmode="numeric" placeholder="مثال: ۱۴۰۵"></div>
+          <div class="form-group"><label class="form-label" for="snappFilterMonth"><input type="checkbox" id="snappTripModeMonth"> گزارش ماه</label><select id="snappFilterMonth" data-nocombo="1" class="form-select"><option value="">همه ماه‌ها</option><option value="01">فروردین</option><option value="02">اردیبهشت</option><option value="03">خرداد</option><option value="04">تیر</option><option value="05">مرداد</option><option value="06">شهریور</option><option value="07">مهر</option><option value="08">آبان</option><option value="09">آذر</option><option value="10">دی</option><option value="11">بهمن</option><option value="12">اسفند</option></select></div>
+          <div class="form-group"><label class="form-label" for="snappFilterRep">نماینده / مسافر</label><select id="snappFilterRep" data-nocombo="1" class="form-select"><option value="">همه نمایندگان</option></select></div>
+          <div class="form-group"><label class="form-label" for="snappFilterFrom"><input type="checkbox" id="snappTripModeFrom"> بازه از تاریخ</label><input id="snappFilterFrom" data-nocombo="1" class="form-input" autocomplete="off" data-no-autofill="1" placeholder="۱۴۰۵/۰۵/۲۵"></div>
+          <div class="form-group"><label class="form-label" for="snappFilterTo"><input type="checkbox" id="snappTripModeTo"> بازه تا تاریخ</label><input id="snappFilterTo" data-nocombo="1" class="form-input" autocomplete="off" data-no-autofill="1" placeholder="۱۴۰۵/۰۵/۲۵"></div>
         </div>
         <div id="snappSummaryCards" class="v20-visit-metrics"></div>
       </div>
@@ -1085,7 +1085,7 @@
       </div>
       <div class="card">
         <div class="card-header"><div class="card-title"><span>💳 گزارش افزایش موجودی — آرشیو دائمی</span></div><button type="button" id="btnExportSnappTopups" class="btn btn-primary btn-sm btn-excel">📊 خروجی افزایش موجودی</button></div>
-        <div class="form-grid" id="snappTopupFilterGrid" style="margin:1rem 0"><div class="form-group"><label class="form-label"><input type="checkbox" id="snappTopupModeYear"> گزارش سال شارژ</label><input id="snappTopupYear" class="form-input" placeholder="۱۴۰۵"></div><div class="form-group"><label class="form-label"><input type="checkbox" id="snappTopupModeMonth"> گزارش ماه شارژ</label><select id="snappTopupMonth" class="form-select"><option value="">همه ماه‌ها</option><option value="01">فروردین</option><option value="02">اردیبهشت</option><option value="03">خرداد</option><option value="04">تیر</option><option value="05">مرداد</option><option value="06">شهریور</option><option value="07">مهر</option><option value="08">آبان</option><option value="09">آذر</option><option value="10">دی</option><option value="11">بهمن</option><option value="12">اسفند</option></select></div><div class="form-group"><label class="form-label"><input type="checkbox" id="snappTopupModeFrom"> بازه از تاریخ شارژ</label><input id="snappTopupFrom" class="form-input" autocomplete="off" data-no-autofill="1" placeholder="۱۴۰۵/۰۵/۲۶"></div><div class="form-group"><label class="form-label"><input type="checkbox" id="snappTopupModeTo"> بازه تا تاریخ شارژ</label><input id="snappTopupTo" class="form-input" autocomplete="off" data-no-autofill="1" placeholder="۱۴۰۵/۰۵/۲۶"></div></div>
+        <div class="form-grid" id="snappTopupFilterGrid" style="margin:1rem 0"><div class="form-group"><label class="form-label"><input type="checkbox" id="snappTopupModeYear"> گزارش سال شارژ</label><input id="snappTopupYear" data-nocombo="1" class="form-input" placeholder="۱۴۰۵"></div><div class="form-group"><label class="form-label"><input type="checkbox" id="snappTopupModeMonth"> گزارش ماه شارژ</label><select id="snappTopupMonth" data-nocombo="1" class="form-select"><option value="">همه ماه‌ها</option><option value="01">فروردین</option><option value="02">اردیبهشت</option><option value="03">خرداد</option><option value="04">تیر</option><option value="05">مرداد</option><option value="06">شهریور</option><option value="07">مهر</option><option value="08">آبان</option><option value="09">آذر</option><option value="10">دی</option><option value="11">بهمن</option><option value="12">اسفند</option></select></div><div class="form-group"><label class="form-label"><input type="checkbox" id="snappTopupModeFrom"> بازه از تاریخ شارژ</label><input id="snappTopupFrom" data-nocombo="1" class="form-input" autocomplete="off" data-no-autofill="1" placeholder="۱۴۰۵/۰۵/۲۶"></div><div class="form-group"><label class="form-label"><input type="checkbox" id="snappTopupModeTo"> بازه تا تاریخ شارژ</label><input id="snappTopupTo" data-nocombo="1" class="form-input" autocomplete="off" data-no-autofill="1" placeholder="۱۴۰۵/۰۵/۲۶"></div></div>
         <div id="snappTopupSummaryCards" class="v20-visit-metrics"></div>
         <div class="table-responsive"><table class="data-table"><thead><tr id="snappTopupHead"><th>ردیف</th><th>تاریخ</th><th>افزایش موجودی</th></tr></thead><tbody id="snappTopupBody"></tbody></table></div>
       </div>
@@ -2284,9 +2284,9 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.51.0"></script>
-  <script src="crm-app.js?v=11.51.0"></script>
-          <script src="crm-bundle.js?v=11.51.0"></script>
+  <script src="crm-data.js?v=11.58.0"></script>
+  <script src="crm-app.js?v=11.58.0"></script>
+          <script src="crm-bundle.js?v=11.58.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />

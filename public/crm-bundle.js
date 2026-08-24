@@ -1051,9 +1051,9 @@
       }
       (rt.stops || []).forEach(function (st) {
         if (!st.lat || !st.lng) return;
-        const color = st.visited ? "#16a34a" : "#ea580c";
+        const color = st.visited ? "#16a34a" : "#dc2626"; /* v11.57: قرمز طبق درخواست */
         const mk = L.circleMarker([st.lat, st.lng], { radius: 8, color: "#fff", weight: 2, fillColor: color, fillOpacity: 1 })
-          .bindTooltip((st.visited ? "✅ " : "⏳ ") + st.name + (st.time ? (" — " + st.time) : ""), { permanent: false });
+          .bindTooltip((st.visited ? "✅ " : "🔴 ") + st.name + (st.time ? (" — " + st.time) : ""), { permanent: false });
         mk.addTo(mapRepRoutes);
         routeLayers.push(mk);
         pts.push([st.lat, st.lng]);
@@ -12288,11 +12288,11 @@ button.v19-gps svg{display:block}
     ["فعالیت لحظه‌ای: بروزرسانی خودکار هر ۳۰ ثانیه — اعمال‌شده در 11.50.0؛ فیلترها و نقشه کامل در صف","partial"],
     ["فعالیت/رصد/موقعیت زنده/اسنپ: فیلد کشویی نام نماینده — نماینده: ثابت؛ سرپرست/کارشناس: کشویی با «همه نمایندگان»","applied"],
     ["نقشه جامع: حذف افزودن لحظه‌ای استان/شهر/منطقه + ۵ چک‌باکس (همه/داروخانه/پزشک/بیمارستان/درمانگاه) + ۵ کلید ورودی فایل","pending"],
-    ["اسنپ: رفع فلش سال و چک‌باکس‌های خراب","pending"],
+    ["اسنپ: فیلدهای فیلتر از combo خارج شد — فلش/ورودی سال و چک‌باکس‌ها فعال (11.58.0)","applied"],
     ["رمزها: دابل‌کلیک نمایش/پنهان در کل برنامه (حتی صفحه ورود) — اعمال‌شده در 11.46.0","applied"],
     ["جستجوی اطلاعات: زیرمجموعه همه داروخانه/پزشک/بیمارستان + نمایش نقطه روی نقشه","pending"],
     ["فروش پخش‌ها: فیلترها در یک سطر قفل‌شده","applied"],
-    ["رصد تردد: فیلتر سال/ماه/تاریخ + نشانگر سبز/قرمز ویزیت + مدت توقف‌ها + ثبت آفلاین و ارسال خودکار","pending"],
+    ["رصد تردد: فیلترها + توقف‌ها با مدت + نشانگر سبز/قرمز + موتور آفلاین — اعمال‌شده در 11.55–11.57","applied"],
     ["ویزیت: کادر ساعت پایان کنار وضعیت + ثبت ساعت پایان — اعمال‌شده در 11.46.0","applied"],
     ["منزل نمایندگان: پلاک/طبقه در فرم و لیست — اعمال‌شده در 11.47.0","applied"],
     ["مرخصی: از ساعت/تا ساعت فیلدهای ۵ و ۶ بدون ثانیه — اعمال‌شده (11.37)؛ گارد لیبل فارسی فعال","applied"],
@@ -12890,4 +12890,375 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(v51RouteLabels,2500);});else setTimeout(v51RouteLabels,2500);
   setInterval(v51RouteLabels,8000);
+})();
+
+/* v11.53 / بند ۱۲: فیلترهای فعالیت لحظه‌ای + رفع سایز نقشه */
+(function(){
+  function v53Apply(){
+    var tbody=document.getElementById("tableActivityLogBody");if(!tbody)return;
+    var box=document.getElementById("v53ActivityFilters");if(!box)return;
+    var repOn=box.querySelector("#v53fRepOn"),rep=box.querySelector("#v53fRep");
+    var yrOn=box.querySelector("#v53fYearOn"),yr=box.querySelector("#v53fYear");
+    var moOn=box.querySelector("#v53fMonthOn"),mo=box.querySelector("#v53fMonth");
+    var fOn=box.querySelector("#v53fFromOn"),fd=box.querySelector("#v53fFrom");
+    var tOn=box.querySelector("#v53fToOn"),td=box.querySelector("#v53fTo");
+    var repV=repOn&&repOn.checked&&rep?String(rep.value||""):"";
+    var yrV=yrOn&&yrOn.checked&&yr?String(yr.value||"").trim():"";
+    var moV=moOn&&moOn.checked&&mo?String(mo.value||""):"";
+    var fdV=fOn&&fOn.checked&&fd?String(fd.value||"").replace(/\//g,""):"";
+    var tdV=tOn&&tOn.checked&&td?String(td.value||"").replace(/\//g,""):"";
+    Array.prototype.forEach.call(tbody.rows,function(tr){
+      if(!tr.cells||tr.cells.length<3){tr.style.display="";return;}
+      var repTxt=String(tr.cells[1].textContent||"").trim();
+      var timeTxt=String(tr.cells[0].textContent||"").trim();
+      var actTxt=String(tr.cells[2].textContent||"").trim();
+      var blob=(timeTxt+" "+repTxt+" "+actTxt);
+      var ok=true;
+      if(repV&&repTxt.indexOf(repV)===-1)ok=false;
+      if(ok&&yrV&&blob.indexOf(yrV)===-1)ok=false;
+      if(ok&&moV&&blob.indexOf(moV)===-1)ok=false;
+      if(ok&&fdV){var m=blob.match(/(1[34]\d{3})\/?\d{0,2}\/?\d{0,2}/);var dig=blob.replace(/[^0-9]/g,"");if(dig&&dig<fdV.replace(/[^0-9]/g,""))ok=false;}
+      if(ok&&tdV){var dig2=blob.replace(/[^0-9]/g,"");if(dig2&&dig2>tdV.replace(/[^0-9]/g,""))ok=false;}
+      tr.style.display=ok?"":"none";
+    });
+  }
+  function v53BuildUI(){
+    var pane=document.getElementById("tab-activity-log");if(!pane)return;
+    if(document.getElementById("v53ActivityFilters")){v53FillReps();return;}
+    var bar=document.createElement("div");bar.id="v53ActivityFilters";
+    bar.style.cssText="display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#f8fafc;border:1px solid #cbd5e1;border-radius:10px;padding:8px 10px;margin:0 0 10px";
+    bar.innerHTML='<label style="font-size:12px"><input type="checkbox" id="v53fRepOn"> نماینده</label><select id="v53fRep" class="form-select" style="max-width:160px"></select>'
+      +'<label style="font-size:12px"><input type="checkbox" id="v53fYearOn"> سال</label><input id="v53fYear" class="form-input" placeholder="مثلاً 1405" style="max-width:110px">'
+      +'<label style="font-size:12px"><input type="checkbox" id="v53fMonthOn"> ماه</label><select id="v53fMonth" class="form-select" style="max-width:120px"><option>فروردین</option><option>اردیبهشت</option><option>خرداد</option><option>تیر</option><option>مرداد</option><option>شهریور</option><option>مهر</option><option>آبان</option><option>آذر</option><option>دی</option><option>بهمن</option><option>اسفند</option></select>'
+      +'<label style="font-size:12px"><input type="checkbox" id="v53fFromOn"> از تاریخ</label><input id="v53fFrom" class="form-input" placeholder="1405/06/01" style="max-width:130px">'
+      +'<label style="font-size:12px"><input type="checkbox" id="v53fToOn"> تا تاریخ</label><input id="v53fTo" class="form-input" placeholder="1405/06/31" style="max-width:130px">'
+      +'<button type="button" id="v53fApply" class="btn btn-primary btn-sm" style="background:#0d9488">اعمال فیلتر</button>';
+    var title=pane.querySelector(".card-title")||pane.querySelector(".card-header");
+    if(title&&title.parentNode)title.parentNode.insertBefore(bar,title.nextSibling);
+    bar.addEventListener("click",function(e){if(e.target.id==="v53fApply")v53Apply();});
+    bar.addEventListener("change",v53Apply);
+    bar.addEventListener("input",v53Apply);
+    v53FillReps();
+  }
+  function v53FillReps(){
+    var sel=document.getElementById("v53fRep");if(!sel)return;
+    var names=[];try{((window.state||{}).users||[]).forEach(function(u){if(u&&u.fullName)names.push(u.fullName);});}catch(e){}
+    var cur=sel.value;sel.innerHTML="<option value=''>همه</option>"+names.map(function(n){return "<option>"+String(n).replace(/[<>]/g,"")+"</option>";}).join("");
+    if(names.indexOf(cur)!==-1)sel.value=cur;
+  }
+  function v53WrapRender(){
+    if(window.__v53wrapped)return;window.__v53wrapped=1;
+    var orig=window.renderActivityLogTable;
+    window.renderActivityLogTable=function(){var r=orig&&orig.apply(null,arguments);setTimeout(function(){v53BuildUI();v53Apply();},30);return r;};
+  }
+  function v53MapFix(){
+    var m=document.getElementById("map-activity-log");
+    if(m){m.style.minHeight="360px";try{window.dispatchEvent(new Event("resize"));}catch(e){}}
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){v53WrapRender();v53BuildUI();v53MapFix();});
+  else{v53WrapRender();v53BuildUI();v53MapFix();}
+  document.addEventListener("click",function(e){if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-activity-log"]')){setTimeout(function(){v53BuildUI();v53Apply();v53MapFix();},250);}},true);
+})();
+
+/* v11.54 / بند ۱۴: چک‌باکس‌های تفکیک + ورودی فایل در نقشه جامع */
+(function(){
+  var v54Kinds={all:true,ph:true,doc:true,hosp:true,cl:true};
+  function v54Refresh(){
+    try{
+      var S=window.state;if(!S)return;
+      var keepPh=v54Kinds.all||v54Kinds.ph, keepDoc=v54Kinds.all||v54Kinds.doc;
+      var keepHosp=v54Kinds.all||v54Kinds.hosp, keepCl=v54Kinds.all||v54Kinds.cl;
+      var oPh=S.pharmacies,oDoc=S.doctors,oHos=S.hospitals;
+      if(!keepPh)S.pharmacies=[];
+      if(!keepDoc)S.doctors=[];
+      if(!keepHosp||!keepCl)S.hospitals=(oHos||[]).filter(function(h){var t=String(h.type||"بیمارستان");var isClinic=t.indexOf("درمانگاه")!==-1;return isClinic?(keepHosp||keepCl||v54Kinds.all):(keepHosp||v54Kinds.all);});
+      var el=document.getElementById("mapFilterProvince");
+      if(el){el.dispatchEvent(new Event("change"));}
+      setTimeout(function(){S.pharmacies=oPh;S.doctors=oDoc;S.hospitals=oHos;},500);
+    }catch(e){}
+  }
+  function v54UI(){
+    var pane=document.getElementById("tab-overview-map");if(!pane)return;
+    if(document.getElementById("v54OverviewBar"))return;
+    var bar=document.createElement("div");bar.id="v54OverviewBar";
+    bar.style.cssText="display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#f0fdfa;border:1px solid #0d9488;border-radius:10px;padding:8px 10px;margin:0 0 10px";
+    bar.innerHTML='<b style="color:#0f766e;font-size:12px">نمایش:</b>'
+      +'<label style="font-size:12px"><input type="checkbox" id="v54kAll" checked> همه</label>'
+      +'<label style="font-size:12px"><input type="checkbox" id="v54kPh" checked> داروخانه‌ها</label>'
+      +'<label style="font-size:12px"><input type="checkbox" id="v54kDoc" checked> پزشکان</label>'
+      +'<label style="font-size:12px"><input type="checkbox" id="v54kHosp" checked> بیمارستان‌ها</label>'
+      +'<label style="font-size:12px"><input type="checkbox" id="v54kCl" checked> درمانگاه‌ها</label>'
+      +'<span style="border-right:1px solid #99f6e4;margin:0 4px"></span>'
+      +'<label class="btn btn-outline btn-sm" style="font-size:11px">📥 ورودی فایل داروخانه‌ها<input type="file" class="v54imp" data-target="pharmacies" accept=".json,.csv" hidden></label>'
+      +'<label class="btn btn-outline btn-sm" style="font-size:11px">📥 ورودی فایل پزشکان<input type="file" class="v54imp" data-target="doctors" accept=".json,.csv" hidden></label>'
+      +'<label class="btn btn-outline btn-sm" style="font-size:11px">📥 ورودی فایل بیمارستان‌ها<input type="file" class="v54imp" data-target="hospitals" accept=".json,.csv" hidden></label>'
+      +'<label class="btn btn-outline btn-sm" style="font-size:11px">📥 ورودی فایل درمانگاه‌ها<input type="file" class="v54imp" data-target="clinics" accept=".json,.csv" hidden></label>';
+    var title=pane.querySelector(".card-title")||pane.querySelector(".card-header");
+    if(title&&title.parentNode)title.parentNode.insertBefore(bar,title.nextSibling);else pane.insertBefore(bar,pane.firstChild);
+    function v54readChecks(){
+      v54Kinds.all=document.getElementById("v54kAll").checked;
+      v54Kinds.ph=document.getElementById("v54kPh").checked;
+      v54Kinds.doc=document.getElementById("v54kDoc").checked;
+      v54Kinds.hosp=document.getElementById("v54kHosp").checked;
+      v54Kinds.cl=document.getElementById("v54kCl").checked;
+    }
+    bar.addEventListener("change",function(e){
+      if(e.target.type==="checkbox"){v54readChecks();
+        if(e.target.id!=="v54kAll"&&v54Kinds.all)v54Kinds.all=false;
+        if(e.target.id==="v54kAll"){var ids=["v54kPh","v54kDoc","v54kHosp","v54kCl"];ids.forEach(function(i){document.getElementById(i).checked=v54Kinds.all;});v54readChecks();}
+        v54Refresh();
+      }
+    });
+    bar.addEventListener("change",function(e){if(e.target.classList&&e.target.classList.contains("v54imp"))v54import(e.target);});
+  }
+  function v54parse(text){
+    text=String(text||"").trim();if(!text)return [];
+    try{var j=JSON.parse(text);if(Array.isArray(j))return j;}catch(e){}
+    var rows=[];var lines=text.split(/\r?\n/);
+    lines.forEach(function(ln,i){if(!ln.trim())return;var c=ln.split(",");if(i===0&&/name|نام/i.test(c[0]))return;
+      if(c.length>=7)rows.push({name:c[0],province:c[1],city:c[2],district:c[3],address:c[4],lat:parseFloat(c[5])||null,lng:parseFloat(c[6])||null,type:c[7]||""});});
+    return rows;
+  }
+  function v54import(inp){
+    var f=inp.files&&inp.files[0];if(!f)return;
+    var target=inp.getAttribute("data-target");
+    var rd=new FileReader();
+    rd.onload=function(){
+      try{
+        var rows=v54parse(rd.result);if(!rows.length)return alert("فایلی قابل خواندن نبود (JSON آرایه یا CSV: name,province,city,district,address,lat,lng,type)");
+        var S=window.state;if(!S)return;
+        S.hospitals=S.hospitals||[];S.pharmacies=S.pharmacies||[];S.doctors=S.doctors||[];
+        var n=0;
+        rows.forEach(function(r){
+          if(!r.name)return;
+          var rec={id:"v54-"+Date.now()+"-"+Math.random().toString(36).slice(2,7),name:String(r.name),province:String(r.province||""),city:String(r.city||""),district:String(r.district||""),address:String(r.address||""),lat:r.lat,lng:r.lng};
+          if(target==="pharmacies"){rec.repName="مدیر سیستم";S.pharmacies.push(rec);n++;}
+          else if(target==="doctors"){rec.specialty="";rec.repName="مدیر سیستم";S.doctors.push(rec);n++;}
+          else{rec.type=(target==="clinics")?"درمانگاه":(String(r.type||"").indexOf("درمانگاه")!==-1?"درمانگاه":"بیمارستان");rec.specialty=rec.specialty||"عمومی";rec.hours="";S.hospitals.push(rec);n++;}
+        });
+        if(window.saveState)window.saveState(false);
+        var el=document.getElementById("mapFilterProvince");if(el)el.dispatchEvent(new Event("change"));
+        alert("✅ "+n+" رکورد از فایل وارد و روی نقشه جامع اضافه شد.");
+      }catch(e){alert("خطا در پردازش فایل: "+e.message);}
+      inp.value="";
+    };
+    rd.readAsText(f,"utf-8");
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",v54UI);else v54UI();
+  document.addEventListener("click",function(e){if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-overview-map"]'))setTimeout(v54UI,250);},true);
+})();
+
+/* v11.55 / بند ۱۹(نیمه اول): ستون توقف‌ها+مدت و فیلترهای سال/ماه/تاریخ در رصد تردد */
+(function(){
+  function v55min(t){var m=String(t||"").match(/(\d{1,2}):(\d{2})/);return m?(+m[1])*60+(+m[2]):null;}
+  function v55stopsCell(rt){
+    var stops=(rt&&rt.stops)||[];if(!stops.length)return "—";
+    var out=[];
+    for(var i=0;i<stops.length;i++){
+      var st=stops[i];var dur="";
+      if(i<stops.length-1){var a=v55min(st.time),b=v55min(stops[i+1].time);
+        if(a!==null&&b!==null&&b>=a){var d=b-a;dur=" ⏱"+Math.floor(d/60)+"س"+(d%60)+"د";}}
+      out.push((st.visited?"✅ ":"🔴 ")+String(st.name||"—")+" ("+String(st.time||"—")+")"+dur);
+    }
+    return out.join("<br>");
+  }
+  function v55RoutesEnhance(){
+    var tbody=document.getElementById("tableRepRoutesBody");if(!tbody)return;
+    var thead=tbody.parentNode&&tbody.parentNode.querySelector("thead tr");
+    if(thead&&thead.cells&&String(thead.cells[thead.cells.length-1].textContent).indexOf("توقف‌ها")===-1){
+      var th=document.createElement("th");th.textContent="توقف‌ها و مدت هر توقف";thead.appendChild(th);
+    }
+    Array.prototype.forEach.call(tbody.rows,function(tr){
+      if(!tr.cells||tr.cells.length<2)return;
+      if(tr.getAttribute("data-v55done"))return;tr.setAttribute("data-v55done","1");
+      var rep=String(tr.cells[0].textContent||"").trim(),date=String(tr.cells[1].textContent||"").trim();
+      var rt=null;try{((window.state||{}).repRoutes||[]).forEach(function(x){if(!rt&&String(x.repName||"").trim()===rep&&String(x.date||"").trim()===date)rt=x;});}catch(e){}
+      var td=document.createElement("td");td.style.cssText="font-size:11.5px;text-align:right";td.innerHTML=v55stopsCell(rt);
+      tr.appendChild(td);
+    });
+    v55Filter();
+  }
+  function v55Filter(){
+    var bar=document.getElementById("v55RouteFilters");if(!bar)return;
+    var on=function(id){var c=bar.querySelector("#"+id);return c&&c.checked;};
+    var val=function(id){var e=bar.querySelector("#"+id);return e?String(e.value||"").trim():"";};
+    var repV=on("v55fRepOn")?val("v55fRep"):"",yrV=on("v55fYearOn")?val("v55fYear"):"",moV=on("v55fMonthOn")?val("v55fMonth"):"";
+    var fdV=on("v55fFromOn")?val("v55fFrom").replace(/\//g,""):"",tdV=on("v55fToOn")?val("v55fTo").replace(/\//g,""):"";
+    var tbody=document.getElementById("tableRepRoutesBody");if(!tbody)return;
+    Array.prototype.forEach.call(tbody.rows,function(tr){
+      if(!tr.cells||tr.cells.length<2){tr.style.display="";return;}
+      var rep=String(tr.cells[0].textContent||"").trim(),date=String(tr.cells[1].textContent||"").trim();
+      var ok=true;
+      if(repV&&rep.indexOf(repV)===-1)ok=false;
+      if(ok&&yrV&&date.indexOf(yrV)===-1)ok=false;
+      if(ok&&moV&&!v55monthMatch(date,moV))ok=false;
+      if(ok&&fdV&&date.replace(/\//g,"")<fdV)ok=false;
+      if(ok&&tdV&&date.replace(/\//g,"")>tdV)ok=false;
+      tr.style.display=ok?"":"none";
+    });
+  }
+  function v55monthMatch(date,month){
+    var names=["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند"];
+    var m=String(date).split("/");
+    var mi=names.indexOf(month)+1;
+    return m[1]&&+m[1]===mi;
+  }
+  function v55BuildUI(){
+    var pane=document.getElementById("tab-rep-routes");if(!pane)return;
+    if(!document.getElementById("v55RouteFilters")){
+      var bar=document.createElement("div");bar.id="v55RouteFilters";
+      bar.style.cssText="display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#f8fafc;border:1px solid #cbd5e1;border-radius:10px;padding:8px 10px;margin:0 0 10px";
+      bar.innerHTML='<label style="font-size:12px"><input type="checkbox" id="v55fRepOn"> نماینده</label><input id="v55fRep" class="form-input" placeholder="نام نماینده" style="max-width:140px">'
+        +'<label style="font-size:12px"><input type="checkbox" id="v55fYearOn"> سال</label><input id="v55fYear" class="form-input" placeholder="1405" style="max-width:90px">'
+        +'<label style="font-size:12px"><input type="checkbox" id="v55fMonthOn"> ماه</label><select id="v55fMonth" class="form-select" style="max-width:110px"><option>فروردین</option><option>اردیبهشت</option><option>خرداد</option><option>تیر</option><option>مرداد</option><option>شهریور</option><option>مهر</option><option>آبان</option><option>آذر</option><option>دی</option><option>بهمن</option><option>اسفند</option></select>'
+        +'<label style="font-size:12px"><input type="checkbox" id="v55fFromOn"> از تاریخ</label><input id="v55fFrom" class="form-input" placeholder="1405/06/01" style="max-width:120px">'
+        +'<label style="font-size:12px"><input type="checkbox" id="v55fToOn"> تا تاریخ</label><input id="v55fTo" class="form-input" placeholder="1405/06/31" style="max-width:120px">';
+      var card=pane.querySelector(".card");
+      if(card)card.insertBefore(bar,card.firstChild.nextSibling);else pane.insertBefore(bar,pane.firstChild);
+      bar.addEventListener("change",v55Filter);bar.addEventListener("input",v55Filter);
+    }
+    v55RoutesEnhance();
+  }
+  function v55Wrap(){
+    if(window.__v55wrapped)return;window.__v55wrapped=1;
+    var orig=window.renderRepRoutesTable;
+    window.renderRepRoutesTable=function(){var r=orig&&orig.apply(null,arguments);setTimeout(v55BuildUI,40);return r;};
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){v55Wrap();setTimeout(v55BuildUI,400);});
+  else{v55Wrap();setTimeout(v55BuildUI,400);}
+  document.addEventListener("click",function(e){if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-rep-routes"]'))setTimeout(v55BuildUI,300);},true);
+})();
+
+/* v11.56 / بند ۲۴(نیمه دوم): فیلتر استان/شهر بر اساس مسیرهای تعریف‌شده کاربر */
+(function(){
+  function v56user(){
+    try{
+      var S=window.state;if(!S)return null;
+      var nm=sessionStorage.getItem("crmUserName")||"";
+      var u=((S.users||[]).filter(function(x){return x&&nm&&String(x.fullName||"")===nm;}))[0]||null;
+      return u;
+    }catch(e){return null;}
+  }
+  function v56isManager(u){return !u||/^مدیر/.test(String(u.role||""));}
+  function v56routes(u){
+    try{
+      var S=window.state;if(!S||!u)return [];
+      var rs=(S.settings&&S.settings.representativeRoutes)||S.representativeRoutes||[];
+      var nm=String(u.fullName||"");
+      return rs.filter(function(r){var rn=String((r&&r.repName)||r&&r.rep||"");return rn&&(rn===nm||rn.indexOf(nm)!==-1||nm.indexOf(rn)!==-1);});
+    }catch(e){return [];}
+  }
+  function v56allowed(){
+    var u=v56user();if(!u||v56isManager(u))return null;
+    var rs=v56routes(u);if(!rs.length)return null;
+    var prov={},city={};
+    rs.forEach(function(r){
+      var ps=r.provinces||(typeof r.province==="string"&&r.province?[r.province]:[]);
+      ps.forEach(function(x){if(x)prov[String(x)]=1;});
+      (r.cities||[]).forEach(function(c){if(c){city[String(c)]=1;
+        var pr=String(r.provinces&&r.provinces.length?r.provinces.find(function(p){return true;})||r.province||"":r.province||"");
+        if(pr)city[pr+"|"+String(c)]=1;}});
+      (r.districts||[]).forEach(function(d){if(d)city[String(d)]=1;});
+    });
+    return {prov:prov,city:city};
+  }
+  function v56applyToSelect(sel,allowed){
+    if(!sel||!allowed)return;
+    var isProv=/Province|استان/.test(sel.id||"");
+    Array.prototype.forEach.call(sel.options,function(o){
+      if(!o.value||o.value==="ایران")return;
+      if(isProv){if(!allowed.prov[o.value])o.remove();}
+    });
+  }
+  function v56routeGeoFilter(){
+    var allowed=v56allowed();if(!allowed)return;
+    document.querySelectorAll("select[id]").forEach(function(sel){
+      if(/Province/.test(sel.id))v56applyToSelect(sel,allowed);
+    });
+  }
+  function v56wrap(){
+    if(window.__v56wrapped)return;window.__v56wrapped=1;
+    if(typeof window.populateProvinces==="function"){
+      var op=window.populateProvinces;
+      window.populateProvinces=function(a,b){var r=op.apply(null,arguments);setTimeout(v56routeGeoFilter,25);return r;};
+    }
+    if(typeof window.populateCities==="function"){
+      var oc=window.populateCities;
+      window.populateCities=function(p,s,b){
+        var allowed=v56allowed();
+        if(allowed&&allowed.prov[p]&&Object.keys(allowed.city).length){
+          var r=oc.apply(null,arguments);
+          var sel=document.getElementById(s);
+          if(sel){Array.prototype.forEach.call(Array.prototype.slice.call(sel.options),function(o){
+            if(!o.value)return;
+            var hit=allowed.city[p+"|"+o.value]||allowed.city[o.value];
+            if(!hit&&Object.keys(allowed.city).some(function(k){return k.indexOf("|")===-1;}))o.remove();
+          });}
+          return r;
+        }
+        return oc.apply(null,arguments);
+      };
+    }
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){v56wrap();setTimeout(v56routeGeoFilter,1500);});
+  else{v56wrap();setTimeout(v56routeGeoFilter,1500);}
+  setInterval(v56routeGeoFilter,2500);
+})();
+
+/* v11.57 / بند ۱۹(پایان): موتور آفلاین — ثبت محلی همیشه + ارسال خودکار به سرور با اتصال اینترنت */
+(function(){
+  var v57lastSync=0;
+  function v57sync(){
+    if(!navigator.onLine)return;
+    try{
+      var raw=localStorage.getItem("CRM_APP_STATE_V2");
+      if(!raw)return;
+      var S=window.state;if(!S)return;
+      var body=(typeof serializeStateForLocalStorage==="function")?serializeStateForLocalStorage(S):raw;
+      fetch("/api/state",{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1"},body:body})
+        .then(function(r){if(r.ok){v57lastSync=Date.now();}})
+        .catch(function(){});
+    }catch(e){}
+  }
+  function v57OfflineSync(){
+    window.addEventListener("online",function(){setTimeout(v57sync,1500);try{v57toast&&v57toast("🌐 اتصال برقرار شد — داده‌های ثبت‌شده آفلاین به سرور ارسال می‌شوند.");}catch(e){}});
+    window.addEventListener("offline",function(){try{v57toast&&v57toast("📴 حالت آفلاین: ترددها و فعالیت‌ها در حافظه دستگاه ثبت می‌شوند و با اتصال اینترنت خودکار ارسال خواهند شد.");}catch(e){}});
+    setInterval(function(){if(navigator.onLine&&Date.now()-v57lastSync>120000)v57sync();},90000);
+    document.addEventListener("visibilitychange",function(){if(!document.hidden&&navigator.onLine)setTimeout(v57sync,2000);});
+  }
+  function v57toast(msg){try{var t=document.createElement("div");t.textContent=msg;t.style.cssText="position:fixed;bottom:14px;right:14px;z-index:99999;background:#0f766e;color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;box-shadow:0 6px 20px rgba(0,0,0,.3)";document.body.appendChild(t);setTimeout(function(){t.remove();},5000);}catch(e){}}
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",v57OfflineSync);else v57OfflineSync();
+})();
+
+/* v11.58 / بند ۱۵: فیلدهای فیلتر اسنپ از combo خارج — فلش و چک‌باکس‌ها کار کنند */
+(function(){
+  var IDS=["snappFilterYear","snappFilterMonth","snappFilterRep","snappFilterFrom","snappFilterTo","snappTopupYear","snappTopupMonth","snappTopupFrom","snappTopupTo"];
+  function v58UnwrapSnappCombos(){
+    IDS.forEach(function(id){
+      var el=document.getElementById(id);if(!el)return;
+      el.setAttribute("data-nocombo","1");
+      var wrap=el.closest&&el.closest(".crm-combo");
+      if(wrap&&wrap.parentNode){wrap.parentNode.insertBefore(el,wrap);wrap.remove();}
+      el.classList.remove("crm-combo-src");
+      ["position","opacity","pointer-events","width","height","left","top"].forEach(function(k){el.style.removeProperty(k);});
+      el.removeAttribute("tabindex");
+      var g=el.closest(".form-group");if(g)g.style.zIndex="";
+    });
+    ["snappTripFilterGrid","snappTopupFilterGrid"].forEach(function(gid){
+      var g=document.getElementById(gid);if(!g)return;
+      g.querySelectorAll(".crm-combo").forEach(function(w){w.style.position="static";});
+      g.style.position="relative";g.style.zIndex="1";
+    });
+  }
+  function v58bind(){
+    if(!window.__v58once){window.__v58once=1;
+      var st=document.createElement("style");
+      st.textContent="#snappTripFilterGrid .form-group,#snappTopupFilterGrid .form-group{z-index:auto!important}#snappTripFilterGrid .crm-combo,#snappTopupFilterGrid .crm-combo{position:static!important}";
+      document.head.appendChild(st);
+    }
+    v58UnwrapSnappCombos();
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(v58bind,1500);});else setTimeout(v58bind,1500);
+  document.addEventListener("click",function(e){if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-snapp-corporate"]'))setTimeout(v58bind,300);},true);
+  setInterval(v58UnwrapSnappCombos,4000);
 })();
