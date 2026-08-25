@@ -11737,13 +11737,18 @@ button.v19-gps svg{display:block}
       for (var fix = 0; fix < ths.length; fix++) if (finalOrder[fix] === -1) { finalOrder[fix] = fix; }
       function reorderRow(row) {
         var cells = Array.prototype.slice.call(row.children);
-        if (cells.length !== finalOrder.length) return;
+        if (cells.length !== finalOrder.length) return false;
+        // v11.61.0: فقط وقتی ترتیب واقعاً متفاوت است DOM جابه‌جا شود؛ جابه‌جایی تکراریِ همان ترتیب، حلقه خودتغذی MutationObserver می‌ساخت و فیلدهای سه تب را قفل/ناپایدار می‌کرد
+        var needs = false;
+        for (var i = 0; i < finalOrder.length; i++) { if (cells[i] !== cells[finalOrder[i]]) { needs = true; break; } }
+        if (!needs) return false;
         var copy = cells.slice();
         finalOrder.forEach(function (srcIdx, i) { row.appendChild(copy[srcIdx]); });
+        return true;
       }
-      reorderRow(headRow);
-      Array.prototype.forEach.call(table.querySelectorAll("tbody tr"), reorderRow);
-      log("ترتیب ستون لیست اعمال شد: " + paneId);
+      var movedAny = reorderRow(headRow);
+      Array.prototype.forEach.call(table.querySelectorAll("tbody tr"), function (row) { if (reorderRow(row)) movedAny = true; });
+      if (movedAny) log("ترتیب ستون لیست اعمال شد: " + paneId);
     } catch (e) {}
   }
   function wrapListRenderers() {
@@ -12169,7 +12174,12 @@ button.v19-gps svg{display:block}
     v20ApplyOrderLock();
   }
   function captureOrderFormSequence(){var form=$("formOrder");if(!form)return[];return Array.prototype.map.call(form.querySelectorAll(".form-grid"),function(grid,i){return{key:grid.id||("grid-"+i),ids:Array.prototype.map.call(grid.children,function(g){return groupAnchor(g);}).filter(Boolean)};});}
-  function restoreOrderFormSequence(snapshot){var form=$("formOrder");if(!form||!snapshot)return;var grids=Array.prototype.slice.call(form.querySelectorAll(".form-grid"));snapshot.forEach(function(rec,i){var grid=rec.key&&$(rec.key)||grids[i];if(!grid)return;var groups={};Array.prototype.forEach.call(grid.children,function(g){var id=groupAnchor(g);if(id)groups[id]=g;});rec.ids.forEach(function(id){if(groups[id]&&groups[id].parentNode===grid)grid.appendChild(groups[id]);});});}
+  function restoreOrderFormSequence(snapshot){var form=$("formOrder");if(!form||!snapshot)return;var grids=Array.prototype.slice.call(form.querySelectorAll(".form-grid"));snapshot.forEach(function(rec,i){var grid=rec.key&&$(rec.key)||grids[i];if(!grid)return;var groups={};Array.prototype.forEach.call(grid.children,function(g){var id=groupAnchor(g);if(id)groups[id]=g;});
+    // v11.61.0: اگر ترتیب فعلی از قبل مطابق اسنپ‌شات است، هیچ appendChild انجام نشود؛ در غیر این صورت بازنویسیِ بدون تغییر، MutationObserver را بارها خودتغذی می‌کرد و فرم مدام تکان می‌خورد
+    var currentIds=Array.prototype.map.call(grid.children,function(g){return groupAnchor(g);}).filter(Boolean);
+    var desiredIds=rec.ids.filter(function(id){return !!(groups[id]&&groups[id].parentNode===grid);});
+    if(currentIds.length===desiredIds.length&&currentIds.every(function(id,ix){return id===desiredIds[ix];}))return;
+    rec.ids.forEach(function(id){if(groups[id]&&groups[id].parentNode===grid)grid.appendChild(groups[id]);});});}
   function captureOrderLayoutSettings(){var S=st()||{};return JSON.stringify({meta:((S.formFieldMeta||{}).order)||{},custom:((S.customFields||{}).order)||[]});}
   function restoreOrderLayoutSettings(raw){var S=st();if(!S||!raw)return;var current=captureOrderLayoutSettings();if(current===raw)return;var snap;try{snap=JSON.parse(raw);}catch(e){return;}S.formFieldMeta=S.formFieldMeta||{};S.customFields=S.customFields||{};S.formFieldMeta.order=snap.meta||{};S.customFields.order=snap.custom||[];try{saveState(false);}catch(e){}}
   function bindOrderResetProof() {
@@ -12182,7 +12192,17 @@ button.v19-gps svg{display:block}
     if(reset&&!reset.dataset.v36reset){reset.dataset.v36reset="1";reset.addEventListener("click",protectReset,true);}
     if (form&&!form.dataset.v36resetProof){form.dataset.v36resetProof="1";form.addEventListener("reset", function () { protectReset();setTimeout(clearOrderPharmacyDraft, 20); });}
   }
-  function bindOrderFormPositionLock(){var form=$("formOrder");if(!form||form.dataset.v36positionLock)return;form.dataset.v36positionLock="1";var stable=null,busy=false,timer=0;function approve(){stable=captureOrderFormSequence();}form.addEventListener("crm-order-layout-approved",approve);setTimeout(function(){restoreDomFieldOrder();approve();},1900);if(window.MutationObserver)new MutationObserver(function(records){if(busy||!stable||form.dataset.v36Resetting==="1")return;if(window.__CRM_MANAGER_LAYOUT_INTENT){clearTimeout(timer);timer=setTimeout(approve,900);return;}var moved=records.some(function(r){return r.type==="childList"&&(r.addedNodes.length||r.removedNodes.length);});if(!moved)return;clearTimeout(timer);timer=setTimeout(function(){busy=true;restoreDomFieldOrder();restoreOrderFormSequence(stable);busy=false;},0);}).observe(form,{childList:true,subtree:true});}
+  function bindOrderFormPositionLock(){var form=$("formOrder");if(!form||form.dataset.v36positionLock)return;form.dataset.v36positionLock="1";var stable=null,busy=false,timer=0;function approve(){stable=captureOrderFormSequence();}form.addEventListener("crm-order-layout-approved",approve);setTimeout(function(){restoreDomFieldOrder();approve();},1900);if(window.MutationObserver)new MutationObserver(function(records){if(busy||!stable||form.dataset.v36Resetting==="1")return;if(window.__CRM_MANAGER_LAYOUT_INTENT){clearTimeout(timer);timer=setTimeout(approve,900);return;}
+    // v11.61.0: رنگ/لیست کشویی و نقشه‌های داخلی فیلد، «جابه‌جایی فیلد» نیست؛ فقط ساختار واقعی جریده باشد وگرنه با هر تایپ/کلیک کاربر این ناظر دوباره فرم را جابه‌جا می‌کرد (فیلدها قفل نمی‌ماندند)
+    var structural=false;
+    records.forEach(function(r){
+      if(structural||r.type!=="childList")return;
+      var t=r.target&&r.target.nodeType===1?r.target:null;
+      if(t&&t.closest&&t.closest(".crm-combo-list"))return;
+      function hit(list){return Array.prototype.some.call(list,function(n){return n.nodeType===1&&!(n.closest&&n.closest(".crm-combo-list"));});}
+      if(hit(r.addedNodes)||hit(r.removedNodes))structural=true;
+    });
+    if(!structural)return;clearTimeout(timer);timer=setTimeout(function(){busy=true;restoreDomFieldOrder();restoreOrderFormSequence(stable);setTimeout(function(){busy=false;},120);},0);}).observe(form,{childList:true,subtree:true});}
 
   function productFieldRecord(id) {
     var S=st(); S.customFields=S.customFields||{}; S.customFields.products=S.customFields.products||[];
@@ -12257,7 +12277,7 @@ button.v19-gps svg{display:block}
   function permissionAllowed(perms,key,manager){return manager||!key||perms[key]!==false;}
   function setPermissionNodeVisible(node,allow){if(!node)return;var target=(node.matches&&node.matches("input[type=file]"))?node.closest("label"):node;if(!target)return;if(allow){if(target.dataset.permissionHidden==="1"){target.style.removeProperty("display");delete target.dataset.permissionHidden;}}else{target.style.setProperty("display","none","important");target.dataset.permissionHidden="1";}}
   function applyCentralPermissions(){var logged=sessionStorage.getItem("crmLoggedIn")==="1",u=v20CurrentUser(),manager=v20IsManager(),perms=(u&&u.permissions)||{};if(!logged)manager=true;Object.keys(TAB_PERMISSION_MAP).forEach(function(id){var pinned=false,allow=permissionAllowed(perms,TAB_PERMISSION_MAP[id],manager);document.querySelectorAll('[data-target="'+id+'"],[data-side-target="'+id+'"]').forEach(function(n){setPermissionNodeVisible(n,allow);});var pane=$(id);if(pane){if(allow){pane.style.removeProperty("display");delete pane.dataset.permissionHidden;}else{pane.style.setProperty("display","none","important");pane.dataset.permissionHidden="1";}}});var invoice=$("tab-distributor-invoice-status"),invoiceAllowed=permissionAllowed(perms,"dist_invoice_status_access",manager);if(invoice){var card=invoice.querySelector(":scope > .card"),notice=$("invoiceStatusAccessNotice");if(!notice){notice=document.createElement("div");notice.id="invoiceStatusAccessNotice";notice.className="card";notice.style.cssText="border:2px solid #f59e0b;background:#fffbeb;color:#92400e;font-weight:800";notice.textContent="این تب برای حساب شما قابل مشاهده است، اما دسترسی اطلاعات آن توسط مدیر غیرفعال شده است.";invoice.insertBefore(notice,invoice.firstChild);}notice.style.display=invoiceAllowed?"none":"block";if(card)card.style.display=invoiceAllowed?"":"none";}Object.keys(FEATURE_PERMISSION_MAP).forEach(function(key){var allow=permissionAllowed(perms,key,manager);FEATURE_PERMISSION_MAP[key].forEach(function(sel){document.querySelectorAll(sel).forEach(function(n){setPermissionNodeVisible(n,allow);});});});var active=document.querySelector(".tab-pane.active");if(active&&active.id!=="tab-distributor-invoice-status"&&!permissionAllowed(perms,TAB_PERMISSION_MAP[active.id],manager)&&active.id!=="tab-dashboard"){try{window.switchTab("tab-dashboard");}catch(e){}}syncRepresentativeSelectors();syncNotificationRecipients();document.documentElement.classList.remove("crm-booting");}
-  function bindCentralPermissions(){if(document.body.dataset.centralPermissions)return;document.body.dataset.centralPermissions="1";window.applyUserRolePermissions=applyCentralPermissions;window.applyFieldPermissions=applyCentralPermissions;var t;new MutationObserver(function(records){var relevant=records.some(function(r){return(r.addedNodes||[]).length;});if(relevant){clearTimeout(t);t=setTimeout(applyCentralPermissions,80);}}).observe(document.body,{childList:true,subtree:true});window.addEventListener("focus",applyCentralPermissions);setTimeout(applyCentralPermissions,0);}
+  function bindCentralPermissions(){if(document.body.dataset.centralPermissions)return;document.body.dataset.centralPermissions="1";window.applyUserRolePermissions=applyCentralPermissions;window.applyFieldPermissions=applyCentralPermissions;var t;new MutationObserver(function(records){var relevant=records.some(function(r){return Array.prototype.some.call(r.addedNodes||[],function(n){return n.nodeType===1&&!(n.closest&&n.closest(".crm-combo-list"));});});if(relevant){clearTimeout(t);t=setTimeout(applyCentralPermissions,80);}}).observe(document.body,{childList:true,subtree:true});window.addEventListener("focus",applyCentralPermissions);setTimeout(applyCentralPermissions,0);}
 
   function pushKeyBytes(value){var pad="=".repeat((4-value.length%4)%4),base=(value+pad).replace(/-/g,"+").replace(/_/g,"/"),raw=atob(base),out=new Uint8Array(raw.length);for(var i=0;i<raw.length;i++)out[i]=raw.charCodeAt(i);return out;}
   async function enableDeviceNotifications(){if(!("Notification" in window)||!navigator.serviceWorker||!window.PushManager){v20Toast("این مرورگر اعلان پس‌زمینه را پشتیبانی نمی‌کند.");return false;}var permission=Notification.permission;if(permission!=="granted")permission=await Notification.requestPermission();if(permission!=="granted"){v20Toast("اجازه اعلان داده نشد.");return false;}try{var reg=await navigator.serviceWorker.ready,keyData=await fetch("/api/push/public-key",{cache:"no-store"}).then(function(r){return r.json();}),sub=await reg.pushManager.getSubscription();if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:pushKeyBytes(keyData.publicKey)});var u=v20CurrentUser()||{};await fetch("/api/push/subscribe",{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1"},body:JSON.stringify({userId:u.id||sessionStorage.getItem("crmUserId")||"",username:u.username||sessionStorage.getItem("crmUsername")||"",name:u.fullName||sessionStorage.getItem("crmUserName")||"",subscription:sub.toJSON()})});v20Toast("✅ اعلان صدادار دستگاه فعال شد.");return true;}catch(e){console.warn("push subscribe",e);v20Toast("فعال‌سازی اعلان دستگاه کامل نشد.");return false;}}
@@ -12587,7 +12607,12 @@ button.v19-gps svg{display:block}
   function gridLockKey(grid,index){var form=grid.closest("form[id]"),pane=grid.closest(".tab-pane");return grid.id?("grid:"+grid.id):(form?("form:"+form.id):("pane:"+((pane&&pane.id)||"unknown")+":"+index));}
   // فقط اقدام صریح مدیر snapshot می‌سازد؛ شروع نسخه/رفرش هرگز ترتیب تازه‌ای را خودکار ضبط نمی‌کند.
   function captureDomFieldOrder(){if(domOrderBusy)return;var out={};lockableGrids().forEach(function(grid,i){out[gridLockKey(grid,i)]=Array.prototype.filter.call(grid.children,function(g){return g.classList&&g.classList.contains("form-group");}).map(groupAnchor).filter(Boolean);});try{localStorage.setItem(MANAGER_ORDER_KEY,JSON.stringify(out));}catch(e){}}
-  function restoreDomFieldOrder(){var explicit={};try{explicit=JSON.parse(localStorage.getItem(MANAGER_ORDER_KEY)||"{}");}catch(e){}domOrderBusy=true;lockableGrids().forEach(function(grid,i){var seq=explicit[gridLockKey(grid,i)];if(!Array.isArray(seq)||!seq.length)return;var groups={};Array.prototype.forEach.call(grid.children,function(g){var id=groupAnchor(g);if(id)groups[id]=g;});seq.forEach(function(id){if(groups[id])grid.appendChild(groups[id]);});});domOrderBusy=false;}
+  function restoreDomFieldOrder(){var explicit={};try{explicit=JSON.parse(localStorage.getItem(MANAGER_ORDER_KEY)||"{}");}catch(e){}domOrderBusy=true;lockableGrids().forEach(function(grid,i){var seq=explicit[gridLockKey(grid,i)];if(!Array.isArray(seq)||!seq.length)return;var groups={};Array.prototype.forEach.call(grid.children,function(g){var id=groupAnchor(g);if(id)groups[id]=g;});
+    // v11.61.0: فقط در صورت تفاوت واقعی با ترتیب ذخیره‌شده جابه‌جا کن؛ بازنویسیِ همان ترتیب، حلقه خودتغذی MutationObserver و تکان مداوم فیلدها می‌ساخت
+    var currentIds=Array.prototype.map.call(grid.children,function(g){return groupAnchor(g);}).filter(Boolean);
+    var desiredIds=seq.filter(function(id){return !!groups[id];});
+    if(currentIds.length===desiredIds.length&&currentIds.every(function(id,ix){return id===desiredIds[ix];}))return;
+    seq.forEach(function(id){if(groups[id])grid.appendChild(groups[id]);});});domOrderBusy=false;}
   /* v11.39 / turn 65 - one-time canonical orders-form reset (date first) per explicit manager request */
   function v39OrdersCanonicalReset(){try{if(localStorage.getItem("CRM_V39_ORDER_CANONICAL_RESET")==="1")return;var raw={};try{raw=JSON.parse(localStorage.getItem(MANAGER_ORDER_KEY)||"{}");}catch(e){raw={};}var form=$("formOrder"),grid=form&&mainFormGrid(form);if(grid){var seq=Array.prototype.filter.call(grid.children,function(g){return g&&g.classList&&g.classList.contains("form-group");}).map(groupAnchor).filter(Boolean);if(seq.length>1){raw["form:formOrder"]=seq;lockableGrids().forEach(function(pg,i){var k=gridLockKey(pg,i);if(pg===grid&&k!=="form:formOrder")raw[k]=seq;});try{localStorage.setItem(MANAGER_ORDER_KEY,JSON.stringify(raw));}catch(e){}}}localStorage.setItem("CRM_V39_ORDER_CANONICAL_RESET","1");}catch(e){}}
   function restoreConfiguredFieldVisibility(root){var panes=root&&root.classList&&root.classList.contains("tab-pane")?[root]:Array.prototype.slice.call(document.querySelectorAll(".tab-pane"));panes.forEach(function(pane){var fields=typeof window.getUnifiedFieldList==="function"?window.getUnifiedFieldList(pane.id):[];(fields||[]).forEach(function(f){if(!f||!f.id)return;var el=$(f.id)||pane.querySelector('[data-custom-field-id="'+f.id+'"]'),g=el&&el.closest&&el.closest(".form-group");if(!g)return;var show=!f.deleted&&f.showInForm!==false;if(show){g.classList.remove("col-hide-form");g.removeAttribute("data-col-hidden");if(g.dataset.permissionHidden!=="1")g.style.removeProperty("display");}else{g.style.setProperty("display","none","important");g.setAttribute("data-col-hidden","1");}});});}
@@ -12836,8 +12861,13 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(KEEP.indexOf(el.id)!==-1)return;
       if(el.id==="orderItemsContainer"||el.closest("#orderItemsContainer"))return;
       if(el.type==="hidden")return;
-      el.disabled=true;el.readOnly=true;
-      el.style.background="#e2e8f0";el.style.color="#64748b";el.style.borderColor="#cbd5e1";el.style.opacity="0.85";
+      // v11.61.0: بازنویسی بدون تغییر (هر ۴ ثانیه) attribute churn و نوسان ظاهری ایجاد می‌کرد؛ فقط وقتی وضعیت واقعاً تغییر کرده بنویس
+      if(el.dataset.v49grey==="1"&&el.disabled&&el.readOnly)return;
+      el.dataset.v49grey="1";
+      if(!el.disabled)el.disabled=true;
+      if(!el.readOnly)el.readOnly=true;
+      el.style.background="#e2e8f0";el.style.color="#64748b";el.style.borderColor="#cbd5e1";
+      if(el.style.opacity!=="0.85")el.style.opacity="0.85";
       el.title="این فیلد با انتخاب داروخانه خودکار پر می‌شود";
     });
   }
