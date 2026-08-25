@@ -2919,19 +2919,29 @@ window.IRAN_FACILITIES = [
       placed.push({ f: f, group: group });
     });
     if (grid) {
-      placed.forEach(function (item) {
-        if (!item.f.showInForm || item.f.hidden) return;
-        if (item.f.kind === "widget") return;
-        if (item.group.parentNode !== grid) grid.appendChild(item.group);
-        else grid.appendChild(item.group);
-      });
-      placed.forEach(function (item) {
-        if (item.f.showInForm && !item.f.hidden) return;
-        if (groupIsShared(item.group, item.f.id)) return;
-        if (item.group.parentNode === grid) grid.appendChild(item.group);
-      });
-      if (container && container.parentNode === grid) grid.appendChild(container);
-      applyUserBoxes(tabId, key, grid, placed);
+      /*
+       * A layout pass can run for many harmless reasons (tab switch, data
+       * refresh, permission refresh, service-worker boot).  Re-appending every
+       * group during those passes makes the sorted metadata become a new DOM
+       * order, which is exactly the field-jumping regression reported by users.
+       * Only an explicit interaction with the manager designer may reorder the
+       * DOM.  Painting visibility/labels above remains safe and still runs for
+       * normal refreshes.
+       */
+      if (window.__CRM_MANAGER_LAYOUT_INTENT === true) {
+        placed.forEach(function (item) {
+          if (!item.f.showInForm || item.f.hidden) return;
+          if (item.f.kind === "widget") return;
+          grid.appendChild(item.group);
+        });
+        placed.forEach(function (item) {
+          if (item.f.showInForm && !item.f.hidden) return;
+          if (groupIsShared(item.group, item.f.id)) return;
+          if (item.group.parentNode === grid) grid.appendChild(item.group);
+        });
+        if (container && container.parentNode === grid) grid.appendChild(container);
+        applyUserBoxes(tabId, key, grid, placed);
+      }
     }
     if (tabId === "tab-orders") applyOrderItemLayout();
     try {

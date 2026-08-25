@@ -493,6 +493,12 @@ test('v11.60.0 safe cache-hardening', () => {
   assert.match(app,/بارگذاری شد/);
 });
 
+test('layout refreshes preserve field DOM order unless manager explicitly edits the designer', () => {
+  const b = read('../public/crm-bundle.js');
+  assert.match(b,/Only an explicit interaction with the manager designer/);
+  assert.match(b,/if \(window\.__CRM_MANAGER_LAYOUT_INTENT === true\)/);
+});
+
 test('v11.45 pharmacies/doctors/orders tab batch', () => {
   const html = read('../public/index.html'); const app = read('../public/crm-app.js'); const b = read('../public/crm-bundle.js');
   assert.match(html,/id="orderPriority"[\s\S]*?عادی[\s\S]*?فوری/);
