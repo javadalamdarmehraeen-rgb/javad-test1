@@ -11464,12 +11464,12 @@ button.v19-gps svg{display:block}
   }
   function v20ApplyGreyChains() {
     var S = st(); if (!S) return;
-    var on = !(S.settings && S.settings.v20GreyOn === false);
+    var on = !!(S.settings && S.settings.v20GreyOn === true);
     var y = window.scrollY;
     Object.keys(S.v20GreyMap || {}).forEach(function (id) {
       var el = $(id); if (!el) return;
       // قفل سفارشات مالک فیلدهای سفارش است
-      if (id.indexOf("order") === 0 && !(S.settings && S.settings.v20OrderLock === false)) return;
+      if (id.indexOf("order") === 0 && !(S.settings && S.settings.v20OrderLock === true)) return;
       var pEl = $(S.v20GreyMap[id]);
       var locked = on && pEl && !String(pEl.value || "").trim();
       setFieldGrey(el, locked);
@@ -11485,7 +11485,7 @@ button.v19-gps svg{display:block}
   function v20ApplyOrderLock() {
     var pane = $("tab-orders"); if (!pane) return;
     var S = st(); if (!S) return;
-    var on = !(S.settings && S.settings.v20OrderLock === false);
+    var on = !!(S.settings && S.settings.v20OrderLock === true);
     var inputs = pane.querySelectorAll("input, select, textarea");
     var y = window.scrollY;
     if (!on) {
@@ -12830,6 +12830,8 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   var KEEP=["orderDate","orderPharmacyName","orderPriority","orderEditId","orderPharmacyMatchedId"];
   function v49GreyOrderFields(){
+    /* Legacy v49 globally locked order descriptors. Locking is now opt-in and centralized in v20. */
+    if (!(window.state && state.settings && state.settings.v20OrderLock === true)) return;
     var form=document.getElementById("formOrder");if(!form)return;
     var fields=form.querySelectorAll("input[id^=order], select[id^=order], textarea[id^=order]");
     fields.forEach(function(el){
