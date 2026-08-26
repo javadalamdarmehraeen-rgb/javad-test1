@@ -1,25 +1,34 @@
 @echo off
-chcp 65001 >nul
+setlocal EnableExtensions
 cd /d "%~dp0"
+
 echo.
-echo پاکسازی فایل و فولدر اضافی — محلی سپس گیت‌هاب
-echo مسیر: %CD%
+echo Cleanup extra files (local). Safe: does not delete CRM source JS.
+echo Folder: %CD%
 echo.
+
 if not exist "server.js" (
-  echo خطا: این فایل را داخل فولدر javad-test1 اجرا کنید.
+  echo ERROR: run this inside javad-test1
   pause
   exit /b 1
 )
-echo --- حذف زباله‌های شناخته‌شده ---
-for %%Z in (namayandeelmi-v11.68.0.zip namayandeelmi-v11.69.0.zip download-v11.68.0.html download-v11.69.0.html) do if exist "%%Z" del /f /q "%%Z"
+
+if exist "namayandeelmi-v11.68.0.zip" del /f /q "namayandeelmi-v11.68.0.zip"
+if exist "namayandeelmi-v11.69.0.zip" del /f /q "namayandeelmi-v11.69.0.zip"
+if exist "namayandeelmi-v11.70.0.zip" del /f /q "namayandeelmi-v11.70.0.zip"
+if exist "namayandeelmi-v11.71.0.zip" del /f /q "namayandeelmi-v11.71.0.zip"
+if exist "download-v11.68.0.html" del /f /q "download-v11.68.0.html"
+if exist "download-v11.69.0.html" del /f /q "download-v11.69.0.html"
+if exist "download-v11.70.0.html" del /f /q "download-v11.70.0.html"
 if exist ".next" rd /s /q ".next"
 if exist "coverage" rd /s /q "coverage"
 if exist "__pycache__" rd /s /q "__pycache__"
+
 echo.
-echo --- فایل‌های اضافه نسبت به گیت ---
+echo --- git status ---
 git status -sb
 echo.
-echo اگر بالا فایل اضافه دیدی، با دستورهای پایان چت commit/push کن.
-echo گیت‌لب فقط اگر remote به نام gitlab داشته باشی پوش می‌شود.
+echo Extra files above are NOT deleted automatically.
+echo Restore deleted CRM sources with: git restore -- public
 echo.
 pause
