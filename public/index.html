@@ -32,7 +32,7 @@
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.60.1",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="11.66.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       document.documentElement.classList.add("crm-booting");
       function target(){return location.pathname+location.search+location.hash;}
       function rescue(serverBuild){if(__justRescued)return;var u="/cache-reset?to="+encodeURIComponent(target())+"&build="+encodeURIComponent(serverBuild||BUILD)+"&t="+Date.now();location.replace(u);}
@@ -56,7 +56,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.60.1" />
+  <link rel="stylesheet" href="style.css?v=11.66.0" />
 </head>
 <body>
 
@@ -122,7 +122,9 @@
       <button type="button" class="nav-item" data-target="tab-leaves" onclick="switchTab('tab-leaves')"><span>📝 مرخصی‌ها</span><span class="nav-badge" id="badgeLeavesCount">0</span></button>
       <button type="button" class="nav-item" data-target="tab-notifications" onclick="switchTab('tab-notifications')"><span>🔔 اعلان‌ها</span></button>
       <button type="button" class="nav-item" data-target="tab-monthly-reports" onclick="switchTab('tab-monthly-reports')"><span>📈 گزارش ماهانه</span></button>
-      <button type="button" class="nav-item" data-target="tab-sales-targets" onclick="switchTab('tab-sales-targets')"><span>🎯 تارگت فروش</span></button>
+      <button type="button" class="nav-item" data-target="tab-define-routes" onclick="switchTab('tab-define-routes')"><span>🗺️ تعریف مسیر نمایندگان</span></button>
+      <button type="button" class="nav-item" data-target="tab-sales-targets" onclick="switchTab('tab-sales-targets')"><span>🎯 تارگت فروش نمایندگان</span></button>
+      <button type="button" class="nav-item" data-target="tab-dist-targets" onclick="switchTab('tab-dist-targets')"><span>🎯 تارگت فروش هرپخش</span></button>
       <button type="button" class="nav-item" data-target="tab-custom-fields" onclick="switchTab('tab-custom-fields')"><span>➕ افزودن‌ها</span></button>
       <button type="button" class="nav-item" data-target="tab-columns-products" onclick="switchTab('tab-columns-products')"><span>🧱 ستون‌ها و کالاها</span></button>
       <button type="button" class="nav-item" data-target="tab-manual-design" onclick="switchTab('tab-manual-design')"><span>🎨 طراحی دستی تب‌ها</span></button>
@@ -188,7 +190,9 @@
       <button type="button" class="side-menu-item" data-side-target="tab-leaves" onclick="switchTab('tab-leaves');closeSideMenu();"><span>مرخصی‌ها</span><span>📝</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-notifications" onclick="switchTab('tab-notifications');closeSideMenu();"><span>اعلان‌ها</span><span>🔔</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-monthly-reports" onclick="switchTab('tab-monthly-reports');closeSideMenu();"><span>گزارش ماهانه</span><span>📈</span></button>
-      <button type="button" class="side-menu-item" data-side-target="tab-sales-targets" onclick="switchTab('tab-sales-targets');closeSideMenu();"><span>تارگت فروش</span><span>🎯</span></button>
+      <button type="button" class="side-menu-item" data-side-target="tab-define-routes" onclick="switchTab('tab-define-routes');closeSideMenu();"><span>تعریف مسیر نمایندگان</span><span>🗺️</span></button>
+      <button type="button" class="side-menu-item" data-side-target="tab-sales-targets" onclick="switchTab('tab-sales-targets');closeSideMenu();"><span>تارگت فروش نمایندگان</span><span>🎯</span></button>
+      <button type="button" class="side-menu-item" data-side-target="tab-dist-targets" onclick="switchTab('tab-dist-targets');closeSideMenu();"><span>تارگت فروش هرپخش</span><span>🎯</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-custom-fields" onclick="switchTab('tab-custom-fields');closeSideMenu();"><span>افزودن‌ها</span><span>➕</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-columns-products" onclick="switchTab('tab-columns-products');closeSideMenu();"><span>ستون‌ها و کالاها</span><span>🧱</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-manual-design" onclick="switchTab('tab-manual-design');closeSideMenu();"><span>طراحی دستی تب‌ها</span><span>🎨</span></button>
@@ -376,8 +380,8 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="pharmacyName">نام داروخانه * (انتخاب یا تایپ کنید... قابل تایپ + افزودن لحظه‌ای)</label>
-              <input type="text" id="pharmacyName" class="form-input" placeholder="مثال: داروخانه دکتر عرفانی..." required />
+              <label class="form-label" for="pharmacyName">نام داروخانه *</label>
+              <input type="text" id="pharmacyName" class="form-input" placeholder="مثال: داروخانه دکتر عرفانی..." required autocomplete="off" data-simple-name="1" />
             </div>
             <div class="form-group">
               <label class="form-label" for="pharmacyPhone">شماره ثابت داروخانه (...۰۲۱)</label>
@@ -396,22 +400,22 @@
               <label class="form-label" for="pharmacyAddress">آدرس داروخانه</label>
               <textarea id="pharmacyAddress" class="form-input" rows="3" placeholder="آدرس دقیق داروخانه..." required></textarea>
             </div>
+            <div class="form-group">
+              <label class="form-label" for="pharmacyPlate">پلاک</label>
+              <input type="text" id="pharmacyPlate" class="form-input" placeholder="مثلاً 12" autocomplete="off" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="pharmacyFloor">طبقه</label>
+              <input type="text" id="pharmacyFloor" class="form-input" placeholder="مثلاً 3" autocomplete="off" />
+            </div>
 
-            <!-- Toggle: آیا این داروخانه درصدی می‌باشد؟ (Matching Screenshot 3) -->
-            <div class="form-group full-width" style="background: #fef9c3; border: 1px solid #fde047; padding: 1rem; border-radius: 10px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+            <!-- Toggle: آیا این داروخانه درصدی می‌باشد؟ — فقط بله/خیر؛ پلاک و طبقه بیرون از این کادر هستند -->
+            <div class="form-group full-width" id="pharmacyPercentBox" style="background: #fef9c3; border: 1px solid #fde047; padding: 1rem; border-radius: 10px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
               <span style="font-weight: 700; color: #854d0e;">آیا این داروخانه درصدی می‌باشد؟</span>
               <div style="display: flex; gap: 0.5rem;">
                 <button type="button" id="btnPhPercentageNo" class="btn-toggle-option active">خیر</button>
                 <button type="button" id="btnPhPercentageYes" class="btn-toggle-option">بله</button>
               </div>
-            <div class="form-group">
-              <label class="form-label" for="pharmacyPlate">پلاک</label>
-              <input type="text" id="pharmacyPlate" class="form-input" placeholder="مثلاً 12" />
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="pharmacyFloor">طبقه</label>
-              <input type="text" id="pharmacyFloor" class="form-input" placeholder="مثلاً 3" />
-            </div>
               <input type="hidden" id="pharmacyIsPercentage" value="false" />
             </div>
 
@@ -560,7 +564,7 @@
             </div>
             <div class="form-group">
               <label class="form-label" for="doctorName">نام پزشک / مطب *</label>
-              <input type="text" id="doctorName" class="form-input" placeholder="مثال: دکتر کاوه سعیدی" required />
+              <input type="text" id="doctorName" class="form-input" placeholder="مثال: دکتر کاوه سعیدی" required autocomplete="off" data-simple-name="1" />
             </div>
             <div class="form-group">
               <label class="form-label" for="doctorSpecialty">تخصص *</label>
@@ -595,22 +599,22 @@
               <label class="form-label" for="doctorAddress">آدرس متنی کامل مطب *</label>
               <textarea id="doctorAddress" class="form-input" rows="3" placeholder="آدرس دقیق مطب..." required></textarea>
             </div>
+            <div class="form-group">
+              <label class="form-label" for="docPlate">پلاک</label>
+              <input type="text" id="docPlate" class="form-input" placeholder="مثلاً 12" autocomplete="off" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="docFloor">طبقه</label>
+              <input type="text" id="docFloor" class="form-input" placeholder="مثلاً 3" autocomplete="off" />
+            </div>
 
-            <!-- Toggle: آیا این پزشک درصدی می‌باشد؟ -->
-            <div class="form-group full-width" style="background: #fef9c3; border: 1px solid #fde047; padding: 1rem; border-radius: 10px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+            <!-- Toggle: آیا این پزشک درصدی می‌باشد؟ — فقط بله/خیر؛ پلاک و طبقه بیرون از این کادر هستند -->
+            <div class="form-group full-width" id="doctorPercentBox" style="background: #fef9c3; border: 1px solid #fde047; padding: 1rem; border-radius: 10px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
               <span style="font-weight: 700; color: #854d0e;">آیا این پزشک درصدی می‌باشد؟</span>
               <div style="display: flex; gap: 0.5rem;">
                 <button type="button" id="btnDocPercentageNo" class="btn-toggle-option active">خیر</button>
                 <button type="button" id="btnDocPercentageYes" class="btn-toggle-option">بله</button>
               </div>
-            <div class="form-group">
-              <label class="form-label" for="docPlate">پلاک</label>
-              <input type="text" id="docPlate" class="form-input" placeholder="مثلاً 12" />
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="docFloor">طبقه</label>
-              <input type="text" id="docFloor" class="form-input" placeholder="مثلاً 3" />
-            </div>
               <input type="hidden" id="doctorIsPercentage" value="false" />
             </div>
 
@@ -802,6 +806,42 @@
             <div class="form-group full-width">
               <label class="form-label" for="orderAddress">آدرس داروخانه</label>
               <textarea id="orderAddress" class="form-input" rows="3" placeholder="آدرس داروخانه..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="orderPharmacyPhone">شماره ثابت داروخانه</label>
+              <input type="text" id="orderPharmacyPhone" class="form-input" placeholder="021..." autocomplete="off" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="orderManager">نام مسئول سفارش</label>
+              <input type="text" id="orderManager" class="form-input" placeholder="نام مسئول فنی یا مدیر..." autocomplete="off" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="orderManagerPhone">شماره همراه مسئول سفارش</label>
+              <input type="text" id="orderManagerPhone" class="form-input" placeholder="0912..." autocomplete="off" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="orderPlate">پلاک</label>
+              <input type="text" id="orderPlate" class="form-input" placeholder="مثلاً 12" autocomplete="off" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="orderFloor">طبقه</label>
+              <input type="text" id="orderFloor" class="form-input" placeholder="مثلاً 3" autocomplete="off" />
+            </div>
+            <div class="form-group full-width" id="orderPercentBox" style="background: #fef9c3; border: 1px solid #fde047; padding: 1rem; border-radius: 10px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+              <span style="font-weight: 700; color: #854d0e;">آیا این داروخانه درصدی می‌باشد؟</span>
+              <div style="display: flex; gap: 0.5rem;">
+                <button type="button" id="btnOrdPercentageNo" class="btn-toggle-option active">خیر</button>
+                <button type="button" id="btnOrdPercentageYes" class="btn-toggle-option">بله</button>
+              </div>
+              <input type="hidden" id="orderIsPercentage" value="false" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="orderLat">عرض جغرافیایی (lat)</label>
+              <input type="number" step="any" id="orderLat" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="orderLng">طول جغرافیایی (lng)</label>
+              <input type="number" step="any" id="orderLng" class="form-input" />
             </div>
 
             <div class="form-group">
@@ -1424,22 +1464,37 @@
     <!-- ======================================================================
          13. TAB: SALES TARGETS (تارگت فروش) - Menu Item 13 + Real-Time Calc
          ====================================================================== -->
-    <section id="tab-sales-targets" class="tab-pane">
+    <section id="tab-define-routes" class="tab-pane">
       <div class="card" id="representativeRoutesCard">
         <div class="card-header"><div class="card-title"><span>🗺️ تعریف مسیرهای نمایندگان</span></div></div>
-        <p class="col-help">مدیر می‌تواند برای هر نماینده چند استان، شهر و منطقه را به‌عنوان مسیر فعالیت انتخاب و ذخیره کند.</p>
+        <p class="col-help">مدیر می‌تواند چند استان، شهر و منطقه را با تیک کنار هر گزینه به‌عنوان مسیر نماینده انتخاب کند. مناطق به‌ترتیب پشت‌سرهم نمایش داده می‌شوند.</p>
         <div class="form-grid" id="representativeRoutesGrid">
-          <div class="form-group"><label class="form-label">نماینده علمی</label><select id="routeManagerRep" class="form-select"></select></div>
-          <div class="form-group"><label class="form-label">استان مسیر</label><select id="routeManagerProvince" class="form-select" multiple size="5"></select></div>
-          <div class="form-group"><label class="form-label">شهر مسیر</label><select id="routeManagerCity" class="form-select" multiple size="5"></select></div>
-          <div class="form-group"><label class="form-label">منطقه مسیر</label><select id="routeManagerDistrict" class="form-select" multiple size="5"></select></div>
+          <div class="form-group full-width"><label class="form-label">نماینده علمی</label><select id="routeManagerRep" class="form-select"></select></div>
+          <div class="form-group"><label class="form-label">استان مسیر</label><div id="routeManagerProvince" class="route-check-box" data-route-kind="province"></div></div>
+          <div class="form-group"><label class="form-label">شهر مسیر</label><div id="routeManagerCity" class="route-check-box" data-route-kind="city"></div></div>
+          <div class="form-group"><label class="form-label">منطقه مسیر</label><div id="routeManagerDistrict" class="route-check-box" data-route-kind="district"></div></div>
         </div>
         <div style="display:flex;justify-content:flex-end;margin-top:1rem"><button type="button" id="btnSaveRepresentativeRoute" class="btn btn-primary">💾 ذخیره مسیر</button></div>
       </div>
       <div class="card">
+        <div class="card-header"><div class="card-title"><span>📋 مسیرهای هر نماینده به‌تفکیک</span></div></div>
+        <div id="repRoutesOverview" class="table-responsive"></div>
+      </div>
+    </section>
+
+    <section id="tab-dist-targets" class="tab-pane">
+      <div class="card" id="v66DistTargetCard">
+        <div class="card-header"><div class="card-title"><span>🎯 تارگت فروش هر پخش — ریالی و به‌تفکیک کالا</span></div></div>
+        <p class="col-help">مانند تارگت نمایندگان: پخش، سال و ماه را انتخاب کنید و برای هر کالا تعداد و مبلغ ریالی تارگت را مشخص کنید.</p>
+        <div id="v66DistTargetPlanner"></div>
+      </div>
+    </section>
+
+    <section id="tab-sales-targets" class="tab-pane">
+      <div class="card">
         <div class="card-header">
           <div class="card-title">
-            <span>🎯 تعیین و نظارت بر تارگت فروش (KPI) به تفکیک نماینده و کالا</span>
+            <span>🎯 تعیین و نظارت بر تارگت فروش نمایندگان (KPI) به تفکیک نماینده و کالا</span>
           </div>
         </div>
         <p style="font-size: 0.88rem; color: #64748b; margin-bottom: 1.25rem;">
@@ -2284,9 +2339,24 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.60.1"></script>
-  <script src="crm-app.js?v=11.60.1"></script>
-          <script src="crm-bundle.js?v=11.60.1"></script>
+  <script src="crm-data.js?v=11.66.0"></script>
+  <script src="crm-app.js?v=11.66.0"></script>
+          <script src="crm-bundle.js?v=11.66.0"></script>
+  <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
+  <input type="hidden" id="pharmacyLocationText" value="" />
+  <input type="hidden" id="doctorLocationText" value="" />
+</body>
+</html>
+
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="vendor/leaflet.js"></script>
+  
+  <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
+  <script src="crm-data.js?v=11.66.0"></script>
+  <script src="crm-app.js?v=11.66.0"></script>
+          <script src="crm-bundle.js?v=11.66.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />

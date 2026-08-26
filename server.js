@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.60.1";
+const APP_VERSION = "11.66.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -85,6 +85,38 @@ function writeJsonAtomic(filePath, data) {
 }
 function readJsonSafe(filePath) {
   try { return sanitizeJsonValue(JSON.parse(fs.readFileSync(filePath, "utf8"))); } catch (e) { return null; }
+}
+const CRM_MERGE_ARRAYS = ["pharmacies","doctors","orders","products","users","reps","leaves","visits","repRoutes","repHomes","hospitals","notifications","salesTargets","distSalesTargets","activityLog"];
+function recStamp(r) {
+  if (!r || typeof r !== "object") return 0;
+  return Number(r._updatedAt || r.updatedAt || r._lastSavedAt || 0);
+}
+function mergeRecordArrays(a, b) {
+  const map = new Map();
+  function put(r) {
+    if (!r || typeof r !== "object") return;
+    const id = r.id != null ? String(r.id) : "";
+    const key = id || ("_anon_" + JSON.stringify(r).slice(0, 160));
+    const prev = map.get(key);
+    if (!prev || recStamp(r) >= recStamp(prev)) map.set(key, r);
+  }
+  (Array.isArray(a) ? a : []).forEach(put);
+  (Array.isArray(b) ? b : []).forEach(put);
+  return Array.from(map.values());
+}
+function mergeCrmState(serverData, incoming) {
+  if (!serverData || typeof serverData !== "object") return incoming;
+  if (!incoming || typeof incoming !== "object") return serverData;
+  const out = Object.assign({}, serverData, incoming);
+  CRM_MERGE_ARRAYS.forEach((k) => { out[k] = mergeRecordArrays(serverData[k], incoming[k]); });
+  out.settings = Object.assign({}, serverData.settings || {}, incoming.settings || {});
+  out.formFieldMeta = Object.assign({}, serverData.formFieldMeta || {}, incoming.formFieldMeta || {});
+  out.customFields = Object.assign({}, serverData.customFields || {}, incoming.customFields || {});
+  const st = Number(serverData._lastSavedAt) || 0;
+  const it = Number(incoming._lastSavedAt) || 0;
+  out._lastSavedAt = Math.max(st, it, Date.now());
+  out._unifiedAt = Date.now();
+  return out;
 }
 function b64url(input) { return Buffer.from(input).toString("base64").replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_"); }
 function fromB64url(input) { const s=String(input||"").replace(/-/g,"+").replace(/_/g,"/");return Buffer.from(s+"=".repeat((4-s.length%4)%4),"base64"); }
@@ -295,8 +327,10 @@ const server = http.createServer((req, res) => {
     req.on("end", () => {
       try {
         const data = sanitizeJsonValue(JSON.parse(body));
-        writeJsonAtomic(SERVER_DATA_PATH, data);
-        send(req, res, 200, JSON.stringify({ status: "success" }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
+        const existing = fs.existsSync(SERVER_DATA_PATH) ? readJsonSafe(SERVER_DATA_PATH) : null;
+        const merged = mergeCrmState(existing, data);
+        writeJsonAtomic(SERVER_DATA_PATH, merged);
+        send(req, res, 200, JSON.stringify({ status: "success", data: merged }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
       } catch (err) {
         send(req, res, 400, JSON.stringify({ status: "error", message: err.message }), "application/json; charset=utf-8");
       }

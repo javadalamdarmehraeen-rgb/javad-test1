@@ -319,6 +319,62 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.25rem;
 }
+.route-check-box {
+  max-height: 260px;
+  overflow: auto;
+  border: 1.5px solid #99f6e4;
+  border-radius: 10px;
+  background: #f0fdfa;
+  padding: 0.45rem 0.55rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.route-check {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 700;
+  font-size: 0.86rem;
+  color: #134e4a;
+  padding: 0.2rem 0.15rem;
+  cursor: pointer;
+}
+.route-check input { width: 16px; height: 16px; accent-color: #0d9488; flex: 0 0 auto; }
+.v66-target-head, .v34-target-head { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.85rem; }
+.v66-target-head label, .v34-target-head label { font-weight: 800; font-size: 0.82rem; color: #0f766e; }
+.v66-target-row, .v34-target-row { display: grid; grid-template-columns: 1.6fr 0.8fr 0.9fr 0.9fr 0.9fr 0.9fr; gap: 0.45rem; align-items: center; padding: 0.45rem 0; border-bottom: 1px dashed #ccfbf1; }
+.v66-target-row.v66-head, .v34-target-row.v34-head { font-size: 0.75rem; font-weight: 800; color: #334155; }
+/* v11.63.0: فرم داروخانه و پزشک همیشه ۳ ستون؛ فیلدهای یک سطر کنار هم بمانند */
+#formPharmacy > .form-grid,
+#formDoctor > .form-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 1.25rem !important;
+}
+#formPharmacy > .form-grid > .form-group.full-width,
+#formDoctor > .form-grid > .form-group.full-width {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: unset !important;
+}
+#formPharmacy > .form-grid > .form-group:not(.full-width),
+#formDoctor > .form-grid > .form-group:not(.full-width) {
+  grid-column: auto !important;
+  width: auto !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  flex: unset !important;
+}
+@media (max-width: 900px) {
+  #formPharmacy > .form-grid,
+  #formDoctor > .form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+@media (max-width: 640px) {
+  #formPharmacy > .form-grid,
+  #formDoctor > .form-grid { grid-template-columns: minmax(0, 1fr) !important; }
+}
 .form-grid.form-grid-sized {
   display: flex;
   flex-wrap: wrap;
