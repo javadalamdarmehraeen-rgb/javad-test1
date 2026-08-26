@@ -6,6 +6,27 @@
 
 const STORAGE_KEY = "CRM_APP_STATE_V2";
 let state = null;
+function bindLiveWindowState() {
+  try {
+    Object.defineProperty(window, "state", {
+      configurable: true,
+      enumerable: true,
+      get: function () { return state; },
+      set: function (v) {
+        if (!v || typeof v !== "object") return;
+        if (v === state) return;
+        if (!state || typeof state !== "object") { state = v; return; }
+        Object.keys(state).forEach(function (k) {
+          if (!Object.prototype.hasOwnProperty.call(v, k)) delete state[k];
+        });
+        Object.keys(v).forEach(function (k) { state[k] = v[k]; });
+      }
+    });
+    window.__CRM_STATE_BOUND = true;
+    window.__CRM_GET_STATE = function () { return state; };
+  } catch (eBind) {}
+}
+bindLiveWindowState();
 let autoBackupFileHandle = null;
 let autoBackupIntervalId = null;
 let isShowingAllPasswords = false;
@@ -25,7 +46,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "11.72.0";
+const CRM_APP_VERSION = "11.73.0";
 try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
@@ -109,6 +130,7 @@ function loadState() {
   if (!state.tabOrder) state.tabOrder = {};
   if (!state.manualLayouts) state.manualLayouts = {};
   state._authoritativeState = true;
+  if (typeof bindLiveWindowState === "function") bindLiveWindowState();
   if (saved) { try { localStorage.setItem(STORAGE_KEY, serializeStateForLocalStorage(state)); } catch (e) {} }
   applyGeneralSettingsToUI();
 }
@@ -225,12 +247,18 @@ function switchTab(targetId) {
     setTimeout(() => {
       if (targetId === "tab-dashboard" && mapDashboardOverview) mapDashboardOverview.invalidateSize();
       if (targetId === "tab-pharmacies") {
-        try { if (typeof renderPharmaciesList === "function") renderPharmaciesList(); } catch (ePh) {}
+        try {
+          var phFn = (typeof window.renderPharmaciesList === "function") ? window.renderPharmaciesList : renderPharmaciesList;
+          if (typeof phFn === "function") phFn();
+        } catch (ePh) {}
         if (typeof initPharmacyDoctorMapsIfNeeded === "function") initPharmacyDoctorMapsIfNeeded();
         if (mapPharmacyForm) mapPharmacyForm.invalidateSize();
       }
       if (targetId === "tab-doctors") {
-        try { if (typeof renderDoctorsList === "function") renderDoctorsList(); } catch (eDoc) {}
+        try {
+          var docFn = (typeof window.renderDoctorsList === "function") ? window.renderDoctorsList : renderDoctorsList;
+          if (typeof docFn === "function") docFn();
+        } catch (eDoc) {}
         if (typeof initPharmacyDoctorMapsIfNeeded === "function") initPharmacyDoctorMapsIfNeeded();
         if (mapDoctorForm) mapDoctorForm.invalidateSize();
       }
@@ -3014,7 +3042,7 @@ function downloadCSVFile(filename, headers, rows) {
 // ----------------------------------------------------------------------------
 function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
-  const build = "11.72.0";
+  const build = "11.73.0";
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'CRM_BUILD_ACTIVE' && event.data.build !== build) {
@@ -3022,7 +3050,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.72.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.73.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;

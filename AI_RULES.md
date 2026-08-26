@@ -1633,3 +1633,6 @@ That is NOT a valid user-facing format.
 
 ## 11.72.0 / نوبت ۹۲
 لیست داروخانه/پزشک باید بعد از پذیرش state سرور دوباره رسم شود. فلش تعداد کالا ممنوع است. ویرایش/حذف تارگت فقط یک handler در capture با stopImmediatePropagation.
+
+## 11.73.0 / نوبت ۹۳
+window.state باید همان شیء زنده crm-app باشد (mutate درجا، نه جایگزینی کور). پرده crm-booting تا adopt سرور. ذخیره تارگت پخش فقط روی live state با تطبیق monthName.

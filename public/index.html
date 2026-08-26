@@ -32,14 +32,15 @@
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.72.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="11.73.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       document.documentElement.classList.add("crm-booting");
       function target(){return location.pathname+location.search+location.hash;}
       function rescue(serverBuild){if(true)return;var u="/cache-reset?to="+encodeURIComponent(target())+"&build="+encodeURIComponent(serverBuild||BUILD)+"&t="+Date.now();location.replace(u);}
       if(sessionStorage.getItem("crmLoggedIn")!=="1"){location.replace("/login");return;}
       try{localStorage.setItem(key,BUILD);}catch(e){}
       fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD){/* v11.70: حلقه cache-reset قطع شد */}}).catch(function(){});
-      setTimeout(function(){document.documentElement.classList.remove("crm-booting");},800);
+      window.__CRM_UNVEIL=function(){try{document.documentElement.classList.remove("crm-booting");}catch(e){}window.__CRM_UNVEILED=1;};
+      setTimeout(function(){if(!window.__CRM_UNVEILED)window.__CRM_UNVEIL();},5000);
     })();
   </script>
   <link rel="icon" type="image/png" href="favicon.png" />
@@ -54,7 +55,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.72.0" />
+  <link rel="stylesheet" href="style.css?v=11.73.0" />
 </head>
 <body>
 
@@ -2339,9 +2340,9 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.72.0"></script>
-  <script src="crm-app.js?v=11.72.0"></script>
-          <script src="crm-bundle.js?v=11.72.0"></script>
+  <script src="crm-data.js?v=11.73.0"></script>
+  <script src="crm-app.js?v=11.73.0"></script>
+          <script src="crm-bundle.js?v=11.73.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />

@@ -1676,3 +1676,6 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 
 ## 11.72.0 / نوبت ۹۲
 علت نشان‌دادن دادهٔ سیستم‌های دیگر در باز شدن: رندر اولیه از localStorage و ادغام دیرهنگام سرور بدون re-render. تصمیم: adopt کامل سرور و رسم فوری لیست‌ها. ویرایش/حذف روی‌هم‌رفتهٔ v67/v68/v69 با یک handler خنثی شد.
+
+## 11.73.0 / نوبت ۹۳
+دو شیء state + پرده ۸۰۰ms علت نشان‌دادن دادهٔ دیگران بود. نقاشان v68/v69 دکمه‌ها را می‌ساختند و hide پنهان می‌کرد. v66 save روی window.state جدا یا match ماه اشتباه ذخیره را از دست می‌داد. تصمیم: bind زنده + unveil بعد adopt + kill host قدیمی + saveDistTargetsV73.
