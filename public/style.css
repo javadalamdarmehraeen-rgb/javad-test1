@@ -406,6 +406,41 @@ body {
 .v68-ops-host { margin-top: 12px; }
 .v68-ops-host .data-table td:last-child { white-space: nowrap; }
 #colFieldList tr.v69-selected { outline: 2px solid #0d9488; background: #ecfdf5; }
+
+/* v11.72: فلش تعداد کالا/جایزه/تارگت حذف — اسکرول مقدار را عوض نکند */
+input[type=number].order-item-count,
+input[type=number].order-item-gift,
+input[type=number].v34-target-count,
+input[type=number].v66-count,
+input[type=number].qty-no-spin,
+#tgtCountInput,
+#orderItemsContainer input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+input[type=number].order-item-count::-webkit-inner-spin-button,
+input[type=number].order-item-count::-webkit-outer-spin-button,
+input[type=number].order-item-gift::-webkit-inner-spin-button,
+input[type=number].order-item-gift::-webkit-outer-spin-button,
+input[type=number].v34-target-count::-webkit-inner-spin-button,
+input[type=number].v34-target-count::-webkit-outer-spin-button,
+input[type=number].v66-count::-webkit-inner-spin-button,
+input[type=number].v66-count::-webkit-outer-spin-button,
+input[type=number].qty-no-spin::-webkit-inner-spin-button,
+input[type=number].qty-no-spin::-webkit-outer-spin-button,
+#tgtCountInput::-webkit-inner-spin-button,
+#tgtCountInput::-webkit-outer-spin-button,
+#orderItemsContainer input[type=number]::-webkit-inner-spin-button,
+#orderItemsContainer input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.v72-dist-grand { background: #f0fdfa; border: 1.5px solid #99f6e4; }
+.v72-dist-card { margin-top: 12px; }
+.v72-dist-card .card-title { color: #0f766e; }
+.v72-ops { white-space: nowrap; }
+.v72-ops .btn { margin: 0 2px; }
+#v68SalesTargetOps, #v68DistTargetOps, .v67-ops-table, .v69-ops-host { display: none !important; }
 .form-group.col-hide-form {
   display: none !important;
 }

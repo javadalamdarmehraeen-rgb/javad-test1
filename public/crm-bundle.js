@@ -15548,3 +15548,362 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,90);});
   else setTimeout(boot,90);
 })();
+
+/* v11.72.0: سرور اول رندر شود + فلش تعداد حذف + ویرایش/حذف پایدار روی هر سطر + تارگت پخش با محقق‌شده/مانده و کادر جمع */
+(function(){
+  "use strict";
+  window.__V69_SYNC=1;window.__V67_SYNC=1;window.__V70_SOLO=1;window.__V71_CLAIMED=1;
+  function $(id){return document.getElementById(id);}
+  function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
+  function S(){return window.state||{};}
+  function toast(msg){try{if(typeof window.v20Toast==="function")window.v20Toast(msg);}catch(e){try{console.log(msg);}catch(x){}}}
+  function persist(){try{localStorage.setItem("CRM_APP_STATE_V2",typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(window.state):JSON.stringify(window.state));}catch(e){}}
+  function meaningful(st){if(!st||typeof st!=="object")return false;return ["pharmacies","doctors","orders","products","users","salesTargets","distSalesTargets"].some(function(k){return Array.isArray(st[k])&&st[k].length;});}
+  function norm(s){return String(s||"").replace(/[\u200c\s]/g,"").toLowerCase();}
+  var MONTHS={"فروردین":"01","اردیبهشت":"02","خرداد":"03","تیر":"04","مرداد":"05","شهریور":"06","مهر":"07","آبان":"08","آذر":"09","دی":"10","بهمن":"11","اسفند":"12"};
+  var DIST_DEFS_V72=[["daya","دایا دارو"],["shafaarad","شفاآراد"],["tivan","تیوان"],["mashateb","مشاطب"]];
+  function faNum(n){return Number(n||0).toLocaleString("en-US");}
+
+  function paintListsNow(){
+    try{if(typeof renderPharmaciesList==="function")renderPharmaciesList();}catch(e){}
+    try{if(typeof renderDoctorsList==="function")renderDoctorsList();}catch(e){}
+    try{if(typeof renderOrdersList==="function")renderOrdersList();}catch(e){}
+    try{if(typeof updateNavBadges==="function")updateNavBadges();}catch(e){}
+  }
+  function adoptServerExact(remote){
+    if(!remote||typeof remote!=="object")return;
+    window.state=remote;
+    if(remote._soloEpoch){try{localStorage.setItem("CRM_SOLO_EPOCH",String(remote._soloEpoch));}catch(e){}}
+    persist();
+    paintListsNow();
+    paintV72All();
+  }
+  function bootServerFirst(){
+    if(window.__V72_BOOT)return;window.__V72_BOOT=1;
+    try{document.documentElement.classList.add("crm-booting");}catch(e){}
+    var done=function(){window.__CRM_SERVER_READY=1;try{document.documentElement.classList.remove("crm-booting");}catch(e){};paintListsNow();paintV72All();};
+    setTimeout(done,2800);
+    fetch("/api/state?__v72boot="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+      var remote=j&&j.data;
+      if(remote&&meaningful(remote)){
+        adoptServerExact(remote);
+      }else if(meaningful(window.state)&&typeof window.crmPushStateToServer==="function"){
+        window.crmPushStateToServer();
+      }
+      done();
+    }).catch(function(){done();});
+  }
+
+  function hideOldOps(){
+    ["v68SalesTargetOps","v68DistTargetOps"].forEach(function(id){var el=$(id);if(el){el.style.display="none";el.hidden=true;}});
+    document.querySelectorAll(".v67-ops-table").forEach(function(el){el.style.display="none";el.hidden=true;});
+    document.querySelectorAll(".card-title").forEach(function(t){
+      var txt=String(t.textContent||"");
+      if(txt.indexOf("نمایش تارگت‌های ثبت‌شده")!==-1){var box=t.closest(".card,.v68-ops-host,.v67-ops-table");if(box){box.style.display="none";box.hidden=true;}}
+    });
+    var oldRep=$("v66DistReports");if(oldRep){oldRep.style.display="none";}
+  }
+
+  function slashDate(v){
+    var original=String(v==null?"":v).trim();
+    var raw=original.replace(/[۰-۹]/g,function(c){return "۰۱۲۳۴۵۶۷۸۹".indexOf(c);}).replace(/[٠-٩]/g,function(c){return "٠١٢٣٤٥٦٧٨٩".indexOf(c);});
+    if(/^1[34]\d{6}$/.test(raw))return raw.slice(0,4)+"/"+raw.slice(4,6)+"/"+raw.slice(6,8);
+    var m=raw.match(/(1[34]\d{2})[\/\-.](\d{1,2})[\/\-.](\d{1,2})/);
+    if(m)return m[1]+"/"+("0"+m[2]).slice(-2)+"/"+("0"+m[3]).slice(-2);
+    return original;
+  }
+  function findIdx(headers,re,fb){for(var i=0;i<(headers||[]).length;i++)if(re.test(String(headers[i]||"")))return i;return fb;}
+  function distAchievedQty(distId,productName,year,monthName){
+    var d=((S().distributorCompanies)||{})[distId];if(!d)return 0;
+    var headers=d.pharmacyHeaders||[],rows=d.pharmacyRows||[];
+    var dateIx=distId==="daya"?13:(distId==="shafaarad"?6:findIdx(headers,/تاریخ/,0));
+    var qtyIx=distId==="daya"?4:(distId==="shafaarad"?7:findIdx(headers,/فروش.*تعداد|تعداد.*فروش/,2));
+    var nameIx=findIdx(headers,/نام.*(کالا|محصول)|کالا|محصول/,1);
+    var yy=String(year||""),mm=MONTHS[monthName]||"";
+    var want=norm(productName),sum=0;
+    rows.forEach(function(raw){
+      var r=Array.isArray(raw)?raw:(raw&&typeof raw==="object"?Object.keys(raw).sort(function(a,b){return Number(a)-Number(b);}).map(function(k){return raw[k];}):[]);
+      var dt=slashDate(r[dateIx]);
+      if(yy&&dt.slice(0,4)!==yy)return;
+      if(mm&&dt.slice(5,7)!==mm)return;
+      var nm=norm(r[nameIx]);
+      if(!nm||!want)return;
+      if(nm!==want&&nm.indexOf(want)<0&&want.indexOf(nm)<0)return;
+      var q=Number(String(r[qtyIx]==null?"":r[qtyIx]).replace(/[^\d.-]/g,""))||0;
+      sum+=q;
+    });
+    return sum;
+  }
+
+  function fillSales(t){
+    if(!t){toast("این تارگت پیدا نشد.");return;}
+    try{if(typeof window.switchTab==="function")window.switchTab("tab-sales-targets");}catch(e){}
+    setTimeout(function(){
+      try{if(typeof window.setupTargetPlannerV34==="function")window.setupTargetPlannerV34();}catch(e){}
+      ["v34TargetRep","v34TargetYear","v34TargetMonth"].forEach(function(id){
+        var el=$(id);if(!el)return;
+        if(id==="v34TargetRep")el.value=t.repName||"";
+        if(id==="v34TargetYear")el.value=t.year||String(t.month||"").split("/")[1]||"";
+        if(id==="v34TargetMonth")el.value=t.monthName||String(t.month||"").split("/")[0]||"";
+        try{el.dispatchEvent(new Event("change",{bubbles:true}));}catch(x){}
+      });
+      setTimeout(function(){
+        try{if(typeof window.paintTargetPlanRows==="function")window.paintTargetPlanRows();}catch(e){}
+        document.querySelectorAll("#v34TargetProductRows .v34-target-row").forEach(function(row){
+          var p=((S().products)||[]).filter(function(x){return String(x.id||x.name)===String(row.dataset.product);})[0];
+          var inp=row.querySelector(".v34-target-count");
+          if(inp&&p&&String(p.name)===String(t.productName)){inp.value=t.targetCount||"";try{inp.dispatchEvent(new Event("input",{bubbles:true}));}catch(e){};inp.focus();}
+        });
+        var planner=$("v34TargetPlanner");if(planner)planner.scrollIntoView({behavior:"smooth",block:"start"});
+        toast("تارگت برای ویرایش بارگذاری شد. بعد از تغییر، ذخیره تارگت‌ها را بزنید.");
+      },220);
+    },180);
+  }
+  function delSales(id){
+    var st=S();if(!st)return;
+    var rec=(st.salesTargets||[]).filter(function(x){return String(x.id)===String(id);})[0];
+    if(!rec){toast("این تارگت پیدا نشد.");return;}
+    if(!confirm("تارگت «"+(rec.productName||"")+"» برای «"+(rec.repName||"")+"» حذف شود؟"))return;
+    st.salesTargets=(st.salesTargets||[]).filter(function(x){return String(x.id)!==String(id);});
+    st._deletedIds=st._deletedIds||{};st._deletedIds[String(id)]=Date.now();
+    if(typeof window.saveState==="function")window.saveState();
+    paintV72All();
+    toast("تارگت حذف شد.");
+  }
+  function fillDist(t){
+    if(!t){toast("این تارگت پخش پیدا نشد.");return;}
+    try{if(typeof window.switchTab==="function")window.switchTab("tab-dist-targets");}catch(e){}
+    setTimeout(function(){
+      try{if(typeof window.setupDistTargetPlanner==="function")window.setupDistTargetPlanner();}catch(e){}
+      function set(id,v){var el=$(id);if(!el||v==null)return;el.value=v;try{el.dispatchEvent(new Event("change",{bubbles:true}));}catch(e){}}
+      set("v66DistSelect",t.distId||"");set("v66DistYear",t.year||"");set("v66DistMonth",t.monthName||"");
+      setTimeout(function(){
+        document.querySelectorAll("#v66DistRows .v66-target-row").forEach(function(row){
+          var p=((S().products)||[]).filter(function(x){return String(x.id||x.name)===String(row.dataset.product);})[0];
+          var inp=row.querySelector(".v66-count");
+          if(inp&&p&&(String(p.id)===String(t.productId)||String(p.name)===String(t.productName))){inp.value=t.targetCount||"";try{inp.dispatchEvent(new Event("input",{bubbles:true}));}catch(e){};inp.focus();}
+        });
+        toast("تارگت پخش برای ویرایش بارگذاری شد.");
+      },200);
+    },180);
+  }
+  function delDist(id){
+    var st=S();if(!st)return;
+    var rec=(st.distSalesTargets||[]).filter(function(x){return String(x.id)===String(id);})[0];
+    if(!rec){toast("این تارگت پخش پیدا نشد.");return;}
+    if(!confirm("تارگت پخش «"+(rec.productName||"")+"» حذف شود؟"))return;
+    st.distSalesTargets=(st.distSalesTargets||[]).filter(function(x){return String(x.id)!==String(id);});
+    st._deletedIds=st._deletedIds||{};st._deletedIds[String(id)]=Date.now();
+    if(typeof window.saveState==="function")window.saveState();
+    try{if(typeof window.setupDistTargetPlanner==="function")window.setupDistTargetPlanner();}catch(e){}
+    paintV72All();
+    toast("تارگت پخش حذف شد.");
+  }
+  function fillRoute(id){
+    try{if(typeof window.switchTab==="function")window.switchTab("tab-define-routes");}catch(e){}
+    setTimeout(function(){
+      var sel=$("routeManagerRep");
+      if(sel){sel.value=id;try{sel.dispatchEvent(new Event("change",{bubbles:true}));}catch(e){}sel.scrollIntoView({behavior:"smooth",block:"center"});}
+      toast("مسیر نماینده برای ویرایش بارگذاری شد.");
+    },160);
+  }
+  function delRoute(id){
+    var st=S();if(!st)return;
+    var u=(st.users||[]).filter(function(x){return String(x.id)===String(id);})[0];
+    if(!u){toast("نماینده پیدا نشد.");return;}
+    if(!confirm("مسیر «"+(u.fullName||u.username||"")+"» پاک شود؟"))return;
+    u.activityProvinces=[];u.activityCities=[];u.activityDistrictList=[];
+    u.activityProvince="";u.activityCity="";u.activityDistricts="";u.activityRouteLabel="";
+    u._updatedAt=Date.now();
+    if(typeof window.saveState==="function")window.saveState();
+    try{if(typeof window.renderRepRoutesOverview==="function")window.renderRepRoutesOverview();}catch(e){}
+    paintV72All();
+    toast("مسیر نماینده پاک شد.");
+  }
+
+  function opsCell(kind,id){
+    return "<td class='v72-ops'><button type='button' class='btn btn-outline btn-sm v72-edit-"+kind+"' data-id='"+esc(id)+"'>✏️ ویرایش</button> <button type='button' class='btn btn-danger btn-sm v72-del-"+kind+"' data-id='"+esc(id)+"'>🗑️ حذف</button></td>";
+  }
+  function addOpsToTable(table,recs,kind,nameCol){
+    if(!table)return;
+    var thead=table.querySelector("thead tr");
+    if(thead&&!/عملیات/.test(thead.textContent||"")){var th=document.createElement("th");th.textContent="عملیات";thead.appendChild(th);}
+    table.querySelectorAll("tbody tr").forEach(function(tr){
+      if(tr.querySelector(".v72-ops"))return;
+      if(/جمع کل/.test(tr.textContent||""))return;
+      var rec=null;
+      var name=String((tr.cells[nameCol]&&tr.cells[nameCol].textContent)||"").trim();
+      recs.forEach(function(t){
+        if(kind==="tgt"&&String(t.productName)===name)rec=t;
+        if(kind==="dtgt"&&String(t.productName)===name)rec=t;
+      });
+      if(!rec&&recs.length)return;
+      if(!rec)return;
+      tr.insertAdjacentHTML("beforeend",opsCell(kind,rec.id));
+    });
+  }
+
+  function paintSalesBoxes(){
+    hideOldOps();
+    var host=$("v34TargetReports");
+    if(host){
+      host.querySelectorAll("table.data-table").forEach(function(tbl){
+        var titleEl=tbl.closest(".card")&&tbl.closest(".card").querySelector(".card-title");
+        var title=titleEl?String(titleEl.textContent||""):"";
+        var recs=S().salesTargets||[];
+        if(title.indexOf("تارگت‌های ")===0){
+          var nm=title.replace("تارگت‌های ","").trim();
+          recs=recs.filter(function(t){return String(t.repName)===nm;});
+        }
+        addOpsToTable(tbl,recs,"tgt",0);
+      });
+    }
+  }
+
+  function paintRouteBoxes(){
+    var overview=$("repRoutesOverview");if(!overview)return;
+    var users=((S().users)||[]).filter(function(u){return u&&u.username!=="admin"&&!/مدیر/.test(String(u.role||""));});
+    var thead=overview.querySelector("thead tr");
+    if(thead&&!/عملیات/.test(thead.textContent||"")){var th=document.createElement("th");th.textContent="عملیات";thead.appendChild(th);}
+    overview.querySelectorAll("tbody tr").forEach(function(tr,i){
+      var u=users[i];if(!u)return;
+      var cell=tr.querySelector(".v72-ops");
+      if(!cell){cell=document.createElement("td");cell.className="v72-ops";tr.appendChild(cell);}
+      var html="<button type='button' class='btn btn-outline btn-sm v72-edit-route' data-id='"+esc(u.id)+"'>✏️ ویرایش</button> <button type='button' class='btn btn-danger btn-sm v72-del-route' data-id='"+esc(u.id)+"'>🗑️ حذف</button>";
+      if(cell.innerHTML!==html)cell.innerHTML=html;
+    });
+  }
+
+  function paintDistBoxes(){
+    hideOldOps();
+    var host=$("v72DistBoxes");
+    if(!host){
+      host=document.createElement("div");host.id="v72DistBoxes";
+      var pane=$("tab-dist-targets");if(pane)pane.appendChild(host);
+    }
+    var grand=$("v72DistGrandBox");
+    if(!grand){
+      grand=document.createElement("div");grand.id="v72DistGrandBox";grand.className="card v72-dist-grand";
+      if(host.parentNode)host.parentNode.insertBefore(grand,host);
+    }
+    var recs=S().distSalesTargets||[];
+    var products=S().products||[];
+    var totals=[];
+    var html="";
+    DIST_DEFS_V72.forEach(function(def){
+      var id=def[0],name=def[1];
+      var mine=recs.filter(function(t){return String(t.distId)===id;});
+      var sumDist=0,sumPh=0,sumAch=0,sumRem=0;
+      var rows=mine.map(function(t){
+        var p=products.filter(function(x){return x.id===t.productId||x.name===t.productName;})[0]||{};
+        var n=Number(t.targetCount||0);
+        var dp=Number(t.targetRialDist||n*(p.distributorPrice||p.distPrice||p.price||0));
+        var hp=Number(t.targetRialPh||n*(p.pharmacyPrice||p.price||0));
+        var ach=distAchievedQty(id,t.productName,t.year,t.monthName||t.month);
+        var rem=Math.max(0,n-ach);
+        sumDist+=dp;sumPh+=hp;sumAch+=ach;sumRem+=rem;
+        return "<tr data-id='"+esc(t.id)+"'><td>"+esc(t.productName)+"</td><td>"+faNum(n)+"</td><td>"+faNum(dp)+"</td><td>"+faNum(hp)+"</td><td>"+faNum(ach)+"</td><td>"+faNum(rem)+"</td><td>"+esc((t.monthName||"")+"/"+(t.year||""))+"</td>"+opsCell("dtgt",t.id)+"</tr>";
+      }).join("")||"<tr><td colspan='8'>تارگتی برای این پخش ثبت نشده است.</td></tr>";
+      totals.push({id:id,name:name,dist:sumDist,ph:sumPh,ach:sumAch,rem:sumRem,n:mine.length});
+      html+="<div class='card v72-dist-card' data-dist='"+esc(id)+"'><div class='card-title'>🎯 تارگت "+esc(name)+"</div><div class='table-responsive'><table class='data-table'><thead><tr><th>کالا</th><th>تعداد تارگت</th><th>جمع ریال پخش</th><th>جمع ریال داروخانه</th><th>محقق شده</th><th>مانده تارگت</th><th>ماه/سال</th><th>عملیات</th></tr></thead><tbody>"+rows+"<tr class='v34-total'><td>جمع تارگت</td><td>—</td><td>"+faNum(sumDist)+"</td><td>"+faNum(sumPh)+"</td><td>"+faNum(sumAch)+"</td><td>"+faNum(sumRem)+"</td><td>—</td><td></td></tr></tbody></table></div></div>";
+    });
+    host.innerHTML=html;
+    var gAll=totals.reduce(function(a,x){a.dist+=x.dist;a.ph+=x.ph;a.ach+=x.ach;a.rem+=x.rem;return a;},{dist:0,ph:0,ach:0,rem:0});
+    grand.innerHTML="<div class='card-title'>جمع تارگت همه پخش‌ها</div><div class='v20-visit-metrics'>"+
+      totals.map(function(x){return "<div class='v20-metric'>"+esc(x.name)+"<b>"+faNum(x.dist)+" ریال</b><span style='font-size:12px;color:#0f766e'>محقق "+faNum(x.ach)+" / مانده "+faNum(x.rem)+"</span></div>";}).join("")+
+      "<div class='v20-metric'>جمع کل<p></p><b>"+faNum(gAll.dist)+" ریال</b><span style='font-size:12px;color:#0f766e'>محقق "+faNum(gAll.ach)+" / مانده "+faNum(gAll.rem)+"</span></div></div>";
+  }
+
+  function paintV72All(){
+    hideOldOps();
+    paintSalesBoxes();
+    paintRouteBoxes();
+    paintDistBoxes();
+  }
+  window.paintV72TargetOps=paintV72All;
+
+  function bindOps(){
+    if(document.body.dataset.v72ops)return;document.body.dataset.v72ops="1";
+    document.addEventListener("click",function(e){
+      var b=e.target&&e.target.closest&&e.target.closest(".v72-edit-tgt,.v72-del-tgt,.v72-edit-dtgt,.v72-del-dtgt,.v72-edit-route,.v72-del-route,.v69-edit-tgt,.v69-del-tgt,.v69-edit-dtgt,.v69-del-dtgt,.v69-edit-route,.v69-del-route,.v68-edit-tgt,.v68-del-tgt,.v68-edit-dtgt,.v68-del-dtgt,.v68-edit-route,.v68-del-route,.v67-edit-tgt,.v67-del-tgt,.v67-edit-dtgt,.v67-del-dtgt,.v67-edit-route,.v67-del-route");
+      if(!b)return;
+      e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+      var id=b.getAttribute("data-id");
+      var cls=b.className||"";
+      if(/edit-tgt/.test(cls)&&!/dtgt/.test(cls))fillSales((S().salesTargets||[]).filter(function(x){return String(x.id)===String(id);})[0]);
+      else if(/del-tgt/.test(cls)&&!/dtgt/.test(cls))delSales(id);
+      else if(/edit-dtgt/.test(cls))fillDist((S().distSalesTargets||[]).filter(function(x){return String(x.id)===String(id);})[0]);
+      else if(/del-dtgt/.test(cls))delDist(id);
+      else if(/edit-route/.test(cls))fillRoute(id);
+      else if(/del-route/.test(cls))delRoute(id);
+    },true);
+  }
+
+  function bindNoSpin(){
+    if(document.body.dataset.v72spin)return;document.body.dataset.v72spin="1";
+    document.addEventListener("wheel",function(e){
+      var el=e.target;
+      if(!el||el.tagName!=="INPUT"||el.type!=="number")return;
+      if(!(el.classList&&(el.classList.contains("order-item-count")||el.classList.contains("order-item-gift")||el.classList.contains("v34-target-count")||el.classList.contains("v66-count")||el.classList.contains("qty-no-spin")))&&el.id!=="tgtCountInput")return;
+      if(document.activeElement===el){e.preventDefault();el.blur();}
+    },{passive:false});
+    document.addEventListener("keydown",function(e){
+      var el=e.target;
+      if(!el||el.tagName!=="INPUT"||el.type!=="number")return;
+      if(!(el.classList&&(el.classList.contains("order-item-count")||el.classList.contains("order-item-gift")||el.classList.contains("v34-target-count")||el.classList.contains("v66-count")))&&el.id!=="tgtCountInput")return;
+      if(e.key==="ArrowUp"||e.key==="ArrowDown")e.preventDefault();
+    },true);
+  }
+
+  function wrapSwitch(){
+    if(window.switchTab&&!window.switchTab._v72){
+      var orig=window.switchTab;
+      var w=function(id){
+        var r=orig.apply(this,arguments);
+        setTimeout(function(){
+          if(id==="tab-pharmacies"){try{if(typeof renderPharmaciesList==="function")renderPharmaciesList();}catch(e){}}
+          if(id==="tab-doctors"){try{if(typeof renderDoctorsList==="function")renderDoctorsList();}catch(e){}}
+          if(id==="tab-orders"){try{if(typeof renderOrdersList==="function")renderOrdersList();}catch(e){}}
+          if(id==="tab-sales-targets"||id==="tab-dist-targets"||id==="tab-define-routes")paintV72All();
+        },50);
+        return r;
+      };
+      w._v72=true;window.switchTab=w;
+    }
+    if(typeof window.paintV68TargetOps==="function"&&!window.paintV68TargetOps._v72){
+      var old=window.paintV68TargetOps;
+      var pw=function(){var r=old.apply(this,arguments);hideOldOps();paintV72All();return r;};
+      pw._v72=true;window.paintV68TargetOps=pw;
+    }
+    if(typeof window.renderTargetReportsV34==="function"&&!window.renderTargetReportsV34._v72){
+      var ro=window.renderTargetReportsV34;
+      var rw=function(){var r=ro.apply(this,arguments);hideOldOps();paintSalesBoxes();return r;};
+      rw._v72=true;window.renderTargetReportsV34=rw;
+    }
+    if(typeof window.setupDistTargetPlanner==="function"&&!window.setupDistTargetPlanner._v72){
+      var so=window.setupDistTargetPlanner;
+      var sw=function(){var r=so.apply(this,arguments);paintDistBoxes();return r;};
+      sw._v72=true;window.setupDistTargetPlanner=sw;
+    }
+    if(typeof window.renderRepRoutesOverview==="function"&&!window.renderRepRoutesOverview._v72){
+      var oo=window.renderRepRoutesOverview;
+      var ow=function(){var r=oo.apply(this,arguments);paintRouteBoxes();return r;};
+      ow._v72=true;window.renderRepRoutesOverview=ow;
+    }
+  }
+
+  function boot(){
+    bindOps();
+    bindNoSpin();
+    wrapSwitch();
+    bootServerFirst();
+    setTimeout(paintV72All,400);
+    setTimeout(paintV72All,1400);
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,40);});
+  else setTimeout(boot,40);
+  document.addEventListener("click",function(e){
+    if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-sales-targets"],[data-target="tab-dist-targets"],[data-target="tab-define-routes"],[data-target="tab-pharmacies"]'))
+      setTimeout(function(){hideOldOps();paintV72All();},180);
+  },true);
+})();

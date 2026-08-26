@@ -47,15 +47,15 @@
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (180734 بایت)
+### `public/crm-app.js` (180935 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 176
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
 
-### `public/crm-bundle.js` (982585 بایت)
+### `public/crm-bundle.js` (1004254 بایت)
 - نقش: * crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
-- تعداد توابع داخلی: 1027
-- نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `WIDGET_PALETTE`, `__CRM_APPLYING_SERVER`, `__CRM_BULK_READY`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SNAP`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__V68_WATCH`, `__V69_SYNC`, `__V70_SOLO`, `__V71_CLAIMED`, `__lastHealth`, `__v40LastPick`, `__v53wrapped`, `__v55wrapped`, `__v56wrapped`, `__v58once`, `_actMap`, `_actMarks`, `_activeAddTab`, `_activeColTab`, `_activeManualTab`, `_colDelPatched`, `_colEditScroll`, `_editingBoxId`, `_editingColField`, `_editingProductId`
+- تعداد توابع داخلی: 1046
+- نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `WIDGET_PALETTE`, `__CRM_APPLYING_SERVER`, `__CRM_BULK_READY`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SERVER_READY`, `__CRM_SNAP`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__V68_WATCH`, `__V69_SYNC`, `__V70_SOLO`, `__V71_CLAIMED`, `__V72_BOOT`, `__lastHealth`, `__v40LastPick`, `__v53wrapped`, `__v55wrapped`, `__v56wrapped`, `__v58once`, `_actMap`, `_actMarks`, `_activeAddTab`, `_activeColTab`, `_activeManualTab`, `_colDelPatched`, `_colEditScroll`, `_editingBoxId`
 
 ### `public/crm-data.js` (63721 بایت)
 - نقش: ============================================================================
@@ -136,7 +136,7 @@
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (3742 بایت)
-- نقش: const BUILD = "11.71.0";
+- نقش: const BUILD = "11.72.0";
 - تعداد توابع داخلی: 3
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -333,6 +333,7 @@
 - `/api/state?__v69boot=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
 - `/api/state?__v70=1` [؟] — مصرف‌کننده: `public/crm-bundle.js`
 - `/api/state?__v70boot=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
+- `/api/state?__v72boot=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
 - `/api/state?replace=1&__v71=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
 - `/api/state?replace=1&__v71p=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
 
@@ -407,7 +408,7 @@
 - `public/crm-features-v20.js` → 6 شناسه (مثل: `btnSaveRepresentativeRoute`, `representativeRoutesCard`, `routeManagerCity`, `routeManagerDistrict`, `routeManagerProvince`, `routeManagerRep`)
 
 ### tab-dist-targets «🎯 تارگت فروش هرپخش»
-- `public/crm-bundle.js` → 1 شناسه (مثل: `v66DistTargetPlanner`)
+- `public/crm-bundle.js` → 3 شناسه (مثل: `v66DistTargetPlanner`, `v72DistBoxes`, `v72DistGrandBox`)
 
 ### tab-distributor-companies «🏢 اطلاعات شرکت‌ها»
 - `public/crm-bundle.js` → 1 شناسه (مثل: `distributorCompanyGrid`)
@@ -1400,7 +1401,7 @@
 
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
-- نسخه سورس package: `11.71.0`
+- نسخه سورس package: `11.72.0`
 - مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a03a45-javad-test1`؛ push/PR فقط از همین شاخه.
 - Production فعال: `https://javad-test1.onrender.com` — نسخه سورس فعلی `11.66.0` است و تا push کاربر روی production همان آخرین دیپلوی قبلی می‌ماند.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.

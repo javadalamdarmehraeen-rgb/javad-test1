@@ -1254,3 +1254,8 @@ Then change only what is requested.
 
 ## 11.71.0 / نوبت ۹۱
 اسکریپت یک‌بار؛ ۴۰۴ بدون login.html؛ سرور فقط داده همین دستگاه.
+
+## لایه v11.72
+- `bootServerFirst` / `adoptServerExact` / `paintV72TargetOps`
+- `#v72DistGrandBox` + `#v72DistBoxes` + `distAchievedQty`
+- hide `#v68SalesTargetOps` / `.v67-ops-table`

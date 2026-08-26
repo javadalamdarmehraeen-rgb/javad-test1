@@ -246,3 +246,11 @@
 
 ## 11.71.0 / نوبت ۹۱
 اسکریپت یک‌بار؛ ۴۰۴ بدون login.html؛ سرور فقط داده همین دستگاه.
+
+## 11.72.0 / نوبت ۹۲
+- [x] باز شدن برنامه اول دادهٔ سرور/همین دستگاه را نشان دهد — bootServerFirst + adoptServerExact + paintListsNow
+- [x] حذف فلش تعداد کالا — CSS appearance:textfield + bindNoSpin
+- [x] ویرایش/حذف سه تب بدون پیغام عجیب — capture + stopImmediatePropagation
+- [x] حذف کادر نمایش تارگت‌های ثبت‌شده — hideOldOps + CSS
+- [x] ستون محقق‌شده و مانده تارگت پخش از فایل پخش — distAchievedQty
+- [x] کادر جمع تارگت و کادر جدا برای هر پخش — v72DistGrandBox / v72DistBoxes
