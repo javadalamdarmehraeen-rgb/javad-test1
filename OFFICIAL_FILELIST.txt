@@ -242,3 +242,6 @@ update_chat_arena.py
 update_project_graph.py
 public/crm-app.js
 public/crm-bundle.js
+PAKSAZI_EZAFI.bat
+download-v11.70.0.html
+scripts/build.js

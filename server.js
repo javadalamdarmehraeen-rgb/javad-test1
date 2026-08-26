@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.70.0";
+const APP_VERSION = "11.71.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -239,7 +239,7 @@ function sendFile(req, res, filePath, maxAge) {
       "Surrogate-Control": maxAge ? ("max-age=" + maxAge) : "no-store",
       "X-CRM-Build": APP_VERSION
     };
-    if (ext === ".html" && !isPreviewHost(req)) extra["Clear-Site-Data"] = '"cache"';
+    /* v11.71: Clear-Site-Data روی هر HTML کش را خالی و صفحه را حلقه می‌کرد */
     if (path.basename(filePath) === "sw.js") {
       extra["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0";
       extra["Service-Worker-Allowed"] = "/";

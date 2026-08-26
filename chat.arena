@@ -1,6 +1,6 @@
 CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.71 | تاریخ به‌روزرسانی: 2026-08-26 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.70.0
+نسخه این فایل: 1.72 | تاریخ به‌روزرسانی: 2026-08-26 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.71.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -564,27 +564,28 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
    index.html به‌روز نگه داشته می‌شود.
 ۸. OFFICIAL_FILELIST.txt همگام با فایل‌های جدید به‌روز می‌شود (قانون ۸).
 
-فهرست فایل‌ها (224 فایل متنی + 28 فایل دودویی):
+فهرست فایل‌ها (226 فایل متنی + 28 فایل دودویی):
 
   [متنی ]      891 بایت  .env.ndcohub.example
   [متنی ]      849 بایت  .gitattributes
   [متنی ]     1157 بایت  .gitignore
   [متنی ]     2041 بایت  .gitlab-ci.yml
-  [متنی ]    36246 بایت  AI_ACCEPTANCE_CHECKLIST.md
-  [متنی ]    35403 بایت  AI_ARCHITECTURE.md
-  [متنی ]    77724 بایت  AI_DECISION_LOG.md
-  [متنی ]    41421 بایت  AI_PROJECT_CONTEXT.md
-  [متنی ]    45406 بایت  AI_RULES.md
-  [متنی ]    53824 بایت  AI_TASKS.md
-  [متنی ]    49606 بایت  ARENA_HANDOFF_PROMPT.md
+  [متنی ]    36382 بایت  AI_ACCEPTANCE_CHECKLIST.md
+  [متنی ]    35539 بایت  AI_ARCHITECTURE.md
+  [متنی ]    77860 بایت  AI_DECISION_LOG.md
+  [متنی ]    41557 بایت  AI_PROJECT_CONTEXT.md
+  [متنی ]    45542 بایت  AI_RULES.md
+  [متنی ]    53960 بایت  AI_TASKS.md
+  [متنی ]    49742 بایت  ARENA_HANDOFF_PROMPT.md
   [متنی ]      600 بایت  CHANGES_V10.md
-  [متنی ]   122241 بایت  CHANGES_V11.md
+  [متنی ]   122677 بایت  CHANGES_V11.md
   [متنی ]     3939 بایت  CHANGES_V9.md
   [متنی ]     1806 بایت  CLEAN_EXTRA_FILES.bat
   [متنی ]    38974 بایت  GITHUB_REVIEW_HANDOFF.md
   [متنی ]     2377 بایت  KEEP_ONLY_GITHUB.bat
-  [متنی ]     6401 بایت  OFFICIAL_FILELIST.txt
-  [متنی ]   131686 بایت  PROJECT_GRAPH.md
+  [متنی ]     6459 بایت  OFFICIAL_FILELIST.txt
+  [متنی ]      938 بایت  PAKSAZI_EZAFI.bat
+  [متنی ]   131840 بایت  PROJECT_GRAPH.md
   [متنی ]     2707 بایت  PUSH_FRESH_GITHUB.bat
   [متنی ]     2680 بایت  PUSH_GITHUB_CLEAN.bat
   [متنی ]     6579 بایت  RAHNAMA_GITLAB.txt
@@ -595,6 +596,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     1273 بایت  SYNC_OFFICIAL_OVER_FOLDER.bat
   [متنی ]     1963 بایت  download-v11.68.0.html
   [متنی ]      939 بایت  download-v11.69.0.html
+  [متنی ]      470 بایت  download-v11.70.0.html
   [متنی ]      156 بایت  drizzle.config.json
   [متنی ]      364 بایت  eslint.config.mjs
   [متنی ]      250 بایت  next-env.d.ts
@@ -603,7 +605,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]      871 بایت  package.json
   [متنی ]      108 بایت  postcss.config.mjs
   [متنی ]     1331 بایت  render.yaml
-  [متنی ]    31559 بایت  server.js
+  [متنی ]    31583 بایت  server.js
   [متنی ]     2426 بایت  sync_all.sh
   [متنی ]      738 بایت  tsconfig.json
   [متنی ]   354890 بایت  update_chat_arena.py
@@ -615,7 +617,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     9966 بایت  mobile/src/simAuth.ts
   [متنی ]     8066 بایت  public/cloudflare-worker.js
   [متنی ]   180734 بایت  public/crm-app.js
-  [متنی ]   979439 بایت  public/crm-bundle.js
+  [متنی ]   982585 بایت  public/crm-bundle.js
   [متنی ]    63721 بایت  public/crm-data.js
   [متنی ]    13643 بایت  public/crm-features-v10.js
   [متنی ]   112307 بایت  public/crm-features-v11.js
@@ -630,7 +632,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]   300408 بایت  public/crm-features-v20.js
   [متنی ]    72007 بایت  public/crm-features-v9.js
   [متنی ]    25683 بایت  public/crm-jalali.js
-  [متنی ]   154991 بایت  public/index.html
+  [متنی ]   154446 بایت  public/index.html
   [متنی ]    11799 بایت  public/iran-facilities.js
   [متنی ]     8785 بایت  public/login.html
   [متنی ]      966 بایت  public/manifest.json
@@ -789,7 +791,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     3346 بایت  src/lib/zip.ts
   [متنی ]     4927 بایت  tests/app-smoke.test.mjs
   [متنی ]    19979 بایت  tests/state-preservation.test.mjs
-  [متنی ]    54613 بایت  tests/version-11.24-regressions.test.mjs
+  [متنی ]    55376 بایت  tests/version-11.24-regressions.test.mjs
   [تصویر]    23282 بایت  public/apple-touch-icon.png
   [تصویر]     4527 بایت  public/favicon.png
   [تصویر]    26208 بایت  public/icon-192.png
@@ -3987,7 +3989,7 @@ sync-after-deploy:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_ACCEPTANCE_CHECKLIST.md (36246 بایت)
+فایل: AI_ACCEPTANCE_CHECKLIST.md (36382 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI_ACCEPTANCE_CHECKLIST — چک‌لیست اجباری تحویل واقعی
@@ -4235,10 +4237,13 @@ sync-after-deploy:
 
 ## 11.70.0 / نوبت ۹۰
 حلقه cache-reset قطع شد. سرور فقط اطلاعات همین دستگاه را نگه می‌دارد (_soloOnly / replace).
+
+## 11.71.0 / نوبت ۹۱
+اسکریپت یک‌بار؛ ۴۰۴ بدون login.html؛ سرور فقط داده همین دستگاه.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_ARCHITECTURE.md (35403 بایت)
+فایل: AI_ARCHITECTURE.md (35539 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI ARCHITECTURE
@@ -5494,10 +5499,13 @@ Then change only what is requested.
 
 ## 11.70.0 / نوبت ۹۰
 حلقه cache-reset قطع شد. سرور فقط اطلاعات همین دستگاه را نگه می‌دارد (_soloOnly / replace).
+
+## 11.71.0 / نوبت ۹۱
+اسکریپت یک‌بار؛ ۴۰۴ بدون login.html؛ سرور فقط داده همین دستگاه.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_DECISION_LOG.md (77724 بایت)
+فایل: AI_DECISION_LOG.md (77860 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI DECISION LOG
@@ -7172,10 +7180,13 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 
 ## 11.70.0 / نوبت ۹۰
 حلقه cache-reset قطع شد. سرور فقط اطلاعات همین دستگاه را نگه می‌دارد (_soloOnly / replace).
+
+## 11.71.0 / نوبت ۹۱
+اسکریپت یک‌بار؛ ۴۰۴ بدون login.html؛ سرور فقط داده همین دستگاه.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_PROJECT_CONTEXT.md (41421 بایت)
+فایل: AI_PROJECT_CONTEXT.md (41557 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI PROJECT CONTEXT
@@ -8128,10 +8139,13 @@ Commit محلی `2c4fe0b` روی شاخه ثابت Arena ساخته شد. Push �
 
 ## 11.70.0 / نوبت ۹۰
 حلقه cache-reset قطع شد. سرور فقط اطلاعات همین دستگاه را نگه می‌دارد (_soloOnly / replace).
+
+## 11.71.0 / نوبت ۹۱
+اسکریپت یک‌بار؛ ۴۰۴ بدون login.html؛ سرور فقط داده همین دستگاه.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_RULES.md (45406 بایت)
+فایل: AI_RULES.md (45542 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI RULES
@@ -9763,10 +9777,13 @@ That is NOT a valid user-facing format.
 
 ## 11.70.0 / نوبت ۹۰
 حلقه cache-reset قطع شد. سرور فقط اطلاعات همین دستگاه را نگه می‌دارد (_soloOnly / replace).
+
+## 11.71.0 / نوبت ۹۱
+اسکریپت یک‌بار؛ ۴۰۴ بدون login.html؛ سرور فقط داده همین دستگاه.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_TASKS.md (53824 بایت)
+فایل: AI_TASKS.md (53960 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI TASKS
@@ -11389,10 +11406,13 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 
 ## 11.70.0 / نوبت ۹۰
 حلقه cache-reset قطع شد. سرور فقط اطلاعات همین دستگاه را نگه می‌دارد (_soloOnly / replace).
+
+## 11.71.0 / نوبت ۹۱
+اسکریپت یک‌بار؛ ۴۰۴ بدون login.html؛ سرور فقط داده همین دستگاه.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: ARENA_HANDOFF_PROMPT.md (49606 بایت)
+فایل: ARENA_HANDOFF_PROMPT.md (49742 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # ARENA AI MASTER HANDOFF PROMPT
@@ -12782,6 +12802,9 @@ ADDENDUM v11.16.1 (2026-08-16)
 
 ## 11.70.0 / نوبت ۹۰
 حلقه cache-reset قطع شد. سرور فقط اطلاعات همین دستگاه را نگه می‌دارد (_soloOnly / replace).
+
+## 11.71.0 / نوبت ۹۱
+اسکریپت یک‌بار؛ ۴۰۴ بدون login.html؛ سرور فقط داده همین دستگاه.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -12801,7 +12824,7 @@ Leaflet محلی. فونت گوگل حذف شد. gzip روی JS/CSS/HTML.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: CHANGES_V11.md (122241 بایت)
+فایل: CHANGES_V11.md (122677 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # نسخه ۱۱.۲۳.۰
@@ -13586,6 +13609,12 @@ CLEAN_EXTRA_FILES.bat و بعد PUSH_GITHUB_CLEAN.bat را اجرا کن.
 
 1. صفحه «در حال دریافت نسخه جدید» دیگر حلقه نمی‌زند.
 2. اطلاعات سیستم‌های دیگر روی سرور جایگزین/نادیده می‌شود؛ فقط اطلاعات دستگاهی که این نسخه را اول باز کند روی سرور می‌ماند.
+
+## تحویل نوبت ۹۱ — نسخه ۱۱.۷۱.۰: اسکریپت یک‌بار + ۴۰۴ واقعی + مبنای همین دستگاه
+
+1. crm-data/crm-app دیگر دوبار لود نمی‌شوند.
+2. فایل گمشده login.html با Clear-Site-Data برنمی‌گرداند.
+3. باز شدن این نسخه از همین دستگاه، سرور را فقط با داده همین سیستم جایگزین می‌کند.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -13726,9 +13755,9 @@ pause
 ~~~~~~~~markdown
 # GITHUB_REVIEW_HANDOFF — تحویل مویرگی برای بررسی GitHub و هوش مصنوعی بعدی
 
-**تاریخ این تحویل:** 2026-08-26 / ۵ شهریور 1405 (به‌روزرسانی نوبت ۹۰)
-**نسخه آماده سورس:** `11.70.0` (فایل واحد crm-bundle + آینه crm-features-v20)
-**نسخه chat.arena پس از بازسازی این نوبت:** `1.71`
+**تاریخ این تحویل:** 2026-08-26 / ۵ شهریور 1405 (به‌روزرسانی نوبت ۹۱)
+**نسخه آماده سورس:** `11.71.0` (فایل واحد crm-bundle + آینه crm-features-v20)
+**نسخه chat.arena پس از بازسازی این نوبت:** `1.72`
 **شاخه اجباری این جلسه:** `arena/01a03a45-javad-test1`
 **مخزن:** `javadalamdarmehraeen-rgb/javad-test1`
 **Production فعال:** `https://javad-test1.onrender.com` — 11.38.0 سرو می‌کند؛ با push نسخه 11.38.1 توسط کاربر، Render دیپلوی می‌کند
@@ -14418,7 +14447,7 @@ pause
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: OFFICIAL_FILELIST.txt (6401 بایت)
+فایل: OFFICIAL_FILELIST.txt (6459 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~text
 .env.ndcohub.example
@@ -14665,10 +14694,44 @@ update_chat_arena.py
 update_project_graph.py
 public/crm-app.js
 public/crm-bundle.js
+PAKSAZI_EZAFI.bat
+download-v11.70.0.html
+scripts/build.js
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: PROJECT_GRAPH.md (131686 بایت)
+فایل: PAKSAZI_EZAFI.bat (938 بایت)
+──────────────────────────────────────────────────────────────────────────────────
+~~~~~~~~batch
+@echo off
+chcp 65001 >nul
+cd /d "%~dp0"
+echo.
+echo پاکسازی فایل و فولدر اضافی — محلی سپس گیت‌هاب
+echo مسیر: %CD%
+echo.
+if not exist "server.js" (
+  echo خطا: این فایل را داخل فولدر javad-test1 اجرا کنید.
+  pause
+  exit /b 1
+)
+echo --- حذف زباله‌های شناخته‌شده ---
+for %%Z in (namayandeelmi-v11.68.0.zip namayandeelmi-v11.69.0.zip download-v11.68.0.html download-v11.69.0.html) do if exist "%%Z" del /f /q "%%Z"
+if exist ".next" rd /s /q ".next"
+if exist "coverage" rd /s /q "coverage"
+if exist "__pycache__" rd /s /q "__pycache__"
+echo.
+echo --- فایل‌های اضافه نسبت به گیت ---
+git status -sb
+echo.
+echo اگر بالا فایل اضافه دیدی، با دستورهای پایان چت commit/push کن.
+echo گیت‌لب فقط اگر remote به نام gitlab داشته باشی پوش می‌شود.
+echo.
+pause
+~~~~~~~~
+
+──────────────────────────────────────────────────────────────────────────────────
+فایل: PROJECT_GRAPH.md (131840 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # 🕸️ گراف دانش پروژه «نماینده علمی» (PROJECT_GRAPH.md)
@@ -14684,14 +14747,10 @@ public/crm-bundle.js
 2. `crm-data.js`
 3. `crm-app.js`
 4. `crm-bundle.js`
-5. `vendor/leaflet.js`
-6. `crm-data.js`
-7. `crm-app.js`
-8. `crm-bundle.js`
 
 ## ب) کارت فایل‌ها (نقش + توابع + نام‌های window که می‌سازد)
 
-### `server.js` (31559 بایت)
+### `server.js` (31583 بایت)
 - نقش: سرور سبک Node.js برای Render — ورود جدا، gzip، health، ژئوکد، محدودیت نرخ
 - تعداد توابع داخلی: 24
 - endpointهای سرور: `/api/backup`, `/api/backup/email`, `/api/bulk`, `/api/bulk`, `/api/feedback`, `/api/feedback`, `/api/push/public-key`, `/api/push/send`, `/api/push/subscribe`, `/api/state`, `/api/state`
@@ -14729,10 +14788,10 @@ public/crm-bundle.js
 - تعداد توابع داخلی: 176
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
 
-### `public/crm-bundle.js` (979439 بایت)
+### `public/crm-bundle.js` (982585 بایت)
 - نقش: * crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
-- تعداد توابع داخلی: 1026
-- نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `WIDGET_PALETTE`, `__CRM_APPLYING_SERVER`, `__CRM_BULK_READY`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SNAP`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__V68_WATCH`, `__V69_SYNC`, `__V70_SOLO`, `__lastHealth`, `__v40LastPick`, `__v53wrapped`, `__v55wrapped`, `__v56wrapped`, `__v58once`, `_actMap`, `_actMarks`, `_activeAddTab`, `_activeColTab`, `_activeManualTab`, `_colDelPatched`, `_colEditScroll`, `_editingBoxId`, `_editingColField`, `_editingProductId`, `_jalaliBuildPatched`
+- تعداد توابع داخلی: 1027
+- نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `WIDGET_PALETTE`, `__CRM_APPLYING_SERVER`, `__CRM_BULK_READY`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SNAP`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__V68_WATCH`, `__V69_SYNC`, `__V70_SOLO`, `__V71_CLAIMED`, `__lastHealth`, `__v40LastPick`, `__v53wrapped`, `__v55wrapped`, `__v56wrapped`, `__v58once`, `_actMap`, `_actMarks`, `_activeAddTab`, `_activeColTab`, `_activeManualTab`, `_colDelPatched`, `_colEditScroll`, `_editingBoxId`, `_editingColField`, `_editingProductId`
 
 ### `public/crm-data.js` (63721 بایت)
 - نقش: ============================================================================
@@ -14813,7 +14872,7 @@ public/crm-bundle.js
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (3742 بایت)
-- نقش: const BUILD = "11.70.0";
+- نقش: const BUILD = "11.71.0";
 - تعداد توابع داخلی: 3
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -15010,6 +15069,8 @@ public/crm-bundle.js
 - `/api/state?__v69boot=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
 - `/api/state?__v70=1` [؟] — مصرف‌کننده: `public/crm-bundle.js`
 - `/api/state?__v70boot=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
+- `/api/state?replace=1&__v71=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
+- `/api/state?replace=1&__v71p=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
 
 ## هـ) گراف حافظه مرورگر (کلید ↔ فایل‌های دست‌زننده)
 
@@ -15020,6 +15081,7 @@ public/crm-bundle.js
 - `CRM_DIAG_LOG` ← localStorage: `public/crm-bundle.js`, `public/crm-features-v11.js`
 - `CRM_LAST_GPS` ← localStorage: `public/crm-bundle.js`, `public/crm-features-v11.js`
 - `CRM_RESET_LOCK` ← sessionStorage: `server.js`
+- `CRM_SOLO_CLAIM` ← localStorage: `public/crm-bundle.js`
 - `CRM_SOLO_EPOCH` ← localStorage: `public/crm-bundle.js`
 - `CRM_USERS_AUTH` ← localStorage: `public/crm-app.js`, `public/crm-bundle.js`, `public/crm-features-v11.js`, `public/crm-features-v20.js`
 - `CRM_V39_ORDER_CANONICAL_RESET` ← localStorage: `public/crm-bundle.js`, `public/crm-features-v20.js`
@@ -16074,7 +16136,7 @@ public/crm-bundle.js
 
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
-- نسخه سورس package: `11.70.0`
+- نسخه سورس package: `11.71.0`
 - مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a03a45-javad-test1`؛ push/PR فقط از همین شاخه.
 - Production فعال: `https://javad-test1.onrender.com` — نسخه سورس فعلی `11.66.0` است و تا push کاربر روی production همان آخرین دیپلوی قبلی می‌ماند.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.
@@ -16410,9 +16472,9 @@ push به گیت‌هاب → push به گیت‌لب.
 ~~~~~~~~markdown
 # نماینده علمی — طنین طب طاها
 
-> **راهنمای بررسی نسخه جاری:** قبل از هر بررسی GitHub، فایل [`GITHUB_REVIEW_HANDOFF.md`](./GITHUB_REVIEW_HANDOFF.md) و سپس [`PROJECT_GRAPH.md`](./PROJECT_GRAPH.md) را بخوانید. نسخه فعال سورس `11.70.0` است؛ ورودی runtime اصلی `server.js + public/` است و اسکلت Next.js پوشه `src/` مسیر production فعلی نیست.
+> **راهنمای بررسی نسخه جاری:** قبل از هر بررسی GitHub، فایل [`GITHUB_REVIEW_HANDOFF.md`](./GITHUB_REVIEW_HANDOFF.md) و سپس [`PROJECT_GRAPH.md`](./PROJECT_GRAPH.md) را بخوانید. نسخه فعال سورس `11.71.0` است؛ ورودی runtime اصلی `server.js + public/` است و اسکلت Next.js پوشه `src/` مسیر production فعلی نیست.
 >
-> **وضعیت انتشار در 2026-08-26 (نوبت ۹۰):** سورس `11.70.0` آماده push کاربر است — قطع حلقه نوسازی + فقط اطلاعات همین دستگاه روی سرور.
+> **وضعیت انتشار در 2026-08-26 (نوبت ۹۱):** سورس `11.71.0` آماده push کاربر است — قطع حلقه نوسازی + فقط اطلاعات همین دستگاه روی سرور.
 
 این مخزن شامل برنامه CRM/PWA نمایندگان علمی، مدیریت داروخانه/پزشک/سفارش، مسیرها، تارگت، اعلان، پخش و ابزارهای حفظ داده است.
 
@@ -17073,6 +17135,20 @@ code{background:#ecfdf5;padding:2px 6px;border-radius:6px;direction:ltr;display:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
+فایل: download-v11.70.0.html (470 بایت)
+──────────────────────────────────────────────────────────────────────────────────
+~~~~~~~~html
+<!doctype html>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8"><title>دانلود ۱۱.۷۰.۰</title>
+<style>body{font-family:Tahoma,Arial;background:#f0fdfa;color:#134e4a;padding:32px}code{background:#ecfdf5;padding:2px 6px;border-radius:6px}</style>
+</head><body>
+<h1>دانلود نسخه ۱۱.۷۰.۰</h1>
+<p>نام فایل: <code>namayandeelmi-v11.70.0.zip</code></p>
+<p>از پیش‌نمایش پورت ۸۰۰۰ دانلود کنید.</p>
+</body></html>
+~~~~~~~~
+
+──────────────────────────────────────────────────────────────────────────────────
 فایل: drizzle.config.json (156 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~json
@@ -17236,7 +17312,7 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.70.0",
+  "version": "11.71.0",
   "description": "سیستم جامع مدیریت و ویزیت علمی، داروخانه‌ها، پزشکان و سفارشات (CRM / PWA) هماهنگ با Render و Neon",
   "main": "server.js",
   "engines": {
@@ -17331,7 +17407,7 @@ services:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: server.js (31559 بایت)
+فایل: server.js (31583 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // سرور سبک Node.js برای Render — ورود جدا، gzip، health، ژئوکد، محدودیت نرخ
@@ -17342,7 +17418,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.70.0";
+const APP_VERSION = "11.71.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -17575,7 +17651,7 @@ function sendFile(req, res, filePath, maxAge) {
       "Surrogate-Control": maxAge ? ("max-age=" + maxAge) : "no-store",
       "X-CRM-Build": APP_VERSION
     };
-    if (ext === ".html" && !isPreviewHost(req)) extra["Clear-Site-Data"] = '"cache"';
+    /* v11.71: Clear-Site-Data روی هر HTML کش را خالی و صفحه را حلقه می‌کرد */
     if (path.basename(filePath) === "sw.js") {
       extra["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0";
       extra["Service-Worker-Allowed"] = "/";
@@ -17991,7 +18067,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.71 | تاریخ به‌روزرسانی: 2026-08-26 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.70.0
+نسخه این فایل: 1.72 | تاریخ به‌روزرسانی: 2026-08-26 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.71.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -22895,7 +22971,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "11.70.0";
+const CRM_APP_VERSION = "11.71.0";
 try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
@@ -25882,7 +25958,7 @@ function downloadCSVFile(filename, headers, rows) {
 // ----------------------------------------------------------------------------
 function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
-  const build = "11.70.0";
+  const build = "11.71.0";
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'CRM_BUILD_ACTIVE' && event.data.build !== build) {
@@ -25890,7 +25966,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.70.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.71.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -27007,7 +27083,7 @@ function deleteProductCatalogItem(id) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-bundle.js (979439 بایت)
+فایل: public/crm-bundle.js (982585 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 /* crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
@@ -42507,6 +42583,59 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(bootSolo,50);});
   else setTimeout(bootSolo,50);
 })();
+
+/* v11.71.0: اسکریپت یک‌بار + فقط همین دستگاه مبنای سرور */
+(function(){
+  window.__V69_SYNC=1;window.__V67_SYNC=1;window.__V70_SOLO=1;
+  var el=document.getElementById("v69UnifyOverlay");if(el)el.style.display="none";
+  function persist(){
+    try{localStorage.setItem("CRM_APP_STATE_V2",typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(window.state):JSON.stringify(window.state));}catch(e){}
+  }
+  function meaningful(st){
+    if(!st||typeof st!=="object")return false;
+    return ["pharmacies","doctors","orders","products","users","salesTargets"].some(function(k){return Array.isArray(st[k])&&st[k].length;});
+  }
+  function claimThisDevice(){
+    if(window.__V71_CLAIMED)return;window.__V71_CLAIMED=1;
+    var st=window.state;
+    if(!meaningful(st))return;
+    st._soloOnly=true;
+    st._soloEpoch=Date.now();
+    st._soloAt=Date.now();
+    st._soloVersion="11.71.0";
+    try{localStorage.setItem("CRM_SOLO_EPOCH",String(st._soloEpoch));localStorage.setItem("CRM_SOLO_CLAIM","11.71.0");}catch(e){}
+    persist();
+    var body=typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(st):JSON.stringify(st);
+    fetch("/api/state?replace=1&__v71="+Date.now(),{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1","X-CRM-Replace":"1","X-CRM-Sync":"v71"},body:body,cache:"no-store"}).catch(function(){});
+  }
+  window.crmPushStateToServer=function(){
+    var st=window.state;if(!st||!navigator.onLine)return;
+    var mine="";try{mine=localStorage.getItem("CRM_SOLO_EPOCH")||"";}catch(e){}
+    if(st._soloEpoch&&mine&&String(st._soloEpoch)!==String(mine))return;
+    st._soloOnly=true;
+    if(!st._soloEpoch){st._soloEpoch=Number(mine)||Date.now();try{localStorage.setItem("CRM_SOLO_EPOCH",String(st._soloEpoch));}catch(e){}}
+    var body=typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(st):JSON.stringify(st);
+    fetch("/api/state?replace=1&__v71p="+Date.now(),{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1","X-CRM-Replace":"1","X-CRM-Sync":"v71"},body:body,cache:"no-store"}).catch(function(){});
+  };
+  var origFetch=window.fetch;
+  if(typeof origFetch==="function"&&!origFetch._v71){
+    var w=function(url,opts){
+      var u=String(url||""),method=(opts&&opts.method)?String(opts.method).toUpperCase():"GET";
+      if(/\/api\/state/.test(u)&&method==="GET"&&/__v60=|__v67=|__v65=|__v69=|__v70=/.test(u)&&u.indexOf("__v71")===-1){
+        return Promise.resolve(new Response(JSON.stringify({status:"skip"}),{status:200,headers:{"Content-Type":"application/json"}}));
+      }
+      return origFetch.apply(this,arguments);
+    };
+    w._v71=true;window.fetch=w;
+  }
+  function boot(){
+    var claimed="";try{claimed=localStorage.getItem("CRM_SOLO_CLAIM")||"";}catch(e){}
+    if(claimed!=="11.71.0")claimThisDevice();
+    else if(typeof window.crmPushStateToServer==="function")window.crmPushStateToServer();
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,90);});
+  else setTimeout(boot,90);
+})();
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -56257,7 +56386,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/index.html (154991 بایت)
+فایل: public/index.html (154446 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~html
 <!DOCTYPE html>
@@ -56294,7 +56423,7 @@ button.v19-gps svg{display:block}
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.70.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="11.71.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       document.documentElement.classList.add("crm-booting");
       function target(){return location.pathname+location.search+location.hash;}
       function rescue(serverBuild){if(true)return;var u="/cache-reset?to="+encodeURIComponent(target())+"&build="+encodeURIComponent(serverBuild||BUILD)+"&t="+Date.now();location.replace(u);}
@@ -56316,7 +56445,7 @@ button.v19-gps svg{display:block}
   <meta name="theme-color" content="#0d9488" />
 
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.70.0" />
+  <link rel="stylesheet" href="style.css?v=11.71.0" />
 </head>
 <body>
 
@@ -58599,24 +58728,9 @@ button.v19-gps svg{display:block}
   <script src="vendor/leaflet.js"></script>
 
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.70.0"></script>
-  <script src="crm-app.js?v=11.70.0"></script>
-          <script src="crm-bundle.js?v=11.70.0"></script>
-  <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
-  <input type="hidden" id="pharmacyLocationText" value="" />
-  <input type="hidden" id="doctorLocationText" value="" />
-</body>
-</html>
-
-  </div>
-
-  <!-- Leaflet JS -->
-  <script src="vendor/leaflet.js"></script>
-
-  <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.70.0"></script>
-  <script src="crm-app.js?v=11.70.0"></script>
-          <script src="crm-bundle.js?v=11.70.0"></script>
+  <script src="crm-data.js?v=11.71.0"></script>
+  <script src="crm-app.js?v=11.71.0"></script>
+          <script src="crm-bundle.js?v=11.71.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
@@ -58690,7 +58804,7 @@ window.IRAN_FACILITIES = [
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
   <script>
-    (function(){var BUILD="11.70.0",key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{localStorage.setItem(key,BUILD);}catch(e){}fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD){/* v11.70 no auto go(d.version) */}}).catch(function(){});})();
+    (function(){var BUILD="11.71.0",key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{localStorage.setItem(key,BUILD);}catch(e){}fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD){/* v11.70 no auto go(d.version) */}}).catch(function(){});})();
   </script>
   <title>ورود | طنین طب طاها</title>
 
@@ -61737,7 +61851,7 @@ self.addEventListener("fetch", (event) => {
 فایل: public/sw.js (3742 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
-const BUILD = "11.70.0";
+const BUILD = "11.71.0";
 const CACHE = "crm-static-v" + BUILD;
 
 async function purgeEveryCache() {
@@ -87526,7 +87640,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/version-11.24-regressions.test.mjs (54613 بایت)
+فایل: tests/version-11.24-regressions.test.mjs (55376 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 import test from 'node:test';
@@ -87848,7 +87962,7 @@ test('multi-part prompts require a real acceptance checklist before ZIP delivery
 });
 
 test('next-chat GitHub handoff records exact publish truth and engine map', () => {
-  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.70.0/);
+  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.71.0/);
   assert.match(githubHandoff,/4984d17/);assert.match(githubHandoff,/Resource not accessible by integration/);
   assert.match(githubHandoff,/Production[\s\S]*11\.20\.0/);
   assert.match(githubHandoff,/موتور پاک‌سازی خودکار کش/);assert.match(githubHandoff,/موتورهای پایداری داده/);
@@ -87900,7 +88014,7 @@ test('new build clears only old asset caches before revealing app and prevents m
 test('v38 cache rescue automatically forces a fresh build without deleting CRM data', () => {
   const login = read('../public/login.html');
   assert.match(server,/pathname === "\/cache-reset"/);assert.match(server,/Clear-Site-Data/);
-  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.70.0"/);
+  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.71.0"/);
   assert.match(html,/\/api\/health\?__crm_nocache=/);assert.match(html,/\/cache-reset\?to=/);assert.match(html,/d\.version!==BUILD/);
   assert.match(login,/CRM_CACHE_RESCUED_/);assert.match(login,/\/cache-reset\?to=/);
   assert.match(sw,/function purgeEveryCache/);assert.match(sw,/CRM_BUILD_ACTIVE/);assert.match(sw,/cache: "reload"/);
@@ -87910,7 +88024,7 @@ test('v38 cache rescue automatically forces a fresh build without deleting CRM d
     assert.doesNotMatch(source,/indexedDB\.deleteDatabase\s*\(/);
     assert.doesNotMatch(source,/removeItem\(["']CRM_APP_STATE_V2/);
   }
-  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.70.0'/);
+  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.71.0'/);
 });
 
 test('security hardening blocks dangerous device APIs, cross-origin writes, executables and formula injection', () => {
@@ -87925,7 +88039,7 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.70.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.71.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
@@ -88020,7 +88134,7 @@ test('v11.43.1 engine button feedback + permanent version watchdog', () => {
 test('v11.61.0 safe cache-hardening', () => {
   const html = read('../public/index.html'); const app = read('../public/crm-app.js');
   assert.match(html,/http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/);
-  assert.match(app,/CRM_APP_VERSION = "11.70.0"/);
+  assert.match(app,/CRM_APP_VERSION = "11.71.0"/);
   assert.match(app,/بارگذاری شد/);
 });
 
@@ -88257,13 +88371,13 @@ test('v11.67.0 manager size + target row ops + live server merge', () => {
 });
 
 
-test('v11.70.0 durable target ops + mm gap + row number', () => {
+test('v11.71.0 durable target ops + mm gap + row number', () => {
   const b = read('../public/crm-bundle.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "11.70.0"/);
-  assert.match(srv, /const APP_VERSION = "11.70.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.71.0"/);
+  assert.match(srv, /const APP_VERSION = "11.71.0"/);
   assert.match(b, /v11\.68\.0/);
   assert.match(b, /v68-edit-tgt/);
   assert.match(b, /v68-del-tgt/);
@@ -88279,12 +88393,12 @@ test('v11.70.0 durable target ops + mm gap + row number', () => {
   assert.match(css, /\.v68-form-row/);
 });
 
-test('v11.70.0 server-authoritative unify + durable delete + live mm/row', () => {
+test('v11.71.0 server-authoritative unify + durable delete + live mm/row', () => {
   const b = read('../public/crm-bundle.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
-  assert.match(app, /CRM_APP_VERSION = "11.70.0"/);
-  assert.match(srv, /const APP_VERSION = "11.70.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.71.0"/);
+  assert.match(srv, /const APP_VERSION = "11.71.0"/);
   assert.match(srv, /function naturalRecordKey/);
   assert.match(srv, /if \(id && deleted && deleted\[id\] && recStamp\(r\) <= Number\(deleted\[id\]\)\) return/);
   assert.match(b, /v11\.69\.0/);
@@ -88300,14 +88414,14 @@ test('v11.70.0 server-authoritative unify + durable delete + live mm/row', () =>
   assert.match(b, /ابتدا از لیست پایین، فیلد را با دکمه ویرایش انتخاب کنید/);
 });
 
-test('v11.70.0 solo device + no cache-reset loop', () => {
+test('v11.71.0 solo device + no cache-reset loop', () => {
   const b = read('../public/crm-bundle.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "11.70.0"/);
-  assert.match(srv, /const APP_VERSION = "11.70.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.71.0"/);
+  assert.match(srv, /const APP_VERSION = "11.71.0"/);
   assert.match(srv, /x-crm-replace/);
   assert.match(srv, /_soloOnly/);
   assert.match(srv, /CRM_RESET_LOCK/);
@@ -88317,6 +88431,23 @@ test('v11.70.0 solo device + no cache-reset loop', () => {
   assert.match(html, /حلقه cache-reset قطع شد/);
   assert.match(login, /v11.70 no auto go/);
   assert.match(b, /حلقه cache-reset قطع شد/);
+});
+
+test('v11.71.0 single script load + 404 not login + solo replace', () => {
+  const html = read('../public/index.html');
+  const srv = read('../server.js');
+  const app = read('../public/crm-app.js');
+  const b = read('../public/crm-bundle.js');
+  assert.equal((html.match(/crm-data\.js\?v=/g)||[]).length, 1);
+  assert.equal((html.match(/crm-app\.js\?v=/g)||[]).length, 1);
+  assert.equal((html.match(/crm-bundle\.js\?v=/g)||[]).length, 1);
+  assert.equal((html.match(/<\/html>/g)||[]).length, 1);
+  assert.match(app, /CRM_APP_VERSION = "11.71.0"/);
+  assert.match(srv, /const APP_VERSION = "11.71.0"/);
+  assert.match(srv, /v11.71: Clear-Site-Data/);
+  assert.match(b, /v11\.71\.0/);
+  assert.match(b, /CRM_SOLO_CLAIM/);
+  assert.match(b, /X-CRM-Replace/);
 });
 ~~~~~~~~
 

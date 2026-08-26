@@ -15495,3 +15495,56 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(bootSolo,50);});
   else setTimeout(bootSolo,50);
 })();
+
+/* v11.71.0: اسکریپت یک‌بار + فقط همین دستگاه مبنای سرور */
+(function(){
+  window.__V69_SYNC=1;window.__V67_SYNC=1;window.__V70_SOLO=1;
+  var el=document.getElementById("v69UnifyOverlay");if(el)el.style.display="none";
+  function persist(){
+    try{localStorage.setItem("CRM_APP_STATE_V2",typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(window.state):JSON.stringify(window.state));}catch(e){}
+  }
+  function meaningful(st){
+    if(!st||typeof st!=="object")return false;
+    return ["pharmacies","doctors","orders","products","users","salesTargets"].some(function(k){return Array.isArray(st[k])&&st[k].length;});
+  }
+  function claimThisDevice(){
+    if(window.__V71_CLAIMED)return;window.__V71_CLAIMED=1;
+    var st=window.state;
+    if(!meaningful(st))return;
+    st._soloOnly=true;
+    st._soloEpoch=Date.now();
+    st._soloAt=Date.now();
+    st._soloVersion="11.71.0";
+    try{localStorage.setItem("CRM_SOLO_EPOCH",String(st._soloEpoch));localStorage.setItem("CRM_SOLO_CLAIM","11.71.0");}catch(e){}
+    persist();
+    var body=typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(st):JSON.stringify(st);
+    fetch("/api/state?replace=1&__v71="+Date.now(),{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1","X-CRM-Replace":"1","X-CRM-Sync":"v71"},body:body,cache:"no-store"}).catch(function(){});
+  }
+  window.crmPushStateToServer=function(){
+    var st=window.state;if(!st||!navigator.onLine)return;
+    var mine="";try{mine=localStorage.getItem("CRM_SOLO_EPOCH")||"";}catch(e){}
+    if(st._soloEpoch&&mine&&String(st._soloEpoch)!==String(mine))return;
+    st._soloOnly=true;
+    if(!st._soloEpoch){st._soloEpoch=Number(mine)||Date.now();try{localStorage.setItem("CRM_SOLO_EPOCH",String(st._soloEpoch));}catch(e){}}
+    var body=typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(st):JSON.stringify(st);
+    fetch("/api/state?replace=1&__v71p="+Date.now(),{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1","X-CRM-Replace":"1","X-CRM-Sync":"v71"},body:body,cache:"no-store"}).catch(function(){});
+  };
+  var origFetch=window.fetch;
+  if(typeof origFetch==="function"&&!origFetch._v71){
+    var w=function(url,opts){
+      var u=String(url||""),method=(opts&&opts.method)?String(opts.method).toUpperCase():"GET";
+      if(/\/api\/state/.test(u)&&method==="GET"&&/__v60=|__v67=|__v65=|__v69=|__v70=/.test(u)&&u.indexOf("__v71")===-1){
+        return Promise.resolve(new Response(JSON.stringify({status:"skip"}),{status:200,headers:{"Content-Type":"application/json"}}));
+      }
+      return origFetch.apply(this,arguments);
+    };
+    w._v71=true;window.fetch=w;
+  }
+  function boot(){
+    var claimed="";try{claimed=localStorage.getItem("CRM_SOLO_CLAIM")||"";}catch(e){}
+    if(claimed!=="11.71.0")claimThisDevice();
+    else if(typeof window.crmPushStateToServer==="function")window.crmPushStateToServer();
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,90);});
+  else setTimeout(boot,90);
+})();

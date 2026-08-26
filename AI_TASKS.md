@@ -1618,3 +1618,6 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 
 ## 11.70.0 / نوبت ۹۰
 حلقه cache-reset قطع شد. سرور فقط اطلاعات همین دستگاه را نگه می‌دارد (_soloOnly / replace).
+
+## 11.71.0 / نوبت ۹۱
+اسکریپت یک‌بار؛ ۴۰۴ بدون login.html؛ سرور فقط داده همین دستگاه.
