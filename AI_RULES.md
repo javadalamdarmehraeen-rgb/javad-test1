@@ -1604,3 +1604,20 @@ Declared by the user and valid for ALL future chats, reinforcing the AI_ACCEPTAN
    git push origin main
    git push gitlab main
 6. The ZIP download beside the page (rule #64) comes only AFTER the verification table is complete.
+
+# 93. WINDOWS ZIP + HTML DOWNLOAD PAGE RULE (PERMANENT — USER-MANDATED 2026-08-26, نوبت ۸۶)
+
+The Arena file-viewer preview of a `.zip` may appear white, binary, or as separate files.
+That is NOT a valid user-facing format.
+
+1. Every delivery ZIP must be a Windows-compatible PKZIP (`create_system=0`, DOS archive
+   bit, no Unix extra fields) named `namayandeelmi-v<version>.zip`.
+2. The live preview on port 8000 must be a Persian HTML download page with a large
+   attachment button (`Content-Disposition: attachment`, `Content-Type: application/zip`,
+   HEAD supported). Direct path `/namayandeelmi-v<version>.zip` must also work.
+3. If the user reports the zip «با فرمت دیگری ظاهر شده», rebuild the Windows ZIP and
+   point them to the green download page / right-click Save link as — do not bump the
+   app version unless CRM code also changed.
+
+
+قانون نوبت ۸۸: جدول عملیات تارگت هرگز داخل عنصری که با innerHTML بازنویسی می‌شود ساخته نشود.

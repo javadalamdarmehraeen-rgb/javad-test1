@@ -1235,3 +1235,13 @@ Then change only what is requested.
 
 ## معماری دروازه تحویل — نوبت ۶۲ (2026-08-22)
 دروازه تحویل استاندارد شد: قبل از هر ZIP، سرور واقعی spawn و تست app-smoke (health/HTML/اسکریپت‌ها/UI حیاتی + round-trip داده + VAPID) باید پاس شود؛ این دروازه در قانون ۹۲ AI_RULES اجباری است و نتیجه‌اش در AI_ACCEPTANCE_CHECKLIST همان نوبت ثبت می‌شود.
+
+## معماری تحویل ZIP — نوبت ۸۶ (2026-08-26)
+فایل تحویلی باید PKZIP سازگار با ویندوز باشد (`create_system=0`). پیش‌نمایش خام `.zip`
+در Arena فرمت معتبر کاربر نیست. دروازه دیداری کاربر صفحه HTML پورت 8000 است که فایل
+را با `Content-Type: application/zip` و `Content-Disposition: attachment` می‌دهد.
+
+
+## لایه v11.68
+- `#v68SalesTargetOps` / `#v68DistTargetOps` جدا از host گزارش‌ها.
+- `gapBeforeMm` / `gapAfterMm` / `rowNo` در formFieldMeta.

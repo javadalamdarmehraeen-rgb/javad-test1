@@ -569,8 +569,14 @@ PERMISSION_GROUPS = {
   "گزارش ماهانه": [
     { key: "rep_monthly", label: "مشاهده گزارش ماهانه" }, { key: "rep_all_reports", label: "مشاهده گزارش همه نمایندگان" }, { key: "rep_item_sales", label: "گزارش فروش کالا" }, { key: "rep_excel", label: "خروجی اکسل" }
   ],
-  "تارگت فروش": [
-    { key: "sys_targets", label: "مشاهده و مدیریت تارگت" }, { key: "target_define_routes", label: "تعریف چند مسیر برای نمایندگان" }, { key: "target_plan_products", label: "تعریف تارگت به تفکیک کالا" }, { key: "target_all_reps", label: "تارگت همه نمایندگان" }, { key: "target_delete", label: "حذف تارگت" }
+  "تعریف مسیر نمایندگان": [
+    { key: "target_define_routes", label: "مشاهده و تعریف مسیر نمایندگان" }
+  ],
+  "تارگت فروش نمایندگان": [
+    { key: "sys_targets", label: "مشاهده و مدیریت تارگت نمایندگان" }, { key: "target_plan_products", label: "تعریف تارگت به تفکیک کالا" }, { key: "target_all_reps", label: "تارگت همه نمایندگان" }, { key: "target_delete", label: "حذف تارگت" }
+  ],
+  "تارگت فروش هرپخش": [
+    { key: "dist_targets_access", label: "مشاهده و تعریف تارگت هر پخش" }
   ],
   "افزودن‌ها": [
     { key: "sys_additions", label: "مشاهده تب افزودن‌ها" }, { key: "sys_add_dropdown", label: "افزودن گزینه کشویی" }, { key: "sys_del_dropdown", label: "حذف گزینه کشویی" }, { key: "sys_global_option_edit", label: "ویرایش گزینه سراسری" }, { key: "sys_global_same_label_options", label: "یکسان‌سازی فیلدهای هم‌نام" }

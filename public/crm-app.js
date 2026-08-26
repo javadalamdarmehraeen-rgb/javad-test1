@@ -25,7 +25,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "11.60.1";
+const CRM_APP_VERSION = "11.68.0";
 try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
@@ -48,7 +48,9 @@ const MENU_SECTIONS_LIST = [
   { id: "tab-leaves", label: "مرخصی‌ها", icon: "📝", badgeId: "badgeLeavesCount" },
   { id: "tab-notifications", label: "اعلان‌ها", icon: "🔔" },
   { id: "tab-monthly-reports", label: "گزارش ماهانه", icon: "📈" },
-  { id: "tab-sales-targets", label: "تارگت فروش", icon: "🎯" },
+  { id: "tab-define-routes", label: "تعریف مسیر نمایندگان", icon: "🗺️" },
+  { id: "tab-sales-targets", label: "تارگت فروش نمایندگان", icon: "🎯" },
+  { id: "tab-dist-targets", label: "تارگت فروش هرپخش", icon: "🎯" },
   { id: "tab-custom-fields", label: "افزودن‌ها", icon: "➕" },
   { id: "tab-columns-products", label: "ستون‌ها و کالاها", icon: "🧱" },
   { id: "tab-manual-design", label: "طراحی دستی تب‌ها", icon: "🎨" },
@@ -2201,6 +2203,14 @@ function setupOrdersTab() {
       const status = document.getElementById("orderStatus").value;
       const priority = (document.getElementById("orderPriority")||{}).value || "عادی";
       const notes = document.getElementById("orderNotes").value.trim();
+      const pharmacyPhone = (document.getElementById("orderPharmacyPhone") || {}).value || "";
+      const orderManager = (document.getElementById("orderManager") || {}).value || "";
+      const orderManagerPhone = (document.getElementById("orderManagerPhone") || {}).value || "";
+      const orderPlate = (document.getElementById("orderPlate") || {}).value || "";
+      const orderFloor = (document.getElementById("orderFloor") || {}).value || "";
+      const isPercentage = ((document.getElementById("orderIsPercentage") || {}).value === "true");
+      const orderLat = Number((document.getElementById("orderLat") || {}).value) || null;
+      const orderLng = Number((document.getElementById("orderLng") || {}).value) || null;
       const customFieldsVals = extractCustomFieldValuesFromForm("order", "orderCustomFieldsContainer");
 
       if (typeof window.validateRequiredFields === "function" && !window.validateRequiredFields("tab-orders")) return;
@@ -2253,6 +2263,10 @@ function resetOrderForm() {
   document.getElementById("orderAddress").value = "";
   document.getElementById("orderDate").value = jalaliTodayEnglish();
   document.getElementById("orderNotes").value = "";
+  ["orderPharmacyPhone","orderManager","orderManagerPhone","orderPlate","orderFloor","orderLat","orderLng"].forEach(function(id){var el=document.getElementById(id);if(el)el.value="";});
+  var op=document.getElementById("orderIsPercentage");if(op)op.value="false";
+  var y=document.getElementById("btnOrdPercentageYes"),n=document.getElementById("btnOrdPercentageNo");
+  if(y)y.classList.remove("active");if(n)n.classList.add("active");
   document.getElementById("existingPharmacyTopAlert").style.display = "none";
 
   const provEl = document.getElementById("orderProvince");
@@ -2998,7 +3012,7 @@ function downloadCSVFile(filename, headers, rows) {
 // ----------------------------------------------------------------------------
 function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
-  const build = "11.60.1";
+  const build = "11.68.0";
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'CRM_BUILD_ACTIVE' && event.data.build !== build) {
@@ -3007,7 +3021,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.60.1', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.68.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
