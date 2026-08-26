@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.60.1";
+const APP_VERSION = "11.69.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -86,6 +86,89 @@ function writeJsonAtomic(filePath, data) {
 function readJsonSafe(filePath) {
   try { return sanitizeJsonValue(JSON.parse(fs.readFileSync(filePath, "utf8"))); } catch (e) { return null; }
 }
+const CRM_MERGE_ARRAYS = ["pharmacies","doctors","orders","products","users","reps","leaves","visits","repRoutes","repHomes","hospitals","notifications","salesTargets","distSalesTargets","activityLog"];
+function recStamp(r) {
+  if (!r || typeof r !== "object") return 0;
+  return Number(r._updatedAt || r.updatedAt || r._lastSavedAt || 0);
+}
+function normKeyPart(s) {
+  return String(s || "").replace(/[\u200c\s]/g, "").toLowerCase();
+}
+function naturalRecordKey(kind, r) {
+  if (!r || typeof r !== "object") return "";
+  const n = normKeyPart;
+  if (kind === "pharmacies") return r.name ? ("ph:" + n(r.name) + "|" + n(r.phone || r.managerPhone) + "|" + n(r.city || r.province)) : "";
+  if (kind === "doctors") return r.name ? ("doc:" + n(r.name) + "|" + n(r.phone) + "|" + n(r.city || r.province)) : "";
+  if (kind === "products") return r.name ? ("prod:" + n(r.name)) : "";
+  if (kind === "users") return (r.username || r.id) ? ("user:" + n(r.username || r.id)) : "";
+  if (kind === "reps") return (r.name || r.id) ? ("rep:" + n(r.name || r.id)) : "";
+  if (kind === "salesTargets") return r.productName ? ("tgt:" + n(r.repName) + "|" + n(r.productName) + "|" + n(r.year) + "|" + n(r.monthName || r.month)) : "";
+  if (kind === "distSalesTargets") return r.productName ? ("dtgt:" + n(r.distId) + "|" + n(r.productName) + "|" + n(r.year) + "|" + n(r.monthName || r.month)) : "";
+  return "";
+}
+function mergeRecordArrays(a, b, kind, deleted) {
+  const map = new Map();
+  function put(r) {
+    if (!r || typeof r !== "object") return;
+    const id = r.id != null ? String(r.id) : "";
+    if (id && deleted && deleted[id] && recStamp(r) <= Number(deleted[id])) return;
+    const key = id || ("_anon_" + JSON.stringify(r).slice(0, 160));
+    const prev = map.get(key);
+    if (!prev || recStamp(r) >= recStamp(prev)) map.set(key, r);
+  }
+  (Array.isArray(a) ? a : []).forEach(put);
+  (Array.isArray(b) ? b : []).forEach(put);
+  const byNat = new Map();
+  const out = [];
+  map.forEach((r) => {
+    const nk = naturalRecordKey(kind, r);
+    if (!nk) { out.push(r); return; }
+    const prev = byNat.get(nk);
+    if (!prev || recStamp(r) >= recStamp(prev)) byNat.set(nk, r);
+  });
+  const seen = new Set();
+  map.forEach((r) => {
+    const nk = naturalRecordKey(kind, r);
+    if (!nk) { return; }
+    const winner = byNat.get(nk);
+    if (!winner || seen.has(nk)) return;
+    seen.add(nk);
+    out.push(winner);
+  });
+  return out;
+}
+function mergeCrmState(serverData, incoming) {
+  if (!serverData || typeof serverData !== "object") return incoming;
+  if (!incoming || typeof incoming !== "object") return serverData;
+  const deleted = Object.assign({}, serverData._deletedIds || {}, incoming._deletedIds || {});
+  const out = Object.assign({}, serverData, incoming);
+  CRM_MERGE_ARRAYS.forEach((k) => { out[k] = mergeRecordArrays(serverData[k], incoming[k], k, deleted); });
+  out.settings = Object.assign({}, serverData.settings || {}, incoming.settings || {});
+  const sm = serverData.formFieldMeta || {};
+  const im = incoming.formFieldMeta || {};
+  out.formFieldMeta = Object.assign({}, sm);
+  Object.keys(im).forEach((ent) => {
+    out.formFieldMeta[ent] = Object.assign({}, sm[ent] || {}, im[ent] || {});
+    Object.keys(im[ent] || {}).forEach((fid) => {
+      const L = (sm[ent] || {})[fid] || {};
+      const R = im[ent][fid] || {};
+      const lt = Number(L._updatedAt || 0);
+      const rt = Number(R._updatedAt || 0);
+      out.formFieldMeta[ent][fid] = rt >= lt ? Object.assign({}, L, R) : Object.assign({}, R, L);
+    });
+  });
+  out.customFields = Object.assign({}, serverData.customFields || {});
+  Object.keys(incoming.customFields || {}).forEach((k) => {
+    out.customFields[k] = mergeRecordArrays(serverData.customFields && serverData.customFields[k], incoming.customFields[k], k, deleted);
+  });
+  out._deletedIds = deleted;
+  const st = Number(serverData._lastSavedAt) || 0;
+  const it = Number(incoming._lastSavedAt) || 0;
+  out._lastSavedAt = Math.max(st, it, Date.now());
+  out._unifiedAt = Date.now();
+  out._stateRev = Math.max(Number(serverData._stateRev) || 0, Number(incoming._stateRev) || 0) + 1;
+  return out;
+}
 function b64url(input) { return Buffer.from(input).toString("base64").replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_"); }
 function fromB64url(input) { const s=String(input||"").replace(/-/g,"+").replace(/_/g,"/");return Buffer.from(s+"=".repeat((4-s.length%4)%4),"base64"); }
 function getVapidKeys() {
@@ -102,21 +185,29 @@ function vapidAuthorization(endpoint) {
 }
 async function sendWebPush(subscription, message) { const body=encryptWebPush(subscription,JSON.stringify(message).slice(0,3500)),auth=vapidAuthorization(subscription.endpoint),response=await fetch(subscription.endpoint,{method:"POST",headers:{TTL:"86400",Urgency:"high","Content-Encoding":"aes128gcm","Content-Type":"application/octet-stream",Authorization:auth.value},body});return response.status; }
 
+function isPreviewHost(req) {
+  const host = String((req && req.headers && req.headers.host) || "").toLowerCase();
+  return /arena\.site|e2b\.app|e2b\.dev|localhost|127\.0\.0\.1/.test(host) || process.env.E2B_SANDBOX === "true";
+}
 function send(req, res, status, content, contentType, extra) {
+  const preview = isPreviewHost(req);
   const headers = Object.assign({
     "Content-Type": contentType || "text/plain; charset=utf-8",
     "X-Content-Type-Options": "nosniff",
     "Referrer-Policy": "strict-origin-when-cross-origin",
-    "X-Frame-Options": "SAMEORIGIN",
-    "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https:; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests",
+    "X-Frame-Options": preview ? "ALLOWALL" : "SAMEORIGIN",
+    "Content-Security-Policy": preview
+      ? "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https:; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors *; worker-src 'self' blob:; manifest-src 'self'"
+      : "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https:; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests",
     "Permissions-Policy": "geolocation=(self), camera=(), microphone=(), payment=(), usb=(), serial=(), hid=(), bluetooth=(), display-capture=(), accelerometer=(), gyroscope=(), magnetometer=(), autoplay=(), encrypted-media=(), picture-in-picture=()",
-    "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
     "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
-    "Cross-Origin-Resource-Policy": "same-origin",
+    "Cross-Origin-Resource-Policy": preview ? "cross-origin" : "same-origin",
     "X-Permitted-Cross-Domain-Policies": "none",
     "X-DNS-Prefetch-Control": "off",
     "Origin-Agent-Cluster": "?1"
   }, extra || {});
+  if (!preview) headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains";
+  if (preview) delete headers["X-Frame-Options"];
   const accept = String(req.headers["accept-encoding"] || "");
   const compressible = /text|javascript|json|svg|csv/.test(contentType || "");
   if (compressible && accept.includes("gzip") && Buffer.byteLength(content) > 512) {
@@ -146,7 +237,7 @@ function sendFile(req, res, filePath, maxAge) {
       "Surrogate-Control": maxAge ? ("max-age=" + maxAge) : "no-store",
       "X-CRM-Build": APP_VERSION
     };
-    if (ext === ".html") extra["Clear-Site-Data"] = '"cache"';
+    if (ext === ".html" && !isPreviewHost(req)) extra["Clear-Site-Data"] = '"cache"';
     if (path.basename(filePath) === "sw.js") {
       extra["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0";
       extra["Service-Worker-Allowed"] = "/";
@@ -295,8 +386,10 @@ const server = http.createServer((req, res) => {
     req.on("end", () => {
       try {
         const data = sanitizeJsonValue(JSON.parse(body));
-        writeJsonAtomic(SERVER_DATA_PATH, data);
-        send(req, res, 200, JSON.stringify({ status: "success" }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
+        const existing = fs.existsSync(SERVER_DATA_PATH) ? readJsonSafe(SERVER_DATA_PATH) : null;
+        const merged = mergeCrmState(existing, data);
+        writeJsonAtomic(SERVER_DATA_PATH, merged);
+        send(req, res, 200, JSON.stringify({ status: "success", data: merged }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
       } catch (err) {
         send(req, res, 400, JSON.stringify({ status: "error", message: err.message }), "application/json; charset=utf-8");
       }
@@ -345,6 +438,17 @@ const server = http.createServer((req, res) => {
   });
 });
 
+function listenOn(port) {
+  const s = http.createServer(server.listeners("request")[0]);
+  s.on("error", (err) => { console.warn("port", port, err.code || err.message); });
+  s.listen(port, "0.0.0.0", () => { console.log("CRM v" + APP_VERSION + " listening on 0.0.0.0:" + port); });
+  return s;
+}
 server.listen(PORT, "0.0.0.0", () => {
   console.log("CRM v" + APP_VERSION + " listening on 0.0.0.0:" + PORT);
 });
+if (process.env.E2B_SANDBOX === "true") {
+  [3000, 8080].forEach((p) => {
+    if (Number(PORT) !== p) listenOn(p);
+  });
+}
