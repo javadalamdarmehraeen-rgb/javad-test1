@@ -54822,6 +54822,14 @@ button.v19-gps svg{display:block}
                 <button type="button" id="btnPhPercentageNo" class="btn-toggle-option active">خیر</button>
                 <button type="button" id="btnPhPercentageYes" class="btn-toggle-option">بله</button>
               </div>
+            <div class="form-group">
+              <label class="form-label" for="pharmacyPlate">پلاک</label>
+              <input type="text" id="pharmacyPlate" class="form-input" placeholder="مثلاً 12" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="pharmacyFloor">طبقه</label>
+              <input type="text" id="pharmacyFloor" class="form-input" placeholder="مثلاً 3" />
+            </div>
               <input type="hidden" id="pharmacyIsPercentage" value="false" />
             </div>
 
@@ -55021,6 +55029,14 @@ button.v19-gps svg{display:block}
                 <button type="button" id="btnDocPercentageNo" class="btn-toggle-option active">خیر</button>
                 <button type="button" id="btnDocPercentageYes" class="btn-toggle-option">بله</button>
               </div>
+            <div class="form-group">
+              <label class="form-label" for="docPlate">پلاک</label>
+              <input type="text" id="docPlate" class="form-input" placeholder="مثلاً 12" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="docFloor">طبقه</label>
+              <input type="text" id="docFloor" class="form-input" placeholder="مثلاً 3" />
+            </div>
               <input type="hidden" id="doctorIsPercentage" value="false" />
             </div>
 
