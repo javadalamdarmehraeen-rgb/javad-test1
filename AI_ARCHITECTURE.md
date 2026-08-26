@@ -1259,3 +1259,8 @@ Then change only what is requested.
 - `bootServerFirst` / `adoptServerExact` / `paintV72TargetOps`
 - `#v72DistGrandBox` + `#v72DistBoxes` + `distAchievedQty`
 - hide `#v68SalesTargetOps` / `.v67-ops-table`
+
+## لایه v11.73
+- `bindLiveWindowState` / `__CRM_GET_STATE` / setter درجا
+- `__CRM_UNVEIL` بعد از `adoptExact` / `__v73boot`
+- `saveDistTargetsV73` / `matchDist` / `parsePeriod` / `killOldOpsHosts`

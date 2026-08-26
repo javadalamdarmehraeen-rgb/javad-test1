@@ -254,3 +254,10 @@
 - [x] حذف کادر نمایش تارگت‌های ثبت‌شده — hideOldOps + CSS
 - [x] ستون محقق‌شده و مانده تارگت پخش از فایل پخش — distAchievedQty
 - [x] کادر جمع تارگت و کادر جدا برای هر پخش — v72DistGrandBox / v72DistBoxes
+
+## 11.73.0 / نوبت ۹۳
+- [x] یک state زنده — bindLiveWindowState + setter درجا
+- [x] پرده تا adopt سرور — __CRM_UNVEIL / ایمنی ۵۰۰۰ms / بدون ۸۰۰ms
+- [x] پاک دادهٔ سیستم‌های دیگر از ریشه — adoptExact + persist replace
+- [x] دکمه‌های ویرایش/حذف ناپدید نشوند — killOldOpsHosts + ops روی سطر
+- [x] ذخیره تارگت پخش بعد از ویرایش/حذف — saveDistTargetsV73 + matchDist + tombstone clear
