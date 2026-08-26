@@ -12412,7 +12412,7 @@ button.v19-gps svg{display:block}
   var srv=j.version||"?";html+=h("نسخه سرور",srv,true);
   var stale=(buildLocal!==srv)||!featOk;
   function report(){try{fetch("/api/feedback",{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1"},body:JSON.stringify({type:"apply-diagnosis",version:buildLocal,server:srv,featureMissing:!featOk,errors:errs,problems:problems,actions:acts,at:new Date().toISOString()})}).catch(function(){});}catch(e){}}
-  if(stale){problems.push("کد اجراشده در مرورگر با نسخه سرور هم‌خوان نیست — کش/SW قدیمی یا خطای بارگذاری.");acts.push("پاک‌سازی خودکار کش/SW و بارگذاری مجدد اجباری + ارسال علت برای هوش مصنوعی.");host.innerHTML=html+"<div style='margin-top:8px;color:#b91c1c;font-weight:700'>✅ موتور تمام شد — تشخیص: نسخه مرورگر قدیمی؛ الان خودکار اصلاح می‌شود…</div>";if(btnD){btnD.disabled=false;btnD.style.opacity="1";btnD.textContent="🩺 اجرای موتور تشخیص";}report();setTimeout(function(){location.replace("/cache-reset?to=/panel");},1200);return;}
+  if(stale){problems.push("کد اجراشده در مرورگر با نسخه سرور هم‌خوان نیست — کش/SW قدیمی یا خطای بارگذاری.");acts.push("پاک‌سازی خودکار کش/SW و بارگذاری مجدد اجباری + ارسال علت برای هوش مصنوعی.");host.innerHTML=html+"<div style='margin-top:8px;color:#b91c1c;font-weight:700'>✅ موتور تمام شد — تشخیص: نسخه مرورگر قدیمی؛ بارگذاری مجدد خودکار برای جلوگیری از حلقه قطع شد.</div>";if(btnD){btnD.disabled=false;btnD.style.opacity="1";btnD.textContent="🩺 اجرای موتور تشخیص";}report();return;}
   if(errs.length){problems.push("خطای runtime — احتمالاً اسکریپتی نیمه‌کار مانده.");acts.push("خطاها برای هوش مصنوعی ارسال شد.");report();}
   if(!problems.length){problems.push("ناسازگاری پیدا نشد — کد جدید سالم اجرا می‌شود.");acts.push("بندهای اعمال‌نشده را تیک بزنید و گزارش بفرستید.");}
   if(btnD){btnD.disabled=false;btnD.style.opacity="1";btnD.textContent="🩺 اجرای موتور تشخیص";}var lis=problems.map(function(x){return "<li>"+esc(x)+"</li>";}).join("");var ais=acts.map(function(x){return "<li>"+esc(x)+"</li>";}).join("");host.innerHTML=html+"<div style='margin-top:10px;text-align:right;border-top:1px solid #cbd5e1;padding-top:8px'><b style='color:#0f766e'>✅ موتور تشخیص تمام شد</b><br><b>مشکل‌ها:</b><ul style='margin:4px 0'>"+lis+"</ul><b>اقدام انجام‌شده:</b><ul style='margin:4px 0'>"+ais+"</ul></div>";
@@ -12442,7 +12442,7 @@ button.v19-gps svg{display:block}
 
   /* v11.43.1 / turn 76: نگهبان نسخه — کش قدیمی هرگز دیگر جلوی تغییرات را نمی‌گیرد */
   function loadedBuildVersion(){try{var m=document.querySelector('script[src*="crm-bundle.js?v="]');return m?String(m.src.split("?v=")[1]):"";}catch(e){return "";}}
-  function versionWatchdogTick(){if(window.__CRM_RESCUING)return;fetch("/api/health?__wd="+Date.now(),{cache:"no-store"}).then(function(r){return r.json();}).then(function(j){var srv=String(j.version||""),loc=loadedBuildVersion();if(srv&&loc&&srv!==loc){window.__CRM_RESCUING=true;try{navigator.serviceWorker&&navigator.serviceWorker.controller&&navigator.serviceWorker.controller.postMessage("CRM_FORCE_REFRESH");}catch(e){}location.replace("/cache-reset?to="+(location.pathname==="/login"||location.pathname==="/login.html"?"/login":"/panel"));}}).catch(function(){});}
+  function versionWatchdogTick(){if(window.__CRM_RESCUING)return;fetch("/api/health?__wd="+Date.now(),{cache:"no-store"}).then(function(r){return r.json();}).then(function(j){var srv=String(j.version||""),loc=loadedBuildVersion();if(srv&&loc&&srv!==loc){/* v11.70: حلقه cache-reset قطع شد — location.replace("/cache-reset?to=") اجرا نمی‌شود */}}).catch(function(){});}
   function installVersionWatchdog(){if(window.__CRM_WD)return;window.__CRM_WD=1;setInterval(versionWatchdogTick,180000);document.addEventListener("visibilitychange",function(){if(!document.hidden)setTimeout(versionWatchdogTick,800);});}
   /* v11.40 / turn 67 - reference fields: no instant-add for non-managers */
   function installReferenceInstantAddGuardV40(){if(window.__V40_REFADD)return;window.__V40_REFADD=1;var REF=/نماینده|سال|ماه|استان|شهر|منطقه|داروخانه/;function refInput(inp){if(!inp)return false;var id=String(inp.id||"");if(/(Rep(Select|Name|Filter)?|Year|Month|Province|City|District|PharmacyName)$/i.test(id))return true;var g=inp.closest&&inp.closest(".form-group");var lab=g&&g.querySelector(".form-label");return !!(lab&&REF.test(String(lab.textContent||"")));}document.addEventListener("click",function(e){var b=e.target&&e.target.closest&&e.target.closest(".btn-instant-add,.v20-addopt");if(!b)return;var wrap=b.closest(".instant-add-add-row,.instant-add-row")||b.closest(".crm-combo")||b.closest(".form-group")||b.parentNode;var inp=wrap&&wrap.querySelector("input,select");if(!inp)return;if(refInput(inp)&&!v20IsManager()){e.preventDefault();e.stopImmediatePropagation();try{v20Toast("افزودن گزینه برای فیلدهای مرجع فقط توسط مدیر ممکن است.");}catch(x){}}},true);document.addEventListener("input",function(e){var inp=e.target;if(!inp||!inp.matches||!inp.matches("input"))return;if(refInput(inp)&&!v20IsManager()){var row=inp.closest(".instant-add-row");var b=row&&row.querySelector(".btn-instant-add");if(b)b.hidden=true;}},true);}
@@ -15376,4 +15376,122 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-sales-targets"],[data-target="tab-dist-targets"],[data-target="tab-define-routes"],[data-target="tab-columns-products"]'))
       setTimeout(function(){bindOps();bindDesigner();paintOpsNow();applyAllLayouts();},200);
   },true);
+})();
+
+/* v11.70.0: قطع حلقه نوسازی + فقط اطلاعات همین دستگاه روی سرور */
+(function(){
+  window.__V69_SYNC=1;
+  window.__V67_SYNC=1;
+  function hideUnify(){var el=document.getElementById("v69UnifyOverlay");if(el)el.style.display="none";}
+  hideUnify();
+  function persist(){
+    try{localStorage.setItem("CRM_APP_STATE_V2",typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(window.state):JSON.stringify(window.state));}catch(e){}
+  }
+  function meaningful(st){
+    if(!st||typeof st!=="object")return false;
+    return ["pharmacies","doctors","orders","products","users","salesTargets","distSalesTargets"].some(function(k){return Array.isArray(st[k])&&st[k].length;});
+  }
+  function adoptServer(remote){
+    if(!remote||typeof remote!=="object")return;
+    window.state=remote;
+    if(remote._soloEpoch){try{localStorage.setItem("CRM_SOLO_EPOCH",String(remote._soloEpoch));}catch(e){}}
+    persist();
+    try{
+      if(typeof renderPharmaciesList==="function")renderPharmaciesList();
+      if(typeof renderDoctorsList==="function")renderDoctorsList();
+      if(typeof renderOrdersList==="function")renderOrdersList();
+    }catch(e){}
+  }
+  function myEpoch(){try{return localStorage.getItem("CRM_SOLO_EPOCH")||"";}catch(e){return "";}}
+  function isOwner(st){
+    var mine=myEpoch();
+    return !!(mine&&st&&String(st._soloEpoch||"")===String(mine));
+  }
+  function pushSolo(replace){
+    var st=window.state;if(!st||!navigator.onLine)return;
+    st._soloOnly=true;
+    if(!st._soloEpoch){
+      st._soloEpoch=Number(myEpoch())||Date.now();
+      try{localStorage.setItem("CRM_SOLO_EPOCH",String(st._soloEpoch));}catch(e){}
+    }
+    var body=typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(st):JSON.stringify(st);
+    var headers={"Content-Type":"application/json","X-CRM-Request":"1","X-CRM-Sync":"v70"};
+    if(replace)headers["X-CRM-Replace"]="1";
+    fetch("/api/state?__v70=1"+(replace?"&replace=1":"")+"&t="+Date.now(),{method:"POST",headers:headers,body:body,cache:"no-store"})
+      .then(function(r){return r.ok?r.json():null;})
+      .then(function(j){
+        if(j&&j.ignored&&j.data){adoptServer(j.data);return;}
+        if(j&&j.data&&j.data._soloEpoch){
+          try{localStorage.setItem("CRM_SOLO_EPOCH",String(j.data._soloEpoch));}catch(e){}
+          window.state._soloEpoch=j.data._soloEpoch;
+          window.state._soloOnly=true;
+          persist();
+        }
+      }).catch(function(){});
+  }
+  window.crmPushStateToServer=function(){
+    var st=window.state;
+    if(st&&st._soloEpoch&&myEpoch()&&!isOwner(st))return;
+    pushSolo(false);
+  };
+  function bootSolo(){
+    if(window.__V70_SOLO)return;window.__V70_SOLO=1;
+    hideUnify();
+    fetch("/api/state?__v70boot="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+      var remote=j&&j.data;
+      if(remote&&remote._soloOnly&&remote._soloEpoch){
+        if(isOwner(remote)||(myEpoch()&&String(myEpoch())===String(remote._soloEpoch))){
+          if(window.state){window.state._soloEpoch=remote._soloEpoch;window.state._soloOnly=true;}
+          pushSolo(true);
+        }else{
+          adoptServer(remote);
+        }
+        return;
+      }
+      if(meaningful(window.state)){
+        window.state._soloEpoch=Date.now();
+        window.state._soloOnly=true;
+        try{localStorage.setItem("CRM_SOLO_EPOCH",String(window.state._soloEpoch));}catch(e){}
+        persist();
+        pushSolo(true);
+        return;
+      }
+      if(remote&&meaningful(remote)){adoptServer(remote);return;}
+      if(window.state){
+        window.state._soloEpoch=Date.now();
+        window.state._soloOnly=true;
+        try{localStorage.setItem("CRM_SOLO_EPOCH",String(window.state._soloEpoch));}catch(e){}
+        persist();
+        pushSolo(true);
+      }
+    }).catch(function(){
+      if(meaningful(window.state)){
+        window.state._soloEpoch=Date.now();
+        window.state._soloOnly=true;
+        try{localStorage.setItem("CRM_SOLO_EPOCH",String(window.state._soloEpoch));}catch(e){}
+        persist();
+        pushSolo(true);
+      }
+    });
+  }
+  var origFetch=window.fetch;
+  if(typeof origFetch==="function"&&!origFetch._v70){
+    var w=function(url,opts){
+      var u=String(url||"");
+      var method=(opts&&opts.method)?String(opts.method).toUpperCase():"GET";
+      if(/\/api\/state/.test(u)&&method==="GET"&&/__v60=|__v67=|__v65=|__v69=/.test(u)&&u.indexOf("__v70")===-1){
+        return Promise.resolve(new Response(JSON.stringify({status:"skip"}),{status:200,headers:{"Content-Type":"application/json"}}));
+      }
+      return origFetch.apply(this,arguments);
+    };
+    w._v70=true;
+    window.fetch=w;
+  }
+  if(typeof window.saveState==="function"&&!window.saveState._v70solo){
+    var os=window.saveState;
+    var ws=function(){var r=os.apply(this,arguments);try{if(isOwner(window.state)||!myEpoch())window.crmPushStateToServer();}catch(e){}return r;};
+    ws._v70solo=true;window.saveState=ws;
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(bootSolo,50);});
+  else setTimeout(bootSolo,50);
 })();

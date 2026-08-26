@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.69.0";
+const APP_VERSION = "11.70.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -54,9 +54,11 @@ function rateLimited(ip) {
   return rec.n > 30;
 }
 function trustedWriteRequest(req) {
+  const host = String(req.headers.host || "").toLowerCase();
+  const preview = /arena\.site|e2b\.app|e2b\.dev|localhost|127\.0\.0\.1/.test(host) || process.env.E2B_SANDBOX === "true";
+  if (preview && String(req.headers["x-crm-request"] || "") === "1") return true;
   const site = String(req.headers["sec-fetch-site"] || "");
   const origin = String(req.headers.origin || "");
-  const host = String(req.headers.host || "");
   if (site && !["same-origin", "same-site", "none"].includes(site)) return false;
   if (origin) { try { if (new URL(origin).host !== host) return false; } catch (e) { return false; } }
   return String(req.headers["x-crm-request"] || "") === "1";
@@ -264,7 +266,7 @@ const server = http.createServer((req, res) => {
   if (pathname === "/cache-reset" && req.method === "GET") {
     const requested = parsed.searchParams.get("to") || "/panel";
     const destination = /^\/(?:panel|login)(?:[/?#]|$)/.test(requested) ? requested : "/panel";
-    const body = `<!doctype html><html lang="fa" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>نوسازی برنامه</title><style>body{font-family:Tahoma,Arial;background:#f0fdfa;color:#134e4a;display:grid;place-items:center;min-height:100vh;margin:0;text-align:center}.box{background:#fff;padding:28px;border-radius:16px;box-shadow:0 12px 35px #0f766e22}.spin{font-size:38px}</style><div class="box"><div class="spin">⟳</div><h2>در حال دریافت نسخه جدید برنامه…</h2><p>اطلاعات و تنظیمات شما دست‌نخورده می‌ماند.</p></div><script>(async function(){var build=${JSON.stringify(APP_VERSION)},to=${JSON.stringify(destination)};try{localStorage.setItem("CRM_ASSET_BUILD",build);sessionStorage.setItem("CRM_CACHE_RESCUED_"+build,"1");}catch(e){}try{if("caches" in window){var keys=await caches.keys();await Promise.all(keys.map(function(k){return caches.delete(k);}));}}catch(e){}try{if("serviceWorker" in navigator){var regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(function(r){return r.unregister();}));}}catch(e){}var u=new URL(to,location.origin);u.searchParams.set("__crm_build",build);u.searchParams.set("__crm_reload",Date.now().toString());location.replace(u.pathname+u.search+u.hash);})();</script></html>`;
+    const body = `<!doctype html><html lang="fa" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>نوسازی برنامه</title><style>body{font-family:Tahoma,Arial;background:#f0fdfa;color:#134e4a;display:grid;place-items:center;min-height:100vh;margin:0;text-align:center}.box{background:#fff;padding:28px;border-radius:16px;box-shadow:0 12px 35px #0f766e22}.spin{font-size:38px}</style><div class="box"><div class="spin">⟳</div><h2>در حال دریافت نسخه جدید برنامه…</h2><p>اطلاعات و تنظیمات شما دست‌نخورده می‌ماند.</p></div><script>(async function(){var build=${JSON.stringify(APP_VERSION)},to=${JSON.stringify(destination)};try{if(sessionStorage.getItem("CRM_RESET_LOCK")==="1"){location.replace(to.split("?")[0]==="/cache-reset"?"/login":to);return;}sessionStorage.setItem("CRM_RESET_LOCK","1");localStorage.setItem("CRM_ASSET_BUILD",build);sessionStorage.setItem("CRM_CACHE_RESCUED_"+build,"1");}catch(e){}try{if("caches" in window){var keys=await caches.keys();await Promise.all(keys.map(function(k){return caches.delete(k);}));}}catch(e){}try{if("serviceWorker" in navigator){var regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(function(r){return r.unregister();}));}}catch(e){}var u=new URL(to,location.origin);if(u.pathname==="/cache-reset")u.pathname="/login";u.searchParams.set("__crm_build",build);location.replace(u.pathname+u.search+u.hash);})();</script></html>`;
     return send(req, res, 200, body, "text/html; charset=utf-8", {
       "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
       "CDN-Cache-Control": "no-store",
@@ -387,6 +389,26 @@ const server = http.createServer((req, res) => {
       try {
         const data = sanitizeJsonValue(JSON.parse(body));
         const existing = fs.existsSync(SERVER_DATA_PATH) ? readJsonSafe(SERVER_DATA_PATH) : null;
+        const wantReplace = parsed.searchParams.get("replace") === "1" || String(req.headers["x-crm-replace"] || "") === "1" || data._soloReplace === true;
+        if (wantReplace) {
+          data._soloOnly = true;
+          data._soloEpoch = Number(data._soloEpoch) || Date.now();
+          data._soloAt = Date.now();
+          data._unifiedAt = Date.now();
+          delete data._soloReplace;
+          writeJsonAtomic(SERVER_DATA_PATH, data);
+          return send(req, res, 200, JSON.stringify({ status: "success", data: data, replaced: true }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
+        }
+        if (existing && existing._soloOnly) {
+          if (String(data._soloEpoch || "") !== String(existing._soloEpoch || "")) {
+            return send(req, res, 200, JSON.stringify({ status: "success", data: existing, ignored: true }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
+          }
+          data._soloOnly = true;
+          data._soloEpoch = existing._soloEpoch;
+          data._unifiedAt = Date.now();
+          writeJsonAtomic(SERVER_DATA_PATH, data);
+          return send(req, res, 200, JSON.stringify({ status: "success", data: data }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
+        }
         const merged = mergeCrmState(existing, data);
         writeJsonAtomic(SERVER_DATA_PATH, merged);
         send(req, res, 200, JSON.stringify({ status: "success", data: merged }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
