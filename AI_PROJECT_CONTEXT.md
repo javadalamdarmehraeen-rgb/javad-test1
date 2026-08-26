@@ -35,10 +35,9 @@ https://namayandeelmi-javad.onrender.com — هنوز 11.20.0
 
 Current project version reported by package.json:
 
-11.66.0
+11.67.0
 
-نوبت ۸۶ (2026-08-26): فقط کانال تحویل ZIP اصلاح شد (فرمت PKZIP ویندوز + صفحه دانلود
-فارسی پورت 8000). کد CRM و شماره نسخه تغییر نکرد.
+نوبت ۸۷ (2026-08-26): عرض/ارتفاع فیلد، ویرایش/حذف تارگت‌ها، همگام‌سازی زنده سرور.
 
 Current project state:
 

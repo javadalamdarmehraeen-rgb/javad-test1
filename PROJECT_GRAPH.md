@@ -18,9 +18,9 @@
 
 ## ب) کارت فایل‌ها (نقش + توابع + نام‌های window که می‌سازد)
 
-### `server.js` (26191 بایت)
+### `server.js` (26926 بایت)
 - نقش: سرور سبک Node.js برای Render — ورود جدا، gzip، health، ژئوکد، محدودیت نرخ
-- تعداد توابع داخلی: 19
+- تعداد توابع داخلی: 20
 - endpointهای سرور: `/api/backup`, `/api/backup/email`, `/api/bulk`, `/api/bulk`, `/api/feedback`, `/api/feedback`, `/api/push/public-key`, `/api/push/send`, `/api/push/subscribe`, `/api/state`, `/api/state`
 
 ### `scripts/build-sw.mjs` (2656 بایت)
@@ -56,10 +56,10 @@
 - تعداد توابع داخلی: 176
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_HAD_SAVED_STATE`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderExtraTabCustomFields`, `validateRequiredFields`
 
-### `public/crm-bundle.js` (894780 بایت)
+### `public/crm-bundle.js` (916098 بایت)
 - نقش: * crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
-- تعداد توابع داخلی: 941
-- نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `WIDGET_PALETTE`, `__CRM_BULK_READY`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_RESCUING`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__lastHealth`, `__v40LastPick`, `__v53wrapped`, `__v55wrapped`, `__v56wrapped`, `__v58once`, `_actMap`, `_actMarks`, `_activeAddTab`, `_activeColTab`, `_activeManualTab`, `_colDelPatched`, `_colEditScroll`, `_editingBoxId`, `_editingColField`, `_editingProductId`, `_jalaliBuildPatched`, `_jalaliLayoutPatched`, `_jalaliRenderPatched`, `_jalaliSw`, `_layoutBusy`, `_manPick`
+- تعداد توابع داخلی: 963
+- نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `WIDGET_PALETTE`, `__CRM_BULK_READY`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_RESCUING`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SNAP`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__lastHealth`, `__v40LastPick`, `__v53wrapped`, `__v55wrapped`, `__v56wrapped`, `__v58once`, `_actMap`, `_actMarks`, `_activeAddTab`, `_activeColTab`, `_activeManualTab`, `_colDelPatched`, `_colEditScroll`, `_editingBoxId`, `_editingColField`, `_editingProductId`, `_jalaliBuildPatched`, `_jalaliLayoutPatched`, `_jalaliRenderPatched`, `_jalaliSw`
 
 ### `public/crm-data.js` (63721 بایت)
 - نقش: ============================================================================
@@ -140,7 +140,7 @@
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (3742 بایت)
-- نقش: const BUILD = "11.66.0";
+- نقش: const BUILD = "11.67.0";
 - تعداد توابع داخلی: 3
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -333,6 +333,7 @@
 - `/api/state` [GET] — مصرف‌کننده: `public/crm-bundle.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`
 - `/api/state?__v60=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
 - `/api/state?__v65=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
+- `/api/state?__v67=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
 
 ## هـ) گراف حافظه مرورگر (کلید ↔ فایل‌های دست‌زننده)
 
@@ -1395,7 +1396,7 @@
 
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
-- نسخه سورس package: `11.66.0`
+- نسخه سورس package: `11.67.0`
 - مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a03a45-javad-test1`؛ push/PR فقط از همین شاخه.
 - Production فعال: `https://javad-test1.onrender.com` — نسخه سورس فعلی `11.66.0` است و تا push کاربر روی production همان آخرین دیپلوی قبلی می‌ماند.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.

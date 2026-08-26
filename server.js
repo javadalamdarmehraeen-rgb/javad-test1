@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.66.0";
+const APP_VERSION = "11.67.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -110,8 +110,24 @@ function mergeCrmState(serverData, incoming) {
   const out = Object.assign({}, serverData, incoming);
   CRM_MERGE_ARRAYS.forEach((k) => { out[k] = mergeRecordArrays(serverData[k], incoming[k]); });
   out.settings = Object.assign({}, serverData.settings || {}, incoming.settings || {});
-  out.formFieldMeta = Object.assign({}, serverData.formFieldMeta || {}, incoming.formFieldMeta || {});
-  out.customFields = Object.assign({}, serverData.customFields || {}, incoming.customFields || {});
+  const sm = serverData.formFieldMeta || {};
+  const im = incoming.formFieldMeta || {};
+  out.formFieldMeta = Object.assign({}, sm);
+  Object.keys(im).forEach((ent) => {
+    out.formFieldMeta[ent] = Object.assign({}, sm[ent] || {}, im[ent] || {});
+    Object.keys(im[ent] || {}).forEach((fid) => {
+      const L = (sm[ent] || {})[fid] || {};
+      const R = im[ent][fid] || {};
+      const lt = Number(L._updatedAt || 0);
+      const rt = Number(R._updatedAt || 0);
+      out.formFieldMeta[ent][fid] = rt >= lt ? Object.assign({}, L, R) : Object.assign({}, R, L);
+    });
+  });
+  out.customFields = Object.assign({}, serverData.customFields || {});
+  Object.keys(incoming.customFields || {}).forEach((k) => {
+    out.customFields[k] = mergeRecordArrays(serverData.customFields && serverData.customFields[k], incoming.customFields[k]);
+  });
+  out._deletedIds = Object.assign({}, serverData._deletedIds || {}, incoming._deletedIds || {});
   const st = Number(serverData._lastSavedAt) || 0;
   const it = Number(incoming._lastSavedAt) || 0;
   out._lastSavedAt = Math.max(st, it, Date.now());

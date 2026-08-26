@@ -317,7 +317,7 @@ test('multi-part prompts require a real acceptance checklist before ZIP delivery
 });
 
 test('next-chat GitHub handoff records exact publish truth and engine map', () => {
-  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.66.0/);
+  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.67.0/);
   assert.match(githubHandoff,/4984d17/);assert.match(githubHandoff,/Resource not accessible by integration/);
   assert.match(githubHandoff,/Production[\s\S]*11\.20\.0/);
   assert.match(githubHandoff,/موتور پاک‌سازی خودکار کش/);assert.match(githubHandoff,/موتورهای پایداری داده/);
@@ -369,7 +369,7 @@ test('new build clears only old asset caches before revealing app and prevents m
 test('v38 cache rescue automatically forces a fresh build without deleting CRM data', () => {
   const login = read('../public/login.html');
   assert.match(server,/pathname === "\/cache-reset"/);assert.match(server,/"Clear-Site-Data": '\"cache\"'/);
-  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.66.0"/);
+  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.67.0"/);
   assert.match(html,/\/api\/health\?__crm_nocache=/);assert.match(html,/\/cache-reset\?to=/);assert.match(html,/d\.version!==BUILD/);
   assert.match(login,/CRM_CACHE_RESCUED_/);assert.match(login,/\/cache-reset\?to=/);
   assert.match(sw,/function purgeEveryCache/);assert.match(sw,/CRM_BUILD_ACTIVE/);assert.match(sw,/cache: "reload"/);
@@ -379,7 +379,7 @@ test('v38 cache rescue automatically forces a fresh build without deleting CRM d
     assert.doesNotMatch(source,/indexedDB\.deleteDatabase\s*\(/);
     assert.doesNotMatch(source,/removeItem\(["']CRM_APP_STATE_V2/);
   }
-  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.66.0'/);
+  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.67.0'/);
 });
 
 test('security hardening blocks dangerous device APIs, cross-origin writes, executables and formula injection', () => {
@@ -394,7 +394,7 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.66.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.67.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
@@ -489,7 +489,7 @@ test('v11.43.1 engine button feedback + permanent version watchdog', () => {
 test('v11.61.0 safe cache-hardening', () => {
   const html = read('../public/index.html'); const app = read('../public/crm-app.js');
   assert.match(html,/http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/);
-  assert.match(app,/CRM_APP_VERSION = "11.66.0"/);
+  assert.match(app,/CRM_APP_VERSION = "11.67.0"/);
   assert.match(app,/بارگذاری شد/);
 });
 
@@ -693,7 +693,7 @@ test('v11.65.0 unified server state + order has pharmacy fields', () => {
   assert.match(b, /همیشه از سرور بکش و ادغام کن/);
 });
 
-test('v11.66.0 define routes tab + checkbox geo + dist targets', () => {
+test('v11.67.0 define routes tab + checkbox geo + dist targets', () => {
   const html = read('../public/index.html');
   const b = read('../public/crm-bundle.js');
   const css = read('../public/style.css');
@@ -706,4 +706,21 @@ test('v11.66.0 define routes tab + checkbox geo + dist targets', () => {
   assert.match(b, /setupDistTargetPlanner/);
   assert.match(b, /renderRepRoutesOverview/);
   assert.match(b, /input\[type=checkbox\]:checked/);
+});
+
+
+test('v11.67.0 manager size + target row ops + live server merge', () => {
+  const b = read('../public/crm-bundle.js');
+  const srv = read('../server.js');
+  assert.match(b, /v11\.67\.0/);
+  assert.match(b, /function applyManagerSizes/);
+  assert.match(b, /v67-edit-tgt/);
+  assert.match(b, /v67-del-tgt/);
+  assert.match(b, /v67-edit-dtgt/);
+  assert.match(b, /v67-edit-route/);
+  assert.match(b, /crmPushStateToServer/);
+  assert.match(b, /crmStampChangedRecords/);
+  assert.match(b, /__v67=/);
+  assert.match(srv, /_deletedIds/);
+  assert.doesNotMatch(b, /var w = size > 40 \? size : 260;/);
 });

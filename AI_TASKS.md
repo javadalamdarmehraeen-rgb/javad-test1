@@ -1601,3 +1601,9 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 - [x] صفحه دانلود فارسی پورت 8000 با attachment + HEAD
 - [x] آرشیوها/graph/chat 1.67
 - [ ] push کاربر → health 11.66.0
+
+## ۹۴) نوبت ۸۷ — 11.67.0 عرض/ارتفاع + ویرایش تارگت + همگام زنده
+- [x] اعمال واقعی size/height
+- [x] ویرایش/حذف سطر تارگت و مسیر
+- [x] همگام‌سازی زنده سرور
+- [ ] push کاربر
