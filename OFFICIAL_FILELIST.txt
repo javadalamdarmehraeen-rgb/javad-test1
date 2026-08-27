@@ -29,9 +29,6 @@ README_FA_COMPLETE.md
 SYNC_ALL.bat
 SYNC_OFFICIAL_OVER_FOLDER.bat
 chat.arena
-download-v11.68.0.html
-download-v11.69.0.html
-download-v11.70.0.html
 drizzle.config.json
 eslint.config.mjs
 mobile/App.tsx

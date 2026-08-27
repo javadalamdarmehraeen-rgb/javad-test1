@@ -1028,7 +1028,7 @@
       return window[holderName];
     }
     const map = L.map(id).setView(center || [35.72, 51.42], zoom || 11);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OpenStreetMap" }).addTo(map);
+    L.tileLayer("/api/tiles/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OpenStreetMap" }).addTo(map);
     window[holderName] = map;
     return map;
   }
@@ -2113,7 +2113,7 @@ window.IRAN_FACILITIES = [
     var el = $("map-my-visit");
     if (el && !visitMap) {
       visitMap = L.map("map-my-visit").setView([35.72, 51.42], 13);
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19 }).addTo(visitMap);
+      L.tileLayer("/api/tiles/{z}/{x}/{y}.png", { maxZoom: 19 }).addTo(visitMap);
     }
     if (visitMap && visitSession && visitSession.points.length) {
       if (visitMap._line) visitMap.removeLayer(visitMap._line);
@@ -2154,7 +2154,7 @@ window.IRAN_FACILITIES = [
     if (el && typeof L !== "undefined") {
       if (!window._actMap) {
         window._actMap = L.map("map-activity-log").setView([35.72, 51.42], 11);
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19 }).addTo(window._actMap);
+        L.tileLayer("/api/tiles/{z}/{x}/{y}.png", { maxZoom: 19 }).addTo(window._actMap);
       }
       if (window._actMarks) window._actMarks.forEach(function (m) { window._actMap.removeLayer(m); });
       window._actMarks = [];
@@ -4436,7 +4436,7 @@ window.IRAN_FACILITIES = [
     var el = $("map-" + fid);
     if (!el || el._leaflet_id) return;
     var map = L.map("map-" + fid).setView([35.72, 51.42], 12);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OSM" }).addTo(map);
+    L.tileLayer("/api/tiles/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OSM" }).addTo(map);
     var marker = L.marker([35.72, 51.42]).addTo(map);
     userMaps[fid] = { map: map, marker: marker };
     map.on("click", function (e) {
@@ -16770,7 +16770,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     var el=$("map-activity-log");if(!el||typeof L==="undefined")return null;
     if(!window._actMap){
       window._actMap=L.map("map-activity-log").setView([32.4,53.7],5);
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19}).addTo(window._actMap);
+      L.tileLayer("/api/tiles/{z}/{x}/{y}.png",{maxZoom:19}).addTo(window._actMap);
     }
     return window._actMap;
   }
@@ -17851,8 +17851,17 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       g.style.removeProperty("grid-row");
     }
   }
+  function typingInLiveForm(){
+    var el=document.activeElement;
+    if(!el)return false;
+    var tag=(el.tagName||"").toLowerCase();
+    if(tag!=="input"&&tag!=="textarea"&&tag!=="select")return false;
+    if(el.closest&&el.closest("#columnsDesignerHost,#colDesignerPanel"))return false;
+    return !!(el.closest&&el.closest("#formPharmacy,#formDoctor,#formOrder,#tab-pharmacies,#tab-doctors,#tab-orders"));
+  }
   function applySavedLayout(tabId){
     if(!tabId)return;
+    if(typingInLiveForm())return;
     try{if(tabId==="tab-columns-products"&&typeof window.applyProductSettings==="function")window.applyProductSettings();}catch(e0){}
     var grid=mainGrid(tabId);if(!grid)return;
     var key=entityKey(tabId);
@@ -17880,7 +17889,9 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         it.g.style.setProperty("order",String(vis),"important");
         applyMetaPaint(it.g,it.m);
       });
-      items.forEach(function(it){if(it.g.parentNode===grid)grid.appendChild(it.g);});
+      var needMove=false;
+      for(var mi=0;mi<items.length;mi++){if(grid.children[mi]!==items[mi].g){needMove=true;break;}}
+      if(needMove)items.forEach(function(it){if(it.g.parentNode===grid)grid.appendChild(it.g);});
       var form=grid.closest("form");
       if(form&&form.id==="formOrder"){
         try{form.dispatchEvent(new CustomEvent("crm-order-layout-approved"));}catch(e){}
@@ -17899,10 +17910,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       setTimeout(function(){window.__CRM_LAYOUT_APPLYING=false;window.__CRM_MANAGER_LAYOUT_INTENT=false;},120);
     }
     try{
-      if(typeof window.v20ReorderListColumns==="function"){}
-      if(key==="pharmacy"&&typeof window.renderPharmaciesList==="function")window.renderPharmaciesList();
-      if(key==="doctor"&&typeof window.renderDoctorsList==="function")window.renderDoctorsList();
-      if(key==="order"&&typeof window.renderOrdersList==="function")window.renderOrdersList();
+      var pane=$(tabId);
+      if(pane&&pane.classList&&pane.classList.contains("active")&&!typingInLiveForm()){
+        if(key==="pharmacy"&&typeof window.renderPharmaciesList==="function"){/* list only when not typing */}
+      }
     }catch(e2){}
   }
   window.applySavedLayoutV82=applySavedLayout;
@@ -17921,8 +17932,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       var sw=window.switchTab;
       var w=function(id){
         var r=sw.apply(this,arguments);
-        setTimeout(function(){applySavedLayout(id);},70);
-        setTimeout(function(){applySavedLayout(id);},400);
+        setTimeout(function(){if(!typingInLiveForm())applySavedLayout(id);},80);
         return r;
       };
       w._v82=true;window.switchTab=w;
@@ -17942,18 +17952,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     }
   }
   function wrapFull(){
-    if(typeof window.applyFullFormLayout==="function"&&!window.applyFullFormLayout._v82lay){
-      var orig=window.applyFullFormLayout;
-      var w=function(tabId){
-        if(window.__CRM_LAYOUT_APPLYING)return orig.apply(this,arguments);
-        var r=orig.apply(this,arguments);
-        try{applySavedLayout(tabId);}catch(e){}
-        return r;
-      };
-      w._v82lay=true;
-      Object.keys(orig).forEach(function(k){try{w[k]=orig[k];}catch(e){}});
-      window.applyFullFormLayout=w;
-    }
+    /* v11.83: دیگر با هر applyFullFormLayout فرم را جابه‌جا نکن — پرش تایپ می‌ساخت */
   }
   function bindDesignerLive(){
     if(document.body&&document.body.dataset.v82lay)return;
@@ -17973,9 +17972,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   function boot(){
     wrapSwitch();wrapDesigner();wrapFull();bindDesignerLive();
-    applyAll();
-    [120,500,1200,2200,3200].forEach(function(ms){setTimeout(applyAll,ms);});
+    setTimeout(function(){if(!typingInLiveForm())applyAll();},90);
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,20);});
   else setTimeout(boot,20);
 })();
+
+/* v11.83.0: بدون پرش تایپ داروخانه/پزشک + کاشی نقشه از خود سرور + ورود پایدار موبایل */

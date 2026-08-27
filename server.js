@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.82.0";
+const APP_VERSION = "11.83.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -311,6 +311,31 @@ const server = http.createServer((req, res) => {
       "Clear-Site-Data": '"cache"',
       "X-CRM-Build": APP_VERSION
     });
+  }
+
+  if (pathname.indexOf("/api/tiles/") === 0 && req.method === "GET") {
+    const m = pathname.match(/^\/api\/tiles\/(\d+)\/(\d+)\/(\d+)/);
+    if (!m) return send(req, res, 400, "bad tile", "text/plain");
+    const z = m[1], x = m[2], y = m[3];
+    const sources = [
+      "https://tile.openstreetmap.org/" + z + "/" + x + "/" + y + ".png",
+      "https://a.tile.openstreetmap.de/" + z + "/" + x + "/" + y + ".png",
+      "https://tile.openstreetmap.de/" + z + "/" + x + "/" + y + ".png"
+    ];
+    function trySrc(i) {
+      if (i >= sources.length) { res.writeHead(204); return res.end(); }
+      const ac = new AbortController();
+      const to = setTimeout(function () { try { ac.abort(); } catch (e) {} }, 5000);
+      fetch(sources[i], { signal: ac.signal, headers: { "User-Agent": "namayandeelmi-javad-crm/11.83 (tile-proxy)", "Accept": "image/png,image/*" } }).then(async function (up) {
+        clearTimeout(to);
+        if (!up.ok) return trySrc(i + 1);
+        const buf = Buffer.from(await up.arrayBuffer());
+        res.writeHead(200, { "Content-Type": "image/png", "Cache-Control": "public, max-age=86400", "X-CRM-Build": APP_VERSION });
+        res.end(buf);
+      }).catch(function () { clearTimeout(to); trySrc(i + 1); });
+    }
+    trySrc(0);
+    return;
   }
 
   if (pathname === "/ping" || pathname === "/api/health" || pathname === "/api/ping" || pathname === "/healthz") {

@@ -2327,3 +2327,10 @@ td .btn, .col-ops .btn, .col-ops {
 #formProduct input.qty-no-spin::-webkit-inner-spin-button,
 #formProduct input.qty-no-spin::-webkit-outer-spin-button{appearance:none;-webkit-appearance:none;margin:0}
 #formProduct input.qty-no-spin{appearance:textfield;-moz-appearance:textfield}
+
+/* v11.83-mobile-type: جلوگیری از زوم iOS و پرش کیبورد همراه */
+@media (max-width: 900px) {
+  input, select, textarea, .form-input, .form-select, .form-textarea {
+    font-size: 16px !important;
+  }
+}

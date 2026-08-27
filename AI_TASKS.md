@@ -1662,3 +1662,7 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 ## 11.82.0
 اعمال ترتیب/اندازه طراح روی فرم و لیست واقعی.
 - [ ] push کاربر → health=11.82.0
+
+## 11.83.0
+پرش تایپ داروخانه/پزشک، موبایل ایران، حذف download html قدیمی.
+- [ ] push کاربر → health=11.83.0
