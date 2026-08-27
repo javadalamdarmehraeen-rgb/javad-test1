@@ -34,7 +34,7 @@
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.84.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="11.85.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       try{
         var GEN="11.81.0";
         var raw=localStorage.getItem("CRM_APP_STATE_V2");
@@ -70,7 +70,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.84.0" />
+  <link rel="stylesheet" href="style.css?v=11.85.0" />
 </head>
 <body>
 
@@ -1494,9 +1494,9 @@
         <p class="col-help">مدیر می‌تواند چند استان، شهر و منطقه را با تیک کنار هر گزینه به‌عنوان مسیر نماینده انتخاب کند. مناطق به‌ترتیب پشت‌سرهم نمایش داده می‌شوند.</p>
         <div class="form-grid" id="representativeRoutesGrid">
           <div class="form-group full-width"><label class="form-label">نماینده علمی</label><select id="routeManagerRep" class="form-select"></select></div>
-          <div class="form-group"><label class="form-label">استان مسیر</label><div id="routeManagerProvince" class="route-check-box" data-route-kind="province"></div></div>
-          <div class="form-group"><label class="form-label">شهر مسیر</label><div id="routeManagerCity" class="route-check-box" data-route-kind="city"></div></div>
-          <div class="form-group"><label class="form-label">منطقه مسیر</label><div id="routeManagerDistrict" class="route-check-box" data-route-kind="district"></div></div>
+          <div class="form-group"><label class="form-label">استان مسیر</label><input class="form-input v85-geo-search" data-for="routeManagerProvince" placeholder="جستجوی استان..."><div id="routeManagerProvince" class="route-check-box" data-route-kind="province"></div></div>
+          <div class="form-group"><label class="form-label">شهر مسیر</label><input class="form-input v85-geo-search" data-for="routeManagerCity" placeholder="جستجوی شهر..."><div id="routeManagerCity" class="route-check-box" data-route-kind="city"></div></div>
+          <div class="form-group"><label class="form-label">منطقه مسیر</label><input class="form-input v85-geo-search" data-for="routeManagerDistrict" placeholder="جستجوی منطقه..."><div id="routeManagerDistrict" class="route-check-box" data-route-kind="district"></div></div>
         </div>
         <div style="display:flex;justify-content:flex-end;margin-top:1rem"><button type="button" id="btnSaveRepresentativeRoute" class="btn btn-primary">💾 ذخیره مسیر</button></div>
       </div>
@@ -2425,9 +2425,9 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.84.0"></script>
-  <script src="crm-app.js?v=11.84.0"></script>
-          <script src="crm-bundle.js?v=11.84.0"></script>
+  <script src="crm-data.js?v=11.85.0"></script>
+  <script src="crm-app.js?v=11.85.0"></script>
+          <script src="crm-bundle.js?v=11.85.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />

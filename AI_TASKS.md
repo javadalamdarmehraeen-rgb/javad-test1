@@ -1670,3 +1670,7 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 ## 11.84.0
 داشبورد فیلتردار، توقف پرش تایپ، قفل ترتیب سفارشات.
 - [ ] push کاربر → health=11.84.0
+
+## 11.85.0
+مسیر، جغرافیا، داشبورد.
+- [ ] push کاربر → health=11.85.0

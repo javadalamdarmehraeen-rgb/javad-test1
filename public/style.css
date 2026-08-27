@@ -2353,3 +2353,17 @@ td .btn, .col-ops .btn, .col-ops {
 .v84-table th{background:#87CEEB;color:#000;text-align:right;padding:.4rem .5rem}
 .v84-table td{padding:.4rem .5rem;border-bottom:1px solid #e2e8f0}
 .v84-legend{font-size:.8rem;color:#334155;line-height:1.8}
+
+/* v11.85 routes + dashboard polish */
+.v85-geo-search{margin:0 0 .45rem;font-size:.86rem}
+.route-check.v85-all{background:#ecfeff;border:1px solid #99f6e4;border-radius:8px;padding:.25rem .4rem;margin-bottom:.35rem;font-weight:800;color:#0f766e}
+#v84DashFilters{display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:.75rem;align-items:end}
+#v84DashFilters .form-group{margin:0;min-width:0}
+.v84-charts{grid-template-columns:1fr 1fr}
+.v84-bars{overflow-x:auto;gap:.4rem}
+.v84-bar{min-width:52px;flex:1 0 52px}
+.v84-bar em{white-space:normal;line-height:1.25;font-size:.72rem;word-break:break-word;max-width:72px;margin:6px auto 0}
+@media (max-width:900px){
+  #v84DashFilters{grid-template-columns:1fr 1fr}
+  .v84-charts{grid-template-columns:1fr}
+}

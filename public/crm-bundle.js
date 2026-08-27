@@ -1658,14 +1658,14 @@ window.IRAN_FACILITIES = [
     if (!host || !state) return;
     var on = state.settings.dashWidgets || [];
     var html = "";
-    if (on.indexOf("salesBar") !== -1) {
+    if (on.indexOf("salesBar") !== -1 && !$("v84DashCharts")) {
       var sales = (state.reps || []).map(function (r) {
         var sum = (state.orders || []).filter(function (o) { return o.repName === r.name; }).reduce(function (s, o) { return s + (o.totalAmount || 0); }, 0);
-        return { l: r.name.split(" ")[0], v: sum || 1 };
+        return { l: String(r.name||"").replace(/^\s*(آقای|آقا|خانم|دکتر)\s+/,"").trim() || r.name, v: sum || 1 };
       });
       html += '<div class="card"><div class="card-header"><div class="card-title">📊 فروش نمایندگان</div></div>' + barHtml(sales) + "</div>";
     }
-    if (on.indexOf("visitPie") !== -1) {
+    if (on.indexOf("visitPie") !== -1 && !$("v84DashCharts")) {
       var ph = (state.pharmacies || []).length;
       var doc = (state.doctors || []).length;
       var tot = Math.max(1, ph + doc);
@@ -1688,7 +1688,7 @@ window.IRAN_FACILITIES = [
     }
     host.innerHTML = html;
     var builtIn = $("dashboardChartsWidget");
-    if (builtIn) builtIn.style.display = on.indexOf("salesBar") !== -1 ? "" : "none";
+    if (builtIn) builtIn.style.display = "";
   }
 
   function enhanceSalesTargets() {
@@ -18077,7 +18077,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     people.forEach(function(p){
       var sum=0, n=0;
       ords.forEach(function(o){if(o.repName===p.name){sum+=Number(o.totalAmount)||0;n++;}});
-      byRep.push({l:p.name, v:sum, n:n});
+      byRep.push({l:String(p.name||"").replace(/^\s*(آقای|آقا|خانم|دکتر)\s+/,"").trim()||p.name, v:sum, n:n});
     });
     byRep.sort(function(a,b){return b.v-a.v;});
     var max=1; byRep.forEach(function(x){if(x.v>max)max=x.v;});
@@ -18092,7 +18092,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     var mNames=["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند"];
     var trend=months.map(function(mm,i){
       var s=0;(st.orders||[]).filter(function(o){return geoOk(o,pr,ci,di)&&inPeriod(o.orderDate,year||dateParts(o.orderDate).y,mm);}).forEach(function(o){s+=Number(o.totalAmount)||0;});
-      return {l:mNames[i].slice(0,2), v:s};
+      return {l:mNames[i], v:s};
     });
     var tmax=1; trend.forEach(function(x){if(x.v>tmax)tmax=x.v;});
     var trendHtml='<div class="v84-bars">'+trend.map(function(x){
@@ -18127,4 +18127,125 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   function boot(){bind();paint();}
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,80);});
   else setTimeout(boot,80);
+})();
+
+/* v11.85.0: یک ستون عملیات مسیر + جستجو و گزینه همه جغرافیا + داشبورد خوانا */
+(function(){
+  "use strict";
+  function $(id){return document.getElementById(id);}
+  function dedupeRouteOps(){
+    var overview=$("repRoutesOverview");if(!overview)return;
+    var thead=overview.querySelector("thead tr");
+    if(thead){
+      var extras=[];
+      Array.prototype.forEach.call(thead.querySelectorAll("th"),function(th){
+        if(/عملیات/.test(th.textContent||""))extras.push(th);
+      });
+      extras.slice(0,-1).forEach(function(th){if(th.parentNode)th.parentNode.removeChild(th);});
+    }
+    overview.querySelectorAll("tbody tr").forEach(function(tr){
+      var ops=[];
+      Array.prototype.forEach.call(tr.querySelectorAll("td"),function(td){
+        if(td.querySelector("[class*='edit-route'],[class*='del-route']"))ops.push(td);
+      });
+      if(!ops.length)return;
+      var keep=ops[ops.length-1];
+      ops.slice(0,-1).forEach(function(td){if(td.parentNode)td.parentNode.removeChild(td);});
+      keep.className="v85-route-ops v73-ops v72-ops";
+      var id="";
+      var btn=keep.querySelector("[data-id]");
+      if(btn)id=btn.getAttribute("data-id")||"";
+      var html="<button type='button' class='btn btn-outline btn-sm v73-edit-route v72-edit-route' data-id='"+id+"'>✏️ ویرایش</button> <button type='button' class='btn btn-danger btn-sm v73-del-route v72-del-route' data-id='"+id+"'>🗑️ حذف</button>";
+      if(keep.innerHTML!==html)keep.innerHTML=html;
+    });
+  }
+  function allLabel(kind){
+    return kind==="province"?"همه استان‌ها":kind==="city"?"همه شهرها":"همه مناطق";
+  }
+  function enhanceBox(box){
+    if(!box)return;
+    var kind=box.getAttribute("data-route-kind")||"province";
+    if(!box.querySelector("label.v85-all")){
+      var lab=document.createElement("label");
+      lab.className="route-check v85-all";
+      lab.innerHTML="<input type='checkbox' data-all='1'><span>"+allLabel(kind)+"</span>";
+      box.insertBefore(lab, box.firstChild);
+      lab.querySelector("input").addEventListener("change",function(){
+        var on=this.checked;
+        box.querySelectorAll("label.route-check input[type=checkbox]").forEach(function(c){
+          if(c.getAttribute("data-all"))return;
+          var row=c.closest("label");
+          if(row&&row.style.display==="none")return;
+          c.checked=on;
+        });
+        try{box.dispatchEvent(new Event("change",{bubbles:true}));}catch(e){}
+      });
+    }
+  }
+  function bindSearch(){
+    document.querySelectorAll(".v85-geo-search").forEach(function(inp){
+      if(inp.dataset.v85b)return;inp.dataset.v85b="1";
+      inp.addEventListener("input",function(){
+        var id=inp.getAttribute("data-for"), box=id&&$(id);
+        if(!box)return;
+        var q=String(inp.value||"").replace(/\s+/g,"");
+        box.querySelectorAll("label.route-check").forEach(function(lab){
+          if(lab.classList.contains("v85-all"))return;
+          var t=String(lab.textContent||"").replace(/\s+/g,"");
+          lab.style.display=(!q||t.indexOf(q)>=0)?"":"none";
+        });
+      });
+    });
+  }
+  function enhanceAllBoxes(){
+    ["routeManagerProvince","routeManagerCity","routeManagerDistrict"].forEach(function(id){enhanceBox($(id));});
+    bindSearch();
+  }
+  function ensureSelectAllOption(sel, kind){
+    if(!sel||sel.tagName!=="SELECT")return;
+    if(sel.multiple)return;
+    if(sel.getAttribute("data-nocombo")!=="1" && sel.required)return;
+    var first=sel.options[0];
+    if(!first)return;
+    if(first.value!=="")return;
+    var want=allLabel(kind);
+    if(String(first.textContent||"").indexOf("همه")<0 && String(first.textContent||"").indexOf("انتخاب")>=0)return;
+    if(!String(first.textContent||"").trim() || /انتخاب|همه/.test(first.textContent)){
+      if(String(first.textContent||"").indexOf("همه")<0) first.textContent=want;
+    }
+  }
+  function scanGeoSelects(){
+    document.querySelectorAll("select").forEach(function(sel){
+      var id=String(sel.id||"");
+      if(/Province|province|استان/.test(id))ensureSelectAllOption(sel,"province");
+      else if(/City|city|شهر/.test(id)&&!/Specialty/.test(id))ensureSelectAllOption(sel,"city");
+      else if(/District|district|منطقه|Region/.test(id))ensureSelectAllOption(sel,"district");
+    });
+  }
+  function boot(){
+    if(document.body&&document.body.dataset.v85geo)return;
+    if(document.body)document.body.dataset.v85geo="1";
+    enhanceAllBoxes();
+    scanGeoSelects();
+    dedupeRouteOps();
+    if(window.MutationObserver){
+      var t=null;
+      new MutationObserver(function(){
+        clearTimeout(t);
+        t=setTimeout(function(){enhanceAllBoxes();dedupeRouteOps();scanGeoSelects();},50);
+      }).observe(document.body,{childList:true,subtree:true});
+    }
+    if(window.renderRepRoutesOverview&&!window.renderRepRoutesOverview._v85){
+      var orig=window.renderRepRoutesOverview;
+      var w=function(){var r=orig.apply(this,arguments);dedupeRouteOps();return r;};
+      w._v85=true;window.renderRepRoutesOverview=w;
+    }
+    if(window.switchTab&&!window.switchTab._v85){
+      var sw=window.switchTab;
+      var ww=function(id){var r=sw.apply(this,arguments);if(id==="tab-define-routes")setTimeout(function(){enhanceAllBoxes();dedupeRouteOps();},80);return r;};
+      ww._v85=true;window.switchTab=ww;
+    }
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,60);});
+  else setTimeout(boot,60);
 })();
