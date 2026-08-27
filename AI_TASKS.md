@@ -1634,3 +1634,7 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 ## 11.74.0 / نوبت ۹۴
 گزارش فروش مشاطب مانند دایا و شفاآراد.
 - [ ] push کاربر → health=11.74.0
+
+## 11.75.0 / نوبت ۹۵
+طراح ستون‌ها، Autofill جغرافیا، دیتابیس پخش ویرایش/حذف، تاریخ مشاطب، تکراری نام+مکان.
+- [ ] push کاربر → health=11.75.0

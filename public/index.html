@@ -32,7 +32,7 @@
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.74.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="11.75.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       document.documentElement.classList.add("crm-booting");
       function target(){return location.pathname+location.search+location.hash;}
       function rescue(serverBuild){if(true)return;var u="/cache-reset?to="+encodeURIComponent(target())+"&build="+encodeURIComponent(serverBuild||BUILD)+"&t="+Date.now();location.replace(u);}
@@ -55,7 +55,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.74.0" />
+  <link rel="stylesheet" href="style.css?v=11.75.0" />
 </head>
 <body>
 
@@ -350,7 +350,7 @@
           <button type="button" class="btn btn-outline btn-sm" id="btnShowPhList">لیست (<span id="phListCountBadge">0</span>)</button>
         </div>
 
-        <form id="formPharmacy" onsubmit="return false;" novalidate>
+        <form id="formPharmacy" onsubmit="return false;" novalidate autocomplete="off">
           <input type="hidden" id="pharmacyEditId" value="" />
           <div class="form-grid">
             <div class="form-group">
@@ -361,19 +361,19 @@
             <!-- Cascading Provinces / Cities / Sorted Districts (Req 4) -->
             <div class="form-group">
               <label class="form-label" for="pharmacyProvince">نام استان * (۳۱ استان کشور - فقط انتخاب کنید)</label>
-              <select id="pharmacyProvince" class="form-select dropdown-auto-clear" required>
+              <select id="pharmacyProvince" class="form-select dropdown-auto-clear" autocomplete="off" data-lpignore="true" data-1p-ignore="true" required>
                 <option value="">انتخاب استان...</option>
               </select>
             </div>
             <div class="form-group">
               <label class="form-label" for="pharmacyCity">شهر (شهرهای همان استان - فقط انتخاب کنید)</label>
-              <select id="pharmacyCity" class="form-select dropdown-auto-clear" required>
+              <select id="pharmacyCity" class="form-select dropdown-auto-clear" autocomplete="off" data-lpignore="true" data-1p-ignore="true" required>
                 <option value="">ابتدا استان را انتخاب کنید</option>
               </select>
             </div>
             <div class="form-group">
               <label class="form-label" for="pharmacyDistrict">منطقه (مناطق همان شهر - فقط انتخاب کنید)</label>
-              <select id="pharmacyDistrict" class="form-select dropdown-auto-clear" required>
+              <select id="pharmacyDistrict" class="form-select dropdown-auto-clear" autocomplete="off" data-lpignore="true" data-1p-ignore="true" required>
                 <option value="">ابتدا شهر را انتخاب کنید</option>
               </select>
             </div>
@@ -554,7 +554,7 @@
           <button type="button" class="btn btn-outline btn-sm" id="btnShowDocList">لیست (<span id="docListCountBadge">0</span>)</button>
         </div>
 
-        <form id="formDoctor" onsubmit="return false;" novalidate>
+        <form id="formDoctor" onsubmit="return false;" novalidate autocomplete="off">
           <input type="hidden" id="doctorEditId" value="" />
           <div class="form-grid">
             <div class="form-group">
@@ -577,19 +577,19 @@
             <!-- Cascading Provinces / Cities / Sorted Districts -->
             <div class="form-group">
               <label class="form-label" for="doctorProvince">استان *</label>
-              <select id="doctorProvince" class="form-select dropdown-auto-clear" required>
+              <select id="doctorProvince" class="form-select dropdown-auto-clear" autocomplete="off" data-lpignore="true" data-1p-ignore="true" required>
                 <option value="">انتخاب استان...</option>
               </select>
             </div>
             <div class="form-group">
               <label class="form-label" for="doctorCity">شهر *</label>
-              <select id="doctorCity" class="form-select dropdown-auto-clear" required>
+              <select id="doctorCity" class="form-select dropdown-auto-clear" autocomplete="off" data-lpignore="true" data-1p-ignore="true" required>
                 <option value="">ابتدا استان را انتخاب کنید</option>
               </select>
             </div>
             <div class="form-group">
               <label class="form-label" for="doctorDistrict">منطقه (مرتب بدون تکرار) *</label>
-              <select id="doctorDistrict" class="form-select dropdown-auto-clear" required>
+              <select id="doctorDistrict" class="form-select dropdown-auto-clear" autocomplete="off" data-lpignore="true" data-1p-ignore="true" required>
                 <option value="">ابتدا شهر را انتخاب کنید</option>
               </select>
             </div>
@@ -758,7 +758,7 @@
           <button type="button" class="btn btn-outline btn-sm" id="btnShowOrdList">لیست (<span id="ordListCountBadge">0</span>)</button>
         </div>
 
-        <form id="formOrder" onsubmit="return false;" novalidate>
+        <form id="formOrder" onsubmit="return false;" novalidate autocomplete="off">
           <input type="hidden" id="orderEditId" value="" />
           <input type="hidden" id="orderPharmacyMatchedId" value="" />
 
@@ -785,19 +785,19 @@
 
             <div class="form-group">
               <label class="form-label" for="orderProvince">استان *</label>
-              <select id="orderProvince" class="form-select dropdown-auto-clear">
+              <select id="orderProvince" class="form-select dropdown-auto-clear" autocomplete="off" data-lpignore="true" data-1p-ignore="true">
                 <option value="">انتخاب استان...</option>
               </select>
             </div>
             <div class="form-group">
               <label class="form-label" for="orderCity">شهر *</label>
-              <select id="orderCity" class="form-select dropdown-auto-clear">
+              <select id="orderCity" class="form-select dropdown-auto-clear" autocomplete="off" data-lpignore="true" data-1p-ignore="true">
                 <option value="">ابتدا استان را انتخاب کنید</option>
               </select>
             </div>
             <div class="form-group">
               <label class="form-label" for="orderDistrict">منطقه (مرتب بدون تکرار) *</label>
-              <select id="orderDistrict" class="form-select dropdown-auto-clear">
+              <select id="orderDistrict" class="form-select dropdown-auto-clear" autocomplete="off" data-lpignore="true" data-1p-ignore="true">
                 <option value="">ابتدا شهر را انتخاب کنید</option>
               </select>
             </div>
@@ -2340,9 +2340,9 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.74.0"></script>
-  <script src="crm-app.js?v=11.74.0"></script>
-          <script src="crm-bundle.js?v=11.74.0"></script>
+  <script src="crm-data.js?v=11.75.0"></script>
+  <script src="crm-app.js?v=11.75.0"></script>
+          <script src="crm-bundle.js?v=11.75.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />

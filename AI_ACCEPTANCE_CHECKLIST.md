@@ -264,3 +264,10 @@
 
 ## 11.74.0 / نوبت ۹۴
 - [x] مشاطب مثل دایا/شفاآراد در تب فروش پخش‌ها — ستون ۱۱/۱۲/۱۰ + قیمت برنامه + کد ۱۸۶۱۰۱…۱۸۶۱۰۷
+
+## 11.75.0 / نوبت ۹۵
+- [x] طراح ستون‌ها زنده — applyDesignerNow + applyPaintedMeta بعد از v64
+- [x] Autofill استان/شهر حذف — combo autocomplete/readonly + interval v56 قطع
+- [x] ویرایش/حذف دیتابیس پخش — db-ph-edit/del و db-inv-edit/del
+- [x] تاریخ مشاطب ستون ۳ — distLastDate ix=2
+- [x] نام بدون زیرمجموعه + تکراری مکان — locationDup

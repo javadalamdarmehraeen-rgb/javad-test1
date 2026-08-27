@@ -1682,3 +1682,6 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 
 ## 11.74.0 / نوبت ۹۴
 مشاطب تا کنون schema ثابت نداشت و از حدس هدر استفاده می‌کرد. تصمیم: ایندکس قطعی ستون‌ها + نقشه کد مثل شفاآراد.
+
+## 11.75.0 / نوبت ۹۵
+v64lockLayout بعد از apply اندازه را پاک می‌کرد. v56routeGeoFilter هر ۲٫۵ثانیه option شهر/استان را حذف می‌کرد. Combo متنی Chrome Autofill می‌آورد. تصمیم: اعمال مجدد meta، قطع interval، hardening combo، locationDup سخت.

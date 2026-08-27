@@ -1268,3 +1268,9 @@ Then change only what is requested.
 ## لایه v11.74
 - `MASHATEB_CODE_MAP` / `mashatebDbCode` / `distProductDbCode` / `isMappedDist`
 - distSchema mashateb: qty=10, giftQty=11, pharmacy=9
+
+## لایه v11.75
+- applyDesignerNow / applyPaintedMeta
+- distLastDate mashateb=2
+- db-ph-edit / db-ph-del / db-inv-edit / db-inv-del
+- locationDup نام+استان+شهر+منطقه+آدرس
