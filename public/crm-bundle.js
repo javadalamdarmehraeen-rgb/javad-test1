@@ -18297,19 +18297,9 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   function $(id){return document.getElementById(id);}
   function restoreLoginSession(){
-    try{
-      if(sessionStorage.getItem("crmLoggedIn")==="1")return true;
-      if(localStorage.getItem("CRM_LOGIN_OK")==="1"){
-        var exp=Number(localStorage.getItem("CRM_LOGIN_EXP")||0);
-        if(!exp||exp>Date.now()){
-          sessionStorage.setItem("crmLoggedIn","1");
-          return true;
-        }
-      }
-    }catch(e){}
+    try{return sessionStorage.getItem("crmLoggedIn")==="1";}catch(e){}
     return false;
   }
-  restoreLoginSession();
 
   var V87_CHANGES=[
     ["تب تعریف مسیر نمایندگان: توقف لرزش شدید با قطع حلقه بازنویسی چک‌باکس جغرافیا","applied"],
@@ -18444,5 +18434,75 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     if(!e.target||!e.target.closest)return;
     if(e.target.closest('[data-target="tab-changelog"],[data-target="tab-messengers"],[data-target="tab-dist-targets"],[data-target="tab-leaves"],[data-target="tab-backup"]'))
       setTimeout(boot,120);
+  },true);
+})();
+
+/* v11.88.0: یک جفت ویرایش/حذف مسیر + صفحه ورود دوباره فعال */
+(function(){
+  "use strict";
+  function $(id){return document.getElementById(id);}
+  function oneColumnRouteOps(){
+    var overview=$("repRoutesOverview"); if(!overview)return;
+    var thead=overview.querySelector("thead tr");
+    if(thead){
+      var extras=[];
+      Array.prototype.forEach.call(thead.querySelectorAll("th"),function(th){
+        if(/عملیات/.test(th.textContent||""))extras.push(th);
+      });
+      extras.slice(1).forEach(function(th){if(th.parentNode)th.parentNode.removeChild(th);});
+    }
+    overview.querySelectorAll("tbody tr").forEach(function(tr){
+      var ops=[];
+      Array.prototype.forEach.call(tr.querySelectorAll("td"),function(td){
+        if(td.querySelector("[class*='edit-route'],[class*='del-route']"))ops.push(td);
+      });
+      if(!ops.length)return;
+      var keep=ops[0];
+      ops.slice(1).forEach(function(td){if(td.parentNode)td.parentNode.removeChild(td);});
+      var id="";
+      var btn=keep.querySelector("[data-id]");
+      if(btn)id=btn.getAttribute("data-id")||"";
+      if(!id)return;
+      var html="<button type='button' class='btn btn-outline btn-sm v73-edit-route v72-edit-route' data-id='"+id+"'>✏️ ویرایش</button> <button type='button' class='btn btn-danger btn-sm v73-del-route v72-del-route' data-id='"+id+"'>🗑️ حذف</button>";
+      keep.className="v88-route-ops v85-route-ops v73-ops v72-ops";
+      if(keep.querySelectorAll("[class*='edit-route']").length!==1 || keep.querySelectorAll("[class*='del-route']").length!==1 || keep.innerHTML!==html)
+        keep.innerHTML=html;
+    });
+  }
+  window.v88OneColumnRouteOps=oneColumnRouteOps;
+
+  function wrapPainters(){
+    ["renderRepRoutesOverview","paintV73TargetOps","paintV72TargetOps","paintV68TargetOps"].forEach(function(name){
+      var fn=window[name];
+      if(typeof fn!=="function"||fn._v88)return;
+      var w=function(){var r=fn.apply(this,arguments);try{oneColumnRouteOps();}catch(e){}return r;};
+      w._v88=true; window[name]=w;
+    });
+  }
+
+  if(window.switchTab&&!window.switchTab._v88){
+    var sw=window.switchTab;
+    var w=function(id){
+      var r=sw.apply(this,arguments);
+      if(id==="tab-define-routes")setTimeout(function(){wrapPainters();oneColumnRouteOps();},60);
+      return r;
+    };
+    w._v88=true; window.switchTab=w;
+  }
+
+  var badge=$("crmBuildBadge");
+  if(badge)badge.textContent="نسخه ۱۱.۸۸.۰";
+
+  function boot(){
+    wrapPainters();
+    oneColumnRouteOps();
+    setTimeout(oneColumnRouteOps,400);
+    setTimeout(oneColumnRouteOps,1200);
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,100);});
+  else setTimeout(boot,100);
+  document.addEventListener("click",function(e){
+    if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-define-routes"]'))
+      setTimeout(function(){oneColumnRouteOps();},200);
   },true);
 })();

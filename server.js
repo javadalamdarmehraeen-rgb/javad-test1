@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.87.0";
+const APP_VERSION = "11.88.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -572,7 +572,10 @@ const server = http.createServer((req, res) => {
   }
 
   // پنل اصلی بعد از ورود
-  if (pathname === "/" || pathname === "/panel" || pathname === "/panel/" || pathname === "/admin") {
+  if (pathname === "/" || pathname === "/login" || pathname === "/login/" || pathname === "/admin") {
+    return sendFile(req, res, path.join(PUBLIC_DIR, "login.html"), 0);
+  }
+  if (pathname === "/panel" || pathname === "/panel/") {
     return sendFile(req, res, path.join(PUBLIC_DIR, "index.html"), 0);
   }
 

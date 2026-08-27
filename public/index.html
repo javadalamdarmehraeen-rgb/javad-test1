@@ -34,7 +34,7 @@
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.87.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="11.88.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       try{
         var GEN="11.81.0";
         var raw=localStorage.getItem("CRM_APP_STATE_V2");
@@ -49,7 +49,7 @@
       document.documentElement.classList.add("crm-booting");
       function target(){return location.pathname+location.search+location.hash;}
       function rescue(serverBuild){if(true)return;var u="/cache-reset?to="+encodeURIComponent(target())+"&build="+encodeURIComponent(serverBuild||BUILD)+"&t="+Date.now();location.replace(u);}
-      function crmLogged(){try{if(sessionStorage.getItem("crmLoggedIn")==="1")return true;}catch(e){}try{if(localStorage.getItem("CRM_LOGIN_OK")==="1"){var exp=Number(localStorage.getItem("CRM_LOGIN_EXP")||0);if(!exp||exp>Date.now()){try{sessionStorage.setItem("crmLoggedIn","1");}catch(x){}return true;}}}catch(e){}return false;}
+      function crmLogged(){try{if(sessionStorage.getItem("crmLoggedIn")==="1")return true;}catch(e){} /* CRM_LOGIN_OK دیگر ورود را دور نمی‌زند */ return false;}
       if(!crmLogged()){location.replace("/login");return;}
       try{localStorage.setItem(key,BUILD);}catch(e){}
       fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD){/* v11.70: حلقه cache-reset قطع شد */}}).catch(function(){});
@@ -69,12 +69,12 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.87.0" />
+  <link rel="stylesheet" href="style.css?v=11.88.0" />
 </head>
 <body>
 
   <script>
-    (function(){function crmLogged(){try{if(sessionStorage.getItem("crmLoggedIn")==="1")return true;}catch(e){}try{if(localStorage.getItem("CRM_LOGIN_OK")==="1"){var exp=Number(localStorage.getItem("CRM_LOGIN_EXP")||0);if(!exp||exp>Date.now()){try{sessionStorage.setItem("crmLoggedIn","1");}catch(x){}return true;}}}catch(e){}return false;}if(!crmLogged())location.replace("/login");})();
+    (function(){function crmLogged(){try{if(sessionStorage.getItem("crmLoggedIn")==="1")return true;}catch(e){}return false;}if(!crmLogged())location.replace("/login");})();
   </script>
 
   <!-- Top App Header matching Screenshot 1 -->
@@ -89,7 +89,7 @@
         </div>
         <div class="logo-text">
           <h1 id="headerCompanyNameDisplay">سیستم مدیریت ویزیت علمی و شبکه درمان</h1>
-          <div id="crmBuildBadge" style="font-size:12px;font-weight:800;color:#0f766e">نسخه ۱۱.۸۷.۰</div>
+          <div id="crmBuildBadge" style="font-size:12px;font-weight:800;color:#0f766e">نسخه ۱۱.۸۸.۰</div>
           <p>طنین طب طاها — TENIN TEB TAHA</p>
         </div>
       </div>
@@ -2435,9 +2435,9 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.87.0"></script>
-  <script src="crm-app.js?v=11.87.0"></script>
-          <script src="crm-bundle.js?v=11.87.0"></script>
+  <script src="crm-data.js?v=11.88.0"></script>
+  <script src="crm-app.js?v=11.88.0"></script>
+          <script src="crm-bundle.js?v=11.88.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
