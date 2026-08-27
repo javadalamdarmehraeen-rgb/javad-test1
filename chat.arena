@@ -1,6 +1,6 @@
 CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.81 | تاریخ به‌روزرسانی: 2026-08-27 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.80.0
+نسخه این فایل: 1.82 | تاریخ به‌روزرسانی: 2026-08-27 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.81.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -564,33 +564,33 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
    index.html به‌روز نگه داشته می‌شود.
 ۸. OFFICIAL_FILELIST.txt همگام با فایل‌های جدید به‌روز می‌شود (قانون ۸).
 
-فهرست فایل‌ها (223 فایل متنی + 30 فایل دودویی):
+فهرست فایل‌ها (223 فایل متنی + 29 فایل دودویی):
 
   [متنی ]      891 بایت  .env.ndcohub.example
   [متنی ]      849 بایت  .gitattributes
   [متنی ]     1157 بایت  .gitignore
   [متنی ]     2041 بایت  .gitlab-ci.yml
-  [متنی ]    38369 بایت  AI_ACCEPTANCE_CHECKLIST.md
-  [متنی ]    36436 بایت  AI_ARCHITECTURE.md
-  [متنی ]    80119 بایت  AI_DECISION_LOG.md
-  [متنی ]    42548 بایت  AI_PROJECT_CONTEXT.md
-  [متنی ]    46700 بایت  AI_RULES.md
-  [متنی ]    55798 بایت  AI_TASKS.md
-  [متنی ]    50785 بایت  ARENA_HANDOFF_PROMPT.md
+  [متنی ]    38539 بایت  AI_ACCEPTANCE_CHECKLIST.md
+  [متنی ]    36606 بایت  AI_ARCHITECTURE.md
+  [متنی ]    80294 بایت  AI_DECISION_LOG.md
+  [متنی ]    42718 بایت  AI_PROJECT_CONTEXT.md
+  [متنی ]    46870 بایت  AI_RULES.md
+  [متنی ]    55934 بایت  AI_TASKS.md
+  [متنی ]    50955 بایت  ARENA_HANDOFF_PROMPT.md
   [متنی ]      600 بایت  CHANGES_V10.md
-  [متنی ]   130563 بایت  CHANGES_V11.md
+  [متنی ]   131247 بایت  CHANGES_V11.md
   [متنی ]     3939 بایت  CHANGES_V9.md
   [متنی ]     1806 بایت  CLEAN_EXTRA_FILES.bat
   [متنی ]    42439 بایت  GITHUB_REVIEW_HANDOFF.md
   [متنی ]      694 بایت  KEEP_ONLY_GITHUB.bat
   [متنی ]     6574 بایت  OFFICIAL_FILELIST.txt
-  [متنی ]     1137 بایت  PAKSAZI_EZAFI.bat
-  [متنی ]   133926 بایت  PROJECT_GRAPH.md
+  [متنی ]     1171 بایت  PAKSAZI_EZAFI.bat
+  [متنی ]   134094 بایت  PROJECT_GRAPH.md
   [متنی ]     2707 بایت  PUSH_FRESH_GITHUB.bat
   [متنی ]     2680 بایت  PUSH_GITHUB_CLEAN.bat
   [متنی ]     6579 بایت  RAHNAMA_GITLAB.txt
   [متنی ]     2852 بایت  RAHNAMA_PAKSAZI.txt
-  [متنی ]    12683 بایت  README.md
+  [متنی ]    12853 بایت  README.md
   [متنی ]     4731 بایت  README_FA_COMPLETE.md
   [متنی ]     2766 بایت  SYNC_ALL.bat
   [متنی ]     1273 بایت  SYNC_OFFICIAL_OVER_FOLDER.bat
@@ -602,10 +602,10 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]      871 بایت  package.json
   [متنی ]      108 بایت  postcss.config.mjs
   [متنی ]     1331 بایت  render.yaml
-  [متنی ]    35965 بایت  server.js
+  [متنی ]    36594 بایت  server.js
   [متنی ]     2426 بایت  sync_all.sh
   [متنی ]      738 بایت  tsconfig.json
-  [متنی ]   363163 بایت  update_chat_arena.py
+  [متنی ]   363980 بایت  update_chat_arena.py
   [متنی ]    13359 بایت  update_project_graph.py
   [متنی ]     2558 بایت  .github/workflows/deploy.yml
   [متنی ]      206 بایت  .github/workflows/keep_alive.yml
@@ -613,8 +613,8 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     9805 بایت  mobile/README.md
   [متنی ]     9966 بایت  mobile/src/simAuth.ts
   [متنی ]     8066 بایت  public/cloudflare-worker.js
-  [متنی ]   184702 بایت  public/crm-app.js
-  [متنی ]  1101837 بایت  public/crm-bundle.js
+  [متنی ]   185050 بایت  public/crm-app.js
+  [متنی ]  1108585 بایت  public/crm-bundle.js
   [متنی ]    52016 بایت  public/crm-data.js
   [متنی ]    13643 بایت  public/crm-features-v10.js
   [متنی ]   112307 بایت  public/crm-features-v11.js
@@ -629,7 +629,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]   304871 بایت  public/crm-features-v20.js
   [متنی ]    72007 بایت  public/crm-features-v9.js
   [متنی ]    25683 بایت  public/crm-jalali.js
-  [متنی ]   162001 بایت  public/index.html
+  [متنی ]   162506 بایت  public/index.html
   [متنی ]    11799 بایت  public/iran-facilities.js
   [متنی ]     8785 بایت  public/login.html
   [متنی ]      966 بایت  public/manifest.json
@@ -788,9 +788,8 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     3346 بایت  src/lib/zip.ts
   [متنی ]     4927 بایت  tests/app-smoke.test.mjs
   [متنی ]    19979 بایت  tests/state-preservation.test.mjs
-  [متنی ]    67980 بایت  tests/version-11.24-regressions.test.mjs
-  [تصویر]   367201 بایت  __pycache__/update_chat_arena.cpython-311.pyc
-  [تصویر]    25642 بایت  __pycache__/update_project_graph.cpython-311.pyc
+  [متنی ]    68913 بایت  tests/version-11.24-regressions.test.mjs
+  [تصویر]   368018 بایت  __pycache__/update_chat_arena.cpython-311.pyc
   [تصویر]    23282 بایت  public/apple-touch-icon.png
   [تصویر]     4527 بایت  public/favicon.png
   [تصویر]    26208 بایت  public/icon-192.png
@@ -3806,6 +3805,10 @@ ZIP اولین نسخه 38 از کامیت تاریخی دقیق همان نسخ
 🧑 کاربر: دوباره اطلاعات سیستم‌های دیگر در برنامه وجود دارد. کلا همه اطلاعات باید یکپارچه باشد و هیچ اثری از اطلاعات سیستم قبلی نباشد. ورود اطلاعات قبلی را قفل کن و ملاک فقط اطلاعات سرور باشد. هیچ اثری از نسخه‌های قبلی در کد نباشد. در کادر قیمت‌های جدید، قیمت مصرف‌کننده با قیمت داروخانه یکی است که نباید باشد و باید بر اساس مصرف‌کننده فعلی و درصد افزایش باشد.
 🤖 دستیار: نسخه ۱۱.۸۰.۰ — بوت فقط از GET سرور با adopt کامل (بدون ادغام localStorage)؛ POST نسخه‌های قبلی با reason=legacy-locked رد می‌شود؛ داده نمونه از DEFAULT_INITIAL_DATA حذف شد. قیمت مصرف‌کننده کادر جدید = مصرف‌کننده فعلی × (۱+درصد افزایش) و دیگر از قیمت داروخانه کپی نمی‌شود.
 
+──────────────────────────────── نوبت ۹۹ ────────────────────────────────
+🧑 کاربر: هیچ‌کدام از تغییرات انجام نشده. دوباره اطلاعات سیستم‌های دیگر هست. باید پاک شود، ورود قبلی قفل شود، ملاک فقط سرور، مصرف‌کننده جدید = فعلی × افزایش.
+🤖 دستیار: نسخه ۱۱.۸۱.۰ — پاکسازی قطعی لیست‌های عملیاتی نسل قبل در localStorage و GET سرور؛ POST بدون نسل ۱۱.۸۱ رد می‌شود؛ مصرف‌کننده کادر جدید از فرمول فعلی×افزایش در سلول مستقل v81-new-cons.
+
 
 
 ══════════════════════════════════════════════════════════════════════════════════
@@ -4023,7 +4026,7 @@ sync-after-deploy:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_ACCEPTANCE_CHECKLIST.md (38369 بایت)
+فایل: AI_ACCEPTANCE_CHECKLIST.md (38539 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI_ACCEPTANCE_CHECKLIST — چک‌لیست اجباری تحویل واقعی
@@ -4302,10 +4305,13 @@ sync-after-deploy:
 
 ## 11.80.0
 ملاک فقط سرور؛ قفل ورود داده نسخه قبلی؛ مصرف‌کننده جدید = فعلی × (۱+افزایش).
+
+## 11.81.0
+پاکسازی قطعی داده سیستم قبلی؛ ملاک فقط سرور نسل ۱۱.۸۱؛ مصرف‌کننده جدید = فعلی × افزایش.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_ARCHITECTURE.md (36436 بایت)
+فایل: AI_ARCHITECTURE.md (36606 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI ARCHITECTURE
@@ -5587,10 +5593,13 @@ Then change only what is requested.
 
 ## 11.80.0
 ملاک فقط سرور؛ قفل ورود داده نسخه قبلی؛ مصرف‌کننده جدید = فعلی × (۱+افزایش).
+
+## 11.81.0
+پاکسازی قطعی داده سیستم قبلی؛ ملاک فقط سرور نسل ۱۱.۸۱؛ مصرف‌کننده جدید = فعلی × افزایش.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_DECISION_LOG.md (80119 بایت)
+فایل: AI_DECISION_LOG.md (80294 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 ## 11.77.0
@@ -7295,10 +7304,13 @@ v64lockLayout بعد از apply اندازه را پاک می‌کرد. v56route
 
 ## 11.80.0
 ملاک فقط سرور؛ قفل POST نسخه‌های قبلی؛ حذف داده نمونه از کد؛ مصرف‌کننده جدید از فعلی × افزایش.
+
+## 11.81.0
+پاکسازی قطعی داده سیستم قبلی روی ارتقا؛ قفل POST قدیمی؛ مصرف‌کننده جدید مستقل از داروخانه.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_PROJECT_CONTEXT.md (42548 بایت)
+فایل: AI_PROJECT_CONTEXT.md (42718 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI PROJECT CONTEXT
@@ -8269,10 +8281,13 @@ Commit محلی `2c4fe0b` روی شاخه ثابت Arena ساخته شد. Push �
 
 ## 11.80.0
 ملاک فقط سرور؛ قفل ورود داده نسخه قبلی؛ مصرف‌کننده جدید = فعلی × (۱+افزایش).
+
+## 11.81.0
+پاکسازی قطعی داده سیستم قبلی؛ ملاک فقط سرور نسل ۱۱.۸۱؛ مصرف‌کننده جدید = فعلی × افزایش.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_RULES.md (46700 بایت)
+فایل: AI_RULES.md (46870 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI RULES
@@ -9922,10 +9937,13 @@ window.state باید همان شیء زنده crm-app باشد (mutate درجا
 
 ## 11.80.0
 ملاک فقط سرور؛ قفل ورود داده نسخه قبلی؛ مصرف‌کننده جدید = فعلی × (۱+افزایش).
+
+## 11.81.0
+پاکسازی قطعی داده سیستم قبلی؛ ملاک فقط سرور نسل ۱۱.۸۱؛ مصرف‌کننده جدید = فعلی × افزایش.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_TASKS.md (55798 بایت)
+فایل: AI_TASKS.md (55934 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 ## 11.77.0
@@ -11584,10 +11602,14 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 ## 11.80.0
 قفل ورود داده قبلی، unify روی سرور، مصرف‌کننده کادر جدید از فعلی و درصد افزایش.
 - [ ] push کاربر → health=11.80.0
+
+## 11.81.0
+پاکسازی نسل قبل + فرمول مصرف‌کننده کادر جدید.
+- [ ] push کاربر → health=11.81.0
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: ARENA_HANDOFF_PROMPT.md (50785 بایت)
+فایل: ARENA_HANDOFF_PROMPT.md (50955 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # ARENA AI MASTER HANDOFF PROMPT
@@ -12995,6 +13017,9 @@ ADDENDUM v11.16.1 (2026-08-16)
 
 ## 11.80.0
 ملاک فقط سرور؛ قفل ورود داده نسخه قبلی؛ مصرف‌کننده جدید = فعلی × (۱+افزایش).
+
+## 11.81.0
+پاکسازی قطعی داده سیستم قبلی؛ ملاک فقط سرور نسل ۱۱.۸۱؛ مصرف‌کننده جدید = فعلی × افزایش.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -13014,7 +13039,7 @@ Leaflet محلی. فونت گوگل حذف شد. gzip روی JS/CSS/HTML.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: CHANGES_V11.md (130563 بایت)
+فایل: CHANGES_V11.md (131247 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # 11.77.0 — ۱۴۰۵/۰۶/۰۵
@@ -13867,6 +13892,12 @@ CLEAN_EXTRA_FILES.bat و بعد PUSH_GITHUB_CLEAN.bat را اجرا کن.
 2. بوت فقط GET سرور را ملاک می‌گیرد؛ snapshot محلی دیگر روی سرور بازنویسی نمی‌شود.
 3. رکوردهای نمونه قدیمی (داروخانه عرفانی/رازی/عقبایی و مشابه) از کد پیش‌فرض و از state حذف شدند.
 4. در کادر قیمت‌های جدید، ستون مصرف‌کننده = مصرف‌کننده فعلی × (۱ + درصد افزایش) است و با قیمت داروخانه یکی گرفته نمی‌شود.
+
+## تحویل نوبت ۹۹ — نسخه ۱۱.۸۱.۰: پاکسازی قطعی داده قبلی + مصرف‌کننده از فرمول افزایش
+
+1. با ارتقا به ۱۱.۸۱ لیست داروخانه/پزشک/سفارش و سایر داده‌های عملیاتی نسل قبل خالی می‌شود؛ کالا و تنظیمات مدیر می‌ماند.
+2. POST نسخه قدیمی رد می‌شود. ملاک فقط state سرور با `_dataGen=11.81.0` است.
+3. ستون مصرف‌کننده کادر قیمت جدید از مصرف‌کننده فعلی × (۱+درصد افزایش) پر می‌شود و از قیمت داروخانه کپی نمی‌شود.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -14008,8 +14039,8 @@ pause
 # GITHUB_REVIEW_HANDOFF — تحویل مویرگی برای بررسی GitHub و هوش مصنوعی بعدی
 
 **تاریخ این تحویل:** 2026-08-27 / ۵ شهریور 1405 (به‌روزرسانی نوبت ۹۵)
-**نسخه آماده سورس:** `11.80.0` (فایل واحد crm-bundle + آینه crm-features-v20)
-**نسخه chat.arena پس از بازسازی این نوبت:** `1.81`
+**نسخه آماده سورس:** `11.81.0` (فایل واحد crm-bundle + آینه crm-features-v20)
+**نسخه chat.arena پس از بازسازی این نوبت:** `1.82`
 **شاخه اجباری این جلسه:** `arena/01a03a45-javad-test1`
 **مخزن:** `javadalamdarmehraeen-rgb/javad-test1`
 **Production فعال:** `https://javad-test1.onrender.com` — 11.38.0 سرو می‌کند؛ با push نسخه 11.38.1 توسط کاربر، Render دیپلوی می‌کند
@@ -14956,7 +14987,7 @@ update_project_graph.py
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: PAKSAZI_EZAFI.bat (1137 بایت)
+فایل: PAKSAZI_EZAFI.bat (1171 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~batch
 @echo off
@@ -14997,7 +15028,7 @@ pause
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: PROJECT_GRAPH.md (133926 بایت)
+فایل: PROJECT_GRAPH.md (134094 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # 🕸️ گراف دانش پروژه «نماینده علمی» (PROJECT_GRAPH.md)
@@ -15016,9 +15047,9 @@ pause
 
 ## ب) کارت فایل‌ها (نقش + توابع + نام‌های window که می‌سازد)
 
-### `server.js` (35965 بایت)
+### `server.js` (36594 بایت)
 - نقش: سرور سبک Node.js برای Render — ورود جدا، gzip، health، ژئوکد، محدودیت نرخ
-- تعداد توابع داخلی: 33
+- تعداد توابع داخلی: 34
 - endpointهای سرور: `/api/backup`, `/api/backup/email`, `/api/bulk`, `/api/bulk`, `/api/feedback`, `/api/feedback`, `/api/push/public-key`, `/api/push/send`, `/api/push/subscribe`, `/api/state`, `/api/state`
 
 ### `scripts/build-sw.mjs` (2656 بایت)
@@ -15049,15 +15080,15 @@ pause
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (184702 بایت)
+### `public/crm-app.js` (185050 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 179
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_STATE_BOUND`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `applyV77ProductPricing`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `paintV77ProductPricing`, `rememberPharmacyName`, `renderDoctorsList`, `renderExtraTabCustomFields`, `renderPharmaciesList`, `syncProductsEverywhere`, `validateRequiredFields`
 
-### `public/crm-bundle.js` (1101837 بایت)
+### `public/crm-bundle.js` (1108585 بایت)
 - نقش: * crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
-- تعداد توابع داخلی: 1117
-- نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `WIDGET_PALETTE`, `__CRM_APPLYING_SERVER`, `__CRM_BULK_PURGE`, `__CRM_BULK_READY`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SERVER_READY`, `__CRM_SKIP_V64_STRIP`, `__CRM_SNAP`, `__CRM_UNVEIL`, `__CRM_V78_EDIT_PID`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__V68_WATCH`, `__V69_SYNC`, `__V70_SOLO`, `__V71_CLAIMED`, `__V72_BOOT`, `__V73_BOOT`, `__V73_WATCH`, `__V79_BOOT`, `__V80_BOOT`, `__V80_LOCK`, `__lastHealth`, `__v40LastPick`, `__v53wrapped`, `__v55wrapped`
+- تعداد توابع داخلی: 1119
+- نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `WIDGET_PALETTE`, `__CRM_APPLYING_SERVER`, `__CRM_BULK_PURGE`, `__CRM_BULK_READY`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SERVER_READY`, `__CRM_SKIP_V64_STRIP`, `__CRM_SNAP`, `__CRM_UNVEIL`, `__CRM_V78_EDIT_PID`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__V68_WATCH`, `__V69_SYNC`, `__V70_SOLO`, `__V71_CLAIMED`, `__V72_BOOT`, `__V73_BOOT`, `__V73_WATCH`, `__V79_BOOT`, `__V80_BOOT`, `__V80_LOCK`, `__V81_BOOT`, `__V81_LOCK`, `__lastHealth`, `__v40LastPick`
 
 ### `public/crm-data.js` (52016 بایت)
 - نقش: ============================================================================
@@ -15138,7 +15169,7 @@ pause
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (3742 بایت)
-- نقش: const BUILD = "11.80.0";
+- نقش: const BUILD = "11.81.0";
 - تعداد توابع داخلی: 3
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -15342,12 +15373,14 @@ pause
 - `/api/state?__v70boot=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
 - `/api/state?__v72boot=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
 - `/api/state?__v73boot=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
+- `/api/state?__v81boot=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
 - `/api/state?replace=1&__v71=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
 - `/api/state?replace=1&__v71p=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
 - `/api/state?replace=1&__v73push=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
 - `/api/state?replace=1&__v79=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
 - `/api/state?replace=1&__v79p=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
 - `/api/state?replace=1&__v80push=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
+- `/api/state?replace=1&__v81push=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
 
 ## هـ) گراف حافظه مرورگر (کلید ↔ فایل‌های دست‌زننده)
 
@@ -16421,7 +16454,7 @@ pause
 
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
-- نسخه سورس package: `11.80.0`
+- نسخه سورس package: `11.81.0`
 - مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a03a45-javad-test1`؛ push/PR فقط از همین شاخه.
 - Production فعال: `https://javad-test1.onrender.com` — نسخه سورس فعلی `11.66.0` است و تا push کاربر روی production همان آخرین دیپلوی قبلی می‌ماند.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.
@@ -16752,7 +16785,7 @@ push به گیت‌هاب → push به گیت‌لب.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: README.md (12683 بایت)
+فایل: README.md (12853 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # نماینده علمی — طنین طب طاها
@@ -17175,6 +17208,9 @@ git push gitlab main             #   GitLab
 : `npm run build`       .
 
 نسخه جاری برنامه: **11.80.0** — ملاک فقط اطلاعات سرور؛ قفل داده نسخه‌های قبلی.
+
+## 11.81.0
+پاکسازی قطعی داده سیستم قبلی؛ ملاک فقط سرور نسل ۱۱.۸۱؛ مصرف‌کننده جدید = فعلی × افزایش.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -17522,7 +17558,7 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.80.0",
+  "version": "11.81.0",
   "description": "سیستم جامع مدیریت و ویزیت علمی، داروخانه‌ها، پزشکان و سفارشات (CRM / PWA) هماهنگ با Render و Neon",
   "main": "server.js",
   "engines": {
@@ -17617,7 +17653,7 @@ services:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: server.js (35965 بایت)
+فایل: server.js (36594 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // سرور سبک Node.js برای Render — ورود جدا، gzip، health، ژئوکد، محدودیت نرخ
@@ -17628,7 +17664,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.80.0";
+const APP_VERSION = "11.81.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -17734,7 +17770,19 @@ function stripLegacySample(st) {
 function isV80Gen(st, syncHdr) {
   const g = String((st && (st._dataGen || st._schemaVersion)) || "");
   const s = String(syncHdr || "");
-  return g === "11.80.0" || g.indexOf("11.80") === 0 || s === "v80" || s === "11.80.0";
+  return g === "11.81.0" || g.indexOf("11.81") === 0 || s === "v81" || s === "11.81.0" || s === "v80";
+}
+const LEGACY_WIPE_KEYS = ["pharmacies","doctors","orders","reps","visits","activityLog","repHomes","repRoutes","leaves","hospitals","notifications"];
+function fenceOldSystem(st) {
+  if (!st || typeof st !== "object") return st;
+  stripLegacySample(st);
+  if (String(st._dataGen || "") !== "11.81.0") {
+    LEGACY_WIPE_KEYS.forEach((k) => { st[k] = []; });
+    st._dataGen = "11.81.0";
+    st._schemaVersion = "11.81.0";
+    st._purgedLegacyAt = Date.now();
+  }
+  return st;
 }
 function recStamp(r) {
   if (!r || typeof r !== "object") return 0;
@@ -18071,8 +18119,10 @@ const server = http.createServer((req, res) => {
     if (fs.existsSync(SERVER_DATA_PATH)) {
       const data = readJsonSafe(SERVER_DATA_PATH);
       if (!data) return send(req, res, 503, JSON.stringify({ status: "error", message: "state data unavailable" }), "application/json; charset=utf-8");
+      const beforeGen = String(data._dataGen || "");
       const removed = stripLegacySample(data);
-      if (removed > 0) {
+      fenceOldSystem(data);
+      if (removed > 0 || beforeGen !== "11.81.0") {
         try { writeJsonAtomic(SERVER_DATA_PATH, data); } catch (e) {}
       }
       return send(req, res, 200, JSON.stringify({ status: "success", data }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
@@ -18097,8 +18147,9 @@ const server = http.createServer((req, res) => {
           return send(req, res, 200, JSON.stringify({ status: "success", data: keep, ignored: true, reason: "legacy-locked" }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
         }
         stripLegacySample(data);
-        data._dataGen = "11.80.0";
-        data._schemaVersion = "11.80.0";
+        fenceOldSystem(data);
+        data._dataGen = "11.81.0";
+        data._schemaVersion = "11.81.0";
         data._soloOnly = true;
         data._soloEpoch = Number(data._soloEpoch) || (existing && existing._soloEpoch) || Date.now();
         data._soloAt = Date.now();
@@ -18288,7 +18339,7 @@ git status -sb
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: update_chat_arena.py (363163 بایت)
+فایل: update_chat_arena.py (363980 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~python
 #!/usr/bin/env python3
@@ -18349,7 +18400,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.81 | تاریخ به‌روزرسانی: 2026-08-27 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.80.0
+نسخه این فایل: 1.82 | تاریخ به‌روزرسانی: 2026-08-27 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.81.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -21895,6 +21946,10 @@ ZIP اولین نسخه 38 از کامیت تاریخی دقیق همان نسخ
 🧑 کاربر: دوباره اطلاعات سیستم‌های دیگر در برنامه وجود دارد. کلا همه اطلاعات باید یکپارچه باشد و هیچ اثری از اطلاعات سیستم قبلی نباشد. ورود اطلاعات قبلی را قفل کن و ملاک فقط اطلاعات سرور باشد. هیچ اثری از نسخه‌های قبلی در کد نباشد. در کادر قیمت‌های جدید، قیمت مصرف‌کننده با قیمت داروخانه یکی است که نباید باشد و باید بر اساس مصرف‌کننده فعلی و درصد افزایش باشد.
 🤖 دستیار: نسخه ۱۱.۸۰.۰ — بوت فقط از GET سرور با adopt کامل (بدون ادغام localStorage)؛ POST نسخه‌های قبلی با reason=legacy-locked رد می‌شود؛ داده نمونه از DEFAULT_INITIAL_DATA حذف شد. قیمت مصرف‌کننده کادر جدید = مصرف‌کننده فعلی × (۱+درصد افزایش) و دیگر از قیمت داروخانه کپی نمی‌شود.
 
+──────────────────────────────── نوبت ۹۹ ────────────────────────────────
+🧑 کاربر: هیچ‌کدام از تغییرات انجام نشده. دوباره اطلاعات سیستم‌های دیگر هست. باید پاک شود، ورود قبلی قفل شود، ملاک فقط سرور، مصرف‌کننده جدید = فعلی × افزایش.
+🤖 دستیار: نسخه ۱۱.۸۱.۰ — پاکسازی قطعی لیست‌های عملیاتی نسل قبل در localStorage و GET سرور؛ POST بدون نسل ۱۱.۸۱ رد می‌شود؛ مصرف‌کننده کادر جدید از فرمول فعلی×افزایش در سلول مستقل v81-new-cons.
+
 """
 
 FILES_INTRO = """
@@ -23258,7 +23313,7 @@ async function sendWhatsappCloud(text, to, token) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-app.js (184702 بایت)
+فایل: public/crm-app.js (185050 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================================
@@ -23309,7 +23364,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "11.80.0";
+const CRM_APP_VERSION = "11.81.0";
 try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
@@ -23377,6 +23432,12 @@ function loadState() {
     if (!state.settings) state.settings = {};
     ["users","activityLog","repHomes","repRoutes","leaves","notifications","salesTargets","products","hospitals","visits","pharmacies","doctors","orders","reps"].forEach(function(k){ if (!Array.isArray(state[k])) state[k] = []; });
     if (!state.messengers) state.messengers = { channels: {}, allowPeerMessaging: false };
+    if (String(state._dataGen || "") !== "11.81.0") {
+      ["pharmacies","doctors","orders","reps","visits","activityLog","repHomes","repRoutes","leaves","hospitals","notifications"].forEach(function (k) { state[k] = []; });
+      state._dataGen = "11.81.0";
+      state._schemaVersion = "11.81.0";
+      state._purgedLegacyAt = Date.now();
+    }
     (function stripLegacySeed(){
       var ids={"ph-1":1,"ph-2":1,"ph-3":1,"doc-1":1,"doc-2":1,"rep-1":1,"rep-2":1,"rep-3":1,"ord-1":1,"u-2":1,"u-3":1,"u-4":1,"prod-1":1,"prod-2":1,"act-1":1,"act-2":1,"act-3":1,"home-1":1,"home-2":1,"rt-1":1,"rt-2":1,"lv-1":1,"lv-2":1,"v-1":1,"v-2":1,"v-3":1,"h-1":1,"h-2":1,"h-3":1,"h-4":1,"not-1":1,"not-2":1,"tgt-1":1,"tgt-2":1};
       var names={"داروخانه دکتر عرفانی":1,"داروخانه شبانه‌روزی رازی":1,"داروخانه دکتر عقبایی":1,"دکتر کاوه سعیدی":1,"دکتر الناز تهرانی":1,"کپسول امپرازول ۲۰ میلی‌گرم":1,"آمپول نوروبیون ویتامین B کمپلکس":1};
@@ -26329,7 +26390,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.80.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.81.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -27462,7 +27523,7 @@ function deleteProductCatalogItem(id) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-bundle.js (1101837 بایت)
+فایل: public/crm-bundle.js (1108585 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 /* crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
@@ -44424,15 +44485,22 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     var cur=pricesOf(p);
     var d=ensureDraft(p);
     var inc=Number(d.increasePct)||0;
-    var baseCons=Number(cur.cons)||0;
-    var newCons=Math.round(baseCons*(1+inc/100));
+    var currentCons=Number(cur.cons)||0;
+    var newCons=Math.round(currentCons*(1+inc/100));
     var m3=Number(d.marginDistPh);if(!isFinite(m3))m3=margin(cur.dist,cur.ph);
-    var m5=Number(d.marginPhCons);if(!isFinite(m5))m5=margin(cur.ph,cur.cons);
-    var back=fromCons(newCons,m3,m5);
-    d.dist=back.dist;d.ph=back.ph;
+    var m5=Number(d.marginPhCons);
+    if(!isFinite(m5))m5=margin(cur.ph,currentCons);
     d.cons=newCons;
     d.vat=cur.vat;
     d.marginDistPh=m3;d.marginPhCons=m5;
+    if(isFinite(m5)&&m5!==0){
+      var back=fromCons(newCons,m3,m5);
+      d.dist=back.dist;d.ph=back.ph;
+    }else{
+      d.ph=Math.round((Number(cur.ph)||0)*(1+inc/100));
+      d.dist=Math.round(d.ph*(1-(Number(m3)||0)/100));
+    }
+    d.cons=newCons;
     return d;
   }
   function applyDue(){
@@ -44506,7 +44574,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         "<td><input class='form-input v77-inp qty-no-spin' data-k='marginDistPh' data-pid='"+pid+"' inputmode='decimal' "+ro+" value='"+faP(d.marginDistPh)+"'></td>"+
         "<td style='direction:ltr'>"+faN(d.ph)+"</td>"+
         "<td><input class='form-input v77-inp qty-no-spin' data-k='marginPhCons' data-pid='"+pid+"' inputmode='decimal' "+ro+" value='"+faP(d.marginPhCons)+"'></td>"+
-        "<td style='direction:ltr'>"+faN(d.cons)+"</td>"+
+        "<td class='v81-new-cons' data-pid='"+pid+"' style='direction:ltr'>"+faN(Math.round((Number(cur.cons)||0)*(1+(Number(d.increasePct)||0)/100)))+"</td>"+
         (editingPid===String(p.id||p.name)
           ? "<td><input class='form-input v77-inp qty-no-spin' data-k='vatPercent' data-box='new' data-pid='"+pid+"' inputmode='decimal' value='"+faP(d.vat)+"'></td>"
           : "<td style='direction:ltr'>"+faP(d.vat)+"٪</td>")+
@@ -44550,6 +44618,15 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
           else this.value=v;
         });
       }
+      inp.addEventListener("input",function(){
+        if(inp.getAttribute("data-k")!=="increasePct")return;
+        var pid=inp.getAttribute("data-pid");
+        var inc=Number(String(inp.value||"").replace(/[^\d.-]/g,""))||0;
+        var p=findProd(pid);if(!p)return;
+        var cur=pricesOf(p);
+        var cell=document.querySelector("#v77NewPricesBody td.v81-new-cons[data-pid='"+pid+"']");
+        if(cell)cell.textContent=faN(Math.round((Number(cur.cons)||0)*(1+inc/100)));
+      });
       inp.addEventListener("change",function(){
         onField(inp.getAttribute("data-pid"),inp.getAttribute("data-k"),inp.value);
       });
@@ -45114,6 +45191,130 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,10);});
   else setTimeout(boot,10);
+})();
+
+/* v11.81.0: پاکسازی قطعی داده سیستم قبلی + ملاک فقط سرور + مصرف‌کننده از فعلی×افزایش */
+(function(){
+  "use strict";
+  window.__V80_BOOT=1;
+  window.__V81_LOCK=1;
+  window.__V73_BOOT=1;
+  window.__V79_BOOT=1;
+  var GEN="11.81.0";
+  var WIPE=["pharmacies","doctors","orders","reps","visits","activityLog","repHomes","repRoutes","leaves","hospitals","notifications"];
+  var allowPost=false;
+  function live(){
+    try{if(typeof window.__CRM_GET_STATE==="function"){var g=window.__CRM_GET_STATE();if(g&&typeof g==="object")return g;}}catch(e){}
+    return window.state||null;
+  }
+  function persist(){
+    var st=live();if(!st)return;
+    try{localStorage.setItem("CRM_APP_STATE_V2",typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(st):JSON.stringify(st));}catch(e){}
+  }
+  function wipeOps(st){
+    if(!st||typeof st!=="object")return st;
+    WIPE.forEach(function(k){st[k]=[];});
+    st._dataGen=GEN;st._schemaVersion=GEN;st._purgedLegacyAt=Date.now();
+    return st;
+  }
+  function stamp(st){
+    if(!st||typeof st!=="object")return st;
+    st._dataGen=GEN;st._schemaVersion=GEN;st._soloOnly=true;st._unifiedAt=Date.now();st._lastSavedAt=Date.now();
+    return st;
+  }
+  function paintLists(){
+    try{if(typeof window.renderPharmaciesList==="function")window.renderPharmaciesList();else if(typeof renderPharmaciesList==="function")renderPharmaciesList();}catch(e){}
+    try{if(typeof window.renderDoctorsList==="function")window.renderDoctorsList();else if(typeof renderDoctorsList==="function")renderDoctorsList();}catch(e){}
+    try{if(typeof window.renderOrdersList==="function")window.renderOrdersList();else if(typeof renderOrdersList==="function")renderOrdersList();}catch(e){}
+    try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}
+    try{if(typeof window.syncProductsEverywhere==="function")window.syncProductsEverywhere();}catch(e){}
+    try{if(typeof window.paintV77ProductPricing==="function")window.paintV77ProductPricing();}catch(e){}
+    try{if(typeof updateNavBadges==="function")updateNavBadges();}catch(e){}
+  }
+  function adoptExact(remote){
+    if(!remote||typeof remote!=="object")return;
+    if(String(remote._dataGen||"")!==GEN)wipeOps(remote);
+    stamp(remote);
+    window.state=remote;
+    persist();
+    paintLists();
+  }
+  (function wipeLocalNow(){
+    var st=live();
+    if(st && String(st._dataGen||"")!==GEN){wipeOps(st);persist();}
+  })();
+  var ofetch=window.fetch;
+  if(typeof ofetch==="function"&&!ofetch._v81){
+    var wf=function(url,opts){
+      var u=String(url||"");
+      var method=(opts&&opts.method)?String(opts.method).toUpperCase():"GET";
+      if(/\/api\/state/.test(u)&&method==="POST"){
+        var hdrs={};
+        try{
+          if(opts&&opts.headers&&typeof opts.headers.forEach==="function")opts.headers.forEach(function(v,k){hdrs[String(k).toLowerCase()]=v;});
+          else if(opts&&opts.headers)Object.keys(opts.headers).forEach(function(k){hdrs[String(k).toLowerCase()]=opts.headers[k];});
+        }catch(e){}
+        var sync=String(hdrs["x-crm-sync"]||"");
+        if(!allowPost&&sync!=="v81"){
+          return Promise.resolve(new Response(JSON.stringify({status:"success",ignored:true,reason:"legacy-locked"}),{status:200,headers:{"Content-Type":"application/json"}}));
+        }
+        opts=opts||{};
+        var h2={};
+        if(opts.headers&&typeof opts.headers.forEach==="function")opts.headers.forEach(function(v,k){h2[k]=v;});
+        else Object.assign(h2,opts.headers||{});
+        h2["X-CRM-Replace"]="1";h2["X-CRM-Request"]="1";h2["X-CRM-Sync"]="v81";
+        opts.headers=h2;
+        try{
+          var body=opts.body;
+          if(typeof body==="string"&&body.charAt(0)==="{"){
+            var parsed=JSON.parse(body);
+            parsed._dataGen=GEN;parsed._schemaVersion=GEN;parsed._soloOnly=true;
+            if(String(parsed._dataGen)!==GEN)wipeOps(parsed);
+            opts.body=JSON.stringify(parsed);
+          }
+        }catch(e2){}
+        if(u.indexOf("replace=")<0)u+=(u.indexOf("?")>=0?"&":"?")+"replace=1";
+        return ofetch.call(this,u,opts);
+      }
+      return ofetch.apply(this,arguments);
+    };
+    wf._v81=true;wf._raw=ofetch;window.fetch=wf;
+  }
+  function pushClean(){
+    var st=live();if(!st)return;
+    stamp(st);
+    if(!navigator.onLine){persist();return;}
+    var body=typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(st):JSON.stringify(st);
+    try{
+      var parsed=JSON.parse(body);
+      parsed._dataGen=GEN;parsed._schemaVersion=GEN;parsed._soloOnly=true;
+      body=JSON.stringify(parsed);
+    }catch(e){}
+    fetch("/api/state?replace=1&__v81push="+Date.now(),{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1","X-CRM-Replace":"1","X-CRM-Sync":"v81"},body:body,cache:"no-store"}).catch(function(){});
+  }
+  window.crmPushStateToServer=function(){if(!allowPost)return;pushClean();};
+  function boot(){
+    if(window.__V81_BOOT)return;window.__V81_BOOT=1;
+    fetch("/api/state?__v81boot="+Date.now()+"&__v79keep=1",{cache:"no-store",headers:{"X-CRM-Request":"1","X-CRM-Sync":"v81"}}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+      var remote=j&&j.data;
+      if(remote&&typeof remote==="object"){
+        adoptExact(remote);
+      }else{
+        var st=live();
+        if(st){wipeOps(st);stamp(st);persist();paintLists();}
+      }
+      allowPost=true;
+      pushClean();
+      try{if(typeof window.__CRM_UNVEIL==="function")window.__CRM_UNVEIL();}catch(e){}
+    }).catch(function(){
+      var st=live();
+      if(st){wipeOps(st);persist();paintLists();}
+      allowPost=true;
+      try{if(typeof window.__CRM_UNVEIL==="function")window.__CRM_UNVEIL();}catch(e){}
+    });
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,8);});
+  else setTimeout(boot,8);
 })();
 ~~~~~~~~
 
@@ -58619,7 +58820,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/index.html (162001 بایت)
+فایل: public/index.html (162506 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~html
 <!DOCTYPE html>
@@ -58656,7 +58857,19 @@ button.v19-gps svg{display:block}
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.80.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="11.81.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      try{
+        var GEN="11.81.0";
+        var raw=localStorage.getItem("CRM_APP_STATE_V2");
+        if(raw){
+          var st=JSON.parse(raw);
+          if(st && typeof st==="object" && String(st._dataGen||"")!==GEN){
+            ["pharmacies","doctors","orders","reps","visits","activityLog","repHomes","repRoutes","leaves","hospitals","notifications"].forEach(function(k){st[k]=[];});
+            st._dataGen=GEN;st._schemaVersion=GEN;st._purgedLegacyAt=Date.now();
+            localStorage.setItem("CRM_APP_STATE_V2", JSON.stringify(st));
+          }
+        }
+      }catch(eWipe){}
       document.documentElement.classList.add("crm-booting");
       function target(){return location.pathname+location.search+location.hash;}
       function rescue(serverBuild){if(true)return;var u="/cache-reset?to="+encodeURIComponent(target())+"&build="+encodeURIComponent(serverBuild||BUILD)+"&t="+Date.now();location.replace(u);}
@@ -58679,7 +58892,7 @@ button.v19-gps svg{display:block}
   <meta name="theme-color" content="#0d9488" />
 
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.80.0" />
+  <link rel="stylesheet" href="style.css?v=11.81.0" />
 </head>
 <body>
 
@@ -60344,7 +60557,7 @@ button.v19-gps svg{display:block}
           <div class="card-title"><span>🆕 قیمت‌های جدید کالاها</span></div>
           <button type="button" id="btnSaveProductPricing" class="btn btn-primary btn-sm">💾 ذخیره پیش‌نویس قیمت‌ها</button>
         </div>
-        <p class="col-help">قیمت مصرف‌کننده در این کادر برابر است با قیمت مصرف‌کننده در کادر قیمت‌های فعلی ضربدر (۱ + درصد افزایش) و با قیمت داروخانه یکی گرفته نمی‌شود. درصد ستون سوم و پنجم را مدیر مشخص می‌کند. تاریخ اعمال با اسلش خودکار است.</p>
+        <p class="col-help">قانون قطعی: ستون مصرف‌کننده این کادر = مصرف‌کننده کادر فعلی × (۱ + درصد افزایش). این عدد از قیمت داروخانه کپی نمی‌شود. درصد ستون ۳ و ۵ فقط پخش و داروخانه را برمی‌گرداند.</p>
         <div class="table-responsive">
           <table class="data-table" id="v77NewPricesTable">
             <thead>
@@ -61048,9 +61261,9 @@ button.v19-gps svg{display:block}
   <script src="vendor/leaflet.js"></script>
 
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.80.0"></script>
-  <script src="crm-app.js?v=11.80.0"></script>
-          <script src="crm-bundle.js?v=11.80.0"></script>
+  <script src="crm-data.js?v=11.81.0"></script>
+  <script src="crm-app.js?v=11.81.0"></script>
+          <script src="crm-bundle.js?v=11.81.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
@@ -61124,7 +61337,7 @@ window.IRAN_FACILITIES = [
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
   <script>
-    (function(){var BUILD="11.80.0",key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{localStorage.setItem(key,BUILD);}catch(e){}fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD){/* v11.70 no auto go(d.version) */}}).catch(function(){});})();
+    (function(){var BUILD="11.81.0",key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{localStorage.setItem(key,BUILD);}catch(e){}fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD){/* v11.70 no auto go(d.version) */}}).catch(function(){});})();
   </script>
   <title>ورود | طنین طب طاها</title>
 
@@ -64226,7 +64439,7 @@ self.addEventListener("fetch", (event) => {
 فایل: public/sw.js (3742 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
-const BUILD = "11.80.0";
+const BUILD = "11.81.0";
 const CACHE = "crm-static-v" + BUILD;
 
 async function purgeEveryCache() {
@@ -90042,7 +90255,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/version-11.24-regressions.test.mjs (67980 بایت)
+فایل: tests/version-11.24-regressions.test.mjs (68913 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 import test from 'node:test';
@@ -90364,7 +90577,7 @@ test('multi-part prompts require a real acceptance checklist before ZIP delivery
 });
 
 test('next-chat GitHub handoff records exact publish truth and engine map', () => {
-  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.80.0/);
+  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.81.0/);
   assert.match(githubHandoff,/4984d17/);assert.match(githubHandoff,/Resource not accessible by integration/);
   assert.match(githubHandoff,/Production[\s\S]*11\.20\.0/);
   assert.match(githubHandoff,/موتور پاک‌سازی خودکار کش/);assert.match(githubHandoff,/موتورهای پایداری داده/);
@@ -90416,7 +90629,7 @@ test('new build clears only old asset caches before revealing app and prevents m
 test('v38 cache rescue automatically forces a fresh build without deleting CRM data', () => {
   const login = read('../public/login.html');
   assert.match(server,/pathname === "\/cache-reset"/);assert.match(server,/Clear-Site-Data/);
-  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.80.0"/);
+  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.81.0"/);
   assert.match(html,/\/api\/health\?__crm_nocache=/);assert.match(html,/\/cache-reset\?to=/);assert.match(html,/d\.version!==BUILD/);
   assert.match(login,/CRM_CACHE_RESCUED_/);assert.match(login,/\/cache-reset\?to=/);
   assert.match(sw,/function purgeEveryCache/);assert.match(sw,/CRM_BUILD_ACTIVE/);assert.match(sw,/cache: "reload"/);
@@ -90426,7 +90639,7 @@ test('v38 cache rescue automatically forces a fresh build without deleting CRM d
     assert.doesNotMatch(source,/indexedDB\.deleteDatabase\s*\(/);
     assert.doesNotMatch(source,/removeItem\(["']CRM_APP_STATE_V2/);
   }
-  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.80.0'/);
+  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.81.0'/);
 });
 
 test('security hardening blocks dangerous device APIs, cross-origin writes, executables and formula injection', () => {
@@ -90441,7 +90654,7 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.80.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.81.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
@@ -90536,7 +90749,7 @@ test('v11.43.1 engine button feedback + permanent version watchdog', () => {
 test('v11.61.0 safe cache-hardening', () => {
   const html = read('../public/index.html'); const app = read('../public/crm-app.js');
   assert.match(html,/http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/);
-  assert.match(app,/CRM_APP_VERSION = "11.80.0"/);
+  assert.match(app,/CRM_APP_VERSION = "11.81.0"/);
   assert.match(app,/بارگذاری شد/);
 });
 
@@ -90778,8 +90991,8 @@ test('v11.72.0 durable target ops + mm gap + row number', () => {
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "11.80.0"/);
-  assert.match(srv, /const APP_VERSION = "11.80.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.81.0"/);
+  assert.match(srv, /const APP_VERSION = "11.81.0"/);
   assert.match(b, /v11\.68\.0/);
   assert.match(b, /v68-edit-tgt/);
   assert.match(b, /v68-del-tgt/);
@@ -90799,8 +91012,8 @@ test('v11.72.0 server-authoritative unify + durable delete + live mm/row', () =>
   const b = read('../public/crm-bundle.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
-  assert.match(app, /CRM_APP_VERSION = "11.80.0"/);
-  assert.match(srv, /const APP_VERSION = "11.80.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.81.0"/);
+  assert.match(srv, /const APP_VERSION = "11.81.0"/);
   assert.match(srv, /function naturalRecordKey/);
   assert.match(srv, /if \(id && deleted && deleted\[id\] && recStamp\(r\) <= Number\(deleted\[id\]\)\) return/);
   assert.match(b, /v11\.69\.0/);
@@ -90822,8 +91035,8 @@ test('v11.72.0 solo device + no cache-reset loop', () => {
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "11.80.0"/);
-  assert.match(srv, /const APP_VERSION = "11.80.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.81.0"/);
+  assert.match(srv, /const APP_VERSION = "11.81.0"/);
   assert.match(srv, /x-crm-replace/);
   assert.match(srv, /_soloOnly/);
   assert.match(srv, /CRM_RESET_LOCK/);
@@ -90844,8 +91057,8 @@ test('v11.72.0 single script load + 404 not login + solo replace', () => {
   assert.equal((html.match(/crm-app\.js\?v=/g)||[]).length, 1);
   assert.equal((html.match(/crm-bundle\.js\?v=/g)||[]).length, 1);
   assert.equal((html.match(/<\/html>/g)||[]).length, 1);
-  assert.match(app, /CRM_APP_VERSION = "11.80.0"/);
-  assert.match(srv, /const APP_VERSION = "11.80.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.81.0"/);
+  assert.match(srv, /const APP_VERSION = "11.81.0"/);
   assert.match(srv, /v11.71: Clear-Site-Data/);
   assert.match(b, /v11\.71\.0/);
   assert.match(b, /CRM_SOLO_CLAIM/);
@@ -90858,9 +91071,9 @@ test('v11.72.0 server-first paint + no-spin qty + per-row ops + dist achieved/re
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "11.80.0"/);
-  assert.match(srv, /const APP_VERSION = "11.80.0"/);
-  assert.match(app, /register\('\/sw\.js\?v=11\.80.0'/);
+  assert.match(app, /CRM_APP_VERSION = "11.81.0"/);
+  assert.match(srv, /const APP_VERSION = "11.81.0"/);
+  assert.match(app, /register\('\/sw\.js\?v=11\.81.0'/);
   assert.match(b, /v11\.72\.0/);
   assert.match(b, /__v72boot/);
   assert.match(b, /function adoptServerExact/);
@@ -90891,17 +91104,17 @@ test('v11.73.0 live state bind + delayed unveil + durable dist save + kill old o
   const html = read('../public/index.html');
   const sw = read('../public/sw.js');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "11.80.0"/);
-  assert.match(srv, /const APP_VERSION = "11.80.0"/);
-  assert.match(sw, /const BUILD = "11.80.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.81.0"/);
+  assert.match(srv, /const APP_VERSION = "11.81.0"/);
+  assert.match(sw, /const BUILD = "11.81.0"/);
   assert.match(app, /function bindLiveWindowState/);
   assert.match(app, /window\.__CRM_GET_STATE/);
   assert.match(app, /window\.renderPharmaciesList/);
-  assert.match(html, /var BUILD="11.80.0"/);
+  assert.match(html, /var BUILD="11.81.0"/);
   assert.match(html, /window\.__CRM_UNVEIL/);
   assert.match(html, /if\(!window\.__CRM_UNVEILED\)window\.__CRM_UNVEIL\(\);},5000\)/);
   assert.doesNotMatch(html, /classList\.remove\("crm-booting"\);},800\)/);
-  assert.match(login, /var BUILD="11.80.0"/);
+  assert.match(login, /var BUILD="11.81.0"/);
   assert.match(b, /v11\.73\.0/);
   assert.match(b, /__v73boot/);
   assert.match(b, /function adoptExact/);
@@ -90923,8 +91136,8 @@ test('v11.74.0 mashateb sales mapping like daya/shafaarad', () => {
   const v20file = read('../public/crm-features-v20.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
-  assert.match(app, /CRM_APP_VERSION = "11.80.0"/);
-  assert.match(srv, /const APP_VERSION = "11.80.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.81.0"/);
+  assert.match(srv, /const APP_VERSION = "11.81.0"/);
   assert.match(b, /MASHATEB_CODE_MAP=\{1001:186101,1002:186102,1003:186103,1004:186104,1005:186105,1006:186106,1007:186107\}/);
   assert.match(v20file, /MASHATEB_CODE_MAP=\{1001:186101,1002:186102,1003:186103,1004:186104,1005:186105,1006:186106,1007:186107\}/);
   assert.match(b, /else if\(id==="mashateb"\)\{x\.date=2;x\.qty=10;x\.giftQty=11;x\.pharmacy=9;/);
@@ -90949,8 +91162,8 @@ test('v11.76.0 designer live apply + geo autofill off + mashateb col3 date + db 
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const v20file = read('../public/crm-features-v20.js');
-  assert.match(app, /CRM_APP_VERSION = "11.80.0"/);
-  assert.match(srv, /const APP_VERSION = "11.80.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.81.0"/);
+  assert.match(srv, /const APP_VERSION = "11.81.0"/);
   assert.match(b, /v11\.75\.0/);
   assert.match(b, /function applyDesignerNow/);
   assert.match(b, /function applyPaintedMeta/);
@@ -90973,8 +91186,8 @@ test('v11.76.0 bulk archive lock + geo nocombo + pharmacy name no subsets + acti
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const v20file = read('../public/crm-features-v20.js');
-  assert.match(app, /CRM_APP_VERSION = "11.80.0"/);
-  assert.match(srv, /const APP_VERSION = "11.80.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.81.0"/);
+  assert.match(srv, /const APP_VERSION = "11.81.0"/);
   assert.match(b, /v11\.76\.0/);
   assert.match(b, /function bulkUnion/);
   assert.match(b, /function bulkCount/);
@@ -91003,8 +91216,8 @@ test('v11.77.0 product pricing tab current/new boxes + reverse calc + jalali app
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const data = read('../public/crm-data.js');
-  assert.match(app, /CRM_APP_VERSION = "11.80.0"/);
-  assert.match(srv, /const APP_VERSION = "11.80.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.81.0"/);
+  assert.match(srv, /const APP_VERSION = "11.81.0"/);
   assert.match(app, /tab-product-pricing/);
   assert.match(html, /id="tab-product-pricing"/);
   assert.match(html, /id="v77CurrentPricesBody"/);
@@ -91039,8 +91252,8 @@ test('v11.78.0 consumer price + legal margin + row edit VAT + live designer + in
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "11.80.0"/);
-  assert.match(srv, /const APP_VERSION = "11.80.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.81.0"/);
+  assert.match(srv, /const APP_VERSION = "11.81.0"/);
   assert.match(html, /id="productConsumerPrice"/);
   assert.match(html, /قیمت مصرف‌کننده \(ریال\)/);
   assert.match(app, /consumerPrice: consPrice \|\| phPrice/);
@@ -91069,8 +91282,8 @@ test('v11.79.0 this-device-only restore + no duplicate product code column', () 
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "11.80.0"/);
-  assert.match(srv, /const APP_VERSION = "11.80.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.81.0"/);
+  assert.match(srv, /const APP_VERSION = "11.81.0"/);
   assert.match(app, /v20-product-code/);
   assert.ok(b.includes("v11.79.0"));
   assert.ok(b.includes("v11.79.0"));
@@ -91087,15 +91300,15 @@ test('v11.80.0 server-only lock + new consumer from current times increase', () 
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const data = read('../public/crm-data.js');
-  assert.match(app, /CRM_APP_VERSION = "11.80.0"/);
-  assert.match(srv, /const APP_VERSION = "11.80.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.81.0"/);
+  assert.match(srv, /const APP_VERSION = "11.81.0"/);
   assert.ok(b.includes("v11.80.0"));
   assert.match(b, /function restoreThisDevice/);
   assert.match(b, /d\.cons=newCons/);
   assert.match(b, /legacy-locked/);
   assert.match(srv, /function stripLegacySample/);
   assert.match(srv, /reason: "legacy-locked"/);
-  assert.match(html, /var BUILD="11.80.0"/);
+  assert.match(html, /var BUILD="11.81.0"/);
   assert.match(data, /pharmacies: \[\]/);
   assert.ok(!data.includes("داروخانه دکتر عرفانی"));
   const ctx={result:null};
@@ -91104,6 +91317,27 @@ test('v11.80.0 server-only lock + new consumer from current times increase', () 
     result={a:computeNew(3816000,10), b:computeNew(3816000,0)};`, ctx);
   assert.equal(ctx.result.a, 4197600);
   assert.equal(ctx.result.b, 3816000);
+});
+
+test('v11.81.0 purge previous-system data + new consumer formula cell', () => {
+  const b = read('../public/crm-bundle.js');
+  const app = read('../public/crm-app.js');
+  const srv = read('../server.js');
+  const html = read('../public/index.html');
+  assert.match(app, /CRM_APP_VERSION = "11.81.0"/);
+  assert.match(srv, /const APP_VERSION = "11.81.0"/);
+  assert.ok(b.includes("v11.81.0"));
+  assert.match(b, /v81-new-cons/);
+  assert.match(srv, /function fenceOldSystem/);
+  assert.match(html, /_purgedLegacyAt/);
+  assert.match(app, /_dataGen \|\| ""\) !== "11.81.0"/);
+  const ctx={result:null};
+  vm.createContext(ctx);
+  vm.runInContext(`function newCons(cur,inc){return Math.round((Number(cur)||0)*(1+(Number(inc)||0)/100));}
+    result={a:newCons(3816000,10), b:newCons(3816000,0), c:newCons(0,10)};`, ctx);
+  assert.equal(ctx.result.a, 4197600);
+  assert.equal(ctx.result.b, 3816000);
+  assert.equal(ctx.result.c, 0);
 });
 ~~~~~~~~
 

@@ -1654,3 +1654,7 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 ## 11.80.0
 قفل ورود داده قبلی، unify روی سرور، مصرف‌کننده کادر جدید از فعلی و درصد افزایش.
 - [ ] push کاربر → health=11.80.0
+
+## 11.81.0
+پاکسازی نسل قبل + فرمول مصرف‌کننده کادر جدید.
+- [ ] push کاربر → health=11.81.0

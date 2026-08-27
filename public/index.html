@@ -32,7 +32,19 @@
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.80.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="11.81.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      try{
+        var GEN="11.81.0";
+        var raw=localStorage.getItem("CRM_APP_STATE_V2");
+        if(raw){
+          var st=JSON.parse(raw);
+          if(st && typeof st==="object" && String(st._dataGen||"")!==GEN){
+            ["pharmacies","doctors","orders","reps","visits","activityLog","repHomes","repRoutes","leaves","hospitals","notifications"].forEach(function(k){st[k]=[];});
+            st._dataGen=GEN;st._schemaVersion=GEN;st._purgedLegacyAt=Date.now();
+            localStorage.setItem("CRM_APP_STATE_V2", JSON.stringify(st));
+          }
+        }
+      }catch(eWipe){}
       document.documentElement.classList.add("crm-booting");
       function target(){return location.pathname+location.search+location.hash;}
       function rescue(serverBuild){if(true)return;var u="/cache-reset?to="+encodeURIComponent(target())+"&build="+encodeURIComponent(serverBuild||BUILD)+"&t="+Date.now();location.replace(u);}
@@ -55,7 +67,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.80.0" />
+  <link rel="stylesheet" href="style.css?v=11.81.0" />
 </head>
 <body>
 
@@ -1720,7 +1732,7 @@
           <div class="card-title"><span>🆕 قیمت‌های جدید کالاها</span></div>
           <button type="button" id="btnSaveProductPricing" class="btn btn-primary btn-sm">💾 ذخیره پیش‌نویس قیمت‌ها</button>
         </div>
-        <p class="col-help">قیمت مصرف‌کننده در این کادر برابر است با قیمت مصرف‌کننده در کادر قیمت‌های فعلی ضربدر (۱ + درصد افزایش) و با قیمت داروخانه یکی گرفته نمی‌شود. درصد ستون سوم و پنجم را مدیر مشخص می‌کند. تاریخ اعمال با اسلش خودکار است.</p>
+        <p class="col-help">قانون قطعی: ستون مصرف‌کننده این کادر = مصرف‌کننده کادر فعلی × (۱ + درصد افزایش). این عدد از قیمت داروخانه کپی نمی‌شود. درصد ستون ۳ و ۵ فقط پخش و داروخانه را برمی‌گرداند.</p>
         <div class="table-responsive">
           <table class="data-table" id="v77NewPricesTable">
             <thead>
@@ -2424,9 +2436,9 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.80.0"></script>
-  <script src="crm-app.js?v=11.80.0"></script>
-          <script src="crm-bundle.js?v=11.80.0"></script>
+  <script src="crm-data.js?v=11.81.0"></script>
+  <script src="crm-app.js?v=11.81.0"></script>
+          <script src="crm-bundle.js?v=11.81.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />

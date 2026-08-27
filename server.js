@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.80.0";
+const APP_VERSION = "11.81.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -112,7 +112,19 @@ function stripLegacySample(st) {
 function isV80Gen(st, syncHdr) {
   const g = String((st && (st._dataGen || st._schemaVersion)) || "");
   const s = String(syncHdr || "");
-  return g === "11.80.0" || g.indexOf("11.80") === 0 || s === "v80" || s === "11.80.0";
+  return g === "11.81.0" || g.indexOf("11.81") === 0 || s === "v81" || s === "11.81.0" || s === "v80";
+}
+const LEGACY_WIPE_KEYS = ["pharmacies","doctors","orders","reps","visits","activityLog","repHomes","repRoutes","leaves","hospitals","notifications"];
+function fenceOldSystem(st) {
+  if (!st || typeof st !== "object") return st;
+  stripLegacySample(st);
+  if (String(st._dataGen || "") !== "11.81.0") {
+    LEGACY_WIPE_KEYS.forEach((k) => { st[k] = []; });
+    st._dataGen = "11.81.0";
+    st._schemaVersion = "11.81.0";
+    st._purgedLegacyAt = Date.now();
+  }
+  return st;
 }
 function recStamp(r) {
   if (!r || typeof r !== "object") return 0;
@@ -449,8 +461,10 @@ const server = http.createServer((req, res) => {
     if (fs.existsSync(SERVER_DATA_PATH)) {
       const data = readJsonSafe(SERVER_DATA_PATH);
       if (!data) return send(req, res, 503, JSON.stringify({ status: "error", message: "state data unavailable" }), "application/json; charset=utf-8");
+      const beforeGen = String(data._dataGen || "");
       const removed = stripLegacySample(data);
-      if (removed > 0) {
+      fenceOldSystem(data);
+      if (removed > 0 || beforeGen !== "11.81.0") {
         try { writeJsonAtomic(SERVER_DATA_PATH, data); } catch (e) {}
       }
       return send(req, res, 200, JSON.stringify({ status: "success", data }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
@@ -475,8 +489,9 @@ const server = http.createServer((req, res) => {
           return send(req, res, 200, JSON.stringify({ status: "success", data: keep, ignored: true, reason: "legacy-locked" }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
         }
         stripLegacySample(data);
-        data._dataGen = "11.80.0";
-        data._schemaVersion = "11.80.0";
+        fenceOldSystem(data);
+        data._dataGen = "11.81.0";
+        data._schemaVersion = "11.81.0";
         data._soloOnly = true;
         data._soloEpoch = Number(data._soloEpoch) || (existing && existing._soloEpoch) || Date.now();
         data._soloAt = Date.now();
