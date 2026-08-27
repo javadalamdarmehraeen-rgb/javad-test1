@@ -32,7 +32,7 @@
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.76.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="11.77.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       document.documentElement.classList.add("crm-booting");
       function target(){return location.pathname+location.search+location.hash;}
       function rescue(serverBuild){if(true)return;var u="/cache-reset?to="+encodeURIComponent(target())+"&build="+encodeURIComponent(serverBuild||BUILD)+"&t="+Date.now();location.replace(u);}
@@ -55,7 +55,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.76.0" />
+  <link rel="stylesheet" href="style.css?v=11.77.0" />
 </head>
 <body>
 
@@ -126,6 +126,7 @@
       <button type="button" class="nav-item" data-target="tab-dist-targets" onclick="switchTab('tab-dist-targets')"><span>🎯 تارگت فروش هرپخش</span></button>
       <button type="button" class="nav-item" data-target="tab-custom-fields" onclick="switchTab('tab-custom-fields')"><span>➕ افزودن‌ها</span></button>
       <button type="button" class="nav-item" data-target="tab-columns-products" onclick="switchTab('tab-columns-products')"><span>🧱 ستون‌ها و کالاها</span></button>
+      <button type="button" class="nav-item" data-target="tab-product-pricing" onclick="switchTab('tab-product-pricing')"><span>💵 قیمت‌گذاری کالاها</span></button>
       <button type="button" class="nav-item" data-target="tab-manual-design" onclick="switchTab('tab-manual-design')"><span>🎨 طراحی دستی تب‌ها</span></button>
       <button type="button" class="nav-item" data-target="tab-users-permissions" onclick="switchTab('tab-users-permissions')"><span>👤 کاربران و دسترسی</span><span class="nav-badge" id="badgeUsersCount">0</span></button>
       <button type="button" class="nav-item" data-target="tab-messengers" onclick="switchTab('tab-messengers')"><span>💬 پیام‌رسان‌ها</span></button>
@@ -194,6 +195,7 @@
       <button type="button" class="side-menu-item" data-side-target="tab-dist-targets" onclick="switchTab('tab-dist-targets');closeSideMenu();"><span>تارگت فروش هرپخش</span><span>🎯</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-custom-fields" onclick="switchTab('tab-custom-fields');closeSideMenu();"><span>افزودن‌ها</span><span>➕</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-columns-products" onclick="switchTab('tab-columns-products');closeSideMenu();"><span>ستون‌ها و کالاها</span><span>🧱</span></button>
+      <button type="button" class="side-menu-item" data-side-target="tab-product-pricing" onclick="switchTab('tab-product-pricing');closeSideMenu();"><span>قیمت‌گذاری کالاها</span><span>💵</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-manual-design" onclick="switchTab('tab-manual-design');closeSideMenu();"><span>طراحی دستی تب‌ها</span><span>🎨</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-users-permissions" onclick="switchTab('tab-users-permissions');closeSideMenu();"><span>کاربران و دسترسی</span><span>👤</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-messengers" onclick="switchTab('tab-messengers');closeSideMenu();"><span>پیام‌رسان‌ها</span><span>💬</span></button>
@@ -1686,6 +1688,59 @@
     <!-- ======================================================================
          15. TAB: COLUMNS & PRODUCTS (ستون‌ها و کالاها) - Menu Item 15
          ====================================================================== -->
+
+    <section id="tab-product-pricing" class="tab-pane">
+      <div class="card" id="v77CurrentPricesCard">
+        <div class="card-header">
+          <div class="card-title"><span>💵 قیمت‌های فعلی کالاها</span></div>
+        </div>
+        <p class="col-help">ستون «درصد افزایش» را برای هر کالا وارد کنید تا قیمت مصرف‌کننده جدید ساخته شود و قیمت پخش و داروخانه از روی درصدهای کادر پایین برگردد.</p>
+        <div class="table-responsive">
+          <table class="data-table" id="v77CurrentPricesTable">
+            <thead>
+              <tr>
+                <th>نام کالا</th>
+                <th>قیمت پخش</th>
+                <th>مابه‌التفاوت پخش و داروخانه ٪</th>
+                <th>قیمت داروخانه</th>
+                <th>مابه‌التفاوت داروخانه و مصرف‌کننده ٪</th>
+                <th>قیمت مصرف‌کننده</th>
+                <th>درصد ارزش افزوده</th>
+                <th>قیمت مصرف‌کننده با ارزش افزوده</th>
+                <th>درصد افزایش</th>
+              </tr>
+            </thead>
+            <tbody id="v77CurrentPricesBody"><tr><td colspan="9">کالایی ثبت نشده است.</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card" id="v77NewPricesCard" style="margin-top:1rem">
+        <div class="card-header">
+          <div class="card-title"><span>🆕 قیمت‌های جدید کالاها</span></div>
+          <button type="button" id="btnSaveProductPricing" class="btn btn-primary btn-sm">💾 ذخیره پیش‌نویس قیمت‌ها</button>
+        </div>
+        <p class="col-help">درصد ستون سوم و پنجم را مدیر مشخص می‌کند. تاریخ اعمال با اسلش خودکار است؛ در همان تاریخ قیمت جدید در کل برنامه جایگزین می‌شود.</p>
+        <div class="table-responsive">
+          <table class="data-table" id="v77NewPricesTable">
+            <thead>
+              <tr>
+                <th>نام کالا</th>
+                <th>قیمت پخش</th>
+                <th>مابه‌التفاوت پخش و داروخانه ٪</th>
+                <th>قیمت داروخانه</th>
+                <th>مابه‌التفاوت داروخانه و مصرف‌کننده ٪</th>
+                <th>قیمت مصرف‌کننده</th>
+                <th>درصد ارزش افزوده</th>
+                <th>قیمت مصرف‌کننده با ارزش افزوده</th>
+                <th>تاریخ اعمال قیمت‌ها</th>
+              </tr>
+            </thead>
+            <tbody id="v77NewPricesBody"><tr><td colspan="9">کالایی ثبت نشده است.</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
     <section id="tab-columns-products" class="tab-pane">
       <div class="card">
         <div class="card-header">
@@ -2362,9 +2417,9 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.76.0"></script>
-  <script src="crm-app.js?v=11.76.0"></script>
-          <script src="crm-bundle.js?v=11.76.0"></script>
+  <script src="crm-data.js?v=11.77.0"></script>
+  <script src="crm-app.js?v=11.77.0"></script>
+          <script src="crm-bundle.js?v=11.77.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />

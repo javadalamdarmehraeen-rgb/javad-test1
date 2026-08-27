@@ -332,6 +332,7 @@ let PERMISSION_GROUPS = {
     { key: "sys_add_dropdown", label: "افزودن مقادیر کشویی" },
     { key: "sys_del_dropdown", label: "حذف مقادیر کشویی" },
     { key: "sys_cols", label: "مدیریت ستون‌ها و کالاها" },
+    { key: "sys_product_pricing", label: "قیمت‌گذاری کالاها" },
     { key: "sys_users", label: "مدیریت کاربران" },
     { key: "sys_msg", label: "تنظیم پیام‌رسان‌ها" },
     { key: "sys_notify", label: "ارسال اعلان به نمایندگان" }
@@ -583,6 +584,9 @@ PERMISSION_GROUPS = {
   ],
   "ستون‌ها و کالاها": [
     { key: "sys_cols", label: "مشاهده ستون‌ها و کالاها" }, { key: "sys_product_crud_guard", label: "افزودن و ویرایش کالا" }, { key: "sys_global_product_delete", label: "حذف کالا" }, { key: "sys_atomic_form_list_order", label: "تغییر ترتیب فرم و لیست" }
+  ],
+  "قیمت‌گذاری کالاها": [
+    { key: "sys_product_pricing", label: "مشاهده و تعیین قیمت کالاها" }
   ],
   "طراحی دستی تب‌ها": [
     { key: "sys_manual_design", label: "مشاهده طراحی دستی" }, { key: "sys_copy_tabs", label: "کپی چیدمان بین تب‌ها" }, { key: "sys_global_layout_lock", label: "ذخیره و قفل چیدمان" }

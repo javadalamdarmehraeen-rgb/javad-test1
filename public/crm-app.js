@@ -46,7 +46,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "11.76.0";
+const CRM_APP_VERSION = "11.77.0";
 try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
@@ -74,6 +74,7 @@ const MENU_SECTIONS_LIST = [
   { id: "tab-dist-targets", label: "تارگت فروش هرپخش", icon: "🎯" },
   { id: "tab-custom-fields", label: "افزودن‌ها", icon: "➕" },
   { id: "tab-columns-products", label: "ستون‌ها و کالاها", icon: "🧱" },
+  { id: "tab-product-pricing", label: "قیمت‌گذاری کالاها", icon: "💵" },
   { id: "tab-manual-design", label: "طراحی دستی تب‌ها", icon: "🎨" },
   { id: "tab-users-permissions", label: "کاربران و دسترسی", icon: "👤", badgeId: "badgeUsersCount" },
   { id: "tab-messengers", label: "پیام‌رسان‌ها", icon: "💬" },
@@ -3042,7 +3043,7 @@ function downloadCSVFile(filename, headers, rows) {
 // ----------------------------------------------------------------------------
 function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
-  const build = "11.76.0";
+  const build = "11.77.0";
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'CRM_BUILD_ACTIVE' && event.data.build !== build) {
@@ -3050,7 +3051,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.76.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.77.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;

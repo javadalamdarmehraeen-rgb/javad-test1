@@ -2313,3 +2313,11 @@ td .btn, .col-ops .btn, .col-ops {
 .v76-heat-bar .form-select{min-height:34px}
 .crm-heat-canvas{pointer-events:none}
 #pharmacyNamePickBox{display:none!important}
+
+/* v11.77 product pricing */
+#tab-product-pricing .data-table input.v77-inp{width:100%;min-width:72px;max-width:140px;text-align:center;direction:ltr}
+#tab-product-pricing .data-table input.v77-date{min-width:110px}
+#tab-product-pricing .data-table td{white-space:nowrap}
+#tab-product-pricing input.v77-inp::-webkit-outer-spin-button,
+#tab-product-pricing input.v77-inp::-webkit-inner-spin-button{appearance:none;-webkit-appearance:none;margin:0}
+#tab-product-pricing input.v77-inp{appearance:textfield;-moz-appearance:textfield}

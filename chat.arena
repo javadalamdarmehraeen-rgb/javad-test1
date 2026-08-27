@@ -1,6 +1,6 @@
 CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.77 | تاریخ به‌روزرسانی: 2026-08-27 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.76.0
+نسخه این فایل: 1.78 | تاریخ به‌روزرسانی: 2026-08-27 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.77.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -572,20 +572,20 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     2041 بایت  .gitlab-ci.yml
   [متنی ]    38221 بایت  AI_ACCEPTANCE_CHECKLIST.md
   [متنی ]    36288 بایت  AI_ARCHITECTURE.md
-  [متنی ]    79375 بایت  AI_DECISION_LOG.md
+  [متنی ]    79508 بایت  AI_DECISION_LOG.md
   [متنی ]    42400 بایت  AI_PROJECT_CONTEXT.md
   [متنی ]    46552 بایت  AI_RULES.md
-  [متنی ]    55042 بایت  AI_TASKS.md
+  [متنی ]    55175 بایت  AI_TASKS.md
   [متنی ]    50637 بایت  ARENA_HANDOFF_PROMPT.md
   [متنی ]      600 بایت  CHANGES_V10.md
-  [متنی ]   127292 بایت  CHANGES_V11.md
+  [متنی ]   127469 بایت  CHANGES_V11.md
   [متنی ]     3939 بایت  CHANGES_V9.md
   [متنی ]     1806 بایت  CLEAN_EXTRA_FILES.bat
-  [متنی ]    42166 بایت  GITHUB_REVIEW_HANDOFF.md
+  [متنی ]    42439 بایت  GITHUB_REVIEW_HANDOFF.md
   [متنی ]      694 بایت  KEEP_ONLY_GITHUB.bat
   [متنی ]     6574 بایت  OFFICIAL_FILELIST.txt
   [متنی ]     1093 بایت  PAKSAZI_EZAFI.bat
-  [متنی ]   132991 بایت  PROJECT_GRAPH.md
+  [متنی ]   133180 بایت  PROJECT_GRAPH.md
   [متنی ]     2707 بایت  PUSH_FRESH_GITHUB.bat
   [متنی ]     2680 بایت  PUSH_GITHUB_CLEAN.bat
   [متنی ]     6579 بایت  RAHNAMA_GITLAB.txt
@@ -616,9 +616,9 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     9805 بایت  mobile/README.md
   [متنی ]     9966 بایت  mobile/src/simAuth.ts
   [متنی ]     8066 بایت  public/cloudflare-worker.js
-  [متنی ]   181955 بایت  public/crm-app.js
-  [متنی ]  1062235 بایت  public/crm-bundle.js
-  [متنی ]    63721 بایت  public/crm-data.js
+  [متنی ]   182047 بایت  public/crm-app.js
+  [متنی ]  1073389 بایت  public/crm-bundle.js
+  [متنی ]    63943 بایت  public/crm-data.js
   [متنی ]    13643 بایت  public/crm-features-v10.js
   [متنی ]   112307 بایت  public/crm-features-v11.js
   [متنی ]    44613 بایت  public/crm-features-v12.js
@@ -632,12 +632,12 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]   304871 بایت  public/crm-features-v20.js
   [متنی ]    72007 بایت  public/crm-features-v9.js
   [متنی ]    25683 بایت  public/crm-jalali.js
-  [متنی ]   157993 بایت  public/index.html
+  [متنی ]   161388 بایت  public/index.html
   [متنی ]    11799 بایت  public/iran-facilities.js
   [متنی ]     8785 بایت  public/login.html
   [متنی ]      966 بایت  public/manifest.json
   [متنی ]     3720 بایت  public/manifest.webmanifest
-  [متنی ]    52236 بایت  public/style.css
+  [متنی ]    52767 بایت  public/style.css
   [متنی ]    13719 بایت  public/sw-template.js
   [متنی ]     3742 بایت  public/sw.js
   [متنی ]    84167 بایت  public/data/iran-provinces-lite.geojson
@@ -791,7 +791,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     3346 بایت  src/lib/zip.ts
   [متنی ]     4927 بایت  tests/app-smoke.test.mjs
   [متنی ]    19979 بایت  tests/state-preservation.test.mjs
-  [متنی ]    62264 بایت  tests/version-11.24-regressions.test.mjs
+  [متنی ]    64326 بایت  tests/version-11.24-regressions.test.mjs
   [تصویر]    23282 بایت  public/apple-touch-icon.png
   [تصویر]     4527 بایت  public/favicon.png
   [تصویر]    26208 بایت  public/icon-192.png
@@ -5565,9 +5565,12 @@ Then change only what is requested.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_DECISION_LOG.md (79375 بایت)
+فایل: AI_DECISION_LOG.md (79508 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
+## 11.77.0
+تب قیمت‌گذاری کالاها با دو کادر فعلی/جدید و اعمال زمان‌بندی‌شده.
+
 ## 11.76.0
 آرشیو فایل پخش/اسنپ قفل شد؛ Autofill جغرافیا قطع؛ نام داروخانه ساده؛ هیت‌مپ فعالیت.
 
@@ -9882,9 +9885,12 @@ window.state باید همان شیء زنده crm-app باشد (mutate درجا
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_TASKS.md (55042 بایت)
+فایل: AI_TASKS.md (55175 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
+## 11.77.0
+تب قیمت‌گذاری کالاها با دو کادر فعلی/جدید و اعمال زمان‌بندی‌شده.
+
 ## 11.76.0
 آرشیو فایل پخش/اسنپ قفل شد؛ Autofill جغرافیا قطع؛ نام داروخانه ساده؛ هیت‌مپ فعالیت.
 
@@ -12955,9 +12961,12 @@ Leaflet محلی. فونت گوگل حذف شد. gzip روی JS/CSS/HTML.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: CHANGES_V11.md (127292 بایت)
+فایل: CHANGES_V11.md (127469 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
+# 11.77.0 — ۱۴۰۵/۰۶/۰۵
+- تب قیمت‌گذاری کالاها: قیمت فعلی، قیمت جدید، درصد افزایش، اعمال در تاریخ شمسی
+
 # 11.76.0 — ۱۴۰۵/۰۶/۰۵
 - آرشیو فایل اسنپ و دیتابیس پخش دیگر با نسخه جدید پاک نمی‌شود؛ حذف فقط با دستور مدیر
 - کادر Autofill/passwords روی استان، شهر و منطقه حذف شد (select بومی)
@@ -13917,13 +13926,13 @@ pause
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: GITHUB_REVIEW_HANDOFF.md (42166 بایت)
+فایل: GITHUB_REVIEW_HANDOFF.md (42439 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # GITHUB_REVIEW_HANDOFF — تحویل مویرگی برای بررسی GitHub و هوش مصنوعی بعدی
 
 **تاریخ این تحویل:** 2026-08-27 / ۵ شهریور 1405 (به‌روزرسانی نوبت ۹۵)
-**نسخه آماده سورس:** `11.76.0` (فایل واحد crm-bundle + آینه crm-features-v20)
+**نسخه آماده سورس:** `11.77.0` (فایل واحد crm-bundle + آینه crm-features-v20)
 **نسخه chat.arena پس از بازسازی این نوبت:** `1.76`
 **شاخه اجباری این جلسه:** `arena/01a03a45-javad-test1`
 **مخزن:** `javadalamdarmehraeen-rgb/javad-test1`
@@ -14563,6 +14572,10 @@ Source 84/84؛ نام‌ها ساده؛ instant-add متنی صفر؛ گرید �
 - استان/شهر/منطقه: data-nocombo + select بومی تا کادر Autofill and passwords ظاهر نشود
 - فیلد نام داروخانه بدون زیرمجموعه (قطع hookPharmacyNameField)
 - هیت‌مپ فعالیت لحظه‌ای برای همه نمایندگان و به‌تفکیک نماینده
+
+
+## نوبت ۹۷ — نسخه 11.77.0
+- تب قیمت‌گذاری کالاها با کادر قیمت فعلی و قیمت جدید، درصد افزایش، برگشت قیمت پخش/داروخانه و اعمال روی تاریخ شمسی با اسلش خودکار
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -14907,7 +14920,7 @@ pause
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: PROJECT_GRAPH.md (132991 بایت)
+فایل: PROJECT_GRAPH.md (133180 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # 🕸️ گراف دانش پروژه «نماینده علمی» (PROJECT_GRAPH.md)
@@ -14959,17 +14972,17 @@ pause
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (181955 بایت)
+### `public/crm-app.js` (182047 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 179
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_STATE_BOUND`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderDoctorsList`, `renderExtraTabCustomFields`, `renderPharmaciesList`, `validateRequiredFields`
 
-### `public/crm-bundle.js` (1062235 بایت)
+### `public/crm-bundle.js` (1073389 بایت)
 - نقش: * crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
-- تعداد توابع داخلی: 1086
+- تعداد توابع داخلی: 1102
 - نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `WIDGET_PALETTE`, `__CRM_APPLYING_SERVER`, `__CRM_BULK_PURGE`, `__CRM_BULK_READY`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SERVER_READY`, `__CRM_SKIP_V64_STRIP`, `__CRM_SNAP`, `__CRM_UNVEIL`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__V68_WATCH`, `__V69_SYNC`, `__V70_SOLO`, `__V71_CLAIMED`, `__V72_BOOT`, `__V73_BOOT`, `__V73_WATCH`, `__lastHealth`, `__v40LastPick`, `__v53wrapped`, `__v55wrapped`, `__v56wrapped`, `__v58once`, `_actHeatLayer`, `_actMap`
 
-### `public/crm-data.js` (63721 بایت)
+### `public/crm-data.js` (63943 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 1
 
@@ -15048,7 +15061,7 @@ pause
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (3742 بایت)
-- نقش: const BUILD = "11.76.0";
+- نقش: const BUILD = "11.77.0";
 - تعداد توابع داخلی: 3
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -15415,6 +15428,9 @@ pause
 - `public/crm-features-v17.js` → 8 شناسه (مثل: `btnSavePharmacy`, `formPharmacy`, `pharmacyAddress`, `pharmacyCity`, `pharmacyDistrict`, `pharmacyName`, `pharmacyPhone`, `pharmacyProvince`)
 - `public/crm-features-v20.js` → 8 شناسه (مثل: `pharmacyCity`, `pharmacyDistrict`, `pharmacyEditId`, `pharmacyManager`, `pharmacyManagerPhone`, `pharmacyName`, `pharmacyPhone`, `pharmacyProvince`)
 - `public/crm-features-v9.js` → 11 شناسه (مثل: `btnPhMapSearch`, `btnPharmacyCurrentLocation`, `btnPharmacyGetAddressFromPoint`, `cardPhList`, `formPharmacy`, `phFileInput`, `phListCountBadge`, `phTableCountBadge`)
+
+### tab-product-pricing «💵 قیمت‌گذاری کالاها»
+- `public/crm-bundle.js` → 3 شناسه (مثل: `btnSaveProductPricing`, `v77CurrentPricesBody`, `v77NewPricesBody`)
 
 ### tab-rep-homes «🏠 منزل نمایندگان»
 - `public/crm-app.js` → 3 شناسه (مثل: `repHomeAddressInput`, `repHomeSelect`, `tableRepHomesBody`)
@@ -16322,7 +16338,7 @@ pause
 
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
-- نسخه سورس package: `11.76.0`
+- نسخه سورس package: `11.77.0`
 - مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a03a45-javad-test1`؛ push/PR فقط از همین شاخه.
 - Production فعال: `https://javad-test1.onrender.com` — نسخه سورس فعلی `11.66.0` است و تا push کاربر روی production همان آخرین دیپلوی قبلی می‌ماند.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.
@@ -17498,7 +17514,7 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.76.0",
+  "version": "11.77.0",
   "description": "سیستم جامع مدیریت و ویزیت علمی، داروخانه‌ها، پزشکان و سفارشات (CRM / PWA) هماهنگ با Render و Neon",
   "main": "server.js",
   "engines": {
@@ -17604,7 +17620,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.76.0";
+const APP_VERSION = "11.77.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -18303,7 +18319,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.77 | تاریخ به‌روزرسانی: 2026-08-27 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.76.0
+نسخه این فایل: 1.78 | تاریخ به‌روزرسانی: 2026-08-27 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.77.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -23192,7 +23208,7 @@ async function sendWhatsappCloud(text, to, token) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-app.js (181955 بایت)
+فایل: public/crm-app.js (182047 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================================
@@ -23243,7 +23259,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "11.76.0";
+const CRM_APP_VERSION = "11.77.0";
 try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
@@ -23271,6 +23287,7 @@ const MENU_SECTIONS_LIST = [
   { id: "tab-dist-targets", label: "تارگت فروش هرپخش", icon: "🎯" },
   { id: "tab-custom-fields", label: "افزودن‌ها", icon: "➕" },
   { id: "tab-columns-products", label: "ستون‌ها و کالاها", icon: "🧱" },
+  { id: "tab-product-pricing", label: "قیمت‌گذاری کالاها", icon: "💵" },
   { id: "tab-manual-design", label: "طراحی دستی تب‌ها", icon: "🎨" },
   { id: "tab-users-permissions", label: "کاربران و دسترسی", icon: "👤", badgeId: "badgeUsersCount" },
   { id: "tab-messengers", label: "پیام‌رسان‌ها", icon: "💬" },
@@ -26239,7 +26256,7 @@ function downloadCSVFile(filename, headers, rows) {
 // ----------------------------------------------------------------------------
 function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
-  const build = "11.76.0";
+  const build = "11.77.0";
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'CRM_BUILD_ACTIVE' && event.data.build !== build) {
@@ -26247,7 +26264,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.76.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.77.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -27364,7 +27381,7 @@ function deleteProductCatalogItem(id) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-bundle.js (1062235 بایت)
+فایل: public/crm-bundle.js (1073389 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 /* crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
@@ -29558,6 +29575,7 @@ window.IRAN_FACILITIES = [
     "tab-sales-targets": "target",
     "tab-custom-fields": "additions",
     "tab-columns-products": "products",
+    "tab-product-pricing": "productPricing",
     "tab-manual-design": "manualdesign",
     "tab-users-permissions": "users",
     "tab-messengers": "messengers",
@@ -32492,7 +32510,8 @@ window.IRAN_FACILITIES = [
       "tab-my-visit": "visit", "tab-rep-homes": "homes", "tab-leaves": "leave",
       "tab-notifications": "notifications", "tab-monthly-reports": "reports",
       "tab-sales-targets": "target", "tab-custom-fields": "additions",
-      "tab-columns-products": "products", "tab-users-permissions": "users",
+      "tab-columns-products": "products",
+    "tab-product-pricing": "productPricing", "tab-users-permissions": "users",
       "tab-messengers": "messengers", "tab-backup": "backup",
       "tab-install-app": "install", "tab-troubleshooting": "diagnostics",
       "tab-manual-design": "manualdesign"
@@ -33957,7 +33976,8 @@ window.IRAN_FACILITIES = [
       "tab-my-visit": "visit", "tab-rep-homes": "homes", "tab-leaves": "leave",
       "tab-notifications": "notifications", "tab-monthly-reports": "reports",
       "tab-sales-targets": "target", "tab-custom-fields": "additions",
-      "tab-columns-products": "products", "tab-users-permissions": "users",
+      "tab-columns-products": "products",
+    "tab-product-pricing": "productPricing", "tab-users-permissions": "users",
       "tab-messengers": "messengers", "tab-backup": "backup",
       "tab-install-app": "install", "tab-troubleshooting": "diagnostics"
     };
@@ -34803,7 +34823,8 @@ window.IRAN_FACILITIES = [
     } catch (e) {}
     var map = {
       "tab-pharmacies": "pharmacy", "tab-doctors": "doctor", "tab-orders": "order",
-      "tab-columns-products": "products"
+      "tab-columns-products": "products",
+    "tab-product-pricing": "productPricing"
     };
     key = map[tabId] || key;
     var meta = ((state.formFieldMeta || {})[key]) || {};
@@ -34857,7 +34878,8 @@ window.IRAN_FACILITIES = [
     size = parseInt(size, 10) || 220;
     var keyMap = {
       "tab-pharmacies": "pharmacy", "tab-doctors": "doctor", "tab-orders": "order",
-      "tab-columns-products": "products"
+      "tab-columns-products": "products",
+    "tab-product-pricing": "productPricing"
     };
     var key = keyMap[tabId] || String(tabId || "").replace(/^tab-/, "");
     var custom = ((state.customFields || {})[key] || []).filter(function (f) { return f.id === fieldId; })[0];
@@ -36560,7 +36582,8 @@ window.IRAN_FACILITIES = [
       "tab-my-visit": "visit", "tab-rep-homes": "homes", "tab-leaves": "leave",
       "tab-notifications": "notifications", "tab-monthly-reports": "reports",
       "tab-sales-targets": "target", "tab-custom-fields": "additions",
-      "tab-columns-products": "products", "tab-users-permissions": "users",
+      "tab-columns-products": "products",
+    "tab-product-pricing": "productPricing", "tab-users-permissions": "users",
       "tab-messengers": "messengers", "tab-backup": "backup",
       "tab-install-app": "install", "tab-troubleshooting": "diagnostics",
       "tab-manual-design": "manualdesign"
@@ -37256,7 +37279,8 @@ window.IRAN_FACILITIES = [
       "tab-my-visit": "visit", "tab-rep-homes": "homes", "tab-leaves": "leave",
       "tab-notifications": "notifications", "tab-monthly-reports": "reports",
       "tab-sales-targets": "target", "tab-custom-fields": "additions",
-      "tab-columns-products": "products", "tab-users-permissions": "users",
+      "tab-columns-products": "products",
+    "tab-product-pricing": "productPricing", "tab-users-permissions": "users",
       "tab-messengers": "messengers", "tab-backup": "backup",
       "tab-install-app": "install", "tab-troubleshooting": "diagnostics",
       "tab-manual-design": "manualdesign"
@@ -39728,7 +39752,7 @@ button.v19-gps svg{display:block}
   function applySnappVisibility(){migrateInvoicePermissionOnce();var manager=v20IsManager(),u=v20CurrentUser(),perms=(u&&u.permissions)||{};function toggle(id,allow){document.querySelectorAll('[data-target="'+id+'"],[data-side-target="'+id+'"]').forEach(function(b){b.style.display=allow?"":"none";});var pane=$(id);if(pane)pane.style.display=allow?"":"none";}toggle("tab-snapp-corporate",manager||perms.sys_snapp_access!==false);toggle("tab-distributor-companies",manager||perms.dist_companies_access!==false);toggle("tab-distributor-sales",manager||perms.dist_sales_access!==false);toggle("tab-distributor-invoice-status",true);toggle("tab-distributor-database",manager||perms.dist_database_access!==false);}
 
   /* ---------- ۲۱-ب) موتور نهایی و برگشت‌پذیر دسترسی همه تب‌ها و ریزامکانات ---------- */
-  var TAB_PERMISSION_MAP={"tab-dashboard":"dash_access","tab-pharmacies":"ph_access","tab-doctors":"doc_access","tab-orders":"ord_access","tab-activity-log":"activity_access","tab-overview-map":"overview_map_access","tab-live-location":"live_access","tab-snapp-corporate":"sys_snapp_access","tab-distributor-companies":"dist_companies_access","tab-distributor-sales":"dist_sales_access","tab-distributor-invoice-status":"dist_invoice_status_access","tab-distributor-database":"dist_database_access","tab-search-info":"search_access","tab-rep-routes":"fld_track","tab-my-visit":"fld_visit","tab-rep-homes":"fld_home_loc","tab-leaves":"hr_leave_req","tab-notifications":"notify_access","tab-monthly-reports":"rep_monthly","tab-define-routes":"target_define_routes","tab-sales-targets":"sys_targets","tab-dist-targets":"dist_targets_access","tab-custom-fields":"sys_additions","tab-columns-products":"sys_cols","tab-manual-design":"sys_manual_design","tab-users-permissions":"sys_users","tab-messengers":"sys_msg","tab-backup":"sys_backup","tab-install-app":"sys_install","tab-troubleshooting":"sys_diag"};
+  var TAB_PERMISSION_MAP={"tab-dashboard":"dash_access","tab-pharmacies":"ph_access","tab-doctors":"doc_access","tab-orders":"ord_access","tab-activity-log":"activity_access","tab-overview-map":"overview_map_access","tab-live-location":"live_access","tab-snapp-corporate":"sys_snapp_access","tab-distributor-companies":"dist_companies_access","tab-distributor-sales":"dist_sales_access","tab-distributor-invoice-status":"dist_invoice_status_access","tab-distributor-database":"dist_database_access","tab-search-info":"search_access","tab-rep-routes":"fld_track","tab-my-visit":"fld_visit","tab-rep-homes":"fld_home_loc","tab-leaves":"hr_leave_req","tab-notifications":"notify_access","tab-monthly-reports":"rep_monthly","tab-define-routes":"target_define_routes","tab-sales-targets":"sys_targets","tab-dist-targets":"dist_targets_access","tab-custom-fields":"sys_additions","tab-columns-products":"sys_cols","tab-product-pricing":"sys_product_pricing","tab-manual-design":"sys_manual_design","tab-users-permissions":"sys_users","tab-messengers":"sys_msg","tab-backup":"sys_backup","tab-install-app":"sys_install","tab-troubleshooting":"sys_diag"};
   var FEATURE_PERMISSION_MAP={ph_create:["#cardPhForm"],ph_list:["#cardPhList"],ph_excel:["#btnExportPharmaciesCSV"],ph_route:["#tablePharmaciesBody .btn-route"],ph_delete:["#tablePharmaciesBody .btn-danger"],doc_create:["#cardDocForm"],doc_list:["#cardDocList"],doc_excel:["#btnExportDoctorsCSV"],doc_route:["#tableDoctorsBody .btn-route"],doc_delete:["#tableDoctorsBody .btn-danger"],ord_create:["#cardOrdForm"],ord_list:["#cardOrdList"],ord_excel:["#btnExportOrdersCSV"],ord_delete:["#tableOrdersBody .btn-danger"],sys_snapp_import:["#btnImportSnappTrips"],sys_snapp_topup:["#btnImportSnappTopups"],sys_snapp_export:["#btnExportSnappView","#btnExportSnappTopups"],dist_company_credentials:["#distributorCompanyGrid .dist-save"],dist_open_panel:["#distributorCompanyGrid .dist-open","#distributorActionGrid .dist-login"],dist_import_pharmacies:["#distributorActionGrid .dist-ph-file"],dist_import_inventory:["#distributorActionGrid .dist-inv-file"],dist_multisheet_excel:["#btnExportDistributorReport"],dist_invoice_status_filters:["#invoiceStatusFilterGrid"],dist_invoice_status_details:["#invoiceStatusBody .inv-status-view"],dist_view_database:["#distributorDatabaseGrid .db-ph","#distributorDatabaseGrid .db-inv"],dist_database_files:["#distributorDatabaseGrid .db-files"],search_excel:["#btnExportSearchInfoCSV"],hr_leave_excel:["#btnExportLeavesCSV"],rep_excel:["#btnExportMonthlyCSV"],usr_edit_save:["#formCreateUser","#userCardsContainer"],usr_permission_templates:["#v20PresetBar"],usr_tab_permission_checkboxes:["#permissionGroupsContainer"],target_define_routes:["#representativeRoutesCard"],target_plan_products:["#v34TargetPlanner"],notify_reply:["#tableNotificationsBody .v35-reply","#tableNotificationsBody .v35-history"],notify_device_push:["#btnEnableDeviceNotifications"]};
   function permissionAllowed(perms,key,manager){return manager||!key||perms[key]!==false;}
   function setPermissionNodeVisible(node,allow){if(!node)return;var target=(node.matches&&node.matches("input[type=file]"))?node.closest("label"):node;if(!target)return;if(allow){if(target.dataset.permissionHidden==="1"){target.style.removeProperty("display");delete target.dataset.permissionHidden;}}else{target.style.setProperty("display","none","important");target.dataset.permissionHidden="1";}}
@@ -44238,10 +44262,246 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   },true);
   window.paintV76ActivityHeat=paintHeat;
 })();
+
+
+/* v11.77.0: تب قیمت‌گذاری کالاها — قیمت فعلی/جدید، درصد افزایش، برگشت پخش و داروخانه، اعمال روی تاریخ شمسی */
+(function(){
+  "use strict";
+  function $(id){return document.getElementById(id);}
+  function S(){return (typeof window.__CRM_GET_STATE==="function"?window.__CRM_GET_STATE():window.state)||window.state||{};}
+  function toast(msg){try{if(typeof window.v20Toast==="function")window.v20Toast(msg);}catch(e){}}
+  function save(){try{if(typeof window.saveState==="function")window.saveState();}catch(e){}}
+  function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
+  function faN(n){n=Number(n)||0;return Math.round(n).toLocaleString("en-US");}
+  function faP(n){n=Number(n);if(!isFinite(n))return "0";return (Math.round(n*100)/100).toLocaleString("en-US");}
+  function vatPct(){
+    try{
+      if(typeof getOrderFormula==="function"){var f=getOrderFormula();if(f&&isFinite(Number(f.vat)))return Number(f.vat);}
+    }catch(e){}
+    var st=S();
+    var v=st.settings&&st.settings.orderFormula&&st.settings.orderFormula.vat;
+    v=Number(v);return isFinite(v)?v:10;
+  }
+  function jalaliToday(){
+    try{if(typeof jalaliTodayEnglish==="function")return jalaliTodayEnglish();}catch(e){}
+    try{if(window.CRMJalali&&typeof window.CRMJalali.jalaliTodayStr==="function")return window.CRMJalali.jalaliTodayStr();}catch(e){}
+    return "1405/06/05";
+  }
+  function digits(s){
+    var FA="۰۱۲۳۴۵۶۷۸۹",AR="٠١٢٣٤٥٦٧٨٩";
+    return String(s==null?"":s).replace(/[۰-۹]/g,function(c){return String(FA.indexOf(c));}).replace(/[٠-٩]/g,function(c){return String(AR.indexOf(c));});
+  }
+  function slashDate(s){
+    var raw=digits(s).replace(/[^\d]/g,"");
+    if(raw.length>=8)return raw.slice(0,4)+"/"+raw.slice(4,6)+"/"+raw.slice(6,8);
+    if(raw.length>4&&raw.length<=6)return raw.slice(0,4)+"/"+raw.slice(4);
+    return digits(s).replace(/-/g,"/");
+  }
+  function dateKey(s){
+    var x=slashDate(s);
+    var m=String(x).match(/(1[34]\d{2})\/(\d{1,2})\/(\d{1,2})/);
+    if(!m)return "";
+    return m[1]+"/"+("0"+m[2]).slice(-2)+"/"+("0"+m[3]).slice(-2);
+  }
+  function dateReached(apply){
+    var a=dateKey(apply),t=dateKey(jalaliToday());
+    return !!(a&&t&&a<=t);
+  }
+  function num(v){var n=Number(digits(v).replace(/[^\d.-]/g,""));return isFinite(n)?n:0;}
+  function pricesOf(p){
+    var dist=Number(p.distributorPrice||p.distPrice||p.price||0)||0;
+    var ph=Number(p.pharmacyPrice||p.price||0)||0;
+    var cons=Number(p.consumerPrice||0);
+    if(!cons)cons=ph||dist;
+    var vat=p.vatPercent!=null&&p.vatPercent!==""?Number(p.vatPercent):vatPct();
+    if(!isFinite(vat))vat=vatPct();
+    return {dist:dist,ph:ph,cons:cons,vat:vat};
+  }
+  function margin(from,to){from=Number(from)||0;to=Number(to)||0;if(!from)return 0;return (to-from)/from*100;}
+  function fromCons(cons,mDistPh,mPhCons){
+    cons=Number(cons)||0;
+    mDistPh=Number(mDistPh)||0;
+    mPhCons=Number(mPhCons)||0;
+    var ph=cons/((1+mPhCons/100)||1);
+    var dist=ph/((1+mDistPh/100)||1);
+    return {dist:Math.round(dist),ph:Math.round(ph),cons:Math.round(cons)};
+  }
+  function ensureDraft(p){
+    p.pricingDraft=p.pricingDraft||{};
+    var cur=pricesOf(p);
+    var d=p.pricingDraft;
+    if(d.marginDistPh==null||d.marginDistPh==="")d.marginDistPh=margin(cur.dist,cur.ph);
+    if(d.marginPhCons==null||d.marginPhCons==="")d.marginPhCons=margin(cur.ph,cur.cons);
+    if(d.increasePct==null)d.increasePct="";
+    if(d.applyDate==null)d.applyDate="";
+    return d;
+  }
+  function computeNew(p){
+    var cur=pricesOf(p);
+    var d=ensureDraft(p);
+    var inc=Number(d.increasePct)||0;
+    var newCons=Math.round(cur.cons*(1+inc/100));
+    var m3=Number(d.marginDistPh);if(!isFinite(m3))m3=margin(cur.dist,cur.ph);
+    var m5=Number(d.marginPhCons);if(!isFinite(m5))m5=margin(cur.ph,cur.cons);
+    var back=fromCons(newCons,m3,m5);
+    d.dist=back.dist;d.ph=back.ph;d.cons=back.cons;
+    d.vat=cur.vat;
+    d.marginDistPh=m3;d.marginPhCons=m5;
+    return d;
+  }
+  function applyDue(){
+    var st=S();if(!st||!Array.isArray(st.products))return 0;
+    var n=0;
+    st.products.forEach(function(p){
+      if(!p||!p.pricingDraft)return;
+      var d=p.pricingDraft;
+      if(!d.applyDate||!dateReached(d.applyDate))return;
+      if(d.appliedKey&&d.appliedKey===dateKey(d.applyDate)&&d.appliedCons===d.cons)return;
+      computeNew(p);
+      p.distributorPrice=d.dist;
+      p.pharmacyPrice=d.ph;
+      p.consumerPrice=d.cons;
+      p.vatPercent=d.vat;
+      p.pricingHistory=p.pricingHistory||[];
+      p.pricingHistory.push({at:Date.now(),date:dateKey(d.applyDate),dist:d.dist,ph:d.ph,cons:d.cons,vat:d.vat,increasePct:d.increasePct});
+      d.appliedKey=dateKey(d.applyDate);
+      d.appliedCons=d.cons;
+      n++;
+    });
+    if(n){
+      save();
+      try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}
+      try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}
+      toast("✅ "+n.toLocaleString("fa-IR")+" کالای دارای تاریخ اعمال، قیمت جدید گرفت.");
+      paint();
+    }
+    return n;
+  }
+  function paint(){
+    var curBody=$("v77CurrentPricesBody"),newBody=$("v77NewPricesBody");
+    if(!curBody||!newBody)return;
+    var st=S(),list=st.products||[],vat=vatPct();
+    if(!list.length){
+      curBody.innerHTML='<tr><td colspan="9">کالایی ثبت نشده است. ابتدا در تب ستون‌ها و کالاها کالا اضافه کنید.</td></tr>';
+      newBody.innerHTML='<tr><td colspan="9">کالایی ثبت نشده است.</td></tr>';
+      return;
+    }
+    var manager=true;
+    try{if(typeof v20IsManager==="function")manager=v20IsManager();}catch(e){}
+    var curRows="",newRows="";
+    list.forEach(function(p){
+      if(!p||!p.name)return;
+      var cur=pricesOf(p);
+      var d=computeNew(p);
+      var m3c=margin(cur.dist,cur.ph),m5c=margin(cur.ph,cur.cons);
+      var consVat=Math.round(cur.cons*(1+(cur.vat||vat)/100));
+      var newVat=Math.round(d.cons*(1+(d.vat||vat)/100));
+      var pid=esc(p.id||p.name);
+      var ro=manager?"":"readonly";
+      curRows+="<tr data-pid='"+pid+"'>"+
+        "<td><strong>"+esc(p.name)+"</strong></td>"+
+        "<td style='direction:ltr'>"+faN(cur.dist)+"</td>"+
+        "<td style='direction:ltr'>"+faP(m3c)+"٪</td>"+
+        "<td style='direction:ltr'>"+faN(cur.ph)+"</td>"+
+        "<td style='direction:ltr'>"+faP(m5c)+"٪</td>"+
+        "<td style='direction:ltr'>"+faN(cur.cons)+"</td>"+
+        "<td style='direction:ltr'>"+faP(cur.vat)+"٪</td>"+
+        "<td style='direction:ltr'>"+faN(consVat)+"</td>"+
+        "<td><input class='form-input v77-inp qty-no-spin' data-k='increasePct' data-pid='"+pid+"' inputmode='decimal' "+ro+" value='"+(d.increasePct==null||d.increasePct===""?"":d.increasePct)+"' placeholder='٪'></td></tr>";
+      newRows+="<tr data-pid='"+pid+"'>"+
+        "<td><strong>"+esc(p.name)+"</strong></td>"+
+        "<td style='direction:ltr'>"+faN(d.dist)+"</td>"+
+        "<td><input class='form-input v77-inp qty-no-spin' data-k='marginDistPh' data-pid='"+pid+"' inputmode='decimal' "+ro+" value='"+faP(d.marginDistPh)+"'></td>"+
+        "<td style='direction:ltr'>"+faN(d.ph)+"</td>"+
+        "<td><input class='form-input v77-inp qty-no-spin' data-k='marginPhCons' data-pid='"+pid+"' inputmode='decimal' "+ro+" value='"+faP(d.marginPhCons)+"'></td>"+
+        "<td style='direction:ltr'>"+faN(d.cons)+"</td>"+
+        "<td style='direction:ltr'>"+faP(d.vat)+"٪</td>"+
+        "<td style='direction:ltr'>"+faN(newVat)+"</td>"+
+        "<td><input class='form-input v77-inp v77-date' data-k='applyDate' data-pid='"+pid+"' "+ro+" inputmode='numeric' placeholder='1405/06/05' value='"+esc(d.applyDate||"")+"'></td></tr>";
+    });
+    curBody.innerHTML=curRows;
+    newBody.innerHTML=newRows;
+    bindInputs();
+  }
+  function findProd(pid){
+    var st=S();
+    return (st.products||[]).filter(function(p){return String(p.id||p.name)===String(pid);})[0];
+  }
+  function onField(pid,key,raw){
+    var p=findProd(pid);if(!p)return;
+    var d=ensureDraft(p);
+    if(key==="applyDate"){
+      d.applyDate=slashDate(raw);
+    }else{
+      var n=num(raw);
+      d[key]=raw===""?"":n;
+    }
+    computeNew(p);
+    save();
+    paint();
+  }
+  function bindInputs(){
+    document.querySelectorAll("#tab-product-pricing input.v77-inp").forEach(function(inp){
+      if(inp.dataset.v77b)return;inp.dataset.v77b="1";
+      if(inp.classList.contains("v77-date")){
+        inp.addEventListener("input",function(){
+          var v=this.value.replace(/[^0-9]/g,"");
+          if(v.length>4&&v.length<=6)this.value=v.slice(0,4)+"/"+v.slice(4);
+          else if(v.length>6)this.value=v.slice(0,4)+"/"+v.slice(4,6)+"/"+v.slice(6,8);
+          else this.value=v;
+        });
+      }
+      inp.addEventListener("change",function(){
+        onField(inp.getAttribute("data-pid"),inp.getAttribute("data-k"),inp.value);
+      });
+      inp.addEventListener("blur",function(){
+        onField(inp.getAttribute("data-pid"),inp.getAttribute("data-k"),inp.value);
+      });
+    });
+  }
+  function bind(){
+    if(document.body.dataset.v77price)return;document.body.dataset.v77price="1";
+    var btn=$("btnSaveProductPricing");
+    if(btn)btn.addEventListener("click",function(){
+      var st=S();
+      (st.products||[]).forEach(function(p){if(p)computeNew(p);});
+      save();
+      applyDue();
+      paint();
+      toast("✅ پیش‌نویس قیمت‌ها ذخیره شد. در تاریخ اعمال، در کل برنامه جایگزین می‌شود.");
+    });
+    if(window.switchTab&&!window.switchTab._v77){
+      var sw=window.switchTab;
+      var w=function(id){
+        var r=sw.apply(this,arguments);
+        if(id==="tab-product-pricing")setTimeout(function(){applyDue();paint();},80);
+        return r;
+      };
+      w._v77=true;window.switchTab=w;
+    }
+    setInterval(applyDue,60000);
+    document.addEventListener("visibilitychange",function(){if(!document.hidden)applyDue();});
+  }
+  function boot(){
+    bind();
+    applyDue();
+    if($("tab-product-pricing")&&$("tab-product-pricing").classList.contains("active"))paint();
+  }
+  window.paintV77ProductPricing=paint;
+  window.applyV77ProductPricing=applyDue;
+  window.v77FromCons=fromCons;
+  window.v77Margin=margin;
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,120);});
+  else setTimeout(boot,120);
+  document.addEventListener("click",function(e){
+    if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-product-pricing"]'))
+      setTimeout(function(){applyDue();paint();},160);
+  },true);
+})();
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-data.js (63721 بایت)
+فایل: public/crm-data.js (63943 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================================
@@ -44578,6 +44838,7 @@ let PERMISSION_GROUPS = {
     { key: "sys_add_dropdown", label: "افزودن مقادیر کشویی" },
     { key: "sys_del_dropdown", label: "حذف مقادیر کشویی" },
     { key: "sys_cols", label: "مدیریت ستون‌ها و کالاها" },
+    { key: "sys_product_pricing", label: "قیمت‌گذاری کالاها" },
     { key: "sys_users", label: "مدیریت کاربران" },
     { key: "sys_msg", label: "تنظیم پیام‌رسان‌ها" },
     { key: "sys_notify", label: "ارسال اعلان به نمایندگان" }
@@ -44829,6 +45090,9 @@ PERMISSION_GROUPS = {
   ],
   "ستون‌ها و کالاها": [
     { key: "sys_cols", label: "مشاهده ستون‌ها و کالاها" }, { key: "sys_product_crud_guard", label: "افزودن و ویرایش کالا" }, { key: "sys_global_product_delete", label: "حذف کالا" }, { key: "sys_atomic_form_list_order", label: "تغییر ترتیب فرم و لیست" }
+  ],
+  "قیمت‌گذاری کالاها": [
+    { key: "sys_product_pricing", label: "مشاهده و تعیین قیمت کالاها" }
   ],
   "طراحی دستی تب‌ها": [
     { key: "sys_manual_design", label: "مشاهده طراحی دستی" }, { key: "sys_copy_tabs", label: "کپی چیدمان بین تب‌ها" }, { key: "sys_global_layout_lock", label: "ذخیره و قفل چیدمان" }
@@ -57993,7 +58257,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/index.html (157993 بایت)
+فایل: public/index.html (161388 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~html
 <!DOCTYPE html>
@@ -58030,7 +58294,7 @@ button.v19-gps svg{display:block}
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.76.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="11.77.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       document.documentElement.classList.add("crm-booting");
       function target(){return location.pathname+location.search+location.hash;}
       function rescue(serverBuild){if(true)return;var u="/cache-reset?to="+encodeURIComponent(target())+"&build="+encodeURIComponent(serverBuild||BUILD)+"&t="+Date.now();location.replace(u);}
@@ -58053,7 +58317,7 @@ button.v19-gps svg{display:block}
   <meta name="theme-color" content="#0d9488" />
 
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.76.0" />
+  <link rel="stylesheet" href="style.css?v=11.77.0" />
 </head>
 <body>
 
@@ -58124,6 +58388,7 @@ button.v19-gps svg{display:block}
       <button type="button" class="nav-item" data-target="tab-dist-targets" onclick="switchTab('tab-dist-targets')"><span>🎯 تارگت فروش هرپخش</span></button>
       <button type="button" class="nav-item" data-target="tab-custom-fields" onclick="switchTab('tab-custom-fields')"><span>➕ افزودن‌ها</span></button>
       <button type="button" class="nav-item" data-target="tab-columns-products" onclick="switchTab('tab-columns-products')"><span>🧱 ستون‌ها و کالاها</span></button>
+      <button type="button" class="nav-item" data-target="tab-product-pricing" onclick="switchTab('tab-product-pricing')"><span>💵 قیمت‌گذاری کالاها</span></button>
       <button type="button" class="nav-item" data-target="tab-manual-design" onclick="switchTab('tab-manual-design')"><span>🎨 طراحی دستی تب‌ها</span></button>
       <button type="button" class="nav-item" data-target="tab-users-permissions" onclick="switchTab('tab-users-permissions')"><span>👤 کاربران و دسترسی</span><span class="nav-badge" id="badgeUsersCount">0</span></button>
       <button type="button" class="nav-item" data-target="tab-messengers" onclick="switchTab('tab-messengers')"><span>💬 پیام‌رسان‌ها</span></button>
@@ -58192,6 +58457,7 @@ button.v19-gps svg{display:block}
       <button type="button" class="side-menu-item" data-side-target="tab-dist-targets" onclick="switchTab('tab-dist-targets');closeSideMenu();"><span>تارگت فروش هرپخش</span><span>🎯</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-custom-fields" onclick="switchTab('tab-custom-fields');closeSideMenu();"><span>افزودن‌ها</span><span>➕</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-columns-products" onclick="switchTab('tab-columns-products');closeSideMenu();"><span>ستون‌ها و کالاها</span><span>🧱</span></button>
+      <button type="button" class="side-menu-item" data-side-target="tab-product-pricing" onclick="switchTab('tab-product-pricing');closeSideMenu();"><span>قیمت‌گذاری کالاها</span><span>💵</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-manual-design" onclick="switchTab('tab-manual-design');closeSideMenu();"><span>طراحی دستی تب‌ها</span><span>🎨</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-users-permissions" onclick="switchTab('tab-users-permissions');closeSideMenu();"><span>کاربران و دسترسی</span><span>👤</span></button>
       <button type="button" class="side-menu-item" data-side-target="tab-messengers" onclick="switchTab('tab-messengers');closeSideMenu();"><span>پیام‌رسان‌ها</span><span>💬</span></button>
@@ -59684,6 +59950,59 @@ button.v19-gps svg{display:block}
     <!-- ======================================================================
          15. TAB: COLUMNS & PRODUCTS (ستون‌ها و کالاها) - Menu Item 15
          ====================================================================== -->
+
+    <section id="tab-product-pricing" class="tab-pane">
+      <div class="card" id="v77CurrentPricesCard">
+        <div class="card-header">
+          <div class="card-title"><span>💵 قیمت‌های فعلی کالاها</span></div>
+        </div>
+        <p class="col-help">ستون «درصد افزایش» را برای هر کالا وارد کنید تا قیمت مصرف‌کننده جدید ساخته شود و قیمت پخش و داروخانه از روی درصدهای کادر پایین برگردد.</p>
+        <div class="table-responsive">
+          <table class="data-table" id="v77CurrentPricesTable">
+            <thead>
+              <tr>
+                <th>نام کالا</th>
+                <th>قیمت پخش</th>
+                <th>مابه‌التفاوت پخش و داروخانه ٪</th>
+                <th>قیمت داروخانه</th>
+                <th>مابه‌التفاوت داروخانه و مصرف‌کننده ٪</th>
+                <th>قیمت مصرف‌کننده</th>
+                <th>درصد ارزش افزوده</th>
+                <th>قیمت مصرف‌کننده با ارزش افزوده</th>
+                <th>درصد افزایش</th>
+              </tr>
+            </thead>
+            <tbody id="v77CurrentPricesBody"><tr><td colspan="9">کالایی ثبت نشده است.</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card" id="v77NewPricesCard" style="margin-top:1rem">
+        <div class="card-header">
+          <div class="card-title"><span>🆕 قیمت‌های جدید کالاها</span></div>
+          <button type="button" id="btnSaveProductPricing" class="btn btn-primary btn-sm">💾 ذخیره پیش‌نویس قیمت‌ها</button>
+        </div>
+        <p class="col-help">درصد ستون سوم و پنجم را مدیر مشخص می‌کند. تاریخ اعمال با اسلش خودکار است؛ در همان تاریخ قیمت جدید در کل برنامه جایگزین می‌شود.</p>
+        <div class="table-responsive">
+          <table class="data-table" id="v77NewPricesTable">
+            <thead>
+              <tr>
+                <th>نام کالا</th>
+                <th>قیمت پخش</th>
+                <th>مابه‌التفاوت پخش و داروخانه ٪</th>
+                <th>قیمت داروخانه</th>
+                <th>مابه‌التفاوت داروخانه و مصرف‌کننده ٪</th>
+                <th>قیمت مصرف‌کننده</th>
+                <th>درصد ارزش افزوده</th>
+                <th>قیمت مصرف‌کننده با ارزش افزوده</th>
+                <th>تاریخ اعمال قیمت‌ها</th>
+              </tr>
+            </thead>
+            <tbody id="v77NewPricesBody"><tr><td colspan="9">کالایی ثبت نشده است.</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
     <section id="tab-columns-products" class="tab-pane">
       <div class="card">
         <div class="card-header">
@@ -60360,9 +60679,9 @@ button.v19-gps svg{display:block}
   <script src="vendor/leaflet.js"></script>
 
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.76.0"></script>
-  <script src="crm-app.js?v=11.76.0"></script>
-          <script src="crm-bundle.js?v=11.76.0"></script>
+  <script src="crm-data.js?v=11.77.0"></script>
+  <script src="crm-app.js?v=11.77.0"></script>
+          <script src="crm-bundle.js?v=11.77.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
@@ -60436,7 +60755,7 @@ window.IRAN_FACILITIES = [
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
   <script>
-    (function(){var BUILD="11.76.0",key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{localStorage.setItem(key,BUILD);}catch(e){}fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD){/* v11.70 no auto go(d.version) */}}).catch(function(){});})();
+    (function(){var BUILD="11.77.0",key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{localStorage.setItem(key,BUILD);}catch(e){}fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD){/* v11.70 no auto go(d.version) */}}).catch(function(){});})();
   </script>
   <title>ورود | طنین طب طاها</title>
 
@@ -60778,7 +61097,7 @@ window.IRAN_FACILITIES = [
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/style.css (52236 بایت)
+فایل: public/style.css (52767 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~css
 /* ============================================================================
@@ -63096,6 +63415,14 @@ td .btn, .col-ops .btn, .col-ops {
 .v76-heat-bar .form-select{min-height:34px}
 .crm-heat-canvas{pointer-events:none}
 #pharmacyNamePickBox{display:none!important}
+
+/* v11.77 product pricing */
+#tab-product-pricing .data-table input.v77-inp{width:100%;min-width:72px;max-width:140px;text-align:center;direction:ltr}
+#tab-product-pricing .data-table input.v77-date{min-width:110px}
+#tab-product-pricing .data-table td{white-space:nowrap}
+#tab-product-pricing input.v77-inp::-webkit-outer-spin-button,
+#tab-product-pricing input.v77-inp::-webkit-inner-spin-button{appearance:none;-webkit-appearance:none;margin:0}
+#tab-product-pricing input.v77-inp{appearance:textfield;-moz-appearance:textfield}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -63524,7 +63851,7 @@ self.addEventListener("fetch", (event) => {
 فایل: public/sw.js (3742 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
-const BUILD = "11.76.0";
+const BUILD = "11.77.0";
 const CACHE = "crm-static-v" + BUILD;
 
 async function purgeEveryCache() {
@@ -89340,7 +89667,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/version-11.24-regressions.test.mjs (62264 بایت)
+فایل: tests/version-11.24-regressions.test.mjs (64326 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 import test from 'node:test';
@@ -89497,7 +89824,7 @@ test('invoice tab visibility is reversible and current user resolves by persiste
 });
 
 test('permissions page uses exact real tab names without legacy version groups', () => {
-  for (const tab of ['داشبورد','داروخانه‌ها','پزشکان','سفارشات','فعالیت لحظه‌ای','نقشه جامع','موقعیت زنده','اسنپ سازمانی','اطلاعات شرکت‌ها','اطلاعات فروش پخش‌ها','وضعیت فاکتور پخش‌ها','دیتابیس پخش‌ها','جستجوی اطلاعات','رصد تردد','شروع/پایان ویزیت','منزل نمایندگان','مرخصی‌ها','اعلان‌ها','گزارش ماهانه','تعریف مسیر نمایندگان','تارگت فروش نمایندگان','تارگت فروش هرپخش','افزودن‌ها','ستون‌ها و کالاها','طراحی دستی تب‌ها','کاربران و دسترسی','پیام‌رسان‌ها','پشتیبان‌گیری','نصب اپ','عیب‌یابی']) assert.match(data,new RegExp(`"${tab}"\\s*:`));
+  for (const tab of ['داشبورد','داروخانه‌ها','پزشکان','سفارشات','فعالیت لحظه‌ای','نقشه جامع','موقعیت زنده','اسنپ سازمانی','اطلاعات شرکت‌ها','اطلاعات فروش پخش‌ها','وضعیت فاکتور پخش‌ها','دیتابیس پخش‌ها','جستجوی اطلاعات','رصد تردد','شروع/پایان ویزیت','منزل نمایندگان','مرخصی‌ها','اعلان‌ها','گزارش ماهانه','تعریف مسیر نمایندگان','تارگت فروش نمایندگان','تارگت فروش هرپخش','افزودن‌ها','ستون‌ها و کالاها','قیمت‌گذاری کالاها','طراحی دستی تب‌ها','کاربران و دسترسی','پیام‌رسان‌ها','پشتیبان‌گیری','نصب اپ','عیب‌یابی']) assert.match(data,new RegExp(`"${tab}"\\s*:`));
   const finalView=data.slice(data.indexOf('// نمای نهایی و خلوت دسترسی‌ها'));
   assert.doesNotMatch(finalView,/ابزارهای مدیریت \(نسخه/);
 });
@@ -89515,7 +89842,7 @@ test('final user editor always has save, exact roles and stable one-dropdown pre
 });
 
 test('central permission engine covers every tab, sub-controls and dynamically rendered nodes', () => {
-  for (const id of ['tab-dashboard','tab-pharmacies','tab-doctors','tab-orders','tab-activity-log','tab-overview-map','tab-live-location','tab-snapp-corporate','tab-distributor-companies','tab-distributor-sales','tab-distributor-invoice-status','tab-distributor-database','tab-search-info','tab-rep-routes','tab-my-visit','tab-rep-homes','tab-leaves','tab-notifications','tab-monthly-reports','tab-sales-targets','tab-custom-fields','tab-columns-products','tab-manual-design','tab-users-permissions','tab-messengers','tab-backup','tab-install-app','tab-troubleshooting']) assert.ok(v20.includes(`"${id}"`),`permission map missing ${id}`);
+  for (const id of ['tab-dashboard','tab-pharmacies','tab-doctors','tab-orders','tab-activity-log','tab-overview-map','tab-live-location','tab-snapp-corporate','tab-distributor-companies','tab-distributor-sales','tab-distributor-invoice-status','tab-distributor-database','tab-search-info','tab-rep-routes','tab-my-visit','tab-rep-homes','tab-leaves','tab-notifications','tab-monthly-reports','tab-sales-targets','tab-custom-fields','tab-columns-products','tab-product-pricing','tab-manual-design','tab-users-permissions','tab-messengers','tab-backup','tab-install-app','tab-troubleshooting']) assert.ok(v20.includes(`"${id}"`),`permission map missing ${id}`);
   assert.match(v20,/var FEATURE_PERMISSION_MAP=/);assert.match(v20,/function applyCentralPermissions/);assert.match(v20,/function bindCentralPermissions/);
   assert.match(v20,/window\.applyUserRolePermissions=applyCentralPermissions/);
   assert.match(v20,/new MutationObserver\(function\(records\)[\s\S]*applyCentralPermissions/);
@@ -89662,7 +89989,7 @@ test('multi-part prompts require a real acceptance checklist before ZIP delivery
 });
 
 test('next-chat GitHub handoff records exact publish truth and engine map', () => {
-  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.76.0/);
+  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.77.0/);
   assert.match(githubHandoff,/4984d17/);assert.match(githubHandoff,/Resource not accessible by integration/);
   assert.match(githubHandoff,/Production[\s\S]*11\.20\.0/);
   assert.match(githubHandoff,/موتور پاک‌سازی خودکار کش/);assert.match(githubHandoff,/موتورهای پایداری داده/);
@@ -89714,7 +90041,7 @@ test('new build clears only old asset caches before revealing app and prevents m
 test('v38 cache rescue automatically forces a fresh build without deleting CRM data', () => {
   const login = read('../public/login.html');
   assert.match(server,/pathname === "\/cache-reset"/);assert.match(server,/Clear-Site-Data/);
-  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.76.0"/);
+  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.77.0"/);
   assert.match(html,/\/api\/health\?__crm_nocache=/);assert.match(html,/\/cache-reset\?to=/);assert.match(html,/d\.version!==BUILD/);
   assert.match(login,/CRM_CACHE_RESCUED_/);assert.match(login,/\/cache-reset\?to=/);
   assert.match(sw,/function purgeEveryCache/);assert.match(sw,/CRM_BUILD_ACTIVE/);assert.match(sw,/cache: "reload"/);
@@ -89724,7 +90051,7 @@ test('v38 cache rescue automatically forces a fresh build without deleting CRM d
     assert.doesNotMatch(source,/indexedDB\.deleteDatabase\s*\(/);
     assert.doesNotMatch(source,/removeItem\(["']CRM_APP_STATE_V2/);
   }
-  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.76.0'/);
+  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.77.0'/);
 });
 
 test('security hardening blocks dangerous device APIs, cross-origin writes, executables and formula injection', () => {
@@ -89739,7 +90066,7 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.76.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.77.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
@@ -89834,7 +90161,7 @@ test('v11.43.1 engine button feedback + permanent version watchdog', () => {
 test('v11.61.0 safe cache-hardening', () => {
   const html = read('../public/index.html'); const app = read('../public/crm-app.js');
   assert.match(html,/http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/);
-  assert.match(app,/CRM_APP_VERSION = "11.76.0"/);
+  assert.match(app,/CRM_APP_VERSION = "11.77.0"/);
   assert.match(app,/بارگذاری شد/);
 });
 
@@ -90076,8 +90403,8 @@ test('v11.72.0 durable target ops + mm gap + row number', () => {
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "11.76.0"/);
-  assert.match(srv, /const APP_VERSION = "11.76.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.77.0"/);
+  assert.match(srv, /const APP_VERSION = "11.77.0"/);
   assert.match(b, /v11\.68\.0/);
   assert.match(b, /v68-edit-tgt/);
   assert.match(b, /v68-del-tgt/);
@@ -90097,8 +90424,8 @@ test('v11.72.0 server-authoritative unify + durable delete + live mm/row', () =>
   const b = read('../public/crm-bundle.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
-  assert.match(app, /CRM_APP_VERSION = "11.76.0"/);
-  assert.match(srv, /const APP_VERSION = "11.76.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.77.0"/);
+  assert.match(srv, /const APP_VERSION = "11.77.0"/);
   assert.match(srv, /function naturalRecordKey/);
   assert.match(srv, /if \(id && deleted && deleted\[id\] && recStamp\(r\) <= Number\(deleted\[id\]\)\) return/);
   assert.match(b, /v11\.69\.0/);
@@ -90120,8 +90447,8 @@ test('v11.72.0 solo device + no cache-reset loop', () => {
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "11.76.0"/);
-  assert.match(srv, /const APP_VERSION = "11.76.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.77.0"/);
+  assert.match(srv, /const APP_VERSION = "11.77.0"/);
   assert.match(srv, /x-crm-replace/);
   assert.match(srv, /_soloOnly/);
   assert.match(srv, /CRM_RESET_LOCK/);
@@ -90142,8 +90469,8 @@ test('v11.72.0 single script load + 404 not login + solo replace', () => {
   assert.equal((html.match(/crm-app\.js\?v=/g)||[]).length, 1);
   assert.equal((html.match(/crm-bundle\.js\?v=/g)||[]).length, 1);
   assert.equal((html.match(/<\/html>/g)||[]).length, 1);
-  assert.match(app, /CRM_APP_VERSION = "11.76.0"/);
-  assert.match(srv, /const APP_VERSION = "11.76.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.77.0"/);
+  assert.match(srv, /const APP_VERSION = "11.77.0"/);
   assert.match(srv, /v11.71: Clear-Site-Data/);
   assert.match(b, /v11\.71\.0/);
   assert.match(b, /CRM_SOLO_CLAIM/);
@@ -90156,9 +90483,9 @@ test('v11.72.0 server-first paint + no-spin qty + per-row ops + dist achieved/re
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "11.76.0"/);
-  assert.match(srv, /const APP_VERSION = "11.76.0"/);
-  assert.match(app, /register\('\/sw\.js\?v=11\.76.0'/);
+  assert.match(app, /CRM_APP_VERSION = "11.77.0"/);
+  assert.match(srv, /const APP_VERSION = "11.77.0"/);
+  assert.match(app, /register\('\/sw\.js\?v=11\.77.0'/);
   assert.match(b, /v11\.72\.0/);
   assert.match(b, /__v72boot/);
   assert.match(b, /function adoptServerExact/);
@@ -90189,17 +90516,17 @@ test('v11.73.0 live state bind + delayed unveil + durable dist save + kill old o
   const html = read('../public/index.html');
   const sw = read('../public/sw.js');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "11.76.0"/);
-  assert.match(srv, /const APP_VERSION = "11.76.0"/);
-  assert.match(sw, /const BUILD = "11.76.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.77.0"/);
+  assert.match(srv, /const APP_VERSION = "11.77.0"/);
+  assert.match(sw, /const BUILD = "11.77.0"/);
   assert.match(app, /function bindLiveWindowState/);
   assert.match(app, /window\.__CRM_GET_STATE/);
   assert.match(app, /window\.renderPharmaciesList/);
-  assert.match(html, /var BUILD="11.76.0"/);
+  assert.match(html, /var BUILD="11.77.0"/);
   assert.match(html, /window\.__CRM_UNVEIL/);
   assert.match(html, /if\(!window\.__CRM_UNVEILED\)window\.__CRM_UNVEIL\(\);},5000\)/);
   assert.doesNotMatch(html, /classList\.remove\("crm-booting"\);},800\)/);
-  assert.match(login, /var BUILD="11.76.0"/);
+  assert.match(login, /var BUILD="11.77.0"/);
   assert.match(b, /v11\.73\.0/);
   assert.match(b, /__v73boot/);
   assert.match(b, /function adoptExact/);
@@ -90221,8 +90548,8 @@ test('v11.74.0 mashateb sales mapping like daya/shafaarad', () => {
   const v20file = read('../public/crm-features-v20.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
-  assert.match(app, /CRM_APP_VERSION = "11.76.0"/);
-  assert.match(srv, /const APP_VERSION = "11.76.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.77.0"/);
+  assert.match(srv, /const APP_VERSION = "11.77.0"/);
   assert.match(b, /MASHATEB_CODE_MAP=\{1001:186101,1002:186102,1003:186103,1004:186104,1005:186105,1006:186106,1007:186107\}/);
   assert.match(v20file, /MASHATEB_CODE_MAP=\{1001:186101,1002:186102,1003:186103,1004:186104,1005:186105,1006:186106,1007:186107\}/);
   assert.match(b, /else if\(id==="mashateb"\)\{x\.date=2;x\.qty=10;x\.giftQty=11;x\.pharmacy=9;/);
@@ -90247,8 +90574,8 @@ test('v11.76.0 designer live apply + geo autofill off + mashateb col3 date + db 
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const v20file = read('../public/crm-features-v20.js');
-  assert.match(app, /CRM_APP_VERSION = "11.76.0"/);
-  assert.match(srv, /const APP_VERSION = "11.76.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.77.0"/);
+  assert.match(srv, /const APP_VERSION = "11.77.0"/);
   assert.match(b, /v11\.75\.0/);
   assert.match(b, /function applyDesignerNow/);
   assert.match(b, /function applyPaintedMeta/);
@@ -90271,8 +90598,8 @@ test('v11.76.0 bulk archive lock + geo nocombo + pharmacy name no subsets + acti
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const v20file = read('../public/crm-features-v20.js');
-  assert.match(app, /CRM_APP_VERSION = "11.76.0"/);
-  assert.match(srv, /const APP_VERSION = "11.76.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.77.0"/);
+  assert.match(srv, /const APP_VERSION = "11.77.0"/);
   assert.match(b, /v11\.76\.0/);
   assert.match(b, /function bulkUnion/);
   assert.match(b, /function bulkCount/);
@@ -90293,6 +90620,43 @@ test('v11.76.0 bulk archive lock + geo nocombo + pharmacy name no subsets + acti
   assert.match(b, /window.paintV76ActivityHeat/);
   assert.match(html, /name="crm-pharmacy-title"/);
   assert.match(b, /inventoryImports=d.inventoryImports\|\|\[\]/);
+});
+
+test('v11.77.0 product pricing tab current/new boxes + reverse calc + jalali apply date', () => {
+  const b = read('../public/crm-bundle.js');
+  const app = read('../public/crm-app.js');
+  const srv = read('../server.js');
+  const html = read('../public/index.html');
+  const data = read('../public/crm-data.js');
+  assert.match(app, /CRM_APP_VERSION = "11.77.0"/);
+  assert.match(srv, /const APP_VERSION = "11.77.0"/);
+  assert.match(app, /tab-product-pricing/);
+  assert.match(html, /id="tab-product-pricing"/);
+  assert.match(html, /id="v77CurrentPricesBody"/);
+  assert.match(html, /id="v77NewPricesBody"/);
+  assert.match(html, /قیمت‌های فعلی کالاها/);
+  assert.match(html, /قیمت‌های جدید کالاها/);
+  assert.match(html, /تاریخ اعمال قیمت‌ها/);
+  assert.match(html, /درصد افزایش/);
+  assert.match(data, /sys_product_pricing/);
+  assert.match(data, /"قیمت‌گذاری کالاها"/);
+  assert.match(b, /v11\.77\.0/);
+  assert.match(b, /function v77FromCons|window.v77FromCons/);
+  assert.match(b, /window.paintV77ProductPricing/);
+  assert.match(b, /window.applyV77ProductPricing/);
+  assert.match(b, /pricingDraft/);
+  assert.match(b, /function fromCons/);
+  assert.match(b, /function dateReached/);
+  assert.match(b, /sys_product_pricing/);
+  const ctx={result:null};
+  vm.createContext(ctx);
+  vm.runInContext(`function margin(from,to){from=Number(from)||0;to=Number(to)||0;if(!from)return 0;return (to-from)/from*100;}
+    function fromCons(cons,mDistPh,mPhCons){cons=Number(cons)||0;mDistPh=Number(mDistPh)||0;mPhCons=Number(mPhCons)||0;var ph=cons/((1+mPhCons/100)||1);var dist=ph/((1+mDistPh/100)||1);return {dist:Math.round(dist),ph:Math.round(ph),cons:Math.round(cons)};}
+    result={m:margin(40000,48000), back:fromCons(110000,20,10)};`, ctx);
+  assert.equal(ctx.result.m, 20);
+  assert.equal(ctx.result.back.cons, 110000);
+  assert.equal(ctx.result.back.ph, 100000);
+  assert.equal(ctx.result.back.dist, 83333);
 });
 ~~~~~~~~
 

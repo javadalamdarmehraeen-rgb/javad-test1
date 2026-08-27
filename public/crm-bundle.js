@@ -2189,6 +2189,7 @@ window.IRAN_FACILITIES = [
     "tab-sales-targets": "target",
     "tab-custom-fields": "additions",
     "tab-columns-products": "products",
+    "tab-product-pricing": "productPricing",
     "tab-manual-design": "manualdesign",
     "tab-users-permissions": "users",
     "tab-messengers": "messengers",
@@ -5123,7 +5124,8 @@ window.IRAN_FACILITIES = [
       "tab-my-visit": "visit", "tab-rep-homes": "homes", "tab-leaves": "leave",
       "tab-notifications": "notifications", "tab-monthly-reports": "reports",
       "tab-sales-targets": "target", "tab-custom-fields": "additions",
-      "tab-columns-products": "products", "tab-users-permissions": "users",
+      "tab-columns-products": "products",
+    "tab-product-pricing": "productPricing", "tab-users-permissions": "users",
       "tab-messengers": "messengers", "tab-backup": "backup",
       "tab-install-app": "install", "tab-troubleshooting": "diagnostics",
       "tab-manual-design": "manualdesign"
@@ -6588,7 +6590,8 @@ window.IRAN_FACILITIES = [
       "tab-my-visit": "visit", "tab-rep-homes": "homes", "tab-leaves": "leave",
       "tab-notifications": "notifications", "tab-monthly-reports": "reports",
       "tab-sales-targets": "target", "tab-custom-fields": "additions",
-      "tab-columns-products": "products", "tab-users-permissions": "users",
+      "tab-columns-products": "products",
+    "tab-product-pricing": "productPricing", "tab-users-permissions": "users",
       "tab-messengers": "messengers", "tab-backup": "backup",
       "tab-install-app": "install", "tab-troubleshooting": "diagnostics"
     };
@@ -7434,7 +7437,8 @@ window.IRAN_FACILITIES = [
     } catch (e) {}
     var map = {
       "tab-pharmacies": "pharmacy", "tab-doctors": "doctor", "tab-orders": "order",
-      "tab-columns-products": "products"
+      "tab-columns-products": "products",
+    "tab-product-pricing": "productPricing"
     };
     key = map[tabId] || key;
     var meta = ((state.formFieldMeta || {})[key]) || {};
@@ -7488,7 +7492,8 @@ window.IRAN_FACILITIES = [
     size = parseInt(size, 10) || 220;
     var keyMap = {
       "tab-pharmacies": "pharmacy", "tab-doctors": "doctor", "tab-orders": "order",
-      "tab-columns-products": "products"
+      "tab-columns-products": "products",
+    "tab-product-pricing": "productPricing"
     };
     var key = keyMap[tabId] || String(tabId || "").replace(/^tab-/, "");
     var custom = ((state.customFields || {})[key] || []).filter(function (f) { return f.id === fieldId; })[0];
@@ -9191,7 +9196,8 @@ window.IRAN_FACILITIES = [
       "tab-my-visit": "visit", "tab-rep-homes": "homes", "tab-leaves": "leave",
       "tab-notifications": "notifications", "tab-monthly-reports": "reports",
       "tab-sales-targets": "target", "tab-custom-fields": "additions",
-      "tab-columns-products": "products", "tab-users-permissions": "users",
+      "tab-columns-products": "products",
+    "tab-product-pricing": "productPricing", "tab-users-permissions": "users",
       "tab-messengers": "messengers", "tab-backup": "backup",
       "tab-install-app": "install", "tab-troubleshooting": "diagnostics",
       "tab-manual-design": "manualdesign"
@@ -9887,7 +9893,8 @@ window.IRAN_FACILITIES = [
       "tab-my-visit": "visit", "tab-rep-homes": "homes", "tab-leaves": "leave",
       "tab-notifications": "notifications", "tab-monthly-reports": "reports",
       "tab-sales-targets": "target", "tab-custom-fields": "additions",
-      "tab-columns-products": "products", "tab-users-permissions": "users",
+      "tab-columns-products": "products",
+    "tab-product-pricing": "productPricing", "tab-users-permissions": "users",
       "tab-messengers": "messengers", "tab-backup": "backup",
       "tab-install-app": "install", "tab-troubleshooting": "diagnostics",
       "tab-manual-design": "manualdesign"
@@ -12359,7 +12366,7 @@ button.v19-gps svg{display:block}
   function applySnappVisibility(){migrateInvoicePermissionOnce();var manager=v20IsManager(),u=v20CurrentUser(),perms=(u&&u.permissions)||{};function toggle(id,allow){document.querySelectorAll('[data-target="'+id+'"],[data-side-target="'+id+'"]').forEach(function(b){b.style.display=allow?"":"none";});var pane=$(id);if(pane)pane.style.display=allow?"":"none";}toggle("tab-snapp-corporate",manager||perms.sys_snapp_access!==false);toggle("tab-distributor-companies",manager||perms.dist_companies_access!==false);toggle("tab-distributor-sales",manager||perms.dist_sales_access!==false);toggle("tab-distributor-invoice-status",true);toggle("tab-distributor-database",manager||perms.dist_database_access!==false);}
 
   /* ---------- ۲۱-ب) موتور نهایی و برگشت‌پذیر دسترسی همه تب‌ها و ریزامکانات ---------- */
-  var TAB_PERMISSION_MAP={"tab-dashboard":"dash_access","tab-pharmacies":"ph_access","tab-doctors":"doc_access","tab-orders":"ord_access","tab-activity-log":"activity_access","tab-overview-map":"overview_map_access","tab-live-location":"live_access","tab-snapp-corporate":"sys_snapp_access","tab-distributor-companies":"dist_companies_access","tab-distributor-sales":"dist_sales_access","tab-distributor-invoice-status":"dist_invoice_status_access","tab-distributor-database":"dist_database_access","tab-search-info":"search_access","tab-rep-routes":"fld_track","tab-my-visit":"fld_visit","tab-rep-homes":"fld_home_loc","tab-leaves":"hr_leave_req","tab-notifications":"notify_access","tab-monthly-reports":"rep_monthly","tab-define-routes":"target_define_routes","tab-sales-targets":"sys_targets","tab-dist-targets":"dist_targets_access","tab-custom-fields":"sys_additions","tab-columns-products":"sys_cols","tab-manual-design":"sys_manual_design","tab-users-permissions":"sys_users","tab-messengers":"sys_msg","tab-backup":"sys_backup","tab-install-app":"sys_install","tab-troubleshooting":"sys_diag"};
+  var TAB_PERMISSION_MAP={"tab-dashboard":"dash_access","tab-pharmacies":"ph_access","tab-doctors":"doc_access","tab-orders":"ord_access","tab-activity-log":"activity_access","tab-overview-map":"overview_map_access","tab-live-location":"live_access","tab-snapp-corporate":"sys_snapp_access","tab-distributor-companies":"dist_companies_access","tab-distributor-sales":"dist_sales_access","tab-distributor-invoice-status":"dist_invoice_status_access","tab-distributor-database":"dist_database_access","tab-search-info":"search_access","tab-rep-routes":"fld_track","tab-my-visit":"fld_visit","tab-rep-homes":"fld_home_loc","tab-leaves":"hr_leave_req","tab-notifications":"notify_access","tab-monthly-reports":"rep_monthly","tab-define-routes":"target_define_routes","tab-sales-targets":"sys_targets","tab-dist-targets":"dist_targets_access","tab-custom-fields":"sys_additions","tab-columns-products":"sys_cols","tab-product-pricing":"sys_product_pricing","tab-manual-design":"sys_manual_design","tab-users-permissions":"sys_users","tab-messengers":"sys_msg","tab-backup":"sys_backup","tab-install-app":"sys_install","tab-troubleshooting":"sys_diag"};
   var FEATURE_PERMISSION_MAP={ph_create:["#cardPhForm"],ph_list:["#cardPhList"],ph_excel:["#btnExportPharmaciesCSV"],ph_route:["#tablePharmaciesBody .btn-route"],ph_delete:["#tablePharmaciesBody .btn-danger"],doc_create:["#cardDocForm"],doc_list:["#cardDocList"],doc_excel:["#btnExportDoctorsCSV"],doc_route:["#tableDoctorsBody .btn-route"],doc_delete:["#tableDoctorsBody .btn-danger"],ord_create:["#cardOrdForm"],ord_list:["#cardOrdList"],ord_excel:["#btnExportOrdersCSV"],ord_delete:["#tableOrdersBody .btn-danger"],sys_snapp_import:["#btnImportSnappTrips"],sys_snapp_topup:["#btnImportSnappTopups"],sys_snapp_export:["#btnExportSnappView","#btnExportSnappTopups"],dist_company_credentials:["#distributorCompanyGrid .dist-save"],dist_open_panel:["#distributorCompanyGrid .dist-open","#distributorActionGrid .dist-login"],dist_import_pharmacies:["#distributorActionGrid .dist-ph-file"],dist_import_inventory:["#distributorActionGrid .dist-inv-file"],dist_multisheet_excel:["#btnExportDistributorReport"],dist_invoice_status_filters:["#invoiceStatusFilterGrid"],dist_invoice_status_details:["#invoiceStatusBody .inv-status-view"],dist_view_database:["#distributorDatabaseGrid .db-ph","#distributorDatabaseGrid .db-inv"],dist_database_files:["#distributorDatabaseGrid .db-files"],search_excel:["#btnExportSearchInfoCSV"],hr_leave_excel:["#btnExportLeavesCSV"],rep_excel:["#btnExportMonthlyCSV"],usr_edit_save:["#formCreateUser","#userCardsContainer"],usr_permission_templates:["#v20PresetBar"],usr_tab_permission_checkboxes:["#permissionGroupsContainer"],target_define_routes:["#representativeRoutesCard"],target_plan_products:["#v34TargetPlanner"],notify_reply:["#tableNotificationsBody .v35-reply","#tableNotificationsBody .v35-history"],notify_device_push:["#btnEnableDeviceNotifications"]};
   function permissionAllowed(perms,key,manager){return manager||!key||perms[key]!==false;}
   function setPermissionNodeVisible(node,allow){if(!node)return;var target=(node.matches&&node.matches("input[type=file]"))?node.closest("label"):node;if(!target)return;if(allow){if(target.dataset.permissionHidden==="1"){target.style.removeProperty("display");delete target.dataset.permissionHidden;}}else{target.style.setProperty("display","none","important");target.dataset.permissionHidden="1";}}
@@ -16868,4 +16875,240 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       setTimeout(function(){hardenAutofill();if(e.target.closest('[data-target="tab-activity-log"]')){fillHeatReps();paintHeat();}},200);
   },true);
   window.paintV76ActivityHeat=paintHeat;
+})();
+
+
+/* v11.77.0: تب قیمت‌گذاری کالاها — قیمت فعلی/جدید، درصد افزایش، برگشت پخش و داروخانه، اعمال روی تاریخ شمسی */
+(function(){
+  "use strict";
+  function $(id){return document.getElementById(id);}
+  function S(){return (typeof window.__CRM_GET_STATE==="function"?window.__CRM_GET_STATE():window.state)||window.state||{};}
+  function toast(msg){try{if(typeof window.v20Toast==="function")window.v20Toast(msg);}catch(e){}}
+  function save(){try{if(typeof window.saveState==="function")window.saveState();}catch(e){}}
+  function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
+  function faN(n){n=Number(n)||0;return Math.round(n).toLocaleString("en-US");}
+  function faP(n){n=Number(n);if(!isFinite(n))return "0";return (Math.round(n*100)/100).toLocaleString("en-US");}
+  function vatPct(){
+    try{
+      if(typeof getOrderFormula==="function"){var f=getOrderFormula();if(f&&isFinite(Number(f.vat)))return Number(f.vat);}
+    }catch(e){}
+    var st=S();
+    var v=st.settings&&st.settings.orderFormula&&st.settings.orderFormula.vat;
+    v=Number(v);return isFinite(v)?v:10;
+  }
+  function jalaliToday(){
+    try{if(typeof jalaliTodayEnglish==="function")return jalaliTodayEnglish();}catch(e){}
+    try{if(window.CRMJalali&&typeof window.CRMJalali.jalaliTodayStr==="function")return window.CRMJalali.jalaliTodayStr();}catch(e){}
+    return "1405/06/05";
+  }
+  function digits(s){
+    var FA="۰۱۲۳۴۵۶۷۸۹",AR="٠١٢٣٤٥٦٧٨٩";
+    return String(s==null?"":s).replace(/[۰-۹]/g,function(c){return String(FA.indexOf(c));}).replace(/[٠-٩]/g,function(c){return String(AR.indexOf(c));});
+  }
+  function slashDate(s){
+    var raw=digits(s).replace(/[^\d]/g,"");
+    if(raw.length>=8)return raw.slice(0,4)+"/"+raw.slice(4,6)+"/"+raw.slice(6,8);
+    if(raw.length>4&&raw.length<=6)return raw.slice(0,4)+"/"+raw.slice(4);
+    return digits(s).replace(/-/g,"/");
+  }
+  function dateKey(s){
+    var x=slashDate(s);
+    var m=String(x).match(/(1[34]\d{2})\/(\d{1,2})\/(\d{1,2})/);
+    if(!m)return "";
+    return m[1]+"/"+("0"+m[2]).slice(-2)+"/"+("0"+m[3]).slice(-2);
+  }
+  function dateReached(apply){
+    var a=dateKey(apply),t=dateKey(jalaliToday());
+    return !!(a&&t&&a<=t);
+  }
+  function num(v){var n=Number(digits(v).replace(/[^\d.-]/g,""));return isFinite(n)?n:0;}
+  function pricesOf(p){
+    var dist=Number(p.distributorPrice||p.distPrice||p.price||0)||0;
+    var ph=Number(p.pharmacyPrice||p.price||0)||0;
+    var cons=Number(p.consumerPrice||0);
+    if(!cons)cons=ph||dist;
+    var vat=p.vatPercent!=null&&p.vatPercent!==""?Number(p.vatPercent):vatPct();
+    if(!isFinite(vat))vat=vatPct();
+    return {dist:dist,ph:ph,cons:cons,vat:vat};
+  }
+  function margin(from,to){from=Number(from)||0;to=Number(to)||0;if(!from)return 0;return (to-from)/from*100;}
+  function fromCons(cons,mDistPh,mPhCons){
+    cons=Number(cons)||0;
+    mDistPh=Number(mDistPh)||0;
+    mPhCons=Number(mPhCons)||0;
+    var ph=cons/((1+mPhCons/100)||1);
+    var dist=ph/((1+mDistPh/100)||1);
+    return {dist:Math.round(dist),ph:Math.round(ph),cons:Math.round(cons)};
+  }
+  function ensureDraft(p){
+    p.pricingDraft=p.pricingDraft||{};
+    var cur=pricesOf(p);
+    var d=p.pricingDraft;
+    if(d.marginDistPh==null||d.marginDistPh==="")d.marginDistPh=margin(cur.dist,cur.ph);
+    if(d.marginPhCons==null||d.marginPhCons==="")d.marginPhCons=margin(cur.ph,cur.cons);
+    if(d.increasePct==null)d.increasePct="";
+    if(d.applyDate==null)d.applyDate="";
+    return d;
+  }
+  function computeNew(p){
+    var cur=pricesOf(p);
+    var d=ensureDraft(p);
+    var inc=Number(d.increasePct)||0;
+    var newCons=Math.round(cur.cons*(1+inc/100));
+    var m3=Number(d.marginDistPh);if(!isFinite(m3))m3=margin(cur.dist,cur.ph);
+    var m5=Number(d.marginPhCons);if(!isFinite(m5))m5=margin(cur.ph,cur.cons);
+    var back=fromCons(newCons,m3,m5);
+    d.dist=back.dist;d.ph=back.ph;d.cons=back.cons;
+    d.vat=cur.vat;
+    d.marginDistPh=m3;d.marginPhCons=m5;
+    return d;
+  }
+  function applyDue(){
+    var st=S();if(!st||!Array.isArray(st.products))return 0;
+    var n=0;
+    st.products.forEach(function(p){
+      if(!p||!p.pricingDraft)return;
+      var d=p.pricingDraft;
+      if(!d.applyDate||!dateReached(d.applyDate))return;
+      if(d.appliedKey&&d.appliedKey===dateKey(d.applyDate)&&d.appliedCons===d.cons)return;
+      computeNew(p);
+      p.distributorPrice=d.dist;
+      p.pharmacyPrice=d.ph;
+      p.consumerPrice=d.cons;
+      p.vatPercent=d.vat;
+      p.pricingHistory=p.pricingHistory||[];
+      p.pricingHistory.push({at:Date.now(),date:dateKey(d.applyDate),dist:d.dist,ph:d.ph,cons:d.cons,vat:d.vat,increasePct:d.increasePct});
+      d.appliedKey=dateKey(d.applyDate);
+      d.appliedCons=d.cons;
+      n++;
+    });
+    if(n){
+      save();
+      try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}
+      try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}
+      toast("✅ "+n.toLocaleString("fa-IR")+" کالای دارای تاریخ اعمال، قیمت جدید گرفت.");
+      paint();
+    }
+    return n;
+  }
+  function paint(){
+    var curBody=$("v77CurrentPricesBody"),newBody=$("v77NewPricesBody");
+    if(!curBody||!newBody)return;
+    var st=S(),list=st.products||[],vat=vatPct();
+    if(!list.length){
+      curBody.innerHTML='<tr><td colspan="9">کالایی ثبت نشده است. ابتدا در تب ستون‌ها و کالاها کالا اضافه کنید.</td></tr>';
+      newBody.innerHTML='<tr><td colspan="9">کالایی ثبت نشده است.</td></tr>';
+      return;
+    }
+    var manager=true;
+    try{if(typeof v20IsManager==="function")manager=v20IsManager();}catch(e){}
+    var curRows="",newRows="";
+    list.forEach(function(p){
+      if(!p||!p.name)return;
+      var cur=pricesOf(p);
+      var d=computeNew(p);
+      var m3c=margin(cur.dist,cur.ph),m5c=margin(cur.ph,cur.cons);
+      var consVat=Math.round(cur.cons*(1+(cur.vat||vat)/100));
+      var newVat=Math.round(d.cons*(1+(d.vat||vat)/100));
+      var pid=esc(p.id||p.name);
+      var ro=manager?"":"readonly";
+      curRows+="<tr data-pid='"+pid+"'>"+
+        "<td><strong>"+esc(p.name)+"</strong></td>"+
+        "<td style='direction:ltr'>"+faN(cur.dist)+"</td>"+
+        "<td style='direction:ltr'>"+faP(m3c)+"٪</td>"+
+        "<td style='direction:ltr'>"+faN(cur.ph)+"</td>"+
+        "<td style='direction:ltr'>"+faP(m5c)+"٪</td>"+
+        "<td style='direction:ltr'>"+faN(cur.cons)+"</td>"+
+        "<td style='direction:ltr'>"+faP(cur.vat)+"٪</td>"+
+        "<td style='direction:ltr'>"+faN(consVat)+"</td>"+
+        "<td><input class='form-input v77-inp qty-no-spin' data-k='increasePct' data-pid='"+pid+"' inputmode='decimal' "+ro+" value='"+(d.increasePct==null||d.increasePct===""?"":d.increasePct)+"' placeholder='٪'></td></tr>";
+      newRows+="<tr data-pid='"+pid+"'>"+
+        "<td><strong>"+esc(p.name)+"</strong></td>"+
+        "<td style='direction:ltr'>"+faN(d.dist)+"</td>"+
+        "<td><input class='form-input v77-inp qty-no-spin' data-k='marginDistPh' data-pid='"+pid+"' inputmode='decimal' "+ro+" value='"+faP(d.marginDistPh)+"'></td>"+
+        "<td style='direction:ltr'>"+faN(d.ph)+"</td>"+
+        "<td><input class='form-input v77-inp qty-no-spin' data-k='marginPhCons' data-pid='"+pid+"' inputmode='decimal' "+ro+" value='"+faP(d.marginPhCons)+"'></td>"+
+        "<td style='direction:ltr'>"+faN(d.cons)+"</td>"+
+        "<td style='direction:ltr'>"+faP(d.vat)+"٪</td>"+
+        "<td style='direction:ltr'>"+faN(newVat)+"</td>"+
+        "<td><input class='form-input v77-inp v77-date' data-k='applyDate' data-pid='"+pid+"' "+ro+" inputmode='numeric' placeholder='1405/06/05' value='"+esc(d.applyDate||"")+"'></td></tr>";
+    });
+    curBody.innerHTML=curRows;
+    newBody.innerHTML=newRows;
+    bindInputs();
+  }
+  function findProd(pid){
+    var st=S();
+    return (st.products||[]).filter(function(p){return String(p.id||p.name)===String(pid);})[0];
+  }
+  function onField(pid,key,raw){
+    var p=findProd(pid);if(!p)return;
+    var d=ensureDraft(p);
+    if(key==="applyDate"){
+      d.applyDate=slashDate(raw);
+    }else{
+      var n=num(raw);
+      d[key]=raw===""?"":n;
+    }
+    computeNew(p);
+    save();
+    paint();
+  }
+  function bindInputs(){
+    document.querySelectorAll("#tab-product-pricing input.v77-inp").forEach(function(inp){
+      if(inp.dataset.v77b)return;inp.dataset.v77b="1";
+      if(inp.classList.contains("v77-date")){
+        inp.addEventListener("input",function(){
+          var v=this.value.replace(/[^0-9]/g,"");
+          if(v.length>4&&v.length<=6)this.value=v.slice(0,4)+"/"+v.slice(4);
+          else if(v.length>6)this.value=v.slice(0,4)+"/"+v.slice(4,6)+"/"+v.slice(6,8);
+          else this.value=v;
+        });
+      }
+      inp.addEventListener("change",function(){
+        onField(inp.getAttribute("data-pid"),inp.getAttribute("data-k"),inp.value);
+      });
+      inp.addEventListener("blur",function(){
+        onField(inp.getAttribute("data-pid"),inp.getAttribute("data-k"),inp.value);
+      });
+    });
+  }
+  function bind(){
+    if(document.body.dataset.v77price)return;document.body.dataset.v77price="1";
+    var btn=$("btnSaveProductPricing");
+    if(btn)btn.addEventListener("click",function(){
+      var st=S();
+      (st.products||[]).forEach(function(p){if(p)computeNew(p);});
+      save();
+      applyDue();
+      paint();
+      toast("✅ پیش‌نویس قیمت‌ها ذخیره شد. در تاریخ اعمال، در کل برنامه جایگزین می‌شود.");
+    });
+    if(window.switchTab&&!window.switchTab._v77){
+      var sw=window.switchTab;
+      var w=function(id){
+        var r=sw.apply(this,arguments);
+        if(id==="tab-product-pricing")setTimeout(function(){applyDue();paint();},80);
+        return r;
+      };
+      w._v77=true;window.switchTab=w;
+    }
+    setInterval(applyDue,60000);
+    document.addEventListener("visibilitychange",function(){if(!document.hidden)applyDue();});
+  }
+  function boot(){
+    bind();
+    applyDue();
+    if($("tab-product-pricing")&&$("tab-product-pricing").classList.contains("active"))paint();
+  }
+  window.paintV77ProductPricing=paint;
+  window.applyV77ProductPricing=applyDue;
+  window.v77FromCons=fromCons;
+  window.v77Margin=margin;
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,120);});
+  else setTimeout(boot,120);
+  document.addEventListener("click",function(e){
+    if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-product-pricing"]'))
+      setTimeout(function(){applyDue();paint();},160);
+  },true);
 })();
