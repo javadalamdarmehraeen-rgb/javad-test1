@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.88.0";
+const APP_VERSION = "11.89.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -85,18 +85,33 @@ function writeJsonAtomic(filePath, data) {
   fs.renameSync(temp, filePath);
   try { fs.chmodSync(filePath, 0o600); } catch (e) {}
 }
+function backupSlotStamp(d) {
+  d = d || new Date();
+  var m = Math.floor(d.getMinutes() / 15) * 15;
+  function pad(n) { return String(n).padStart(2, "0"); }
+  return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()) + "-" + pad(d.getHours()) + "-" + pad(m);
+}
 function snapshotCloudBackup(data) {
   try {
     const dir = path.join(RUNTIME_DATA_DIR, "backups");
     fs.mkdirSync(dir, { recursive: true });
-    const day = new Date().toISOString().slice(0, 10);
-    const dest = path.join(dir, "crm-" + day + ".json");
+    const dest = path.join(dir, "crm-" + backupSlotStamp() + ".json");
     writeJsonAtomic(dest, data);
-    const files = fs.readdirSync(dir).filter(function (f) { return /^crm-\d{4}-\d{2}-\d{2}\.json$/.test(f); }).sort();
-    while (files.length > 14) {
+    const files = fs.readdirSync(dir).filter(function (f) { return /^crm-\d{4}-\d{2}-\d{2}/.test(f) && /\.json$/.test(f); }).sort();
+    while (files.length > 192) {
       try { fs.unlinkSync(path.join(dir, files.shift())); } catch (e0) {}
     }
   } catch (e) {}
+}
+function startQuarterHourBackup() {
+  if (global.__CRM_QBACKUP) return;
+  global.__CRM_QBACKUP = setInterval(function () {
+    try {
+      if (!fs.existsSync(SERVER_DATA_PATH)) return;
+      var data = readJsonSafe(SERVER_DATA_PATH);
+      if (data) snapshotCloudBackup(data);
+    } catch (e1) {}
+  }, 15 * 60 * 1000);
 }
 function readJsonSafe(filePath) {
   try { return sanitizeJsonValue(JSON.parse(fs.readFileSync(filePath, "utf8"))); } catch (e) { return null; }
@@ -607,6 +622,7 @@ function listenOn(port) {
 }
 server.listen(PORT, "0.0.0.0", () => {
   console.log("CRM v" + APP_VERSION + " listening on 0.0.0.0:" + PORT);
+  startQuarterHourBackup();
 });
 if (process.env.E2B_SANDBOX === "true") {
   [3000, 8080].forEach((p) => {
