@@ -1679,3 +1679,6 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 
 ## 11.73.0 / نوبت ۹۳
 دو شیء state + پرده ۸۰۰ms علت نشان‌دادن دادهٔ دیگران بود. نقاشان v68/v69 دکمه‌ها را می‌ساختند و hide پنهان می‌کرد. v66 save روی window.state جدا یا match ماه اشتباه ذخیره را از دست می‌داد. تصمیم: bind زنده + unveil بعد adopt + kill host قدیمی + saveDistTargetsV73.
+
+## 11.74.0 / نوبت ۹۴
+مشاطب تا کنون schema ثابت نداشت و از حدس هدر استفاده می‌کرد. تصمیم: ایندکس قطعی ستون‌ها + نقشه کد مثل شفاآراد.

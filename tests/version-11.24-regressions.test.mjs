@@ -317,7 +317,7 @@ test('multi-part prompts require a real acceptance checklist before ZIP delivery
 });
 
 test('next-chat GitHub handoff records exact publish truth and engine map', () => {
-  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.73.0/);
+  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.74.0/);
   assert.match(githubHandoff,/4984d17/);assert.match(githubHandoff,/Resource not accessible by integration/);
   assert.match(githubHandoff,/Production[\s\S]*11\.20\.0/);
   assert.match(githubHandoff,/موتور پاک‌سازی خودکار کش/);assert.match(githubHandoff,/موتورهای پایداری داده/);
@@ -369,7 +369,7 @@ test('new build clears only old asset caches before revealing app and prevents m
 test('v38 cache rescue automatically forces a fresh build without deleting CRM data', () => {
   const login = read('../public/login.html');
   assert.match(server,/pathname === "\/cache-reset"/);assert.match(server,/Clear-Site-Data/);
-  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.73.0"/);
+  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.74.0"/);
   assert.match(html,/\/api\/health\?__crm_nocache=/);assert.match(html,/\/cache-reset\?to=/);assert.match(html,/d\.version!==BUILD/);
   assert.match(login,/CRM_CACHE_RESCUED_/);assert.match(login,/\/cache-reset\?to=/);
   assert.match(sw,/function purgeEveryCache/);assert.match(sw,/CRM_BUILD_ACTIVE/);assert.match(sw,/cache: "reload"/);
@@ -379,7 +379,7 @@ test('v38 cache rescue automatically forces a fresh build without deleting CRM d
     assert.doesNotMatch(source,/indexedDB\.deleteDatabase\s*\(/);
     assert.doesNotMatch(source,/removeItem\(["']CRM_APP_STATE_V2/);
   }
-  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.73.0'/);
+  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.74.0'/);
 });
 
 test('security hardening blocks dangerous device APIs, cross-origin writes, executables and formula injection', () => {
@@ -394,7 +394,7 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.73.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.74.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
@@ -489,7 +489,7 @@ test('v11.43.1 engine button feedback + permanent version watchdog', () => {
 test('v11.61.0 safe cache-hardening', () => {
   const html = read('../public/index.html'); const app = read('../public/crm-app.js');
   assert.match(html,/http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/);
-  assert.match(app,/CRM_APP_VERSION = "11.73.0"/);
+  assert.match(app,/CRM_APP_VERSION = "11.74.0"/);
   assert.match(app,/بارگذاری شد/);
 });
 
@@ -731,8 +731,8 @@ test('v11.72.0 durable target ops + mm gap + row number', () => {
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "11.73.0"/);
-  assert.match(srv, /const APP_VERSION = "11.73.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.74.0"/);
+  assert.match(srv, /const APP_VERSION = "11.74.0"/);
   assert.match(b, /v11\.68\.0/);
   assert.match(b, /v68-edit-tgt/);
   assert.match(b, /v68-del-tgt/);
@@ -752,8 +752,8 @@ test('v11.72.0 server-authoritative unify + durable delete + live mm/row', () =>
   const b = read('../public/crm-bundle.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
-  assert.match(app, /CRM_APP_VERSION = "11.73.0"/);
-  assert.match(srv, /const APP_VERSION = "11.73.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.74.0"/);
+  assert.match(srv, /const APP_VERSION = "11.74.0"/);
   assert.match(srv, /function naturalRecordKey/);
   assert.match(srv, /if \(id && deleted && deleted\[id\] && recStamp\(r\) <= Number\(deleted\[id\]\)\) return/);
   assert.match(b, /v11\.69\.0/);
@@ -775,8 +775,8 @@ test('v11.72.0 solo device + no cache-reset loop', () => {
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "11.73.0"/);
-  assert.match(srv, /const APP_VERSION = "11.73.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.74.0"/);
+  assert.match(srv, /const APP_VERSION = "11.74.0"/);
   assert.match(srv, /x-crm-replace/);
   assert.match(srv, /_soloOnly/);
   assert.match(srv, /CRM_RESET_LOCK/);
@@ -797,8 +797,8 @@ test('v11.72.0 single script load + 404 not login + solo replace', () => {
   assert.equal((html.match(/crm-app\.js\?v=/g)||[]).length, 1);
   assert.equal((html.match(/crm-bundle\.js\?v=/g)||[]).length, 1);
   assert.equal((html.match(/<\/html>/g)||[]).length, 1);
-  assert.match(app, /CRM_APP_VERSION = "11.73.0"/);
-  assert.match(srv, /const APP_VERSION = "11.73.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.74.0"/);
+  assert.match(srv, /const APP_VERSION = "11.74.0"/);
   assert.match(srv, /v11.71: Clear-Site-Data/);
   assert.match(b, /v11\.71\.0/);
   assert.match(b, /CRM_SOLO_CLAIM/);
@@ -811,9 +811,9 @@ test('v11.72.0 server-first paint + no-spin qty + per-row ops + dist achieved/re
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "11.73.0"/);
-  assert.match(srv, /const APP_VERSION = "11.73.0"/);
-  assert.match(app, /register\('\/sw\.js\?v=11\.73.0'/);
+  assert.match(app, /CRM_APP_VERSION = "11.74.0"/);
+  assert.match(srv, /const APP_VERSION = "11.74.0"/);
+  assert.match(app, /register\('\/sw\.js\?v=11\.74.0'/);
   assert.match(b, /v11\.72\.0/);
   assert.match(b, /__v72boot/);
   assert.match(b, /function adoptServerExact/);
@@ -844,17 +844,17 @@ test('v11.73.0 live state bind + delayed unveil + durable dist save + kill old o
   const html = read('../public/index.html');
   const sw = read('../public/sw.js');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "11.73.0"/);
-  assert.match(srv, /const APP_VERSION = "11.73.0"/);
-  assert.match(sw, /const BUILD = "11.73.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.74.0"/);
+  assert.match(srv, /const APP_VERSION = "11.74.0"/);
+  assert.match(sw, /const BUILD = "11.74.0"/);
   assert.match(app, /function bindLiveWindowState/);
   assert.match(app, /window\.__CRM_GET_STATE/);
   assert.match(app, /window\.renderPharmaciesList/);
-  assert.match(html, /var BUILD="11.73.0"/);
+  assert.match(html, /var BUILD="11.74.0"/);
   assert.match(html, /window\.__CRM_UNVEIL/);
   assert.match(html, /if\(!window\.__CRM_UNVEILED\)window\.__CRM_UNVEIL\(\);},5000\)/);
   assert.doesNotMatch(html, /classList\.remove\("crm-booting"\);},800\)/);
-  assert.match(login, /var BUILD="11.73.0"/);
+  assert.match(login, /var BUILD="11.74.0"/);
   assert.match(b, /v11\.73\.0/);
   assert.match(b, /__v73boot/);
   assert.match(b, /function adoptExact/);
@@ -869,4 +869,28 @@ test('v11.73.0 live state bind + delayed unveil + durable dist save + kill old o
   assert.match(b, /#v66SaveDistTargets/);
   assert.match(b, /_deletedNatKeys/);
   assert.match(b, /window\.paintV68TargetOps=function\(\)\{killOldOpsHosts\(\);paintV73All\(\);\}/);
+});
+
+test('v11.74.0 mashateb sales mapping like daya/shafaarad', () => {
+  const b = read('../public/crm-bundle.js');
+  const v20file = read('../public/crm-features-v20.js');
+  const app = read('../public/crm-app.js');
+  const srv = read('../server.js');
+  assert.match(app, /CRM_APP_VERSION = "11.74.0"/);
+  assert.match(srv, /const APP_VERSION = "11.74.0"/);
+  assert.match(b, /MASHATEB_CODE_MAP=\{1001:186101,1002:186102,1003:186103,1004:186104,1005:186105,1006:186106,1007:186107\}/);
+  assert.match(v20file, /MASHATEB_CODE_MAP=\{1001:186101,1002:186102,1003:186103,1004:186104,1005:186105,1006:186106,1007:186107\}/);
+  assert.match(b, /else if\(id==="mashateb"\)\{x\.qty=10;x\.giftQty=11;x\.pharmacy=9;/);
+  assert.match(b, /function distProductDbCode/);
+  assert.match(b, /function isMappedDist/);
+  assert.match(b, /mashatebDbCode/);
+  assert.match(b, /distId==="mashateb"\?10/);
+  const ctx={result:null, findDistIndex:(h,re,fb)=>fb==null?-1:fb};
+  vm.createContext(ctx);
+  vm.runInContext(`${extract('distSchema')};result=distSchema([],"mashateb")`, ctx);
+  assert.equal(ctx.result.qty, 10);
+  assert.equal(ctx.result.giftQty, 11);
+  assert.equal(ctx.result.pharmacy, 9);
+  assert.equal(ctx.result.invoice, -1);
+  assert.equal(ctx.result.retQty, -1);
 });

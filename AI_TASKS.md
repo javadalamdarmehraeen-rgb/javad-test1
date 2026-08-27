@@ -1630,3 +1630,7 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 یک state زنده؛ پرده تا سرور؛ حذف ریشه دادهٔ سیستم‌های دیگر؛ ویرایش/حذف پایدار؛ ذخیره تارگت پخش.
 - [ ] push کاربر → health=11.73.0
 - [ ] اگر origin/main هنوز تاریخچه جداست: git push origin HEAD:main --force
+
+## 11.74.0 / نوبت ۹۴
+گزارش فروش مشاطب مانند دایا و شفاآراد.
+- [ ] push کاربر → health=11.74.0

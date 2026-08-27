@@ -1264,3 +1264,7 @@ Then change only what is requested.
 - `bindLiveWindowState` / `__CRM_GET_STATE` / setter درجا
 - `__CRM_UNVEIL` بعد از `adoptExact` / `__v73boot`
 - `saveDistTargetsV73` / `matchDist` / `parsePeriod` / `killOldOpsHosts`
+
+## لایه v11.74
+- `MASHATEB_CODE_MAP` / `mashatebDbCode` / `distProductDbCode` / `isMappedDist`
+- distSchema mashateb: qty=10, giftQty=11, pharmacy=9

@@ -1,6 +1,6 @@
 CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.74 | تاریخ به‌روزرسانی: 2026-08-27 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.73.0
+نسخه این فایل: 1.75 | تاریخ به‌روزرسانی: 2026-08-27 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.74.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -570,22 +570,22 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]      849 بایت  .gitattributes
   [متنی ]     1157 بایت  .gitignore
   [متنی ]     2041 بایت  .gitlab-ci.yml
-  [متنی ]    37578 بایت  AI_ACCEPTANCE_CHECKLIST.md
-  [متنی ]    35939 بایت  AI_ARCHITECTURE.md
-  [متنی ]    78661 بایت  AI_DECISION_LOG.md
-  [متنی ]    41992 بایت  AI_PROJECT_CONTEXT.md
-  [متنی ]    46086 بایت  AI_RULES.md
-  [متنی ]    54525 بایت  AI_TASKS.md
-  [متنی ]    50241 بایت  ARENA_HANDOFF_PROMPT.md
+  [متنی ]    37774 بایت  AI_ACCEPTANCE_CHECKLIST.md
+  [متنی ]    36093 بایت  AI_ARCHITECTURE.md
+  [متنی ]    78882 بایت  AI_DECISION_LOG.md
+  [متنی ]    42176 بایت  AI_PROJECT_CONTEXT.md
+  [متنی ]    46327 بایت  AI_RULES.md
+  [متنی ]    54664 بایت  AI_TASKS.md
+  [متنی ]    50423 بایت  ARENA_HANDOFF_PROMPT.md
   [متنی ]      600 بایت  CHANGES_V10.md
-  [متنی ]   125221 بایت  CHANGES_V11.md
+  [متنی ]   125807 بایت  CHANGES_V11.md
   [متنی ]     3939 بایت  CHANGES_V9.md
   [متنی ]     1806 بایت  CLEAN_EXTRA_FILES.bat
-  [متنی ]    40606 بایت  GITHUB_REVIEW_HANDOFF.md
-  [متنی ]      660 بایت  KEEP_ONLY_GITHUB.bat
+  [متنی ]    41036 بایت  GITHUB_REVIEW_HANDOFF.md
+  [متنی ]      694 بایت  KEEP_ONLY_GITHUB.bat
   [متنی ]     6574 بایت  OFFICIAL_FILELIST.txt
-  [متنی ]     1059 بایت  PAKSAZI_EZAFI.bat
-  [متنی ]   132371 بایت  PROJECT_GRAPH.md
+  [متنی ]     1093 بایت  PAKSAZI_EZAFI.bat
+  [متنی ]   132524 بایت  PROJECT_GRAPH.md
   [متنی ]     2707 بایت  PUSH_FRESH_GITHUB.bat
   [متنی ]     2680 بایت  PUSH_GITHUB_CLEAN.bat
   [متنی ]     6579 بایت  RAHNAMA_GITLAB.txt
@@ -616,8 +616,8 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     9805 بایت  mobile/README.md
   [متنی ]     9966 بایت  mobile/src/simAuth.ts
   [متنی ]     8066 بایت  public/cloudflare-worker.js
-  [متنی ]   181908 بایت  public/crm-app.js
-  [متنی ]  1034052 بایت  public/crm-bundle.js
+  [متنی ]   181955 بایت  public/crm-app.js
+  [متنی ]  1035066 بایت  public/crm-bundle.js
   [متنی ]    63721 بایت  public/crm-data.js
   [متنی ]    13643 بایت  public/crm-features-v10.js
   [متنی ]   112307 بایت  public/crm-features-v11.js
@@ -629,7 +629,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]    19662 بایت  public/crm-features-v17.js
   [متنی ]    33040 بایت  public/crm-features-v18.js
   [متنی ]    61295 بایت  public/crm-features-v19.js
-  [متنی ]   300408 بایت  public/crm-features-v20.js
+  [متنی ]   301372 بایت  public/crm-features-v20.js
   [متنی ]    72007 بایت  public/crm-features-v9.js
   [متنی ]    25683 بایت  public/crm-jalali.js
   [متنی ]   154776 بایت  public/index.html
@@ -647,7 +647,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     2656 بایت  scripts/build-sw.mjs
   [متنی ]      720 بایت  scripts/build.js
   [متنی ]     7278 بایت  scripts/clean-extra-files.mjs
-  [متنی ]     6225 بایت  scripts/clean-extra-files.ps1
+  [متنی ]     6382 بایت  scripts/clean-extra-files.ps1
   [متنی ]    11033 بایت  scripts/generate-assets.mjs
   [متنی ]     2550 بایت  scripts/simplify-geojson.mjs
   [متنی ]     1567 بایت  scripts/start.mjs
@@ -791,7 +791,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     3346 بایت  src/lib/zip.ts
   [متنی ]     4927 بایت  tests/app-smoke.test.mjs
   [متنی ]    19979 بایت  tests/state-preservation.test.mjs
-  [متنی ]    58345 بایت  tests/version-11.24-regressions.test.mjs
+  [متنی ]    59606 بایت  tests/version-11.24-regressions.test.mjs
   [تصویر]    23282 بایت  public/apple-touch-icon.png
   [تصویر]     4527 بایت  public/favicon.png
   [تصویر]    26208 بایت  public/icon-192.png
@@ -4004,7 +4004,7 @@ sync-after-deploy:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_ACCEPTANCE_CHECKLIST.md (37578 بایت)
+فایل: AI_ACCEPTANCE_CHECKLIST.md (37774 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI_ACCEPTANCE_CHECKLIST — چک‌لیست اجباری تحویل واقعی
@@ -4270,10 +4270,13 @@ sync-after-deploy:
 - [x] پاک دادهٔ سیستم‌های دیگر از ریشه — adoptExact + persist replace
 - [x] دکمه‌های ویرایش/حذف ناپدید نشوند — killOldOpsHosts + ops روی سطر
 - [x] ذخیره تارگت پخش بعد از ویرایش/حذف — saveDistTargetsV73 + matchDist + tombstone clear
+
+## 11.74.0 / نوبت ۹۴
+- [x] مشاطب مثل دایا/شفاآراد در تب فروش پخش‌ها — ستون ۱۱/۱۲/۱۰ + قیمت برنامه + کد ۱۸۶۱۰۱…۱۸۶۱۰۷
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_ARCHITECTURE.md (35939 بایت)
+فایل: AI_ARCHITECTURE.md (36093 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI ARCHITECTURE
@@ -5542,10 +5545,14 @@ Then change only what is requested.
 - `bindLiveWindowState` / `__CRM_GET_STATE` / setter درجا
 - `__CRM_UNVEIL` بعد از `adoptExact` / `__v73boot`
 - `saveDistTargetsV73` / `matchDist` / `parsePeriod` / `killOldOpsHosts`
+
+## لایه v11.74
+- `MASHATEB_CODE_MAP` / `mashatebDbCode` / `distProductDbCode` / `isMappedDist`
+- distSchema mashateb: qty=10, giftQty=11, pharmacy=9
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_DECISION_LOG.md (78661 بایت)
+فایل: AI_DECISION_LOG.md (78882 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI DECISION LOG
@@ -7229,10 +7236,13 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 
 ## 11.73.0 / نوبت ۹۳
 دو شیء state + پرده ۸۰۰ms علت نشان‌دادن دادهٔ دیگران بود. نقاشان v68/v69 دکمه‌ها را می‌ساختند و hide پنهان می‌کرد. v66 save روی window.state جدا یا match ماه اشتباه ذخیره را از دست می‌داد. تصمیم: bind زنده + unveil بعد adopt + kill host قدیمی + saveDistTargetsV73.
+
+## 11.74.0 / نوبت ۹۴
+مشاطب تا کنون schema ثابت نداشت و از حدس هدر استفاده می‌کرد. تصمیم: ایندکس قطعی ستون‌ها + نقشه کد مثل شفاآراد.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_PROJECT_CONTEXT.md (41992 بایت)
+فایل: AI_PROJECT_CONTEXT.md (42176 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI PROJECT CONTEXT
@@ -8194,10 +8204,13 @@ Commit محلی `2c4fe0b` روی شاخه ثابت Arena ساخته شد. Push �
 
 ## 11.73.0 / نوبت ۹۳
 نسخه جاری برنامه: 11.73.0. یک state زنده، پرده تا adopt سرور، عملیات تارگت پایدار، ذخیره تارگت پخش با تطبیق ماه.
+
+## 11.74.0 / نوبت ۹۴
+نسخه جاری برنامه: 11.74.0. گزارش فروش مشاطب با ستون‌های ۱۱/۱۲/۱۰ و کدهای ۱۸۶۱۰۱ تا ۱۸۶۱۰۷.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_RULES.md (46086 بایت)
+فایل: AI_RULES.md (46327 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI RULES
@@ -9838,10 +9851,13 @@ That is NOT a valid user-facing format.
 
 ## 11.73.0 / نوبت ۹۳
 window.state باید همان شیء زنده crm-app باشد (mutate درجا، نه جایگزینی کور). پرده crm-booting تا adopt سرور. ذخیره تارگت پخش فقط روی live state با تطبیق monthName.
+
+## 11.74.0 / نوبت ۹۴
+گزارش مشاطب از فایل داروخانه: ستون ۱۱ تعداد فروش، ۱۲ جایزه، ۱۰ داروخانه؛ ریال از قیمت برنامه؛ کدهای ۱۸۶۱۰۱ تا ۱۸۶۱۰۷.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_TASKS.md (54525 بایت)
+فایل: AI_TASKS.md (54664 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI TASKS
@@ -11476,10 +11492,14 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 یک state زنده؛ پرده تا سرور؛ حذف ریشه دادهٔ سیستم‌های دیگر؛ ویرایش/حذف پایدار؛ ذخیره تارگت پخش.
 - [ ] push کاربر → health=11.73.0
 - [ ] اگر origin/main هنوز تاریخچه جداست: git push origin HEAD:main --force
+
+## 11.74.0 / نوبت ۹۴
+گزارش فروش مشاطب مانند دایا و شفاآراد.
+- [ ] push کاربر → health=11.74.0
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: ARENA_HANDOFF_PROMPT.md (50241 بایت)
+فایل: ARENA_HANDOFF_PROMPT.md (50423 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # ARENA AI MASTER HANDOFF PROMPT
@@ -12878,6 +12898,9 @@ ADDENDUM v11.16.1 (2026-08-16)
 
 ## 11.73.0 / نوبت ۹۳
 یک state زنده. پرده تا سرور. پاک دادهٔ دیگران از ریشه. ویرایش/حذف پایدار. ذخیره تارگت پخش بعد از ویرایش/حذف.
+
+## 11.74.0 / نوبت ۹۴
+مشاطب در فروش پخش‌ها مانند دایا و شفاآراد با ستون ۱۱/۱۲/۱۰ و تطبیق کد ۱۸۶۱۰۱…۱۸۶۱۰۷.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -12897,7 +12920,7 @@ Leaflet محلی. فونت گوگل حذف شد. gzip روی JS/CSS/HTML.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: CHANGES_V11.md (125221 بایت)
+فایل: CHANGES_V11.md (125807 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # نسخه ۱۱.۲۳.۰
@@ -13703,6 +13726,13 @@ CLEAN_EXTRA_FILES.bat و بعد PUSH_GITHUB_CLEAN.bat را اجرا کن.
 1. باز شدن برنامه دیگر دادهٔ سیستم‌های دیگر را نشان نمی‌دهد: `window.state` همان شیء زنده crm-app است؛ پرده تا آمدن `/api/state?__v73boot=` می‌ماند؛ adopt درجا localStorage را با دادهٔ همین سیستم جایگزین می‌کند.
 2. کلیدهای ویرایش/حذف تارگت نمایندگان، مسیر نمایندگان و تارگت هر پخش روی همان سطر می‌مانند؛ کارت‌های قدیمی «نمایش تارگت‌های ثبت‌شده» حذف می‌شوند نه پنهان لحظه‌ای.
 3. ذخیره تارگت هر پخش بعد از ویرایش یا حذف+ورود دوباره تعداد واقعاً می‌ماند: تطبیق ماه با `monthName` یا `ماه/سال`، به‌روزرسانی همان id، پاک tombstone کلید طبیعی، POST با replace=1.
+
+## تحویل نوبت ۹۴ — نسخه ۱۱.۷۴.۰: گزارش فروش مشاطب مانند دایا و شفاآراد
+
+1. فایل داروخانه مشاطب: ستون ۱۱ فروش تعدادی، ستون ۱۲ تعداد جایزه، ستون ۱۰ شناسه داروخانه.
+2. فروش ریالی پخش و داروخانه از ضرب تعداد در قیمت‌های ثبت‌شده برنامه.
+3. درصد جایزه به فروش و درصد فروش به‌تفکیک کالا از همان تعدادها.
+4. تطبیق کد کالا: 1001=186101 تا 1007=186107.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -13838,14 +13868,14 @@ pause
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: GITHUB_REVIEW_HANDOFF.md (40606 بایت)
+فایل: GITHUB_REVIEW_HANDOFF.md (41036 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # GITHUB_REVIEW_HANDOFF — تحویل مویرگی برای بررسی GitHub و هوش مصنوعی بعدی
 
-**تاریخ این تحویل:** 2026-08-27 / ۵ شهریور 1405 (به‌روزرسانی نوبت ۹۳)
-**نسخه آماده سورس:** `11.73.0` (فایل واحد crm-bundle + آینه crm-features-v20)
-**نسخه chat.arena پس از بازسازی این نوبت:** `1.74`
+**تاریخ این تحویل:** 2026-08-27 / ۵ شهریور 1405 (به‌روزرسانی نوبت ۹۴)
+**نسخه آماده سورس:** `11.74.0` (فایل واحد crm-bundle + آینه crm-features-v20)
+**نسخه chat.arena پس از بازسازی این نوبت:** `1.75`
 **شاخه اجباری این جلسه:** `arena/01a03a45-javad-test1`
 **مخزن:** `javadalamdarmehraeen-rgb/javad-test1`
 **Production فعال:** `https://javad-test1.onrender.com` — 11.38.0 سرو می‌کند؛ با push نسخه 11.38.1 توسط کاربر، Render دیپلوی می‌کند
@@ -14462,10 +14492,17 @@ Source 84/84؛ نام‌ها ساده؛ instant-add متنی صفر؛ گرید �
 - adoptExact درجا + persist روی CRM_APP_STATE_V2 یعنی دادهٔ سیستم‌های دیگر از ریشه پاک می‌شود.
 - نقاشان v68/v69 کارت «نمایش تارگت‌های ثبت‌شده» را می‌ساختند و hideOldOps پنهان می‌کرد → دکمه‌ها ناپدید. v73 آن میزبان‌ها را حذف و عملیات را روی سطر اصلی نگه می‌دارد.
 - ذخیره تارگت پخش: match با monthName یا `ماه/سال`، به‌روزرسانی id موجود، پاک tombstone هنگام ورود دوباره، replace=1.
+
+## نوبت ۹۴ — نسخه 11.74.0
+
+- تب اطلاعات فروش پخش‌ها: مشاطب مانند دایا/شفاآراد.
+- ستون ۱۱ فروش تعدادی، ستون ۱۲ تعداد جایزه، ستون ۱۰ تعداد داروخانه.
+- ریال فروش = تعداد × قیمت پخش/داروخانه برنامه.
+- تطبیق کد: 1001→186101 … 1007→186107 (`MASHATEB_CODE_MAP` / `mashatebDbCode`).
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: KEEP_ONLY_GITHUB.bat (660 بایت)
+فایل: KEEP_ONLY_GITHUB.bat (694 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~batch
 @echo off
@@ -14766,7 +14803,7 @@ update_project_graph.py
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: PAKSAZI_EZAFI.bat (1059 بایت)
+فایل: PAKSAZI_EZAFI.bat (1093 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~batch
 @echo off
@@ -14806,7 +14843,7 @@ pause
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: PROJECT_GRAPH.md (132371 بایت)
+فایل: PROJECT_GRAPH.md (132524 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # 🕸️ گراف دانش پروژه «نماینده علمی» (PROJECT_GRAPH.md)
@@ -14858,14 +14895,14 @@ pause
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (181908 بایت)
+### `public/crm-app.js` (181955 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 179
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_STATE_BOUND`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderDoctorsList`, `renderExtraTabCustomFields`, `renderPharmaciesList`, `validateRequiredFields`
 
-### `public/crm-bundle.js` (1034052 بایت)
+### `public/crm-bundle.js` (1035066 بایت)
 - نقش: * crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
-- تعداد توابع داخلی: 1059
+- تعداد توابع داخلی: 1061
 - نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `WIDGET_PALETTE`, `__CRM_APPLYING_SERVER`, `__CRM_BULK_READY`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SERVER_READY`, `__CRM_SNAP`, `__CRM_UNVEIL`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__V68_WATCH`, `__V69_SYNC`, `__V70_SOLO`, `__V71_CLAIMED`, `__V72_BOOT`, `__V73_BOOT`, `__V73_WATCH`, `__lastHealth`, `__v40LastPick`, `__v53wrapped`, `__v55wrapped`, `__v56wrapped`, `__v58once`, `_actMap`, `_actMarks`, `_activeAddTab`, `_activeColTab`
 
 ### `public/crm-data.js` (63721 بایت)
@@ -14922,9 +14959,9 @@ pause
 - تعداد توابع داخلی: 65
 - نام‌های window که تعریف/بازنویسی می‌کند: `_v18DefaultReq`, `_v19BackupLayoutGuard`, `_v19ComboHook`, `_v19Hist`, `_v19IcObs`, `_v19ProdTableWrap`, `_v19Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `extraListColumns`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderPharmaciesList`, `switchTab`, `testServerConnectivity`
 
-### `public/crm-features-v20.js` (300408 بایت)
+### `public/crm-features-v20.js` (301372 بایت)
 - نقش: ============================================================
-- تعداد توابع داخلی: 341
+- تعداد توابع داخلی: 343
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_READY`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_RESCUING`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__v40LastPick`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFieldPermissions`, `applyFullFormLayout`, `applyUserRolePermissions`, `attachJalaliPicker`, `builtinFieldValue`, `createCustomMarker`, `deleteCustomField`, `deleteProductCatalogItem`, `deleteRepHome`, `deleteUserCard`, `editProductCatalogItem`, `editRepHome`, `editUserCard`, `extraListColumns`, `getUnifiedFieldList`, `open`, `openRowDetailsModal`, `performAutoBackup`, `renderActivityLogTable`, `renderActivityMapAndChart`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`
 
 ### `public/crm-features-v9.js` (72007 بایت)
@@ -14947,7 +14984,7 @@ pause
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (3742 بایت)
-- نقش: const BUILD = "11.73.0";
+- نقش: const BUILD = "11.74.0";
 - تعداد توابع داخلی: 3
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -15533,6 +15570,7 @@ pause
 - `distDatePass` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `distFilter` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `distLastDate` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
+- `distProductDbCode` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `distSchema` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `distStore` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `distributorMetrics` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
@@ -15722,6 +15760,7 @@ pause
 - `isHostGroup` ← `public/crm-bundle.js`, `public/crm-features-v11.js`
 - `isKnownPharmacy` ← `public/crm-bundle.js`, `public/crm-features-v16.js`
 - `isLeap` ← `public/crm-bundle.js`, `public/crm-jalali.js`
+- `isMappedDist` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `isToday` ← `public/crm-bundle.js`, `public/crm-jalali.js`
 - `isUserTab` ← `public/crm-bundle.js`, `public/crm-features-v12.js`
 - `items` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
@@ -16215,7 +16254,7 @@ pause
 
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
-- نسخه سورس package: `11.73.0`
+- نسخه سورس package: `11.74.0`
 - مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a03a45-javad-test1`؛ push/PR فقط از همین شاخه.
 - Production فعال: `https://javad-test1.onrender.com` — نسخه سورس فعلی `11.66.0` است و تا push کاربر روی production همان آخرین دیپلوی قبلی می‌ماند.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.
@@ -16551,9 +16590,9 @@ push به گیت‌هاب → push به گیت‌لب.
 ~~~~~~~~markdown
 # نماینده علمی — طنین طب طاها
 
-> **راهنمای بررسی نسخه جاری:** قبل از هر بررسی GitHub، فایل [`GITHUB_REVIEW_HANDOFF.md`](./GITHUB_REVIEW_HANDOFF.md) و سپس [`PROJECT_GRAPH.md`](./PROJECT_GRAPH.md) را بخوانید. نسخه فعال سورس `11.73.0` است؛ ورودی runtime اصلی `server.js + public/` است و اسکلت Next.js پوشه `src/` مسیر production فعلی نیست.
+> **راهنمای بررسی نسخه جاری:** قبل از هر بررسی GitHub، فایل [`GITHUB_REVIEW_HANDOFF.md`](./GITHUB_REVIEW_HANDOFF.md) و سپس [`PROJECT_GRAPH.md`](./PROJECT_GRAPH.md) را بخوانید. نسخه فعال سورس `11.74.0` است؛ ورودی runtime اصلی `server.js + public/` است و اسکلت Next.js پوشه `src/` مسیر production فعلی نیست.
 >
-> **وضعیت انتشار در 2026-08-27 (نوبت ۹۳):** سورس `11.73.0` آماده push کاربر است — یک state زنده + پرده تا سرور + ذخیره پایدار تارگت پخش.
+> **وضعیت انتشار در 2026-08-27 (نوبت ۹۳):** سورس `11.74.0` آماده push کاربر است — یک state زنده + پرده تا سرور + ذخیره پایدار تارگت پخش.
 
 این مخزن شامل برنامه CRM/PWA نمایندگان علمی، مدیریت داروخانه/پزشک/سفارش، مسیرها، تارگت، اعلان، پخش و ابزارهای حفظ داده است.
 
@@ -17391,7 +17430,7 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.73.0",
+  "version": "11.74.0",
   "description": "سیستم جامع مدیریت و ویزیت علمی، داروخانه‌ها، پزشکان و سفارشات (CRM / PWA) هماهنگ با Render و Neon",
   "main": "server.js",
   "engines": {
@@ -17497,7 +17536,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.73.0";
+const APP_VERSION = "11.74.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -18146,7 +18185,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.74 | تاریخ به‌روزرسانی: 2026-08-27 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.73.0
+نسخه این فایل: 1.75 | تاریخ به‌روزرسانی: 2026-08-27 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.74.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -23035,7 +23074,7 @@ async function sendWhatsappCloud(text, to, token) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-app.js (181908 بایت)
+فایل: public/crm-app.js (181955 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================================
@@ -23086,7 +23125,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "11.73.0";
+const CRM_APP_VERSION = "11.74.0";
 try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
@@ -23170,7 +23209,7 @@ function loadState() {
   if (!state.tabOrder) state.tabOrder = {};
   if (!state.manualLayouts) state.manualLayouts = {};
   state._authoritativeState = true;
-  bindLiveWindowState();
+  if (typeof bindLiveWindowState === "function") bindLiveWindowState();
   if (saved) { try { localStorage.setItem(STORAGE_KEY, serializeStateForLocalStorage(state)); } catch (e) {} }
   applyGeneralSettingsToUI();
 }
@@ -26082,7 +26121,7 @@ function downloadCSVFile(filename, headers, rows) {
 // ----------------------------------------------------------------------------
 function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
-  const build = "11.73.0";
+  const build = "11.74.0";
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'CRM_BUILD_ACTIVE' && event.data.build !== build) {
@@ -26090,7 +26129,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.73.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.74.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -27207,7 +27246,7 @@ function deleteProductCatalogItem(id) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-bundle.js (1034052 بایت)
+فایل: public/crm-bundle.js (1035066 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 /* crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
@@ -39771,18 +39810,20 @@ button.v19-gps svg{display:block}
   async function importDistributorFile(id,kind,file){var d=distStore()[id];try{var rows=await parseSnappFile(file),hi=findHeaderRow(rows,"trip"),headers=rows[hi]||[],data=rows.slice(hi+1).map(normalizeStoredRow).filter(function(r){return r.some(function(x){return String(x).trim();});});headers=alignDistributorHeaders(id,kind,headers,data);if(kind==="pharmacy"){var seen={};d.pharmacyRows.forEach(function(r){seen[rowSignature(r)]=1;});var fresh=data.filter(function(r){var k=rowSignature(r);if(seen[k])return false;seen[k]=1;return true;});d.pharmacyHeaders=headers.slice();d.pharmacyRows=d.pharmacyRows.concat(fresh);d.pharmacyImports.unshift({id:"imp-"+Date.now(),name:file.name,at:Date.now(),lastDate:distLastDate(fresh,headers,d.id),headers:headers.slice(),rows:fresh});v20Toast("✅ "+fresh.length.toLocaleString("fa-IR")+" ردیف جدید داروخانه به انتهای "+d.name+" اضافه شد.");}else{d.inventoryHeaders=headers.slice();d.inventoryRows=data;d.inventoryImport={name:file.name,at:Date.now(),lastDate:distLastDate(data,headers,d.id),headers:headers.slice(),rows:data};v20Toast("✅ موجودی "+d.name+" با "+data.length.toLocaleString("fa-IR")+" ردیف جایگزین شد.");}ensureShafaInventoryDerived(d);await saveBulkVault();save();renderDistributorActions();renderDistributorDatabase();renderDistributorReport();invoiceStatusBaseCache=null;if($("tab-distributor-invoice-status")&&$("tab-distributor-invoice-status").classList.contains("active"))renderInvoiceStatus();}catch(e){alert("خطا در فایل "+file.name+": "+e.message);}}
   function showDistributorRaw(d,kind){var host=$("distributorRawViewer");function paint(title,headers,rows){var originalSigs=(rows||[]).map(rowSignature);host.hidden=false;var archive=kind==="pharmacy"?(d.pharmacyImports||[]):[];host.innerHTML="<div class='card-header'><div class='card-title'>👁 "+esc(d.name+" — "+title)+" ("+rows.length.toLocaleString("fa-IR")+" ردیف)</div><div><button class='btn btn-primary raw-save'>💾 ذخیره تغییرات</button> <button class='btn btn-outline raw-close'>بستن</button></div></div>"+(archive.length?"<div class='v20-card-tools'><button class='btn btn-outline raw-all'>همه دیتابیس</button>"+archive.map(function(x,i){return"<button class='btn btn-outline raw-batch' data-i='"+i+"'>"+esc(x.name+" — "+x.lastDate)+"</button>";}).join("")+"</div>":"")+"<div class='table-responsive'><table class='data-table'><thead><tr>"+(headers||[]).map(function(h){return"<th>"+esc(h)+"</th>";}).join("")+"</tr></thead><tbody>"+(rows||[]).slice(0,1000).map(function(r,ri){return"<tr>"+r.map(function(v,i){var show=/تاریخ/.test(String((headers||[])[i]||""))?slashOnlyPersianDate(v):v;return"<td contenteditable='true' data-r='"+ri+"' data-c='"+i+"'>"+esc(show)+"</td>";}).join("")+"</tr>";}).join("")+"</tbody></table></div>";host.querySelector('.raw-close').onclick=function(){host.hidden=true;};host.querySelector('.raw-save').onclick=async function(){Array.prototype.forEach.call(host.querySelectorAll('td[data-r]'),function(td){var r=Number(td.dataset.r),c=Number(td.dataset.c);if(rows[r])rows[r][c]=td.textContent.trim();});var master=kind==='pharmacy'?d.pharmacyRows:d.inventoryRows;(rows||[]).forEach(function(row,i){var mi=master.findIndex(function(x){return rowSignature(x)===originalSigs[i];});if(mi>=0)master[mi]=row;});await saveBulkVault();save();renderDistributorActions();renderDistributorDatabase();renderDistributorReport();v20Toast('✅ تغییرات دیتابیس پخش ذخیره شد.');};var all=host.querySelector('.raw-all');if(all)all.onclick=function(){paint("همه دیتابیس داروخانه",d.pharmacyHeaders,d.pharmacyRows);};Array.prototype.forEach.call(host.querySelectorAll('.raw-batch'),function(b){b.onclick=function(){var x=archive[Number(b.dataset.i)];paint("فایل "+x.name,x.headers||d.pharmacyHeaders,Array.isArray(x.rows)?x.rows:[]);};});host.scrollIntoView({behavior:"smooth"});}if(kind==="pharmacy")paint("همه دیتابیس داروخانه",d.pharmacyHeaders,d.pharmacyRows);else paint("موجودی فعلی — "+((d.inventoryImport||{}).name||""),d.inventoryHeaders,d.inventoryRows);}
   function findDistIndex(h,re,fb){for(var i=0;i<(h||[]).length;i++)if(re.test(String(h[i])))return i;return fb==null?-1:fb;}
-  function distSchema(h,id){var x={date:findDistIndex(h,/تاریخ/,0),code:findDistIndex(h,/کد.*کالا|کد.*محصول/,-1),product:findDistIndex(h,/نام.*(کالا|محصول)|کالا|محصول/,1),qty:findDistIndex(h,/فروش.*تعداد|تعداد.*فروش/,2),dist:findDistIndex(h,/فروش.*ریال.*پخش|مبلغ.*پخش/,3),ph:findDistIndex(h,/فروش.*ریال.*داروخانه|مبلغ.*داروخانه/,4),giftQty:findDistIndex(h,/تعداد.*جایزه(?!.*مرجوع)/,5),giftRial:findDistIndex(h,/ریال.*جایزه(?!.*مرجوع)|مبلغ.*جایزه(?!.*مرجوع)/,6),retQty:findDistIndex(h,/تعداد.*مرجوع(?!.*جایزه)/,7),retRial:findDistIndex(h,/ریال.*مرجوع(?!.*جایزه)|مبلغ.*مرجوع(?!.*جایزه)/,8),retGiftQty:findDistIndex(h,/تعداد.*مرجوع.*جایزه/, -1),retGiftRial:findDistIndex(h,/ریال.*مرجوع.*جایزه|مبلغ.*مرجوع.*جایزه/,-1),pharmacy:findDistIndex(h,/نام.*داروخانه|داروخانه/,9),province:findDistIndex(h,/استان/,-1),city:findDistIndex(h,/شهر/,-1),district:findDistIndex(h,/منطقه/,-1),address:findDistIndex(h,/آدرس/,-1),invoice:findDistIndex(h,/شماره.*فاکتور|فاکتور/,10),visitor:findDistIndex(h,/نام.*ویزیتور|ویزیتور|بازاریاب|نماینده.*فروش/,-1)};if(id==="daya"){x.date=13;x.invoice=12;x.code=15;x.qty=4;x.giftQty=3;x.retQty=7;x.retGiftQty=6;x.pharmacy=21;x.dist=-1;x.ph=-1;x.giftRial=-1;x.retRial=-1;x.retGiftRial=-1;}else if(id==="shafaarad"){x.date=6;x.invoice=5;x.qty=7;x.retQty=9;x.pharmacy=3;x.giftQty=-1;x.retGiftQty=-1;x.dist=-1;x.ph=-1;x.giftRial=-1;x.retRial=-1;x.retGiftRial=-1;}return x;}
+  function distSchema(h,id){var x={date:findDistIndex(h,/تاریخ/,0),code:findDistIndex(h,/کد.*کالا|کد.*محصول/,-1),product:findDistIndex(h,/نام.*(کالا|محصول)|کالا|محصول/,1),qty:findDistIndex(h,/فروش.*تعداد|تعداد.*فروش/,2),dist:findDistIndex(h,/فروش.*ریال.*پخش|مبلغ.*پخش/,3),ph:findDistIndex(h,/فروش.*ریال.*داروخانه|مبلغ.*داروخانه/,4),giftQty:findDistIndex(h,/تعداد.*جایزه(?!.*مرجوع)/,5),giftRial:findDistIndex(h,/ریال.*جایزه(?!.*مرجوع)|مبلغ.*جایزه(?!.*مرجوع)/,6),retQty:findDistIndex(h,/تعداد.*مرجوع(?!.*جایزه)/,7),retRial:findDistIndex(h,/ریال.*مرجوع(?!.*جایزه)|مبلغ.*مرجوع(?!.*جایزه)/,8),retGiftQty:findDistIndex(h,/تعداد.*مرجوع.*جایزه/, -1),retGiftRial:findDistIndex(h,/ریال.*مرجوع.*جایزه|مبلغ.*مرجوع.*جایزه/,-1),pharmacy:findDistIndex(h,/نام.*داروخانه|داروخانه/,9),province:findDistIndex(h,/استان/,-1),city:findDistIndex(h,/شهر/,-1),district:findDistIndex(h,/منطقه/,-1),address:findDistIndex(h,/آدرس/,-1),invoice:findDistIndex(h,/شماره.*فاکتور|فاکتور/,10),visitor:findDistIndex(h,/نام.*ویزیتور|ویزیتور|بازاریاب|نماینده.*فروش/,-1)};if(id==="daya"){x.date=13;x.invoice=12;x.code=15;x.qty=4;x.giftQty=3;x.retQty=7;x.retGiftQty=6;x.pharmacy=21;x.dist=-1;x.ph=-1;x.giftRial=-1;x.retRial=-1;x.retGiftRial=-1;}else if(id==="shafaarad"){x.date=6;x.invoice=5;x.qty=7;x.retQty=9;x.pharmacy=3;x.giftQty=-1;x.retGiftQty=-1;x.dist=-1;x.ph=-1;x.giftRial=-1;x.retRial=-1;x.retGiftRial=-1;}else if(id==="mashateb"){x.qty=10;x.giftQty=11;x.pharmacy=9;x.invoice=-1;x.retQty=-1;x.retGiftQty=-1;x.dist=-1;x.ph=-1;x.giftRial=-1;x.retRial=-1;x.retGiftRial=-1;}return x;}
   function findDistExact(h,title){var n=norm(title);for(var i=0;i<(h||[]).length;i++)if(norm(h[i])===n)return i;return-1;}
   function invSchema(h,id){var code=findDistExact(h,"کد کالا"),product=findDistExact(h,"نام کالا"),qty=findDistExact(h,"موجودی");if(id==="shafaarad"&&code<0)code=findDistExact(h,"کالا");return{code:code>=0?code:findDistIndex(h,/کد.*کالا|کد.*محصول/,-1),product:product>=0?product:findDistIndex(h,/نام.*(کالا|محصول)/,0),qty:id==="shafaarad"?(findDistExact(h,"جمع تعداد موجودی")>=0?findDistExact(h,"جمع تعداد موجودی"):9):(qty>=0?qty:(id==="daya"?2:findDistIndex(h,/موجودی.*تعداد|تعداد.*موجودی/,1))),rial:findDistIndex(h,/موجودی.*ریال|ریال.*موجودی/,-1)};}
   function distFilter(){var mode=$("distModeDay").checked?"day":$("distModeMonth").checked?"month":$("distModeYear").checked?"year":($("distModeFrom").checked||$("distModeTo").checked)?"range":"all";return{mode:mode,year:enDigits($("distFilterYear").value),month:enDigits($("distFilterMonth").value),day:enDigits($("distFilterDay").value).padStart(2,"0"),from:normSnappDate($("distFilterFrom").value),to:normSnappDate($("distFilterTo").value)};}
   function distDatePass(v,f){var d=slashOnlyPersianDate(v);if(f.mode==="year")return!f.year||d.slice(0,4)===f.year;if(f.mode==="month")return(!f.year||d.slice(0,4)===f.year)&&(!f.month||d.slice(5,7)===f.month);if(f.mode==="day")return(!f.year||d.slice(0,4)===f.year)&&(!f.month||d.slice(5,7)===f.month)&&(!f.day||d.slice(8,10)===f.day);if(f.mode==="range")return(!f.from||d>=f.from)&&(!f.to||d<=f.to);return true;}
   function normalizeDbCode(v){var s=enDigits(String(v==null?"":v)).replace(/[,٬\s]/g,"").trim(),n=Number(s);return isFinite(n)&&n>0?String(Math.trunc(n)):s.replace(/\.0+$/,"");}
-  function findKnownCodeInRow(row,distId){var known={};((st().products)||[]).forEach(function(p){var c=distId==="daya"?(p.dayaDbCode||(p.code?1111000+Number(p.code):"")):(p.shafaDbCode||SHAFA_CODE_MAP[p.code]||"");if(c)known[String(c)]=1;});var r=normalizeStoredRow(row);for(var i=0;i<r.length;i++){var c=normalizeDbCode(r[i]);if(known[c])return c;}return"";}
-  function canonicalProduct(raw,dbCode,distId){var name=String(raw||"").trim(),n=norm(name),code=normalizeDbCode(dbCode);if((distId==="daya"||distId==="shafaarad")&&(!name||n===norm("نامشخص")))return null;var p=((st().products)||[]).filter(function(x){if(distId==="daya"&&code&&String(x.dayaDbCode||((x.code)?1111000+Number(x.code):""))===code)return true;if(distId==="shafaarad"&&code&&String(x.shafaDbCode||SHAFA_CODE_MAP[x.code]||"")===code)return true;var q=norm(x.name);return q===n||(q.length>=4&&n.indexOf(q)>=0)||(n.length>=4&&q.indexOf(n)>=0);})[0];if(p)return p.name;return (distId==="daya"||distId==="shafaarad")?null:(name||"نامشخص");}
+  function distProductDbCode(p,distId){if(!p)return"";if(distId==="daya")return String(p.dayaDbCode||(p.code?1111000+Number(p.code):"")||"");if(distId==="shafaarad")return String(p.shafaDbCode||SHAFA_CODE_MAP[p.code]||"");if(distId==="mashateb")return String(p.mashatebDbCode||MASHATEB_CODE_MAP[p.code]||"");return"";}
+  function isMappedDist(id){return id==="daya"||id==="shafaarad"||id==="mashateb";}
+  function findKnownCodeInRow(row,distId){var known={};((st().products)||[]).forEach(function(p){var c=distProductDbCode(p,distId);if(c)known[String(c)]=1;});var r=normalizeStoredRow(row);for(var i=0;i<r.length;i++){var c=normalizeDbCode(r[i]);if(known[c])return c;}return"";}
+  function canonicalProduct(raw,dbCode,distId){var name=String(raw||"").trim(),n=norm(name),code=normalizeDbCode(dbCode),mapped=distId==="daya"||distId==="shafaarad"||distId==="mashateb";if(mapped&&(!name||n===norm("نامشخص")))return null;var p=((st().products)||[]).filter(function(x){if(mapped&&code){var dc=distId==="daya"?String(x.dayaDbCode||((x.code)?1111000+Number(x.code):"")||""):distId==="shafaarad"?String(x.shafaDbCode||SHAFA_CODE_MAP[x.code]||""):distId==="mashateb"?String(x.mashatebDbCode||(typeof MASHATEB_CODE_MAP!=="undefined"&&MASHATEB_CODE_MAP[x.code])||""):"";if(dc===code)return true;}var q=norm(x.name);return q===n||(q.length>=4&&n.indexOf(q)>=0)||(n.length>=4&&q.indexOf(n)>=0);})[0];if(p)return p.name;return mapped?null:(name||"نامشخص");}
   function productPrice(name,key){var p=((st().products)||[]).filter(function(x){return norm(x.name)===norm(name);})[0]||{};return Number(key==="dist"?(p.distributorPrice||p.distPrice||p.price||0):(p.pharmacyPrice||p.price||0));}
   function emptyMetric(){return{qty:0,dist:0,ph:0,giftQty:0,giftRial:0,retQty:0,retRial:0,retGiftQty:0,retGiftRial:0,pharmacies:{},invoices:{},invQty:0,invDist:0,invPh:0};}
   function calculateDayaAmounts(qty,gift,ret,retGift,distPrice,pharmacyPrice){return{dist:qty*distPrice,ph:qty*pharmacyPrice,giftRial:gift*distPrice,retRial:ret*distPrice,retGiftRial:retGift*distPrice,giftPct:qty?gift/qty*100:0,retPct:qty?ret/qty*100:0,retGiftPct:ret?retGift/ret*100:0};}
-  function distributorMetrics(d){var f=distFilter(),sc=distSchema(d.pharmacyHeaders,d.id),is=invSchema(d.inventoryHeaders,d.id),map={};(d.pharmacyRows||[]).forEach(function(raw){var r=normalizeStoredRow(raw);if(!distDatePass(r[sc.date],f))return;var dbCode=(d.id==="daya"||d.id==="shafaarad")?findKnownCodeInRow(r,d.id):(sc.code>=0?r[sc.code]:"");var n=canonicalProduct(r[sc.product],dbCode,d.id);if(!n)return;var m=map[n]||(map[n]=emptyMetric()),qty=snappNumber(r[sc.qty]),gift=snappNumber(r[sc.giftQty]),ret=snappNumber(r[sc.retQty]),retGift=snappNumber(r[sc.retGiftQty]),dp=productPrice(n,"dist"),pp=productPrice(n,"ph");m.qty+=qty;m.giftQty+=gift;m.retQty+=ret;m.retGiftQty+=retGift;if(d.id==="daya"||d.id==="shafaarad"){var da=calculateDayaAmounts(qty,gift,ret,retGift,dp,pp);m.dist+=da.dist;m.ph+=da.ph;m.giftRial+=da.giftRial;m.retRial+=da.retRial;m.retGiftRial+=da.retGiftRial;}else{var dr=sc.dist>=0?snappNumber(r[sc.dist]):0,pr=sc.ph>=0?snappNumber(r[sc.ph]):0,gr=sc.giftRial>=0?snappNumber(r[sc.giftRial]):0,rr=sc.retRial>=0?snappNumber(r[sc.retRial]):0,rgr=sc.retGiftRial>=0?snappNumber(r[sc.retGiftRial]):0;m.dist+=dr||qty*dp;m.ph+=pr||qty*pp||qty*dp;m.giftRial+=gr||gift*dp;m.retRial+=rr||ret*dp;m.retGiftRial+=rgr||retGift*dp;}if(qty>0){var pk=d.id==="daya"?norm(r[21]):(d.id==="shafaarad"?norm(r[3]):[sc.pharmacy,sc.province,sc.city,sc.district,sc.address].map(function(i){return i>=0?norm(r[i]):"";}).join("|"));if(pk&&pk.replace(/\|/g,""))m.pharmacies[pk]=1;if(sc.invoice>=0&&r[sc.invoice]&&!(ret&&ret===qty))m.invoices[String(r[sc.invoice])]=1;}});(d.inventoryRows||[]).forEach(function(raw){var r=normalizeStoredRow(raw),dbCode=(d.id==="daya"||d.id==="shafaarad")?findKnownCodeInRow(r,d.id):(is.code>=0?r[is.code]:""),n=canonicalProduct(r[is.product],dbCode,d.id);if(!n)return;var m=map[n]||(map[n]=emptyMetric()),q=snappNumber(r[is.qty]);m.invQty+=q;m.invDist+=q*productPrice(n,"dist");m.invPh+=q*productPrice(n,"ph");});((st().products)||[]).forEach(function(p){var n=String(p.name||"").trim();if(n&&norm(n)!==norm("نامشخص")&&!map[n])map[n]=emptyMetric();});Object.keys(map).forEach(function(n){if(norm(n)===norm("نامشخص"))delete map[n];});return map;}
+  function distributorMetrics(d){var f=distFilter(),sc=distSchema(d.pharmacyHeaders,d.id),is=invSchema(d.inventoryHeaders,d.id),map={};(d.pharmacyRows||[]).forEach(function(raw){var r=normalizeStoredRow(raw);if(!distDatePass(r[sc.date],f))return;var dbCode=isMappedDist(d.id)?findKnownCodeInRow(r,d.id):(sc.code>=0?r[sc.code]:"");var n=canonicalProduct(r[sc.product],dbCode,d.id);if(!n)return;var m=map[n]||(map[n]=emptyMetric()),qty=snappNumber(r[sc.qty]),gift=snappNumber(r[sc.giftQty]),ret=snappNumber(r[sc.retQty]),retGift=snappNumber(r[sc.retGiftQty]),dp=productPrice(n,"dist"),pp=productPrice(n,"ph");m.qty+=qty;m.giftQty+=gift;m.retQty+=ret;m.retGiftQty+=retGift;if(isMappedDist(d.id)){var da=calculateDayaAmounts(qty,gift,ret,retGift,dp,pp);m.dist+=da.dist;m.ph+=da.ph;if(d.id!=="mashateb"){m.giftRial+=da.giftRial;m.retRial+=da.retRial;m.retGiftRial+=da.retGiftRial;}}else{var dr=sc.dist>=0?snappNumber(r[sc.dist]):0,pr=sc.ph>=0?snappNumber(r[sc.ph]):0,gr=sc.giftRial>=0?snappNumber(r[sc.giftRial]):0,rr=sc.retRial>=0?snappNumber(r[sc.retRial]):0,rgr=sc.retGiftRial>=0?snappNumber(r[sc.retGiftRial]):0;m.dist+=dr||qty*dp;m.ph+=pr||qty*pp||qty*dp;m.giftRial+=gr||gift*dp;m.retRial+=rr||ret*dp;m.retGiftRial+=rgr||retGift*dp;}if(qty>0){var pk=d.id==="daya"?norm(r[21]):(d.id==="shafaarad"?norm(r[3]):(d.id==="mashateb"?norm(r[9]):[sc.pharmacy,sc.province,sc.city,sc.district,sc.address].map(function(i){return i>=0?norm(r[i]):"";}).join("|")));if(pk&&pk.replace(/\|/g,""))m.pharmacies[pk]=1;if(sc.invoice>=0&&r[sc.invoice]&&!(ret&&ret===qty))m.invoices[String(r[sc.invoice])]=1;}});(d.inventoryRows||[]).forEach(function(raw){var r=normalizeStoredRow(raw),dbCode=isMappedDist(d.id)?findKnownCodeInRow(r,d.id):(is.code>=0?r[is.code]:""),n=canonicalProduct(r[is.product],dbCode,d.id);if(!n)return;var m=map[n]||(map[n]=emptyMetric()),q=snappNumber(r[is.qty]);m.invQty+=q;m.invDist+=q*productPrice(n,"dist");m.invPh+=q*productPrice(n,"ph");});((st().products)||[]).forEach(function(p){var n=String(p.name||"").trim();if(n&&norm(n)!==norm("نامشخص")&&!map[n])map[n]=emptyMetric();});Object.keys(map).forEach(function(n){if(norm(n)===norm("نامشخص"))delete map[n];});return map;}
   function mergeMetricMaps(target,src){Object.keys(src).forEach(function(n){var a=target[n]||(target[n]=emptyMetric()),b=src[n];["qty","dist","ph","giftQty","giftRial","retQty","retRial","retGiftQty","retGiftRial","invQty","invDist","invPh"].forEach(function(k){a[k]+=b[k]||0;});Object.assign(a.pharmacies,b.pharmacies);Object.assign(a.invoices,b.invoices);});return target;}
 
   function metricRows(map){var totalSales=Object.values(map).reduce(function(s,m){return s+m.qty;},0),allPh={},allInv={};Object.keys(map).forEach(function(n){Object.assign(allPh,map[n].pharmacies);Object.assign(allInv,map[n].invoices);});var order={};((st().products)||[]).forEach(function(p,i){order[norm(p.name)]=i;});var rows=Object.keys(map).sort(function(a,b){var ai=order[norm(a)],bi=order[norm(b)];if(ai==null)ai=999999;if(bi==null)bi=999999;return ai-bi||String(a).localeCompare(String(b),'fa');}).map(function(n){var m=map[n],giftPct=m.qty?m.giftQty/m.qty*100:0,retPct=m.qty?m.retQty/m.qty*100:0,retGiftPct=m.retQty?m.retGiftQty/m.retQty*100:0,share=totalSales?m.qty/totalSales*100:0;return[n,m.qty,m.dist,m.ph,m.giftQty,m.giftRial,giftPct,m.retQty,m.retRial,retPct,m.retGiftQty,m.retGiftRial,retGiftPct,Object.keys(m.pharmacies).length,Object.keys(m.invoices).length,share,m.invQty,m.invDist,m.invPh];});rows._uniquePharmacies=Object.keys(allPh).length;rows._uniqueInvoices=Object.keys(allInv).length;return rows;}
@@ -39832,7 +39873,7 @@ button.v19-gps svg{display:block}
   function invoiceStatusDetailRows(order,g){
     var ordered={},factored={},sc=g.schema;
     (order.items||[]).forEach(function(i){var n=String(i.name||i.productName||"").trim();if(!n)return;var k=norm(n),x=ordered[k]||(ordered[k]={name:n,qty:0,gift:0});x.qty+=snappNumber(i.count||i.quantity);x.gift+=snappNumber(i.giftCount||i.giftQty);});
-    g.rows.forEach(function(r){var code=(g.distId==="daya"||g.distId==="shafaarad")?findKnownCodeInRow(r,g.distId):(sc.code>=0?r[sc.code]:""),n=canonicalProduct(sc.product>=0?r[sc.product]:"",code,g.distId);if(!n)return;var k=norm(n),x=factored[k]||(factored[k]={name:n,qty:0,gift:0});x.qty+=snappNumber(r[sc.qty]);x.gift+=snappNumber(r[sc.giftQty]);});
+    g.rows.forEach(function(r){var code=(g.distId==="daya"||g.distId==="shafaarad"||g.distId==="mashateb")?findKnownCodeInRow(r,g.distId):(sc.code>=0?r[sc.code]:""),n=canonicalProduct(sc.product>=0?r[sc.product]:"",code,g.distId);if(!n)return;var k=norm(n),x=factored[k]||(factored[k]={name:n,qty:0,gift:0});x.qty+=snappNumber(r[sc.qty]);x.gift+=snappNumber(r[sc.giftQty]);});
     var keys={};Object.keys(ordered).forEach(function(k){keys[k]=1;});Object.keys(factored).forEach(function(k){keys[k]=1;});
     return Object.keys(keys).map(function(k){var o=ordered[k]||{name:(factored[k]||{}).name||k,qty:0,gift:0},f=factored[k]||{qty:0,gift:0};return{name:o.name,orderQty:o.qty,orderGift:o.gift,invoiceQty:f.qty,invoiceGift:f.gift,qtyDiff:f.qty-o.qty,giftDiff:f.gift-o.gift};});
   }
@@ -39866,11 +39907,11 @@ button.v19-gps svg{display:block}
   function setupDistributorSales(){restoreFixedFilterGrids();bindFixedGridObserver();renderDistributorActions();bindDistributorFilters();var b=$("btnBuildDistributorReport"),e=$("btnExportDistributorReport");if(b&&!b.dataset.bound){b.dataset.bound="1";b.onclick=function(){renderDistributorReport();$("distributorReportSummary").scrollIntoView({behavior:"smooth"});};}if(e&&!e.dataset.bound){e.dataset.bound="1";e.onclick=downloadDistributorWorkbook;}renderDistributorReport();}
 
   /* ---------- ۲۸) CRUD قطعی کالا در آخرین لایه ---------- */
-  var PRODUCT_CODE_SEED={"سافتژلامگا3":1001,"سافتژلامگا5":1002,"سافتژلامگا3,5":1003,"سافتژلامگامولتی(3,5,6,9)":1004,"سافتژلامگاوومن":1005,"سافتژلامگامن":1006,"کپسولملاتونین":1007},SHAFA_CODE_MAP={1001:1391911001,1002:1391911002,1003:1391911003,1004:1391911004,1005:1391911006,1006:1391911005,1007:1391902006};
-  function ensureProductCodes(){var S=st(),changed=false;(S.products||[]).forEach(function(p){if(!p.code){var code=PRODUCT_CODE_SEED[norm(p.name)];if(code){p.code=code;changed=true;}}if(p.code&&!p.dayaDbCode){p.dayaDbCode=1111000+Number(p.code);changed=true;}if(p.code&&SHAFA_CODE_MAP[p.code]&&String(p.shafaDbCode||"")!==String(SHAFA_CODE_MAP[p.code])){p.shafaDbCode=SHAFA_CODE_MAP[p.code];changed=true;}});if(changed)save();}
+  var PRODUCT_CODE_SEED={"سافتژلامگا3":1001,"سافتژلامگا5":1002,"سافتژلامگا3,5":1003,"سافتژلامگامولتی(3,5,6,9)":1004,"سافتژلامگاوومن":1005,"سافتژلامگامن":1006,"کپسولملاتونین":1007},SHAFA_CODE_MAP={1001:1391911001,1002:1391911002,1003:1391911003,1004:1391911004,1005:1391911006,1006:1391911005,1007:1391902006},MASHATEB_CODE_MAP={1001:186101,1002:186102,1003:186103,1004:186104,1005:186105,1006:186106,1007:186107};
+  function ensureProductCodes(){var S=st(),changed=false;(S.products||[]).forEach(function(p){if(!p.code){var code=PRODUCT_CODE_SEED[norm(p.name)];if(code){p.code=code;changed=true;}}if(p.code&&!p.dayaDbCode){p.dayaDbCode=1111000+Number(p.code);changed=true;}if(p.code&&SHAFA_CODE_MAP[p.code]&&String(p.shafaDbCode||"")!==String(SHAFA_CODE_MAP[p.code])){p.shafaDbCode=SHAFA_CODE_MAP[p.code];changed=true;}if(p.code&&MASHATEB_CODE_MAP[p.code]&&String(p.mashatebDbCode||"")!==String(MASHATEB_CODE_MAP[p.code])){p.mashatebDbCode=MASHATEB_CODE_MAP[p.code];changed=true;}});if(changed)save();}
 
   function resetProductV20(){window._editingProductId="";var f=$("formProduct");if(f)f.reset();var n=$("productName");if(n){n.value="";n.focus();}var b=$("productSavedBanner");if(b)b.hidden=true;}
-  function saveProductV20(){var S=st(),name=String(($("productName")||{}).value||"").trim(),code=parseInt(($("productCode")||{}).value,10)||0;if(!code)return alert("کد کالا را وارد کنید.");if(!name)return alert("نام کالا را وارد کنید.");var id=window._editingProductId||"",idx=(S.products||[]).findIndex(function(p){return(id&&p.id===id)||(!id&&norm(p.name)===norm(name));}),rec=idx>=0?S.products[idx]:{id:"prod-"+Date.now()};rec.name=name;rec.code=code;rec.dayaDbCode=1111000+code;if(SHAFA_CODE_MAP[code])rec.shafaDbCode=SHAFA_CODE_MAP[code];rec.distributorPrice=parseInt(($("productDistPrice")||{}).value,10)||0;rec.pharmacyPrice=parseInt(($("productPrice")||{}).value,10)||0;rec.stock=parseInt(($("productStock")||{}).value,10)||0;if(idx<0)S.products.push(rec);save();window._editingProductId="";try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}v20Toast("✅ کالا «"+name+"» "+(idx<0?"اضافه":"ویرایش")+" شد.");resetProductV20();}
+  function saveProductV20(){var S=st(),name=String(($("productName")||{}).value||"").trim(),code=parseInt(($("productCode")||{}).value,10)||0;if(!code)return alert("کد کالا را وارد کنید.");if(!name)return alert("نام کالا را وارد کنید.");var id=window._editingProductId||"",idx=(S.products||[]).findIndex(function(p){return(id&&p.id===id)||(!id&&norm(p.name)===norm(name));}),rec=idx>=0?S.products[idx]:{id:"prod-"+Date.now()};rec.name=name;rec.code=code;rec.dayaDbCode=1111000+code;if(SHAFA_CODE_MAP[code])rec.shafaDbCode=SHAFA_CODE_MAP[code];if(MASHATEB_CODE_MAP[code])rec.mashatebDbCode=MASHATEB_CODE_MAP[code];rec.distributorPrice=parseInt(($("productDistPrice")||{}).value,10)||0;rec.pharmacyPrice=parseInt(($("productPrice")||{}).value,10)||0;rec.stock=parseInt(($("productStock")||{}).value,10)||0;if(idx<0)S.products.push(rec);save();window._editingProductId="";try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}v20Toast("✅ کالا «"+name+"» "+(idx<0?"اضافه":"ویرایش")+" شد.");resetProductV20();}
   function bindProductCrudV20(){var form=$("formProduct"),btn=$("btnSaveProduct");if(btn&&!btn.dataset.v20crud){btn.dataset.v20crud="1";btn.addEventListener("click",function(e){e.preventDefault();e.stopImmediatePropagation();saveProductV20();},true);}if(form&&!form.dataset.v20crud){form.dataset.v20crud="1";form.addEventListener("submit",function(e){e.preventDefault();e.stopImmediatePropagation();saveProductV20();},true);}var pane=$("tab-columns-products"),head=pane&&pane.querySelector("#formProduct")&&pane.querySelector("#formProduct").closest(".card").querySelector(".card-header");if(head&&!$("v20NewProduct")){var n=document.createElement("button");n.id="v20NewProduct";n.type="button";n.className="btn btn-outline btn-sm";n.textContent="➕ کالای جدید";n.onclick=resetProductV20;head.appendChild(n);}window.editProductCatalogItem=function(id){var p=(st().products||[]).filter(function(x){return String(x.id)===String(id);})[0];if(!p)return;window._editingProductId=p.id;if($("productCode"))$("productCode").value=p.code||"";if($("productName"))$("productName").value=p.name||"";if($("productDistPrice"))$("productDistPrice").value=p.distributorPrice||p.price||"";if($("productPrice"))$("productPrice").value=p.pharmacyPrice||p.price||"";if($("productStock"))$("productStock").value=p.stock||"";$("productName").scrollIntoView({behavior:"smooth",block:"center"});};function patchCodes(){var body=$("tableProductsBody"),S=st();if(!body)return;Array.prototype.forEach.call(body.children,function(tr,i){if(tr.querySelector('.v20-product-code'))return;var td=document.createElement('td');td.className='v20-product-code';td.setAttribute('data-no-number-group','1');td.innerHTML='<strong>'+esc(((S.products||[])[i]||{}).code||'—')+'</strong>';tr.insertBefore(td,tr.children[1]||null);});}if(typeof window.renderColumnsProductsTable==='function'&&!window.renderColumnsProductsTable._v20code){var rr=window.renderColumnsProductsTable,w=function(){var x=rr.apply(this,arguments);patchCodes();return x;};w._v20code=true;window.renderColumnsProductsTable=w;}patchCodes();var old=window.deleteProductCatalogItem;window.deleteProductCatalogItem=function(id){var S=st(),p=(S.products||[]).filter(function(x){return String(x.id)===String(id);})[0];if(!p)return;if(!confirm("کالای «"+(p.name||"")+"» حذف شود؟"))return;S.products=(S.products||[]).filter(function(x){return String(x.id)!==String(id);});S.salesTargets=(S.salesTargets||[]).filter(function(t){return norm(t.productName)!==norm(p.name);});(S.orders||[]).forEach(function(o){o.items=(o.items||[]).filter(function(i){return norm(i.name)!==norm(p.name);});});Array.prototype.forEach.call(document.querySelectorAll('.order-item-row'),function(r){var n=r.querySelector('.order-item-name');if(n&&norm(n.value)===norm(p.name))r.remove();});save();try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}v20Toast("✅ کالا حذف شد.");};}
 
   /* ---------- ۲۹) IndexedDB برای ماندگاری فایل‌های حجیم اکسل ---------- */
@@ -42840,7 +42881,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     var d=((S().distributorCompanies)||{})[distId];if(!d)return 0;
     var headers=d.pharmacyHeaders||[],rows=d.pharmacyRows||[];
     var dateIx=distId==="daya"?13:(distId==="shafaarad"?6:findIdx(headers,/تاریخ/,0));
-    var qtyIx=distId==="daya"?4:(distId==="shafaarad"?7:findIdx(headers,/فروش.*تعداد|تعداد.*فروش/,2));
+    var qtyIx=distId==="daya"?4:(distId==="shafaarad"?7:(distId==="mashateb"?10:findIdx(headers,/فروش.*تعداد|تعداد.*فروش/,2)));
     var nameIx=findIdx(headers,/نام.*(کالا|محصول)|کالا|محصول/,1);
     var yy=String(year||""),mm=MONTHS[monthName]||"";
     var want=norm(productName),sum=0;
@@ -43273,7 +43314,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     var d=((S().distributorCompanies)||{})[distId];if(!d)return 0;
     var headers=d.pharmacyHeaders||[],rows=d.pharmacyRows||[];
     var dateIx=distId==="daya"?13:(distId==="shafaarad"?6:findIdx(headers,/تاریخ/,0));
-    var qtyIx=distId==="daya"?4:(distId==="shafaarad"?7:findIdx(headers,/فروش.*تعداد|تعداد.*فروش/,2));
+    var qtyIx=distId==="daya"?4:(distId==="shafaarad"?7:(distId==="mashateb"?10:findIdx(headers,/فروش.*تعداد|تعداد.*فروش/,2)));
     var nameIx=findIdx(headers,/نام.*(کالا|محصول)|کالا|محصول/,1);
     var p=parsePeriod({year:year,monthName:monthName,month:monthName});
     var yy=String(p.year||""),mm=MONTHS[p.monthName]||"";
@@ -53377,7 +53418,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-features-v20.js (300408 بایت)
+فایل: public/crm-features-v20.js (301372 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================
@@ -54911,18 +54952,20 @@ button.v19-gps svg{display:block}
   async function importDistributorFile(id,kind,file){var d=distStore()[id];try{var rows=await parseSnappFile(file),hi=findHeaderRow(rows,"trip"),headers=rows[hi]||[],data=rows.slice(hi+1).map(normalizeStoredRow).filter(function(r){return r.some(function(x){return String(x).trim();});});headers=alignDistributorHeaders(id,kind,headers,data);if(kind==="pharmacy"){var seen={};d.pharmacyRows.forEach(function(r){seen[rowSignature(r)]=1;});var fresh=data.filter(function(r){var k=rowSignature(r);if(seen[k])return false;seen[k]=1;return true;});d.pharmacyHeaders=headers.slice();d.pharmacyRows=d.pharmacyRows.concat(fresh);d.pharmacyImports.unshift({id:"imp-"+Date.now(),name:file.name,at:Date.now(),lastDate:distLastDate(fresh,headers,d.id),headers:headers.slice(),rows:fresh});v20Toast("✅ "+fresh.length.toLocaleString("fa-IR")+" ردیف جدید داروخانه به انتهای "+d.name+" اضافه شد.");}else{d.inventoryHeaders=headers.slice();d.inventoryRows=data;d.inventoryImport={name:file.name,at:Date.now(),lastDate:distLastDate(data,headers,d.id),headers:headers.slice(),rows:data};v20Toast("✅ موجودی "+d.name+" با "+data.length.toLocaleString("fa-IR")+" ردیف جایگزین شد.");}ensureShafaInventoryDerived(d);await saveBulkVault();save();renderDistributorActions();renderDistributorDatabase();renderDistributorReport();invoiceStatusBaseCache=null;if($("tab-distributor-invoice-status")&&$("tab-distributor-invoice-status").classList.contains("active"))renderInvoiceStatus();}catch(e){alert("خطا در فایل "+file.name+": "+e.message);}}
   function showDistributorRaw(d,kind){var host=$("distributorRawViewer");function paint(title,headers,rows){var originalSigs=(rows||[]).map(rowSignature);host.hidden=false;var archive=kind==="pharmacy"?(d.pharmacyImports||[]):[];host.innerHTML="<div class='card-header'><div class='card-title'>👁 "+esc(d.name+" — "+title)+" ("+rows.length.toLocaleString("fa-IR")+" ردیف)</div><div><button class='btn btn-primary raw-save'>💾 ذخیره تغییرات</button> <button class='btn btn-outline raw-close'>بستن</button></div></div>"+(archive.length?"<div class='v20-card-tools'><button class='btn btn-outline raw-all'>همه دیتابیس</button>"+archive.map(function(x,i){return"<button class='btn btn-outline raw-batch' data-i='"+i+"'>"+esc(x.name+" — "+x.lastDate)+"</button>";}).join("")+"</div>":"")+"<div class='table-responsive'><table class='data-table'><thead><tr>"+(headers||[]).map(function(h){return"<th>"+esc(h)+"</th>";}).join("")+"</tr></thead><tbody>"+(rows||[]).slice(0,1000).map(function(r,ri){return"<tr>"+r.map(function(v,i){var show=/تاریخ/.test(String((headers||[])[i]||""))?slashOnlyPersianDate(v):v;return"<td contenteditable='true' data-r='"+ri+"' data-c='"+i+"'>"+esc(show)+"</td>";}).join("")+"</tr>";}).join("")+"</tbody></table></div>";host.querySelector('.raw-close').onclick=function(){host.hidden=true;};host.querySelector('.raw-save').onclick=async function(){Array.prototype.forEach.call(host.querySelectorAll('td[data-r]'),function(td){var r=Number(td.dataset.r),c=Number(td.dataset.c);if(rows[r])rows[r][c]=td.textContent.trim();});var master=kind==='pharmacy'?d.pharmacyRows:d.inventoryRows;(rows||[]).forEach(function(row,i){var mi=master.findIndex(function(x){return rowSignature(x)===originalSigs[i];});if(mi>=0)master[mi]=row;});await saveBulkVault();save();renderDistributorActions();renderDistributorDatabase();renderDistributorReport();v20Toast('✅ تغییرات دیتابیس پخش ذخیره شد.');};var all=host.querySelector('.raw-all');if(all)all.onclick=function(){paint("همه دیتابیس داروخانه",d.pharmacyHeaders,d.pharmacyRows);};Array.prototype.forEach.call(host.querySelectorAll('.raw-batch'),function(b){b.onclick=function(){var x=archive[Number(b.dataset.i)];paint("فایل "+x.name,x.headers||d.pharmacyHeaders,Array.isArray(x.rows)?x.rows:[]);};});host.scrollIntoView({behavior:"smooth"});}if(kind==="pharmacy")paint("همه دیتابیس داروخانه",d.pharmacyHeaders,d.pharmacyRows);else paint("موجودی فعلی — "+((d.inventoryImport||{}).name||""),d.inventoryHeaders,d.inventoryRows);}
   function findDistIndex(h,re,fb){for(var i=0;i<(h||[]).length;i++)if(re.test(String(h[i])))return i;return fb==null?-1:fb;}
-  function distSchema(h,id){var x={date:findDistIndex(h,/تاریخ/,0),code:findDistIndex(h,/کد.*کالا|کد.*محصول/,-1),product:findDistIndex(h,/نام.*(کالا|محصول)|کالا|محصول/,1),qty:findDistIndex(h,/فروش.*تعداد|تعداد.*فروش/,2),dist:findDistIndex(h,/فروش.*ریال.*پخش|مبلغ.*پخش/,3),ph:findDistIndex(h,/فروش.*ریال.*داروخانه|مبلغ.*داروخانه/,4),giftQty:findDistIndex(h,/تعداد.*جایزه(?!.*مرجوع)/,5),giftRial:findDistIndex(h,/ریال.*جایزه(?!.*مرجوع)|مبلغ.*جایزه(?!.*مرجوع)/,6),retQty:findDistIndex(h,/تعداد.*مرجوع(?!.*جایزه)/,7),retRial:findDistIndex(h,/ریال.*مرجوع(?!.*جایزه)|مبلغ.*مرجوع(?!.*جایزه)/,8),retGiftQty:findDistIndex(h,/تعداد.*مرجوع.*جایزه/, -1),retGiftRial:findDistIndex(h,/ریال.*مرجوع.*جایزه|مبلغ.*مرجوع.*جایزه/,-1),pharmacy:findDistIndex(h,/نام.*داروخانه|داروخانه/,9),province:findDistIndex(h,/استان/,-1),city:findDistIndex(h,/شهر/,-1),district:findDistIndex(h,/منطقه/,-1),address:findDistIndex(h,/آدرس/,-1),invoice:findDistIndex(h,/شماره.*فاکتور|فاکتور/,10),visitor:findDistIndex(h,/نام.*ویزیتور|ویزیتور|بازاریاب|نماینده.*فروش/,-1)};if(id==="daya"){x.date=13;x.invoice=12;x.code=15;x.qty=4;x.giftQty=3;x.retQty=7;x.retGiftQty=6;x.pharmacy=21;x.dist=-1;x.ph=-1;x.giftRial=-1;x.retRial=-1;x.retGiftRial=-1;}else if(id==="shafaarad"){x.date=6;x.invoice=5;x.qty=7;x.retQty=9;x.pharmacy=3;x.giftQty=-1;x.retGiftQty=-1;x.dist=-1;x.ph=-1;x.giftRial=-1;x.retRial=-1;x.retGiftRial=-1;}return x;}
+  function distSchema(h,id){var x={date:findDistIndex(h,/تاریخ/,0),code:findDistIndex(h,/کد.*کالا|کد.*محصول/,-1),product:findDistIndex(h,/نام.*(کالا|محصول)|کالا|محصول/,1),qty:findDistIndex(h,/فروش.*تعداد|تعداد.*فروش/,2),dist:findDistIndex(h,/فروش.*ریال.*پخش|مبلغ.*پخش/,3),ph:findDistIndex(h,/فروش.*ریال.*داروخانه|مبلغ.*داروخانه/,4),giftQty:findDistIndex(h,/تعداد.*جایزه(?!.*مرجوع)/,5),giftRial:findDistIndex(h,/ریال.*جایزه(?!.*مرجوع)|مبلغ.*جایزه(?!.*مرجوع)/,6),retQty:findDistIndex(h,/تعداد.*مرجوع(?!.*جایزه)/,7),retRial:findDistIndex(h,/ریال.*مرجوع(?!.*جایزه)|مبلغ.*مرجوع(?!.*جایزه)/,8),retGiftQty:findDistIndex(h,/تعداد.*مرجوع.*جایزه/, -1),retGiftRial:findDistIndex(h,/ریال.*مرجوع.*جایزه|مبلغ.*مرجوع.*جایزه/,-1),pharmacy:findDistIndex(h,/نام.*داروخانه|داروخانه/,9),province:findDistIndex(h,/استان/,-1),city:findDistIndex(h,/شهر/,-1),district:findDistIndex(h,/منطقه/,-1),address:findDistIndex(h,/آدرس/,-1),invoice:findDistIndex(h,/شماره.*فاکتور|فاکتور/,10),visitor:findDistIndex(h,/نام.*ویزیتور|ویزیتور|بازاریاب|نماینده.*فروش/,-1)};if(id==="daya"){x.date=13;x.invoice=12;x.code=15;x.qty=4;x.giftQty=3;x.retQty=7;x.retGiftQty=6;x.pharmacy=21;x.dist=-1;x.ph=-1;x.giftRial=-1;x.retRial=-1;x.retGiftRial=-1;}else if(id==="shafaarad"){x.date=6;x.invoice=5;x.qty=7;x.retQty=9;x.pharmacy=3;x.giftQty=-1;x.retGiftQty=-1;x.dist=-1;x.ph=-1;x.giftRial=-1;x.retRial=-1;x.retGiftRial=-1;}else if(id==="mashateb"){x.qty=10;x.giftQty=11;x.pharmacy=9;x.invoice=-1;x.retQty=-1;x.retGiftQty=-1;x.dist=-1;x.ph=-1;x.giftRial=-1;x.retRial=-1;x.retGiftRial=-1;}return x;}
   function findDistExact(h,title){var n=norm(title);for(var i=0;i<(h||[]).length;i++)if(norm(h[i])===n)return i;return-1;}
   function invSchema(h,id){var code=findDistExact(h,"کد کالا"),product=findDistExact(h,"نام کالا"),qty=findDistExact(h,"موجودی");if(id==="shafaarad"&&code<0)code=findDistExact(h,"کالا");return{code:code>=0?code:findDistIndex(h,/کد.*کالا|کد.*محصول/,-1),product:product>=0?product:findDistIndex(h,/نام.*(کالا|محصول)/,0),qty:id==="shafaarad"?(findDistExact(h,"جمع تعداد موجودی")>=0?findDistExact(h,"جمع تعداد موجودی"):9):(qty>=0?qty:(id==="daya"?2:findDistIndex(h,/موجودی.*تعداد|تعداد.*موجودی/,1))),rial:findDistIndex(h,/موجودی.*ریال|ریال.*موجودی/,-1)};}
   function distFilter(){var mode=$("distModeDay").checked?"day":$("distModeMonth").checked?"month":$("distModeYear").checked?"year":($("distModeFrom").checked||$("distModeTo").checked)?"range":"all";return{mode:mode,year:enDigits($("distFilterYear").value),month:enDigits($("distFilterMonth").value),day:enDigits($("distFilterDay").value).padStart(2,"0"),from:normSnappDate($("distFilterFrom").value),to:normSnappDate($("distFilterTo").value)};}
   function distDatePass(v,f){var d=slashOnlyPersianDate(v);if(f.mode==="year")return!f.year||d.slice(0,4)===f.year;if(f.mode==="month")return(!f.year||d.slice(0,4)===f.year)&&(!f.month||d.slice(5,7)===f.month);if(f.mode==="day")return(!f.year||d.slice(0,4)===f.year)&&(!f.month||d.slice(5,7)===f.month)&&(!f.day||d.slice(8,10)===f.day);if(f.mode==="range")return(!f.from||d>=f.from)&&(!f.to||d<=f.to);return true;}
   function normalizeDbCode(v){var s=enDigits(String(v==null?"":v)).replace(/[,٬\s]/g,"").trim(),n=Number(s);return isFinite(n)&&n>0?String(Math.trunc(n)):s.replace(/\.0+$/,"");}
-  function findKnownCodeInRow(row,distId){var known={};((st().products)||[]).forEach(function(p){var c=distId==="daya"?(p.dayaDbCode||(p.code?1111000+Number(p.code):"")):(p.shafaDbCode||SHAFA_CODE_MAP[p.code]||"");if(c)known[String(c)]=1;});var r=normalizeStoredRow(row);for(var i=0;i<r.length;i++){var c=normalizeDbCode(r[i]);if(known[c])return c;}return"";}
-  function canonicalProduct(raw,dbCode,distId){var name=String(raw||"").trim(),n=norm(name),code=normalizeDbCode(dbCode);if((distId==="daya"||distId==="shafaarad")&&(!name||n===norm("نامشخص")))return null;var p=((st().products)||[]).filter(function(x){if(distId==="daya"&&code&&String(x.dayaDbCode||((x.code)?1111000+Number(x.code):""))===code)return true;if(distId==="shafaarad"&&code&&String(x.shafaDbCode||SHAFA_CODE_MAP[x.code]||"")===code)return true;var q=norm(x.name);return q===n||(q.length>=4&&n.indexOf(q)>=0)||(n.length>=4&&q.indexOf(n)>=0);})[0];if(p)return p.name;return (distId==="daya"||distId==="shafaarad")?null:(name||"نامشخص");}
+  function distProductDbCode(p,distId){if(!p)return"";if(distId==="daya")return String(p.dayaDbCode||(p.code?1111000+Number(p.code):"")||"");if(distId==="shafaarad")return String(p.shafaDbCode||SHAFA_CODE_MAP[p.code]||"");if(distId==="mashateb")return String(p.mashatebDbCode||MASHATEB_CODE_MAP[p.code]||"");return"";}
+  function isMappedDist(id){return id==="daya"||id==="shafaarad"||id==="mashateb";}
+  function findKnownCodeInRow(row,distId){var known={};((st().products)||[]).forEach(function(p){var c=distProductDbCode(p,distId);if(c)known[String(c)]=1;});var r=normalizeStoredRow(row);for(var i=0;i<r.length;i++){var c=normalizeDbCode(r[i]);if(known[c])return c;}return"";}
+  function canonicalProduct(raw,dbCode,distId){var name=String(raw||"").trim(),n=norm(name),code=normalizeDbCode(dbCode),mapped=distId==="daya"||distId==="shafaarad"||distId==="mashateb";if(mapped&&(!name||n===norm("نامشخص")))return null;var p=((st().products)||[]).filter(function(x){if(mapped&&code){var dc=distId==="daya"?String(x.dayaDbCode||((x.code)?1111000+Number(x.code):"")||""):distId==="shafaarad"?String(x.shafaDbCode||SHAFA_CODE_MAP[x.code]||""):distId==="mashateb"?String(x.mashatebDbCode||(typeof MASHATEB_CODE_MAP!=="undefined"&&MASHATEB_CODE_MAP[x.code])||""):"";if(dc===code)return true;}var q=norm(x.name);return q===n||(q.length>=4&&n.indexOf(q)>=0)||(n.length>=4&&q.indexOf(n)>=0);})[0];if(p)return p.name;return mapped?null:(name||"نامشخص");}
   function productPrice(name,key){var p=((st().products)||[]).filter(function(x){return norm(x.name)===norm(name);})[0]||{};return Number(key==="dist"?(p.distributorPrice||p.distPrice||p.price||0):(p.pharmacyPrice||p.price||0));}
   function emptyMetric(){return{qty:0,dist:0,ph:0,giftQty:0,giftRial:0,retQty:0,retRial:0,retGiftQty:0,retGiftRial:0,pharmacies:{},invoices:{},invQty:0,invDist:0,invPh:0};}
   function calculateDayaAmounts(qty,gift,ret,retGift,distPrice,pharmacyPrice){return{dist:qty*distPrice,ph:qty*pharmacyPrice,giftRial:gift*distPrice,retRial:ret*distPrice,retGiftRial:retGift*distPrice,giftPct:qty?gift/qty*100:0,retPct:qty?ret/qty*100:0,retGiftPct:ret?retGift/ret*100:0};}
-  function distributorMetrics(d){var f=distFilter(),sc=distSchema(d.pharmacyHeaders,d.id),is=invSchema(d.inventoryHeaders,d.id),map={};(d.pharmacyRows||[]).forEach(function(raw){var r=normalizeStoredRow(raw);if(!distDatePass(r[sc.date],f))return;var dbCode=(d.id==="daya"||d.id==="shafaarad")?findKnownCodeInRow(r,d.id):(sc.code>=0?r[sc.code]:"");var n=canonicalProduct(r[sc.product],dbCode,d.id);if(!n)return;var m=map[n]||(map[n]=emptyMetric()),qty=snappNumber(r[sc.qty]),gift=snappNumber(r[sc.giftQty]),ret=snappNumber(r[sc.retQty]),retGift=snappNumber(r[sc.retGiftQty]),dp=productPrice(n,"dist"),pp=productPrice(n,"ph");m.qty+=qty;m.giftQty+=gift;m.retQty+=ret;m.retGiftQty+=retGift;if(d.id==="daya"||d.id==="shafaarad"){var da=calculateDayaAmounts(qty,gift,ret,retGift,dp,pp);m.dist+=da.dist;m.ph+=da.ph;m.giftRial+=da.giftRial;m.retRial+=da.retRial;m.retGiftRial+=da.retGiftRial;}else{var dr=sc.dist>=0?snappNumber(r[sc.dist]):0,pr=sc.ph>=0?snappNumber(r[sc.ph]):0,gr=sc.giftRial>=0?snappNumber(r[sc.giftRial]):0,rr=sc.retRial>=0?snappNumber(r[sc.retRial]):0,rgr=sc.retGiftRial>=0?snappNumber(r[sc.retGiftRial]):0;m.dist+=dr||qty*dp;m.ph+=pr||qty*pp||qty*dp;m.giftRial+=gr||gift*dp;m.retRial+=rr||ret*dp;m.retGiftRial+=rgr||retGift*dp;}if(qty>0){var pk=d.id==="daya"?norm(r[21]):(d.id==="shafaarad"?norm(r[3]):[sc.pharmacy,sc.province,sc.city,sc.district,sc.address].map(function(i){return i>=0?norm(r[i]):"";}).join("|"));if(pk&&pk.replace(/\|/g,""))m.pharmacies[pk]=1;if(sc.invoice>=0&&r[sc.invoice]&&!(ret&&ret===qty))m.invoices[String(r[sc.invoice])]=1;}});(d.inventoryRows||[]).forEach(function(raw){var r=normalizeStoredRow(raw),dbCode=(d.id==="daya"||d.id==="shafaarad")?findKnownCodeInRow(r,d.id):(is.code>=0?r[is.code]:""),n=canonicalProduct(r[is.product],dbCode,d.id);if(!n)return;var m=map[n]||(map[n]=emptyMetric()),q=snappNumber(r[is.qty]);m.invQty+=q;m.invDist+=q*productPrice(n,"dist");m.invPh+=q*productPrice(n,"ph");});((st().products)||[]).forEach(function(p){var n=String(p.name||"").trim();if(n&&norm(n)!==norm("نامشخص")&&!map[n])map[n]=emptyMetric();});Object.keys(map).forEach(function(n){if(norm(n)===norm("نامشخص"))delete map[n];});return map;}
+  function distributorMetrics(d){var f=distFilter(),sc=distSchema(d.pharmacyHeaders,d.id),is=invSchema(d.inventoryHeaders,d.id),map={};(d.pharmacyRows||[]).forEach(function(raw){var r=normalizeStoredRow(raw);if(!distDatePass(r[sc.date],f))return;var dbCode=isMappedDist(d.id)?findKnownCodeInRow(r,d.id):(sc.code>=0?r[sc.code]:"");var n=canonicalProduct(r[sc.product],dbCode,d.id);if(!n)return;var m=map[n]||(map[n]=emptyMetric()),qty=snappNumber(r[sc.qty]),gift=snappNumber(r[sc.giftQty]),ret=snappNumber(r[sc.retQty]),retGift=snappNumber(r[sc.retGiftQty]),dp=productPrice(n,"dist"),pp=productPrice(n,"ph");m.qty+=qty;m.giftQty+=gift;m.retQty+=ret;m.retGiftQty+=retGift;if(isMappedDist(d.id)){var da=calculateDayaAmounts(qty,gift,ret,retGift,dp,pp);m.dist+=da.dist;m.ph+=da.ph;if(d.id!=="mashateb"){m.giftRial+=da.giftRial;m.retRial+=da.retRial;m.retGiftRial+=da.retGiftRial;}}else{var dr=sc.dist>=0?snappNumber(r[sc.dist]):0,pr=sc.ph>=0?snappNumber(r[sc.ph]):0,gr=sc.giftRial>=0?snappNumber(r[sc.giftRial]):0,rr=sc.retRial>=0?snappNumber(r[sc.retRial]):0,rgr=sc.retGiftRial>=0?snappNumber(r[sc.retGiftRial]):0;m.dist+=dr||qty*dp;m.ph+=pr||qty*pp||qty*dp;m.giftRial+=gr||gift*dp;m.retRial+=rr||ret*dp;m.retGiftRial+=rgr||retGift*dp;}if(qty>0){var pk=d.id==="daya"?norm(r[21]):(d.id==="shafaarad"?norm(r[3]):(d.id==="mashateb"?norm(r[9]):[sc.pharmacy,sc.province,sc.city,sc.district,sc.address].map(function(i){return i>=0?norm(r[i]):"";}).join("|")));if(pk&&pk.replace(/\|/g,""))m.pharmacies[pk]=1;if(sc.invoice>=0&&r[sc.invoice]&&!(ret&&ret===qty))m.invoices[String(r[sc.invoice])]=1;}});(d.inventoryRows||[]).forEach(function(raw){var r=normalizeStoredRow(raw),dbCode=isMappedDist(d.id)?findKnownCodeInRow(r,d.id):(is.code>=0?r[is.code]:""),n=canonicalProduct(r[is.product],dbCode,d.id);if(!n)return;var m=map[n]||(map[n]=emptyMetric()),q=snappNumber(r[is.qty]);m.invQty+=q;m.invDist+=q*productPrice(n,"dist");m.invPh+=q*productPrice(n,"ph");});((st().products)||[]).forEach(function(p){var n=String(p.name||"").trim();if(n&&norm(n)!==norm("نامشخص")&&!map[n])map[n]=emptyMetric();});Object.keys(map).forEach(function(n){if(norm(n)===norm("نامشخص"))delete map[n];});return map;}
   function mergeMetricMaps(target,src){Object.keys(src).forEach(function(n){var a=target[n]||(target[n]=emptyMetric()),b=src[n];["qty","dist","ph","giftQty","giftRial","retQty","retRial","retGiftQty","retGiftRial","invQty","invDist","invPh"].forEach(function(k){a[k]+=b[k]||0;});Object.assign(a.pharmacies,b.pharmacies);Object.assign(a.invoices,b.invoices);});return target;}
 
   function metricRows(map){var totalSales=Object.values(map).reduce(function(s,m){return s+m.qty;},0),allPh={},allInv={};Object.keys(map).forEach(function(n){Object.assign(allPh,map[n].pharmacies);Object.assign(allInv,map[n].invoices);});var order={};((st().products)||[]).forEach(function(p,i){order[norm(p.name)]=i;});var rows=Object.keys(map).sort(function(a,b){var ai=order[norm(a)],bi=order[norm(b)];if(ai==null)ai=999999;if(bi==null)bi=999999;return ai-bi||String(a).localeCompare(String(b),'fa');}).map(function(n){var m=map[n],giftPct=m.qty?m.giftQty/m.qty*100:0,retPct=m.qty?m.retQty/m.qty*100:0,retGiftPct=m.retQty?m.retGiftQty/m.retQty*100:0,share=totalSales?m.qty/totalSales*100:0;return[n,m.qty,m.dist,m.ph,m.giftQty,m.giftRial,giftPct,m.retQty,m.retRial,retPct,m.retGiftQty,m.retGiftRial,retGiftPct,Object.keys(m.pharmacies).length,Object.keys(m.invoices).length,share,m.invQty,m.invDist,m.invPh];});rows._uniquePharmacies=Object.keys(allPh).length;rows._uniqueInvoices=Object.keys(allInv).length;return rows;}
@@ -54972,7 +55015,7 @@ button.v19-gps svg{display:block}
   function invoiceStatusDetailRows(order,g){
     var ordered={},factored={},sc=g.schema;
     (order.items||[]).forEach(function(i){var n=String(i.name||i.productName||"").trim();if(!n)return;var k=norm(n),x=ordered[k]||(ordered[k]={name:n,qty:0,gift:0});x.qty+=snappNumber(i.count||i.quantity);x.gift+=snappNumber(i.giftCount||i.giftQty);});
-    g.rows.forEach(function(r){var code=(g.distId==="daya"||g.distId==="shafaarad")?findKnownCodeInRow(r,g.distId):(sc.code>=0?r[sc.code]:""),n=canonicalProduct(sc.product>=0?r[sc.product]:"",code,g.distId);if(!n)return;var k=norm(n),x=factored[k]||(factored[k]={name:n,qty:0,gift:0});x.qty+=snappNumber(r[sc.qty]);x.gift+=snappNumber(r[sc.giftQty]);});
+    g.rows.forEach(function(r){var code=(g.distId==="daya"||g.distId==="shafaarad"||g.distId==="mashateb")?findKnownCodeInRow(r,g.distId):(sc.code>=0?r[sc.code]:""),n=canonicalProduct(sc.product>=0?r[sc.product]:"",code,g.distId);if(!n)return;var k=norm(n),x=factored[k]||(factored[k]={name:n,qty:0,gift:0});x.qty+=snappNumber(r[sc.qty]);x.gift+=snappNumber(r[sc.giftQty]);});
     var keys={};Object.keys(ordered).forEach(function(k){keys[k]=1;});Object.keys(factored).forEach(function(k){keys[k]=1;});
     return Object.keys(keys).map(function(k){var o=ordered[k]||{name:(factored[k]||{}).name||k,qty:0,gift:0},f=factored[k]||{qty:0,gift:0};return{name:o.name,orderQty:o.qty,orderGift:o.gift,invoiceQty:f.qty,invoiceGift:f.gift,qtyDiff:f.qty-o.qty,giftDiff:f.gift-o.gift};});
   }
@@ -55006,11 +55049,11 @@ button.v19-gps svg{display:block}
   function setupDistributorSales(){restoreFixedFilterGrids();bindFixedGridObserver();renderDistributorActions();bindDistributorFilters();var b=$("btnBuildDistributorReport"),e=$("btnExportDistributorReport");if(b&&!b.dataset.bound){b.dataset.bound="1";b.onclick=function(){renderDistributorReport();$("distributorReportSummary").scrollIntoView({behavior:"smooth"});};}if(e&&!e.dataset.bound){e.dataset.bound="1";e.onclick=downloadDistributorWorkbook;}renderDistributorReport();}
 
   /* ---------- ۲۸) CRUD قطعی کالا در آخرین لایه ---------- */
-  var PRODUCT_CODE_SEED={"سافتژلامگا3":1001,"سافتژلامگا5":1002,"سافتژلامگا3,5":1003,"سافتژلامگامولتی(3,5,6,9)":1004,"سافتژلامگاوومن":1005,"سافتژلامگامن":1006,"کپسولملاتونین":1007},SHAFA_CODE_MAP={1001:1391911001,1002:1391911002,1003:1391911003,1004:1391911004,1005:1391911006,1006:1391911005,1007:1391902006};
-  function ensureProductCodes(){var S=st(),changed=false;(S.products||[]).forEach(function(p){if(!p.code){var code=PRODUCT_CODE_SEED[norm(p.name)];if(code){p.code=code;changed=true;}}if(p.code&&!p.dayaDbCode){p.dayaDbCode=1111000+Number(p.code);changed=true;}if(p.code&&SHAFA_CODE_MAP[p.code]&&String(p.shafaDbCode||"")!==String(SHAFA_CODE_MAP[p.code])){p.shafaDbCode=SHAFA_CODE_MAP[p.code];changed=true;}});if(changed)save();}
+  var PRODUCT_CODE_SEED={"سافتژلامگا3":1001,"سافتژلامگا5":1002,"سافتژلامگا3,5":1003,"سافتژلامگامولتی(3,5,6,9)":1004,"سافتژلامگاوومن":1005,"سافتژلامگامن":1006,"کپسولملاتونین":1007},SHAFA_CODE_MAP={1001:1391911001,1002:1391911002,1003:1391911003,1004:1391911004,1005:1391911006,1006:1391911005,1007:1391902006},MASHATEB_CODE_MAP={1001:186101,1002:186102,1003:186103,1004:186104,1005:186105,1006:186106,1007:186107};
+  function ensureProductCodes(){var S=st(),changed=false;(S.products||[]).forEach(function(p){if(!p.code){var code=PRODUCT_CODE_SEED[norm(p.name)];if(code){p.code=code;changed=true;}}if(p.code&&!p.dayaDbCode){p.dayaDbCode=1111000+Number(p.code);changed=true;}if(p.code&&SHAFA_CODE_MAP[p.code]&&String(p.shafaDbCode||"")!==String(SHAFA_CODE_MAP[p.code])){p.shafaDbCode=SHAFA_CODE_MAP[p.code];changed=true;}if(p.code&&MASHATEB_CODE_MAP[p.code]&&String(p.mashatebDbCode||"")!==String(MASHATEB_CODE_MAP[p.code])){p.mashatebDbCode=MASHATEB_CODE_MAP[p.code];changed=true;}});if(changed)save();}
 
   function resetProductV20(){window._editingProductId="";var f=$("formProduct");if(f)f.reset();var n=$("productName");if(n){n.value="";n.focus();}var b=$("productSavedBanner");if(b)b.hidden=true;}
-  function saveProductV20(){var S=st(),name=String(($("productName")||{}).value||"").trim(),code=parseInt(($("productCode")||{}).value,10)||0;if(!code)return alert("کد کالا را وارد کنید.");if(!name)return alert("نام کالا را وارد کنید.");var id=window._editingProductId||"",idx=(S.products||[]).findIndex(function(p){return(id&&p.id===id)||(!id&&norm(p.name)===norm(name));}),rec=idx>=0?S.products[idx]:{id:"prod-"+Date.now()};rec.name=name;rec.code=code;rec.dayaDbCode=1111000+code;if(SHAFA_CODE_MAP[code])rec.shafaDbCode=SHAFA_CODE_MAP[code];rec.distributorPrice=parseInt(($("productDistPrice")||{}).value,10)||0;rec.pharmacyPrice=parseInt(($("productPrice")||{}).value,10)||0;rec.stock=parseInt(($("productStock")||{}).value,10)||0;if(idx<0)S.products.push(rec);save();window._editingProductId="";try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}v20Toast("✅ کالا «"+name+"» "+(idx<0?"اضافه":"ویرایش")+" شد.");resetProductV20();}
+  function saveProductV20(){var S=st(),name=String(($("productName")||{}).value||"").trim(),code=parseInt(($("productCode")||{}).value,10)||0;if(!code)return alert("کد کالا را وارد کنید.");if(!name)return alert("نام کالا را وارد کنید.");var id=window._editingProductId||"",idx=(S.products||[]).findIndex(function(p){return(id&&p.id===id)||(!id&&norm(p.name)===norm(name));}),rec=idx>=0?S.products[idx]:{id:"prod-"+Date.now()};rec.name=name;rec.code=code;rec.dayaDbCode=1111000+code;if(SHAFA_CODE_MAP[code])rec.shafaDbCode=SHAFA_CODE_MAP[code];if(MASHATEB_CODE_MAP[code])rec.mashatebDbCode=MASHATEB_CODE_MAP[code];rec.distributorPrice=parseInt(($("productDistPrice")||{}).value,10)||0;rec.pharmacyPrice=parseInt(($("productPrice")||{}).value,10)||0;rec.stock=parseInt(($("productStock")||{}).value,10)||0;if(idx<0)S.products.push(rec);save();window._editingProductId="";try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}v20Toast("✅ کالا «"+name+"» "+(idx<0?"اضافه":"ویرایش")+" شد.");resetProductV20();}
   function bindProductCrudV20(){var form=$("formProduct"),btn=$("btnSaveProduct");if(btn&&!btn.dataset.v20crud){btn.dataset.v20crud="1";btn.addEventListener("click",function(e){e.preventDefault();e.stopImmediatePropagation();saveProductV20();},true);}if(form&&!form.dataset.v20crud){form.dataset.v20crud="1";form.addEventListener("submit",function(e){e.preventDefault();e.stopImmediatePropagation();saveProductV20();},true);}var pane=$("tab-columns-products"),head=pane&&pane.querySelector("#formProduct")&&pane.querySelector("#formProduct").closest(".card").querySelector(".card-header");if(head&&!$("v20NewProduct")){var n=document.createElement("button");n.id="v20NewProduct";n.type="button";n.className="btn btn-outline btn-sm";n.textContent="➕ کالای جدید";n.onclick=resetProductV20;head.appendChild(n);}window.editProductCatalogItem=function(id){var p=(st().products||[]).filter(function(x){return String(x.id)===String(id);})[0];if(!p)return;window._editingProductId=p.id;if($("productCode"))$("productCode").value=p.code||"";if($("productName"))$("productName").value=p.name||"";if($("productDistPrice"))$("productDistPrice").value=p.distributorPrice||p.price||"";if($("productPrice"))$("productPrice").value=p.pharmacyPrice||p.price||"";if($("productStock"))$("productStock").value=p.stock||"";$("productName").scrollIntoView({behavior:"smooth",block:"center"});};function patchCodes(){var body=$("tableProductsBody"),S=st();if(!body)return;Array.prototype.forEach.call(body.children,function(tr,i){if(tr.querySelector('.v20-product-code'))return;var td=document.createElement('td');td.className='v20-product-code';td.setAttribute('data-no-number-group','1');td.innerHTML='<strong>'+esc(((S.products||[])[i]||{}).code||'—')+'</strong>';tr.insertBefore(td,tr.children[1]||null);});}if(typeof window.renderColumnsProductsTable==='function'&&!window.renderColumnsProductsTable._v20code){var rr=window.renderColumnsProductsTable,w=function(){var x=rr.apply(this,arguments);patchCodes();return x;};w._v20code=true;window.renderColumnsProductsTable=w;}patchCodes();var old=window.deleteProductCatalogItem;window.deleteProductCatalogItem=function(id){var S=st(),p=(S.products||[]).filter(function(x){return String(x.id)===String(id);})[0];if(!p)return;if(!confirm("کالای «"+(p.name||"")+"» حذف شود؟"))return;S.products=(S.products||[]).filter(function(x){return String(x.id)!==String(id);});S.salesTargets=(S.salesTargets||[]).filter(function(t){return norm(t.productName)!==norm(p.name);});(S.orders||[]).forEach(function(o){o.items=(o.items||[]).filter(function(i){return norm(i.name)!==norm(p.name);});});Array.prototype.forEach.call(document.querySelectorAll('.order-item-row'),function(r){var n=r.querySelector('.order-item-name');if(n&&norm(n.value)===norm(p.name))r.remove();});save();try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}v20Toast("✅ کالا حذف شد.");};}
 
   /* ---------- ۲۹) IndexedDB برای ماندگاری فایل‌های حجیم اکسل ---------- */
@@ -57422,7 +57465,7 @@ button.v19-gps svg{display:block}
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.73.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="11.74.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       document.documentElement.classList.add("crm-booting");
       function target(){return location.pathname+location.search+location.hash;}
       function rescue(serverBuild){if(true)return;var u="/cache-reset?to="+encodeURIComponent(target())+"&build="+encodeURIComponent(serverBuild||BUILD)+"&t="+Date.now();location.replace(u);}
@@ -57445,7 +57488,7 @@ button.v19-gps svg{display:block}
   <meta name="theme-color" content="#0d9488" />
 
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.73.0" />
+  <link rel="stylesheet" href="style.css?v=11.74.0" />
 </head>
 <body>
 
@@ -59730,9 +59773,9 @@ button.v19-gps svg{display:block}
   <script src="vendor/leaflet.js"></script>
 
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.73.0"></script>
-  <script src="crm-app.js?v=11.73.0"></script>
-          <script src="crm-bundle.js?v=11.73.0"></script>
+  <script src="crm-data.js?v=11.74.0"></script>
+  <script src="crm-app.js?v=11.74.0"></script>
+          <script src="crm-bundle.js?v=11.74.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
@@ -59806,7 +59849,7 @@ window.IRAN_FACILITIES = [
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
   <script>
-    (function(){var BUILD="11.73.0",key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{localStorage.setItem(key,BUILD);}catch(e){}fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD){/* v11.70 no auto go(d.version) */}}).catch(function(){});})();
+    (function(){var BUILD="11.74.0",key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{localStorage.setItem(key,BUILD);}catch(e){}fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD){/* v11.70 no auto go(d.version) */}}).catch(function(){});})();
   </script>
   <title>ورود | طنین طب طاها</title>
 
@@ -62888,7 +62931,7 @@ self.addEventListener("fetch", (event) => {
 فایل: public/sw.js (3742 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
-const BUILD = "11.73.0";
+const BUILD = "11.74.0";
 const CACHE = "crm-static-v" + BUILD;
 
 async function purgeEveryCache() {
@@ -66964,7 +67007,7 @@ main();
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: scripts/clean-extra-files.ps1 (6225 بایت)
+فایل: scripts/clean-extra-files.ps1 (6382 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~powershell
 # Requires: Windows PowerShell 5+
@@ -88704,7 +88747,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/version-11.24-regressions.test.mjs (58345 بایت)
+فایل: tests/version-11.24-regressions.test.mjs (59606 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 import test from 'node:test';
@@ -89026,7 +89069,7 @@ test('multi-part prompts require a real acceptance checklist before ZIP delivery
 });
 
 test('next-chat GitHub handoff records exact publish truth and engine map', () => {
-  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.73.0/);
+  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.74.0/);
   assert.match(githubHandoff,/4984d17/);assert.match(githubHandoff,/Resource not accessible by integration/);
   assert.match(githubHandoff,/Production[\s\S]*11\.20\.0/);
   assert.match(githubHandoff,/موتور پاک‌سازی خودکار کش/);assert.match(githubHandoff,/موتورهای پایداری داده/);
@@ -89078,7 +89121,7 @@ test('new build clears only old asset caches before revealing app and prevents m
 test('v38 cache rescue automatically forces a fresh build without deleting CRM data', () => {
   const login = read('../public/login.html');
   assert.match(server,/pathname === "\/cache-reset"/);assert.match(server,/Clear-Site-Data/);
-  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.73.0"/);
+  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.74.0"/);
   assert.match(html,/\/api\/health\?__crm_nocache=/);assert.match(html,/\/cache-reset\?to=/);assert.match(html,/d\.version!==BUILD/);
   assert.match(login,/CRM_CACHE_RESCUED_/);assert.match(login,/\/cache-reset\?to=/);
   assert.match(sw,/function purgeEveryCache/);assert.match(sw,/CRM_BUILD_ACTIVE/);assert.match(sw,/cache: "reload"/);
@@ -89088,7 +89131,7 @@ test('v38 cache rescue automatically forces a fresh build without deleting CRM d
     assert.doesNotMatch(source,/indexedDB\.deleteDatabase\s*\(/);
     assert.doesNotMatch(source,/removeItem\(["']CRM_APP_STATE_V2/);
   }
-  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.73.0'/);
+  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.74.0'/);
 });
 
 test('security hardening blocks dangerous device APIs, cross-origin writes, executables and formula injection', () => {
@@ -89103,7 +89146,7 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.73.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.74.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
@@ -89198,7 +89241,7 @@ test('v11.43.1 engine button feedback + permanent version watchdog', () => {
 test('v11.61.0 safe cache-hardening', () => {
   const html = read('../public/index.html'); const app = read('../public/crm-app.js');
   assert.match(html,/http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/);
-  assert.match(app,/CRM_APP_VERSION = "11.73.0"/);
+  assert.match(app,/CRM_APP_VERSION = "11.74.0"/);
   assert.match(app,/بارگذاری شد/);
 });
 
@@ -89440,8 +89483,8 @@ test('v11.72.0 durable target ops + mm gap + row number', () => {
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "11.73.0"/);
-  assert.match(srv, /const APP_VERSION = "11.73.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.74.0"/);
+  assert.match(srv, /const APP_VERSION = "11.74.0"/);
   assert.match(b, /v11\.68\.0/);
   assert.match(b, /v68-edit-tgt/);
   assert.match(b, /v68-del-tgt/);
@@ -89461,8 +89504,8 @@ test('v11.72.0 server-authoritative unify + durable delete + live mm/row', () =>
   const b = read('../public/crm-bundle.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
-  assert.match(app, /CRM_APP_VERSION = "11.73.0"/);
-  assert.match(srv, /const APP_VERSION = "11.73.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.74.0"/);
+  assert.match(srv, /const APP_VERSION = "11.74.0"/);
   assert.match(srv, /function naturalRecordKey/);
   assert.match(srv, /if \(id && deleted && deleted\[id\] && recStamp\(r\) <= Number\(deleted\[id\]\)\) return/);
   assert.match(b, /v11\.69\.0/);
@@ -89484,8 +89527,8 @@ test('v11.72.0 solo device + no cache-reset loop', () => {
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "11.73.0"/);
-  assert.match(srv, /const APP_VERSION = "11.73.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.74.0"/);
+  assert.match(srv, /const APP_VERSION = "11.74.0"/);
   assert.match(srv, /x-crm-replace/);
   assert.match(srv, /_soloOnly/);
   assert.match(srv, /CRM_RESET_LOCK/);
@@ -89506,8 +89549,8 @@ test('v11.72.0 single script load + 404 not login + solo replace', () => {
   assert.equal((html.match(/crm-app\.js\?v=/g)||[]).length, 1);
   assert.equal((html.match(/crm-bundle\.js\?v=/g)||[]).length, 1);
   assert.equal((html.match(/<\/html>/g)||[]).length, 1);
-  assert.match(app, /CRM_APP_VERSION = "11.73.0"/);
-  assert.match(srv, /const APP_VERSION = "11.73.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.74.0"/);
+  assert.match(srv, /const APP_VERSION = "11.74.0"/);
   assert.match(srv, /v11.71: Clear-Site-Data/);
   assert.match(b, /v11\.71\.0/);
   assert.match(b, /CRM_SOLO_CLAIM/);
@@ -89520,9 +89563,9 @@ test('v11.72.0 server-first paint + no-spin qty + per-row ops + dist achieved/re
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "11.73.0"/);
-  assert.match(srv, /const APP_VERSION = "11.73.0"/);
-  assert.match(app, /register\('\/sw\.js\?v=11\.73.0'/);
+  assert.match(app, /CRM_APP_VERSION = "11.74.0"/);
+  assert.match(srv, /const APP_VERSION = "11.74.0"/);
+  assert.match(app, /register\('\/sw\.js\?v=11\.74.0'/);
   assert.match(b, /v11\.72\.0/);
   assert.match(b, /__v72boot/);
   assert.match(b, /function adoptServerExact/);
@@ -89553,17 +89596,17 @@ test('v11.73.0 live state bind + delayed unveil + durable dist save + kill old o
   const html = read('../public/index.html');
   const sw = read('../public/sw.js');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "11.73.0"/);
-  assert.match(srv, /const APP_VERSION = "11.73.0"/);
-  assert.match(sw, /const BUILD = "11.73.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.74.0"/);
+  assert.match(srv, /const APP_VERSION = "11.74.0"/);
+  assert.match(sw, /const BUILD = "11.74.0"/);
   assert.match(app, /function bindLiveWindowState/);
   assert.match(app, /window\.__CRM_GET_STATE/);
   assert.match(app, /window\.renderPharmaciesList/);
-  assert.match(html, /var BUILD="11.73.0"/);
+  assert.match(html, /var BUILD="11.74.0"/);
   assert.match(html, /window\.__CRM_UNVEIL/);
   assert.match(html, /if\(!window\.__CRM_UNVEILED\)window\.__CRM_UNVEIL\(\);},5000\)/);
   assert.doesNotMatch(html, /classList\.remove\("crm-booting"\);},800\)/);
-  assert.match(login, /var BUILD="11.73.0"/);
+  assert.match(login, /var BUILD="11.74.0"/);
   assert.match(b, /v11\.73\.0/);
   assert.match(b, /__v73boot/);
   assert.match(b, /function adoptExact/);
@@ -89578,6 +89621,30 @@ test('v11.73.0 live state bind + delayed unveil + durable dist save + kill old o
   assert.match(b, /#v66SaveDistTargets/);
   assert.match(b, /_deletedNatKeys/);
   assert.match(b, /window\.paintV68TargetOps=function\(\)\{killOldOpsHosts\(\);paintV73All\(\);\}/);
+});
+
+test('v11.74.0 mashateb sales mapping like daya/shafaarad', () => {
+  const b = read('../public/crm-bundle.js');
+  const v20file = read('../public/crm-features-v20.js');
+  const app = read('../public/crm-app.js');
+  const srv = read('../server.js');
+  assert.match(app, /CRM_APP_VERSION = "11.74.0"/);
+  assert.match(srv, /const APP_VERSION = "11.74.0"/);
+  assert.match(b, /MASHATEB_CODE_MAP=\{1001:186101,1002:186102,1003:186103,1004:186104,1005:186105,1006:186106,1007:186107\}/);
+  assert.match(v20file, /MASHATEB_CODE_MAP=\{1001:186101,1002:186102,1003:186103,1004:186104,1005:186105,1006:186106,1007:186107\}/);
+  assert.match(b, /else if\(id==="mashateb"\)\{x\.qty=10;x\.giftQty=11;x\.pharmacy=9;/);
+  assert.match(b, /function distProductDbCode/);
+  assert.match(b, /function isMappedDist/);
+  assert.match(b, /mashatebDbCode/);
+  assert.match(b, /distId==="mashateb"\?10/);
+  const ctx={result:null, findDistIndex:(h,re,fb)=>fb==null?-1:fb};
+  vm.createContext(ctx);
+  vm.runInContext(`${extract('distSchema')};result=distSchema([],"mashateb")`, ctx);
+  assert.equal(ctx.result.qty, 10);
+  assert.equal(ctx.result.giftQty, 11);
+  assert.equal(ctx.result.pharmacy, 9);
+  assert.equal(ctx.result.invoice, -1);
+  assert.equal(ctx.result.retQty, -1);
 });
 ~~~~~~~~
 
