@@ -1274,3 +1274,6 @@ Then change only what is requested.
 - distLastDate mashateb=2
 - db-ph-edit / db-ph-del / db-inv-edit / db-inv-del
 - locationDup نام+استان+شهر+منطقه+آدرس
+
+## 11.80.0
+ملاک فقط سرور؛ قفل ورود داده نسخه قبلی؛ مصرف‌کننده جدید = فعلی × (۱+افزایش).
