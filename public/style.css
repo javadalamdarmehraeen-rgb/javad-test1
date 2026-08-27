@@ -2407,3 +2407,26 @@ td .btn, .col-ops .btn, .col-ops {
 .v87-dist-grand { display: block !important; margin: 12px 0; }
 .v20-share-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 6px 12px; }
 #v20ShareManager fieldset + fieldset { margin-top: 8px; }
+
+/* v11.89.0: فشرده‌سازی فاصله بیهوده + یک جفت عملیات مسیر */
+#tab-dashboard .card, #tab-define-routes .card { padding: 12px; margin-bottom: 10px; }
+#tab-dashboard .card-header, #tab-define-routes .card-header { margin-bottom: 8px; padding-bottom: 6px; }
+#tab-dashboard .stats-grid { gap: 8px; margin-bottom: 10px; }
+#tab-dashboard .stat-card { padding: 10px 12px; gap: 10px; }
+#tab-dashboard .stat-icon { width: 40px; height: 40px; border-radius: 10px; }
+#tab-dashboard .v84-dash-filters, #tab-dashboard .v84-kpi { margin-bottom: 8px; gap: 8px; }
+#tab-dashboard .v84-charts { gap: 8px; }
+#tab-dashboard .v84-chart-card { padding: 8px; }
+#tab-dashboard #map-dashboard-overview.map-container-large,
+#tab-dashboard #map-dashboard-overview { height: 300px !important; }
+#dashboardWidgetManager, #dashboardChartsWidget { margin-bottom: 8px !important; }
+#dashboardWidgetsHost:empty { display: none; }
+#representativeRoutesGrid { gap: 8px !important; }
+#representativeRoutesGrid > .form-group { margin: 0 !important; }
+#representativeRoutesCard .col-help { margin: 0 0 6px; }
+#tab-define-routes .route-check-box { min-height: 88px !important; max-height: 160px; }
+#tab-define-routes .form-grid { gap: 8px !important; }
+#repRoutesOverview tbody td:has([class*="edit-route"]) ~ td:has([class*="edit-route"]) { display: none !important; }
+#repRoutesOverview td button[class*="edit-route"] ~ button[class*="edit-route"],
+#repRoutesOverview td button[class*="del-route"] ~ button[class*="del-route"] { display: none !important; }
+#repRoutesOverview thead tr th:nth-child(n+7) { display: none !important; }

@@ -1675,6 +1675,6 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 مسیر، جغرافیا، داشبورد.
 - [ ] push کاربر → health=11.85.0
 
-## 11.88.0
+## 11.89.0
 توقف wipe داروخانه، مسیر، موبایل.
-- [ ] push کاربر → health=11.88.0 و force main برای Render موبایل
+- [ ] push کاربر → health=11.89.0 و force main برای Render موبایل

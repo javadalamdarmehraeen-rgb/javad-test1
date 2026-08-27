@@ -18382,7 +18382,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     var el=$("v87BackupStatus"); if(!el)return;
     fetch("/api/backup/status",{cache:"no-store"}).then(function(r){return r.json();}).then(function(j){
       if(!j||!j.cloud){el.textContent="پشتیبان ابری در حال آماده‌سازی است.";return;}
-      el.textContent="پشتیبان ابری فعال"+(j.latest?(" — آخرین نسخه روزانه: "+String(j.latest).replace("crm-","").replace(".json","")):"")+" | "+(j.days||0)+" روز نگهداری می‌شود.";
+      el.textContent="پشتیبان ابری هر ۱۵ دقیقه"+(j.latest?(" — آخرین: "+String(j.latest).replace("crm-","").replace(".json","")):"")+" | "+(j.days||0)+" نسخه نگهداری می‌شود.";
     }).catch(function(){el.textContent="آفلاین هستید؛ به محض وصل شدن، ذخیره روی سرور می‌نشیند.";});
   }
 
@@ -18491,7 +18491,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
 
   var badge=$("crmBuildBadge");
-  if(badge)badge.textContent="نسخه ۱۱.۸۸.۰";
+  if(badge)badge.textContent="نسخه ۱۱.۸۹.۰";
 
   function boot(){
     wrapPainters();
@@ -18505,4 +18505,74 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-define-routes"]'))
       setTimeout(function(){oneColumnRouteOps();},200);
   },true);
+})();
+
+/* v11.89.0: SW هم‌نسخه + پشتیبان ۱۵دقیقه + یک جفت عملیات مسیر + فاصله فشرده */
+(function(){
+  "use strict";
+  function $(id){return document.getElementById(id);}
+  function oneOps(){
+    var overview=$("repRoutesOverview"); if(!overview)return;
+    var thead=overview.querySelector("thead tr");
+    if(thead){
+      var extras=[];
+      Array.prototype.forEach.call(thead.querySelectorAll("th"),function(th){
+        if(/عملیات/.test(th.textContent||""))extras.push(th);
+      });
+      extras.slice(0,-1).forEach(function(th){if(th.parentNode)th.parentNode.removeChild(th);});
+    }
+    overview.querySelectorAll("tbody tr").forEach(function(tr){
+      var ops=[];
+      Array.prototype.forEach.call(tr.children,function(td){
+        if(td.querySelector&&td.querySelector("[class*='edit-route'],[class*='del-route']"))ops.push(td);
+      });
+      if(!ops.length)return;
+      var keep=ops[ops.length-1];
+      ops.slice(0,-1).forEach(function(td){if(td.parentNode)td.parentNode.removeChild(td);});
+      var btns=keep.querySelectorAll("button");
+      var edit=null,del=null;
+      Array.prototype.forEach.call(btns,function(b){
+        var c=b.className||"";
+        if(/edit-route/.test(c)&&!edit)edit=b;
+        else if(/del-route/.test(c)&&!del)del=b;
+        else if(b.parentNode)b.parentNode.removeChild(b);
+      });
+      if(edit&&del&&keep.querySelectorAll("button").length===2)return;
+      var id=(edit&&edit.getAttribute("data-id"))||(del&&del.getAttribute("data-id"))||"";
+      if(!id)return;
+      keep.className="v89-route-ops v88-route-ops v73-ops v72-ops";
+      keep.innerHTML="<button type='button' class='btn btn-outline btn-sm v73-edit-route' data-id='"+id+"'>✏️ ویرایش</button> <button type='button' class='btn btn-danger btn-sm v73-del-route' data-id='"+id+"'>🗑️ حذف</button>";
+    });
+  }
+  window.v89OneColumnRouteOps=oneOps;
+  if(window.MutationObserver){
+    var t=null;
+    new MutationObserver(function(){
+      var pane=$("tab-define-routes");
+      if(!pane||!pane.classList.contains("active"))return;
+      clearTimeout(t);
+      t=setTimeout(oneOps,30);
+    }).observe(document.body,{childList:true,subtree:true});
+  }
+  function wrap(){
+    ["renderRepRoutesOverview","paintV73TargetOps","paintV72TargetOps","paintV68TargetOps","v88OneColumnRouteOps"].forEach(function(name){
+      var fn=window[name];
+      if(typeof fn!=="function"||fn._v89)return;
+      var w=function(){var r=fn.apply(this,arguments);try{oneOps();}catch(e){}return r;};
+      w._v89=true; window[name]=w;
+    });
+  }
+  if(window.switchTab&&!window.switchTab._v89){
+    var sw=window.switchTab;
+    var w=function(id){
+      var r=sw.apply(this,arguments);
+      if(id==="tab-define-routes")setTimeout(function(){wrap();oneOps();},40);
+      return r;
+    };
+    w._v89=true; window.switchTab=w;
+  }
+  var badge=$("crmBuildBadge"); if(badge)badge.textContent="نسخه ۱۱.۸۹.۰";
+  function boot(){wrap();oneOps();setTimeout(oneOps,500);}
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,120);});
+  else setTimeout(boot,120);
 })();
