@@ -47,17 +47,17 @@
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (181955 بایت)
+### `public/crm-app.js` (182047 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 179
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_STATE_BOUND`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderDoctorsList`, `renderExtraTabCustomFields`, `renderPharmaciesList`, `validateRequiredFields`
 
-### `public/crm-bundle.js` (1062235 بایت)
+### `public/crm-bundle.js` (1073389 بایت)
 - نقش: * crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
-- تعداد توابع داخلی: 1086
+- تعداد توابع داخلی: 1102
 - نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `WIDGET_PALETTE`, `__CRM_APPLYING_SERVER`, `__CRM_BULK_PURGE`, `__CRM_BULK_READY`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SERVER_READY`, `__CRM_SKIP_V64_STRIP`, `__CRM_SNAP`, `__CRM_UNVEIL`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__V68_WATCH`, `__V69_SYNC`, `__V70_SOLO`, `__V71_CLAIMED`, `__V72_BOOT`, `__V73_BOOT`, `__V73_WATCH`, `__lastHealth`, `__v40LastPick`, `__v53wrapped`, `__v55wrapped`, `__v56wrapped`, `__v58once`, `_actHeatLayer`, `_actMap`
 
-### `public/crm-data.js` (63721 بایت)
+### `public/crm-data.js` (63943 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 1
 
@@ -136,7 +136,7 @@
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (3742 بایت)
-- نقش: const BUILD = "11.76.0";
+- نقش: const BUILD = "11.77.0";
 - تعداد توابع داخلی: 3
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -503,6 +503,9 @@
 - `public/crm-features-v17.js` → 8 شناسه (مثل: `btnSavePharmacy`, `formPharmacy`, `pharmacyAddress`, `pharmacyCity`, `pharmacyDistrict`, `pharmacyName`, `pharmacyPhone`, `pharmacyProvince`)
 - `public/crm-features-v20.js` → 8 شناسه (مثل: `pharmacyCity`, `pharmacyDistrict`, `pharmacyEditId`, `pharmacyManager`, `pharmacyManagerPhone`, `pharmacyName`, `pharmacyPhone`, `pharmacyProvince`)
 - `public/crm-features-v9.js` → 11 شناسه (مثل: `btnPhMapSearch`, `btnPharmacyCurrentLocation`, `btnPharmacyGetAddressFromPoint`, `cardPhList`, `formPharmacy`, `phFileInput`, `phListCountBadge`, `phTableCountBadge`)
+
+### tab-product-pricing «💵 قیمت‌گذاری کالاها»
+- `public/crm-bundle.js` → 3 شناسه (مثل: `btnSaveProductPricing`, `v77CurrentPricesBody`, `v77NewPricesBody`)
 
 ### tab-rep-homes «🏠 منزل نمایندگان»
 - `public/crm-app.js` → 3 شناسه (مثل: `repHomeAddressInput`, `repHomeSelect`, `tableRepHomesBody`)
@@ -1410,7 +1413,7 @@
 
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
-- نسخه سورس package: `11.76.0`
+- نسخه سورس package: `11.77.0`
 - مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a03a45-javad-test1`؛ push/PR فقط از همین شاخه.
 - Production فعال: `https://javad-test1.onrender.com` — نسخه سورس فعلی `11.66.0` است و تا push کاربر روی production همان آخرین دیپلوی قبلی می‌ماند.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.
