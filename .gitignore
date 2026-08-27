@@ -73,3 +73,5 @@ crm-app-all-in-one.html
 # خروجی کامپایل پایتون
 __pycache__/
 *.pyc
+
+download-v11.*.html

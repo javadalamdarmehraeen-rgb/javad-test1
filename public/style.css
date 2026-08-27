@@ -319,6 +319,62 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.25rem;
 }
+.route-check-box {
+  max-height: 260px;
+  overflow: auto;
+  border: 1.5px solid #99f6e4;
+  border-radius: 10px;
+  background: #f0fdfa;
+  padding: 0.45rem 0.55rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.route-check {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 700;
+  font-size: 0.86rem;
+  color: #134e4a;
+  padding: 0.2rem 0.15rem;
+  cursor: pointer;
+}
+.route-check input { width: 16px; height: 16px; accent-color: #0d9488; flex: 0 0 auto; }
+.v66-target-head, .v34-target-head { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.85rem; }
+.v66-target-head label, .v34-target-head label { font-weight: 800; font-size: 0.82rem; color: #0f766e; }
+.v66-target-row, .v34-target-row { display: grid; grid-template-columns: 1.6fr 0.8fr 0.9fr 0.9fr 0.9fr 0.9fr; gap: 0.45rem; align-items: center; padding: 0.45rem 0; border-bottom: 1px dashed #ccfbf1; }
+.v66-target-row.v66-head, .v34-target-row.v34-head { font-size: 0.75rem; font-weight: 800; color: #334155; }
+/* v11.63.0: فرم داروخانه و پزشک همیشه ۳ ستون؛ فیلدهای یک سطر کنار هم بمانند */
+#formPharmacy > .form-grid,
+#formDoctor > .form-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 1.25rem !important;
+}
+#formPharmacy > .form-grid > .form-group.full-width,
+#formDoctor > .form-grid > .form-group.full-width {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: unset !important;
+}
+#formPharmacy > .form-grid > .form-group:not(.full-width),
+#formDoctor > .form-grid > .form-group:not(.full-width) {
+  grid-column: auto !important;
+  width: auto !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  flex: unset !important;
+}
+@media (max-width: 900px) {
+  #formPharmacy > .form-grid,
+  #formDoctor > .form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+@media (max-width: 640px) {
+  #formPharmacy > .form-grid,
+  #formDoctor > .form-grid { grid-template-columns: minmax(0, 1fr) !important; }
+}
 .form-grid.form-grid-sized {
   display: flex;
   flex-wrap: wrap;
@@ -338,6 +394,53 @@ body {
 .form-grid.form-grid-sized > .form-group.col-place-beside {
   flex: 1 1 260px;
 }
+.v68-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  width: 100%;
+  flex: 1 1 100%;
+  gap: 8px;
+  box-sizing: border-box;
+}
+.v68-ops-host { margin-top: 12px; }
+.v68-ops-host .data-table td:last-child { white-space: nowrap; }
+#colFieldList tr.v69-selected { outline: 2px solid #0d9488; background: #ecfdf5; }
+
+/* v11.72: فلش تعداد کالا/جایزه/تارگت حذف — اسکرول مقدار را عوض نکند */
+input[type=number].order-item-count,
+input[type=number].order-item-gift,
+input[type=number].v34-target-count,
+input[type=number].v66-count,
+input[type=number].qty-no-spin,
+#tgtCountInput,
+#orderItemsContainer input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+input[type=number].order-item-count::-webkit-inner-spin-button,
+input[type=number].order-item-count::-webkit-outer-spin-button,
+input[type=number].order-item-gift::-webkit-inner-spin-button,
+input[type=number].order-item-gift::-webkit-outer-spin-button,
+input[type=number].v34-target-count::-webkit-inner-spin-button,
+input[type=number].v34-target-count::-webkit-outer-spin-button,
+input[type=number].v66-count::-webkit-inner-spin-button,
+input[type=number].v66-count::-webkit-outer-spin-button,
+input[type=number].qty-no-spin::-webkit-inner-spin-button,
+input[type=number].qty-no-spin::-webkit-outer-spin-button,
+#tgtCountInput::-webkit-inner-spin-button,
+#tgtCountInput::-webkit-outer-spin-button,
+#orderItemsContainer input[type=number]::-webkit-inner-spin-button,
+#orderItemsContainer input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.v72-dist-grand { background: #f0fdfa; border: 1.5px solid #99f6e4; }
+.v72-dist-card { margin-top: 12px; }
+.v72-dist-card .card-title { color: #0f766e; }
+.v72-ops { white-space: nowrap; }
+.v72-ops .btn { margin: 0 2px; }
+#v68SalesTargetOps, #v68DistTargetOps, .v67-ops-table, .v69-ops-host { display: none !important; }
 .form-group.col-hide-form {
   display: none !important;
 }
@@ -2203,4 +2306,64 @@ td .btn, .col-ops .btn, .col-ops {
 #manualDesignCanvas .man-resize {
   pointer-events: auto !important;
   z-index: 9;
+}
+
+/* v11.76 heatmap */
+.v76-heat-bar{font-family:Tahoma,Arial,sans-serif}
+.v76-heat-bar .form-select{min-height:34px}
+.crm-heat-canvas{pointer-events:none}
+#pharmacyNamePickBox{display:none!important}
+
+/* v11.77 product pricing */
+#tab-product-pricing .data-table input.v77-inp{width:100%;min-width:72px;max-width:140px;text-align:center;direction:ltr}
+#tab-product-pricing .data-table input.v77-date{min-width:110px}
+#tab-product-pricing .data-table td{white-space:nowrap}
+#tab-product-pricing input.v77-inp::-webkit-outer-spin-button,
+#tab-product-pricing input.v77-inp::-webkit-inner-spin-button{appearance:none;-webkit-appearance:none;margin:0}
+#tab-product-pricing input.v77-inp{appearance:textfield;-moz-appearance:textfield}
+
+#tab-product-pricing .v78-edit-price{white-space:nowrap;min-width:88px}
+#tab-columns-products #productConsumerPrice{-moz-appearance:textfield}
+#formProduct input.qty-no-spin::-webkit-inner-spin-button,
+#formProduct input.qty-no-spin::-webkit-outer-spin-button{appearance:none;-webkit-appearance:none;margin:0}
+#formProduct input.qty-no-spin{appearance:textfield;-moz-appearance:textfield}
+
+/* v11.83-mobile-type: جلوگیری از زوم iOS و پرش کیبورد همراه */
+@media (max-width: 900px) {
+  input, select, textarea, .form-input, .form-select, .form-textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* v11.84 dashboard analytics */
+.v84-dash-filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem;margin-bottom:1rem}
+.v84-kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.75rem;margin-bottom:1rem}
+.v84-kpi .k{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.85rem 1rem}
+.v84-kpi .k b{display:block;font-size:1.25rem;color:#0f766e;margin-top:.2rem}
+.v84-kpi .k span{font-size:.78rem;color:#64748b;font-weight:700}
+.v84-charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}
+.v84-chart-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:1rem}
+.v84-chart-card h5{margin:0 0 .75rem;color:#0f766e;font-size:.92rem}
+.v84-bars{display:flex;align-items:flex-end;gap:.55rem;height:150px;border-bottom:2px solid #cbd5e1;padding:.25rem .1rem 0}
+.v84-bar{flex:1;text-align:center;min-width:28px}
+.v84-bar i{display:block;background:linear-gradient(180deg,#14b8a6,#0d9488);border-radius:6px 6px 0 0;margin:0 auto;width:70%}
+.v84-bar em{display:block;font-size:.7rem;font-style:normal;font-weight:800;color:#334155;margin-top:.35rem}
+.v84-empty{color:#94a3b8;font-size:.85rem;padding:1.5rem 0;text-align:center}
+.v84-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.v84-table th{background:#87CEEB;color:#000;text-align:right;padding:.4rem .5rem}
+.v84-table td{padding:.4rem .5rem;border-bottom:1px solid #e2e8f0}
+.v84-legend{font-size:.8rem;color:#334155;line-height:1.8}
+
+/* v11.85 routes + dashboard polish */
+.v85-geo-search{margin:0 0 .45rem;font-size:.86rem}
+.route-check.v85-all{background:#ecfeff;border:1px solid #99f6e4;border-radius:8px;padding:.25rem .4rem;margin-bottom:.35rem;font-weight:800;color:#0f766e}
+#v84DashFilters{display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:.75rem;align-items:end}
+#v84DashFilters .form-group{margin:0;min-width:0}
+.v84-charts{grid-template-columns:1fr 1fr}
+.v84-bars{overflow-x:auto;gap:.4rem}
+.v84-bar{min-width:52px;flex:1 0 52px}
+.v84-bar em{white-space:normal;line-height:1.25;font-size:.72rem;word-break:break-word;max-width:72px;margin:6px auto 0}
+@media (max-width:900px){
+  #v84DashFilters{grid-template-columns:1fr 1fr}
+  .v84-charts{grid-template-columns:1fr}
 }
