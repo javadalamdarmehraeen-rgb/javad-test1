@@ -1,5 +1,6 @@
 # Requires: Windows PowerShell 5+
 # Deletes leftover files that are NOT in OFFICIAL_FILELIST.txt
+# Never deletes git-tracked files or runtime CRM sources.
 param(
   [string]$Root = "",
   [string]$SyncFrom = "",
@@ -17,6 +18,12 @@ if ($SyncFrom) { $SyncFrom = [System.IO.Path]::GetFullPath($SyncFrom) }
 
 $ProtectedDirs = @(".git", "node_modules", ".next", ".cache", ".vscode", ".idea", ".arena")
 $ProtectedFiles = @(".env", ".env.local", ".env.ndcohub", ".env.production", ".env.development")
+$NeverDeleteNames = @(
+  "server.js", "package.json", "package-lock.json",
+  "public/crm-app.js", "public/crm-bundle.js", "public/crm-data.js",
+  "public/crm-jalali.js", "public/iran-facilities.js",
+  "public/index.html", "public/login.html", "public/style.css", "public/sw.js"
+)
 $KnownExtras = @(
   "__rzi_4828.46476.rartemp",
   "CHANGELOG_ENHANCEMENTS.md",
@@ -50,7 +57,22 @@ function IsProtected([string]$rel) {
   if ($ProtectedFiles -contains $base) { return $true }
   if ($base.StartsWith(".env") -and -not $base.EndsWith(".example")) { return $true }
   if ($base.StartsWith("crm-backup")) { return $true }
+  if ($NeverDeleteNames -contains $n) { return $true }
+  if ($n -match '^public/crm-features-v(9|1[0-9]|2[0-9])\.js$') { return $true }
+  if ($n -match '^public/crm-.*\.js$') { return $true }
   return $false
+}
+
+function Get-GitTracked([string]$base) {
+  $set = New-Object "System.Collections.Generic.HashSet[string]"
+  try {
+    Push-Location -LiteralPath $base
+    $files = & git ls-files 2>$null
+    if ($LASTEXITCODE -eq 0 -and $files) {
+      foreach ($f in $files) { [void]$set.Add((Norm $f)) }
+    }
+  } catch { } finally { Pop-Location }
+  return $set
 }
 
 function Get-RelFiles([string]$base) {
@@ -65,7 +87,7 @@ function Get-RelFiles([string]$base) {
 $listRoot = $(if ($SyncFrom) { $SyncFrom } else { [string]$RepoRoot })
 $listFile = Join-Path $listRoot "OFFICIAL_FILELIST.txt"
 if (-not (Test-Path -LiteralPath $listFile)) {
-  Write-Host "OFFICIAL_FILELIST.txt پیدا نشد: $listFile"
+  Write-Host "OFFICIAL_FILELIST.txt not found: $listFile"
   exit 1
 }
 $official = New-Object "System.Collections.Generic.HashSet[string]"
@@ -73,6 +95,7 @@ Get-Content -LiteralPath $listFile -Encoding UTF8 | ForEach-Object {
   $t = $_.Trim()
   if ($t) { [void]$official.Add((Norm $t)) }
 }
+$tracked = Get-GitTracked $Root
 
 $existing = Get-RelFiles $Root
 $toDelete = @()
@@ -80,15 +103,19 @@ foreach ($rel in $existing) {
   $n = Norm $rel
   if ($n -eq "OFFICIAL_FILELIST.txt") { continue }
   if (IsProtected $n) { continue }
+  if ($tracked.Contains($n)) { continue }
   $drop = $false
   if ($KnownExtras -contains $n) { $drop = $true }
   elseif ($n.EndsWith(".rartemp") -or $n.Contains("__rzi_")) { $drop = $true }
+  elseif ($n -match '^namayandeelmi-v11\.(6[0-9]|70|71)\.0\.zip$') { $drop = $true }
+  elseif ($n -match '^download-v11\.(6[0-9]|70|71)\.0\.html$') { $drop = $true }
   elseif (-not $official.Contains($n)) { $drop = $true }
   if ($drop) { $toDelete += $n }
 }
 
 Write-Host "root: $Root"
 Write-Host "official files: $($official.Count)"
+Write-Host "git-tracked: $($tracked.Count)"
 Write-Host "present files: $($existing.Count)"
 Write-Host "extra files: $($toDelete.Count)"
 $toDelete | ForEach-Object { Write-Host "  DEL $_" }
@@ -108,13 +135,13 @@ if ($SyncFrom -and $Apply) {
 
 if (-not $Apply) {
   Write-Host ""
-  Write-Host "dry-run. برای حذف واقعی سوییچ -Apply بزنید."
+  Write-Host "dry-run. Use -Apply to delete."
   exit 0
 }
 
 foreach ($rel in $toDelete) {
   $abs = Join-Path $Root ($rel -replace "/", "\")
-  try { Remove-Item -LiteralPath $abs -Force } catch { Write-Host "نتوانست حذف شود: $rel" }
+  try { Remove-Item -LiteralPath $abs -Force } catch { Write-Host "could not delete: $rel" }
 }
 
 Get-ChildItem -LiteralPath $Root -Recurse -Force -Directory | Sort-Object { $_.FullName.Length } -Descending | ForEach-Object {
