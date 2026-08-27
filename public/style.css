@@ -2321,3 +2321,9 @@ td .btn, .col-ops .btn, .col-ops {
 #tab-product-pricing input.v77-inp::-webkit-outer-spin-button,
 #tab-product-pricing input.v77-inp::-webkit-inner-spin-button{appearance:none;-webkit-appearance:none;margin:0}
 #tab-product-pricing input.v77-inp{appearance:textfield;-moz-appearance:textfield}
+
+#tab-product-pricing .v78-edit-price{white-space:nowrap;min-width:88px}
+#tab-columns-products #productConsumerPrice{-moz-appearance:textfield}
+#formProduct input.qty-no-spin::-webkit-inner-spin-button,
+#formProduct input.qty-no-spin::-webkit-outer-spin-button{appearance:none;-webkit-appearance:none;margin:0}
+#formProduct input.qty-no-spin{appearance:textfield;-moz-appearance:textfield}

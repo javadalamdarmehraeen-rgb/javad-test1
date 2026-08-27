@@ -1,6 +1,6 @@
 CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.78 | تاریخ به‌روزرسانی: 2026-08-27 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.77.0
+نسخه این فایل: 1.79 | تاریخ به‌روزرسانی: 2026-08-27 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.78.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -572,20 +572,20 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     2041 بایت  .gitlab-ci.yml
   [متنی ]    38221 بایت  AI_ACCEPTANCE_CHECKLIST.md
   [متنی ]    36288 بایت  AI_ARCHITECTURE.md
-  [متنی ]    79508 بایت  AI_DECISION_LOG.md
+  [متنی ]    79751 بایت  AI_DECISION_LOG.md
   [متنی ]    42400 بایت  AI_PROJECT_CONTEXT.md
   [متنی ]    46552 بایت  AI_RULES.md
-  [متنی ]    55175 بایت  AI_TASKS.md
+  [متنی ]    55418 بایت  AI_TASKS.md
   [متنی ]    50637 بایت  ARENA_HANDOFF_PROMPT.md
   [متنی ]      600 بایت  CHANGES_V10.md
-  [متنی ]   127469 بایت  CHANGES_V11.md
+  [متنی ]   128970 بایت  CHANGES_V11.md
   [متنی ]     3939 بایت  CHANGES_V9.md
   [متنی ]     1806 بایت  CLEAN_EXTRA_FILES.bat
   [متنی ]    42439 بایت  GITHUB_REVIEW_HANDOFF.md
   [متنی ]      694 بایت  KEEP_ONLY_GITHUB.bat
   [متنی ]     6574 بایت  OFFICIAL_FILELIST.txt
   [متنی ]     1093 بایت  PAKSAZI_EZAFI.bat
-  [متنی ]   133180 بایت  PROJECT_GRAPH.md
+  [متنی ]   133662 بایت  PROJECT_GRAPH.md
   [متنی ]     2707 بایت  PUSH_FRESH_GITHUB.bat
   [متنی ]     2680 بایت  PUSH_GITHUB_CLEAN.bat
   [متنی ]     6579 بایت  RAHNAMA_GITLAB.txt
@@ -608,7 +608,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]    34757 بایت  server.js
   [متنی ]     2426 بایت  sync_all.sh
   [متنی ]      738 بایت  tsconfig.json
-  [متنی ]   357752 بایت  update_chat_arena.py
+  [متنی ]   360833 بایت  update_chat_arena.py
   [متنی ]    13359 بایت  update_project_graph.py
   [متنی ]     2558 بایت  .github/workflows/deploy.yml
   [متنی ]      206 بایت  .github/workflows/keep_alive.yml
@@ -616,8 +616,8 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     9805 بایت  mobile/README.md
   [متنی ]     9966 بایت  mobile/src/simAuth.ts
   [متنی ]     8066 بایت  public/cloudflare-worker.js
-  [متنی ]   182047 بایت  public/crm-app.js
-  [متنی ]  1073389 بایت  public/crm-bundle.js
+  [متنی ]   183343 بایت  public/crm-app.js
+  [متنی ]  1088674 بایت  public/crm-bundle.js
   [متنی ]    63943 بایت  public/crm-data.js
   [متنی ]    13643 بایت  public/crm-features-v10.js
   [متنی ]   112307 بایت  public/crm-features-v11.js
@@ -632,12 +632,12 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]   304871 بایت  public/crm-features-v20.js
   [متنی ]    72007 بایت  public/crm-features-v9.js
   [متنی ]    25683 بایت  public/crm-jalali.js
-  [متنی ]   161388 بایت  public/index.html
+  [متنی ]   161842 بایت  public/index.html
   [متنی ]    11799 بایت  public/iran-facilities.js
   [متنی ]     8785 بایت  public/login.html
   [متنی ]      966 بایت  public/manifest.json
   [متنی ]     3720 بایت  public/manifest.webmanifest
-  [متنی ]    52767 بایت  public/style.css
+  [متنی ]    53157 بایت  public/style.css
   [متنی ]    13719 بایت  public/sw-template.js
   [متنی ]     3742 بایت  public/sw.js
   [متنی ]    84167 بایت  public/data/iran-provinces-lite.geojson
@@ -791,7 +791,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     3346 بایت  src/lib/zip.ts
   [متنی ]     4927 بایت  tests/app-smoke.test.mjs
   [متنی ]    19979 بایت  tests/state-preservation.test.mjs
-  [متنی ]    64326 بایت  tests/version-11.24-regressions.test.mjs
+  [متنی ]    66083 بایت  tests/version-11.24-regressions.test.mjs
   [تصویر]    23282 بایت  public/apple-touch-icon.png
   [تصویر]     4527 بایت  public/favicon.png
   [تصویر]    26208 بایت  public/icon-192.png
@@ -3787,6 +3787,18 @@ ZIP اولین نسخه 38 از کامیت تاریخی دقیق همان نسخ
 🤖 دستیار: 11.72.0 — بوت سرور‌اول با adopt کامل و رسم فوری لیست‌ها؛ فلش/اسکرول تعداد مسدود؛ یک handler ویرایش/حذف با stopImmediatePropagation؛ حذف کادر نمایش تارگت‌های ثبت‌شده؛ کادر جدا هر پخش + جمع تارگت + محقق‌شده/مانده از pharmacyRows.
 🤖 دستیار: 11.73.0 — یک state زنده + پرده تا adopt سرور + kill میزبان‌های قدیمی ops + ذخیره پایدار تارگت پخش (match ماه + tombstone + replace=1).
 
+──────────────────────────────── نوبت ۹۶ ────────────────────────────────
+🧑 کاربر (عیناً):
+«در تب ستون ها و کالاها در قسمت کالاها قیمت مصرف کننده را نیز اضافه کن تا مدیر بتواند قیمت را به بتفکیک کالا اضافه کند
+اگر کالایی در تب بالا اضافه شد در هر تبی که اطلاعات کالاها وجود دارد کالای جدید اضافه شود و اگر در تب قیمت گذاری کالاها تاریخ اعمال قیمت جدید سر رسید قیمت ها در تب ستون ها و کالا نیز به قیمت جدید تغییر پیدا کند
+در تب قیمت گذاری کالا جلو هر سطر کلید ویرایش وجود داشته باشد و در کادر قیمت فعلی کالاها وقتی ویرایش را میزنی بتوان درصد ارزش افزوده را تغییر دادو همینطور در کادر دوم
+در کادر قیمت فعلی کالاها درصد ستون 3 و 5 بر اساس قانون مارین باشد.الان مارزین بین عدد 3,358,080 و 3,816,000 طبق قانون 12درصد می باشد نه اینکه 13.64.پس این محاسبه اشتباه است.وقتی عدد 1 را تقسیم بر عدد دو میکنی می شود 88 درصد و مانده درصد می شود همان میزان مارزین که باید 12درصد باشد
+شماره ترتیب در فرم و شماره ترتیب در لیست و عرض (پیکسل) و ارتفاع (پیکسل) و فاصله نسبت به فیلد قبلی (میلی‌متر) و فاصله نسبت به فیلد بعدی (میلی‌متر) و شماره سطر و جای فیلد در صفحه و در تب ستون ها و کالاها اصلا کار نمی کند و با تغییر در این فیلدها هیچ اتفاقی نمی افتد مخصوصا در تب سفارشات که کلا همه جای فیلدها بهم می ریزد
+وقتی تغییری در کل سیستم انجام میدهی یا اطلاعاتی را ثبت میکنی تا بصورت دستی رفرش نکنی ان تغییر یا ثبت در برنامه اعمال نمی شود و بصورت لحظه ای این کار انجام نمی شود»
+
+🤖 دستیار:
+نسخه **۱۱.۷۸.۰**. قیمت مصرف‌کننده در فرم و جدول کالا؛ همگام‌سازی کالا در سفارش/تارگت/قیمت‌گذاری؛ مارژین قانونی (to-from)/to یعنی 3358080 روی 3816000 = ۱۲٪ و برگشت قیمت با ضرب (1-m/100)؛ کلید ویرایش هر سطر برای VAT در هر دو کادر؛ طراح ستون با fid پایدار و بدون دریدن گروه‌های تو در توی سفارشات؛ saveState نمای فعال و کاتالوگ کالا را همان لحظه تازه می‌کند. ۷۹/۷۹ تست.
+
 
 
 ══════════════════════════════════════════════════════════════════════════════════
@@ -5565,7 +5577,7 @@ Then change only what is requested.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_DECISION_LOG.md (79508 بایت)
+فایل: AI_DECISION_LOG.md (79751 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 ## 11.77.0
@@ -7261,6 +7273,9 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 
 ## 11.75.0 / نوبت ۹۵
 v64lockLayout بعد از apply اندازه را پاک می‌کرد. v56routeGeoFilter هر ۲٫۵ثانیه option شهر/استان را حذف می‌کرد. Combo متنی Chrome Autofill می‌آورد. تصمیم: اعمال مجدد meta، قطع interval، hardening combo، locationDup سخت.
+
+## 11.78.0
+قیمت مصرف‌کننده، مارژین قانونی (to-from)/to، ویرایش VAT هر سطر، طراح زنده بدون به‌هم‌ریختن سفارشات، اعمال لحظه‌ای ذخیره بدون رفرش.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -9885,7 +9900,7 @@ window.state باید همان شیء زنده crm-app باشد (mutate درجا
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_TASKS.md (55175 بایت)
+فایل: AI_TASKS.md (55418 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 ## 11.77.0
@@ -11534,6 +11549,9 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 ## 11.75.0 / نوبت ۹۵
 طراح ستون‌ها، Autofill جغرافیا، دیتابیس پخش ویرایش/حذف، تاریخ مشاطب، تکراری نام+مکان.
 - [ ] push کاربر → health=11.75.0
+
+## 11.78.0
+قیمت مصرف‌کننده، مارژین قانونی (to-from)/to، ویرایش VAT هر سطر، طراح زنده بدون به‌هم‌ریختن سفارشات، اعمال لحظه‌ای ذخیره بدون رفرش.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -12961,7 +12979,7 @@ Leaflet محلی. فونت گوگل حذف شد. gzip روی JS/CSS/HTML.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: CHANGES_V11.md (127469 بایت)
+فایل: CHANGES_V11.md (128970 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # 11.77.0 — ۱۴۰۵/۰۶/۰۵
@@ -13791,6 +13809,15 @@ CLEAN_EXTRA_FILES.bat و بعد PUSH_GITHUB_CLEAN.bat را اجرا کن.
 3. در تب دیتابیس پخش‌ها روبروی دیتابیس داروخانه و موجودی فعلی کلید ویرایش و حذف آمد.
 4. آخرین تاریخ داروخانه مشاطب از ستون شماره ۳ خوانده می‌شود.
 5. نام داروخانه و پزشک بدون زیرمجموعه؛ ثبت جدید با نام+استان+شهر+منطقه(+آدرس) تکراری کاملاً مسدود است.
+
+## تحویل نوبت ۹۶ — نسخه ۱۱.۷۸.۰: قیمت مصرف‌کننده، مارژین قانونی، طراح زنده، اعمال لحظه‌ای
+
+1. در تب ستون‌ها و کالاها فیلد و ستون «قیمت مصرف‌کننده» اضافه شد و با ذخیره کالا در همه تب‌های کالا (سفارش، تارگت، قیمت‌گذاری) همان لحظه ظاهر می‌شود.
+2. با سررسید تاریخ اعمال در تب قیمت‌گذاری، قیمت پخش/داروخانه/مصرف‌کننده در کاتالوگ کالا هم عوض می‌شود.
+3. جلو هر سطر قیمت‌گذاری کلید ویرایش است؛ در حالت ویرایش درصد ارزش افزوده در هر دو کادر قابل تغییر است.
+4. ستون ۳ و ۵ با قانون مارژین محاسبه می‌شود: (قیمت بالاتر − قیمت پایین‌تر) ÷ قیمت بالاتر؛ نمونه 3,358,080 و 3,816,000 = ۱۲٪. برگشت قیمت از مصرف‌کننده با ضرب (1 − مارژین/100).
+5. طراح ستون (ترتیب فرم/لیست، عرض، ارتفاع، فاصله میلی‌متری، شماره سطر، جای فیلد) پس از انتخاب فیلد زنده اعمال می‌شود و در سفارشات گروه‌های تو در تو جابه‌جا نمی‌شوند.
+6. ذخیره و ثبت بدون رفرش دستی در نمای فعال اعمال می‌شود.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -13932,8 +13959,8 @@ pause
 # GITHUB_REVIEW_HANDOFF — تحویل مویرگی برای بررسی GitHub و هوش مصنوعی بعدی
 
 **تاریخ این تحویل:** 2026-08-27 / ۵ شهریور 1405 (به‌روزرسانی نوبت ۹۵)
-**نسخه آماده سورس:** `11.77.0` (فایل واحد crm-bundle + آینه crm-features-v20)
-**نسخه chat.arena پس از بازسازی این نوبت:** `1.76`
+**نسخه آماده سورس:** `11.78.0` (فایل واحد crm-bundle + آینه crm-features-v20)
+**نسخه chat.arena پس از بازسازی این نوبت:** `1.79`
 **شاخه اجباری این جلسه:** `arena/01a03a45-javad-test1`
 **مخزن:** `javadalamdarmehraeen-rgb/javad-test1`
 **Production فعال:** `https://javad-test1.onrender.com` — 11.38.0 سرو می‌کند؛ با push نسخه 11.38.1 توسط کاربر، Render دیپلوی می‌کند
@@ -14920,7 +14947,7 @@ pause
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: PROJECT_GRAPH.md (133180 بایت)
+فایل: PROJECT_GRAPH.md (133662 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # 🕸️ گراف دانش پروژه «نماینده علمی» (PROJECT_GRAPH.md)
@@ -14972,15 +14999,15 @@ pause
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (182047 بایت)
+### `public/crm-app.js` (183343 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 179
-- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_STATE_BOUND`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `rememberPharmacyName`, `renderDoctorsList`, `renderExtraTabCustomFields`, `renderPharmaciesList`, `validateRequiredFields`
+- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_STATE_BOUND`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `applyV77ProductPricing`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `paintV77ProductPricing`, `rememberPharmacyName`, `renderDoctorsList`, `renderExtraTabCustomFields`, `renderPharmaciesList`, `syncProductsEverywhere`, `validateRequiredFields`
 
-### `public/crm-bundle.js` (1073389 بایت)
+### `public/crm-bundle.js` (1088674 بایت)
 - نقش: * crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
-- تعداد توابع داخلی: 1102
-- نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `WIDGET_PALETTE`, `__CRM_APPLYING_SERVER`, `__CRM_BULK_PURGE`, `__CRM_BULK_READY`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SERVER_READY`, `__CRM_SKIP_V64_STRIP`, `__CRM_SNAP`, `__CRM_UNVEIL`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__V68_WATCH`, `__V69_SYNC`, `__V70_SOLO`, `__V71_CLAIMED`, `__V72_BOOT`, `__V73_BOOT`, `__V73_WATCH`, `__lastHealth`, `__v40LastPick`, `__v53wrapped`, `__v55wrapped`, `__v56wrapped`, `__v58once`, `_actHeatLayer`, `_actMap`
+- تعداد توابع داخلی: 1108
+- نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `WIDGET_PALETTE`, `__CRM_APPLYING_SERVER`, `__CRM_BULK_PURGE`, `__CRM_BULK_READY`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SERVER_READY`, `__CRM_SKIP_V64_STRIP`, `__CRM_SNAP`, `__CRM_UNVEIL`, `__CRM_V78_EDIT_PID`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__V68_WATCH`, `__V69_SYNC`, `__V70_SOLO`, `__V71_CLAIMED`, `__V72_BOOT`, `__V73_BOOT`, `__V73_WATCH`, `__lastHealth`, `__v40LastPick`, `__v53wrapped`, `__v55wrapped`, `__v56wrapped`, `__v58once`, `_actHeatLayer`
 
 ### `public/crm-data.js` (63943 بایت)
 - نقش: ============================================================================
@@ -15061,7 +15088,7 @@ pause
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (3742 بایت)
-- نقش: const BUILD = "11.77.0";
+- نقش: const BUILD = "11.78.0";
 - تعداد توابع داخلی: 3
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -15148,6 +15175,7 @@ pause
 - `applyFullFormLayout`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v11.js` ← `public/crm-features-v12.js` ← `public/crm-features-v13.js` ← `public/crm-features-v14.js` ← `public/crm-features-v15.js` ← `public/crm-features-v18.js` ← `public/crm-features-v19.js` ← `public/crm-features-v20.js` ← `public/crm-jalali.js`
 - `applySelectExtraOptions`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v11.js` ← `public/crm-features-v14.js` ← `public/crm-features-v19.js`
 - `applyUserRolePermissions`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
+- `applyV77ProductPricing`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
 - `attachInstantAdd`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js` ← `public/crm-features-v16.js` ← `public/crm-features-v17.js` ← `public/crm-jalali.js`
 - `attachJalaliPicker`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js` ← `public/crm-features-v20.js` ← `public/crm-jalali.js`
 - `buildDesignerWidget`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js` ← `public/crm-features-v12.js` ← `public/crm-features-v18.js` ← `public/crm-jalali.js`
@@ -15184,6 +15212,7 @@ pause
 - `openRowDetailsModal`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
 - `paintFieldBox`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v11.js`
 - `paintRequiredStar`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v11.js`
+- `paintV77ProductPricing`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
 - `performAutoBackup`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v19.js` ← `public/crm-features-v20.js`
 - `placeFieldOnTab`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v12.js` ← `public/crm-features-v13.js`
 - `populateCities`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v16.js`
@@ -15226,6 +15255,7 @@ pause
 - `setupLiveLocationTab`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v9.js`
 - `setupRepsTab`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v9.js`
 - `switchTab`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v10.js` ← `public/crm-features-v11.js` ← `public/crm-features-v12.js` ← `public/crm-features-v13.js` ← `public/crm-features-v14.js` ← `public/crm-features-v15.js` ← `public/crm-features-v16.js` ← `public/crm-features-v17.js` ← `public/crm-features-v18.js` ← `public/crm-features-v19.js` ← `public/crm-features-v20.js` ← `public/crm-features-v9.js` ← `public/crm-jalali.js`
+- `syncProductsEverywhere`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
 - `testServerConnectivity`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v19.js`
 - `updateNavBadges`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
 - `updateOrderTotalAmountDisplay`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
@@ -15308,7 +15338,7 @@ pause
 - `public/crm-features-v20.js` → 6 شناسه (مثل: `btnDownloadUnappliedReport`, `btnRunDiagnosis`, `btnSendUnappliedReport`, `v41ChangeHost`, `v41DiagHost`, `v41ReportStatus`)
 
 ### tab-columns-products «🧱 ستون‌ها و کالاها»
-- `public/crm-app.js` → 8 شناسه (مثل: `btnSaveProduct`, `formProduct`, `productDistPrice`, `productName`, `productPrice`, `productSavedBanner`, `productStock`, `tableProductsBody`)
+- `public/crm-app.js` → 10 شناسه (مثل: `btnSaveProduct`, `formProduct`, `productCode`, `productConsumerPrice`, `productDistPrice`, `productName`, `productPrice`, `productSavedBanner`)
 - `public/crm-bundle.js` → 10 شناسه (مثل: `btnSaveProduct`, `columnsDesignerHost`, `formProduct`, `productCode`, `productDistPrice`, `productName`, `productPrice`, `productSavedBanner`)
 - `public/crm-features-v11.js` → 1 شناسه (مثل: `columnsDesignerHost`)
 - `public/crm-features-v12.js` → 1 شناسه (مثل: `columnsDesignerHost`)
@@ -16338,7 +16368,7 @@ pause
 
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
-- نسخه سورس package: `11.77.0`
+- نسخه سورس package: `11.78.0`
 - مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a03a45-javad-test1`؛ push/PR فقط از همین شاخه.
 - Production فعال: `https://javad-test1.onrender.com` — نسخه سورس فعلی `11.66.0` است و تا push کاربر روی production همان آخرین دیپلوی قبلی می‌ماند.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.
@@ -17514,7 +17544,7 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.77.0",
+  "version": "11.78.0",
   "description": "سیستم جامع مدیریت و ویزیت علمی، داروخانه‌ها، پزشکان و سفارشات (CRM / PWA) هماهنگ با Render و Neon",
   "main": "server.js",
   "engines": {
@@ -17620,7 +17650,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.77.0";
+const APP_VERSION = "11.78.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -18258,7 +18288,7 @@ git status -sb
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: update_chat_arena.py (357752 بایت)
+فایل: update_chat_arena.py (360833 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~python
 #!/usr/bin/env python3
@@ -18319,7 +18349,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.78 | تاریخ به‌روزرسانی: 2026-08-27 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.77.0
+نسخه این فایل: 1.79 | تاریخ به‌روزرسانی: 2026-08-27 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.78.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -21845,6 +21875,18 @@ ZIP اولین نسخه 38 از کامیت تاریخی دقیق همان نسخ
 🤖 دستیار: 11.72.0 — بوت سرور‌اول با adopt کامل و رسم فوری لیست‌ها؛ فلش/اسکرول تعداد مسدود؛ یک handler ویرایش/حذف با stopImmediatePropagation؛ حذف کادر نمایش تارگت‌های ثبت‌شده؛ کادر جدا هر پخش + جمع تارگت + محقق‌شده/مانده از pharmacyRows.
 🤖 دستیار: 11.73.0 — یک state زنده + پرده تا adopt سرور + kill میزبان‌های قدیمی ops + ذخیره پایدار تارگت پخش (match ماه + tombstone + replace=1).
 
+──────────────────────────────── نوبت ۹۶ ────────────────────────────────
+🧑 کاربر (عیناً):
+«در تب ستون ها و کالاها در قسمت کالاها قیمت مصرف کننده را نیز اضافه کن تا مدیر بتواند قیمت را به بتفکیک کالا اضافه کند
+اگر کالایی در تب بالا اضافه شد در هر تبی که اطلاعات کالاها وجود دارد کالای جدید اضافه شود و اگر در تب قیمت گذاری کالاها تاریخ اعمال قیمت جدید سر رسید قیمت ها در تب ستون ها و کالا نیز به قیمت جدید تغییر پیدا کند
+در تب قیمت گذاری کالا جلو هر سطر کلید ویرایش وجود داشته باشد و در کادر قیمت فعلی کالاها وقتی ویرایش را میزنی بتوان درصد ارزش افزوده را تغییر دادو همینطور در کادر دوم
+در کادر قیمت فعلی کالاها درصد ستون 3 و 5 بر اساس قانون مارین باشد.الان مارزین بین عدد 3,358,080 و 3,816,000 طبق قانون 12درصد می باشد نه اینکه 13.64.پس این محاسبه اشتباه است.وقتی عدد 1 را تقسیم بر عدد دو میکنی می شود 88 درصد و مانده درصد می شود همان میزان مارزین که باید 12درصد باشد
+شماره ترتیب در فرم و شماره ترتیب در لیست و عرض (پیکسل) و ارتفاع (پیکسل) و فاصله نسبت به فیلد قبلی (میلی‌متر) و فاصله نسبت به فیلد بعدی (میلی‌متر) و شماره سطر و جای فیلد در صفحه و در تب ستون ها و کالاها اصلا کار نمی کند و با تغییر در این فیلدها هیچ اتفاقی نمی افتد مخصوصا در تب سفارشات که کلا همه جای فیلدها بهم می ریزد
+وقتی تغییری در کل سیستم انجام میدهی یا اطلاعاتی را ثبت میکنی تا بصورت دستی رفرش نکنی ان تغییر یا ثبت در برنامه اعمال نمی شود و بصورت لحظه ای این کار انجام نمی شود»
+
+🤖 دستیار:
+نسخه **۱۱.۷۸.۰**. قیمت مصرف‌کننده در فرم و جدول کالا؛ همگام‌سازی کالا در سفارش/تارگت/قیمت‌گذاری؛ مارژین قانونی (to-from)/to یعنی 3358080 روی 3816000 = ۱۲٪ و برگشت قیمت با ضرب (1-m/100)؛ کلید ویرایش هر سطر برای VAT در هر دو کادر؛ طراح ستون با fid پایدار و بدون دریدن گروه‌های تو در توی سفارشات؛ saveState نمای فعال و کاتالوگ کالا را همان لحظه تازه می‌کند. ۷۹/۷۹ تست.
+
 """
 
 FILES_INTRO = """
@@ -23208,7 +23250,7 @@ async function sendWhatsappCloud(text, to, token) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-app.js (182047 بایت)
+فایل: public/crm-app.js (183343 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================================
@@ -23259,7 +23301,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "11.77.0";
+const CRM_APP_VERSION = "11.78.0";
 try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
@@ -26256,7 +26298,7 @@ function downloadCSVFile(filename, headers, rows) {
 // ----------------------------------------------------------------------------
 function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
-  const build = "11.77.0";
+  const build = "11.78.0";
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'CRM_BUILD_ACTIVE' && event.data.build !== build) {
@@ -26264,7 +26306,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.77.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.78.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -27248,8 +27290,12 @@ function setupColumnsProductsTab() {
   const handleSaveProd = () => {
     const nameEl = document.getElementById("productName");
     const name = nameEl ? nameEl.value.trim() : "";
+    const codeEl = document.getElementById("productCode");
+    const code = codeEl ? String(codeEl.value || "").trim() : "";
     const distPrice = parseInt(document.getElementById("productDistPrice") ? document.getElementById("productDistPrice").value : 40000) || 40000;
     const phPrice = parseInt(document.getElementById("productPrice") ? document.getElementById("productPrice").value : 45000) || 45000;
+    const consEl = document.getElementById("productConsumerPrice");
+    const consPrice = parseInt(consEl && consEl.value ? consEl.value : 0, 10) || 0;
     const stock = parseInt(document.getElementById("productStock") ? document.getElementById("productStock").value : 5000) || 5000;
     const customFieldsVals = (typeof extractCustomFieldValuesFromForm === "function")
       ? extractCustomFieldValuesFromForm("products", "productCustomFieldsContainer")
@@ -27265,13 +27311,15 @@ function setupColumnsProductsTab() {
     let idx = editId ? state.products.findIndex(p => p.id === editId) : -1;
     if (idx === -1) idx = state.products.findIndex(p => p.name === name);
     if (idx !== -1) {
-      state.products[idx] = { ...state.products[idx], name, distributorPrice: distPrice, pharmacyPrice: phPrice, stock, customFields: customFieldsVals };
+      state.products[idx] = { ...state.products[idx], name, code, distributorPrice: distPrice, pharmacyPrice: phPrice, consumerPrice: consPrice || phPrice, stock, customFields: customFieldsVals };
     } else {
       state.products.push({
         id: "prod-" + Date.now(),
         name,
+        code,
         distributorPrice: distPrice,
         pharmacyPrice: phPrice,
+        consumerPrice: consPrice || phPrice,
         stock,
         customFields: customFieldsVals
       });
@@ -27295,7 +27343,10 @@ function setupColumnsProductsTab() {
     setupSalesTargetsTab();
     mergeCatalogIntoOrderItems();
     updateNavBadges();
-    alert("کالا ثبت شد: «" + name + "» و در تب سفارشات با فیلد تعداد جایزه اضافه شد.");
+    try { if (typeof window.syncProductsEverywhere === "function") window.syncProductsEverywhere(); } catch (eSync) {}
+    try { if (typeof window.paintV77ProductPricing === "function") window.paintV77ProductPricing(); } catch (eP) {}
+    try { if (typeof window.applyV77ProductPricing === "function") window.applyV77ProductPricing(); } catch (eA) {}
+    alert("کالا ثبت شد: «" + name + "» و در همه تب‌های کالا همان لحظه اضافه شد.");
   };
 
   if (btnProd) btnProd.onclick = (e) => { e.preventDefault(); handleSaveProd(); };
@@ -27327,9 +27378,11 @@ function renderColumnsProductsTable() {
     const shownName = prod.name || window._lastSavedProductName || "—";
     tr.innerHTML = `
       <td>${index + 1}</td>
+      <td>${prod.code || "—"}</td>
       <td class="product-name-cell"><strong>${shownName}</strong></td>
       <td><strong style="color:#1e40af;">${Number(prod.distributorPrice || prod.price || 40000).toLocaleString("fa-IR")} ریال</strong></td>
       <td><strong style="color:#0d9488;">${Number(prod.pharmacyPrice || prod.price || 45000).toLocaleString("fa-IR")} ریال</strong></td>
+      <td><strong style="color:#7c3aed;">${Number(prod.consumerPrice || prod.pharmacyPrice || prod.price || 0).toLocaleString("fa-IR")} ریال</strong></td>
       <td>${prod.stock || 5000} عدد</td>
       <td>
         <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
@@ -27347,12 +27400,16 @@ function editProductCatalogItem(id) {
   if (!prod) return;
   window._editingProductId = id;
   const nameEl = document.getElementById("productName");
+  const codeEl = document.getElementById("productCode");
   const distEl = document.getElementById("productDistPrice");
   const phEl = document.getElementById("productPrice");
+  const consEl = document.getElementById("productConsumerPrice");
   const stEl = document.getElementById("productStock");
   if (nameEl) nameEl.value = prod.name || "";
+  if (codeEl) codeEl.value = prod.code || "";
   if (distEl) distEl.value = prod.distributorPrice || prod.price || "";
   if (phEl) phEl.value = prod.pharmacyPrice || prod.price || "";
+  if (consEl) consEl.value = prod.consumerPrice || prod.pharmacyPrice || prod.price || "";
   if (stEl) stEl.value = prod.stock || "";
   const banner = document.getElementById("productSavedBanner");
   if (banner) {
@@ -27377,11 +27434,12 @@ function deleteProductCatalogItem(id) {
   setupSalesTargetsTab();
   mergeCatalogIntoOrderItems();
   updateNavBadges();
+  try { if (typeof window.syncProductsEverywhere === "function") window.syncProductsEverywhere(); } catch (eSync2) {}
 }
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-bundle.js (1073389 بایت)
+فایل: public/crm-bundle.js (1088674 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 /* crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
@@ -44317,13 +44375,15 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     if(!isFinite(vat))vat=vatPct();
     return {dist:dist,ph:ph,cons:cons,vat:vat};
   }
-  function margin(from,to){from=Number(from)||0;to=Number(to)||0;if(!from)return 0;return (to-from)/from*100;}
+  function margin(from,to){from=Number(from)||0;to=Number(to)||0;if(!to)return 0;return (to-from)/to*100;}
   function fromCons(cons,mDistPh,mPhCons){
     cons=Number(cons)||0;
     mDistPh=Number(mDistPh)||0;
     mPhCons=Number(mPhCons)||0;
-    var ph=cons/((1+mPhCons/100)||1);
-    var dist=ph/((1+mDistPh/100)||1);
+    if(mPhCons>=100)mPhCons=99.99;
+    if(mDistPh>=100)mDistPh=99.99;
+    var ph=cons*(1-mPhCons/100);
+    var dist=ph*(1-mDistPh/100);
     return {dist:Math.round(dist),ph:Math.round(ph),cons:Math.round(cons)};
   }
   function ensureDraft(p){
@@ -44373,6 +44433,8 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}
       try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}
       toast("✅ "+n.toLocaleString("fa-IR")+" کالای دارای تاریخ اعمال، قیمت جدید گرفت.");
+      try{if(typeof window.syncProductsEverywhere==="function")window.syncProductsEverywhere();}catch(e){}
+      try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}
       paint();
     }
     return n;
@@ -44382,13 +44444,14 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     if(!curBody||!newBody)return;
     var st=S(),list=st.products||[],vat=vatPct();
     if(!list.length){
-      curBody.innerHTML='<tr><td colspan="9">کالایی ثبت نشده است. ابتدا در تب ستون‌ها و کالاها کالا اضافه کنید.</td></tr>';
-      newBody.innerHTML='<tr><td colspan="9">کالایی ثبت نشده است.</td></tr>';
+      curBody.innerHTML='<tr><td colspan="10">کالایی ثبت نشده است. ابتدا در تب ستون‌ها و کالاها کالا اضافه کنید.</td></tr>';
+      newBody.innerHTML='<tr><td colspan="10">کالایی ثبت نشده است.</td></tr>';
       return;
     }
     var manager=true;
     try{if(typeof v20IsManager==="function")manager=v20IsManager();}catch(e){}
     var curRows="",newRows="";
+    var editingPid=String(window.__CRM_V78_EDIT_PID||"");
     list.forEach(function(p){
       if(!p||!p.name)return;
       var cur=pricesOf(p);
@@ -44405,9 +44468,12 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         "<td style='direction:ltr'>"+faN(cur.ph)+"</td>"+
         "<td style='direction:ltr'>"+faP(m5c)+"٪</td>"+
         "<td style='direction:ltr'>"+faN(cur.cons)+"</td>"+
-        "<td style='direction:ltr'>"+faP(cur.vat)+"٪</td>"+
+        (editingPid===String(p.id||p.name)
+          ? "<td><input class='form-input v77-inp qty-no-spin' data-k='vatPercent' data-box='cur' data-pid='"+pid+"' inputmode='decimal' value='"+faP(cur.vat)+"'></td>"
+          : "<td style='direction:ltr'>"+faP(cur.vat)+"٪</td>")+
         "<td style='direction:ltr'>"+faN(consVat)+"</td>"+
-        "<td><input class='form-input v77-inp qty-no-spin' data-k='increasePct' data-pid='"+pid+"' inputmode='decimal' "+ro+" value='"+(d.increasePct==null||d.increasePct===""?"":d.increasePct)+"' placeholder='٪'></td></tr>";
+        "<td><input class='form-input v77-inp qty-no-spin' data-k='increasePct' data-pid='"+pid+"' inputmode='decimal' "+ro+" value='"+(d.increasePct==null||d.increasePct===""?"":d.increasePct)+"' placeholder='٪'></td>"+
+        "<td><button type='button' class='btn btn-outline btn-sm v78-edit-price' data-pid='"+pid+"'>"+(editingPid===String(p.id||p.name)?"✅ ثبت":"✏️ ویرایش")+"</button></td></tr>";
       newRows+="<tr data-pid='"+pid+"'>"+
         "<td><strong>"+esc(p.name)+"</strong></td>"+
         "<td style='direction:ltr'>"+faN(d.dist)+"</td>"+
@@ -44415,9 +44481,12 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         "<td style='direction:ltr'>"+faN(d.ph)+"</td>"+
         "<td><input class='form-input v77-inp qty-no-spin' data-k='marginPhCons' data-pid='"+pid+"' inputmode='decimal' "+ro+" value='"+faP(d.marginPhCons)+"'></td>"+
         "<td style='direction:ltr'>"+faN(d.cons)+"</td>"+
-        "<td style='direction:ltr'>"+faP(d.vat)+"٪</td>"+
+        (editingPid===String(p.id||p.name)
+          ? "<td><input class='form-input v77-inp qty-no-spin' data-k='vatPercent' data-box='new' data-pid='"+pid+"' inputmode='decimal' value='"+faP(d.vat)+"'></td>"
+          : "<td style='direction:ltr'>"+faP(d.vat)+"٪</td>")+
         "<td style='direction:ltr'>"+faN(newVat)+"</td>"+
-        "<td><input class='form-input v77-inp v77-date' data-k='applyDate' data-pid='"+pid+"' "+ro+" inputmode='numeric' placeholder='1405/06/05' value='"+esc(d.applyDate||"")+"'></td></tr>";
+        "<td><input class='form-input v77-inp v77-date' data-k='applyDate' data-pid='"+pid+"' "+ro+" inputmode='numeric' placeholder='1405/06/05' value='"+esc(d.applyDate||"")+"'></td>"+
+        "<td><button type='button' class='btn btn-outline btn-sm v78-edit-price' data-pid='"+pid+"'>"+(editingPid===String(p.id||p.name)?"✅ ثبت":"✏️ ویرایش")+"</button></td></tr>";
     });
     curBody.innerHTML=curRows;
     newBody.innerHTML=newRows;
@@ -44432,6 +44501,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     var d=ensureDraft(p);
     if(key==="applyDate"){
       d.applyDate=slashDate(raw);
+    }else if(key==="vatPercent"){
+      var n=num(raw);
+      p.vatPercent=n;
+      d.vat=n;
     }else{
       var n=num(raw);
       d[key]=raw===""?"":n;
@@ -44461,6 +44534,14 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   function bind(){
     if(document.body.dataset.v77price)return;document.body.dataset.v77price="1";
+    document.addEventListener("click",function(e){
+      var b=e.target&&e.target.closest&&e.target.closest(".v78-edit-price");
+      if(!b)return;
+      e.preventDefault();e.stopPropagation();
+      var pid=b.getAttribute("data-pid")||"";
+      window.__CRM_V78_EDIT_PID=(window.__CRM_V78_EDIT_PID===pid)?"":pid;
+      paint();
+    },true);
     var btn=$("btnSaveProductPricing");
     if(btn)btn.addEventListener("click",function(){
       var st=S();
@@ -44496,6 +44577,265 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   document.addEventListener("click",function(e){
     if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-product-pricing"]'))
       setTimeout(function(){applyDue();paint();},160);
+  },true);
+})();
+
+
+/* v11.78.0: قیمت مصرف‌کننده در کالا + همگام‌سازی همه تب‌ها + مارژین قانونی + ویرایش VAT + طراح زنده + اعمال لحظه‌ای بدون رفرش */
+(function(){
+  "use strict";
+  function $(id){return document.getElementById(id);}
+  function S(){return (typeof window.__CRM_GET_STATE==="function"?window.__CRM_GET_STATE():window.state)||window.state||{};}
+  function toast(msg){try{if(typeof window.v20Toast==="function")window.v20Toast(msg);}catch(e){}}
+  function persist(){try{if(typeof window.saveState==="function")window.saveState(false);}catch(e){}}
+  function entityKey(tabId){
+    tabId=String(tabId||"");
+    return tabId==="tab-pharmacies"?"pharmacy":tabId==="tab-doctors"?"doctor":tabId==="tab-orders"?"order":tabId==="tab-columns-products"?"products":String(tabId||"").replace(/^tab-/,"");
+  }
+
+  function syncProductsEverywhere(){
+    try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}
+    try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}
+    try{if(typeof refreshOrderProductCatalog==="function")refreshOrderProductCatalog();}catch(e){}
+    try{if(typeof window.paintV77ProductPricing==="function")window.paintV77ProductPricing();}catch(e){}
+    try{if(typeof window.paintTargetPlanRows==="function")window.paintTargetPlanRows();}catch(e){}
+    try{
+      var sel=$("tgtProductSelect");
+      if(sel){
+        var keep=sel.value;
+        var opts='<option value="">انتخاب کالا...</option>'+(S().products||[]).map(function(p){return '<option value="'+String(p.name||"").replace(/"/g,"&quot;")+'">'+(p.name||"")+"</option>";}).join("");
+        if(sel.innerHTML!==opts){sel.innerHTML=opts;if(keep)sel.value=keep;}
+      }
+    }catch(e){}
+  }
+  window.syncProductsEverywhere=syncProductsEverywhere;
+
+  function refreshLiveNow(){
+    var pane=document.querySelector(".tab-pane.active"),id=pane&&pane.id;
+    try{
+      if(id==="tab-pharmacies"){if(typeof window.renderPharmaciesList==="function")window.renderPharmaciesList();else if(typeof renderPharmaciesList==="function")renderPharmaciesList();}
+      if(id==="tab-doctors"){if(typeof window.renderDoctorsList==="function")window.renderDoctorsList();else if(typeof renderDoctorsList==="function")renderDoctorsList();}
+      if(id==="tab-orders"){if(typeof window.renderOrdersList==="function")window.renderOrdersList();else if(typeof renderOrdersList==="function")renderOrdersList();}
+      if(id==="tab-columns-products"&&typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();
+      if(id==="tab-product-pricing"){
+        try{if(typeof window.applyV77ProductPricing==="function")window.applyV77ProductPricing();}catch(e){}
+        try{if(typeof window.paintV77ProductPricing==="function")window.paintV77ProductPricing();}catch(e){}
+      }
+      if(id==="tab-sales-targets"){try{if(typeof window.paintTargetPlanRows==="function")window.paintTargetPlanRows();}catch(e){}try{if(typeof renderSalesTargetsTable==="function")renderSalesTargetsTable();}catch(e){}}
+      if(id==="tab-leaves"&&typeof renderLeavesTable==="function")renderLeavesTable();
+      if(id==="tab-notifications"&&typeof renderNotificationsTable==="function")renderNotificationsTable();
+      if(typeof updateNavBadges==="function")updateNavBadges();
+    }catch(e){}
+    syncProductsEverywhere();
+  }
+  window.refreshLiveNow=refreshLiveNow;
+
+  function wrapSaveLive(){
+    if(typeof window.saveState!=="function"||window.saveState._v78live)return;
+    var old=window.saveState;
+    var t=null;
+    var w=function(){
+      var r=old.apply(this,arguments);
+      clearTimeout(t);
+      t=setTimeout(refreshLiveNow,0);
+      return r;
+    };
+    w._v78live=true;
+    Object.keys(old).forEach(function(k){try{w[k]=old[k];}catch(e){}});
+    window.saveState=w;
+  }
+
+  function currentFid(){
+    if(window._editingColField&&window._editingColField.id)return window._editingColField.id;
+    if(window._lastColFid)return window._lastColFid;
+    var row=document.querySelector("#colFieldList tr.v69-selected[data-fid], #colFieldList tr[data-fid].active, #colFieldList tr[data-fid][data-editing]");
+    return row&&row.getAttribute("data-fid");
+  }
+  function applyV78Layout(tabId){
+    if(!tabId)return;
+    var pane=$(tabId);if(!pane)return;
+    var form=pane.querySelector("form");
+    var grid=form&&(form.querySelector(":scope > .form-grid")||form.querySelector(".form-grid"));
+    if(!grid||grid.closest("#columnsDesignerHost"))return;
+    var key=entityKey(tabId);
+    var meta=((((S().formFieldMeta)||{})[key])||{});
+    var kids=[];
+    Array.prototype.forEach.call(grid.children,function(g){
+      if(!g.classList||!g.classList.contains("form-group"))return;
+      if(g.closest("#orderItemsContainer")||g.closest("#columnsDesignerHost")||g.closest(".modal-overlay"))return;
+      if(g.parentNode!==grid)return;
+      kids.push(g);
+      var fid=g.getAttribute("data-col-fid")||((g.querySelector("input[id],select[id],textarea[id],button[id]")||{}).id)||"";
+      if(!fid)return;
+      var m=Object.assign({},meta[fid]||{});
+      var size=parseInt(m.size,10),hgt=parseInt(m.height,10),place=m.place||(m.full?"under":"beside");
+      g.classList.toggle("col-place-under",place==="under");
+      g.classList.toggle("col-place-beside",place!=="under");
+      if(place==="under"){
+        g.style.setProperty("flex","1 1 100%","important");
+        g.style.setProperty("max-width","100%","important");
+        g.style.setProperty("width","100%","important");
+      }else if(isFinite(size)&&size>=40){
+        g.style.setProperty("flex","0 0 "+size+"px","important");
+        g.style.setProperty("max-width",size+"px","important");
+        g.style.setProperty("width",size+"px","important");
+      }
+      var el=g.querySelector("input:not([type=hidden]),select,textarea");
+      if(el&&isFinite(size)&&size>=40){
+        el.style.setProperty("width","100%","important");
+        el.style.setProperty("max-width",size+"px","important");
+      }
+      if(el&&isFinite(hgt)&&hgt>=24){
+        el.style.setProperty("height",hgt+"px","important");
+        el.style.setProperty("min-height",hgt+"px","important");
+      }
+      var gapB=parseFloat(m.gapBeforeMm),gapA=parseFloat(m.gapAfterMm);
+      if(isFinite(gapB)&&gapB>0)g.style.setProperty("margin-inline-start",(gapB*96/25.4).toFixed(2)+"px","important");
+      else g.style.removeProperty("margin-inline-start");
+      if(isFinite(gapA)&&gapA>0)g.style.setProperty("margin-inline-end",(gapA*96/25.4).toFixed(2)+"px","important");
+      else g.style.removeProperty("margin-inline-end");
+      var rowNo=parseInt(m.rowNo,10);
+      if(rowNo>0)g.setAttribute("data-v68-row",String(rowNo));
+      else g.removeAttribute("data-v68-row");
+    });
+    if(window.__CRM_MANAGER_LAYOUT_INTENT===true){
+      var buckets={},rest=[];
+      kids.forEach(function(g){
+        var fid=g.getAttribute("data-col-fid")||((g.querySelector("[id]")||{}).id)||"";
+        var rn=parseInt((meta[fid]||{}).rowNo,10);
+        if(rn>0)(buckets[rn]=buckets[rn]||[]).push(g);
+        else rest.push(g);
+      });
+      var ordered=kids.slice().sort(function(a,b){
+        var fa=a.getAttribute("data-col-fid")||((a.querySelector("[id]")||{}).id)||"";
+        var fb=b.getAttribute("data-col-fid")||((b.querySelector("[id]")||{}).id)||"";
+        var oa=Number((meta[fa]||{}).order)||999,ob=Number((meta[fb]||{}).order)||999;
+        return oa-ob;
+      });
+      ordered.forEach(function(g){if(g.parentNode===grid)grid.appendChild(g);});
+    }
+  }
+  window.applyV78FieldLayout=applyV78Layout;
+
+  function applyDesignerV78(force){
+    var fid=currentFid();
+    if(!fid){if(force)toast("ابتدا فیلد را از لیست با دکمه ✏️ ویرایش انتخاب کنید.");return false;}
+    window._lastColFid=fid;
+    var tab=window._activeColTab||"tab-pharmacies";
+    var st=S();if(!st||typeof st!=="object")return false;
+    var key=entityKey(tab);
+    st.formFieldMeta=st.formFieldMeta||{};st.formFieldMeta[key]=st.formFieldMeta[key]||{};
+    var m=st.formFieldMeta[key][fid]=st.formFieldMeta[key][fid]||{};
+    function num(id){var el=$(id);if(!el)return null;var n=parseFloat(el.value);return isFinite(n)?n:null;}
+    var order=num("colFieldOrder"),listOrder=num("colFieldListOrder"),size=num("colFieldSize"),height=num("colFieldHeight");
+    var gapB=num("colGapBefore"),gapA=num("colGapAfter"),rowNo=num("colRowNo");
+    var placeEl=$("colFieldPlace");
+    if(order!=null&&order>=1)m.order=Math.round(order);
+    if(listOrder!=null&&listOrder>=1)m.listOrder=Math.round(listOrder);
+    if(size!=null&&size>0)m.size=Math.round(size);
+    if(height!=null&&height>0)m.height=Math.round(height);
+    if(gapB!=null)m.gapBeforeMm=gapB;
+    if(gapA!=null)m.gapAfterMm=gapA;
+    if(rowNo!=null&&rowNo>=1)m.rowNo=Math.round(rowNo);else if(rowNo===0)delete m.rowNo;
+    if(placeEl&&placeEl.value)m.place=placeEl.value;
+    m._updatedAt=Date.now();
+    var cf=((st.customFields||{})[key]||[]).filter(function(f){return f&&f.id===fid;})[0];
+    if(cf){["order","listOrder","size","height","gapBeforeMm","gapAfterMm","rowNo","place"].forEach(function(k){if(m[k]!=null)cf[k]=m[k];});}
+    if(window._editingColField){["order","listOrder","size","height","gapBeforeMm","gapAfterMm","rowNo","place"].forEach(function(k){if(m[k]!=null)window._editingColField[k]=m[k];});}
+    window.__CRM_MANAGER_LAYOUT_INTENT=true;
+    window.__CRM_SKIP_V64_STRIP=1;
+    try{if(typeof window.applyFullFormLayout==="function")window.applyFullFormLayout(tab);}catch(e){}
+    applyV78Layout(tab);
+    try{
+      if(key==="pharmacy"){if(typeof window.renderPharmaciesList==="function")window.renderPharmaciesList();else if(typeof renderPharmaciesList==="function")renderPharmaciesList();}
+      if(key==="doctor"){if(typeof window.renderDoctorsList==="function")window.renderDoctorsList();else if(typeof renderDoctorsList==="function")renderDoctorsList();}
+      if(key==="order"){if(typeof window.renderOrdersList==="function")window.renderOrdersList();else if(typeof renderOrdersList==="function")renderOrdersList();}
+    }catch(e){}
+    persist();
+    setTimeout(function(){applyV78Layout(tab);window.__CRM_MANAGER_LAYOUT_INTENT=false;window.__CRM_SKIP_V64_STRIP=0;},600);
+    return true;
+  }
+  window.applyDesignerV78=applyDesignerV78;
+
+  function wrapLayout(){
+    if(typeof window.applyFullFormLayout!=="function"||window.applyFullFormLayout._v78)return;
+    var orig=window.applyFullFormLayout;
+    var w=function(tabId){
+      var intent=window.__CRM_MANAGER_LAYOUT_INTENT===true;
+      if(tabId==="tab-orders"){
+        window.__CRM_MANAGER_LAYOUT_INTENT=false;
+        var r=orig.apply(this,arguments);
+        window.__CRM_MANAGER_LAYOUT_INTENT=intent;
+        try{applyV78Layout(tabId);}catch(e){}
+        return r;
+      }
+      var r=orig.apply(this,arguments);
+      try{applyV78Layout(tabId||window._activeColTab||"");}catch(e){}
+      return r;
+    };
+    w._v78=true;
+    Object.keys(orig).forEach(function(k){try{w[k]=orig[k];}catch(e){}});
+    window.applyFullFormLayout=w;
+  }
+
+  function bindDesigner(){
+    if(document.body.dataset.v78des)return;document.body.dataset.v78des="1";
+    var ids=["colFieldOrder","colFieldListOrder","colFieldSize","colFieldHeight","colGapBefore","colGapAfter","colRowNo","colFieldPlace"];
+    document.addEventListener("input",function(e){
+      if(!e.target||ids.indexOf(e.target.id)<0)return;
+      applyDesignerV78(false);
+    },true);
+    document.addEventListener("change",function(e){
+      if(!e.target||ids.indexOf(e.target.id)<0)return;
+      applyDesignerV78(true);
+    },true);
+    document.addEventListener("click",function(e){
+      var row=e.target&&e.target.closest&&e.target.closest("#colFieldList tr[data-fid], .col-edit-field");
+      if(row){
+        var fid=row.getAttribute("data-fid")||(row.closest("tr")&&row.closest("tr").getAttribute("data-fid"));
+        if(fid){
+          window._lastColFid=fid;
+          document.querySelectorAll("#colFieldList tr[data-fid]").forEach(function(tr){tr.classList.toggle("v69-selected",tr.getAttribute("data-fid")===fid);});
+        }
+      }
+      if(e.target&&e.target.id==="btnSaveColField"){
+        window.__CRM_MANAGER_LAYOUT_INTENT=true;
+        applyDesignerV78(true);
+        setTimeout(function(){applyDesignerV78(false);},120);
+      }
+    },true);
+  }
+
+  function wrapSwitch(){
+    if(window.switchTab&&!window.switchTab._v78){
+      var sw=window.switchTab;
+      var w=function(id){
+        var r=sw.apply(this,arguments);
+        setTimeout(function(){
+          refreshLiveNow();
+          if(id==="tab-columns-products"||id==="tab-product-pricing")syncProductsEverywhere();
+          if(id==="tab-product-pricing"){try{if(typeof window.applyV77ProductPricing==="function")window.applyV77ProductPricing();}catch(e){}}
+          applyV78Layout(id);
+        },60);
+        return r;
+      };
+      w._v78=true;window.switchTab=w;
+    }
+  }
+
+  function boot(){
+    wrapLayout();
+    bindDesigner();
+    wrapSaveLive();
+    wrapSwitch();
+    try{if(typeof window.applyV77ProductPricing==="function")window.applyV77ProductPricing();}catch(e){}
+    syncProductsEverywhere();
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,140);});
+  else setTimeout(boot,140);
+  document.addEventListener("click",function(e){
+    if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-columns-products"],[data-target="tab-product-pricing"],[data-target="tab-orders"],[data-target="tab-pharmacies"]'))
+      setTimeout(function(){syncProductsEverywhere();refreshLiveNow();},180);
   },true);
 })();
 ~~~~~~~~
@@ -58257,7 +58597,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/index.html (161388 بایت)
+فایل: public/index.html (161842 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~html
 <!DOCTYPE html>
@@ -58294,7 +58634,7 @@ button.v19-gps svg{display:block}
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.77.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="11.78.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       document.documentElement.classList.add("crm-booting");
       function target(){return location.pathname+location.search+location.hash;}
       function rescue(serverBuild){if(true)return;var u="/cache-reset?to="+encodeURIComponent(target())+"&build="+encodeURIComponent(serverBuild||BUILD)+"&t="+Date.now();location.replace(u);}
@@ -58317,7 +58657,7 @@ button.v19-gps svg{display:block}
   <meta name="theme-color" content="#0d9488" />
 
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.77.0" />
+  <link rel="stylesheet" href="style.css?v=11.78.0" />
 </head>
 <body>
 
@@ -59970,9 +60310,10 @@ button.v19-gps svg{display:block}
                 <th>درصد ارزش افزوده</th>
                 <th>قیمت مصرف‌کننده با ارزش افزوده</th>
                 <th>درصد افزایش</th>
+                <th>عملیات</th>
               </tr>
             </thead>
-            <tbody id="v77CurrentPricesBody"><tr><td colspan="9">کالایی ثبت نشده است.</td></tr></tbody>
+            <tbody id="v77CurrentPricesBody"><tr><td colspan="10">کالایی ثبت نشده است.</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -59995,9 +60336,10 @@ button.v19-gps svg{display:block}
                 <th>درصد ارزش افزوده</th>
                 <th>قیمت مصرف‌کننده با ارزش افزوده</th>
                 <th>تاریخ اعمال قیمت‌ها</th>
+                <th>عملیات</th>
               </tr>
             </thead>
-            <tbody id="v77NewPricesBody"><tr><td colspan="9">کالایی ثبت نشده است.</td></tr></tbody>
+            <tbody id="v77NewPricesBody"><tr><td colspan="10">کالایی ثبت نشده است.</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -60024,7 +60366,7 @@ button.v19-gps svg{display:block}
           <div class="form-grid">
             <div class="form-group">
               <label class="form-label">کد کالا *</label>
-              <input type="number" id="productCode" class="form-input" placeholder="مثال: 1001" required />
+              <input type="number" id="productCode" class="form-input qty-no-spin" placeholder="مثال: 1001" required />
             </div>
             <div class="form-group">
               <label class="form-label">نام کالا *</label>
@@ -60032,15 +60374,19 @@ button.v19-gps svg{display:block}
             </div>
             <div class="form-group">
               <label class="form-label">قیمت پخش (ریال) *</label>
-              <input type="number" id="productDistPrice" class="form-input" placeholder="40000" required />
+              <input type="number" id="productDistPrice" class="form-input qty-no-spin" placeholder="40000" required />
             </div>
             <div class="form-group">
               <label class="form-label">قیمت داروخانه (ریال) *</label>
-              <input type="number" id="productPrice" class="form-input" placeholder="45000" required />
+              <input type="number" id="productPrice" class="form-input qty-no-spin" placeholder="45000" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">قیمت مصرف‌کننده (ریال)</label>
+              <input type="number" id="productConsumerPrice" class="form-input qty-no-spin" placeholder="55000" />
             </div>
             <div class="form-group">
               <label class="form-label">موجودی انبار</label>
-              <input type="number" id="productStock" class="form-input" placeholder="5000" />
+              <input type="number" id="productStock" class="form-input qty-no-spin" placeholder="5000" />
             </div>
           </div>
           <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
@@ -60058,6 +60404,7 @@ button.v19-gps svg{display:block}
                 <th>نام کالا</th>
                 <th>قیمت پخش (ریال)</th>
                 <th>قیمت داروخانه (ریال)</th>
+                <th>قیمت مصرف‌کننده (ریال)</th>
                 <th>موجودی</th>
                 <th>عملیات</th>
               </tr>
@@ -60679,9 +61026,9 @@ button.v19-gps svg{display:block}
   <script src="vendor/leaflet.js"></script>
 
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.77.0"></script>
-  <script src="crm-app.js?v=11.77.0"></script>
-          <script src="crm-bundle.js?v=11.77.0"></script>
+  <script src="crm-data.js?v=11.78.0"></script>
+  <script src="crm-app.js?v=11.78.0"></script>
+          <script src="crm-bundle.js?v=11.78.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
@@ -60755,7 +61102,7 @@ window.IRAN_FACILITIES = [
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
   <script>
-    (function(){var BUILD="11.77.0",key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{localStorage.setItem(key,BUILD);}catch(e){}fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD){/* v11.70 no auto go(d.version) */}}).catch(function(){});})();
+    (function(){var BUILD="11.78.0",key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{localStorage.setItem(key,BUILD);}catch(e){}fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD){/* v11.70 no auto go(d.version) */}}).catch(function(){});})();
   </script>
   <title>ورود | طنین طب طاها</title>
 
@@ -61097,7 +61444,7 @@ window.IRAN_FACILITIES = [
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/style.css (52767 بایت)
+فایل: public/style.css (53157 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~css
 /* ============================================================================
@@ -63423,6 +63770,12 @@ td .btn, .col-ops .btn, .col-ops {
 #tab-product-pricing input.v77-inp::-webkit-outer-spin-button,
 #tab-product-pricing input.v77-inp::-webkit-inner-spin-button{appearance:none;-webkit-appearance:none;margin:0}
 #tab-product-pricing input.v77-inp{appearance:textfield;-moz-appearance:textfield}
+
+#tab-product-pricing .v78-edit-price{white-space:nowrap;min-width:88px}
+#tab-columns-products #productConsumerPrice{-moz-appearance:textfield}
+#formProduct input.qty-no-spin::-webkit-inner-spin-button,
+#formProduct input.qty-no-spin::-webkit-outer-spin-button{appearance:none;-webkit-appearance:none;margin:0}
+#formProduct input.qty-no-spin{appearance:textfield;-moz-appearance:textfield}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -63851,7 +64204,7 @@ self.addEventListener("fetch", (event) => {
 فایل: public/sw.js (3742 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
-const BUILD = "11.77.0";
+const BUILD = "11.78.0";
 const CACHE = "crm-static-v" + BUILD;
 
 async function purgeEveryCache() {
@@ -89667,7 +90020,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/version-11.24-regressions.test.mjs (64326 بایت)
+فایل: tests/version-11.24-regressions.test.mjs (66083 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 import test from 'node:test';
@@ -89989,7 +90342,7 @@ test('multi-part prompts require a real acceptance checklist before ZIP delivery
 });
 
 test('next-chat GitHub handoff records exact publish truth and engine map', () => {
-  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.77.0/);
+  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.78.0/);
   assert.match(githubHandoff,/4984d17/);assert.match(githubHandoff,/Resource not accessible by integration/);
   assert.match(githubHandoff,/Production[\s\S]*11\.20\.0/);
   assert.match(githubHandoff,/موتور پاک‌سازی خودکار کش/);assert.match(githubHandoff,/موتورهای پایداری داده/);
@@ -90041,7 +90394,7 @@ test('new build clears only old asset caches before revealing app and prevents m
 test('v38 cache rescue automatically forces a fresh build without deleting CRM data', () => {
   const login = read('../public/login.html');
   assert.match(server,/pathname === "\/cache-reset"/);assert.match(server,/Clear-Site-Data/);
-  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.77.0"/);
+  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.78.0"/);
   assert.match(html,/\/api\/health\?__crm_nocache=/);assert.match(html,/\/cache-reset\?to=/);assert.match(html,/d\.version!==BUILD/);
   assert.match(login,/CRM_CACHE_RESCUED_/);assert.match(login,/\/cache-reset\?to=/);
   assert.match(sw,/function purgeEveryCache/);assert.match(sw,/CRM_BUILD_ACTIVE/);assert.match(sw,/cache: "reload"/);
@@ -90051,7 +90404,7 @@ test('v38 cache rescue automatically forces a fresh build without deleting CRM d
     assert.doesNotMatch(source,/indexedDB\.deleteDatabase\s*\(/);
     assert.doesNotMatch(source,/removeItem\(["']CRM_APP_STATE_V2/);
   }
-  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.77.0'/);
+  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.78.0'/);
 });
 
 test('security hardening blocks dangerous device APIs, cross-origin writes, executables and formula injection', () => {
@@ -90066,7 +90419,7 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.77.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.78.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
@@ -90161,7 +90514,7 @@ test('v11.43.1 engine button feedback + permanent version watchdog', () => {
 test('v11.61.0 safe cache-hardening', () => {
   const html = read('../public/index.html'); const app = read('../public/crm-app.js');
   assert.match(html,/http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/);
-  assert.match(app,/CRM_APP_VERSION = "11.77.0"/);
+  assert.match(app,/CRM_APP_VERSION = "11.78.0"/);
   assert.match(app,/بارگذاری شد/);
 });
 
@@ -90403,8 +90756,8 @@ test('v11.72.0 durable target ops + mm gap + row number', () => {
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "11.77.0"/);
-  assert.match(srv, /const APP_VERSION = "11.77.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.78.0"/);
+  assert.match(srv, /const APP_VERSION = "11.78.0"/);
   assert.match(b, /v11\.68\.0/);
   assert.match(b, /v68-edit-tgt/);
   assert.match(b, /v68-del-tgt/);
@@ -90424,8 +90777,8 @@ test('v11.72.0 server-authoritative unify + durable delete + live mm/row', () =>
   const b = read('../public/crm-bundle.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
-  assert.match(app, /CRM_APP_VERSION = "11.77.0"/);
-  assert.match(srv, /const APP_VERSION = "11.77.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.78.0"/);
+  assert.match(srv, /const APP_VERSION = "11.78.0"/);
   assert.match(srv, /function naturalRecordKey/);
   assert.match(srv, /if \(id && deleted && deleted\[id\] && recStamp\(r\) <= Number\(deleted\[id\]\)\) return/);
   assert.match(b, /v11\.69\.0/);
@@ -90447,8 +90800,8 @@ test('v11.72.0 solo device + no cache-reset loop', () => {
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "11.77.0"/);
-  assert.match(srv, /const APP_VERSION = "11.77.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.78.0"/);
+  assert.match(srv, /const APP_VERSION = "11.78.0"/);
   assert.match(srv, /x-crm-replace/);
   assert.match(srv, /_soloOnly/);
   assert.match(srv, /CRM_RESET_LOCK/);
@@ -90469,8 +90822,8 @@ test('v11.72.0 single script load + 404 not login + solo replace', () => {
   assert.equal((html.match(/crm-app\.js\?v=/g)||[]).length, 1);
   assert.equal((html.match(/crm-bundle\.js\?v=/g)||[]).length, 1);
   assert.equal((html.match(/<\/html>/g)||[]).length, 1);
-  assert.match(app, /CRM_APP_VERSION = "11.77.0"/);
-  assert.match(srv, /const APP_VERSION = "11.77.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.78.0"/);
+  assert.match(srv, /const APP_VERSION = "11.78.0"/);
   assert.match(srv, /v11.71: Clear-Site-Data/);
   assert.match(b, /v11\.71\.0/);
   assert.match(b, /CRM_SOLO_CLAIM/);
@@ -90483,9 +90836,9 @@ test('v11.72.0 server-first paint + no-spin qty + per-row ops + dist achieved/re
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "11.77.0"/);
-  assert.match(srv, /const APP_VERSION = "11.77.0"/);
-  assert.match(app, /register\('\/sw\.js\?v=11\.77.0'/);
+  assert.match(app, /CRM_APP_VERSION = "11.78.0"/);
+  assert.match(srv, /const APP_VERSION = "11.78.0"/);
+  assert.match(app, /register\('\/sw\.js\?v=11\.78.0'/);
   assert.match(b, /v11\.72\.0/);
   assert.match(b, /__v72boot/);
   assert.match(b, /function adoptServerExact/);
@@ -90516,17 +90869,17 @@ test('v11.73.0 live state bind + delayed unveil + durable dist save + kill old o
   const html = read('../public/index.html');
   const sw = read('../public/sw.js');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "11.77.0"/);
-  assert.match(srv, /const APP_VERSION = "11.77.0"/);
-  assert.match(sw, /const BUILD = "11.77.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.78.0"/);
+  assert.match(srv, /const APP_VERSION = "11.78.0"/);
+  assert.match(sw, /const BUILD = "11.78.0"/);
   assert.match(app, /function bindLiveWindowState/);
   assert.match(app, /window\.__CRM_GET_STATE/);
   assert.match(app, /window\.renderPharmaciesList/);
-  assert.match(html, /var BUILD="11.77.0"/);
+  assert.match(html, /var BUILD="11.78.0"/);
   assert.match(html, /window\.__CRM_UNVEIL/);
   assert.match(html, /if\(!window\.__CRM_UNVEILED\)window\.__CRM_UNVEIL\(\);},5000\)/);
   assert.doesNotMatch(html, /classList\.remove\("crm-booting"\);},800\)/);
-  assert.match(login, /var BUILD="11.77.0"/);
+  assert.match(login, /var BUILD="11.78.0"/);
   assert.match(b, /v11\.73\.0/);
   assert.match(b, /__v73boot/);
   assert.match(b, /function adoptExact/);
@@ -90548,8 +90901,8 @@ test('v11.74.0 mashateb sales mapping like daya/shafaarad', () => {
   const v20file = read('../public/crm-features-v20.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
-  assert.match(app, /CRM_APP_VERSION = "11.77.0"/);
-  assert.match(srv, /const APP_VERSION = "11.77.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.78.0"/);
+  assert.match(srv, /const APP_VERSION = "11.78.0"/);
   assert.match(b, /MASHATEB_CODE_MAP=\{1001:186101,1002:186102,1003:186103,1004:186104,1005:186105,1006:186106,1007:186107\}/);
   assert.match(v20file, /MASHATEB_CODE_MAP=\{1001:186101,1002:186102,1003:186103,1004:186104,1005:186105,1006:186106,1007:186107\}/);
   assert.match(b, /else if\(id==="mashateb"\)\{x\.date=2;x\.qty=10;x\.giftQty=11;x\.pharmacy=9;/);
@@ -90574,8 +90927,8 @@ test('v11.76.0 designer live apply + geo autofill off + mashateb col3 date + db 
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const v20file = read('../public/crm-features-v20.js');
-  assert.match(app, /CRM_APP_VERSION = "11.77.0"/);
-  assert.match(srv, /const APP_VERSION = "11.77.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.78.0"/);
+  assert.match(srv, /const APP_VERSION = "11.78.0"/);
   assert.match(b, /v11\.75\.0/);
   assert.match(b, /function applyDesignerNow/);
   assert.match(b, /function applyPaintedMeta/);
@@ -90598,8 +90951,8 @@ test('v11.76.0 bulk archive lock + geo nocombo + pharmacy name no subsets + acti
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const v20file = read('../public/crm-features-v20.js');
-  assert.match(app, /CRM_APP_VERSION = "11.77.0"/);
-  assert.match(srv, /const APP_VERSION = "11.77.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.78.0"/);
+  assert.match(srv, /const APP_VERSION = "11.78.0"/);
   assert.match(b, /v11\.76\.0/);
   assert.match(b, /function bulkUnion/);
   assert.match(b, /function bulkCount/);
@@ -90628,8 +90981,8 @@ test('v11.77.0 product pricing tab current/new boxes + reverse calc + jalali app
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const data = read('../public/crm-data.js');
-  assert.match(app, /CRM_APP_VERSION = "11.77.0"/);
-  assert.match(srv, /const APP_VERSION = "11.77.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.78.0"/);
+  assert.match(srv, /const APP_VERSION = "11.78.0"/);
   assert.match(app, /tab-product-pricing/);
   assert.match(html, /id="tab-product-pricing"/);
   assert.match(html, /id="v77CurrentPricesBody"/);
@@ -90657,6 +91010,36 @@ test('v11.77.0 product pricing tab current/new boxes + reverse calc + jalali app
   assert.equal(ctx.result.back.cons, 110000);
   assert.equal(ctx.result.back.ph, 100000);
   assert.equal(ctx.result.back.dist, 83333);
+});
+
+test('v11.78.0 consumer price + legal margin + row edit VAT + live designer + instant apply', () => {
+  const b = read('../public/crm-bundle.js');
+  const app = read('../public/crm-app.js');
+  const srv = read('../server.js');
+  const html = read('../public/index.html');
+  assert.match(app, /CRM_APP_VERSION = "11.78.0"/);
+  assert.match(srv, /const APP_VERSION = "11.78.0"/);
+  assert.match(html, /id="productConsumerPrice"/);
+  assert.match(html, /قیمت مصرف‌کننده \(ریال\)/);
+  assert.match(app, /consumerPrice: consPrice \|\| phPrice/);
+  assert.match(app, /window.syncProductsEverywhere/);
+  assert.ok(b.includes("v11.78.0"));
+  assert.match(b, /window.syncProductsEverywhere/);
+  assert.match(b, /function applyDesignerV78/);
+  assert.match(b, /function applyV78Layout/);
+  assert.match(b, /function refreshLiveNow/);
+  assert.match(b, /v78-edit-price/);
+  assert.match(b, /tabId==="tab-orders"/);
+  assert.match(b, /if\(!to\)return 0;return \(to-from\)\/to\*100/);
+  assert.match(b, /var ph=cons\*\(1-mPhCons\/100\)/);
+  const ctx={result:null};
+  vm.createContext(ctx);
+  vm.runInContext(`function margin(from,to){from=Number(from)||0;to=Number(to)||0;if(!to)return 0;return (to-from)/to*100;}
+    function fromCons(cons,mDistPh,mPhCons){cons=Number(cons)||0;mDistPh=Number(mDistPh)||0;mPhCons=Number(mPhCons)||0;if(mPhCons>=100)mPhCons=99.99;if(mDistPh>=100)mDistPh=99.99;var ph=cons*(1-mPhCons/100);var dist=ph*(1-mDistPh/100);return {dist:Math.round(dist),ph:Math.round(ph),cons:Math.round(cons)};}
+    result={m:Math.round(margin(3358080,3816000)*100)/100, back:fromCons(3816000,12,0)};`, ctx);
+  assert.equal(ctx.result.m, 12);
+  assert.equal(ctx.result.back.ph, 3816000);
+  assert.equal(ctx.result.back.dist, 3358080);
 });
 ~~~~~~~~
 

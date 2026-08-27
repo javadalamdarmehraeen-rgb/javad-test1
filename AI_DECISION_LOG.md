@@ -1691,3 +1691,6 @@ Syntax-checked; server smoke 11.16.2 OK. Browser verification pending.
 
 ## 11.75.0 / نوبت ۹۵
 v64lockLayout بعد از apply اندازه را پاک می‌کرد. v56routeGeoFilter هر ۲٫۵ثانیه option شهر/استان را حذف می‌کرد. Combo متنی Chrome Autofill می‌آورد. تصمیم: اعمال مجدد meta، قطع interval، hardening combo، locationDup سخت.
+
+## 11.78.0
+قیمت مصرف‌کننده، مارژین قانونی (to-from)/to، ویرایش VAT هر سطر، طراح زنده بدون به‌هم‌ریختن سفارشات، اعمال لحظه‌ای ذخیره بدون رفرش.

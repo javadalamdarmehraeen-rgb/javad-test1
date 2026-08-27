@@ -46,7 +46,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "11.77.0";
+const CRM_APP_VERSION = "11.78.0";
 try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
@@ -3043,7 +3043,7 @@ function downloadCSVFile(filename, headers, rows) {
 // ----------------------------------------------------------------------------
 function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
-  const build = "11.77.0";
+  const build = "11.78.0";
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'CRM_BUILD_ACTIVE' && event.data.build !== build) {
@@ -3051,7 +3051,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.77.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.78.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -4035,8 +4035,12 @@ function setupColumnsProductsTab() {
   const handleSaveProd = () => {
     const nameEl = document.getElementById("productName");
     const name = nameEl ? nameEl.value.trim() : "";
+    const codeEl = document.getElementById("productCode");
+    const code = codeEl ? String(codeEl.value || "").trim() : "";
     const distPrice = parseInt(document.getElementById("productDistPrice") ? document.getElementById("productDistPrice").value : 40000) || 40000;
     const phPrice = parseInt(document.getElementById("productPrice") ? document.getElementById("productPrice").value : 45000) || 45000;
+    const consEl = document.getElementById("productConsumerPrice");
+    const consPrice = parseInt(consEl && consEl.value ? consEl.value : 0, 10) || 0;
     const stock = parseInt(document.getElementById("productStock") ? document.getElementById("productStock").value : 5000) || 5000;
     const customFieldsVals = (typeof extractCustomFieldValuesFromForm === "function")
       ? extractCustomFieldValuesFromForm("products", "productCustomFieldsContainer")
@@ -4052,13 +4056,15 @@ function setupColumnsProductsTab() {
     let idx = editId ? state.products.findIndex(p => p.id === editId) : -1;
     if (idx === -1) idx = state.products.findIndex(p => p.name === name);
     if (idx !== -1) {
-      state.products[idx] = { ...state.products[idx], name, distributorPrice: distPrice, pharmacyPrice: phPrice, stock, customFields: customFieldsVals };
+      state.products[idx] = { ...state.products[idx], name, code, distributorPrice: distPrice, pharmacyPrice: phPrice, consumerPrice: consPrice || phPrice, stock, customFields: customFieldsVals };
     } else {
       state.products.push({
         id: "prod-" + Date.now(),
         name,
+        code,
         distributorPrice: distPrice,
         pharmacyPrice: phPrice,
+        consumerPrice: consPrice || phPrice,
         stock,
         customFields: customFieldsVals
       });
@@ -4082,7 +4088,10 @@ function setupColumnsProductsTab() {
     setupSalesTargetsTab();
     mergeCatalogIntoOrderItems();
     updateNavBadges();
-    alert("کالا ثبت شد: «" + name + "» و در تب سفارشات با فیلد تعداد جایزه اضافه شد.");
+    try { if (typeof window.syncProductsEverywhere === "function") window.syncProductsEverywhere(); } catch (eSync) {}
+    try { if (typeof window.paintV77ProductPricing === "function") window.paintV77ProductPricing(); } catch (eP) {}
+    try { if (typeof window.applyV77ProductPricing === "function") window.applyV77ProductPricing(); } catch (eA) {}
+    alert("کالا ثبت شد: «" + name + "» و در همه تب‌های کالا همان لحظه اضافه شد.");
   };
 
   if (btnProd) btnProd.onclick = (e) => { e.preventDefault(); handleSaveProd(); };
@@ -4114,9 +4123,11 @@ function renderColumnsProductsTable() {
     const shownName = prod.name || window._lastSavedProductName || "—";
     tr.innerHTML = `
       <td>${index + 1}</td>
+      <td>${prod.code || "—"}</td>
       <td class="product-name-cell"><strong>${shownName}</strong></td>
       <td><strong style="color:#1e40af;">${Number(prod.distributorPrice || prod.price || 40000).toLocaleString("fa-IR")} ریال</strong></td>
       <td><strong style="color:#0d9488;">${Number(prod.pharmacyPrice || prod.price || 45000).toLocaleString("fa-IR")} ریال</strong></td>
+      <td><strong style="color:#7c3aed;">${Number(prod.consumerPrice || prod.pharmacyPrice || prod.price || 0).toLocaleString("fa-IR")} ریال</strong></td>
       <td>${prod.stock || 5000} عدد</td>
       <td>
         <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
@@ -4134,12 +4145,16 @@ function editProductCatalogItem(id) {
   if (!prod) return;
   window._editingProductId = id;
   const nameEl = document.getElementById("productName");
+  const codeEl = document.getElementById("productCode");
   const distEl = document.getElementById("productDistPrice");
   const phEl = document.getElementById("productPrice");
+  const consEl = document.getElementById("productConsumerPrice");
   const stEl = document.getElementById("productStock");
   if (nameEl) nameEl.value = prod.name || "";
+  if (codeEl) codeEl.value = prod.code || "";
   if (distEl) distEl.value = prod.distributorPrice || prod.price || "";
   if (phEl) phEl.value = prod.pharmacyPrice || prod.price || "";
+  if (consEl) consEl.value = prod.consumerPrice || prod.pharmacyPrice || prod.price || "";
   if (stEl) stEl.value = prod.stock || "";
   const banner = document.getElementById("productSavedBanner");
   if (banner) {
@@ -4164,4 +4179,5 @@ function deleteProductCatalogItem(id) {
   setupSalesTargetsTab();
   mergeCatalogIntoOrderItems();
   updateNavBadges();
+  try { if (typeof window.syncProductsEverywhere === "function") window.syncProductsEverywhere(); } catch (eSync2) {}
 }

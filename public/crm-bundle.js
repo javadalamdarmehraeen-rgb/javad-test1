@@ -16931,13 +16931,15 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     if(!isFinite(vat))vat=vatPct();
     return {dist:dist,ph:ph,cons:cons,vat:vat};
   }
-  function margin(from,to){from=Number(from)||0;to=Number(to)||0;if(!from)return 0;return (to-from)/from*100;}
+  function margin(from,to){from=Number(from)||0;to=Number(to)||0;if(!to)return 0;return (to-from)/to*100;}
   function fromCons(cons,mDistPh,mPhCons){
     cons=Number(cons)||0;
     mDistPh=Number(mDistPh)||0;
     mPhCons=Number(mPhCons)||0;
-    var ph=cons/((1+mPhCons/100)||1);
-    var dist=ph/((1+mDistPh/100)||1);
+    if(mPhCons>=100)mPhCons=99.99;
+    if(mDistPh>=100)mDistPh=99.99;
+    var ph=cons*(1-mPhCons/100);
+    var dist=ph*(1-mDistPh/100);
     return {dist:Math.round(dist),ph:Math.round(ph),cons:Math.round(cons)};
   }
   function ensureDraft(p){
@@ -16987,6 +16989,8 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}
       try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}
       toast("✅ "+n.toLocaleString("fa-IR")+" کالای دارای تاریخ اعمال، قیمت جدید گرفت.");
+      try{if(typeof window.syncProductsEverywhere==="function")window.syncProductsEverywhere();}catch(e){}
+      try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}
       paint();
     }
     return n;
@@ -16996,13 +17000,14 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     if(!curBody||!newBody)return;
     var st=S(),list=st.products||[],vat=vatPct();
     if(!list.length){
-      curBody.innerHTML='<tr><td colspan="9">کالایی ثبت نشده است. ابتدا در تب ستون‌ها و کالاها کالا اضافه کنید.</td></tr>';
-      newBody.innerHTML='<tr><td colspan="9">کالایی ثبت نشده است.</td></tr>';
+      curBody.innerHTML='<tr><td colspan="10">کالایی ثبت نشده است. ابتدا در تب ستون‌ها و کالاها کالا اضافه کنید.</td></tr>';
+      newBody.innerHTML='<tr><td colspan="10">کالایی ثبت نشده است.</td></tr>';
       return;
     }
     var manager=true;
     try{if(typeof v20IsManager==="function")manager=v20IsManager();}catch(e){}
     var curRows="",newRows="";
+    var editingPid=String(window.__CRM_V78_EDIT_PID||"");
     list.forEach(function(p){
       if(!p||!p.name)return;
       var cur=pricesOf(p);
@@ -17019,9 +17024,12 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         "<td style='direction:ltr'>"+faN(cur.ph)+"</td>"+
         "<td style='direction:ltr'>"+faP(m5c)+"٪</td>"+
         "<td style='direction:ltr'>"+faN(cur.cons)+"</td>"+
-        "<td style='direction:ltr'>"+faP(cur.vat)+"٪</td>"+
+        (editingPid===String(p.id||p.name)
+          ? "<td><input class='form-input v77-inp qty-no-spin' data-k='vatPercent' data-box='cur' data-pid='"+pid+"' inputmode='decimal' value='"+faP(cur.vat)+"'></td>"
+          : "<td style='direction:ltr'>"+faP(cur.vat)+"٪</td>")+
         "<td style='direction:ltr'>"+faN(consVat)+"</td>"+
-        "<td><input class='form-input v77-inp qty-no-spin' data-k='increasePct' data-pid='"+pid+"' inputmode='decimal' "+ro+" value='"+(d.increasePct==null||d.increasePct===""?"":d.increasePct)+"' placeholder='٪'></td></tr>";
+        "<td><input class='form-input v77-inp qty-no-spin' data-k='increasePct' data-pid='"+pid+"' inputmode='decimal' "+ro+" value='"+(d.increasePct==null||d.increasePct===""?"":d.increasePct)+"' placeholder='٪'></td>"+
+        "<td><button type='button' class='btn btn-outline btn-sm v78-edit-price' data-pid='"+pid+"'>"+(editingPid===String(p.id||p.name)?"✅ ثبت":"✏️ ویرایش")+"</button></td></tr>";
       newRows+="<tr data-pid='"+pid+"'>"+
         "<td><strong>"+esc(p.name)+"</strong></td>"+
         "<td style='direction:ltr'>"+faN(d.dist)+"</td>"+
@@ -17029,9 +17037,12 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         "<td style='direction:ltr'>"+faN(d.ph)+"</td>"+
         "<td><input class='form-input v77-inp qty-no-spin' data-k='marginPhCons' data-pid='"+pid+"' inputmode='decimal' "+ro+" value='"+faP(d.marginPhCons)+"'></td>"+
         "<td style='direction:ltr'>"+faN(d.cons)+"</td>"+
-        "<td style='direction:ltr'>"+faP(d.vat)+"٪</td>"+
+        (editingPid===String(p.id||p.name)
+          ? "<td><input class='form-input v77-inp qty-no-spin' data-k='vatPercent' data-box='new' data-pid='"+pid+"' inputmode='decimal' value='"+faP(d.vat)+"'></td>"
+          : "<td style='direction:ltr'>"+faP(d.vat)+"٪</td>")+
         "<td style='direction:ltr'>"+faN(newVat)+"</td>"+
-        "<td><input class='form-input v77-inp v77-date' data-k='applyDate' data-pid='"+pid+"' "+ro+" inputmode='numeric' placeholder='1405/06/05' value='"+esc(d.applyDate||"")+"'></td></tr>";
+        "<td><input class='form-input v77-inp v77-date' data-k='applyDate' data-pid='"+pid+"' "+ro+" inputmode='numeric' placeholder='1405/06/05' value='"+esc(d.applyDate||"")+"'></td>"+
+        "<td><button type='button' class='btn btn-outline btn-sm v78-edit-price' data-pid='"+pid+"'>"+(editingPid===String(p.id||p.name)?"✅ ثبت":"✏️ ویرایش")+"</button></td></tr>";
     });
     curBody.innerHTML=curRows;
     newBody.innerHTML=newRows;
@@ -17046,6 +17057,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     var d=ensureDraft(p);
     if(key==="applyDate"){
       d.applyDate=slashDate(raw);
+    }else if(key==="vatPercent"){
+      var n=num(raw);
+      p.vatPercent=n;
+      d.vat=n;
     }else{
       var n=num(raw);
       d[key]=raw===""?"":n;
@@ -17075,6 +17090,14 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   function bind(){
     if(document.body.dataset.v77price)return;document.body.dataset.v77price="1";
+    document.addEventListener("click",function(e){
+      var b=e.target&&e.target.closest&&e.target.closest(".v78-edit-price");
+      if(!b)return;
+      e.preventDefault();e.stopPropagation();
+      var pid=b.getAttribute("data-pid")||"";
+      window.__CRM_V78_EDIT_PID=(window.__CRM_V78_EDIT_PID===pid)?"":pid;
+      paint();
+    },true);
     var btn=$("btnSaveProductPricing");
     if(btn)btn.addEventListener("click",function(){
       var st=S();
@@ -17110,5 +17133,264 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   document.addEventListener("click",function(e){
     if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-product-pricing"]'))
       setTimeout(function(){applyDue();paint();},160);
+  },true);
+})();
+
+
+/* v11.78.0: قیمت مصرف‌کننده در کالا + همگام‌سازی همه تب‌ها + مارژین قانونی + ویرایش VAT + طراح زنده + اعمال لحظه‌ای بدون رفرش */
+(function(){
+  "use strict";
+  function $(id){return document.getElementById(id);}
+  function S(){return (typeof window.__CRM_GET_STATE==="function"?window.__CRM_GET_STATE():window.state)||window.state||{};}
+  function toast(msg){try{if(typeof window.v20Toast==="function")window.v20Toast(msg);}catch(e){}}
+  function persist(){try{if(typeof window.saveState==="function")window.saveState(false);}catch(e){}}
+  function entityKey(tabId){
+    tabId=String(tabId||"");
+    return tabId==="tab-pharmacies"?"pharmacy":tabId==="tab-doctors"?"doctor":tabId==="tab-orders"?"order":tabId==="tab-columns-products"?"products":String(tabId||"").replace(/^tab-/,"");
+  }
+
+  function syncProductsEverywhere(){
+    try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}
+    try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}
+    try{if(typeof refreshOrderProductCatalog==="function")refreshOrderProductCatalog();}catch(e){}
+    try{if(typeof window.paintV77ProductPricing==="function")window.paintV77ProductPricing();}catch(e){}
+    try{if(typeof window.paintTargetPlanRows==="function")window.paintTargetPlanRows();}catch(e){}
+    try{
+      var sel=$("tgtProductSelect");
+      if(sel){
+        var keep=sel.value;
+        var opts='<option value="">انتخاب کالا...</option>'+(S().products||[]).map(function(p){return '<option value="'+String(p.name||"").replace(/"/g,"&quot;")+'">'+(p.name||"")+"</option>";}).join("");
+        if(sel.innerHTML!==opts){sel.innerHTML=opts;if(keep)sel.value=keep;}
+      }
+    }catch(e){}
+  }
+  window.syncProductsEverywhere=syncProductsEverywhere;
+
+  function refreshLiveNow(){
+    var pane=document.querySelector(".tab-pane.active"),id=pane&&pane.id;
+    try{
+      if(id==="tab-pharmacies"){if(typeof window.renderPharmaciesList==="function")window.renderPharmaciesList();else if(typeof renderPharmaciesList==="function")renderPharmaciesList();}
+      if(id==="tab-doctors"){if(typeof window.renderDoctorsList==="function")window.renderDoctorsList();else if(typeof renderDoctorsList==="function")renderDoctorsList();}
+      if(id==="tab-orders"){if(typeof window.renderOrdersList==="function")window.renderOrdersList();else if(typeof renderOrdersList==="function")renderOrdersList();}
+      if(id==="tab-columns-products"&&typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();
+      if(id==="tab-product-pricing"){
+        try{if(typeof window.applyV77ProductPricing==="function")window.applyV77ProductPricing();}catch(e){}
+        try{if(typeof window.paintV77ProductPricing==="function")window.paintV77ProductPricing();}catch(e){}
+      }
+      if(id==="tab-sales-targets"){try{if(typeof window.paintTargetPlanRows==="function")window.paintTargetPlanRows();}catch(e){}try{if(typeof renderSalesTargetsTable==="function")renderSalesTargetsTable();}catch(e){}}
+      if(id==="tab-leaves"&&typeof renderLeavesTable==="function")renderLeavesTable();
+      if(id==="tab-notifications"&&typeof renderNotificationsTable==="function")renderNotificationsTable();
+      if(typeof updateNavBadges==="function")updateNavBadges();
+    }catch(e){}
+    syncProductsEverywhere();
+  }
+  window.refreshLiveNow=refreshLiveNow;
+
+  function wrapSaveLive(){
+    if(typeof window.saveState!=="function"||window.saveState._v78live)return;
+    var old=window.saveState;
+    var t=null;
+    var w=function(){
+      var r=old.apply(this,arguments);
+      clearTimeout(t);
+      t=setTimeout(refreshLiveNow,0);
+      return r;
+    };
+    w._v78live=true;
+    Object.keys(old).forEach(function(k){try{w[k]=old[k];}catch(e){}});
+    window.saveState=w;
+  }
+
+  function currentFid(){
+    if(window._editingColField&&window._editingColField.id)return window._editingColField.id;
+    if(window._lastColFid)return window._lastColFid;
+    var row=document.querySelector("#colFieldList tr.v69-selected[data-fid], #colFieldList tr[data-fid].active, #colFieldList tr[data-fid][data-editing]");
+    return row&&row.getAttribute("data-fid");
+  }
+  function applyV78Layout(tabId){
+    if(!tabId)return;
+    var pane=$(tabId);if(!pane)return;
+    var form=pane.querySelector("form");
+    var grid=form&&(form.querySelector(":scope > .form-grid")||form.querySelector(".form-grid"));
+    if(!grid||grid.closest("#columnsDesignerHost"))return;
+    var key=entityKey(tabId);
+    var meta=((((S().formFieldMeta)||{})[key])||{});
+    var kids=[];
+    Array.prototype.forEach.call(grid.children,function(g){
+      if(!g.classList||!g.classList.contains("form-group"))return;
+      if(g.closest("#orderItemsContainer")||g.closest("#columnsDesignerHost")||g.closest(".modal-overlay"))return;
+      if(g.parentNode!==grid)return;
+      kids.push(g);
+      var fid=g.getAttribute("data-col-fid")||((g.querySelector("input[id],select[id],textarea[id],button[id]")||{}).id)||"";
+      if(!fid)return;
+      var m=Object.assign({},meta[fid]||{});
+      var size=parseInt(m.size,10),hgt=parseInt(m.height,10),place=m.place||(m.full?"under":"beside");
+      g.classList.toggle("col-place-under",place==="under");
+      g.classList.toggle("col-place-beside",place!=="under");
+      if(place==="under"){
+        g.style.setProperty("flex","1 1 100%","important");
+        g.style.setProperty("max-width","100%","important");
+        g.style.setProperty("width","100%","important");
+      }else if(isFinite(size)&&size>=40){
+        g.style.setProperty("flex","0 0 "+size+"px","important");
+        g.style.setProperty("max-width",size+"px","important");
+        g.style.setProperty("width",size+"px","important");
+      }
+      var el=g.querySelector("input:not([type=hidden]),select,textarea");
+      if(el&&isFinite(size)&&size>=40){
+        el.style.setProperty("width","100%","important");
+        el.style.setProperty("max-width",size+"px","important");
+      }
+      if(el&&isFinite(hgt)&&hgt>=24){
+        el.style.setProperty("height",hgt+"px","important");
+        el.style.setProperty("min-height",hgt+"px","important");
+      }
+      var gapB=parseFloat(m.gapBeforeMm),gapA=parseFloat(m.gapAfterMm);
+      if(isFinite(gapB)&&gapB>0)g.style.setProperty("margin-inline-start",(gapB*96/25.4).toFixed(2)+"px","important");
+      else g.style.removeProperty("margin-inline-start");
+      if(isFinite(gapA)&&gapA>0)g.style.setProperty("margin-inline-end",(gapA*96/25.4).toFixed(2)+"px","important");
+      else g.style.removeProperty("margin-inline-end");
+      var rowNo=parseInt(m.rowNo,10);
+      if(rowNo>0)g.setAttribute("data-v68-row",String(rowNo));
+      else g.removeAttribute("data-v68-row");
+    });
+    if(window.__CRM_MANAGER_LAYOUT_INTENT===true){
+      var buckets={},rest=[];
+      kids.forEach(function(g){
+        var fid=g.getAttribute("data-col-fid")||((g.querySelector("[id]")||{}).id)||"";
+        var rn=parseInt((meta[fid]||{}).rowNo,10);
+        if(rn>0)(buckets[rn]=buckets[rn]||[]).push(g);
+        else rest.push(g);
+      });
+      var ordered=kids.slice().sort(function(a,b){
+        var fa=a.getAttribute("data-col-fid")||((a.querySelector("[id]")||{}).id)||"";
+        var fb=b.getAttribute("data-col-fid")||((b.querySelector("[id]")||{}).id)||"";
+        var oa=Number((meta[fa]||{}).order)||999,ob=Number((meta[fb]||{}).order)||999;
+        return oa-ob;
+      });
+      ordered.forEach(function(g){if(g.parentNode===grid)grid.appendChild(g);});
+    }
+  }
+  window.applyV78FieldLayout=applyV78Layout;
+
+  function applyDesignerV78(force){
+    var fid=currentFid();
+    if(!fid){if(force)toast("ابتدا فیلد را از لیست با دکمه ✏️ ویرایش انتخاب کنید.");return false;}
+    window._lastColFid=fid;
+    var tab=window._activeColTab||"tab-pharmacies";
+    var st=S();if(!st||typeof st!=="object")return false;
+    var key=entityKey(tab);
+    st.formFieldMeta=st.formFieldMeta||{};st.formFieldMeta[key]=st.formFieldMeta[key]||{};
+    var m=st.formFieldMeta[key][fid]=st.formFieldMeta[key][fid]||{};
+    function num(id){var el=$(id);if(!el)return null;var n=parseFloat(el.value);return isFinite(n)?n:null;}
+    var order=num("colFieldOrder"),listOrder=num("colFieldListOrder"),size=num("colFieldSize"),height=num("colFieldHeight");
+    var gapB=num("colGapBefore"),gapA=num("colGapAfter"),rowNo=num("colRowNo");
+    var placeEl=$("colFieldPlace");
+    if(order!=null&&order>=1)m.order=Math.round(order);
+    if(listOrder!=null&&listOrder>=1)m.listOrder=Math.round(listOrder);
+    if(size!=null&&size>0)m.size=Math.round(size);
+    if(height!=null&&height>0)m.height=Math.round(height);
+    if(gapB!=null)m.gapBeforeMm=gapB;
+    if(gapA!=null)m.gapAfterMm=gapA;
+    if(rowNo!=null&&rowNo>=1)m.rowNo=Math.round(rowNo);else if(rowNo===0)delete m.rowNo;
+    if(placeEl&&placeEl.value)m.place=placeEl.value;
+    m._updatedAt=Date.now();
+    var cf=((st.customFields||{})[key]||[]).filter(function(f){return f&&f.id===fid;})[0];
+    if(cf){["order","listOrder","size","height","gapBeforeMm","gapAfterMm","rowNo","place"].forEach(function(k){if(m[k]!=null)cf[k]=m[k];});}
+    if(window._editingColField){["order","listOrder","size","height","gapBeforeMm","gapAfterMm","rowNo","place"].forEach(function(k){if(m[k]!=null)window._editingColField[k]=m[k];});}
+    window.__CRM_MANAGER_LAYOUT_INTENT=true;
+    window.__CRM_SKIP_V64_STRIP=1;
+    try{if(typeof window.applyFullFormLayout==="function")window.applyFullFormLayout(tab);}catch(e){}
+    applyV78Layout(tab);
+    try{
+      if(key==="pharmacy"){if(typeof window.renderPharmaciesList==="function")window.renderPharmaciesList();else if(typeof renderPharmaciesList==="function")renderPharmaciesList();}
+      if(key==="doctor"){if(typeof window.renderDoctorsList==="function")window.renderDoctorsList();else if(typeof renderDoctorsList==="function")renderDoctorsList();}
+      if(key==="order"){if(typeof window.renderOrdersList==="function")window.renderOrdersList();else if(typeof renderOrdersList==="function")renderOrdersList();}
+    }catch(e){}
+    persist();
+    setTimeout(function(){applyV78Layout(tab);window.__CRM_MANAGER_LAYOUT_INTENT=false;window.__CRM_SKIP_V64_STRIP=0;},600);
+    return true;
+  }
+  window.applyDesignerV78=applyDesignerV78;
+
+  function wrapLayout(){
+    if(typeof window.applyFullFormLayout!=="function"||window.applyFullFormLayout._v78)return;
+    var orig=window.applyFullFormLayout;
+    var w=function(tabId){
+      var intent=window.__CRM_MANAGER_LAYOUT_INTENT===true;
+      if(tabId==="tab-orders"){
+        window.__CRM_MANAGER_LAYOUT_INTENT=false;
+        var r=orig.apply(this,arguments);
+        window.__CRM_MANAGER_LAYOUT_INTENT=intent;
+        try{applyV78Layout(tabId);}catch(e){}
+        return r;
+      }
+      var r=orig.apply(this,arguments);
+      try{applyV78Layout(tabId||window._activeColTab||"");}catch(e){}
+      return r;
+    };
+    w._v78=true;
+    Object.keys(orig).forEach(function(k){try{w[k]=orig[k];}catch(e){}});
+    window.applyFullFormLayout=w;
+  }
+
+  function bindDesigner(){
+    if(document.body.dataset.v78des)return;document.body.dataset.v78des="1";
+    var ids=["colFieldOrder","colFieldListOrder","colFieldSize","colFieldHeight","colGapBefore","colGapAfter","colRowNo","colFieldPlace"];
+    document.addEventListener("input",function(e){
+      if(!e.target||ids.indexOf(e.target.id)<0)return;
+      applyDesignerV78(false);
+    },true);
+    document.addEventListener("change",function(e){
+      if(!e.target||ids.indexOf(e.target.id)<0)return;
+      applyDesignerV78(true);
+    },true);
+    document.addEventListener("click",function(e){
+      var row=e.target&&e.target.closest&&e.target.closest("#colFieldList tr[data-fid], .col-edit-field");
+      if(row){
+        var fid=row.getAttribute("data-fid")||(row.closest("tr")&&row.closest("tr").getAttribute("data-fid"));
+        if(fid){
+          window._lastColFid=fid;
+          document.querySelectorAll("#colFieldList tr[data-fid]").forEach(function(tr){tr.classList.toggle("v69-selected",tr.getAttribute("data-fid")===fid);});
+        }
+      }
+      if(e.target&&e.target.id==="btnSaveColField"){
+        window.__CRM_MANAGER_LAYOUT_INTENT=true;
+        applyDesignerV78(true);
+        setTimeout(function(){applyDesignerV78(false);},120);
+      }
+    },true);
+  }
+
+  function wrapSwitch(){
+    if(window.switchTab&&!window.switchTab._v78){
+      var sw=window.switchTab;
+      var w=function(id){
+        var r=sw.apply(this,arguments);
+        setTimeout(function(){
+          refreshLiveNow();
+          if(id==="tab-columns-products"||id==="tab-product-pricing")syncProductsEverywhere();
+          if(id==="tab-product-pricing"){try{if(typeof window.applyV77ProductPricing==="function")window.applyV77ProductPricing();}catch(e){}}
+          applyV78Layout(id);
+        },60);
+        return r;
+      };
+      w._v78=true;window.switchTab=w;
+    }
+  }
+
+  function boot(){
+    wrapLayout();
+    bindDesigner();
+    wrapSaveLive();
+    wrapSwitch();
+    try{if(typeof window.applyV77ProductPricing==="function")window.applyV77ProductPricing();}catch(e){}
+    syncProductsEverywhere();
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,140);});
+  else setTimeout(boot,140);
+  document.addEventListener("click",function(e){
+    if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-columns-products"],[data-target="tab-product-pricing"],[data-target="tab-orders"],[data-target="tab-pharmacies"]'))
+      setTimeout(function(){syncProductsEverywhere();refreshLiveNow();},180);
   },true);
 })();
