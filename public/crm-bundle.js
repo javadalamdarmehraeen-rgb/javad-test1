@@ -12281,7 +12281,7 @@ button.v19-gps svg{display:block}
     if(reset&&!reset.dataset.v36reset){reset.dataset.v36reset="1";reset.addEventListener("click",protectReset,true);}
     if (form&&!form.dataset.v36resetProof){form.dataset.v36resetProof="1";form.addEventListener("reset", function () { protectReset();setTimeout(clearOrderPharmacyDraft, 20); });}
   }
-  function bindOrderFormPositionLock(){var form=$("formOrder");if(!form||form.dataset.v36positionLock)return;form.dataset.v36positionLock="1";var stable=null,busy=false,timer=0;function approve(){stable=captureOrderFormSequence();}form.addEventListener("crm-order-layout-approved",approve);setTimeout(function(){restoreDomFieldOrder();approve();},1900);if(window.MutationObserver)new MutationObserver(function(records){if(busy||!stable||form.dataset.v36Resetting==="1")return;if(window.__CRM_MANAGER_LAYOUT_INTENT){clearTimeout(timer);timer=setTimeout(approve,900);return;}
+  function bindOrderFormPositionLock(){var form=$("formOrder");if(!form||form.dataset.v36positionLock)return;form.dataset.v36positionLock="1";var stable=null,busy=false,timer=0;function approve(){stable=captureOrderFormSequence();}form.addEventListener("crm-order-layout-approved",approve);setTimeout(function(){restoreDomFieldOrder();approve();},1900);if(window.MutationObserver)new MutationObserver(function(records){if(busy||form.dataset.v36Resetting==="1")return;if(window.__CRM_LAYOUT_APPLYING)return;if(document.activeElement&&form.contains(document.activeElement))return;if(window.__CRM_MANAGER_LAYOUT_INTENT){clearTimeout(timer);timer=setTimeout(approve,900);return;}
     // v11.61.0: رنگ/لیست کشویی و نقشه‌های داخلی فیلد، «جابه‌جایی فیلد» نیست؛ فقط ساختار واقعی جریده باشد وگرنه با هر تایپ/کلیک کاربر این ناظر دوباره فرم را جابه‌جا می‌کرد (فیلدها قفل نمی‌ماندند)
     var structural=false;
     records.forEach(function(r){
@@ -12291,7 +12291,7 @@ button.v19-gps svg{display:block}
       function hit(list){return Array.prototype.some.call(list,function(n){return n.nodeType===1&&!(n.closest&&n.closest(".crm-combo-list"));});}
       if(hit(r.addedNodes)||hit(r.removedNodes))structural=true;
     });
-    if(!structural)return;clearTimeout(timer);timer=setTimeout(function(){busy=true;restoreDomFieldOrder();restoreOrderFormSequence(stable);setTimeout(function(){busy=false;},120);},0);}).observe(form,{childList:true,subtree:true});}
+    if(!structural)return;clearTimeout(timer);timer=setTimeout(function(){if(document.activeElement&&form.contains(document.activeElement))return;if(window.__CRM_LAYOUT_APPLYING)return;busy=true;restoreDomFieldOrder();setTimeout(function(){busy=false;},120);},0);}).observe(form,{childList:true,subtree:true});}
 
   function productFieldRecord(id) {
     var S=st(); S.customFields=S.customFields||{}; S.customFields.products=S.customFields.products||[];
@@ -12706,7 +12706,7 @@ button.v19-gps svg{display:block}
   function gridLockKey(grid,index){var form=grid.closest("form[id]"),pane=grid.closest(".tab-pane");return grid.id?("grid:"+grid.id):(form?("form:"+form.id):("pane:"+((pane&&pane.id)||"unknown")+":"+index));}
   // فقط اقدام صریح مدیر snapshot می‌سازد؛ شروع نسخه/رفرش هرگز ترتیب تازه‌ای را خودکار ضبط نمی‌کند.
   function captureDomFieldOrder(){if(domOrderBusy)return;var out={};lockableGrids().forEach(function(grid,i){out[gridLockKey(grid,i)]=Array.prototype.filter.call(grid.children,function(g){return g.classList&&g.classList.contains("form-group");}).map(groupAnchor).filter(Boolean);});try{localStorage.setItem(MANAGER_ORDER_KEY,JSON.stringify(out));}catch(e){}}
-  function restoreDomFieldOrder(){var explicit={};try{explicit=JSON.parse(localStorage.getItem(MANAGER_ORDER_KEY)||"{}");}catch(e){}domOrderBusy=true;lockableGrids().forEach(function(grid,i){var seq=explicit[gridLockKey(grid,i)];if(!Array.isArray(seq)||!seq.length)return;var groups={};Array.prototype.forEach.call(grid.children,function(g){var id=groupAnchor(g);if(id)groups[id]=g;});
+  function restoreDomFieldOrder(){try{var ae=document.activeElement,tg=ae&&(ae.tagName||"").toLowerCase();if(ae&&(tg==="input"||tg==="textarea"||tg==="select")&&ae.closest&&ae.closest("#formPharmacy,#formDoctor,#formOrder,#tab-pharmacies,#tab-doctors,#tab-orders"))return;}catch(e0){}if(window.__CRM_LAYOUT_APPLYING)return;if(typeof window.applySavedLayoutV82==="function"){try{window.applySavedLayoutV82("tab-pharmacies");window.applySavedLayoutV82("tab-doctors");window.applySavedLayoutV82("tab-orders");}catch(e1){}return;}var explicit={};try{explicit=JSON.parse(localStorage.getItem(MANAGER_ORDER_KEY)||"{}");}catch(e){}domOrderBusy=true;lockableGrids().forEach(function(grid,i){var seq=explicit[gridLockKey(grid,i)];if(!Array.isArray(seq)||!seq.length)return;var groups={};Array.prototype.forEach.call(grid.children,function(g){var id=groupAnchor(g);if(id)groups[id]=g;});
     // v11.61.0: فقط در صورت تفاوت واقعی با ترتیب ذخیره‌شده جابه‌جا کن؛ بازنویسیِ همان ترتیب، حلقه خودتغذی MutationObserver و تکان مداوم فیلدها می‌ساخت
     var currentIds=Array.prototype.map.call(grid.children,function(g){return groupAnchor(g);}).filter(Boolean);
     var desiredIds=seq.filter(function(id){return !!groups[id];});
@@ -17889,9 +17889,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         it.g.style.setProperty("order",String(vis),"important");
         applyMetaPaint(it.g,it.m);
       });
-      var needMove=false;
-      for(var mi=0;mi<items.length;mi++){if(grid.children[mi]!==items[mi].g){needMove=true;break;}}
-      if(needMove)items.forEach(function(it){if(it.g.parentNode===grid)grid.appendChild(it.g);});
+      /* v11.84: جابه‌جایی DOM ممنوع — فقط CSS order تا تایپ نپرد و ترتیب پایدار بماند */
       var form=grid.closest("form");
       if(form&&form.id==="formOrder"){
         try{form.dispatchEvent(new CustomEvent("crm-order-layout-approved"));}catch(e){}
@@ -17979,3 +17977,154 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 })();
 
 /* v11.83.0: بدون پرش تایپ داروخانه/پزشک + کاشی نقشه از خود سرور + ورود پایدار موبایل */
+
+/* v11.84.0: داشبورد حرفه‌ای زنده + توقف پرش تایپ + قفل پایدار ترتیب سفارشات */
+(function(){
+  "use strict";
+  function $(id){return document.getElementById(id);}
+  function S(){return (typeof window.__CRM_GET_STATE==="function"?window.__CRM_GET_STATE():window.state)||window.state||{};}
+  function faN(n){n=Number(n)||0;return Math.round(n).toLocaleString("en-US");}
+  function digits(s){var FA="۰۱۲۳۴۵۶۷۸۹",AR="٠١٢٣٤٥٦٧٨٩";return String(s==null?"":s).replace(/[۰-۹]/g,function(c){return String(FA.indexOf(c));}).replace(/[٠-٩]/g,function(c){return String(AR.indexOf(c));});}
+  function dateParts(s){
+    var x=digits(s).replace(/-/g,"/");
+    var m=String(x).match(/(1[34]\d{2})\/(\d{1,2})(?:\/(\d{1,2}))?/);
+    if(!m)return {y:"",m:""};
+    return {y:m[1], m:("0"+m[2]).slice(-2)};
+  }
+  function inPeriod(dateStr, year, month){
+    if(!year&&!month)return true;
+    var p=dateParts(dateStr);
+    if(year&&p.y!==String(year))return false;
+    if(month&&p.m!==String(month))return false;
+    return true;
+  }
+  function geoOk(rec, pr, ci, di){
+    if(!rec)return false;
+    if(pr&&String(rec.province||"")!==pr)return false;
+    if(ci&&String(rec.city||"")!==ci)return false;
+    if(di&&String(rec.district||"")!==di)return false;
+    return true;
+  }
+  function livePeople(){
+    var st=S(), tomb=((st.settings||{}).deletedUserTombstones)||[];
+    var deadId={"u-2":1,"u-3":1}, deadUser={"taheri":1,"nila":1};
+    tomb.forEach(function(t){if(t&&t.id)deadId[String(t.id)]=1;if(t&&t.username)deadUser[String(t.username).toLowerCase()]=1;});
+    var out=[];
+    (st.users||[]).forEach(function(u){
+      if(!u||u.username==="admin")return;
+      if(/مدیر سیستم/.test(String(u.role||"")))return;
+      if(deadId[String(u.id)]||deadUser[String(u.username||"").toLowerCase()])return;
+      out.push({id:u.id, name:u.fullName||u.username});
+    });
+    if(out.length)return out;
+    (st.reps||[]).forEach(function(r){
+      if(!r||!r.name)return;
+      if(deadId[String(r.id)])return;
+      out.push({id:r.id, name:r.name});
+    });
+    return out;
+  }
+  function fillGeo(){
+    var geo=(typeof IRAN_GEO_DATA!=="undefined")?IRAN_GEO_DATA:{};
+    var pr=$("v84DashProvince"), ci=$("v84DashCity"), di=$("v84DashDistrict");
+    if(!pr)return;
+    var keep=pr.value;
+    var opts='<option value="">همه استان‌ها</option>'+Object.keys(geo).map(function(p){return '<option value="'+p+'">'+p+"</option>";}).join("");
+    if(pr.innerHTML!==opts){pr.innerHTML=opts;if(keep)pr.value=keep;}
+    var cities=geo[pr.value]||{};
+    var ck=ci?ci.value:"";
+    if(ci){
+      var copts='<option value="">همه شهرها</option>'+Object.keys(cities).map(function(c){return '<option value="'+c+'">'+c+"</option>";}).join("");
+      ci.innerHTML=copts;if(ck&&cities[ck])ci.value=ck;
+    }
+    var districts=(ci&&cities[ci.value])||[];
+    var dk=di?di.value:"";
+    if(di){
+      var dopts='<option value="">همه مناطق</option>'+districts.map(function(d){return '<option value="'+d+'">'+d+"</option>";}).join("");
+      di.innerHTML=dopts;if(dk&&districts.indexOf(dk)>=0)di.value=dk;
+    }
+  }
+  function fillYears(){
+    var sel=$("v84DashYear");if(!sel||sel.dataset.v84y)return;sel.dataset.v84y="1";
+    var y=1403, html='<option value="">همه سال‌ها</option>';
+    for(;y<=1408;y++)html+='<option value="'+y+'">'+y+"</option>";
+    sel.innerHTML=html;
+  }
+  function paint(){
+    var host=$("v84DashCharts"), kpi=$("v84DashKpi");
+    if(!host||!kpi)return;
+    var st=S();
+    var year=($("v84DashYear")||{}).value||"";
+    var month=($("v84DashMonth")||{}).value||"";
+    var pr=($("v84DashProvince")||{}).value||"";
+    var ci=($("v84DashCity")||{}).value||"";
+    var di=($("v84DashDistrict")||{}).value||"";
+    var ph=(st.pharmacies||[]).filter(function(p){return geoOk(p,pr,ci,di);});
+    var docs=(st.doctors||[]).filter(function(p){return geoOk(p,pr,ci,di);});
+    var ords=(st.orders||[]).filter(function(o){return geoOk(o,pr,ci,di)&&inPeriod(o.orderDate,year,month);});
+    var visits=(st.visits||[]).filter(function(v){return inPeriod(v.date,year,month);});
+    var people=livePeople();
+    var sales=0;
+    ords.forEach(function(o){sales+=Number(o.totalAmount)||0;});
+    kpi.innerHTML=
+      '<div class="k"><span>داروخانه در فیلتر</span><b>'+faN(ph.length)+"</b></div>"+
+      '<div class="k"><span>پزشک در فیلتر</span><b>'+faN(docs.length)+"</b></div>"+
+      '<div class="k"><span>سفارش دوره</span><b>'+faN(ords.length)+"</b></div>"+
+      '<div class="k"><span>فروش دوره (ریال)</span><b>'+faN(sales)+"</b></div>"+
+      '<div class="k"><span>ویزیت دوره</span><b>'+faN(visits.length)+"</b></div>"+
+      '<div class="k"><span>نمایندگان فعال</span><b>'+faN(people.length)+"</b></div>";
+    var byRep=[];
+    people.forEach(function(p){
+      var sum=0, n=0;
+      ords.forEach(function(o){if(o.repName===p.name){sum+=Number(o.totalAmount)||0;n++;}});
+      byRep.push({l:p.name, v:sum, n:n});
+    });
+    byRep.sort(function(a,b){return b.v-a.v;});
+    var max=1; byRep.forEach(function(x){if(x.v>max)max=x.v;});
+    var bars=byRep.length?('<div class="v84-bars">'+byRep.slice(0,8).map(function(x){
+      var h=Math.max(6,Math.round((x.v/max)*130));
+      return '<div class="v84-bar"><i style="height:'+h+'px" title="'+faN(x.v)+' ریال"></i><em>'+x.l+'</em></div>';
+    }).join("")+"</div>"):'<div class="v84-empty">برای این فیلتر سفارشی ثبت نشده است.</div>';
+    var totC=Math.max(1,ph.length+docs.length);
+    var a=Math.round(ph.length/totC*100);
+    var pie='<div style="display:flex;align-items:center;gap:1rem;min-height:140px"><div style="width:96px;height:96px;border-radius:50%;background:conic-gradient(#0d9488 0 '+a+'%,#2563eb '+a+'% 100%);box-shadow:0 6px 16px #0f766e22"></div><div class="v84-legend"><div>● داروخانه '+ph.length+' ('+a+'٪)</div><div>● پزشک '+docs.length+' ('+(100-a)+'٪)</div></div></div>';
+    var months=["01","02","03","04","05","06","07","08","09","10","11","12"];
+    var mNames=["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند"];
+    var trend=months.map(function(mm,i){
+      var s=0;(st.orders||[]).filter(function(o){return geoOk(o,pr,ci,di)&&inPeriod(o.orderDate,year||dateParts(o.orderDate).y,mm);}).forEach(function(o){s+=Number(o.totalAmount)||0;});
+      return {l:mNames[i].slice(0,2), v:s};
+    });
+    var tmax=1; trend.forEach(function(x){if(x.v>tmax)tmax=x.v;});
+    var trendHtml='<div class="v84-bars">'+trend.map(function(x){
+      var h=Math.max(4,Math.round((x.v/tmax)*130));
+      return '<div class="v84-bar"><i style="height:'+h+'px;background:linear-gradient(180deg,#38bdf8,#0284c7)" title="'+faN(x.v)+'"></i><em>'+x.l+'</em></div>';
+    }).join("")+"</div>";
+    var top={};
+    ords.forEach(function(o){var n=o.pharmacyName||"—";if(!top[n])top[n]=0;top[n]+=Number(o.totalAmount)||0;});
+    var topRows=Object.keys(top).map(function(n){return {n:n,v:top[n]};}).sort(function(a,b){return b.v-a.v;}).slice(0,6);
+    var tbl=topRows.length?('<table class="v84-table"><thead><tr><th>داروخانه</th><th>فروش</th></tr></thead><tbody>'+topRows.map(function(r){return "<tr><td>"+r.n+"</td><td>"+faN(r.v)+"</td></tr>";}).join("")+"</tbody></table>"):'<div class="v84-empty">سفارشی در این بازه نیست.</div>';
+    host.innerHTML=
+      '<div class="v84-chart-card"><h5>فروش نمایندگان (ریال)</h5>'+bars+"</div>"+
+      '<div class="v84-chart-card"><h5>روند فروش ماهانه</h5>'+trendHtml+"</div>"+
+      '<div class="v84-chart-card"><h5>ترکیب مراکز در فیلتر</h5>'+pie+"</div>"+
+      '<div class="v84-chart-card"><h5>برترین داروخانه‌ها</h5>'+tbl+"</div>";
+  }
+  window.paintV84Dashboard=paint;
+  function bind(){
+    if(document.body&&document.body.dataset.v84dash)return;
+    if(document.body)document.body.dataset.v84dash="1";
+    fillYears();fillGeo();
+    ["v84DashYear","v84DashMonth","v84DashProvince","v84DashCity","v84DashDistrict"].forEach(function(id){
+      var el=$(id);if(!el)return;
+      el.addEventListener("change",function(){if(id==="v84DashProvince"||id==="v84DashCity")fillGeo();paint();});
+    });
+    if(window.switchTab&&!window.switchTab._v84){
+      var sw=window.switchTab;
+      var w=function(id){var r=sw.apply(this,arguments);if(id==="tab-dashboard")setTimeout(paint,60);return r;};
+      w._v84=true;window.switchTab=w;
+    }
+  }
+  function boot(){bind();paint();}
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,80);});
+  else setTimeout(boot,80);
+})();

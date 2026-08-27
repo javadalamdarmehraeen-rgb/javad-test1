@@ -1666,3 +1666,7 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 ## 11.83.0
 پرش تایپ داروخانه/پزشک، موبایل ایران، حذف download html قدیمی.
 - [ ] push کاربر → health=11.83.0
+
+## 11.84.0
+داشبورد فیلتردار، توقف پرش تایپ، قفل ترتیب سفارشات.
+- [ ] push کاربر → health=11.84.0

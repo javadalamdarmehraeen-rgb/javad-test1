@@ -1709,3 +1709,6 @@ v64lockLayout بعد از apply اندازه را پاک می‌کرد. v56route
 
 ## 11.83.0
 appendChild فرم هنگام فوکوس ورودی ممنوع. کاشی OSM از طریق پروکسی سرور. ورود موبایل روی localStorage.
+
+## 11.84.0
+داشبورد زنده با فیلتر. Layout فقط CSS order. Observer سفارشات دیگر snapshot HTML را برنمی‌گرداند.

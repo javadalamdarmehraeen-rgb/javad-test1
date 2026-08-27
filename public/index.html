@@ -34,7 +34,7 @@
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.83.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="11.84.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       try{
         var GEN="11.81.0";
         var raw=localStorage.getItem("CRM_APP_STATE_V2");
@@ -70,7 +70,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.83.0" />
+  <link rel="stylesheet" href="style.css?v=11.84.0" />
 </head>
 <body>
 
@@ -286,45 +286,33 @@
       <!-- Interactive Chart Analytics Widget (Section 1 Requirement) -->
       <div class="card" id="dashboardChartsWidget" style="margin-bottom: 1.5rem;">
         <div class="card-header">
-          <div class="card-title">
-            <span>📈 نمودارهای تحلیلی ویزیت‌ها، فروش و عملکرد نمایندگان (Chart Analytics)</span>
+          <div class="card-title"><span>📈 گزارش تحلیلی عملکرد شبکه درمان</span></div>
+        </div>
+        <div class="v84-dash-filters" id="v84DashFilters">
+          <div class="form-group"><label class="form-label">سال</label>
+            <select id="v84DashYear" class="form-select" data-nocombo="1"><option value="">همه سال‌ها</option></select>
           </div>
-          <div style="display: flex; gap: 0.5rem;">
-            <button type="button" class="btn btn-outline btn-sm" onclick="alert('🎛️ امکان افزودن، حذف و جابجایی ویجت‌های داشبورد برای مدیر فعال شد.')">
-              <span>🎛️ مدیریت پنل و ویجت‌ها</span>
-            </button>
+          <div class="form-group"><label class="form-label">ماه</label>
+            <select id="v84DashMonth" class="form-select" data-nocombo="1">
+              <option value="">همه ماه‌ها</option>
+              <option value="01">فروردین</option><option value="02">اردیبهشت</option><option value="03">خرداد</option>
+              <option value="04">تیر</option><option value="05">مرداد</option><option value="06">شهریور</option>
+              <option value="07">مهر</option><option value="08">آبان</option><option value="09">آذر</option>
+              <option value="10">دی</option><option value="11">بهمن</option><option value="12">اسفند</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">استان</label>
+            <select id="v84DashProvince" class="form-select" data-nocombo="1"><option value="">همه استان‌ها</option></select>
+          </div>
+          <div class="form-group"><label class="form-label">شهر</label>
+            <select id="v84DashCity" class="form-select" data-nocombo="1"><option value="">همه شهرها</option></select>
+          </div>
+          <div class="form-group"><label class="form-label">منطقه</label>
+            <select id="v84DashDistrict" class="form-select" data-nocombo="1"><option value="">همه مناطق</option></select>
           </div>
         </div>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
-          <div style="background: #f8fafc; padding: 1rem; border-radius: 10px; border: 1px solid var(--border-color);">
-            <h5 style="margin-bottom: 0.75rem; color: #0d9488;">📊 نمودار میله‌ای فروش نمایندگان (ریال)</h5>
-            <div style="display: flex; align-items: flex-end; gap: 1rem; height: 140px; padding: 0.5rem 0; border-bottom: 2px solid var(--border-color);">
-              <div style="flex: 1; text-align: center;">
-                <div style="background: #0d9488; height: 100px; border-radius: 6px 6px 0 0;" title="380,000,000 ریال"></div>
-                <span style="font-size: 0.75rem; font-weight: 700;">جواد علمدار</span>
-              </div>
-              <div style="flex: 1; text-align: center;">
-                <div style="background: #10b981; height: 120px; border-radius: 6px 6px 0 0;" title="410,000,000 ریال"></div>
-                <span style="font-size: 0.75rem; font-weight: 700;">نیلا محرمی</span>
-              </div>
-              <div style="flex: 1; text-align: center;">
-                <div style="background: #f59e0b; height: 60px; border-radius: 6px 6px 0 0;" title="150,000,000 ریال"></div>
-                <span style="font-size: 0.75rem; font-weight: 700;">داوود عقبایی</span>
-              </div>
-            </div>
-          </div>
-
-          <div style="background: #f8fafc; padding: 1rem; border-radius: 10px; border: 1px solid var(--border-color);">
-            <h5 style="margin-bottom: 0.75rem; color: #0d9488;">🥧 نسبت سهم ویزیت پزشکان به داروخانه‌ها</h5>
-            <div style="display: flex; align-items: center; justify-content: center; gap: 1.5rem; height: 140px;">
-              <div style="width: 100px; height: 100px; border-radius: 50%; background: conic-gradient(#0d9488 0% 65%, #10b981 65% 100%); box-shadow: var(--shadow-sm);"></div>
-              <div style="font-size: 0.82rem; color: #334155;">
-                <div><span style="color: #0d9488;">●</span> پزشکان و مطب‌ها (۶۵٪)</div>
-                <div><span style="color: #10b981;">●</span> داروخانه‌ها (۳۵٪)</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="v84-kpi" id="v84DashKpi"></div>
+        <div class="v84-charts" id="v84DashCharts"></div>
       </div>
 
       <!-- Quick Overview Map -->
@@ -2437,9 +2425,9 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.83.0"></script>
-  <script src="crm-app.js?v=11.83.0"></script>
-          <script src="crm-bundle.js?v=11.83.0"></script>
+  <script src="crm-data.js?v=11.84.0"></script>
+  <script src="crm-app.js?v=11.84.0"></script>
+          <script src="crm-bundle.js?v=11.84.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
