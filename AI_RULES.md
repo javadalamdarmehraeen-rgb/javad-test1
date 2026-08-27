@@ -1604,3 +1604,38 @@ Declared by the user and valid for ALL future chats, reinforcing the AI_ACCEPTAN
    git push origin main
    git push gitlab main
 6. The ZIP download beside the page (rule #64) comes only AFTER the verification table is complete.
+
+# 93. WINDOWS ZIP + HTML DOWNLOAD PAGE RULE (PERMANENT — USER-MANDATED 2026-08-26, نوبت ۸۶)
+
+The Arena file-viewer preview of a `.zip` may appear white, binary, or as separate files.
+That is NOT a valid user-facing format.
+
+1. Every delivery ZIP must be a Windows-compatible PKZIP (`create_system=0`, DOS archive
+   bit, no Unix extra fields) named `namayandeelmi-v<version>.zip`.
+2. The live preview on port 8000 must be a Persian HTML download page with a large
+   attachment button (`Content-Disposition: attachment`, `Content-Type: application/zip`,
+   HEAD supported). Direct path `/namayandeelmi-v<version>.zip` must also work.
+3. If the user reports the zip «با فرمت دیگری ظاهر شده», rebuild the Windows ZIP and
+   point them to the green download page / right-click Save link as — do not bump the
+   app version unless CRM code also changed.
+
+
+قانون نوبت ۸۸: جدول عملیات تارگت هرگز داخل عنصری که با innerHTML بازنویسی می‌شود ساخته نشود.
+
+## 11.69.0 / نوبت ۸۹
+سرور منبع حقیقت است؛ حذف با _deletedIds روی ادغام اعمال می‌شود؛ رکوردهای هم‌نام ادغام می‌شوند؛ poll سبک ۲۵ثانیه؛ ویرایش/حذف تارگت و فاصله/سطر زنده.
+
+## 11.70.0 / نوبت ۹۰
+حلقه cache-reset قطع شد. سرور فقط اطلاعات همین دستگاه را نگه می‌دارد (_soloOnly / replace).
+
+## 11.71.0 / نوبت ۹۱
+اسکریپت یک‌بار؛ ۴۰۴ بدون login.html؛ سرور فقط داده همین دستگاه.
+
+## 11.72.0 / نوبت ۹۲
+لیست داروخانه/پزشک باید بعد از پذیرش state سرور دوباره رسم شود. فلش تعداد کالا ممنوع است. ویرایش/حذف تارگت فقط یک handler در capture با stopImmediatePropagation.
+
+## 11.73.0 / نوبت ۹۳
+window.state باید همان شیء زنده crm-app باشد (mutate درجا، نه جایگزینی کور). پرده crm-booting تا adopt سرور. ذخیره تارگت پخش فقط روی live state با تطبیق monthName.
+
+## 11.74.0 / نوبت ۹۴
+گزارش مشاطب از فایل داروخانه: ستون ۱۱ تعداد فروش، ۱۲ جایزه، ۱۰ داروخانه؛ ریال از قیمت برنامه؛ کدهای ۱۸۶۱۰۱ تا ۱۸۶۱۰۷.

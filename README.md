@@ -1,8 +1,8 @@
 # نماینده علمی — طنین طب طاها
 
-> **راهنمای بررسی نسخه جاری:** قبل از هر بررسی GitHub، فایل [`GITHUB_REVIEW_HANDOFF.md`](./GITHUB_REVIEW_HANDOFF.md) و سپس [`PROJECT_GRAPH.md`](./PROJECT_GRAPH.md) را بخوانید. نسخه فعال سورس `11.38.1` است؛ ورودی runtime اصلی `server.js + public/` است و اسکلت Next.js پوشه `src/` مسیر production فعلی نیست.
+> **راهنمای بررسی نسخه جاری:** قبل از هر بررسی GitHub، فایل [`GITHUB_REVIEW_HANDOFF.md`](./GITHUB_REVIEW_HANDOFF.md) و سپس [`PROJECT_GRAPH.md`](./PROJECT_GRAPH.md) را بخوانید. نسخه فعال سورس `11.74.0` است؛ ورودی runtime اصلی `server.js + public/` است و اسکلت Next.js پوشه `src/` مسیر production فعلی نیست.
 >
-> **وضعیت انتشار در 2026-08-22 (نوبت ۶۴):** سورس `11.38.1` آماده push کاربر است — تمام ردهای دامنه قدیمی در کد/کانفیگ به `https://javad-test1.onrender.com` تبدیل شد (شامل keep-alive، sync، موبایل و متن عیب‌یابی). production فعال همین حالا 11.38.0 سرو می‌کند و با push شما 11.38.1 می‌شود. سرویس قدیمی `namayandeelmi-javad.onrender.com` دیگر در برنامه هیچ ردی ندارد. جزئیات در فایل handoff.
+> **وضعیت انتشار در 2026-08-27 (نوبت ۹۳):** سورس `11.74.0` آماده push کاربر است — یک state زنده + پرده تا سرور + ذخیره پایدار تارگت پخش.
 
 این مخزن شامل برنامه CRM/PWA نمایندگان علمی، مدیریت داروخانه/پزشک/سفارش، مسیرها، تارگت، اعلان، پخش و ابزارهای حفظ داده است.
 
