@@ -2307,3 +2307,9 @@ td .btn, .col-ops .btn, .col-ops {
   pointer-events: auto !important;
   z-index: 9;
 }
+
+/* v11.76 heatmap */
+.v76-heat-bar{font-family:Tahoma,Arial,sans-serif}
+.v76-heat-bar .form-select{min-height:34px}
+.crm-heat-canvas{pointer-events:none}
+#pharmacyNamePickBox{display:none!important}

@@ -32,7 +32,7 @@
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.75.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="11.76.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       document.documentElement.classList.add("crm-booting");
       function target(){return location.pathname+location.search+location.hash;}
       function rescue(serverBuild){if(true)return;var u="/cache-reset?to="+encodeURIComponent(target())+"&build="+encodeURIComponent(serverBuild||BUILD)+"&t="+Date.now();location.replace(u);}
@@ -55,7 +55,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.75.0" />
+  <link rel="stylesheet" href="style.css?v=11.76.0" />
 </head>
 <body>
 
@@ -351,6 +351,11 @@
         </div>
 
         <form id="formPharmacy" onsubmit="return false;" novalidate autocomplete="off">
+          <div class="crm-autofill-trap" aria-hidden="true" style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden">
+            <input type="text" name="username" autocomplete="username" tabindex="-1" value="">
+            <input type="password" name="password" autocomplete="current-password" tabindex="-1" value="">
+          </div>
+
           <input type="hidden" id="pharmacyEditId" value="" />
           <div class="form-grid">
             <div class="form-group">
@@ -361,26 +366,26 @@
             <!-- Cascading Provinces / Cities / Sorted Districts (Req 4) -->
             <div class="form-group">
               <label class="form-label" for="pharmacyProvince">نام استان * (۳۱ استان کشور - فقط انتخاب کنید)</label>
-              <select id="pharmacyProvince" class="form-select dropdown-auto-clear" autocomplete="off" data-lpignore="true" data-1p-ignore="true" required>
+              <select id="pharmacyProvince" class="form-select dropdown-auto-clear" data-nocombo="1" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-form-type="other" required>
                 <option value="">انتخاب استان...</option>
               </select>
             </div>
             <div class="form-group">
               <label class="form-label" for="pharmacyCity">شهر (شهرهای همان استان - فقط انتخاب کنید)</label>
-              <select id="pharmacyCity" class="form-select dropdown-auto-clear" autocomplete="off" data-lpignore="true" data-1p-ignore="true" required>
+              <select id="pharmacyCity" class="form-select dropdown-auto-clear" data-nocombo="1" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-form-type="other" required>
                 <option value="">ابتدا استان را انتخاب کنید</option>
               </select>
             </div>
             <div class="form-group">
               <label class="form-label" for="pharmacyDistrict">منطقه (مناطق همان شهر - فقط انتخاب کنید)</label>
-              <select id="pharmacyDistrict" class="form-select dropdown-auto-clear" autocomplete="off" data-lpignore="true" data-1p-ignore="true" required>
+              <select id="pharmacyDistrict" class="form-select dropdown-auto-clear" data-nocombo="1" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-form-type="other" required>
                 <option value="">ابتدا شهر را انتخاب کنید</option>
               </select>
             </div>
 
             <div class="form-group">
               <label class="form-label" for="pharmacyName">نام داروخانه *</label>
-              <input type="text" id="pharmacyName" class="form-input" placeholder="مثال: داروخانه دکتر عرفانی..." required autocomplete="off" data-simple-name="1" />
+              <input type="text" id="pharmacyName" class="form-input" placeholder="مثال: داروخانه دکتر عرفانی..." required autocomplete="off" data-simple-name="1" data-lpignore="true" data-1p-ignore="true" data-form-type="other" name="crm-pharmacy-title" spellcheck="false" />
             </div>
             <div class="form-group">
               <label class="form-label" for="pharmacyPhone">شماره ثابت داروخانه (...۰۲۱)</label>
@@ -555,6 +560,11 @@
         </div>
 
         <form id="formDoctor" onsubmit="return false;" novalidate autocomplete="off">
+          <div class="crm-autofill-trap" aria-hidden="true" style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden">
+            <input type="text" name="username" autocomplete="username" tabindex="-1" value="">
+            <input type="password" name="password" autocomplete="current-password" tabindex="-1" value="">
+          </div>
+
           <input type="hidden" id="doctorEditId" value="" />
           <div class="form-grid">
             <div class="form-group">
@@ -563,7 +573,7 @@
             </div>
             <div class="form-group">
               <label class="form-label" for="doctorName">نام پزشک / مطب *</label>
-              <input type="text" id="doctorName" class="form-input" placeholder="مثال: دکتر کاوه سعیدی" required autocomplete="off" data-simple-name="1" />
+              <input type="text" id="doctorName" class="form-input" placeholder="مثال: دکتر کاوه سعیدی" required autocomplete="off" data-simple-name="1" data-lpignore="true" data-1p-ignore="true" data-form-type="other" name="crm-doctor-title" spellcheck="false" />
             </div>
             <div class="form-group">
               <label class="form-label" for="doctorSpecialty">تخصص *</label>
@@ -577,19 +587,19 @@
             <!-- Cascading Provinces / Cities / Sorted Districts -->
             <div class="form-group">
               <label class="form-label" for="doctorProvince">استان *</label>
-              <select id="doctorProvince" class="form-select dropdown-auto-clear" autocomplete="off" data-lpignore="true" data-1p-ignore="true" required>
+              <select id="doctorProvince" class="form-select dropdown-auto-clear" data-nocombo="1" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-form-type="other" required>
                 <option value="">انتخاب استان...</option>
               </select>
             </div>
             <div class="form-group">
               <label class="form-label" for="doctorCity">شهر *</label>
-              <select id="doctorCity" class="form-select dropdown-auto-clear" autocomplete="off" data-lpignore="true" data-1p-ignore="true" required>
+              <select id="doctorCity" class="form-select dropdown-auto-clear" data-nocombo="1" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-form-type="other" required>
                 <option value="">ابتدا استان را انتخاب کنید</option>
               </select>
             </div>
             <div class="form-group">
               <label class="form-label" for="doctorDistrict">منطقه (مرتب بدون تکرار) *</label>
-              <select id="doctorDistrict" class="form-select dropdown-auto-clear" autocomplete="off" data-lpignore="true" data-1p-ignore="true" required>
+              <select id="doctorDistrict" class="form-select dropdown-auto-clear" data-nocombo="1" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-form-type="other" required>
                 <option value="">ابتدا شهر را انتخاب کنید</option>
               </select>
             </div>
@@ -759,6 +769,11 @@
         </div>
 
         <form id="formOrder" onsubmit="return false;" novalidate autocomplete="off">
+          <div class="crm-autofill-trap" aria-hidden="true" style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden">
+            <input type="text" name="username" autocomplete="username" tabindex="-1" value="">
+            <input type="password" name="password" autocomplete="current-password" tabindex="-1" value="">
+          </div>
+
           <input type="hidden" id="orderEditId" value="" />
           <input type="hidden" id="orderPharmacyMatchedId" value="" />
 
@@ -785,19 +800,19 @@
 
             <div class="form-group">
               <label class="form-label" for="orderProvince">استان *</label>
-              <select id="orderProvince" class="form-select dropdown-auto-clear" autocomplete="off" data-lpignore="true" data-1p-ignore="true">
+              <select id="orderProvince" class="form-select dropdown-auto-clear" data-nocombo="1" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-form-type="other">
                 <option value="">انتخاب استان...</option>
               </select>
             </div>
             <div class="form-group">
               <label class="form-label" for="orderCity">شهر *</label>
-              <select id="orderCity" class="form-select dropdown-auto-clear" autocomplete="off" data-lpignore="true" data-1p-ignore="true">
+              <select id="orderCity" class="form-select dropdown-auto-clear" data-nocombo="1" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-form-type="other">
                 <option value="">ابتدا استان را انتخاب کنید</option>
               </select>
             </div>
             <div class="form-group">
               <label class="form-label" for="orderDistrict">منطقه (مرتب بدون تکرار) *</label>
-              <select id="orderDistrict" class="form-select dropdown-auto-clear" autocomplete="off" data-lpignore="true" data-1p-ignore="true">
+              <select id="orderDistrict" class="form-select dropdown-auto-clear" data-nocombo="1" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-form-type="other">
                 <option value="">ابتدا شهر را انتخاب کنید</option>
               </select>
             </div>
@@ -961,7 +976,14 @@
           ثبت تردد، ویزیت‌ها و اقدامات لحظه‌ای انجام‌شده توسط تمامی نمایندگان در شبکه درمان.
         </p>
         <div id="activityChartBox" class="activity-chart-box"></div>
-        <div id="map-activity-log" class="map-container" style="height:320px;margin-bottom:1rem;"></div>
+        <div id="v76HeatBar" class="v76-heat-bar" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#f0fdfa;border:1px solid #99f6e4;border-radius:10px;padding:8px 10px;margin:0 0 10px">
+          <strong style="color:#0f766e">🌡️ هیت‌مپ فعالیت</strong>
+          <label style="font-size:12px">نماینده</label>
+          <select id="v76HeatRep" class="form-select" data-nocombo="1" style="max-width:200px"><option value="">همه نمایندگان</option></select>
+          <button type="button" id="v76HeatAll" class="btn btn-primary btn-sm">همه نمایندگان</button>
+          <span id="v76HeatStatus" style="font-size:12px;color:#0f766e">نقاط فعالیت روی نقشه به‌صورت هیت‌مپ دیده می‌شود.</span>
+        </div>
+        <div id="map-activity-log" class="map-container" style="height:420px;margin-bottom:1rem;"></div>
         <div class="table-responsive">
           <table class="data-table">
             <thead>
@@ -992,20 +1014,20 @@
           <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: flex-end;">
             <div>
               <label class="form-label" style="margin:0 0 4px;">استان</label>
-              <select id="mapFilterProvince" class="form-select dropdown-auto-clear" style="width: 150px;">
+              <select id="mapFilterProvince" class="form-select dropdown-auto-clear" data-nocombo="1" autocomplete="off" style="width: 150px;">
                 <option value="ایران">ایران</option>
                 <option value="">همه استان‌ها</option>
               </select>
             </div>
             <div>
               <label class="form-label" style="margin:0 0 4px;">شهر</label>
-              <select id="mapFilterCity" class="form-select dropdown-auto-clear" style="width: 140px;">
+              <select id="mapFilterCity" class="form-select dropdown-auto-clear" data-nocombo="1" autocomplete="off" style="width: 140px;">
                 <option value="">همه شهرها</option>
               </select>
             </div>
             <div>
               <label class="form-label" style="margin:0 0 4px;">منطقه</label>
-              <select id="mapFilterDistrict" class="form-select dropdown-auto-clear" style="width: 140px;">
+              <select id="mapFilterDistrict" class="form-select dropdown-auto-clear" data-nocombo="1" autocomplete="off" style="width: 140px;">
                 <option value="">همه مناطق</option>
               </select>
             </div>
@@ -2340,9 +2362,9 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.75.0"></script>
-  <script src="crm-app.js?v=11.75.0"></script>
-          <script src="crm-bundle.js?v=11.75.0"></script>
+  <script src="crm-data.js?v=11.76.0"></script>
+  <script src="crm-app.js?v=11.76.0"></script>
+          <script src="crm-bundle.js?v=11.76.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />

@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.75.0";
+const APP_VERSION = "11.76.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -359,12 +359,62 @@ const server = http.createServer((req, res) => {
     return send(req, res, 200, JSON.stringify({ status: "success", data }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
   }
 
+  function bulkSig(r) { try { return (r && r.id) ? ("id:" + r.id) : JSON.stringify(r); } catch (e) { return String(r); } }
+  function bulkUnion(a, b) {
+    const seen = Object.create(null), out = [];
+    function add(r) { if (r == null) return; const k = bulkSig(r); if (seen[k]) return; seen[k] = 1; out.push(r); }
+    (Array.isArray(a) ? a : []).forEach(add); (Array.isArray(b) ? b : []).forEach(add);
+    return out;
+  }
+  function bulkCount(b) {
+    if (!b) return 0;
+    let n = 0; const s = b.snapp || {};
+    n += (s.rows || []).length + (s.topups || []).length + (s.tripImports || []).length + (s.topupImports || []).length;
+    Object.keys(b.distributors || {}).forEach((id) => {
+      const d = b.distributors[id] || {};
+      n += (d.pharmacyRows || []).length + (d.pharmacyImports || []).length + (d.inventoryRows || []).length + (d.inventoryImports || []).length;
+    });
+    return n;
+  }
+  function mergeBulkVault(existing, incoming) {
+    if (!incoming || typeof incoming !== "object") return existing;
+    const purge = incoming._managerPurge;
+    if (purge === true) return incoming;
+    function purged(path) { return !!(purge && typeof purge === "object" && purge[path]); }
+    if (!existing || typeof existing !== "object" || bulkCount(existing) === 0) return incoming;
+    if (bulkCount(incoming) === 0 && !purge) return existing;
+    const out = { snapp: Object.assign({}, existing.snapp || {}, incoming.snapp || {}), distributors: Object.assign({}, existing.distributors || {}), savedAt: Math.max(Number(existing.savedAt) || 0, Number(incoming.savedAt) || 0, Date.now()) };
+    const es = existing.snapp || {}, ins = incoming.snapp || {};
+    ["rows", "topups", "tripImports", "topupImports", "files", "topupFiles"].forEach((k) => {
+      out.snapp[k] = purged("snapp." + k) ? (ins[k] || []) : bulkUnion(es[k], ins[k]);
+    });
+    ["headers", "topupHeaders"].forEach((k) => { if ((ins[k] || []).length) out.snapp[k] = ins[k]; else if ((es[k] || []).length) out.snapp[k] = es[k]; });
+    const ids = new Set([...Object.keys(existing.distributors || {}), ...Object.keys(incoming.distributors || {})]);
+    ids.forEach((id) => {
+      const a = (existing.distributors || {})[id] || {}, b = (incoming.distributors || {})[id] || {};
+      out.distributors[id] = Object.assign({}, a, b);
+      ["pharmacyRows", "pharmacyImports", "inventoryRows", "inventoryImports"].forEach((k) => {
+        out.distributors[id][k] = purged("distributors." + id + "." + k) ? (b[k] || []) : bulkUnion(a[k], b[k]);
+      });
+      ["pharmacyHeaders", "inventoryHeaders"].forEach((k) => { if ((b[k] || []).length) out.distributors[id][k] = b[k]; });
+      if (purged("distributors." + id + ".inventoryImport")) out.distributors[id].inventoryImport = b.inventoryImport || null;
+      else if (!out.distributors[id].inventoryImport && a.inventoryImport) out.distributors[id].inventoryImport = a.inventoryImport;
+    });
+    delete out._managerPurge;
+    return out;
+  }
   if (pathname === "/api/bulk" && req.method === "POST") {
     if (rateLimited(ip + ":bulk")) return send(req, res, 429, JSON.stringify({ status: "error", message: "too many requests" }), "application/json; charset=utf-8");
     let body = "";
     req.on("data", (c) => { body += c; if (body.length > 64 * 1024 * 1024) req.destroy(); });
     req.on("end", () => {
-      try { const data = sanitizeJsonValue(JSON.parse(body)); writeJsonAtomic(USER_BULK_PATH, data); send(req, res, 200, JSON.stringify({ status: "success" }), "application/json; charset=utf-8", { "Cache-Control": "no-store" }); }
+      try {
+        const data = sanitizeJsonValue(JSON.parse(body));
+        const existing = fs.existsSync(USER_BULK_PATH) ? readJsonSafe(USER_BULK_PATH) : null;
+        const merged = mergeBulkVault(existing, data);
+        writeJsonAtomic(USER_BULK_PATH, merged);
+        send(req, res, 200, JSON.stringify({ status: "success", kept: bulkCount(merged) }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
+      }
       catch (err) { send(req, res, 400, JSON.stringify({ status: "error", message: err.message }), "application/json; charset=utf-8"); }
     });
     return;
