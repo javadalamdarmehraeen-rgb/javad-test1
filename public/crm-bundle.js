@@ -10855,7 +10855,7 @@ button.v19-gps svg{display:block}
     } catch (e) {
       push(diagRow("حافظه محلی (localStorage)", "bad", "خطا: " + esc(e.message), "حالت خصوصی/حریم مرورگرstorage را محدود کرده است."));
     }
-    var sess = sessionStorage.getItem("crmLoggedIn") === "1";
+    var sess = sessionStorage.getItem("crmLoggedIn") === "1"; try{if(!sess&&localStorage.getItem("CRM_LOGIN_OK")==="1"){var exp=Number(localStorage.getItem("CRM_LOGIN_EXP")||0);if(!exp||exp>Date.now())sess=true;}}catch(eSess){}
     push(diagRow("نشست ورود", sess ? "ok" : "warn",
       sess ? ("کاربر: " + esc(sessionStorage.getItem("crmUserName") || "—") + " | نقش: " + esc(sessionStorage.getItem("crmUserRole") || "—")) : "ورود فعال نیست",
       sess ? "" : "از صفحه ورود وارد شوید."));
@@ -12146,7 +12146,7 @@ button.v19-gps svg{display:block}
   };
   function dynamicShareFields(kind) {
     var S = st() || {}, out = [], seen = {};
-    function add(id, label, getter) { if (!id || seen[id]) return; seen[id] = true; out.push({ id:id, label:label || id, get:getter }); }
+    function add(id, label, getter) { if (!id || seen[id]) return; var lab=String(label||id).replace(/\s+/g," ").trim(); if(seen["L:"+lab]) return; seen[id]=true; seen["L:"+lab]=true; out.push({ id:id, label:lab || id, get:getter }); }
     (SHARE_CORE[kind] || []).forEach(function (x) { add(x[0], x[1], function (r) {
       if (x[2] === "__manager" || x[2] === "__managerPhone") {
         var ph = ((st().pharmacies || []).filter(function (p) { return (r.pharmacyId && p.id === r.pharmacyId) || p.name === r.pharmacyName; })[0]) || {};
@@ -12420,7 +12420,7 @@ button.v19-gps svg{display:block}
     ["قانون حذف‌نشدن داده‌ها و بازنگشتن داده‌های حذف‌شده","applied"],
     ["همگام‌سازی چند-سیستمی (merge+ارسال خودکار) + دکمه مخفی‌کردن فیلد + اصلاح پاک‌کردن + تطبیق هم‌نام داروخانه — اعمال‌شده در 11.59.0","applied"]
   ];
-  function renderChangeLogV41(){var host=$("v41ChangeHost");if(!host)return;host.innerHTML=V41_CHANGES.map(function(c,i){var st=c[1]==="applied"?"<span style='color:#059669;font-weight:700'>✅ اعمال شد در 11.41.0</span>":(c[1]==="partial"?"<span style='color:#d97706;font-weight:700'>🟡 بخشی اعمال شد</span>":"<span style='color:#64748b'>⏳ در صف پیاده‌سازی (نسخه‌های بعدی)</span>");return "<div style='border:1px solid #cbd5e1;border-radius:8px;padding:8px;margin:6px 0;display:flex;justify-content:space-between;gap:10px;align-items:center'><div>"+(i+1)+". "+esc(c[0])+"</div><div style='display:flex;gap:10px;align-items:center;white-space:nowrap'>"+st+"<label style='font-size:12px'><input type='checkbox' class='v41-unapplied' data-i='"+i+"'> اعمال نشده</label></div></div>";}).join("");}
+  function renderChangeLogV41(){var host=$("v41ChangeHost");if(!host)return;host.innerHTML=V41_CHANGES.map(function(c,i){var st=c[1]==="applied"?"<span style='color:#059669;font-weight:700'>✅ اعمال شد</span>":(c[1]==="partial"?"<span style='color:#d97706;font-weight:700'>🟡 بخشی اعمال شد</span>":"<span style='color:#64748b'>⏳ در صف پیاده‌سازی (نسخه‌های بعدی)</span>");return "<div style='border:1px solid #cbd5e1;border-radius:8px;padding:8px;margin:6px 0;display:flex;justify-content:space-between;gap:10px;align-items:center'><div>"+(i+1)+". "+esc(c[0])+"</div><div style='display:flex;gap:10px;align-items:center;white-space:nowrap'>"+st+"<label style='font-size:12px'><input type='checkbox' class='v41-unapplied' data-i='"+i+"'> اعمال نشده</label></div></div>";}).join("");}
   function collectUnappliedV41(){var v="11.42.0";try{var m=document.querySelector('script[src*="crm-bundle.js?v="]');if(m&&m.src.split("?v=")[1])v=m.src.split("?v=")[1];}catch(e){}var out={version:v,at:new Date().toISOString(),unapplied:[]};document.querySelectorAll(".v41-unapilled, .v41-unapplied").forEach(function(cb){if(cb.checked)out.unapplied.push({index:Number(cb.dataset.i)+1,title:V41_CHANGES[Number(cb.dataset.i)][0]});});out.appliedCount=V41_CHANGES.filter(function(c){return c[1]==="applied";}).length;out.pendingCount=V41_CHANGES.filter(function(c){return c[1]==="pending";}).length;return out;}
   function sendUnappliedReportV41(){var r=collectUnappliedV41();fetch("/api/feedback",{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1"},body:JSON.stringify(r)}).then(function(res){var box=$("v41ReportStatus");if(box)box.textContent=res.ok?("✅ گزارش ذخیره شد ("+r.unapplied.length+" بند اعمال‌نشده) — هوش مصنوعی جلسه بعد آن را می‌خواند."):"⚠️ خطا در ارسال";}).catch(function(){var box=$("v41ReportStatus");if(box)box.textContent="⚠️ ارسال نشد؛ فایل دانلودی را برای پشتیبانی بفرستید.";});}
   /* v11.43 / turn 75: موتور تشخیص «چرا تغییرات اعمال نمی‌شود» */
@@ -12491,7 +12491,7 @@ button.v19-gps svg{display:block}
   function routeSelected(sel){if(!sel)return[];if(sel.tagName==="SELECT")return Array.prototype.filter.call(sel.options,function(o){return o.selected;}).map(function(o){return o.value;});return Array.prototype.map.call(sel.querySelectorAll("input[type=checkbox]:checked"),function(c){return c.value;});}
   function routeFill(sel,values,selected){if(!sel)return;var set={};(selected||[]).forEach(function(x){set[norm(x)]=1;});
     if(sel.tagName==="SELECT"){sel.innerHTML="";(values||[]).forEach(function(v){var o=document.createElement("option");o.value=v;o.textContent=v;o.selected=!!set[norm(v)];sel.appendChild(o);});return;}
-    sel.innerHTML=(values||[]).map(function(v){return "<label class='route-check'><input type='checkbox' value='"+esc(v)+"'"+(set[norm(v)]?" checked":"")+"><span>"+esc(v)+"</span></label>";}).join("");}
+    var allLab=sel.querySelector("label.v85-all");var allHtml=allLab?allLab.outerHTML:"";var body=(values||[]).map(function(v){return "<label class='route-check'><input type='checkbox' value='"+esc(v)+"'"+(set[norm(v)]?" checked":"")+"><span>"+esc(v)+"</span></label>";}).join("");var html=allHtml+body;if(sel.getAttribute("data-v87sig")===html)return;sel.setAttribute("data-v87sig",html);sel.innerHTML=html;}
   function routeGeoValues(kind,parents,cities){var out=[],geo=typeof IRAN_GEO_DATA!=="undefined"?IRAN_GEO_DATA:{},extra=(st()&&st().geoExtras)||{};function add(v){if(v&&out.indexOf(v)<0)out.push(v);}if(kind==="province"){Object.keys(geo).forEach(add);Object.keys(extra).forEach(add);}else if(kind==="city"){(parents||[]).forEach(function(p){Object.keys(geo[p]||{}).forEach(add);Object.keys(extra[p]||{}).forEach(add);});}else{(parents||[]).forEach(function(p){(cities||[]).forEach(function(c){((geo[p]||{})[c]||[]).forEach(add);((extra[p]||{})[c]||[]).forEach(add);});});}var key=kind==="province"?"استان":kind==="city"?"شهر":"منطقه",rec=seedGlobalOptions(key);(rec.values||[]).forEach(function(x){add(x.value);});return out.sort(function(a,b){return String(a).localeCompare(String(b),"fa");});}
   function routeLabelFromUser(u){var base=(u.activityCities||[]).length?u.activityCities:(u.activityProvinces||[]),districts=u.activityDistrictList||[];return base.join("، ")+(districts.length?(" ("+districts.join("، ")+")"):"");}
   function setupRepresentativeRoutes(){var card=$("representativeRoutesCard");if(!card)return;card.style.display=v20IsManager()?"":"none";if(!v20IsManager())return;var rep=$("routeManagerRep"),ps=$("routeManagerProvince"),cs=$("routeManagerCity"),ds=$("routeManagerDistrict"),btn=$("btnSaveRepresentativeRoute"),S=st(),users=(S.users||[]).filter(function(u){return u.username!=="admin"&&!/مدیر/.test(String(u.role||""));}),cur=rep&&rep.value;routeFill(rep,users.map(function(u){return u.id;}),[cur]);Array.prototype.forEach.call(rep.options,function(o){var u=users.filter(function(x){return String(x.id)===String(o.value);})[0];if(u)o.textContent=u.fullName+(u.activityRouteLabel?(" ("+u.activityRouteLabel+")"):"");});if(cur&&users.some(function(u){return String(u.id)===String(cur);}))rep.value=cur;else if(rep.options.length)rep.selectedIndex=0;function load(){var u=users.filter(function(x){return String(x.id)===String(rep.value);})[0];if(!u)return;var prov=(u.activityProvinces||[]).concat(u.activityProvince||[]).filter(Boolean),cities=(u.activityCities||[]).concat(u.activityCity||[]).filter(Boolean),districts=(u.activityDistrictList||[]).concat(u.activityDistricts?String(u.activityDistricts).split(/[,،]/):[]).map(function(x){return String(x).trim();}).filter(Boolean);routeFill(ps,routeGeoValues("province"),prov);routeFill(cs,routeGeoValues("city",prov),cities);routeFill(ds,routeGeoValues("district",prov,cities),districts);}if(!card.dataset.bound){card.dataset.bound="1";rep.onchange=load;ps.onchange=function(){var prov=routeSelected(ps);routeFill(cs,routeGeoValues("city",prov),routeSelected(cs));routeFill(ds,routeGeoValues("district",prov,routeSelected(cs)),routeSelected(ds));};cs.onchange=function(){routeFill(ds,routeGeoValues("district",routeSelected(ps),routeSelected(cs)),routeSelected(ds));};btn.onclick=function(){var u=(st().users||[]).filter(function(x){return String(x.id)===String(rep.value);})[0];if(!u)return alert("نماینده را انتخاب کنید.");u.activityProvinces=routeSelected(ps);u.activityCities=routeSelected(cs);u.activityDistrictList=routeSelected(ds);u.activityProvince=u.activityProvinces[0]||"";u.activityCity=u.activityCities[0]||"";u.activityDistricts=u.activityDistrictList.join("، ");u.activityRouteLabel=routeLabelFromUser(u);save();syncRepsFromUsers();syncRepresentativeSelectors();try{window.renderUserCardsList();}catch(e){}setupRepresentativeRoutes();v20Toast("✅ مسیرهای نماینده ذخیره شد.");};}load();}
@@ -18229,10 +18229,13 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     scanGeoSelects();
     dedupeRouteOps();
     if(window.MutationObserver){
-      var t=null;
+      var t=null,busy=0;
       new MutationObserver(function(){
+        if(busy)return;
+        var pane=$("tab-define-routes");
+        if(!pane||!pane.classList.contains("active"))return;
         clearTimeout(t);
-        t=setTimeout(function(){enhanceAllBoxes();dedupeRouteOps();scanGeoSelects();},50);
+        t=setTimeout(function(){busy=1;try{enhanceAllBoxes();dedupeRouteOps();}finally{setTimeout(function(){busy=0;},80);}},220);
       }).observe(document.body,{childList:true,subtree:true});
     }
     if(window.renderRepRoutesOverview&&!window.renderRepRoutesOverview._v85){
@@ -18287,4 +18290,159 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   },true);
   var badge=$("crmBuildBadge");
   if(badge)badge.textContent="نسخه ۱۱.۸۶.۰";
+})();
+
+/* v11.87.0: توقف لرزش مسیر + حذف فیلد تکراری پیام‌رسان + changelog زنده + نشست ورود + پشتیبان ابری + جمع تارگت پخش + مرخصی مرتب */
+(function(){
+  "use strict";
+  function $(id){return document.getElementById(id);}
+  function restoreLoginSession(){
+    try{
+      if(sessionStorage.getItem("crmLoggedIn")==="1")return true;
+      if(localStorage.getItem("CRM_LOGIN_OK")==="1"){
+        var exp=Number(localStorage.getItem("CRM_LOGIN_EXP")||0);
+        if(!exp||exp>Date.now()){
+          sessionStorage.setItem("crmLoggedIn","1");
+          return true;
+        }
+      }
+    }catch(e){}
+    return false;
+  }
+  restoreLoginSession();
+
+  var V87_CHANGES=[
+    ["تب تعریف مسیر نمایندگان: توقف لرزش شدید با قطع حلقه بازنویسی چک‌باکس جغرافیا","applied"],
+    ["تب پیام‌رسان‌ها: فیلدهای تکراری «تعیین اطلاعات مجاز برای ارسال» حذف شد","applied"],
+    ["تب تغییرات در نسخه جدید در هر نسخه (از جمله ۱۱.۸۷) به‌روز می‌شود","applied"],
+    ["تب عیب‌یابی: نشست ورود با CRM_LOGIN_OK دیگر هشدار «ورود فعال نیست» نمی‌دهد","applied"],
+    ["پشتیبان پیشنهادی: سرور ابری با snapshot روزانه ۱۴ روز — بدون دغدغه پوشه این رایانه","applied"],
+    ["تب تارگت فروش پخش‌ها: کادر «جمع تارگت همه پخش‌ها» دوباره ثابت و همیشه نمایان","applied"],
+    ["تب مرخصی‌ها: ترتیب فیلد قفل شد؛ لیبل از ساعت / تا ساعت؛ ثانیه حذف شد","applied"],
+    ["نمونه سیستم/نسخه قدیمی فقط با شناسه و نام شناخته‌شده حذف می‌شود؛ داروخانه واقعی کاربر خالی نمی‌شود","applied"],
+    ["نسخه ۱۱.۸۶: داروخانه کاربر حفظ + کلیک مسیر پایدار + نشان نسخه یکسان موبایل/ویندوز","applied"],
+    ["نسخه ۱۱.۸۵: یک ستون عملیات مسیر + جستجوی جغرافیا + گزینه همه + داشبورد خوانا","applied"],
+    ["نسخه ۱۱.۸۴: داشبورد زنده با فیلتر سال/ماه/جغرافیا و توقف پرش تایپ","applied"],
+    ["نسخه ۱۱.۸۳: کاشی نقشه از خود سرور + ورود پایدار موبایل + اینترنت ایران","applied"]
+  ];
+  function paintChangelogV87(){
+    var host=$("v41ChangeHost"); if(!host)return;
+    host.innerHTML=V87_CHANGES.map(function(c,i){
+      var st=c[1]==="applied"?"<span style='color:#059669;font-weight:700'>✅ اعمال شد</span>":"<span style='color:#64748b'>⏳ در صف</span>";
+      return "<div class='v87-change-row' style='border:1px solid #cbd5e1;border-radius:8px;padding:8px;margin:6px 0;display:flex;justify-content:space-between;gap:10px;align-items:center'><div>"+(i+1)+". "+c[0]+"</div><div style='display:flex;gap:10px;align-items:center;white-space:nowrap'>"+st+"<label style='font-size:12px'><input type='checkbox' class='v41-unapplied' data-i='"+i+"'> اعمال نشده</label></div></div>";
+    }).join("");
+  }
+  window.paintChangelogV87=paintChangelogV87;
+
+  function dedupeShareManager(){
+    var box=$("v20ShareManager"); if(!box)return;
+    box.querySelectorAll("fieldset").forEach(function(fs){
+      var seen={};
+      Array.prototype.slice.call(fs.querySelectorAll("label.v20-share-item")).forEach(function(lab){
+        var t=String(lab.textContent||"").replace(/\s+/g," ").trim();
+        if(!t)return;
+        if(seen[t]){if(lab.parentNode)lab.parentNode.removeChild(lab);}
+        else seen[t]=1;
+      });
+    });
+  }
+  window.v87ShareDedupe=dedupeShareManager;
+
+  function ensureDistGrand(){
+    var pane=$("tab-dist-targets"); if(!pane)return;
+    var grand=$("v72DistGrandBox");
+    if(!grand){
+      grand=document.createElement("div");
+      grand.id="v72DistGrandBox";
+      grand.className="card v72-dist-grand v87-dist-grand";
+      pane.appendChild(grand);
+    }
+    grand.style.setProperty("display","block","important");
+    grand.hidden=false;
+    if(!grand.querySelector(".card-title")){
+      var t=document.createElement("div"); t.className="card-title"; t.textContent="جمع تارگت همه پخش‌ها";
+      grand.insertBefore(t, grand.firstChild);
+    }
+    try{if(typeof window.paintV73TargetOps==="function")window.paintV73TargetOps();}catch(e){}
+    try{if(typeof window.paintV72TargetOps==="function")window.paintV72TargetOps();}catch(e){}
+  }
+
+  function lockLeavesLayout(){
+    var form=$("formLeaveRequest"); if(!form)return;
+    var grid=form.querySelector(":scope > .form-grid")||form.querySelector(".form-grid");
+    if(!grid)return;
+    grid.style.setProperty("display","grid","important");
+    grid.style.setProperty("grid-template-columns","1fr 1fr","important");
+    Array.prototype.forEach.call(grid.children,function(g){
+      if(!g.classList||!g.classList.contains("form-group"))return;
+      g.style.removeProperty("order");
+      g.style.removeProperty("grid-row");
+    });
+    ["leaveFromTime","leaveToTime"].forEach(function(id){
+      var el=$(id); if(!el)return;
+      el.setAttribute("step","60");
+      try{if(el.value&&el.value.length>5)el.value=el.value.slice(0,5);}catch(e){}
+    });
+    var lab;
+    lab=document.querySelector("label[for='leaveFromTime']"); if(lab)lab.textContent="از ساعت";
+    lab=document.querySelector("label[for='leaveToTime']"); if(lab)lab.textContent="تا ساعت";
+  }
+
+  function paintBackupStatus(){
+    var el=$("v87BackupStatus"); if(!el)return;
+    fetch("/api/backup/status",{cache:"no-store"}).then(function(r){return r.json();}).then(function(j){
+      if(!j||!j.cloud){el.textContent="پشتیبان ابری در حال آماده‌سازی است.";return;}
+      el.textContent="پشتیبان ابری فعال"+(j.latest?(" — آخرین نسخه روزانه: "+String(j.latest).replace("crm-","").replace(".json","")):"")+" | "+(j.days||0)+" روز نگهداری می‌شود.";
+    }).catch(function(){el.textContent="آفلاین هستید؛ به محض وصل شدن، ذخیره روی سرور می‌نشیند.";});
+  }
+
+  if(typeof window.applySavedLayoutV82==="function"&&!window.applySavedLayoutV82._v87){
+    var al=window.applySavedLayoutV82;
+    var w=function(tabId){
+      if(tabId==="tab-leaves"||tabId==="tab-backup"||tabId==="tab-messengers"||tabId==="tab-define-routes")return;
+      return al.apply(this,arguments);
+    };
+    w._v87=true; window.applySavedLayoutV82=w;
+  }
+
+  function wrapSwitch(){
+    if(window.switchTab&&!window.switchTab._v87){
+      var sw=window.switchTab;
+      var w=function(id){
+        var r=sw.apply(this,arguments);
+        setTimeout(function(){
+          restoreLoginSession();
+          if(id==="tab-changelog")paintChangelogV87();
+          if(id==="tab-messengers")dedupeShareManager();
+          if(id==="tab-dist-targets")ensureDistGrand();
+          if(id==="tab-leaves")lockLeavesLayout();
+          if(id==="tab-backup")paintBackupStatus();
+          if(id==="tab-troubleshooting"){try{if(typeof window.testServerConnectivity==="function")window.testServerConnectivity();}catch(e){}}
+        },90);
+        return r;
+      };
+      w._v87=true; window.switchTab=w;
+    }
+  }
+
+  var badge=$("crmBuildBadge");
+  if(badge)badge.textContent="نسخه ۱۱.۸۷.۰";
+
+  function boot(){
+    wrapSwitch();
+    restoreLoginSession();
+    paintChangelogV87();
+    dedupeShareManager();
+    lockLeavesLayout();
+    paintBackupStatus();
+    if($("tab-dist-targets")&&$("tab-dist-targets").classList.contains("active"))ensureDistGrand();
+    setTimeout(function(){dedupeShareManager();lockLeavesLayout();},700);
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,80);});
+  else setTimeout(boot,80);
+  document.addEventListener("click",function(e){
+    if(!e.target||!e.target.closest)return;
+    if(e.target.closest('[data-target="tab-changelog"],[data-target="tab-messengers"],[data-target="tab-dist-targets"],[data-target="tab-leaves"],[data-target="tab-backup"]'))
+      setTimeout(boot,120);
+  },true);
 })();

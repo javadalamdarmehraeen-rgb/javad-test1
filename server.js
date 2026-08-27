@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.86.0";
+const APP_VERSION = "11.87.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -85,12 +85,25 @@ function writeJsonAtomic(filePath, data) {
   fs.renameSync(temp, filePath);
   try { fs.chmodSync(filePath, 0o600); } catch (e) {}
 }
+function snapshotCloudBackup(data) {
+  try {
+    const dir = path.join(RUNTIME_DATA_DIR, "backups");
+    fs.mkdirSync(dir, { recursive: true });
+    const day = new Date().toISOString().slice(0, 10);
+    const dest = path.join(dir, "crm-" + day + ".json");
+    writeJsonAtomic(dest, data);
+    const files = fs.readdirSync(dir).filter(function (f) { return /^crm-\d{4}-\d{2}-\d{2}\.json$/.test(f); }).sort();
+    while (files.length > 14) {
+      try { fs.unlinkSync(path.join(dir, files.shift())); } catch (e0) {}
+    }
+  } catch (e) {}
+}
 function readJsonSafe(filePath) {
   try { return sanitizeJsonValue(JSON.parse(fs.readFileSync(filePath, "utf8"))); } catch (e) { return null; }
 }
 const CRM_MERGE_ARRAYS = ["pharmacies","doctors","orders","products","users","reps","leaves","visits","repRoutes","repHomes","hospitals","notifications","salesTargets","distSalesTargets","activityLog"];
 const LEGACY_SAMPLE_IDS = {"ph-1":1,"ph-2":1,"ph-3":1,"doc-1":1,"doc-2":1,"rep-1":1,"rep-2":1,"rep-3":1,"ord-1":1,"u-2":1,"u-3":1,"u-4":1,"prod-1":1,"prod-2":1,"act-1":1,"act-2":1,"act-3":1,"home-1":1,"home-2":1,"rt-1":1,"rt-2":1,"lv-1":1,"lv-2":1,"v-1":1,"v-2":1,"v-3":1,"h-1":1,"h-2":1,"h-3":1,"h-4":1,"not-1":1,"not-2":1,"tgt-1":1,"tgt-2":1};
-const LEGACY_SAMPLE_NAMES = {"داروخانه دکتر عرفانی":1,"داروخانه شبانه‌روزی رازی":1,"داروخانه دکتر عقبایی":1,"دکتر کاوه سعیدی":1,"دکتر الناز تهرانی":1,"کپسول امپرازول ۲۰ میلی‌گرم":1,"آمپول نوروبیون ویتامین B کمپلکس":1};
+const LEGACY_SAMPLE_NAMES = {"داروخانه دکتر عرفانی":1,"داروخانه شبانه‌روزی رازی":1,"داروخانه دکتر عقبایی":1,"دکتر کاوه سعیدی":1,"دکتر الناز تهرانی":1,"کپسول امپرازول ۲۰ میلی‌گرم":1,"آمپول نوروبیون ویتامین B کمپلکس":1,"داروخانه ۱۳ آبان":1,"داروخانه هلال احمر انقلاب":1,"داروخانه شبانه‌روزی امام رضا":1,"داروخانه شبانه‌روزی کاشانی":1,"داروخانه شبانه‌روزی ولیعصر تبریز":1,"داروخانه شبانه‌روزی گوهردشت":1};
 function stripLegacySample(st) {
   if (!st || typeof st !== "object") return 0;
   let n = 0;
@@ -521,6 +534,7 @@ const server = http.createServer((req, res) => {
         data._unifiedAt = Date.now();
         delete data._soloReplace;
         writeJsonAtomic(SERVER_DATA_PATH, data);
+        snapshotCloudBackup(data);
         return send(req, res, 200, JSON.stringify({ status: "success", data: data, replaced: true }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
       } catch (err) {
         send(req, res, 400, JSON.stringify({ status: "error", message: err.message }), "application/json; charset=utf-8");
@@ -529,6 +543,18 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (pathname === "/api/backup/status" && req.method === "GET") {
+    var bdir = path.join(RUNTIME_DATA_DIR, "backups");
+    var snaps = [];
+    try { snaps = fs.readdirSync(bdir).filter(function (f) { return /^crm-\d{4}-\d{2}-\d{2}\.json$/.test(f); }).sort(); } catch (e1) {}
+    return send(req, res, 200, JSON.stringify({
+      status: "ok",
+      cloud: true,
+      days: snaps.length,
+      latest: snaps.length ? snaps[snaps.length - 1] : null,
+      live: fs.existsSync(SERVER_DATA_PATH)
+    }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
+  }
   if (pathname === "/api/backup" && req.method === "GET") {
     if (!fs.existsSync(SERVER_DATA_PATH)) {
       return send(req, res, 404, JSON.stringify({ status: "error" }), "application/json; charset=utf-8");

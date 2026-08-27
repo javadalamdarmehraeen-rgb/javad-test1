@@ -2367,3 +2367,43 @@ td .btn, .col-ops .btn, .col-ops {
   #v84DashFilters{grid-template-columns:1fr 1fr}
   .v84-charts{grid-template-columns:1fr}
 }
+
+/* v11.87.0: مسیر بدون لرزش + مرخصی مرتب + پشتیبان ابری + جمع تارگت */
+#tab-define-routes .route-check-box { min-height: 140px; contain: layout; }
+#tab-define-routes .form-group { transform: none !important; }
+#tab-leaves #formLeaveRequest > .form-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 14px !important;
+  align-items: start;
+}
+#tab-leaves #formLeaveRequest > .form-grid > .form-group {
+  width: auto !important;
+  max-width: 100% !important;
+  order: unset !important;
+  grid-row: auto !important;
+}
+#tab-leaves #formLeaveRequest > .form-grid > .form-group.full-width { grid-column: 1 / -1 !important; }
+#leaveFromTime::-webkit-datetime-edit-second-field,
+#leaveToTime::-webkit-datetime-edit-second-field { display: none; }
+.v87-time { min-height: 42px; }
+.v87-backup-card {
+  background: #ecfdf5;
+  border: 1.5px solid #6ee7b7;
+  border-radius: 12px;
+  padding: 1rem 1.15rem;
+  margin-bottom: 1rem;
+  color: #065f46;
+}
+.v87-backup-card h4 { margin: 0 0 .5rem; color: #047857; }
+.v87-backup-card ul { margin: .4rem 0 .6rem 1.2rem; }
+.v87-backup-status {
+  background: #fff;
+  border-radius: 8px;
+  padding: .55rem .75rem;
+  font-weight: 700;
+  color: #0f766e;
+}
+.v87-dist-grand { display: block !important; margin: 12px 0; }
+.v20-share-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 6px 12px; }
+#v20ShareManager fieldset + fieldset { margin-top: 8px; }

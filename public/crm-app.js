@@ -46,7 +46,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "11.86.0";
+const CRM_APP_VERSION = "11.87.0";
 try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
@@ -1932,9 +1932,13 @@ function setupLeavesModule() {
     });
   }
 
-  if (typeSel && hoursGrp) {
+  if (typeSel) {
     typeSel.addEventListener("change", () => {
-      hoursGrp.style.display = typeSel.value.includes("ساعتی") ? "block" : "none";
+      var hourly = typeSel.value.includes("ساعتی");
+      ["leaveFromTimeGroup","leaveToTimeGroup"].forEach(function(id){
+        var g = document.getElementById(id);
+        if (g) g.style.opacity = hourly ? "1" : "0.85";
+      });
     });
   }
 
@@ -3084,7 +3088,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.86.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.87.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;

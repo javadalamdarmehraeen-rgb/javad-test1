@@ -75,3 +75,5 @@ __pycache__/
 *.pyc
 
 download-v11.*.html
+backups/
+**/backups/

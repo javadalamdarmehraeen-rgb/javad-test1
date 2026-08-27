@@ -14,10 +14,10 @@
 
 ## ب) کارت فایل‌ها (نقش + توابع + نام‌های window که می‌سازد)
 
-### `server.js` (37754 بایت)
+### `server.js` (39233 بایت)
 - نقش: سرور سبک Node.js برای Render — ورود جدا، gzip، health، ژئوکد، محدودیت نرخ
-- تعداد توابع داخلی: 35
-- endpointهای سرور: `/api/backup`, `/api/backup/email`, `/api/bulk`, `/api/bulk`, `/api/feedback`, `/api/feedback`, `/api/push/public-key`, `/api/push/send`, `/api/push/subscribe`, `/api/state`, `/api/state`
+- تعداد توابع داخلی: 36
+- endpointهای سرور: `/api/backup`, `/api/backup/email`, `/api/backup/status`, `/api/bulk`, `/api/bulk`, `/api/feedback`, `/api/feedback`, `/api/push/public-key`, `/api/push/send`, `/api/push/subscribe`, `/api/state`, `/api/state`
 
 ### `scripts/build-sw.mjs` (2656 بایت)
 - نقش: #!/usr/bin/env node
@@ -47,14 +47,14 @@
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (185530 بایت)
+### `public/crm-app.js` (185668 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 179
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_STATE_BOUND`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `applyV77ProductPricing`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `paintV77ProductPricing`, `rememberPharmacyName`, `renderDoctorsList`, `renderExtraTabCustomFields`, `renderPharmaciesList`, `syncProductsEverywhere`, `validateRequiredFields`
 
-### `public/crm-bundle.js` (1133879 بایت)
+### `public/crm-bundle.js` (1142876 بایت)
 - نقش: * crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
-- تعداد توابع داخلی: 1153
+- تعداد توابع داخلی: 1159
 - نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `WIDGET_PALETTE`, `__CRM_APPLYING_SERVER`, `__CRM_BULK_PURGE`, `__CRM_BULK_READY`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_LAYOUT_APPLYING`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SERVER_READY`, `__CRM_SKIP_V64_STRIP`, `__CRM_SNAP`, `__CRM_UNVEIL`, `__CRM_V78_EDIT_PID`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__V68_WATCH`, `__V69_SYNC`, `__V70_SOLO`, `__V71_CLAIMED`, `__V72_BOOT`, `__V73_BOOT`, `__V73_WATCH`, `__V79_BOOT`, `__V80_BOOT`, `__V80_LOCK`, `__V81_BOOT`, `__V81_LOCK`, `__lastHealth`
 
 ### `public/crm-data.js` (52016 بایت)
@@ -136,7 +136,7 @@
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (4414 بایت)
-- نقش: const BUILD = "11.86.0";
+- نقش: const BUILD = "11.87.0";
 - تعداد توابع داخلی: 4
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -320,6 +320,7 @@
 
 - `/api/backup` [GET] — مصرف‌کننده: —
 - `/api/backup/email` [POST] — مصرف‌کننده: `public/crm-bundle.js`, `public/crm-features-v20.js`
+- `/api/backup/status` [GET] — مصرف‌کننده: `public/crm-bundle.js`
 - `/api/bulk` [GET] — مصرف‌کننده: `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `/api/feedback` [GET] — مصرف‌کننده: `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `/api/geocode?q=` [؟] — مصرف‌کننده: `public/crm-app.js`
@@ -357,8 +358,8 @@
 - `CRM_CACHE_RESCUED_` ← sessionStorage: `server.js`
 - `CRM_DIAG_LOG` ← localStorage: `public/crm-bundle.js`, `public/crm-features-v11.js`
 - `CRM_LAST_GPS` ← localStorage: `public/crm-bundle.js`, `public/crm-features-v11.js`
-- `CRM_LOGIN_EXP` ← localStorage: `public/crm-app.js`
-- `CRM_LOGIN_OK` ← localStorage: `public/crm-app.js`
+- `CRM_LOGIN_EXP` ← localStorage: `public/crm-app.js`, `public/crm-bundle.js`
+- `CRM_LOGIN_OK` ← localStorage: `public/crm-app.js`, `public/crm-bundle.js`
 - `CRM_MANAGER_GRID_ORDER_V2` ← localStorage: `public/crm-bundle.js`
 - `CRM_RESET_LOCK` ← sessionStorage: `server.js`
 - `CRM_SOLO_CLAIM` ← localStorage: `public/crm-bundle.js`
@@ -384,7 +385,7 @@
 
 ### tab-backup «💾 پشتیبان‌گیری»
 - `public/crm-app.js` → 14 شناسه (مثل: `autoBackupHandleStatus`, `btnCancelRestore`, `btnConfirmRestore`, `btnManualBackupNow`, `btnSelectAutoBackupFolder`, `chkAutoBackupEnabled`, `dropzoneRestore`, `fileInputRestore`)
-- `public/crm-bundle.js` → 3 شناسه (مثل: `autoBackupHandleStatus`, `backupEmailInput`, `backupIntervalSelect`)
+- `public/crm-bundle.js` → 4 شناسه (مثل: `autoBackupHandleStatus`, `backupEmailInput`, `backupIntervalSelect`, `v87BackupStatus`)
 - `public/crm-features-v19.js` → 1 شناسه (مثل: `autoBackupHandleStatus`)
 - `public/crm-features-v20.js` → 1 شناسه (مثل: `autoBackupHandleStatus`)
 - `public/crm-features-v9.js` → 2 شناسه (مثل: `backupEmailInput`, `backupIntervalSelect`)
@@ -453,6 +454,7 @@
 
 ### tab-leaves «📝 مرخصی‌ها»
 - `public/crm-app.js` → 12 شناسه (مثل: `btnExportLeavesCSV`, `formLeaveRequest`, `leaveFromDate`, `leaveFromTime`, `leaveHoursGroup`, `leaveHoursInput`, `leaveReasonInput`, `leaveRepSelect`)
+- `public/crm-bundle.js` → 1 شناسه (مثل: `formLeaveRequest`)
 
 ### tab-live-location «📍 موقعیت زنده»
 - `public/crm-app.js` → 1 شناسه (مثل: `map-live-reps`)
@@ -1424,7 +1426,7 @@
 
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
-- نسخه سورس package: `11.86.0`
+- نسخه سورس package: `11.87.0`
 - مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a03a45-javad-test1`؛ push/PR فقط از همین شاخه.
 - Production فعال: `https://javad-test1.onrender.com` — نسخه سورس فعلی `11.66.0` است و تا push کاربر روی production همان آخرین دیپلوی قبلی می‌ماند.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.
