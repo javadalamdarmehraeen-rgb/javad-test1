@@ -46,7 +46,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "11.82.0";
+const CRM_APP_VERSION = "11.83.0";
 try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
@@ -452,12 +452,7 @@ function createCustomMarker(lat, lng, type, name, mapInstance, onClickCallback =
 // ----------------------------------------------------------------------------
 function addFallbackTiles(map) {
   if (!map || typeof L === "undefined") return;
-  const layers = [
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-    "https://tile.openstreetmap.de/{z}/{x}/{y}.png"
-  ];
-  L.tileLayer(layers[0], { maxZoom: 19, attribution: "© OSM" }).addTo(map);
+  L.tileLayer("/api/tiles/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OSM", errorTileUrl: "" }).addTo(map);
 }
 
 function ensureMap(id, holderSetter, center, zoom, after) {
@@ -524,7 +519,7 @@ function initFullOverviewMap() {
   if (!el) return;
 
   mapFullOverview = L.map("map-full-overview").setView([35.7200, 51.4200], 11);
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  L.tileLayer("/api/tiles/{z}/{x}/{y}.png", {
     maxZoom: 19,
     attribution: "© OpenStreetMap contributors"
   }).addTo(mapFullOverview);
@@ -2922,6 +2917,7 @@ function setupAuthAndRoleSwitching() {
         currentRoleIndex = 0;
         currentUserName = "مدیر سیستم";
         try { sessionStorage.removeItem("crmLoggedIn"); } catch(e) {}
+        try { localStorage.removeItem("CRM_LOGIN_OK"); localStorage.removeItem("CRM_LOGIN_EXP"); } catch(e) {}
         location.href = "/login";
         return;
       }
@@ -3072,7 +3068,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.82.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.83.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -3871,7 +3867,7 @@ function renderSearchInfoResults(results) {
 
   if (!mapSearchInfoInstance && document.getElementById("map-search-info")) {
     mapSearchInfoInstance = L.map("map-search-info").setView([35.7200, 51.4200], 11);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    L.tileLayer("/api/tiles/{z}/{x}/{y}.png", {
       maxZoom: 19,
       attribution: "© OpenStreetMap contributors"
     }).addTo(mapSearchInfoInstance);
@@ -4026,7 +4022,7 @@ function openRowDetailsModal(rowObj, entityType) {
   setTimeout(() => {
     if (!mapRowDetailsMiniInstance && document.getElementById("rowDetailsMiniMap")) {
       mapRowDetailsMiniInstance = L.map("rowDetailsMiniMap").setView([rowObj.lat || 35.7200, rowObj.lng || 51.4200], 15);
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      L.tileLayer("/api/tiles/{z}/{x}/{y}.png", {
         maxZoom: 19,
         attribution: "© OpenStreetMap contributors"
       }).addTo(mapRowDetailsMiniInstance);
