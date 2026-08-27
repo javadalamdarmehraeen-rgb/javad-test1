@@ -1,6 +1,6 @@
 CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.86 | تاریخ به‌روزرسانی: 2026-08-27 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.85.0
+نسخه این فایل: 1.87 | تاریخ به‌روزرسانی: 2026-08-27 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.86.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -570,15 +570,15 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]      849 بایت  .gitattributes
   [متنی ]     1178 بایت  .gitignore
   [متنی ]     2041 بایت  .gitlab-ci.yml
-  [متنی ]    39069 بایت  AI_ACCEPTANCE_CHECKLIST.md
-  [متنی ]    37136 بایت  AI_ARCHITECTURE.md
-  [متنی ]    81050 بایت  AI_DECISION_LOG.md
-  [متنی ]    43248 بایت  AI_PROJECT_CONTEXT.md
-  [متنی ]    47400 بایت  AI_RULES.md
-  [متنی ]    56470 بایت  AI_TASKS.md
-  [متنی ]    51485 بایت  ARENA_HANDOFF_PROMPT.md
+  [متنی ]    39212 بایت  AI_ACCEPTANCE_CHECKLIST.md
+  [متنی ]    37279 بایت  AI_ARCHITECTURE.md
+  [متنی ]    81242 بایت  AI_DECISION_LOG.md
+  [متنی ]    43391 بایت  AI_PROJECT_CONTEXT.md
+  [متنی ]    47543 بایت  AI_RULES.md
+  [متنی ]    56624 بایت  AI_TASKS.md
+  [متنی ]    51628 بایت  ARENA_HANDOFF_PROMPT.md
   [متنی ]      600 بایت  CHANGES_V10.md
-  [متنی ]   133812 بایت  CHANGES_V11.md
+  [متنی ]   134449 بایت  CHANGES_V11.md
   [متنی ]     3939 بایت  CHANGES_V9.md
   [متنی ]     1806 بایت  CLEAN_EXTRA_FILES.bat
   [متنی ]    42439 بایت  GITHUB_REVIEW_HANDOFF.md
@@ -590,7 +590,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     2680 بایت  PUSH_GITHUB_CLEAN.bat
   [متنی ]     6579 بایت  RAHNAMA_GITLAB.txt
   [متنی ]     2852 بایت  RAHNAMA_PAKSAZI.txt
-  [متنی ]    13383 بایت  README.md
+  [متنی ]    13526 بایت  README.md
   [متنی ]     4731 بایت  README_FA_COMPLETE.md
   [متنی ]     2766 بایت  SYNC_ALL.bat
   [متنی ]     1273 بایت  SYNC_OFFICIAL_OVER_FOLDER.bat
@@ -602,10 +602,10 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]      871 بایت  package.json
   [متنی ]      108 بایت  postcss.config.mjs
   [متنی ]     1331 بایت  render.yaml
-  [متنی ]    37872 بایت  server.js
+  [متنی ]    37754 بایت  server.js
   [متنی ]     2426 بایت  sync_all.sh
   [متنی ]      738 بایت  tsconfig.json
-  [متنی ]   367195 بایت  update_chat_arena.py
+  [متنی ]   368058 بایت  update_chat_arena.py
   [متنی ]    13359 بایت  update_project_graph.py
   [متنی ]     2558 بایت  .github/workflows/deploy.yml
   [متنی ]      206 بایت  .github/workflows/keep_alive.yml
@@ -613,8 +613,8 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     9805 بایت  mobile/README.md
   [متنی ]     9966 بایت  mobile/src/simAuth.ts
   [متنی ]     8066 بایت  public/cloudflare-worker.js
-  [متنی ]   184922 بایت  public/crm-app.js
-  [متنی ]  1131890 بایت  public/crm-bundle.js
+  [متنی ]   185530 بایت  public/crm-app.js
+  [متنی ]  1133879 بایت  public/crm-bundle.js
   [متنی ]    52016 بایت  public/crm-data.js
   [متنی ]    13643 بایت  public/crm-features-v10.js
   [متنی ]   112307 بایت  public/crm-features-v11.js
@@ -629,9 +629,9 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]   304871 بایت  public/crm-features-v20.js
   [متنی ]    72007 بایت  public/crm-features-v9.js
   [متنی ]    25683 بایت  public/crm-jalali.js
-  [متنی ]   162459 بایت  public/index.html
+  [متنی ]   162425 بایت  public/index.html
   [متنی ]    11799 بایت  public/iran-facilities.js
-  [متنی ]     9567 بایت  public/login.html
+  [متنی ]    10692 بایت  public/login.html
   [متنی ]      966 بایت  public/manifest.json
   [متنی ]     3720 بایت  public/manifest.webmanifest
   [متنی ]    55666 بایت  public/style.css
@@ -788,8 +788,8 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     3346 بایت  src/lib/zip.ts
   [متنی ]     4927 بایت  tests/app-smoke.test.mjs
   [متنی ]    19979 بایت  tests/state-preservation.test.mjs
-  [متنی ]    71758 بایت  tests/version-11.24-regressions.test.mjs
-  [تصویر]   371233 بایت  __pycache__/update_chat_arena.cpython-311.pyc
+  [متنی ]    72423 بایت  tests/version-11.24-regressions.test.mjs
+  [تصویر]   372096 بایت  __pycache__/update_chat_arena.cpython-311.pyc
   [تصویر]    23282 بایت  public/apple-touch-icon.png
   [تصویر]     4527 بایت  public/favicon.png
   [تصویر]    26208 بایت  public/icon-192.png
@@ -3825,6 +3825,10 @@ ZIP اولین نسخه 38 از کامیت تاریخی دقیق همان نسخ
 🧑 کاربر: تب مسیر سه بار ویرایش/حذف دارد. جستجوی لحظه‌ای استان/شهر/منطقه. گزینه همه با چک‌باکس. داشبورد نامرتب و فقط آقا/خانم و دو حرف ماه.
 🤖 دستیار: نسخه ۱۱.۸۵.۰ یک ستون عملیات مسیر، جستجو + همه استان/شهر/منطقه، داشبورد با نام کامل و ماه کامل و چیدمان دو ستونه.
 
+──────────────────────────────── نوبت ۱۰۴ ────────────────────────────────
+🧑 کاربر: اطلاعات قدیمی را از ریشه حذف کن اما داروخانه ثبت‌شده من پاک شده. ویرایش/حذف مسیر کار نمی‌کند. موبایل نسخه ویندوز را نشان نمی‌دهد.
+🤖 دستیار: نسخه ۱۱.۸۶.۰ — خالی‌کردن لیست داروخانه/پزشک/سفارش برای همیشه حذف شد؛ فقط نمونه قدیمی فیلتر می‌شود؛ بازیابی از آرشیو localStorage. کلیک مسیر بدون بازنویسی دکمه. نشان نسخه روی ورود و هدر برای یکسان بودن گوشی و ویندوز.
+
 
 
 ══════════════════════════════════════════════════════════════════════════════════
@@ -4044,7 +4048,7 @@ sync-after-deploy:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_ACCEPTANCE_CHECKLIST.md (39069 بایت)
+فایل: AI_ACCEPTANCE_CHECKLIST.md (39212 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI_ACCEPTANCE_CHECKLIST — چک‌لیست اجباری تحویل واقعی
@@ -4338,10 +4342,13 @@ sync-after-deploy:
 
 ## 11.85.0
 یک ستون عملیات مسیر؛ جستجو و همه جغرافیا؛ داشبورد خوانا.
+
+## 11.86.0
+هرگز داروخانه کاربر پاک نشود؛ مسیر قابل کلیک؛ نسخه یکسان موبایل/ویندوز.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_ARCHITECTURE.md (37136 بایت)
+فایل: AI_ARCHITECTURE.md (37279 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI ARCHITECTURE
@@ -5638,10 +5645,13 @@ Then change only what is requested.
 
 ## 11.85.0
 یک ستون عملیات مسیر؛ جستجو و همه جغرافیا؛ داشبورد خوانا.
+
+## 11.86.0
+هرگز داروخانه کاربر پاک نشود؛ مسیر قابل کلیک؛ نسخه یکسان موبایل/ویندوز.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_DECISION_LOG.md (81050 بایت)
+فایل: AI_DECISION_LOG.md (81242 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 ## 11.77.0
@@ -7361,10 +7371,13 @@ appendChild فرم هنگام فوکوس ورودی ممنوع. کاشی OSM ا�
 
 ## 11.85.0
 دکمه عملیات مسیر از v68/v72/v73 تکراری می‌شد؛ یک سلول نگه داشته شد. جغرافیا: جستجو + همه. داشبورد برچسب کامل.
+
+## 11.86.0
+پاکسازی نسل ۱۱.۸۱ داروخانه واقعی را هم می‌کشت. قانون جدید: هرگز آرایه‌های عملیاتی کاربر خالی نشود.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_PROJECT_CONTEXT.md (43248 بایت)
+فایل: AI_PROJECT_CONTEXT.md (43391 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI PROJECT CONTEXT
@@ -8350,10 +8363,13 @@ Commit محلی `2c4fe0b` روی شاخه ثابت Arena ساخته شد. Push �
 
 ## 11.85.0
 یک ستون عملیات مسیر؛ جستجو و همه جغرافیا؛ داشبورد خوانا.
+
+## 11.86.0
+هرگز داروخانه کاربر پاک نشود؛ مسیر قابل کلیک؛ نسخه یکسان موبایل/ویندوز.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_RULES.md (47400 بایت)
+فایل: AI_RULES.md (47543 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI RULES
@@ -10018,10 +10034,13 @@ window.state باید همان شیء زنده crm-app باشد (mutate درجا
 
 ## 11.85.0
 یک ستون عملیات مسیر؛ جستجو و همه جغرافیا؛ داشبورد خوانا.
+
+## 11.86.0
+هرگز داروخانه کاربر پاک نشود؛ مسیر قابل کلیک؛ نسخه یکسان موبایل/ویندوز.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_TASKS.md (56470 بایت)
+فایل: AI_TASKS.md (56624 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 ## 11.77.0
@@ -11700,10 +11719,14 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 ## 11.85.0
 مسیر، جغرافیا، داشبورد.
 - [ ] push کاربر → health=11.85.0
+
+## 11.86.0
+توقف wipe داروخانه، مسیر، موبایل.
+- [ ] push کاربر → health=11.86.0 و force main برای Render موبایل
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: ARENA_HANDOFF_PROMPT.md (51485 بایت)
+فایل: ARENA_HANDOFF_PROMPT.md (51628 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # ARENA AI MASTER HANDOFF PROMPT
@@ -13126,6 +13149,9 @@ ADDENDUM v11.16.1 (2026-08-16)
 
 ## 11.85.0
 یک ستون عملیات مسیر؛ جستجو و همه جغرافیا؛ داشبورد خوانا.
+
+## 11.86.0
+هرگز داروخانه کاربر پاک نشود؛ مسیر قابل کلیک؛ نسخه یکسان موبایل/ویندوز.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -13145,7 +13171,7 @@ Leaflet محلی. فونت گوگل حذف شد. gzip روی JS/CSS/HTML.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: CHANGES_V11.md (133812 بایت)
+فایل: CHANGES_V11.md (134449 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # 11.77.0 — ۱۴۰۵/۰۶/۰۵
@@ -14028,6 +14054,12 @@ CLEAN_EXTRA_FILES.bat و بعد PUSH_GITHUB_CLEAN.bat را اجرا کن.
 1. در تب تعریف مسیر فقط یک جفت ویرایش/حذف می‌ماند.
 2. جستجوی لحظه‌ای استان/شهر/منطقه و چک‌باکس همه استان‌ها/شهرها/مناطق بالای هر لیست.
 3. داشبورد نام نماینده را کامل (بدون بریدن به آقا/خانم) و ماه را کامل نشان می‌دهد و چیدمان دو ستونه است.
+
+## تحویل نوبت ۱۰۴ — نسخه ۱۱.۸۶.۰: توقف حذف داروخانه کاربر + مسیر + موبایل
+
+1. دیگر هیچ ارتقایی لیست داروخانه/پزشک/سفارش را خالی نمی‌کند. فقط رکوردهای نمونه قدیمی حذف می‌شوند. اگر لیست خالی باشد از آرشیو localStorage بازیابی می‌شود.
+2. ویرایش/حذف مسیر با کلیک پایدار و بدون بازنویسی دکمه.
+3. شماره نسخه روی ورود و هدر؛ یک‌بار پاک‌سازی کش موبایل هنگام عوض شدن نسخه.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -14169,8 +14201,8 @@ pause
 # GITHUB_REVIEW_HANDOFF — تحویل مویرگی برای بررسی GitHub و هوش مصنوعی بعدی
 
 **تاریخ این تحویل:** 2026-08-27 / ۵ شهریور 1405 (به‌روزرسانی نوبت ۹۵)
-**نسخه آماده سورس:** `11.85.0` (فایل واحد crm-bundle + آینه crm-features-v20)
-**نسخه chat.arena پس از بازسازی این نوبت:** `1.86`
+**نسخه آماده سورس:** `11.86.0` (فایل واحد crm-bundle + آینه crm-features-v20)
+**نسخه chat.arena پس از بازسازی این نوبت:** `1.87`
 **شاخه اجباری این جلسه:** `arena/01a03a45-javad-test1`
 **مخزن:** `javadalamdarmehraeen-rgb/javad-test1`
 **Production فعال:** `https://javad-test1.onrender.com` — 11.38.0 سرو می‌کند؛ با push نسخه 11.38.1 توسط کاربر، Render دیپلوی می‌کند
@@ -15174,7 +15206,7 @@ pause
 
 ## ب) کارت فایل‌ها (نقش + توابع + نام‌های window که می‌سازد)
 
-### `server.js` (37872 بایت)
+### `server.js` (37754 بایت)
 - نقش: سرور سبک Node.js برای Render — ورود جدا، gzip، health، ژئوکد، محدودیت نرخ
 - تعداد توابع داخلی: 35
 - endpointهای سرور: `/api/backup`, `/api/backup/email`, `/api/bulk`, `/api/bulk`, `/api/feedback`, `/api/feedback`, `/api/push/public-key`, `/api/push/send`, `/api/push/subscribe`, `/api/state`, `/api/state`
@@ -15207,12 +15239,12 @@ pause
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (184922 بایت)
+### `public/crm-app.js` (185530 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 179
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_STATE_BOUND`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `applyV77ProductPricing`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `paintV77ProductPricing`, `rememberPharmacyName`, `renderDoctorsList`, `renderExtraTabCustomFields`, `renderPharmaciesList`, `syncProductsEverywhere`, `validateRequiredFields`
 
-### `public/crm-bundle.js` (1131890 بایت)
+### `public/crm-bundle.js` (1133879 بایت)
 - نقش: * crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
 - تعداد توابع داخلی: 1153
 - نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `WIDGET_PALETTE`, `__CRM_APPLYING_SERVER`, `__CRM_BULK_PURGE`, `__CRM_BULK_READY`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_LAYOUT_APPLYING`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SERVER_READY`, `__CRM_SKIP_V64_STRIP`, `__CRM_SNAP`, `__CRM_UNVEIL`, `__CRM_V78_EDIT_PID`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__V68_WATCH`, `__V69_SYNC`, `__V70_SOLO`, `__V71_CLAIMED`, `__V72_BOOT`, `__V73_BOOT`, `__V73_WATCH`, `__V79_BOOT`, `__V80_BOOT`, `__V80_LOCK`, `__V81_BOOT`, `__V81_LOCK`, `__lastHealth`
@@ -15296,7 +15328,7 @@ pause
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (4414 بایت)
-- نقش: const BUILD = "11.85.0";
+- نقش: const BUILD = "11.86.0";
 - تعداد توابع داخلی: 4
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -16584,7 +16616,7 @@ pause
 
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
-- نسخه سورس package: `11.85.0`
+- نسخه سورس package: `11.86.0`
 - مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a03a45-javad-test1`؛ push/PR فقط از همین شاخه.
 - Production فعال: `https://javad-test1.onrender.com` — نسخه سورس فعلی `11.66.0` است و تا push کاربر روی production همان آخرین دیپلوی قبلی می‌ماند.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.
@@ -16915,7 +16947,7 @@ push به گیت‌هاب → push به گیت‌لب.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: README.md (13383 بایت)
+فایل: README.md (13526 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # نماینده علمی — طنین طب طاها
@@ -17353,6 +17385,9 @@ git push gitlab main             #   GitLab
 
 ## 11.85.0
 یک ستون عملیات مسیر؛ جستجو و همه جغرافیا؛ داشبورد خوانا.
+
+## 11.86.0
+هرگز داروخانه کاربر پاک نشود؛ مسیر قابل کلیک؛ نسخه یکسان موبایل/ویندوز.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -17700,7 +17735,7 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "11.85.0",
+  "version": "11.86.0",
   "description": "سیستم جامع مدیریت و ویزیت علمی، داروخانه‌ها، پزشکان و سفارشات (CRM / PWA) هماهنگ با Render و Neon",
   "main": "server.js",
   "engines": {
@@ -17795,7 +17830,7 @@ services:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: server.js (37872 بایت)
+فایل: server.js (37754 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // سرور سبک Node.js برای Render — ورود جدا، gzip، health، ژئوکد، محدودیت نرخ
@@ -17806,7 +17841,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.85.0";
+const APP_VERSION = "11.86.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -17918,11 +17953,9 @@ const LEGACY_WIPE_KEYS = ["pharmacies","doctors","orders","reps","visits","activ
 function fenceOldSystem(st) {
   if (!st || typeof st !== "object") return st;
   stripLegacySample(st);
-  if (String(st._dataGen || "") !== "11.81.0") {
-    LEGACY_WIPE_KEYS.forEach((k) => { st[k] = []; });
+  if (!st._dataGen) {
     st._dataGen = "11.81.0";
     st._schemaVersion = "11.81.0";
-    st._purgedLegacyAt = Date.now();
   }
   return st;
 }
@@ -18506,7 +18539,7 @@ git status -sb
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: update_chat_arena.py (367195 بایت)
+فایل: update_chat_arena.py (368058 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~python
 #!/usr/bin/env python3
@@ -18567,7 +18600,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.86 | تاریخ به‌روزرسانی: 2026-08-27 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.85.0
+نسخه این فایل: 1.87 | تاریخ به‌روزرسانی: 2026-08-27 (۵ شهریور ۱۴۰۵) | نسخه برنامه: 11.86.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -22133,6 +22166,10 @@ ZIP اولین نسخه 38 از کامیت تاریخی دقیق همان نسخ
 🧑 کاربر: تب مسیر سه بار ویرایش/حذف دارد. جستجوی لحظه‌ای استان/شهر/منطقه. گزینه همه با چک‌باکس. داشبورد نامرتب و فقط آقا/خانم و دو حرف ماه.
 🤖 دستیار: نسخه ۱۱.۸۵.۰ یک ستون عملیات مسیر، جستجو + همه استان/شهر/منطقه، داشبورد با نام کامل و ماه کامل و چیدمان دو ستونه.
 
+──────────────────────────────── نوبت ۱۰۴ ────────────────────────────────
+🧑 کاربر: اطلاعات قدیمی را از ریشه حذف کن اما داروخانه ثبت‌شده من پاک شده. ویرایش/حذف مسیر کار نمی‌کند. موبایل نسخه ویندوز را نشان نمی‌دهد.
+🤖 دستیار: نسخه ۱۱.۸۶.۰ — خالی‌کردن لیست داروخانه/پزشک/سفارش برای همیشه حذف شد؛ فقط نمونه قدیمی فیلتر می‌شود؛ بازیابی از آرشیو localStorage. کلیک مسیر بدون بازنویسی دکمه. نشان نسخه روی ورود و هدر برای یکسان بودن گوشی و ویندوز.
+
 """
 
 FILES_INTRO = """
@@ -23496,7 +23533,7 @@ async function sendWhatsappCloud(text, to, token) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-app.js (184922 بایت)
+فایل: public/crm-app.js (185530 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================================
@@ -23547,7 +23584,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "11.85.0";
+const CRM_APP_VERSION = "11.86.0";
 try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
@@ -23616,11 +23653,27 @@ function loadState() {
     ["users","activityLog","repHomes","repRoutes","leaves","notifications","salesTargets","products","hospitals","visits","pharmacies","doctors","orders","reps"].forEach(function(k){ if (!Array.isArray(state[k])) state[k] = []; });
     if (!state.messengers) state.messengers = { channels: {}, allowPeerMessaging: false };
     if (String(state._dataGen || "") !== "11.81.0") {
-      ["pharmacies","doctors","orders","reps","visits","activityLog","repHomes","repRoutes","leaves","hospitals","notifications"].forEach(function (k) { state[k] = []; });
       state._dataGen = "11.81.0";
       state._schemaVersion = "11.81.0";
-      state._purgedLegacyAt = Date.now();
     }
+    (function recoverWipedUserData(){
+      var keys=["pharmacies","doctors","orders"];
+      var sample={"ph-1":1,"ph-2":1,"ph-3":1,"doc-1":1,"doc-2":1,"ord-1":1};
+      keys.forEach(function(arr){
+        if (Array.isArray(state[arr]) && state[arr].length) return;
+        for (var i=0;i<localStorage.length;i++){
+          var k=localStorage.key(i);
+          if (!k || k===STORAGE_KEY) continue;
+          if (k.indexOf("CRM_APP_STATE_CORRUPT_ARCHIVE_")!==0) continue;
+          try {
+            var o=JSON.parse(localStorage.getItem(k));
+            if (!o || !Array.isArray(o[arr]) || !o[arr].length) continue;
+            var add=o[arr].filter(function(r){ return r && r.id && !sample[String(r.id)]; });
+            if (add.length) { state[arr]=add; break; }
+          } catch (e) {}
+        }
+      });
+    })();
     (function stripLegacySeed(){
       var ids={"ph-1":1,"ph-2":1,"ph-3":1,"doc-1":1,"doc-2":1,"rep-1":1,"rep-2":1,"rep-3":1,"ord-1":1,"u-2":1,"u-3":1,"u-4":1,"prod-1":1,"prod-2":1,"act-1":1,"act-2":1,"act-3":1,"home-1":1,"home-2":1,"rt-1":1,"rt-2":1,"lv-1":1,"lv-2":1,"v-1":1,"v-2":1,"v-3":1,"h-1":1,"h-2":1,"h-3":1,"h-4":1,"not-1":1,"not-2":1,"tgt-1":1,"tgt-2":1};
       var names={"داروخانه دکتر عرفانی":1,"داروخانه شبانه‌روزی رازی":1,"داروخانه دکتر عقبایی":1,"دکتر کاوه سعیدی":1,"دکتر الناز تهرانی":1,"کپسول امپرازول ۲۰ میلی‌گرم":1,"آمپول نوروبیون ویتامین B کمپلکس":1};
@@ -26569,7 +26622,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.85.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.86.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -27702,7 +27755,7 @@ function deleteProductCatalogItem(id) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-bundle.js (1131890 بایت)
+فایل: public/crm-bundle.js (1133879 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 /* crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
@@ -45387,8 +45440,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   function wipeOps(st){
     if(!st||typeof st!=="object")return st;
-    WIPE.forEach(function(k){st[k]=[];});
-    st._dataGen=GEN;st._schemaVersion=GEN;st._purgedLegacyAt=Date.now();
+    st._dataGen=GEN;st._schemaVersion=GEN;
     return st;
   }
   function stamp(st){
@@ -45407,7 +45459,6 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   function adoptExact(remote){
     if(!remote||typeof remote!=="object")return;
-    if(String(remote._dataGen||"")!==GEN)wipeOps(remote);
     stamp(remote);
     window.state=remote;
     persist();
@@ -45415,7 +45466,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   (function wipeLocalNow(){
     var st=live();
-    if(st && String(st._dataGen||"")!==GEN){wipeOps(st);persist();}
+    if(st && String(st._dataGen||"")!==GEN){stamp(st);persist();}
   })();
   var ofetch=window.fetch;
   if(typeof ofetch==="function"&&!ofetch._v81){
@@ -45475,14 +45526,14 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         adoptExact(remote);
       }else{
         var st=live();
-        if(st){wipeOps(st);stamp(st);persist();paintLists();}
+        if(st){stamp(st);persist();paintLists();}
       }
       allowPost=true;
       pushClean();
       try{if(typeof window.__CRM_UNVEIL==="function")window.__CRM_UNVEIL();}catch(e){}
     }).catch(function(){
       var st=live();
-      if(st){wipeOps(st);persist();paintLists();}
+      if(st){stamp(st);persist();paintLists();}
       allowPost=true;
       try{if(typeof window.__CRM_UNVEIL==="function")window.__CRM_UNVEIL();}catch(e){}
     });
@@ -45858,10 +45909,12 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(!ops.length)return;
       var keep=ops[ops.length-1];
       ops.slice(0,-1).forEach(function(td){if(td.parentNode)td.parentNode.removeChild(td);});
+      if(ops.length===1 && keep.querySelector("[class*='edit-route']") && keep.querySelector("[class*='del-route']"))return;
       keep.className="v85-route-ops v73-ops v72-ops";
       var id="";
       var btn=keep.querySelector("[data-id]");
       if(btn)id=btn.getAttribute("data-id")||"";
+      if(!id)return;
       var html="<button type='button' class='btn btn-outline btn-sm v73-edit-route v72-edit-route' data-id='"+id+"'>✏️ ویرایش</button> <button type='button' class='btn btn-danger btn-sm v73-del-route v72-del-route' data-id='"+id+"'>🗑️ حذف</button>";
       if(keep.innerHTML!==html)keep.innerHTML=html;
     });
@@ -45955,6 +46008,45 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,60);});
   else setTimeout(boot,60);
+})();
+
+/* v11.86.0: هرگز لیست داروخانه کاربر خالی نشود + کلیک مسیر پایدار + نسخه یکسان موبایل */
+(function(){
+  "use strict";
+  function $(id){return document.getElementById(id);}
+  document.addEventListener("click",function(e){
+    var t=e.target;
+    if(!t||!t.closest)return;
+    var ed=t.closest(".v73-edit-route,.v72-edit-route,.v69-edit-route,.v68-edit-route,.v67-edit-route,[class*='edit-route']");
+    var del=t.closest(".v73-del-route,.v72-del-route,.v69-del-route,.v68-del-route,.v67-del-route,[class*='del-route']");
+    if(!ed&&!del)return;
+    var id=(ed||del).getAttribute("data-id")||"";
+    if(!id)return;
+    e.preventDefault();
+    if(ed){
+      try{if(typeof window.switchTab==="function")window.switchTab("tab-define-routes");}catch(x){}
+      setTimeout(function(){
+        var sel=$("routeManagerRep");
+        if(!sel)return;
+        sel.value=id;
+        try{sel.dispatchEvent(new Event("change",{bubbles:true}));}catch(x){}
+        var card=$("representativeRoutesCard");
+        if(card)card.scrollIntoView({behavior:"smooth",block:"start"});
+      },220);
+    }else{
+      var st=(typeof window.__CRM_GET_STATE==="function"?window.__CRM_GET_STATE():window.state)||{};
+      var u=((st.users)||[]).filter(function(x){return String(x.id)===String(id);})[0];
+      if(!u){alert("نماینده پیدا نشد.");return;}
+      if(!confirm("مسیر «"+(u.fullName||u.username||"")+"» پاک شود؟"))return;
+      u.activityProvinces=[];u.activityCities=[];u.activityDistrictList=[];
+      u.activityProvince="";u.activityCity="";u.activityDistricts="";u.activityRouteLabel="";
+      u._updatedAt=Date.now();
+      try{if(typeof window.saveState==="function")window.saveState();}catch(x){}
+      try{if(typeof window.renderRepRoutesOverview==="function")window.renderRepRoutesOverview();}catch(x){}
+    }
+  },true);
+  var badge=$("crmBuildBadge");
+  if(badge)badge.textContent="نسخه ۱۱.۸۶.۰";
 })();
 ~~~~~~~~
 
@@ -59460,7 +59552,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/index.html (162459 بایت)
+فایل: public/index.html (162425 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~html
 <!DOCTYPE html>
@@ -59499,15 +59591,14 @@ button.v19-gps svg{display:block}
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.85.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="11.86.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       try{
         var GEN="11.81.0";
         var raw=localStorage.getItem("CRM_APP_STATE_V2");
         if(raw){
           var st=JSON.parse(raw);
           if(st && typeof st==="object" && String(st._dataGen||"")!==GEN){
-            ["pharmacies","doctors","orders","reps","visits","activityLog","repHomes","repRoutes","leaves","hospitals","notifications"].forEach(function(k){st[k]=[];});
-            st._dataGen=GEN;st._schemaVersion=GEN;st._purgedLegacyAt=Date.now();
+            st._dataGen=GEN;st._schemaVersion=GEN;st._purgedLegacyAt=st._purgedLegacyAt||Date.now();
             localStorage.setItem("CRM_APP_STATE_V2", JSON.stringify(st));
           }
         }
@@ -59535,7 +59626,7 @@ button.v19-gps svg{display:block}
   <meta name="theme-color" content="#0d9488" />
 
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.85.0" />
+  <link rel="stylesheet" href="style.css?v=11.86.0" />
 </head>
 <body>
 
@@ -59555,6 +59646,7 @@ button.v19-gps svg{display:block}
         </div>
         <div class="logo-text">
           <h1 id="headerCompanyNameDisplay">سیستم مدیریت ویزیت علمی و شبکه درمان</h1>
+          <div id="crmBuildBadge" style="font-size:12px;font-weight:800;color:#0f766e">نسخه ۱۱.۸۶.۰</div>
           <p>طنین طب طاها — TENIN TEB TAHA</p>
         </div>
       </div>
@@ -61890,9 +61982,9 @@ button.v19-gps svg{display:block}
   <script src="vendor/leaflet.js"></script>
 
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.85.0"></script>
-  <script src="crm-app.js?v=11.85.0"></script>
-          <script src="crm-bundle.js?v=11.85.0"></script>
+  <script src="crm-data.js?v=11.86.0"></script>
+  <script src="crm-app.js?v=11.86.0"></script>
+          <script src="crm-bundle.js?v=11.86.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
@@ -61954,7 +62046,7 @@ window.IRAN_FACILITIES = [
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/login.html (9567 بایت)
+فایل: public/login.html (10692 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~html
 <!DOCTYPE html>
@@ -61968,7 +62060,19 @@ window.IRAN_FACILITIES = [
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
   <script>
-    (function(){var BUILD="11.85.0",key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{localStorage.setItem(key,BUILD);}catch(e){}fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD){/* v11.70 no auto go(d.version) */}}).catch(function(){});})();
+    (function(){var BUILD="11.86.0",key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{
+      var prev=localStorage.getItem(key)||"";
+      localStorage.setItem(key,BUILD);
+      if(prev&&prev!==BUILD&&sessionStorage.getItem("CRM_MOBILE_RELOAD")!==BUILD){
+        sessionStorage.setItem("CRM_MOBILE_RELOAD",BUILD);
+        var go=function(){location.reload();};
+        if(navigator.serviceWorker){
+          navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister();}));}).then(function(){
+            if(window.caches)return caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.delete(k);}));});
+          }).then(go).catch(go);
+        } else go();
+      }
+    }catch(e){}fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD){/* v11.70 no auto go(d.version) */}}).catch(function(){});})();
   </script>
   <title>ورود | طنین طب طاها</title>
 
@@ -62027,6 +62131,7 @@ window.IRAN_FACILITIES = [
     </form>
     <div class="ok" id="st"></div>
     <p class="hint">نمونه مدیر: admin / 123 — شماره 09120000000</p>
+    <p class="hint" id="crmBuildHint">نسخه ۱۱.۸۶.۰ — گوشی و ویندوز باید همین شماره را ببینند</p>
   </div>
   <script>
     (function(){
@@ -62069,7 +62174,7 @@ window.IRAN_FACILITIES = [
       var err = document.getElementById("err");
       function showErr(m){ err.style.display="block"; err.textContent=m; }
       function hideErr(){ err.style.display="none"; }
-      fetch("/api/health").then(function(){ st.textContent="سرور آماده است"; }).catch(function(){ st.textContent="در حال بیدار کردن سرور..."; });
+      fetch("/api/health").then(function(r){return r.json();}).then(function(d){ st.textContent="سرور آماده است — نسخه "+((d&&d.version)||"۱۱.۸۶.۰"); var h=document.getElementById("crmBuildHint"); if(h&&d&&d.version&&d.version!=="11.86.0") h.textContent="گوشی نسخه قدیمی می‌بیند ("+d.version+") — یک‌بار کش را خالی کنید یا لینک را با Chrome باز کنید."; }).catch(function(){ st.textContent="در حال بیدار کردن سرور..."; });
       document.getElementById("f").addEventListener("submit", function(){
         hideErr();
         var u=document.getElementById("u").value.trim();
@@ -65125,7 +65230,7 @@ self.addEventListener("fetch", (event) => {
 فایل: public/sw.js (4414 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
-const BUILD = "11.85.0";
+const BUILD = "11.86.0";
 const CACHE = "crm-static-v" + BUILD;
 
 async function purgeEveryCache() {
@@ -90956,7 +91061,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/version-11.24-regressions.test.mjs (71758 بایت)
+فایل: tests/version-11.24-regressions.test.mjs (72423 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 import test from 'node:test';
@@ -91278,7 +91383,7 @@ test('multi-part prompts require a real acceptance checklist before ZIP delivery
 });
 
 test('next-chat GitHub handoff records exact publish truth and engine map', () => {
-  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.85.0/);
+  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*11\.86.0/);
   assert.match(githubHandoff,/4984d17/);assert.match(githubHandoff,/Resource not accessible by integration/);
   assert.match(githubHandoff,/Production[\s\S]*11\.20\.0/);
   assert.match(githubHandoff,/موتور پاک‌سازی خودکار کش/);assert.match(githubHandoff,/موتورهای پایداری داده/);
@@ -91330,7 +91435,7 @@ test('new build clears only old asset caches before revealing app and prevents m
 test('v38 cache rescue automatically forces a fresh build without deleting CRM data', () => {
   const login = read('../public/login.html');
   assert.match(server,/pathname === "\/cache-reset"/);assert.match(server,/Clear-Site-Data/);
-  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.85.0"/);
+  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "11\.86.0"/);
   assert.match(html,/\/api\/health\?__crm_nocache=/);assert.match(html,/\/cache-reset\?to=/);assert.match(html,/d\.version!==BUILD/);
   assert.match(login,/CRM_CACHE_RESCUED_/);assert.match(login,/\/cache-reset\?to=/);
   assert.match(sw,/function purgeEveryCache/);assert.match(sw,/CRM_BUILD_ACTIVE/);assert.match(sw,/cache: "reload"/);
@@ -91340,7 +91445,7 @@ test('v38 cache rescue automatically forces a fresh build without deleting CRM d
     assert.doesNotMatch(source,/indexedDB\.deleteDatabase\s*\(/);
     assert.doesNotMatch(source,/removeItem\(["']CRM_APP_STATE_V2/);
   }
-  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.85.0'/);
+  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=11\.86.0'/);
 });
 
 test('security hardening blocks dangerous device APIs, cross-origin writes, executables and formula injection', () => {
@@ -91355,7 +91460,7 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=11\.85.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=11\.86.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
@@ -91450,7 +91555,7 @@ test('v11.43.1 engine button feedback + permanent version watchdog', () => {
 test('v11.61.0 safe cache-hardening', () => {
   const html = read('../public/index.html'); const app = read('../public/crm-app.js');
   assert.match(html,/http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/);
-  assert.match(app,/CRM_APP_VERSION = "11.85.0"/);
+  assert.match(app,/CRM_APP_VERSION = "11.86.0"/);
   assert.match(app,/بارگذاری شد/);
 });
 
@@ -91692,8 +91797,8 @@ test('v11.72.0 durable target ops + mm gap + row number', () => {
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "11.85.0"/);
-  assert.match(srv, /const APP_VERSION = "11.85.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.86.0"/);
+  assert.match(srv, /const APP_VERSION = "11.86.0"/);
   assert.match(b, /v11\.68\.0/);
   assert.match(b, /v68-edit-tgt/);
   assert.match(b, /v68-del-tgt/);
@@ -91713,8 +91818,8 @@ test('v11.72.0 server-authoritative unify + durable delete + live mm/row', () =>
   const b = read('../public/crm-bundle.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
-  assert.match(app, /CRM_APP_VERSION = "11.85.0"/);
-  assert.match(srv, /const APP_VERSION = "11.85.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.86.0"/);
+  assert.match(srv, /const APP_VERSION = "11.86.0"/);
   assert.match(srv, /function naturalRecordKey/);
   assert.match(srv, /if \(id && deleted && deleted\[id\] && recStamp\(r\) <= Number\(deleted\[id\]\)\) return/);
   assert.match(b, /v11\.69\.0/);
@@ -91736,8 +91841,8 @@ test('v11.72.0 solo device + no cache-reset loop', () => {
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "11.85.0"/);
-  assert.match(srv, /const APP_VERSION = "11.85.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.86.0"/);
+  assert.match(srv, /const APP_VERSION = "11.86.0"/);
   assert.match(srv, /x-crm-replace/);
   assert.match(srv, /_soloOnly/);
   assert.match(srv, /CRM_RESET_LOCK/);
@@ -91758,8 +91863,8 @@ test('v11.72.0 single script load + 404 not login + solo replace', () => {
   assert.equal((html.match(/crm-app\.js\?v=/g)||[]).length, 1);
   assert.equal((html.match(/crm-bundle\.js\?v=/g)||[]).length, 1);
   assert.equal((html.match(/<\/html>/g)||[]).length, 1);
-  assert.match(app, /CRM_APP_VERSION = "11.85.0"/);
-  assert.match(srv, /const APP_VERSION = "11.85.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.86.0"/);
+  assert.match(srv, /const APP_VERSION = "11.86.0"/);
   assert.match(srv, /v11.71: Clear-Site-Data/);
   assert.match(b, /v11\.71\.0/);
   assert.match(b, /CRM_SOLO_CLAIM/);
@@ -91772,9 +91877,9 @@ test('v11.72.0 server-first paint + no-spin qty + per-row ops + dist achieved/re
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "11.85.0"/);
-  assert.match(srv, /const APP_VERSION = "11.85.0"/);
-  assert.match(app, /register\('\/sw\.js\?v=11\.85.0'/);
+  assert.match(app, /CRM_APP_VERSION = "11.86.0"/);
+  assert.match(srv, /const APP_VERSION = "11.86.0"/);
+  assert.match(app, /register\('\/sw\.js\?v=11\.86.0'/);
   assert.match(b, /v11\.72\.0/);
   assert.match(b, /__v72boot/);
   assert.match(b, /function adoptServerExact/);
@@ -91805,17 +91910,17 @@ test('v11.73.0 live state bind + delayed unveil + durable dist save + kill old o
   const html = read('../public/index.html');
   const sw = read('../public/sw.js');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "11.85.0"/);
-  assert.match(srv, /const APP_VERSION = "11.85.0"/);
-  assert.match(sw, /const BUILD = "11.85.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.86.0"/);
+  assert.match(srv, /const APP_VERSION = "11.86.0"/);
+  assert.match(sw, /const BUILD = "11.86.0"/);
   assert.match(app, /function bindLiveWindowState/);
   assert.match(app, /window\.__CRM_GET_STATE/);
   assert.match(app, /window\.renderPharmaciesList/);
-  assert.match(html, /var BUILD="11.85.0"/);
+  assert.match(html, /var BUILD="11.86.0"/);
   assert.match(html, /window\.__CRM_UNVEIL/);
   assert.match(html, /if\(!window\.__CRM_UNVEILED\)window\.__CRM_UNVEIL\(\);},5000\)/);
   assert.doesNotMatch(html, /classList\.remove\("crm-booting"\);},800\)/);
-  assert.match(login, /var BUILD="11.85.0"/);
+  assert.match(login, /var BUILD="11.86.0"/);
   assert.match(b, /v11\.73\.0/);
   assert.match(b, /__v73boot/);
   assert.match(b, /function adoptExact/);
@@ -91837,8 +91942,8 @@ test('v11.74.0 mashateb sales mapping like daya/shafaarad', () => {
   const v20file = read('../public/crm-features-v20.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
-  assert.match(app, /CRM_APP_VERSION = "11.85.0"/);
-  assert.match(srv, /const APP_VERSION = "11.85.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.86.0"/);
+  assert.match(srv, /const APP_VERSION = "11.86.0"/);
   assert.match(b, /MASHATEB_CODE_MAP=\{1001:186101,1002:186102,1003:186103,1004:186104,1005:186105,1006:186106,1007:186107\}/);
   assert.match(v20file, /MASHATEB_CODE_MAP=\{1001:186101,1002:186102,1003:186103,1004:186104,1005:186105,1006:186106,1007:186107\}/);
   assert.match(b, /else if\(id==="mashateb"\)\{x\.date=2;x\.qty=10;x\.giftQty=11;x\.pharmacy=9;/);
@@ -91863,8 +91968,8 @@ test('v11.76.0 designer live apply + geo autofill off + mashateb col3 date + db 
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const v20file = read('../public/crm-features-v20.js');
-  assert.match(app, /CRM_APP_VERSION = "11.85.0"/);
-  assert.match(srv, /const APP_VERSION = "11.85.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.86.0"/);
+  assert.match(srv, /const APP_VERSION = "11.86.0"/);
   assert.match(b, /v11\.75\.0/);
   assert.match(b, /function applyDesignerNow/);
   assert.match(b, /function applyPaintedMeta/);
@@ -91887,8 +91992,8 @@ test('v11.76.0 bulk archive lock + geo nocombo + pharmacy name no subsets + acti
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const v20file = read('../public/crm-features-v20.js');
-  assert.match(app, /CRM_APP_VERSION = "11.85.0"/);
-  assert.match(srv, /const APP_VERSION = "11.85.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.86.0"/);
+  assert.match(srv, /const APP_VERSION = "11.86.0"/);
   assert.match(b, /v11\.76\.0/);
   assert.match(b, /function bulkUnion/);
   assert.match(b, /function bulkCount/);
@@ -91917,8 +92022,8 @@ test('v11.77.0 product pricing tab current/new boxes + reverse calc + jalali app
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const data = read('../public/crm-data.js');
-  assert.match(app, /CRM_APP_VERSION = "11.85.0"/);
-  assert.match(srv, /const APP_VERSION = "11.85.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.86.0"/);
+  assert.match(srv, /const APP_VERSION = "11.86.0"/);
   assert.match(app, /tab-product-pricing/);
   assert.match(html, /id="tab-product-pricing"/);
   assert.match(html, /id="v77CurrentPricesBody"/);
@@ -91953,8 +92058,8 @@ test('v11.78.0 consumer price + legal margin + row edit VAT + live designer + in
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "11.85.0"/);
-  assert.match(srv, /const APP_VERSION = "11.85.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.86.0"/);
+  assert.match(srv, /const APP_VERSION = "11.86.0"/);
   assert.match(html, /id="productConsumerPrice"/);
   assert.match(html, /قیمت مصرف‌کننده \(ریال\)/);
   assert.match(app, /consumerPrice: consPrice \|\| phPrice/);
@@ -91983,8 +92088,8 @@ test('v11.79.0 this-device-only restore + no duplicate product code column', () 
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "11.85.0"/);
-  assert.match(srv, /const APP_VERSION = "11.85.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.86.0"/);
+  assert.match(srv, /const APP_VERSION = "11.86.0"/);
   assert.match(app, /v20-product-code/);
   assert.ok(b.includes("v11.79.0"));
   assert.ok(b.includes("v11.79.0"));
@@ -92001,15 +92106,15 @@ test('v11.80.0 server-only lock + new consumer from current times increase', () 
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const data = read('../public/crm-data.js');
-  assert.match(app, /CRM_APP_VERSION = "11.85.0"/);
-  assert.match(srv, /const APP_VERSION = "11.85.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.86.0"/);
+  assert.match(srv, /const APP_VERSION = "11.86.0"/);
   assert.ok(b.includes("v11.80.0"));
   assert.match(b, /function restoreThisDevice/);
   assert.match(b, /d\.cons=newCons/);
   assert.match(b, /legacy-locked/);
   assert.match(srv, /function stripLegacySample/);
   assert.match(srv, /reason: "legacy-locked"/);
-  assert.match(html, /var BUILD="11.85.0"/);
+  assert.match(html, /var BUILD="11.86.0"/);
   assert.match(data, /pharmacies: \[\]/);
   assert.ok(!data.includes("داروخانه دکتر عرفانی"));
   const ctx={result:null};
@@ -92025,8 +92130,8 @@ test('v11.81.0 purge previous-system data + new consumer formula cell', () => {
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "11.85.0"/);
-  assert.match(srv, /const APP_VERSION = "11.85.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.86.0"/);
+  assert.match(srv, /const APP_VERSION = "11.86.0"/);
   assert.ok(b.includes("v11.81.0"));
   assert.match(b, /v81-new-cons/);
   assert.match(srv, /function fenceOldSystem/);
@@ -92045,8 +92150,8 @@ test('v11.82.0 designer order applies to live form and list', () => {
   const b = read('../public/crm-bundle.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
-  assert.match(app, /CRM_APP_VERSION = "11.85.0"/);
-  assert.match(srv, /const APP_VERSION = "11.85.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.86.0"/);
+  assert.match(srv, /const APP_VERSION = "11.86.0"/);
   assert.ok(b.includes("v11.82.0"));
   assert.match(b, /function applySavedLayout/);
   assert.match(b, /window.applySavedLayoutV82/);
@@ -92062,8 +92167,8 @@ test('v11.83.0 no jump typing + iran mobile tiles and login persist', () => {
   const login = read('../public/login.html');
   const html = read('../public/index.html');
   const official = read('../OFFICIAL_FILELIST.txt');
-  assert.match(app, /CRM_APP_VERSION = "11.85.0"/);
-  assert.match(srv, /const APP_VERSION = "11.85.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.86.0"/);
+  assert.match(srv, /const APP_VERSION = "11.86.0"/);
   assert.ok(b.includes("v11.83.0"));
   assert.match(b, /function typingInLiveForm/);
   assert.match(srv, /\/api\/tiles\//);
@@ -92081,8 +92186,8 @@ test('v11.84.0 live dashboard filters + no form jump + stable order lock', () =>
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "11.85.0"/);
-  assert.match(srv, /const APP_VERSION = "11.85.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.86.0"/);
+  assert.match(srv, /const APP_VERSION = "11.86.0"/);
   assert.ok(b.includes("v11.84.0"));
   assert.match(html, /id="v84DashYear"/);
   assert.match(html, /id="v84DashProvince"/);
@@ -92096,8 +92201,8 @@ test('v11.85.0 routes one ops column + geo search all + dashboard labels', () =>
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "11.85.0"/);
-  assert.match(srv, /const APP_VERSION = "11.85.0"/);
+  assert.match(app, /CRM_APP_VERSION = "11.86.0"/);
+  assert.match(srv, /const APP_VERSION = "11.86.0"/);
   assert.ok(b.includes("v11.85.0"));
   assert.match(html, /v85-geo-search/);
   assert.match(html, /data-for="routeManagerProvince"/);
@@ -92105,6 +92210,22 @@ test('v11.85.0 routes one ops column + geo search all + dashboard labels', () =>
   assert.match(b, /همه استان‌ها/);
   assert.match(b, /mNames\[i\]/);
   assert.doesNotMatch(b, /mNames\[i\]\.slice\(0,2\)/);
+});
+
+test('v11.86.0 never wipe user pharmacies + route click + same mobile version', () => {
+  const b = read('../public/crm-bundle.js');
+  const app = read('../public/crm-app.js');
+  const srv = read('../server.js');
+  const html = read('../public/index.html');
+  const login = read('../public/login.html');
+  assert.match(app, /CRM_APP_VERSION = "11.86.0"/);
+  assert.match(srv, /const APP_VERSION = "11.86.0"/);
+  assert.ok(b.includes("v11.86.0"));
+  assert.match(app, /recoverWipedUserData/);
+  assert.doesNotMatch(srv, /LEGACY_WIPE_KEYS\.forEach/);
+  assert.match(html, /crmBuildBadge/);
+  assert.match(login, /crmBuildHint/);
+  assert.match(b, /edit-route/);
 });
 ~~~~~~~~
 

@@ -34,15 +34,14 @@
   <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
   <script>
     (function(){
-      var BUILD="11.85.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="11.86.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       try{
         var GEN="11.81.0";
         var raw=localStorage.getItem("CRM_APP_STATE_V2");
         if(raw){
           var st=JSON.parse(raw);
           if(st && typeof st==="object" && String(st._dataGen||"")!==GEN){
-            ["pharmacies","doctors","orders","reps","visits","activityLog","repHomes","repRoutes","leaves","hospitals","notifications"].forEach(function(k){st[k]=[];});
-            st._dataGen=GEN;st._schemaVersion=GEN;st._purgedLegacyAt=Date.now();
+            st._dataGen=GEN;st._schemaVersion=GEN;st._purgedLegacyAt=st._purgedLegacyAt||Date.now();
             localStorage.setItem("CRM_APP_STATE_V2", JSON.stringify(st));
           }
         }
@@ -70,7 +69,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.85.0" />
+  <link rel="stylesheet" href="style.css?v=11.86.0" />
 </head>
 <body>
 
@@ -90,6 +89,7 @@
         </div>
         <div class="logo-text">
           <h1 id="headerCompanyNameDisplay">سیستم مدیریت ویزیت علمی و شبکه درمان</h1>
+          <div id="crmBuildBadge" style="font-size:12px;font-weight:800;color:#0f766e">نسخه ۱۱.۸۶.۰</div>
           <p>طنین طب طاها — TENIN TEB TAHA</p>
         </div>
       </div>
@@ -2425,9 +2425,9 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.85.0"></script>
-  <script src="crm-app.js?v=11.85.0"></script>
-          <script src="crm-bundle.js?v=11.85.0"></script>
+  <script src="crm-data.js?v=11.86.0"></script>
+  <script src="crm-app.js?v=11.86.0"></script>
+          <script src="crm-bundle.js?v=11.86.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />

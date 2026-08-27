@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.85.0";
+const APP_VERSION = "11.86.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -118,11 +118,9 @@ const LEGACY_WIPE_KEYS = ["pharmacies","doctors","orders","reps","visits","activ
 function fenceOldSystem(st) {
   if (!st || typeof st !== "object") return st;
   stripLegacySample(st);
-  if (String(st._dataGen || "") !== "11.81.0") {
-    LEGACY_WIPE_KEYS.forEach((k) => { st[k] = []; });
+  if (!st._dataGen) {
     st._dataGen = "11.81.0";
     st._schemaVersion = "11.81.0";
-    st._purgedLegacyAt = Date.now();
   }
   return st;
 }
