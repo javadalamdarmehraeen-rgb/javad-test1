@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.60.1";
+const APP_VERSION = "11.81.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -54,9 +54,11 @@ function rateLimited(ip) {
   return rec.n > 30;
 }
 function trustedWriteRequest(req) {
+  const host = String(req.headers.host || "").toLowerCase();
+  const preview = /arena\.site|e2b\.app|e2b\.dev|localhost|127\.0\.0\.1/.test(host) || process.env.E2B_SANDBOX === "true";
+  if (preview && String(req.headers["x-crm-request"] || "") === "1") return true;
   const site = String(req.headers["sec-fetch-site"] || "");
   const origin = String(req.headers.origin || "");
-  const host = String(req.headers.host || "");
   if (site && !["same-origin", "same-site", "none"].includes(site)) return false;
   if (origin) { try { if (new URL(origin).host !== host) return false; } catch (e) { return false; } }
   return String(req.headers["x-crm-request"] || "") === "1";
@@ -86,6 +88,126 @@ function writeJsonAtomic(filePath, data) {
 function readJsonSafe(filePath) {
   try { return sanitizeJsonValue(JSON.parse(fs.readFileSync(filePath, "utf8"))); } catch (e) { return null; }
 }
+const CRM_MERGE_ARRAYS = ["pharmacies","doctors","orders","products","users","reps","leaves","visits","repRoutes","repHomes","hospitals","notifications","salesTargets","distSalesTargets","activityLog"];
+const LEGACY_SAMPLE_IDS = {"ph-1":1,"ph-2":1,"ph-3":1,"doc-1":1,"doc-2":1,"rep-1":1,"rep-2":1,"rep-3":1,"ord-1":1,"u-2":1,"u-3":1,"u-4":1,"prod-1":1,"prod-2":1,"act-1":1,"act-2":1,"act-3":1,"home-1":1,"home-2":1,"rt-1":1,"rt-2":1,"lv-1":1,"lv-2":1,"v-1":1,"v-2":1,"v-3":1,"h-1":1,"h-2":1,"h-3":1,"h-4":1,"not-1":1,"not-2":1,"tgt-1":1,"tgt-2":1};
+const LEGACY_SAMPLE_NAMES = {"داروخانه دکتر عرفانی":1,"داروخانه شبانه‌روزی رازی":1,"داروخانه دکتر عقبایی":1,"دکتر کاوه سعیدی":1,"دکتر الناز تهرانی":1,"کپسول امپرازول ۲۰ میلی‌گرم":1,"آمپول نوروبیون ویتامین B کمپلکس":1};
+function stripLegacySample(st) {
+  if (!st || typeof st !== "object") return 0;
+  let n = 0;
+  CRM_MERGE_ARRAYS.forEach((k) => {
+    if (!Array.isArray(st[k])) return;
+    const next = st[k].filter((r) => {
+      if (!r || typeof r !== "object") return false;
+      const id = r.id != null ? String(r.id) : "";
+      if (id && LEGACY_SAMPLE_IDS[id]) return false;
+      const name = String(r.name || r.fullName || r.pharmacyName || "");
+      if (name && LEGACY_SAMPLE_NAMES[name]) return false;
+      return true;
+    });
+    n += st[k].length - next.length;
+    st[k] = next;
+  });
+  return n;
+}
+function isV80Gen(st, syncHdr) {
+  const g = String((st && (st._dataGen || st._schemaVersion)) || "");
+  const s = String(syncHdr || "");
+  return g === "11.81.0" || g.indexOf("11.81") === 0 || s === "v81" || s === "11.81.0" || s === "v80";
+}
+const LEGACY_WIPE_KEYS = ["pharmacies","doctors","orders","reps","visits","activityLog","repHomes","repRoutes","leaves","hospitals","notifications"];
+function fenceOldSystem(st) {
+  if (!st || typeof st !== "object") return st;
+  stripLegacySample(st);
+  if (String(st._dataGen || "") !== "11.81.0") {
+    LEGACY_WIPE_KEYS.forEach((k) => { st[k] = []; });
+    st._dataGen = "11.81.0";
+    st._schemaVersion = "11.81.0";
+    st._purgedLegacyAt = Date.now();
+  }
+  return st;
+}
+function recStamp(r) {
+  if (!r || typeof r !== "object") return 0;
+  return Number(r._updatedAt || r.updatedAt || r._lastSavedAt || 0);
+}
+function normKeyPart(s) {
+  return String(s || "").replace(/[\u200c\s]/g, "").toLowerCase();
+}
+function naturalRecordKey(kind, r) {
+  if (!r || typeof r !== "object") return "";
+  const n = normKeyPart;
+  if (kind === "pharmacies") return r.name ? ("ph:" + n(r.name) + "|" + n(r.phone || r.managerPhone) + "|" + n(r.city || r.province)) : "";
+  if (kind === "doctors") return r.name ? ("doc:" + n(r.name) + "|" + n(r.phone) + "|" + n(r.city || r.province)) : "";
+  if (kind === "products") return r.name ? ("prod:" + n(r.name)) : "";
+  if (kind === "users") return (r.username || r.id) ? ("user:" + n(r.username || r.id)) : "";
+  if (kind === "reps") return (r.name || r.id) ? ("rep:" + n(r.name || r.id)) : "";
+  if (kind === "salesTargets") return r.productName ? ("tgt:" + n(r.repName) + "|" + n(r.productName) + "|" + n(r.year) + "|" + n(r.monthName || r.month)) : "";
+  if (kind === "distSalesTargets") return r.productName ? ("dtgt:" + n(r.distId) + "|" + n(r.productName) + "|" + n(r.year) + "|" + n(r.monthName || r.month)) : "";
+  return "";
+}
+function mergeRecordArrays(a, b, kind, deleted) {
+  const map = new Map();
+  function put(r) {
+    if (!r || typeof r !== "object") return;
+    const id = r.id != null ? String(r.id) : "";
+    if (id && deleted && deleted[id] && recStamp(r) <= Number(deleted[id])) return;
+    const key = id || ("_anon_" + JSON.stringify(r).slice(0, 160));
+    const prev = map.get(key);
+    if (!prev || recStamp(r) >= recStamp(prev)) map.set(key, r);
+  }
+  (Array.isArray(a) ? a : []).forEach(put);
+  (Array.isArray(b) ? b : []).forEach(put);
+  const byNat = new Map();
+  const out = [];
+  map.forEach((r) => {
+    const nk = naturalRecordKey(kind, r);
+    if (!nk) { out.push(r); return; }
+    const prev = byNat.get(nk);
+    if (!prev || recStamp(r) >= recStamp(prev)) byNat.set(nk, r);
+  });
+  const seen = new Set();
+  map.forEach((r) => {
+    const nk = naturalRecordKey(kind, r);
+    if (!nk) { return; }
+    const winner = byNat.get(nk);
+    if (!winner || seen.has(nk)) return;
+    seen.add(nk);
+    out.push(winner);
+  });
+  return out;
+}
+function mergeCrmState(serverData, incoming) {
+  if (!serverData || typeof serverData !== "object") return incoming;
+  if (!incoming || typeof incoming !== "object") return serverData;
+  const deleted = Object.assign({}, serverData._deletedIds || {}, incoming._deletedIds || {});
+  const out = Object.assign({}, serverData, incoming);
+  CRM_MERGE_ARRAYS.forEach((k) => { out[k] = mergeRecordArrays(serverData[k], incoming[k], k, deleted); });
+  out.settings = Object.assign({}, serverData.settings || {}, incoming.settings || {});
+  const sm = serverData.formFieldMeta || {};
+  const im = incoming.formFieldMeta || {};
+  out.formFieldMeta = Object.assign({}, sm);
+  Object.keys(im).forEach((ent) => {
+    out.formFieldMeta[ent] = Object.assign({}, sm[ent] || {}, im[ent] || {});
+    Object.keys(im[ent] || {}).forEach((fid) => {
+      const L = (sm[ent] || {})[fid] || {};
+      const R = im[ent][fid] || {};
+      const lt = Number(L._updatedAt || 0);
+      const rt = Number(R._updatedAt || 0);
+      out.formFieldMeta[ent][fid] = rt >= lt ? Object.assign({}, L, R) : Object.assign({}, R, L);
+    });
+  });
+  out.customFields = Object.assign({}, serverData.customFields || {});
+  Object.keys(incoming.customFields || {}).forEach((k) => {
+    out.customFields[k] = mergeRecordArrays(serverData.customFields && serverData.customFields[k], incoming.customFields[k], k, deleted);
+  });
+  out._deletedIds = deleted;
+  const st = Number(serverData._lastSavedAt) || 0;
+  const it = Number(incoming._lastSavedAt) || 0;
+  out._lastSavedAt = Math.max(st, it, Date.now());
+  out._unifiedAt = Date.now();
+  out._stateRev = Math.max(Number(serverData._stateRev) || 0, Number(incoming._stateRev) || 0) + 1;
+  return out;
+}
 function b64url(input) { return Buffer.from(input).toString("base64").replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_"); }
 function fromB64url(input) { const s=String(input||"").replace(/-/g,"+").replace(/_/g,"/");return Buffer.from(s+"=".repeat((4-s.length%4)%4),"base64"); }
 function getVapidKeys() {
@@ -102,21 +224,29 @@ function vapidAuthorization(endpoint) {
 }
 async function sendWebPush(subscription, message) { const body=encryptWebPush(subscription,JSON.stringify(message).slice(0,3500)),auth=vapidAuthorization(subscription.endpoint),response=await fetch(subscription.endpoint,{method:"POST",headers:{TTL:"86400",Urgency:"high","Content-Encoding":"aes128gcm","Content-Type":"application/octet-stream",Authorization:auth.value},body});return response.status; }
 
+function isPreviewHost(req) {
+  const host = String((req && req.headers && req.headers.host) || "").toLowerCase();
+  return /arena\.site|e2b\.app|e2b\.dev|localhost|127\.0\.0\.1/.test(host) || process.env.E2B_SANDBOX === "true";
+}
 function send(req, res, status, content, contentType, extra) {
+  const preview = isPreviewHost(req);
   const headers = Object.assign({
     "Content-Type": contentType || "text/plain; charset=utf-8",
     "X-Content-Type-Options": "nosniff",
     "Referrer-Policy": "strict-origin-when-cross-origin",
-    "X-Frame-Options": "SAMEORIGIN",
-    "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https:; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests",
+    "X-Frame-Options": preview ? "ALLOWALL" : "SAMEORIGIN",
+    "Content-Security-Policy": preview
+      ? "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https:; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors *; worker-src 'self' blob:; manifest-src 'self'"
+      : "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https:; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests",
     "Permissions-Policy": "geolocation=(self), camera=(), microphone=(), payment=(), usb=(), serial=(), hid=(), bluetooth=(), display-capture=(), accelerometer=(), gyroscope=(), magnetometer=(), autoplay=(), encrypted-media=(), picture-in-picture=()",
-    "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
     "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
-    "Cross-Origin-Resource-Policy": "same-origin",
+    "Cross-Origin-Resource-Policy": preview ? "cross-origin" : "same-origin",
     "X-Permitted-Cross-Domain-Policies": "none",
     "X-DNS-Prefetch-Control": "off",
     "Origin-Agent-Cluster": "?1"
   }, extra || {});
+  if (!preview) headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains";
+  if (preview) delete headers["X-Frame-Options"];
   const accept = String(req.headers["accept-encoding"] || "");
   const compressible = /text|javascript|json|svg|csv/.test(contentType || "");
   if (compressible && accept.includes("gzip") && Buffer.byteLength(content) > 512) {
@@ -146,7 +276,7 @@ function sendFile(req, res, filePath, maxAge) {
       "Surrogate-Control": maxAge ? ("max-age=" + maxAge) : "no-store",
       "X-CRM-Build": APP_VERSION
     };
-    if (ext === ".html") extra["Clear-Site-Data"] = '"cache"';
+    /* v11.71: Clear-Site-Data روی هر HTML کش را خالی و صفحه را حلقه می‌کرد */
     if (path.basename(filePath) === "sw.js") {
       extra["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0";
       extra["Service-Worker-Allowed"] = "/";
@@ -173,7 +303,7 @@ const server = http.createServer((req, res) => {
   if (pathname === "/cache-reset" && req.method === "GET") {
     const requested = parsed.searchParams.get("to") || "/panel";
     const destination = /^\/(?:panel|login)(?:[/?#]|$)/.test(requested) ? requested : "/panel";
-    const body = `<!doctype html><html lang="fa" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>نوسازی برنامه</title><style>body{font-family:Tahoma,Arial;background:#f0fdfa;color:#134e4a;display:grid;place-items:center;min-height:100vh;margin:0;text-align:center}.box{background:#fff;padding:28px;border-radius:16px;box-shadow:0 12px 35px #0f766e22}.spin{font-size:38px}</style><div class="box"><div class="spin">⟳</div><h2>در حال دریافت نسخه جدید برنامه…</h2><p>اطلاعات و تنظیمات شما دست‌نخورده می‌ماند.</p></div><script>(async function(){var build=${JSON.stringify(APP_VERSION)},to=${JSON.stringify(destination)};try{localStorage.setItem("CRM_ASSET_BUILD",build);sessionStorage.setItem("CRM_CACHE_RESCUED_"+build,"1");}catch(e){}try{if("caches" in window){var keys=await caches.keys();await Promise.all(keys.map(function(k){return caches.delete(k);}));}}catch(e){}try{if("serviceWorker" in navigator){var regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(function(r){return r.unregister();}));}}catch(e){}var u=new URL(to,location.origin);u.searchParams.set("__crm_build",build);u.searchParams.set("__crm_reload",Date.now().toString());location.replace(u.pathname+u.search+u.hash);})();</script></html>`;
+    const body = `<!doctype html><html lang="fa" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>نوسازی برنامه</title><style>body{font-family:Tahoma,Arial;background:#f0fdfa;color:#134e4a;display:grid;place-items:center;min-height:100vh;margin:0;text-align:center}.box{background:#fff;padding:28px;border-radius:16px;box-shadow:0 12px 35px #0f766e22}.spin{font-size:38px}</style><div class="box"><div class="spin">⟳</div><h2>در حال دریافت نسخه جدید برنامه…</h2><p>اطلاعات و تنظیمات شما دست‌نخورده می‌ماند.</p></div><script>(async function(){var build=${JSON.stringify(APP_VERSION)},to=${JSON.stringify(destination)};try{if(sessionStorage.getItem("CRM_RESET_LOCK")==="1"){location.replace(to.split("?")[0]==="/cache-reset"?"/login":to);return;}sessionStorage.setItem("CRM_RESET_LOCK","1");localStorage.setItem("CRM_ASSET_BUILD",build);sessionStorage.setItem("CRM_CACHE_RESCUED_"+build,"1");}catch(e){}try{if("caches" in window){var keys=await caches.keys();await Promise.all(keys.map(function(k){return caches.delete(k);}));}}catch(e){}try{if("serviceWorker" in navigator){var regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(function(r){return r.unregister();}));}}catch(e){}var u=new URL(to,location.origin);if(u.pathname==="/cache-reset")u.pathname="/login";u.searchParams.set("__crm_build",build);location.replace(u.pathname+u.search+u.hash);})();</script></html>`;
     return send(req, res, 200, body, "text/html; charset=utf-8", {
       "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
       "CDN-Cache-Control": "no-store",
@@ -266,12 +396,62 @@ const server = http.createServer((req, res) => {
     return send(req, res, 200, JSON.stringify({ status: "success", data }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
   }
 
+  function bulkSig(r) { try { return (r && r.id) ? ("id:" + r.id) : JSON.stringify(r); } catch (e) { return String(r); } }
+  function bulkUnion(a, b) {
+    const seen = Object.create(null), out = [];
+    function add(r) { if (r == null) return; const k = bulkSig(r); if (seen[k]) return; seen[k] = 1; out.push(r); }
+    (Array.isArray(a) ? a : []).forEach(add); (Array.isArray(b) ? b : []).forEach(add);
+    return out;
+  }
+  function bulkCount(b) {
+    if (!b) return 0;
+    let n = 0; const s = b.snapp || {};
+    n += (s.rows || []).length + (s.topups || []).length + (s.tripImports || []).length + (s.topupImports || []).length;
+    Object.keys(b.distributors || {}).forEach((id) => {
+      const d = b.distributors[id] || {};
+      n += (d.pharmacyRows || []).length + (d.pharmacyImports || []).length + (d.inventoryRows || []).length + (d.inventoryImports || []).length;
+    });
+    return n;
+  }
+  function mergeBulkVault(existing, incoming) {
+    if (!incoming || typeof incoming !== "object") return existing;
+    const purge = incoming._managerPurge;
+    if (purge === true) return incoming;
+    function purged(path) { return !!(purge && typeof purge === "object" && purge[path]); }
+    if (!existing || typeof existing !== "object" || bulkCount(existing) === 0) return incoming;
+    if (bulkCount(incoming) === 0 && !purge) return existing;
+    const out = { snapp: Object.assign({}, existing.snapp || {}, incoming.snapp || {}), distributors: Object.assign({}, existing.distributors || {}), savedAt: Math.max(Number(existing.savedAt) || 0, Number(incoming.savedAt) || 0, Date.now()) };
+    const es = existing.snapp || {}, ins = incoming.snapp || {};
+    ["rows", "topups", "tripImports", "topupImports", "files", "topupFiles"].forEach((k) => {
+      out.snapp[k] = purged("snapp." + k) ? (ins[k] || []) : bulkUnion(es[k], ins[k]);
+    });
+    ["headers", "topupHeaders"].forEach((k) => { if ((ins[k] || []).length) out.snapp[k] = ins[k]; else if ((es[k] || []).length) out.snapp[k] = es[k]; });
+    const ids = new Set([...Object.keys(existing.distributors || {}), ...Object.keys(incoming.distributors || {})]);
+    ids.forEach((id) => {
+      const a = (existing.distributors || {})[id] || {}, b = (incoming.distributors || {})[id] || {};
+      out.distributors[id] = Object.assign({}, a, b);
+      ["pharmacyRows", "pharmacyImports", "inventoryRows", "inventoryImports"].forEach((k) => {
+        out.distributors[id][k] = purged("distributors." + id + "." + k) ? (b[k] || []) : bulkUnion(a[k], b[k]);
+      });
+      ["pharmacyHeaders", "inventoryHeaders"].forEach((k) => { if ((b[k] || []).length) out.distributors[id][k] = b[k]; });
+      if (purged("distributors." + id + ".inventoryImport")) out.distributors[id].inventoryImport = b.inventoryImport || null;
+      else if (!out.distributors[id].inventoryImport && a.inventoryImport) out.distributors[id].inventoryImport = a.inventoryImport;
+    });
+    delete out._managerPurge;
+    return out;
+  }
   if (pathname === "/api/bulk" && req.method === "POST") {
     if (rateLimited(ip + ":bulk")) return send(req, res, 429, JSON.stringify({ status: "error", message: "too many requests" }), "application/json; charset=utf-8");
     let body = "";
     req.on("data", (c) => { body += c; if (body.length > 64 * 1024 * 1024) req.destroy(); });
     req.on("end", () => {
-      try { const data = sanitizeJsonValue(JSON.parse(body)); writeJsonAtomic(USER_BULK_PATH, data); send(req, res, 200, JSON.stringify({ status: "success" }), "application/json; charset=utf-8", { "Cache-Control": "no-store" }); }
+      try {
+        const data = sanitizeJsonValue(JSON.parse(body));
+        const existing = fs.existsSync(USER_BULK_PATH) ? readJsonSafe(USER_BULK_PATH) : null;
+        const merged = mergeBulkVault(existing, data);
+        writeJsonAtomic(USER_BULK_PATH, merged);
+        send(req, res, 200, JSON.stringify({ status: "success", kept: bulkCount(merged) }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
+      }
       catch (err) { send(req, res, 400, JSON.stringify({ status: "error", message: err.message }), "application/json; charset=utf-8"); }
     });
     return;
@@ -281,6 +461,12 @@ const server = http.createServer((req, res) => {
     if (fs.existsSync(SERVER_DATA_PATH)) {
       const data = readJsonSafe(SERVER_DATA_PATH);
       if (!data) return send(req, res, 503, JSON.stringify({ status: "error", message: "state data unavailable" }), "application/json; charset=utf-8");
+      const beforeGen = String(data._dataGen || "");
+      const removed = stripLegacySample(data);
+      fenceOldSystem(data);
+      if (removed > 0 || beforeGen !== "11.81.0") {
+        try { writeJsonAtomic(SERVER_DATA_PATH, data); } catch (e) {}
+      }
       return send(req, res, 200, JSON.stringify({ status: "success", data }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
     }
     return send(req, res, 200, JSON.stringify({ status: "empty" }), "application/json; charset=utf-8");
@@ -295,8 +481,24 @@ const server = http.createServer((req, res) => {
     req.on("end", () => {
       try {
         const data = sanitizeJsonValue(JSON.parse(body));
+        const existing = fs.existsSync(SERVER_DATA_PATH) ? readJsonSafe(SERVER_DATA_PATH) : null;
+        const wantReplace = parsed.searchParams.get("replace") === "1" || String(req.headers["x-crm-replace"] || "") === "1" || data._soloReplace === true;
+        const syncHdr = String(req.headers["x-crm-sync"] || "");
+        if (!isV80Gen(data, syncHdr)) {
+          const keep = existing || {};
+          return send(req, res, 200, JSON.stringify({ status: "success", data: keep, ignored: true, reason: "legacy-locked" }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
+        }
+        stripLegacySample(data);
+        fenceOldSystem(data);
+        data._dataGen = "11.81.0";
+        data._schemaVersion = "11.81.0";
+        data._soloOnly = true;
+        data._soloEpoch = Number(data._soloEpoch) || (existing && existing._soloEpoch) || Date.now();
+        data._soloAt = Date.now();
+        data._unifiedAt = Date.now();
+        delete data._soloReplace;
         writeJsonAtomic(SERVER_DATA_PATH, data);
-        send(req, res, 200, JSON.stringify({ status: "success" }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
+        return send(req, res, 200, JSON.stringify({ status: "success", data: data, replaced: true }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
       } catch (err) {
         send(req, res, 400, JSON.stringify({ status: "error", message: err.message }), "application/json; charset=utf-8");
       }
@@ -345,6 +547,17 @@ const server = http.createServer((req, res) => {
   });
 });
 
+function listenOn(port) {
+  const s = http.createServer(server.listeners("request")[0]);
+  s.on("error", (err) => { console.warn("port", port, err.code || err.message); });
+  s.listen(port, "0.0.0.0", () => { console.log("CRM v" + APP_VERSION + " listening on 0.0.0.0:" + port); });
+  return s;
+}
 server.listen(PORT, "0.0.0.0", () => {
   console.log("CRM v" + APP_VERSION + " listening on 0.0.0.0:" + PORT);
 });
+if (process.env.E2B_SANDBOX === "true") {
+  [3000, 8080].forEach((p) => {
+    if (Number(PORT) !== p) listenOn(p);
+  });
+}
