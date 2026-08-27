@@ -1658,3 +1658,7 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 ## 11.81.0
 پاکسازی نسل قبل + فرمول مصرف‌کننده کادر جدید.
 - [ ] push کاربر → health=11.81.0
+
+## 11.82.0
+اعمال ترتیب/اندازه طراح روی فرم و لیست واقعی.
+- [ ] push کاربر → health=11.82.0

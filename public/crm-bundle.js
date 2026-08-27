@@ -11788,17 +11788,12 @@ button.v19-gps svg{display:block}
       var newOrder = new Array(ths.length).fill(-1);
       var taken = {};
       newOrder[0] = 0; taken[0] = true; // ستون اول: ردیف واقعی
-      // ستون دوم: نام نماینده
-      for (var r = 1; r < ths.length; r++) {
-        if (/نماینده/.test(mapLabel[r])) { newOrder[1] = r; taken[r] = true; break; }
-      }
       // آخرین ستون اگر عملیات/خالی است در آخر بماند
       var lastIdx = ths.length - 1;
       var keepLast = (!mapLabel[lastIdx] || /عملیات|ویرایش|حذف/.test(mapLabel[lastIdx]));
       if (keepLast) { taken[lastIdx] = true; }
       var desiredMvids = fields.map(function (f) { return String(f.label || "").replace(/\s+/g, " ").replace(/[*]/g, "").trim(); });
       var fillPos = 1;
-      if (newOrder[1] !== -1) fillPos = 2;
       desiredMvids.forEach(function (lab) {
         if (!lab) return;
         for (var i = 1; i < ths.length; i++) {
@@ -17787,4 +17782,200 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,8);});
   else setTimeout(boot,8);
+})();
+
+/* v11.82.0: اعمال قطعی ترتیب/اندازه طراح ستون‌ها روی فرم و لیست واقعی */
+(function(){
+  "use strict";
+  function $(id){return document.getElementById(id);}
+  function S(){return (typeof window.__CRM_GET_STATE==="function"?window.__CRM_GET_STATE():window.state)||window.state||{};}
+  function entityKey(tabId){
+    tabId=String(tabId||"");
+    return tabId==="tab-pharmacies"?"pharmacy":tabId==="tab-doctors"?"doctor":tabId==="tab-orders"?"order":tabId==="tab-columns-products"?"products":String(tabId||"").replace(/^tab-/,"");
+  }
+  function mainGrid(tabId){
+    var pane=$(tabId);if(!pane)return null;
+    var form=pane.querySelector("form");
+    if(form){
+      for(var i=0;i<form.children.length;i++){
+        var ch=form.children[i];
+        if(ch.classList&&ch.classList.contains("form-grid"))return ch;
+      }
+    }
+    return (form&&form.querySelector(".form-grid"))||pane.querySelector(".card form .form-grid")||null;
+  }
+  function groupFid(g){
+    if(!g)return "";
+    var d=g.getAttribute("data-col-fid");if(d)return d;
+    var el=g.querySelector("input[id]:not([type=hidden]),select[id],textarea[id]");
+    return el?el.id:"";
+  }
+  function applyMetaPaint(g, m){
+    if(!g||!m)return;
+    var size=parseFloat(m.size),hgt=parseFloat(m.height),place=m.place||(m.full?"under":"beside");
+    g.classList.toggle("col-place-under",place==="under");
+    g.classList.toggle("col-place-beside",place!=="under");
+    if(place==="under"){
+      g.style.setProperty("flex","1 1 100%","important");
+      g.style.setProperty("max-width","100%","important");
+      g.style.setProperty("width","100%","important");
+      g.style.setProperty("grid-column","1 / -1","important");
+    }else{
+      g.style.removeProperty("grid-column");
+      if(isFinite(size)&&size>=1){
+        g.style.setProperty("flex","0 0 "+Math.round(size)+"px","important");
+        g.style.setProperty("max-width",Math.round(size)+"px","important");
+        g.style.setProperty("width",Math.round(size)+"px","important");
+      }
+    }
+    var el=g.querySelector("input:not([type=hidden]),select,textarea");
+    if(el&&isFinite(size)&&size>=1){
+      el.style.setProperty("width","100%","important");
+      el.style.setProperty("max-width",Math.round(size)+"px","important");
+    }
+    if(el&&isFinite(hgt)&&hgt>=8){
+      el.style.setProperty("height",Math.round(hgt)+"px","important");
+      el.style.setProperty("min-height",Math.round(hgt)+"px","important");
+    }
+    var gapB=parseFloat(m.gapBeforeMm),gapA=parseFloat(m.gapAfterMm);
+    if(isFinite(gapB)&&gapB!==0)g.style.setProperty("margin-inline-start",(gapB*96/25.4).toFixed(2)+"px","important");
+    else g.style.removeProperty("margin-inline-start");
+    if(isFinite(gapA)&&gapA!==0)g.style.setProperty("margin-inline-end",(gapA*96/25.4).toFixed(2)+"px","important");
+    else g.style.removeProperty("margin-inline-end");
+    var rowNo=parseInt(m.rowNo,10);
+    if(rowNo>0){
+      g.setAttribute("data-v68-row",String(rowNo));
+      g.style.setProperty("grid-row",String(rowNo),"important");
+    }else{
+      g.removeAttribute("data-v68-row");
+      g.style.removeProperty("grid-row");
+    }
+  }
+  function applySavedLayout(tabId){
+    if(!tabId)return;
+    try{if(tabId==="tab-columns-products"&&typeof window.applyProductSettings==="function")window.applyProductSettings();}catch(e0){}
+    var grid=mainGrid(tabId);if(!grid)return;
+    var key=entityKey(tabId);
+    var meta=((((S().formFieldMeta)||{})[key])||{});
+    var kids=[];
+    Array.prototype.forEach.call(grid.children,function(g){
+      if(!g.classList||!g.classList.contains("form-group"))return;
+      if(g.parentNode!==grid)return;
+      if(g.closest("#orderItemsContainer")||g.closest("#columnsDesignerHost")||g.closest(".modal-overlay"))return;
+      kids.push(g);
+    });
+    if(!kids.length)return;
+    var items=kids.map(function(g){
+      var fid=groupFid(g);
+      var m=meta[fid]||{};
+      var ord=Number(m.order);
+      return {g:g,fid:fid,m:m,order:(isFinite(ord)&&ord>=1)?ord:9999};
+    });
+    items.sort(function(a,b){if(a.order!==b.order)return a.order-b.order;return 0;});
+    window.__CRM_LAYOUT_APPLYING=true;
+    window.__CRM_MANAGER_LAYOUT_INTENT=true;
+    try{
+      items.forEach(function(it,i){
+        var vis=(it.order<9999)?it.order:(i+1);
+        it.g.style.setProperty("order",String(vis),"important");
+        applyMetaPaint(it.g,it.m);
+      });
+      items.forEach(function(it){if(it.g.parentNode===grid)grid.appendChild(it.g);});
+      var form=grid.closest("form");
+      if(form&&form.id==="formOrder"){
+        try{form.dispatchEvent(new CustomEvent("crm-order-layout-approved"));}catch(e){}
+      }
+      try{
+        var snap={};
+        try{snap=JSON.parse(localStorage.getItem("CRM_MANAGER_GRID_ORDER_V2")||"{}");}catch(e0){snap={};}
+        var ids=items.map(function(it){return it.fid;}).filter(Boolean);
+        if(ids.length){
+          if(form&&form.id)snap["form:"+form.id]=ids;
+          if(grid.id)snap["grid:"+grid.id]=ids;
+          localStorage.setItem("CRM_MANAGER_GRID_ORDER_V2",JSON.stringify(snap));
+        }
+      }catch(e1){}
+    }finally{
+      setTimeout(function(){window.__CRM_LAYOUT_APPLYING=false;window.__CRM_MANAGER_LAYOUT_INTENT=false;},120);
+    }
+    try{
+      if(typeof window.v20ReorderListColumns==="function"){}
+      if(key==="pharmacy"&&typeof window.renderPharmaciesList==="function")window.renderPharmaciesList();
+      if(key==="doctor"&&typeof window.renderDoctorsList==="function")window.renderDoctorsList();
+      if(key==="order"&&typeof window.renderOrdersList==="function")window.renderOrdersList();
+    }catch(e2){}
+  }
+  window.applySavedLayoutV82=applySavedLayout;
+
+  function applyAll(){
+    ["tab-pharmacies","tab-doctors","tab-orders","tab-columns-products"].forEach(function(id){try{applySavedLayout(id);}catch(e){}});
+  }
+
+  function wrapRestore(){
+    var names=["restoreDomFieldOrder"];
+    names.forEach(function(){});
+  }
+
+  function wrapSwitch(){
+    if(window.switchTab&&!window.switchTab._v82){
+      var sw=window.switchTab;
+      var w=function(id){
+        var r=sw.apply(this,arguments);
+        setTimeout(function(){applySavedLayout(id);},70);
+        setTimeout(function(){applySavedLayout(id);},400);
+        return r;
+      };
+      w._v82=true;window.switchTab=w;
+    }
+  }
+  function wrapDesigner(){
+    if(typeof window.applyDesignerV78==="function"&&!window.applyDesignerV78._v82){
+      var old=window.applyDesignerV78;
+      var w=function(){
+        var r=old.apply(this,arguments);
+        var tab=window._activeColTab||"";
+        setTimeout(function(){applySavedLayout(tab);},50);
+        setTimeout(function(){applySavedLayout(tab);},700);
+        return r;
+      };
+      w._v82=true;window.applyDesignerV78=w;
+    }
+  }
+  function wrapFull(){
+    if(typeof window.applyFullFormLayout==="function"&&!window.applyFullFormLayout._v82lay){
+      var orig=window.applyFullFormLayout;
+      var w=function(tabId){
+        if(window.__CRM_LAYOUT_APPLYING)return orig.apply(this,arguments);
+        var r=orig.apply(this,arguments);
+        try{applySavedLayout(tabId);}catch(e){}
+        return r;
+      };
+      w._v82lay=true;
+      Object.keys(orig).forEach(function(k){try{w[k]=orig[k];}catch(e){}});
+      window.applyFullFormLayout=w;
+    }
+  }
+  function bindDesignerLive(){
+    if(document.body&&document.body.dataset.v82lay)return;
+    if(document.body)document.body.dataset.v82lay="1";
+    var ids=["colFieldOrder","colFieldListOrder","colFieldSize","colFieldHeight","colGapBefore","colGapAfter","colRowNo","colFieldPlace"];
+    document.addEventListener("change",function(e){
+      if(!e.target||ids.indexOf(e.target.id)<0)return;
+      var tab=window._activeColTab||"";
+      setTimeout(function(){applySavedLayout(tab);},30);
+    },true);
+    document.addEventListener("click",function(e){
+      if(e.target&&e.target.id==="btnSaveColField"){
+        var tab=window._activeColTab||"";
+        setTimeout(function(){applySavedLayout(tab);},80);
+      }
+    },true);
+  }
+  function boot(){
+    wrapSwitch();wrapDesigner();wrapFull();bindDesignerLive();
+    applyAll();
+    [120,500,1200,2200,3200].forEach(function(ms){setTimeout(applyAll,ms);});
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,20);});
+  else setTimeout(boot,20);
 })();
