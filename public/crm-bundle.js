@@ -12678,8 +12678,8 @@ button.v19-gps svg{display:block}
   function ensureProductCodes(){var S=st(),changed=false;(S.products||[]).forEach(function(p){if(!p.code){var code=PRODUCT_CODE_SEED[norm(p.name)];if(code){p.code=code;changed=true;}}if(p.code&&!p.dayaDbCode){p.dayaDbCode=1111000+Number(p.code);changed=true;}if(p.code&&SHAFA_CODE_MAP[p.code]&&String(p.shafaDbCode||"")!==String(SHAFA_CODE_MAP[p.code])){p.shafaDbCode=SHAFA_CODE_MAP[p.code];changed=true;}if(p.code&&MASHATEB_CODE_MAP[p.code]&&String(p.mashatebDbCode||"")!==String(MASHATEB_CODE_MAP[p.code])){p.mashatebDbCode=MASHATEB_CODE_MAP[p.code];changed=true;}});if(changed)save();}
 
   function resetProductV20(){window._editingProductId="";var f=$("formProduct");if(f)f.reset();var n=$("productName");if(n){n.value="";n.focus();}var b=$("productSavedBanner");if(b)b.hidden=true;}
-  function saveProductV20(){var S=st(),name=String(($("productName")||{}).value||"").trim(),code=parseInt(($("productCode")||{}).value,10)||0;if(!code)return alert("کد کالا را وارد کنید.");if(!name)return alert("نام کالا را وارد کنید.");var id=window._editingProductId||"",idx=(S.products||[]).findIndex(function(p){return(id&&p.id===id)||(!id&&norm(p.name)===norm(name));}),rec=idx>=0?S.products[idx]:{id:"prod-"+Date.now()};rec.name=name;rec.code=code;rec.dayaDbCode=1111000+code;if(SHAFA_CODE_MAP[code])rec.shafaDbCode=SHAFA_CODE_MAP[code];if(MASHATEB_CODE_MAP[code])rec.mashatebDbCode=MASHATEB_CODE_MAP[code];rec.distributorPrice=parseInt(($("productDistPrice")||{}).value,10)||0;rec.pharmacyPrice=parseInt(($("productPrice")||{}).value,10)||0;rec.stock=parseInt(($("productStock")||{}).value,10)||0;if(idx<0)S.products.push(rec);save();window._editingProductId="";try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}v20Toast("✅ کالا «"+name+"» "+(idx<0?"اضافه":"ویرایش")+" شد.");resetProductV20();}
-  function bindProductCrudV20(){var form=$("formProduct"),btn=$("btnSaveProduct");if(btn&&!btn.dataset.v20crud){btn.dataset.v20crud="1";btn.addEventListener("click",function(e){e.preventDefault();e.stopImmediatePropagation();saveProductV20();},true);}if(form&&!form.dataset.v20crud){form.dataset.v20crud="1";form.addEventListener("submit",function(e){e.preventDefault();e.stopImmediatePropagation();saveProductV20();},true);}var pane=$("tab-columns-products"),head=pane&&pane.querySelector("#formProduct")&&pane.querySelector("#formProduct").closest(".card").querySelector(".card-header");if(head&&!$("v20NewProduct")){var n=document.createElement("button");n.id="v20NewProduct";n.type="button";n.className="btn btn-outline btn-sm";n.textContent="➕ کالای جدید";n.onclick=resetProductV20;head.appendChild(n);}window.editProductCatalogItem=function(id){var p=(st().products||[]).filter(function(x){return String(x.id)===String(id);})[0];if(!p)return;window._editingProductId=p.id;if($("productCode"))$("productCode").value=p.code||"";if($("productName"))$("productName").value=p.name||"";if($("productDistPrice"))$("productDistPrice").value=p.distributorPrice||p.price||"";if($("productPrice"))$("productPrice").value=p.pharmacyPrice||p.price||"";if($("productStock"))$("productStock").value=p.stock||"";$("productName").scrollIntoView({behavior:"smooth",block:"center"});};function patchCodes(){var body=$("tableProductsBody"),S=st();if(!body)return;Array.prototype.forEach.call(body.children,function(tr,i){if(tr.querySelector('.v20-product-code'))return;var td=document.createElement('td');td.className='v20-product-code';td.setAttribute('data-no-number-group','1');td.innerHTML='<strong>'+esc(((S.products||[])[i]||{}).code||'—')+'</strong>';tr.insertBefore(td,tr.children[1]||null);});}if(typeof window.renderColumnsProductsTable==='function'&&!window.renderColumnsProductsTable._v20code){var rr=window.renderColumnsProductsTable,w=function(){var x=rr.apply(this,arguments);patchCodes();return x;};w._v20code=true;window.renderColumnsProductsTable=w;}patchCodes();var old=window.deleteProductCatalogItem;window.deleteProductCatalogItem=function(id){var S=st(),p=(S.products||[]).filter(function(x){return String(x.id)===String(id);})[0];if(!p)return;if(!confirm("کالای «"+(p.name||"")+"» حذف شود؟"))return;S.products=(S.products||[]).filter(function(x){return String(x.id)!==String(id);});S.salesTargets=(S.salesTargets||[]).filter(function(t){return norm(t.productName)!==norm(p.name);});(S.orders||[]).forEach(function(o){o.items=(o.items||[]).filter(function(i){return norm(i.name)!==norm(p.name);});});Array.prototype.forEach.call(document.querySelectorAll('.order-item-row'),function(r){var n=r.querySelector('.order-item-name');if(n&&norm(n.value)===norm(p.name))r.remove();});save();try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}v20Toast("✅ کالا حذف شد.");};}
+  function saveProductV20(){var S=st(),name=String(($("productName")||{}).value||"").trim(),code=parseInt(($("productCode")||{}).value,10)||0;if(!code)return alert("کد کالا را وارد کنید.");if(!name)return alert("نام کالا را وارد کنید.");var id=window._editingProductId||"",idx=(S.products||[]).findIndex(function(p){return(id&&p.id===id)||(!id&&norm(p.name)===norm(name));}),rec=idx>=0?S.products[idx]:{id:"prod-"+Date.now()};rec.name=name;rec.code=code;rec.dayaDbCode=1111000+code;if(SHAFA_CODE_MAP[code])rec.shafaDbCode=SHAFA_CODE_MAP[code];if(MASHATEB_CODE_MAP[code])rec.mashatebDbCode=MASHATEB_CODE_MAP[code];rec.distributorPrice=parseInt(($("productDistPrice")||{}).value,10)||0;rec.pharmacyPrice=parseInt(($("productPrice")||{}).value,10)||0;rec.consumerPrice=parseInt((($("productConsumerPrice")||{}).value),10)||rec.pharmacyPrice||0;rec.stock=parseInt(($("productStock")||{}).value,10)||0;if(idx<0)S.products.push(rec);save();window._editingProductId="";try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}v20Toast("✅ کالا «"+name+"» "+(idx<0?"اضافه":"ویرایش")+" شد.");resetProductV20();}
+  function bindProductCrudV20(){var form=$("formProduct"),btn=$("btnSaveProduct");if(btn&&!btn.dataset.v20crud){btn.dataset.v20crud="1";btn.addEventListener("click",function(e){e.preventDefault();e.stopImmediatePropagation();saveProductV20();},true);}if(form&&!form.dataset.v20crud){form.dataset.v20crud="1";form.addEventListener("submit",function(e){e.preventDefault();e.stopImmediatePropagation();saveProductV20();},true);}var pane=$("tab-columns-products"),head=pane&&pane.querySelector("#formProduct")&&pane.querySelector("#formProduct").closest(".card").querySelector(".card-header");if(head&&!$("v20NewProduct")){var n=document.createElement("button");n.id="v20NewProduct";n.type="button";n.className="btn btn-outline btn-sm";n.textContent="➕ کالای جدید";n.onclick=resetProductV20;head.appendChild(n);}window.editProductCatalogItem=function(id){var p=(st().products||[]).filter(function(x){return String(x.id)===String(id);})[0];if(!p)return;window._editingProductId=p.id;if($("productCode"))$("productCode").value=p.code||"";if($("productName"))$("productName").value=p.name||"";if($("productDistPrice"))$("productDistPrice").value=p.distributorPrice||p.price||"";if($("productPrice"))$("productPrice").value=p.pharmacyPrice||p.price||"";if($("productConsumerPrice"))$("productConsumerPrice").value=p.consumerPrice||p.pharmacyPrice||p.price||"";if($("productStock"))$("productStock").value=p.stock||"";$("productName").scrollIntoView({behavior:"smooth",block:"center"});};function patchCodes(){var body=$("tableProductsBody"),S=st();if(!body)return;Array.prototype.forEach.call(body.children,function(tr,i){if(!tr||tr.querySelector('.v20-product-code'))return;if(tr.children.length>=8)return;var nameCell=tr.querySelector('.product-name-cell');if(nameCell&&tr.children[1]&&tr.children[1]!==nameCell)return;var td=document.createElement('td');td.className='v20-product-code';td.setAttribute('data-no-number-group','1');td.innerHTML='<strong>'+esc(((S.products||[])[i]||{}).code||'—')+'</strong>';tr.insertBefore(td,nameCell||tr.children[1]||null);});}if(typeof window.renderColumnsProductsTable==='function'&&!window.renderColumnsProductsTable._v20code){var rr=window.renderColumnsProductsTable,w=function(){var x=rr.apply(this,arguments);patchCodes();return x;};w._v20code=true;window.renderColumnsProductsTable=w;}patchCodes();var old=window.deleteProductCatalogItem;window.deleteProductCatalogItem=function(id){var S=st(),p=(S.products||[]).filter(function(x){return String(x.id)===String(id);})[0];if(!p)return;if(!confirm("کالای «"+(p.name||"")+"» حذف شود؟"))return;S.products=(S.products||[]).filter(function(x){return String(x.id)!==String(id);});S.salesTargets=(S.salesTargets||[]).filter(function(t){return norm(t.productName)!==norm(p.name);});(S.orders||[]).forEach(function(o){o.items=(o.items||[]).filter(function(i){return norm(i.name)!==norm(p.name);});});Array.prototype.forEach.call(document.querySelectorAll('.order-item-row'),function(r){var n=r.querySelector('.order-item-name');if(n&&norm(n.value)===norm(p.name))r.remove();});save();try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}v20Toast("✅ کالا حذف شد.");};}
 
   /* ---------- ۲۹) IndexedDB برای ماندگاری فایل‌های حجیم اکسل ---------- */
   function bulkDb(){return new Promise(function(res,rej){var q=indexedDB.open("crmBulkData",1);q.onupgradeneeded=function(){if(!q.result.objectStoreNames.contains("kv"))q.result.createObjectStore("kv");};q.onsuccess=function(){res(q.result);};q.onerror=function(){rej(q.error);};});}
@@ -17393,4 +17393,94 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-columns-products"],[data-target="tab-product-pricing"],[data-target="tab-orders"],[data-target="tab-pharmacies"]'))
       setTimeout(function(){syncProductsEverywhere();refreshLiveNow();},180);
   },true);
+})();
+
+
+/* v11.79.0: فقط اطلاعات همین دستگاه + بدون ستون تکراری کد کالا + حفظ قیمت مصرف‌کننده */
+(function(){
+  "use strict";
+  var localSnap=null;
+  try{localSnap=localStorage.getItem("CRM_APP_STATE_V2");}catch(e){}
+  function $(id){return document.getElementById(id);}
+  function S(){return (typeof window.__CRM_GET_STATE==="function"?window.__CRM_GET_STATE():window.state)||window.state||{};}
+  function persist(){
+    var st=S();if(!st)return;
+    try{localStorage.setItem("CRM_APP_STATE_V2",typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(st):JSON.stringify(st));}catch(e){}
+  }
+  function meaningful(st){
+    if(!st||typeof st!=="object")return false;
+    return ["pharmacies","doctors","orders","products","users","salesTargets","distSalesTargets"].some(function(k){return Array.isArray(st[k])&&st[k].length;});
+  }
+  function paintLists(){
+    try{if(typeof window.renderPharmaciesList==="function")window.renderPharmaciesList();else if(typeof renderPharmaciesList==="function")renderPharmaciesList();}catch(e){}
+    try{if(typeof window.renderDoctorsList==="function")window.renderDoctorsList();else if(typeof renderDoctorsList==="function")renderDoctorsList();}catch(e){}
+    try{if(typeof window.renderOrdersList==="function")window.renderOrdersList();else if(typeof renderOrdersList==="function")renderOrdersList();}catch(e){}
+    try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}
+    try{if(typeof window.syncProductsEverywhere==="function")window.syncProductsEverywhere();}catch(e){}
+    try{if(typeof updateNavBadges==="function")updateNavBadges();}catch(e){}
+  }
+  function claimAndReplace(st){
+    if(!st||typeof st!=="object")return;
+    st._soloOnly=true;
+    st._soloVersion="11.79.0";
+    st._soloAt=Date.now();
+    if(!st._soloEpoch){
+      try{st._soloEpoch=localStorage.getItem("CRM_SOLO_EPOCH")||String(Date.now());}catch(e){st._soloEpoch=String(Date.now());}
+    }
+    try{localStorage.setItem("CRM_SOLO_EPOCH",String(st._soloEpoch));localStorage.setItem("CRM_SOLO_CLAIM","11.79.0");}catch(e){}
+    window.state=st;
+    persist();
+    if(!navigator.onLine)return;
+    var body=typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(st):JSON.stringify(st);
+    fetch("/api/state?replace=1&__v79="+Date.now(),{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1","X-CRM-Replace":"1","X-CRM-Sync":"v79"},body:body,cache:"no-store"}).catch(function(){});
+  }
+  function restoreThisDevice(){
+    var parsed=null;
+    try{parsed=localSnap?JSON.parse(localSnap):null;}catch(e){parsed=null;}
+    var live=S();
+    if(meaningful(parsed)){
+      claimAndReplace(parsed);
+    }else if(live&&typeof live==="object"){
+      claimAndReplace(live);
+    }
+    paintLists();
+  }
+  var ofetch=window.fetch;
+  if(typeof ofetch==="function"&&!ofetch._v79){
+    var wf=function(url,opts){
+      var u=String(url||"");
+      var method=(opts&&opts.method)?String(opts.method).toUpperCase():"GET";
+      if(/\/api\/state/.test(u)&&method==="GET"&&u.indexOf("__v79keep")===-1){
+        return Promise.resolve(new Response(JSON.stringify({status:"skip"}),{status:200,headers:{"Content-Type":"application/json"}}));
+      }
+      return ofetch.apply(this,arguments);
+    };
+    wf._v79=true;window.fetch=wf;
+  }
+  window.__V73_BOOT=1;window.__V72_BOOT=1;window.__V71_CLAIMED=1;window.__V70_SOLO=1;
+  window.crmPushStateToServer=function(){
+    var st=S();if(!st)return;
+    st._soloOnly=true;st._soloVersion="11.79.0";
+    var body=typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(st):JSON.stringify(st);
+    fetch("/api/state?replace=1&__v79p="+Date.now(),{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1","X-CRM-Replace":"1","X-CRM-Sync":"v79"},body:body,cache:"no-store"}).catch(function(){});
+  };
+  function killDupCodeColumn(){
+    var body=$("tableProductsBody");if(!body)return;
+    Array.prototype.forEach.call(body.children,function(tr){
+      var codes=tr.querySelectorAll(".v20-product-code");
+      if(codes.length>1){for(var i=1;i<codes.length;i++)try{codes[i].parentNode.removeChild(codes[i]);}catch(e){}}
+    });
+  }
+  if(typeof window.renderColumnsProductsTable==="function"&&!window.renderColumnsProductsTable._v79code){
+    var rr=window.renderColumnsProductsTable;
+    var w=function(){var x=rr.apply(this,arguments);killDupCodeColumn();return x;};
+    w._v79code=true;window.renderColumnsProductsTable=w;
+  }
+  function boot(){
+    restoreThisDevice();
+    killDupCodeColumn();
+    setTimeout(function(){restoreThisDevice();killDupCodeColumn();},400);
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,20);});
+  else setTimeout(boot,20);
 })();
