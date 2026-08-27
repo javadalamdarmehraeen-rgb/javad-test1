@@ -17680,8 +17680,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   function wipeOps(st){
     if(!st||typeof st!=="object")return st;
-    WIPE.forEach(function(k){st[k]=[];});
-    st._dataGen=GEN;st._schemaVersion=GEN;st._purgedLegacyAt=Date.now();
+    st._dataGen=GEN;st._schemaVersion=GEN;
     return st;
   }
   function stamp(st){
@@ -17700,7 +17699,6 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   function adoptExact(remote){
     if(!remote||typeof remote!=="object")return;
-    if(String(remote._dataGen||"")!==GEN)wipeOps(remote);
     stamp(remote);
     window.state=remote;
     persist();
@@ -17708,7 +17706,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   (function wipeLocalNow(){
     var st=live();
-    if(st && String(st._dataGen||"")!==GEN){wipeOps(st);persist();}
+    if(st && String(st._dataGen||"")!==GEN){stamp(st);persist();}
   })();
   var ofetch=window.fetch;
   if(typeof ofetch==="function"&&!ofetch._v81){
@@ -17768,14 +17766,14 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         adoptExact(remote);
       }else{
         var st=live();
-        if(st){wipeOps(st);stamp(st);persist();paintLists();}
+        if(st){stamp(st);persist();paintLists();}
       }
       allowPost=true;
       pushClean();
       try{if(typeof window.__CRM_UNVEIL==="function")window.__CRM_UNVEIL();}catch(e){}
     }).catch(function(){
       var st=live();
-      if(st){wipeOps(st);persist();paintLists();}
+      if(st){stamp(st);persist();paintLists();}
       allowPost=true;
       try{if(typeof window.__CRM_UNVEIL==="function")window.__CRM_UNVEIL();}catch(e){}
     });
@@ -18151,10 +18149,12 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(!ops.length)return;
       var keep=ops[ops.length-1];
       ops.slice(0,-1).forEach(function(td){if(td.parentNode)td.parentNode.removeChild(td);});
+      if(ops.length===1 && keep.querySelector("[class*='edit-route']") && keep.querySelector("[class*='del-route']"))return;
       keep.className="v85-route-ops v73-ops v72-ops";
       var id="";
       var btn=keep.querySelector("[data-id]");
       if(btn)id=btn.getAttribute("data-id")||"";
+      if(!id)return;
       var html="<button type='button' class='btn btn-outline btn-sm v73-edit-route v72-edit-route' data-id='"+id+"'>✏️ ویرایش</button> <button type='button' class='btn btn-danger btn-sm v73-del-route v72-del-route' data-id='"+id+"'>🗑️ حذف</button>";
       if(keep.innerHTML!==html)keep.innerHTML=html;
     });
@@ -18248,4 +18248,43 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,60);});
   else setTimeout(boot,60);
+})();
+
+/* v11.86.0: هرگز لیست داروخانه کاربر خالی نشود + کلیک مسیر پایدار + نسخه یکسان موبایل */
+(function(){
+  "use strict";
+  function $(id){return document.getElementById(id);}
+  document.addEventListener("click",function(e){
+    var t=e.target;
+    if(!t||!t.closest)return;
+    var ed=t.closest(".v73-edit-route,.v72-edit-route,.v69-edit-route,.v68-edit-route,.v67-edit-route,[class*='edit-route']");
+    var del=t.closest(".v73-del-route,.v72-del-route,.v69-del-route,.v68-del-route,.v67-del-route,[class*='del-route']");
+    if(!ed&&!del)return;
+    var id=(ed||del).getAttribute("data-id")||"";
+    if(!id)return;
+    e.preventDefault();
+    if(ed){
+      try{if(typeof window.switchTab==="function")window.switchTab("tab-define-routes");}catch(x){}
+      setTimeout(function(){
+        var sel=$("routeManagerRep");
+        if(!sel)return;
+        sel.value=id;
+        try{sel.dispatchEvent(new Event("change",{bubbles:true}));}catch(x){}
+        var card=$("representativeRoutesCard");
+        if(card)card.scrollIntoView({behavior:"smooth",block:"start"});
+      },220);
+    }else{
+      var st=(typeof window.__CRM_GET_STATE==="function"?window.__CRM_GET_STATE():window.state)||{};
+      var u=((st.users)||[]).filter(function(x){return String(x.id)===String(id);})[0];
+      if(!u){alert("نماینده پیدا نشد.");return;}
+      if(!confirm("مسیر «"+(u.fullName||u.username||"")+"» پاک شود؟"))return;
+      u.activityProvinces=[];u.activityCities=[];u.activityDistrictList=[];
+      u.activityProvince="";u.activityCity="";u.activityDistricts="";u.activityRouteLabel="";
+      u._updatedAt=Date.now();
+      try{if(typeof window.saveState==="function")window.saveState();}catch(x){}
+      try{if(typeof window.renderRepRoutesOverview==="function")window.renderRepRoutesOverview();}catch(x){}
+    }
+  },true);
+  var badge=$("crmBuildBadge");
+  if(badge)badge.textContent="نسخه ۱۱.۸۶.۰";
 })();
