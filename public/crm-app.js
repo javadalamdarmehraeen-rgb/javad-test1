@@ -6,6 +6,27 @@
 
 const STORAGE_KEY = "CRM_APP_STATE_V2";
 let state = null;
+function bindLiveWindowState() {
+  try {
+    Object.defineProperty(window, "state", {
+      configurable: true,
+      enumerable: true,
+      get: function () { return state; },
+      set: function (v) {
+        if (!v || typeof v !== "object") return;
+        if (v === state) return;
+        if (!state || typeof state !== "object") { state = v; return; }
+        Object.keys(state).forEach(function (k) {
+          if (!Object.prototype.hasOwnProperty.call(v, k)) delete state[k];
+        });
+        Object.keys(v).forEach(function (k) { state[k] = v[k]; });
+      }
+    });
+    window.__CRM_STATE_BOUND = true;
+    window.__CRM_GET_STATE = function () { return state; };
+  } catch (eBind) {}
+}
+bindLiveWindowState();
 let autoBackupFileHandle = null;
 let autoBackupIntervalId = null;
 let isShowingAllPasswords = false;
@@ -25,7 +46,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "11.60.1";
+const CRM_APP_VERSION = "11.78.0";
 try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
@@ -48,9 +69,12 @@ const MENU_SECTIONS_LIST = [
   { id: "tab-leaves", label: "مرخصی‌ها", icon: "📝", badgeId: "badgeLeavesCount" },
   { id: "tab-notifications", label: "اعلان‌ها", icon: "🔔" },
   { id: "tab-monthly-reports", label: "گزارش ماهانه", icon: "📈" },
-  { id: "tab-sales-targets", label: "تارگت فروش", icon: "🎯" },
+  { id: "tab-define-routes", label: "تعریف مسیر نمایندگان", icon: "🗺️" },
+  { id: "tab-sales-targets", label: "تارگت فروش نمایندگان", icon: "🎯" },
+  { id: "tab-dist-targets", label: "تارگت فروش هرپخش", icon: "🎯" },
   { id: "tab-custom-fields", label: "افزودن‌ها", icon: "➕" },
   { id: "tab-columns-products", label: "ستون‌ها و کالاها", icon: "🧱" },
+  { id: "tab-product-pricing", label: "قیمت‌گذاری کالاها", icon: "💵" },
   { id: "tab-manual-design", label: "طراحی دستی تب‌ها", icon: "🎨" },
   { id: "tab-users-permissions", label: "کاربران و دسترسی", icon: "👤", badgeId: "badgeUsersCount" },
   { id: "tab-messengers", label: "پیام‌رسان‌ها", icon: "💬" },
@@ -107,6 +131,7 @@ function loadState() {
   if (!state.tabOrder) state.tabOrder = {};
   if (!state.manualLayouts) state.manualLayouts = {};
   state._authoritativeState = true;
+  if (typeof bindLiveWindowState === "function") bindLiveWindowState();
   if (saved) { try { localStorage.setItem(STORAGE_KEY, serializeStateForLocalStorage(state)); } catch (e) {} }
   applyGeneralSettingsToUI();
 }
@@ -223,10 +248,18 @@ function switchTab(targetId) {
     setTimeout(() => {
       if (targetId === "tab-dashboard" && mapDashboardOverview) mapDashboardOverview.invalidateSize();
       if (targetId === "tab-pharmacies") {
+        try {
+          var phFn = (typeof window.renderPharmaciesList === "function") ? window.renderPharmaciesList : renderPharmaciesList;
+          if (typeof phFn === "function") phFn();
+        } catch (ePh) {}
         if (typeof initPharmacyDoctorMapsIfNeeded === "function") initPharmacyDoctorMapsIfNeeded();
         if (mapPharmacyForm) mapPharmacyForm.invalidateSize();
       }
       if (targetId === "tab-doctors") {
+        try {
+          var docFn = (typeof window.renderDoctorsList === "function") ? window.renderDoctorsList : renderDoctorsList;
+          if (typeof docFn === "function") docFn();
+        } catch (eDoc) {}
         if (typeof initPharmacyDoctorMapsIfNeeded === "function") initPharmacyDoctorMapsIfNeeded();
         if (mapDoctorForm) mapDoctorForm.invalidateSize();
       }
@@ -2201,6 +2234,14 @@ function setupOrdersTab() {
       const status = document.getElementById("orderStatus").value;
       const priority = (document.getElementById("orderPriority")||{}).value || "عادی";
       const notes = document.getElementById("orderNotes").value.trim();
+      const pharmacyPhone = (document.getElementById("orderPharmacyPhone") || {}).value || "";
+      const orderManager = (document.getElementById("orderManager") || {}).value || "";
+      const orderManagerPhone = (document.getElementById("orderManagerPhone") || {}).value || "";
+      const orderPlate = (document.getElementById("orderPlate") || {}).value || "";
+      const orderFloor = (document.getElementById("orderFloor") || {}).value || "";
+      const isPercentage = ((document.getElementById("orderIsPercentage") || {}).value === "true");
+      const orderLat = Number((document.getElementById("orderLat") || {}).value) || null;
+      const orderLng = Number((document.getElementById("orderLng") || {}).value) || null;
       const customFieldsVals = extractCustomFieldValuesFromForm("order", "orderCustomFieldsContainer");
 
       if (typeof window.validateRequiredFields === "function" && !window.validateRequiredFields("tab-orders")) return;
@@ -2253,6 +2294,10 @@ function resetOrderForm() {
   document.getElementById("orderAddress").value = "";
   document.getElementById("orderDate").value = jalaliTodayEnglish();
   document.getElementById("orderNotes").value = "";
+  ["orderPharmacyPhone","orderManager","orderManagerPhone","orderPlate","orderFloor","orderLat","orderLng"].forEach(function(id){var el=document.getElementById(id);if(el)el.value="";});
+  var op=document.getElementById("orderIsPercentage");if(op)op.value="false";
+  var y=document.getElementById("btnOrdPercentageYes"),n=document.getElementById("btnOrdPercentageNo");
+  if(y)y.classList.remove("active");if(n)n.classList.add("active");
   document.getElementById("existingPharmacyTopAlert").style.display = "none";
 
   const provEl = document.getElementById("orderProvince");
@@ -2998,16 +3043,15 @@ function downloadCSVFile(filename, headers, rows) {
 // ----------------------------------------------------------------------------
 function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
-  const build = "11.60.1";
+  const build = "11.78.0";
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'CRM_BUILD_ACTIVE' && event.data.build !== build) {
-      const to = location.pathname + location.search + location.hash;
-      location.replace('/cache-reset?to=' + encodeURIComponent(to) + '&build=' + encodeURIComponent(event.data.build) + '&t=' + Date.now());
+      try { console.warn("نسخه SW متفاوت است؛ بارگذاری مجدد خودکار غیرفعال شد تا حلقه قطع شود."); } catch (e) {}
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.60.1', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.78.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -3991,8 +4035,12 @@ function setupColumnsProductsTab() {
   const handleSaveProd = () => {
     const nameEl = document.getElementById("productName");
     const name = nameEl ? nameEl.value.trim() : "";
+    const codeEl = document.getElementById("productCode");
+    const code = codeEl ? String(codeEl.value || "").trim() : "";
     const distPrice = parseInt(document.getElementById("productDistPrice") ? document.getElementById("productDistPrice").value : 40000) || 40000;
     const phPrice = parseInt(document.getElementById("productPrice") ? document.getElementById("productPrice").value : 45000) || 45000;
+    const consEl = document.getElementById("productConsumerPrice");
+    const consPrice = parseInt(consEl && consEl.value ? consEl.value : 0, 10) || 0;
     const stock = parseInt(document.getElementById("productStock") ? document.getElementById("productStock").value : 5000) || 5000;
     const customFieldsVals = (typeof extractCustomFieldValuesFromForm === "function")
       ? extractCustomFieldValuesFromForm("products", "productCustomFieldsContainer")
@@ -4008,13 +4056,15 @@ function setupColumnsProductsTab() {
     let idx = editId ? state.products.findIndex(p => p.id === editId) : -1;
     if (idx === -1) idx = state.products.findIndex(p => p.name === name);
     if (idx !== -1) {
-      state.products[idx] = { ...state.products[idx], name, distributorPrice: distPrice, pharmacyPrice: phPrice, stock, customFields: customFieldsVals };
+      state.products[idx] = { ...state.products[idx], name, code, distributorPrice: distPrice, pharmacyPrice: phPrice, consumerPrice: consPrice || phPrice, stock, customFields: customFieldsVals };
     } else {
       state.products.push({
         id: "prod-" + Date.now(),
         name,
+        code,
         distributorPrice: distPrice,
         pharmacyPrice: phPrice,
+        consumerPrice: consPrice || phPrice,
         stock,
         customFields: customFieldsVals
       });
@@ -4038,7 +4088,10 @@ function setupColumnsProductsTab() {
     setupSalesTargetsTab();
     mergeCatalogIntoOrderItems();
     updateNavBadges();
-    alert("کالا ثبت شد: «" + name + "» و در تب سفارشات با فیلد تعداد جایزه اضافه شد.");
+    try { if (typeof window.syncProductsEverywhere === "function") window.syncProductsEverywhere(); } catch (eSync) {}
+    try { if (typeof window.paintV77ProductPricing === "function") window.paintV77ProductPricing(); } catch (eP) {}
+    try { if (typeof window.applyV77ProductPricing === "function") window.applyV77ProductPricing(); } catch (eA) {}
+    alert("کالا ثبت شد: «" + name + "» و در همه تب‌های کالا همان لحظه اضافه شد.");
   };
 
   if (btnProd) btnProd.onclick = (e) => { e.preventDefault(); handleSaveProd(); };
@@ -4070,9 +4123,11 @@ function renderColumnsProductsTable() {
     const shownName = prod.name || window._lastSavedProductName || "—";
     tr.innerHTML = `
       <td>${index + 1}</td>
+      <td>${prod.code || "—"}</td>
       <td class="product-name-cell"><strong>${shownName}</strong></td>
       <td><strong style="color:#1e40af;">${Number(prod.distributorPrice || prod.price || 40000).toLocaleString("fa-IR")} ریال</strong></td>
       <td><strong style="color:#0d9488;">${Number(prod.pharmacyPrice || prod.price || 45000).toLocaleString("fa-IR")} ریال</strong></td>
+      <td><strong style="color:#7c3aed;">${Number(prod.consumerPrice || prod.pharmacyPrice || prod.price || 0).toLocaleString("fa-IR")} ریال</strong></td>
       <td>${prod.stock || 5000} عدد</td>
       <td>
         <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
@@ -4090,12 +4145,16 @@ function editProductCatalogItem(id) {
   if (!prod) return;
   window._editingProductId = id;
   const nameEl = document.getElementById("productName");
+  const codeEl = document.getElementById("productCode");
   const distEl = document.getElementById("productDistPrice");
   const phEl = document.getElementById("productPrice");
+  const consEl = document.getElementById("productConsumerPrice");
   const stEl = document.getElementById("productStock");
   if (nameEl) nameEl.value = prod.name || "";
+  if (codeEl) codeEl.value = prod.code || "";
   if (distEl) distEl.value = prod.distributorPrice || prod.price || "";
   if (phEl) phEl.value = prod.pharmacyPrice || prod.price || "";
+  if (consEl) consEl.value = prod.consumerPrice || prod.pharmacyPrice || prod.price || "";
   if (stEl) stEl.value = prod.stock || "";
   const banner = document.getElementById("productSavedBanner");
   if (banner) {
@@ -4120,4 +4179,5 @@ function deleteProductCatalogItem(id) {
   setupSalesTargetsTab();
   mergeCatalogIntoOrderItems();
   updateNavBadges();
+  try { if (typeof window.syncProductsEverywhere === "function") window.syncProductsEverywhere(); } catch (eSync2) {}
 }

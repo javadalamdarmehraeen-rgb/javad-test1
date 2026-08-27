@@ -332,6 +332,7 @@ let PERMISSION_GROUPS = {
     { key: "sys_add_dropdown", label: "افزودن مقادیر کشویی" },
     { key: "sys_del_dropdown", label: "حذف مقادیر کشویی" },
     { key: "sys_cols", label: "مدیریت ستون‌ها و کالاها" },
+    { key: "sys_product_pricing", label: "قیمت‌گذاری کالاها" },
     { key: "sys_users", label: "مدیریت کاربران" },
     { key: "sys_msg", label: "تنظیم پیام‌رسان‌ها" },
     { key: "sys_notify", label: "ارسال اعلان به نمایندگان" }
@@ -569,14 +570,23 @@ PERMISSION_GROUPS = {
   "گزارش ماهانه": [
     { key: "rep_monthly", label: "مشاهده گزارش ماهانه" }, { key: "rep_all_reports", label: "مشاهده گزارش همه نمایندگان" }, { key: "rep_item_sales", label: "گزارش فروش کالا" }, { key: "rep_excel", label: "خروجی اکسل" }
   ],
-  "تارگت فروش": [
-    { key: "sys_targets", label: "مشاهده و مدیریت تارگت" }, { key: "target_define_routes", label: "تعریف چند مسیر برای نمایندگان" }, { key: "target_plan_products", label: "تعریف تارگت به تفکیک کالا" }, { key: "target_all_reps", label: "تارگت همه نمایندگان" }, { key: "target_delete", label: "حذف تارگت" }
+  "تعریف مسیر نمایندگان": [
+    { key: "target_define_routes", label: "مشاهده و تعریف مسیر نمایندگان" }
+  ],
+  "تارگت فروش نمایندگان": [
+    { key: "sys_targets", label: "مشاهده و مدیریت تارگت نمایندگان" }, { key: "target_plan_products", label: "تعریف تارگت به تفکیک کالا" }, { key: "target_all_reps", label: "تارگت همه نمایندگان" }, { key: "target_delete", label: "حذف تارگت" }
+  ],
+  "تارگت فروش هرپخش": [
+    { key: "dist_targets_access", label: "مشاهده و تعریف تارگت هر پخش" }
   ],
   "افزودن‌ها": [
     { key: "sys_additions", label: "مشاهده تب افزودن‌ها" }, { key: "sys_add_dropdown", label: "افزودن گزینه کشویی" }, { key: "sys_del_dropdown", label: "حذف گزینه کشویی" }, { key: "sys_global_option_edit", label: "ویرایش گزینه سراسری" }, { key: "sys_global_same_label_options", label: "یکسان‌سازی فیلدهای هم‌نام" }
   ],
   "ستون‌ها و کالاها": [
     { key: "sys_cols", label: "مشاهده ستون‌ها و کالاها" }, { key: "sys_product_crud_guard", label: "افزودن و ویرایش کالا" }, { key: "sys_global_product_delete", label: "حذف کالا" }, { key: "sys_atomic_form_list_order", label: "تغییر ترتیب فرم و لیست" }
+  ],
+  "قیمت‌گذاری کالاها": [
+    { key: "sys_product_pricing", label: "مشاهده و تعیین قیمت کالاها" }
   ],
   "طراحی دستی تب‌ها": [
     { key: "sys_manual_design", label: "مشاهده طراحی دستی" }, { key: "sys_copy_tabs", label: "کپی چیدمان بین تب‌ها" }, { key: "sys_global_layout_lock", label: "ذخیره و قفل چیدمان" }

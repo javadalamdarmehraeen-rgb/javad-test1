@@ -711,6 +711,9 @@
         listOrder: (meta[b.id].listOrder != null && meta[b.id].listOrder !== "") ? Number(meta[b.id].listOrder) : (Number(meta[b.id].order) || b.scanOrder),
         size: meta[b.id].size,
         height: meta[b.id].height,
+        gapBeforeMm: meta[b.id].gapBeforeMm,
+        gapAfterMm: meta[b.id].gapAfterMm,
+        rowNo: meta[b.id].rowNo,
         hidden: !showForm,
         showInForm: showForm,
         showInList: showList === true,
@@ -739,6 +742,9 @@
         listOrder: (c.listOrder != null && c.listOrder !== "") ? Number(c.listOrder) : (Number(c.order) || 999),
         size: c.size,
         height: c.height,
+        gapBeforeMm: c.gapBeforeMm,
+        gapAfterMm: c.gapAfterMm,
+        rowNo: c.rowNo,
         hidden: c.showInForm === false,
         showInForm: c.showInForm !== false,
         showInList: c.showInList !== false,
@@ -917,8 +923,8 @@
       group.style.setProperty("max-width", "100%", "important");
       group.style.setProperty("min-width", "100%", "important");
       group.style.setProperty("width", "100%", "important");
-    } else if (!shared) {
-      var w = size > 40 ? size : 260;
+    } else if (!shared && size > 40) {
+      var w = size;
       group.style.setProperty("flex", "0 0 " + w + "px", "important");
       group.style.setProperty("max-width", w + "px", "important");
       group.style.setProperty("min-width", Math.min(140, w) + "px", "important");
@@ -965,6 +971,14 @@
       } else if (size) el.style.fontSize = size;
       else el.style.removeProperty("font-size");
     }
+    var gapB = parseFloat(f.gapBeforeMm), gapA = parseFloat(f.gapAfterMm);
+    if (isFinite(gapB) && gapB > 0) group.style.setProperty("margin-inline-start", (gapB * 96 / 25.4).toFixed(2) + "px", "important");
+    else group.style.removeProperty("margin-inline-start");
+    if (isFinite(gapA) && gapA > 0) group.style.setProperty("margin-inline-end", (gapA * 96 / 25.4).toFixed(2) + "px", "important");
+    else group.style.removeProperty("margin-inline-end");
+    var rowNo = parseInt(f.rowNo, 10);
+    if (rowNo > 0) group.setAttribute("data-v68-row", String(rowNo));
+    else group.removeAttribute("data-v68-row");
     applyFont(lab, f.labelFontFamily || f.fontFamily, f.labelFontWeight || f.fontWeight, f.labelFontSize || f.fontSize);
     applyFont(inp, f.fieldFontFamily || f.fontFamily, f.fieldFontWeight || f.fontWeight, f.fieldFontSize || f.fontSize);
     if (f.kind === "widget" && group.querySelector(".map-container")) {
@@ -1292,6 +1306,9 @@
     }
     $("colFieldSize").value = shownSize > 40 ? shownSize : 220;
     if ($("colFieldHeight")) $("colFieldHeight").value = shownH > 20 ? shownH : 42;
+    if ($("colGapBefore")) $("colGapBefore").value = field && field.gapBeforeMm != null ? field.gapBeforeMm : 0;
+    if ($("colGapAfter")) $("colGapAfter").value = field && field.gapAfterMm != null ? field.gapAfterMm : 0;
+    if ($("colRowNo")) $("colRowNo").value = field && field.rowNo ? field.rowNo : "";
     if ($("colAddKind")) $("colAddKind").value = (field && (field.kind === "widget" || String(field.inputKind || "").indexOf("widget-") === 0)) ? "button" : (field && field.kind === "box" ? "box" : "field");
     if ($("colFieldPlace")) $("colFieldPlace").value = field && field.place ? field.place : (field && field.full ? "under" : "beside");
     $("colFieldOpts").value = field && field.options ? field.options.join("، ") : "";
@@ -1345,6 +1362,9 @@
         '<div class="form-group"><label class="form-label">شماره ترتیب در لیست</label><input id="colFieldListOrder" class="form-input" type="number" min="1" value="' + (list.length + 1) + '"><small class="col-help">جای ستون در جدول لیست — جدا از فرم</small></div>' +
         '<div class="form-group"><label class="form-label">عرض (پیکسل)</label><input id="colFieldSize" class="form-input" type="number" min="40" max="1200" value="220"><small class="col-help">عدد واقعی عرض همان فیلد/کادر/کلید</small></div>' +
         '<div class="form-group"><label class="form-label">ارتفاع (پیکسل)</label><input id="colFieldHeight" class="form-input" type="number" min="24" max="800" value="42"><small class="col-help">عدد واقعی ارتفاع همان مورد</small></div>' +
+        '<div class="form-group"><label class="form-label">فاصله نسبت به فیلد قبلی (میلی‌متر)</label><input id="colGapBefore" class="form-input" type="number" min="0" max="200" step="0.5" value="0"><small class="col-help">فاصله این فیلد از فیلد قبلی، بر حسب میلی‌متر</small></div>' +
+        '<div class="form-group"><label class="form-label">فاصله نسبت به فیلد بعدی (میلی‌متر)</label><input id="colGapAfter" class="form-input" type="number" min="0" max="200" step="0.5" value="0"><small class="col-help">فاصله این فیلد تا فیلد بعدی، بر حسب میلی‌متر</small></div>' +
+        '<div class="form-group"><label class="form-label">شماره سطر</label><input id="colRowNo" class="form-input" type="number" min="1" max="80" value=""><small class="col-help">شماره سطر این فیلد در فرم؛ فیلدهای هم‌شماره در یک سطر می‌مانند</small></div>' +
         '<div class="form-group"><label class="form-label">جای فیلد در صفحه</label><select id="colFieldPlace" class="form-select"><option value="beside">روبرو (کنار فیلدها)</option><option value="under">زیر هم (سطر جدا)</option></select></div>' +
         '<div class="form-group"><label class="form-label">داخل کدام کادر؟</label><select id="colFieldBoxTarget" class="form-select"><option value="">روی خود فرم (بدون کادر)</option></select></div>' +
         '<div class="form-group" id="colFieldOptsWrap"><label class="form-label">گزینه‌های کشویی</label><input id="colFieldOpts" class="form-input" placeholder="با ویرگول جدا کنید"></div>' +
@@ -1500,6 +1520,9 @@
     if (!order || order < 1) order = getUnifiedFieldList(tabId).length + 1;
     var size = parseInt($("colFieldSize").value, 10) || 220;
     var heightVal = $("colFieldHeight") ? (parseInt($("colFieldHeight").value, 10) || 0) : 0;
+    var gapBeforeVal = $("colGapBefore") ? (parseFloat($("colGapBefore").value) || 0) : 0;
+    var gapAfterVal = $("colGapAfter") ? (parseFloat($("colGapAfter").value) || 0) : 0;
+    var rowNoVal = $("colRowNo") ? (parseInt($("colRowNo").value, 10) || 0) : 0;
     var listOrderVal = $("colFieldListOrder") ? (parseInt($("colFieldListOrder").value, 10) || 0) : 0;
     var addKind = $("colAddKind") ? $("colAddKind").value : "field";
     var placeVal = $("colFieldPlace") ? $("colFieldPlace").value : "beside";
@@ -1559,6 +1582,9 @@
       meta[editing.id].label = label;
       meta[editing.id].size = size;
       if (heightVal > 20) meta[editing.id].height = heightVal;
+      meta[editing.id].gapBeforeMm = gapBeforeVal;
+      meta[editing.id].gapAfterMm = gapAfterVal;
+      if (rowNoVal > 0) meta[editing.id].rowNo = rowNoVal; else delete meta[editing.id].rowNo;
       if (listOrderVal > 0) meta[editing.id].listOrder = listOrderVal;
       meta[editing.id].place = placeVal || "beside";
       meta[editing.id].showInForm = $("colFieldInForm").checked;
@@ -1588,6 +1614,9 @@
         rec.showInList = $("colFieldInList").checked;
         rec.size = size;
         if (heightVal > 20) rec.height = heightVal;
+        rec.gapBeforeMm = gapBeforeVal;
+        rec.gapAfterMm = gapAfterVal;
+        rec.rowNo = rowNoVal || "";
         if (listOrderVal > 0) rec.listOrder = listOrderVal;
         if ($("colFieldPlace")) rec.place = $("colFieldPlace").value || "beside";
         rec.dependsOn = ($("colFieldDep").value || "").trim();
@@ -1621,6 +1650,9 @@
       listOrder: listOrderVal || order,
       size: size,
       height: heightVal || 0,
+      gapBeforeMm: gapBeforeVal,
+      gapAfterMm: gapAfterVal,
+      rowNo: rowNoVal || "",
       place: placeVal || "beside",
       required: reqVal,
       exportExcel: excelVal,
