@@ -1,4 +1,4 @@
-const BUILD = "11.60.1";
+const BUILD = "11.88.0";
 const CACHE = "crm-static-v" + BUILD;
 
 async function purgeEveryCache() {
@@ -49,6 +49,12 @@ self.addEventListener("notificationclick", function (event) {
   }));
 });
 
+function fetchWithTimeout(req, ms) {
+  const ac = new AbortController();
+  const to = setTimeout(function () { try { ac.abort(); } catch (e) {} }, ms || 8000);
+  return fetch(req, { signal: ac.signal }).then(function (r) { clearTimeout(to); return r; }, function (err) { clearTimeout(to); throw err; });
+}
+
 self.addEventListener("fetch", function (event) {
   const request = event.request;
   if (request.method !== "GET") return;
@@ -60,16 +66,25 @@ self.addEventListener("fetch", function (event) {
 
   if (isApi || mustBeFresh) {
     const fresh = isApi ? new Request(request, { cache: "no-store" }) : new Request(request, { cache: "reload" });
-    event.respondWith(fetch(fresh).catch(function () {
-      if (request.mode === "navigate") {
-        return new Response("<!doctype html><meta charset='utf-8'><title>اتصال لازم است</title><body dir='rtl' style='font-family:Tahoma;text-align:center;padding:40px'><h2>برای دریافت آخرین نسخه، اینترنت را وصل کنید.</h2><button onclick='location.reload()'>تلاش دوباره</button></body>", { status: 503, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" } });
+    event.respondWith(fetchWithTimeout(fresh, isApi ? 12000 : 8000).then(function (response) {
+      if (response && response.ok && !isApi) {
+        const copy = response.clone();
+        caches.open(CACHE).then(function (cache) { cache.put(request, copy); });
       }
-      return new Response("نسخه تازه در دسترس نیست", { status: 503, headers: { "Cache-Control": "no-store" } });
+      return response;
+    }).catch(function () {
+      return caches.match(request).then(function (hit) {
+        if (hit) return hit;
+        if (request.mode === "navigate") {
+          return new Response("<!doctype html><meta charset='utf-8'><title>اتصال لازم است</title><body dir='rtl' style='font-family:Tahoma;text-align:center;padding:40px'><h2>اتصال ضعیف است. دوباره تلاش کنید.</h2><button onclick='location.reload()'>تلاش دوباره</button></body>", { status: 503, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" } });
+        }
+        return new Response("نسخه تازه در دسترس نیست", { status: 503, headers: { "Cache-Control": "no-store" } });
+      });
     }));
     return;
   }
 
-  event.respondWith(fetch(new Request(request, { cache: "no-cache" })).then(function (response) {
+  event.respondWith(fetchWithTimeout(new Request(request, { cache: "no-cache" }), 8000).then(function (response) {
     if (response.ok && /\.(?:png|jpg|jpeg|ico|woff2)$/.test(url.pathname)) {
       const copy = response.clone();
       caches.open(CACHE).then(function (cache) { cache.put(request, copy); });
