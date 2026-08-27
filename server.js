@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.79.0";
+const APP_VERSION = "11.80.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -89,6 +89,31 @@ function readJsonSafe(filePath) {
   try { return sanitizeJsonValue(JSON.parse(fs.readFileSync(filePath, "utf8"))); } catch (e) { return null; }
 }
 const CRM_MERGE_ARRAYS = ["pharmacies","doctors","orders","products","users","reps","leaves","visits","repRoutes","repHomes","hospitals","notifications","salesTargets","distSalesTargets","activityLog"];
+const LEGACY_SAMPLE_IDS = {"ph-1":1,"ph-2":1,"ph-3":1,"doc-1":1,"doc-2":1,"rep-1":1,"rep-2":1,"rep-3":1,"ord-1":1,"u-2":1,"u-3":1,"u-4":1,"prod-1":1,"prod-2":1,"act-1":1,"act-2":1,"act-3":1,"home-1":1,"home-2":1,"rt-1":1,"rt-2":1,"lv-1":1,"lv-2":1,"v-1":1,"v-2":1,"v-3":1,"h-1":1,"h-2":1,"h-3":1,"h-4":1,"not-1":1,"not-2":1,"tgt-1":1,"tgt-2":1};
+const LEGACY_SAMPLE_NAMES = {"داروخانه دکتر عرفانی":1,"داروخانه شبانه‌روزی رازی":1,"داروخانه دکتر عقبایی":1,"دکتر کاوه سعیدی":1,"دکتر الناز تهرانی":1,"کپسول امپرازول ۲۰ میلی‌گرم":1,"آمپول نوروبیون ویتامین B کمپلکس":1};
+function stripLegacySample(st) {
+  if (!st || typeof st !== "object") return 0;
+  let n = 0;
+  CRM_MERGE_ARRAYS.forEach((k) => {
+    if (!Array.isArray(st[k])) return;
+    const next = st[k].filter((r) => {
+      if (!r || typeof r !== "object") return false;
+      const id = r.id != null ? String(r.id) : "";
+      if (id && LEGACY_SAMPLE_IDS[id]) return false;
+      const name = String(r.name || r.fullName || r.pharmacyName || "");
+      if (name && LEGACY_SAMPLE_NAMES[name]) return false;
+      return true;
+    });
+    n += st[k].length - next.length;
+    st[k] = next;
+  });
+  return n;
+}
+function isV80Gen(st, syncHdr) {
+  const g = String((st && (st._dataGen || st._schemaVersion)) || "");
+  const s = String(syncHdr || "");
+  return g === "11.80.0" || g.indexOf("11.80") === 0 || s === "v80" || s === "11.80.0";
+}
 function recStamp(r) {
   if (!r || typeof r !== "object") return 0;
   return Number(r._updatedAt || r.updatedAt || r._lastSavedAt || 0);
@@ -424,6 +449,10 @@ const server = http.createServer((req, res) => {
     if (fs.existsSync(SERVER_DATA_PATH)) {
       const data = readJsonSafe(SERVER_DATA_PATH);
       if (!data) return send(req, res, 503, JSON.stringify({ status: "error", message: "state data unavailable" }), "application/json; charset=utf-8");
+      const removed = stripLegacySample(data);
+      if (removed > 0) {
+        try { writeJsonAtomic(SERVER_DATA_PATH, data); } catch (e) {}
+      }
       return send(req, res, 200, JSON.stringify({ status: "success", data }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
     }
     return send(req, res, 200, JSON.stringify({ status: "empty" }), "application/json; charset=utf-8");
@@ -440,28 +469,21 @@ const server = http.createServer((req, res) => {
         const data = sanitizeJsonValue(JSON.parse(body));
         const existing = fs.existsSync(SERVER_DATA_PATH) ? readJsonSafe(SERVER_DATA_PATH) : null;
         const wantReplace = parsed.searchParams.get("replace") === "1" || String(req.headers["x-crm-replace"] || "") === "1" || data._soloReplace === true;
-        if (wantReplace) {
-          data._soloOnly = true;
-          data._soloEpoch = Number(data._soloEpoch) || Date.now();
-          data._soloAt = Date.now();
-          data._unifiedAt = Date.now();
-          delete data._soloReplace;
-          writeJsonAtomic(SERVER_DATA_PATH, data);
-          return send(req, res, 200, JSON.stringify({ status: "success", data: data, replaced: true }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
+        const syncHdr = String(req.headers["x-crm-sync"] || "");
+        if (!isV80Gen(data, syncHdr)) {
+          const keep = existing || {};
+          return send(req, res, 200, JSON.stringify({ status: "success", data: keep, ignored: true, reason: "legacy-locked" }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
         }
-        if (existing && existing._soloOnly) {
-          if (String(data._soloEpoch || "") !== String(existing._soloEpoch || "")) {
-            return send(req, res, 200, JSON.stringify({ status: "success", data: existing, ignored: true }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
-          }
-          data._soloOnly = true;
-          data._soloEpoch = existing._soloEpoch;
-          data._unifiedAt = Date.now();
-          writeJsonAtomic(SERVER_DATA_PATH, data);
-          return send(req, res, 200, JSON.stringify({ status: "success", data: data }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
-        }
-        const merged = mergeCrmState(existing, data);
-        writeJsonAtomic(SERVER_DATA_PATH, merged);
-        send(req, res, 200, JSON.stringify({ status: "success", data: merged }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
+        stripLegacySample(data);
+        data._dataGen = "11.80.0";
+        data._schemaVersion = "11.80.0";
+        data._soloOnly = true;
+        data._soloEpoch = Number(data._soloEpoch) || (existing && existing._soloEpoch) || Date.now();
+        data._soloAt = Date.now();
+        data._unifiedAt = Date.now();
+        delete data._soloReplace;
+        writeJsonAtomic(SERVER_DATA_PATH, data);
+        return send(req, res, 200, JSON.stringify({ status: "success", data: data, replaced: true }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
       } catch (err) {
         send(req, res, 400, JSON.stringify({ status: "error", message: err.message }), "application/json; charset=utf-8");
       }

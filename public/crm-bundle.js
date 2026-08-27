@@ -16925,7 +16925,8 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   function pricesOf(p){
     var dist=Number(p.distributorPrice||p.distPrice||p.price||0)||0;
     var ph=Number(p.pharmacyPrice||p.price||0)||0;
-    var cons=Number(p.consumerPrice||0);
+    var cons=Number(String(p.consumerPrice==null?"":p.consumerPrice).replace(/[^\d.-]/g,""));
+    if(!isFinite(cons)||cons<=0)cons=Number(p.consumerPrice)||0;
     if(!cons)cons=ph||dist;
     var vat=p.vatPercent!=null&&p.vatPercent!==""?Number(p.vatPercent):vatPct();
     if(!isFinite(vat))vat=vatPct();
@@ -16956,11 +16957,13 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     var cur=pricesOf(p);
     var d=ensureDraft(p);
     var inc=Number(d.increasePct)||0;
-    var newCons=Math.round(cur.cons*(1+inc/100));
+    var baseCons=Number(cur.cons)||0;
+    var newCons=Math.round(baseCons*(1+inc/100));
     var m3=Number(d.marginDistPh);if(!isFinite(m3))m3=margin(cur.dist,cur.ph);
     var m5=Number(d.marginPhCons);if(!isFinite(m5))m5=margin(cur.ph,cur.cons);
     var back=fromCons(newCons,m3,m5);
-    d.dist=back.dist;d.ph=back.ph;d.cons=back.cons;
+    d.dist=back.dist;d.ph=back.ph;
+    d.cons=newCons;
     d.vat=cur.vat;
     d.marginDistPh=m3;d.marginPhCons=m5;
     return d;
@@ -17435,23 +17438,17 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     fetch("/api/state?replace=1&__v79="+Date.now(),{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1","X-CRM-Replace":"1","X-CRM-Sync":"v79"},body:body,cache:"no-store"}).catch(function(){});
   }
   function restoreThisDevice(){
-    var parsed=null;
-    try{parsed=localSnap?JSON.parse(localSnap):null;}catch(e){parsed=null;}
-    var live=S();
-    if(meaningful(parsed)){
-      claimAndReplace(parsed);
-    }else if(live&&typeof live==="object"){
-      claimAndReplace(live);
-    }
-    paintLists();
+    return;
   }
   var ofetch=window.fetch;
   if(typeof ofetch==="function"&&!ofetch._v79){
     var wf=function(url,opts){
       var u=String(url||"");
       var method=(opts&&opts.method)?String(opts.method).toUpperCase():"GET";
-      if(/\/api\/state/.test(u)&&method==="GET"&&u.indexOf("__v79keep")===-1){
-        return Promise.resolve(new Response(JSON.stringify({status:"skip"}),{status:200,headers:{"Content-Type":"application/json"}}));
+      if(/\/api\/state/.test(u)&&method==="GET"&&u.indexOf("__v79keep")===-1&&u.indexOf("__v80")===-1){
+        if(/__v60=|__v67=|__v65=|__v69=|__v70=|__v69boot|__v72boot/.test(u)){
+          return Promise.resolve(new Response(JSON.stringify({status:"skip"}),{status:200,headers:{"Content-Type":"application/json"}}));
+        }
       }
       return ofetch.apply(this,arguments);
     };
@@ -17483,4 +17480,171 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,20);});
   else setTimeout(boot,20);
+})();
+
+/* v11.80.0: ملاک فقط سرور — قفل ورود داده نسخه/سیستم قبلی — مصرف‌کننده جدید = فعلی × (۱+افزایش) */
+(function(){
+  "use strict";
+  window.__V80_LOCK=1;
+  window.__V73_BOOT=1;
+  window.__V72_BOOT=1;
+  window.__V71_CLAIMED=1;
+  window.__V70_SOLO=1;
+  window.__V79_BOOT=1;
+  var DATA_GEN="11.80.0";
+  var allowPost=false;
+  var SAMPLE_IDS={"ph-1":1,"ph-2":1,"ph-3":1,"doc-1":1,"doc-2":1,"rep-1":1,"rep-2":1,"rep-3":1,"ord-1":1,"u-2":1,"u-3":1,"u-4":1,"prod-1":1,"prod-2":1,"act-1":1,"act-2":1,"act-3":1,"home-1":1,"home-2":1,"rt-1":1,"rt-2":1,"lv-1":1,"lv-2":1,"v-1":1,"v-2":1,"v-3":1,"h-1":1,"h-2":1,"h-3":1,"h-4":1,"not-1":1,"not-2":1,"tgt-1":1,"tgt-2":1};
+  var SAMPLE_NAMES={"داروخانه دکتر عرفانی":1,"داروخانه شبانه‌روزی رازی":1,"داروخانه دکتر عقبایی":1,"دکتر کاوه سعیدی":1,"دکتر الناز تهرانی":1,"کپسول امپرازول ۲۰ میلی‌گرم":1,"آمپول نوروبیون ویتامین B کمپلکس":1};
+  var ARRAYS=["pharmacies","doctors","orders","products","users","reps","leaves","visits","repRoutes","repHomes","hospitals","notifications","salesTargets","distSalesTargets","activityLog"];
+  function $(id){return document.getElementById(id);}
+  function live(){
+    try{if(typeof window.__CRM_GET_STATE==="function"){var g=window.__CRM_GET_STATE();if(g&&typeof g==="object")return g;}}catch(e){}
+    return window.state||null;
+  }
+  function S(){return live()||{};}
+  function persist(){
+    var st=live();if(!st)return;
+    try{localStorage.setItem("CRM_APP_STATE_V2",typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(st):JSON.stringify(st));}catch(e){}
+  }
+  function meaningful(st){
+    if(!st||typeof st!=="object")return false;
+    return ["pharmacies","doctors","orders","products","users","salesTargets","distSalesTargets"].some(function(k){return Array.isArray(st[k])&&st[k].length;});
+  }
+  function stripLegacy(st){
+    if(!st||typeof st!=="object")return st;
+    ARRAYS.forEach(function(k){
+      if(!Array.isArray(st[k]))return;
+      st[k]=st[k].filter(function(r){
+        if(!r||typeof r!=="object")return false;
+        var id=r.id!=null?String(r.id):"";
+        if(id&&SAMPLE_IDS[id])return false;
+        var name=String(r.name||r.fullName||r.pharmacyName||"");
+        if(name&&SAMPLE_NAMES[name])return false;
+        return true;
+      });
+    });
+    return st;
+  }
+  function stamp(st){
+    if(!st||typeof st!=="object")return st;
+    st._dataGen=DATA_GEN;
+    st._schemaVersion=DATA_GEN;
+    st._soloOnly=true;
+    st._unifiedAt=Date.now();
+    st._lastSavedAt=Date.now();
+    return st;
+  }
+  function paintLists(){
+    try{if(typeof window.renderPharmaciesList==="function")window.renderPharmaciesList();else if(typeof renderPharmaciesList==="function")renderPharmaciesList();}catch(e){}
+    try{if(typeof window.renderDoctorsList==="function")window.renderDoctorsList();else if(typeof renderDoctorsList==="function")renderDoctorsList();}catch(e){}
+    try{if(typeof window.renderOrdersList==="function")window.renderOrdersList();else if(typeof renderOrdersList==="function")renderOrdersList();}catch(e){}
+    try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}
+    try{if(typeof window.syncProductsEverywhere==="function")window.syncProductsEverywhere();}catch(e){}
+    try{if(typeof window.paintV77ProductPricing==="function")window.paintV77ProductPricing();}catch(e){}
+    try{if(typeof updateNavBadges==="function")updateNavBadges();}catch(e){}
+  }
+  function adoptExact(remote){
+    if(!remote||typeof remote!=="object")return;
+    stripLegacy(remote);
+    stamp(remote);
+    window.state=remote;
+    persist();
+    paintLists();
+  }
+  function nativeFetch(){
+    var f=window.fetch;
+    while(f&&(f._v79||f._v73||f._v80||f._v72||f._v71)){
+      if(f._raw){f=f._raw;break;}
+      break;
+    }
+    return f;
+  }
+  var ofetch=window.fetch;
+  if(typeof ofetch==="function"&&!ofetch._v80){
+    var wf=function(url,opts){
+      var u=String(url||"");
+      var method=(opts&&opts.method)?String(opts.method).toUpperCase():"GET";
+      if(/\/api\/state/.test(u)&&method==="POST"){
+        var hdrs={};
+        try{
+          if(opts&&opts.headers&&typeof opts.headers.forEach==="function")opts.headers.forEach(function(v,k){hdrs[String(k).toLowerCase()]=v;});
+          else if(opts&&opts.headers)Object.keys(opts.headers).forEach(function(k){hdrs[String(k).toLowerCase()]=opts.headers[k];});
+        }catch(e){}
+        var sync=String(hdrs["x-crm-sync"]||"");
+        if(!allowPost&&sync!=="v80"){
+          return Promise.resolve(new Response(JSON.stringify({status:"success",ignored:true,reason:"legacy-locked"}),{status:200,headers:{"Content-Type":"application/json"}}));
+        }
+        opts=opts||{};
+        var h2={};
+        if(opts.headers&&typeof opts.headers.forEach==="function")opts.headers.forEach(function(v,k){h2[k]=v;});
+        else Object.assign(h2,opts.headers||{});
+        h2["X-CRM-Replace"]="1";h2["X-CRM-Request"]="1";h2["X-CRM-Sync"]="v80";
+        opts.headers=h2;
+        try{
+          var body=opts.body;
+          if(typeof body==="string"&&body.charAt(0)==="{"){
+            var parsed=JSON.parse(body);
+            parsed._dataGen=DATA_GEN;parsed._schemaVersion=DATA_GEN;parsed._soloOnly=true;
+            stripLegacy(parsed);
+            opts.body=JSON.stringify(parsed);
+          }
+        }catch(e2){}
+        if(u.indexOf("replace=")<0)u+=(u.indexOf("?")>=0?"&":"?")+"replace=1";
+        return ofetch.call(this,u,opts);
+      }
+      return ofetch.apply(this,arguments);
+    };
+    wf._v80=true;wf._raw=ofetch;window.fetch=wf;
+  }
+  function pushServer(st){
+    if(!st)st=live();
+    if(!st)return;
+    stamp(st);stripLegacy(st);
+    if(!navigator.onLine){persist();return;}
+    var body=typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(st):JSON.stringify(st);
+    try{
+      var parsed=JSON.parse(body);
+      parsed._dataGen=DATA_GEN;parsed._schemaVersion=DATA_GEN;parsed._soloOnly=true;
+      stripLegacy(parsed);
+      body=JSON.stringify(parsed);
+    }catch(e){}
+    fetch("/api/state?replace=1&__v80push="+Date.now(),{method:"POST",headers:{"Content-Type":"application/json","X-CRM-Request":"1","X-CRM-Replace":"1","X-CRM-Sync":"v80"},body:body,cache:"no-store"}).catch(function(){});
+  }
+  window.crmPushStateToServer=function(){if(!allowPost)return;pushServer();};
+
+  function bootServerOnly(){
+    if(window.__V80_BOOT)return;window.__V80_BOOT=1;
+    var url="/api/state?__v80boot="+Date.now()+"&__v79keep=1";
+    fetch(url,{cache:"no-store",headers:{"X-CRM-Request":"1","X-CRM-Sync":"v80"}}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+      var remote=j&&j.data;
+      if(remote&&typeof remote==="object"){
+        adoptExact(remote);
+        allowPost=true;
+        pushServer(live());
+      }else{
+        var st=live();
+        if(st&&typeof st==="object"){
+          stripLegacy(st);
+          stamp(st);
+          persist();
+          paintLists();
+        }
+        allowPost=true;
+        if(meaningful(live()))pushServer(live());
+      }
+      try{if(typeof window.__CRM_UNVEIL==="function")window.__CRM_UNVEIL();else document.documentElement.classList.remove("crm-booting");}catch(e){}
+    }).catch(function(){
+      var st=live();
+      if(st){stripLegacy(st);persist();paintLists();}
+      allowPost=true;
+      try{if(typeof window.__CRM_UNVEIL==="function")window.__CRM_UNVEIL();}catch(e){}
+    });
+  }
+
+  function boot(){
+    bootServerOnly();
+    setTimeout(function(){try{if(typeof window.paintV77ProductPricing==="function")window.paintV77ProductPricing();}catch(e){}},600);
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,10);});
+  else setTimeout(boot,10);
 })();

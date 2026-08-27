@@ -46,7 +46,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "11.79.0";
+const CRM_APP_VERSION = "11.80.0";
 try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
@@ -114,6 +114,21 @@ function loadState() {
     if (!state.settings) state.settings = {};
     ["users","activityLog","repHomes","repRoutes","leaves","notifications","salesTargets","products","hospitals","visits","pharmacies","doctors","orders","reps"].forEach(function(k){ if (!Array.isArray(state[k])) state[k] = []; });
     if (!state.messengers) state.messengers = { channels: {}, allowPeerMessaging: false };
+    (function stripLegacySeed(){
+      var ids={"ph-1":1,"ph-2":1,"ph-3":1,"doc-1":1,"doc-2":1,"rep-1":1,"rep-2":1,"rep-3":1,"ord-1":1,"u-2":1,"u-3":1,"u-4":1,"prod-1":1,"prod-2":1,"act-1":1,"act-2":1,"act-3":1,"home-1":1,"home-2":1,"rt-1":1,"rt-2":1,"lv-1":1,"lv-2":1,"v-1":1,"v-2":1,"v-3":1,"h-1":1,"h-2":1,"h-3":1,"h-4":1,"not-1":1,"not-2":1,"tgt-1":1,"tgt-2":1};
+      var names={"داروخانه دکتر عرفانی":1,"داروخانه شبانه‌روزی رازی":1,"داروخانه دکتر عقبایی":1,"دکتر کاوه سعیدی":1,"دکتر الناز تهرانی":1,"کپسول امپرازول ۲۰ میلی‌گرم":1,"آمپول نوروبیون ویتامین B کمپلکس":1};
+      ["pharmacies","doctors","orders","products","users","reps","leaves","visits","repRoutes","repHomes","hospitals","notifications","salesTargets","activityLog"].forEach(function(k){
+        if(!Array.isArray(state[k])) return;
+        state[k]=state[k].filter(function(r){
+          if(!r||typeof r!=="object") return false;
+          var id=r.id!=null?String(r.id):"";
+          if(id&&ids[id]) return false;
+          var name=String(r.name||r.fullName||r.pharmacyName||"");
+          if(name&&names[name]) return false;
+          return true;
+        });
+      });
+    })();
   } else {
     // نصب کاملاً تازه باید خالی باشد؛ داده و کاربران نمونه قدیمی نباید پس از حذف مدیر دوباره ظاهر شوند.
     // این مسیر فقط وقتی CRM_APP_STATE_V2 اصلاً وجود ندارد اجرا می‌شود و هرگز state واقعی موجود را تغییر نمی‌دهد.
@@ -3051,7 +3066,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.79.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.80.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;

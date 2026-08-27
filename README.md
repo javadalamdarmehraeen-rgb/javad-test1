@@ -416,3 +416,5 @@ git push gitlab main             #   GitLab
   Turbopack      .   
  **     **  .
 : `npm run build`       .
+
+نسخه جاری برنامه: **11.80.0** — ملاک فقط اطلاعات سرور؛ قفل داده نسخه‌های قبلی.
