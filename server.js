@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.95.0";
+const APP_VERSION = "11.97.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -622,6 +622,16 @@ const server = http.createServer((req, res) => {
       }
     });
     return;
+  }
+
+  if (pathname === "/api/sync") {
+    return send(req, res, 200, JSON.stringify({
+      status: "ok",
+      role: "render",
+      message: "این سرور رندر است. همگام نت‌افراز→رندر با POST /api/state و هدر X-CRM-Sync: v81 انجام می‌شود.",
+      version: APP_VERSION,
+      sync: true
+    }), "application/json; charset=utf-8", { "Cache-Control": "no-store", "X-CRM-Build": APP_VERSION });
   }
 
   if (pathname === "/api/backup/status" && req.method === "GET") {

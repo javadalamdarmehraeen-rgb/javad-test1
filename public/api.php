@@ -1,7 +1,8 @@
 <?php
 /**
  * API نت‌افراز بدون Node — برنامه روی هاست اشتراکی مستقل از Render کار می‌کند.
- * همگام‌سازی با Render فقط اگر BASE_URL در api-config.php باشد و شبکه وصل باشد.
+ * ذخیره همیشه محلی است. ارسال به رندر با POST /api/state و GET/POST /api/sync?target=render.
+ * دادهٔ زنده با رندر یکی است: GET/state و /api/sync?target=pull&mode=replace از رندر می‌کشند (خالی نمی‌نویسند).
  */
 header("X-Content-Type-Options: nosniff");
 $origin = isset($_SERVER["HTTP_ORIGIN"]) ? $_SERVER["HTTP_ORIGIN"] : "";
@@ -15,6 +16,9 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
   http_response_code(204);
   exit;
 }
+
+define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
+define("CRM_APP_VERSION", "11.97.0");
 
 function cfg() {
   $f = __DIR__ . "/api-config.php";
@@ -60,30 +64,102 @@ function too_empty($incoming, $existing) {
   }
   return false;
 }
-function push_render($data) {
+function hollow_state($data) {
+  if (!$data || !is_array($data)) return true;
+  $ph = isset($data["pharmacies"]) && is_array($data["pharmacies"]) ? count($data["pharmacies"]) : 0;
+  $doc = isset($data["doctors"]) && is_array($data["doctors"]) ? count($data["doctors"]) : 0;
+  $us = isset($data["users"]) && is_array($data["users"]) ? count($data["users"]) : 0;
+  return $ph === 0 && $doc === 0 && $us <= 1;
+}
+function stamp_gen($data) {
+  if (!is_array($data)) $data = array();
+  $data["_dataGen"] = "11.81.0";
+  $data["_schemaVersion"] = "11.81.0";
+  if (empty($data["_purgedLegacyAt"])) $data["_purgedLegacyAt"] = round(microtime(true) * 1000);
+  $data["_netafrazSyncAt"] = round(microtime(true) * 1000);
+  $data["_netafrazVersion"] = CRM_APP_VERSION;
+  return $data;
+}
+function render_base($allowDefault) {
   $c = cfg();
-  $base = isset($c["baseUrl"]) ? rtrim($c["baseUrl"], "/") : "";
-  if ($base === "") return;
-  $payload = json_encode($data, JSON_UNESCAPED_UNICODE);
-  $ctx = stream_context_create(array(
+  $base = isset($c["baseUrl"]) ? rtrim(strval($c["baseUrl"]), "/") : "";
+  if ($base === "" && $allowDefault) $base = CRM_DEFAULT_RENDER;
+  return $base;
+}
+function http_json($method, $url, $body = null) {
+  $headers = array(
+    "Content-Type: application/json",
+    "X-CRM-Request: 1",
+    "X-CRM-Hub-Sync: 1",
+    "X-CRM-Sync: v81",
+    "X-CRM-Build: " . CRM_APP_VERSION
+  );
+  if (function_exists("curl_init")) {
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 8);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 14);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+    if (strtoupper($method) === "POST") {
+      curl_setopt($ch, CURLOPT_POST, true);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $body === null ? "" : $body);
+    }
+    $raw = curl_exec($ch);
+    $code = intval(curl_getinfo($ch, CURLINFO_HTTP_CODE));
+    $err = curl_error($ch);
+    curl_close($ch);
+    if ($raw === false) return array("ok" => false, "code" => $code, "error" => $err ?: "curl failed", "raw" => "");
+    return array("ok" => ($code >= 200 && $code < 300), "code" => $code, "error" => $err, "raw" => $raw);
+  }
+  $hdr = implode("\r\n", $headers) . "\r\n";
+  $opts = array(
     "http" => array(
-      "method" => "POST",
-      "header" => "Content-Type: application/json\r\nX-CRM-Request: 1\r\nX-CRM-Hub-Sync: 1\r\n",
-      "content" => $payload,
-      "timeout" => 8,
+      "method" => strtoupper($method),
+      "header" => $hdr,
+      "timeout" => 14,
       "ignore_errors" => true
-    )
-  ));
-  @file_get_contents($base . "/api/state", false, $ctx);
+    ),
+    "ssl" => array("verify_peer" => true, "verify_peer_name" => true)
+  );
+  if (strtoupper($method) === "POST") $opts["http"]["content"] = $body === null ? "" : $body;
+  $ctx = stream_context_create($opts);
+  $raw = @file_get_contents($url, false, $ctx);
+  $code = 0;
+  if (isset($http_response_header) && is_array($http_response_header) && isset($http_response_header[0])) {
+    if (preg_match('/\s(\d{3})\s/', $http_response_header[0], $m)) $code = intval($m[1]);
+  }
+  if ($raw === false) return array("ok" => false, "code" => $code, "error" => "file_get_contents failed (allow_url_fopen?)", "raw" => "");
+  return array("ok" => ($code >= 200 && $code < 300) || ($code === 0 && $raw !== ""), "code" => $code, "error" => "", "raw" => $raw);
+}
+function push_render($data) {
+  $base = render_base(true);
+  if ($base === "") return array("ok" => false, "error" => "baseUrl not configured", "skipped" => true);
+  if (!is_array($data)) return array("ok" => false, "error" => "no data", "skipped" => true);
+  if (hollow_state($data)) return array("ok" => false, "error" => "too_empty", "skipped" => true, "reason" => "empty-rejected");
+  $payload = json_encode(stamp_gen($data), JSON_UNESCAPED_UNICODE);
+  $res = http_json("POST", $base . "/api/state", $payload);
+  $decoded = null;
+  if (!empty($res["raw"])) {
+    $j = json_decode($res["raw"], true);
+    if (is_array($j)) $decoded = $j;
+  }
+  return array(
+    "ok" => !empty($res["ok"]),
+    "target" => $base,
+    "http" => isset($res["code"]) ? $res["code"] : 0,
+    "error" => isset($res["error"]) ? $res["error"] : "",
+    "result" => $decoded,
+    "ignored" => is_array($decoded) && !empty($decoded["ignored"])
+  );
 }
 function pull_render() {
-  $c = cfg();
-  $base = isset($c["baseUrl"]) ? rtrim($c["baseUrl"], "/") : "";
+  $base = render_base(true);
   if ($base === "") return null;
-  $ctx = stream_context_create(array("http" => array("timeout" => 6, "ignore_errors" => true)));
-  $raw = @file_get_contents($base . "/api/state", false, $ctx);
-  if ($raw === false || $raw === "") return null;
-  $j = json_decode($raw, true);
+  $res = http_json("GET", $base . "/api/state", null);
+  if (empty($res["ok"]) || empty($res["raw"])) return null;
+  $j = json_decode($res["raw"], true);
   if (!is_array($j)) return null;
   if (isset($j["data"]) && is_array($j["data"])) return $j["data"];
   return $j;
@@ -95,13 +171,16 @@ $p = path_info();
 $method = $_SERVER["REQUEST_METHOD"];
 
 if ($p === "health" || $p === "ping" || $p === "healthz" || $p === "") {
+  $c = cfg();
   send_json(array(
     "ok" => true,
     "status" => "healthy",
     "message" => "OK",
     "service" => "namayandeelmi-netafraz",
-    "version" => "11.95.0",
+    "version" => CRM_APP_VERSION,
     "platform" => "static-php",
+    "sync" => true,
+    "baseUrl" => isset($c["baseUrl"]) ? $c["baseUrl"] : "",
     "host" => isset($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : ""
   ));
 }
@@ -111,11 +190,12 @@ if ($p === "runtime-config") {
     "platform" => "static-php",
     "baseUrl" => isset($c["baseUrl"]) ? $c["baseUrl"] : "",
     "hubs" => isset($c["hubs"]) ? $c["hubs"] : array(),
-    "version" => "11.95.0"
+    "version" => CRM_APP_VERSION,
+    "sync" => true
   ));
 }
 if ($p === "backup/status") {
-  send_json(array("status" => "ok", "cloud" => false, "local" => is_file($DATA), "platform" => "static-php"));
+  send_json(array("status" => "ok", "cloud" => false, "local" => is_file($DATA), "platform" => "static-php", "sync" => true));
 }
 function strip_sample($st) {
   if (!is_array($st)) return $st;
@@ -142,20 +222,72 @@ function merge_by_id($a, $b) {
   }
   return array_values($map);
 }
+
+if ($p === "sync" || strpos($p, "sync/") === 0) {
+  $target = isset($_GET["target"]) ? strval($_GET["target"]) : "render";
+  if (strpos($p, "sync/") === 0) {
+    $rest = trim(substr($p, 5), "/");
+    if ($rest !== "") $target = $rest;
+  }
+  $local = read_json($DATA);
+  if ($target === "render" || $target === "push") {
+    if (!$local || !is_array($local)) {
+      send_json(array("status" => "error", "message" => "no local data", "path" => "sync"), 400);
+    }
+    $sync = push_render($local);
+    if (!empty($sync["skipped"]) && isset($sync["error"]) && $sync["error"] === "too_empty") {
+      send_json(array("status" => "error", "message" => "too_empty", "sync" => $sync), 400);
+    }
+    if (empty($sync["ok"])) {
+      send_json(array(
+        "status" => "error",
+        "message" => "render unavailable",
+        "target" => isset($sync["target"]) ? $sync["target"] : render_base(true),
+        "sync" => $sync
+      ), 502);
+    }
+    send_json(array(
+      "status" => "success",
+      "message" => "synced to render",
+      "target" => $sync["target"],
+      "result" => isset($sync["result"]) ? $sync["result"] : null,
+      "http" => $sync["http"]
+    ));
+  }
+  if ($target === "pull" || $target === "netafraz") {
+    $mode = isset($_GET["mode"]) ? strval($_GET["mode"]) : "";
+    $remote = pull_render();
+    if (!$remote) {
+      send_json(array("status" => "error", "message" => "render unavailable", "target" => render_base(true)), 502);
+    }
+    $remote = strip_sample($remote);
+    if (hollow_state($remote) || ($local && too_empty($remote, $local))) {
+      send_json(array("status" => "success", "ignored" => true, "reason" => "empty-rejected", "data" => $local));
+    }
+    if ($mode === "replace" || !$local) {
+      $local = stamp_gen($remote);
+    } else {
+      foreach (array("pharmacies","doctors","orders","users","products") as $k) {
+        $local[$k] = merge_by_id(isset($local[$k])?$local[$k]:array(), isset($remote[$k])?$remote[$k]:array());
+      }
+      $local = stamp_gen($local);
+    }
+    write_json($DATA, $local);
+    send_json(array("status" => "success", "message" => $mode === "replace" ? "replaced from render" : "pulled from render", "data" => $local));
+  }
+  send_json(array("status" => "error", "message" => "invalid target", "target" => $target), 400);
+}
+
 if (strpos($p, "state") === 0) {
   if ($method === "GET") {
     $local = read_json($DATA);
     $remote = pull_render();
     if ($remote && is_array($remote)) {
       $remote = strip_sample($remote);
-      if ($local && is_array($local)) {
-        foreach (array("pharmacies","doctors","orders","users","products") as $k) {
-          $local[$k] = merge_by_id(isset($local[$k])?$local[$k]:array(), isset($remote[$k])?$remote[$k]:array());
-        }
-      } else {
-        $local = $remote;
+      if (!hollow_state($remote) && !($local && too_empty($remote, $local))) {
+        $local = stamp_gen($remote);
+        write_json($DATA, $local);
       }
-      write_json($DATA, $local);
     }
     send_json($local ? array("status" => "success", "data" => $local) : array("status" => "empty"));
   }
@@ -168,8 +300,8 @@ if (strpos($p, "state") === 0) {
       send_json(array("status" => "success", "data" => $existing, "ignored" => true, "reason" => "empty-rejected"));
     }
     write_json($DATA, $incoming);
-    push_render($incoming);
-    send_json(array("status" => "success", "data" => $incoming));
+    $sync = push_render($incoming);
+    send_json(array("status" => "success", "data" => $incoming, "sync" => $sync));
   }
 }
 if (strpos($p, "bulk") === 0) {

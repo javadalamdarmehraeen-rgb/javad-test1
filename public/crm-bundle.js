@@ -19197,3 +19197,128 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function(){ paintBadge(); migrateCompany(); addResetBox(); });
   else { migrateCompany(); addResetBox(); }
 })();
+/* v11.96.0: همگام دستی/خودکار نت‌افراز → رندر با /api/sync */
+(function(){
+  "use strict";
+  window.v96NetafrazSync = true;
+  function ver(){ return String(window.CRM_APP_VERSION || "11.96.0"); }
+  function faVer(v){
+    var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
+    return String(v||"11.96.0").replace(/[0-9]/g, function(d){ return map[d]; });
+  }
+  function paintBadge(){
+    var b = document.getElementById("crmBuildBadge");
+    if (b) b.textContent = "نسخه " + faVer(ver());
+    var h = document.getElementById("crmBuildHint");
+    if (h) h.textContent = "نسخه " + faVer(ver()) + " — گوشی و ویندوز باید همین شماره را ببینند";
+  }
+  function syncToRender(){
+    return fetch("/api/sync?target=render", { cache: "no-store", headers: { "X-CRM-Request": "1" } })
+      .then(function(r){ return r.json().then(function(j){ return { ok: r.ok, j: j }; }); })
+      .catch(function(){ return { ok: false, j: { message: "شبکه قطع است" } }; });
+  }
+  window.v96SyncToRender = syncToRender;
+  function addBtn(){
+    var host = document.getElementById("tab-troubleshooting") || document.getElementById("tab-backup");
+    if (!host || document.getElementById("v96SyncBox")) return;
+    var box = document.createElement("div");
+    box.id = "v96SyncBox";
+    box.style.cssText = "background:#ecfeff;border:1px solid #67e8f9;border-radius:10px;padding:12px;margin:12px 0";
+    box.innerHTML = "<h4 style='margin:0 0 8px'>☁️ همگام با رندر</h4><p style='font-size:13px;margin:0 0 8px'>داده این دامنه (نت‌افراز) را الان به رندر بفرستید. ذخیره هر رکورد هم خودش ارسال می‌کند.</p><button type='button' id='btnV96SyncRender' class='btn btn-primary'>ارسال به رندر</button><div id='v96SyncStatus' style='margin-top:8px;font-size:12px;color:#0f766e'></div>";
+    var card = host.querySelector(".card") || host;
+    card.appendChild(box);
+    var btn = document.getElementById("btnV96SyncRender");
+    var st = document.getElementById("v96SyncStatus");
+    if (!btn) return;
+    btn.onclick = function(){
+      if (st) st.textContent = "در حال ارسال…";
+      syncToRender().then(function(x){
+        if (x.ok && x.j && x.j.status === "success") {
+          if (st) st.textContent = "ارسال شد به " + (x.j.target || "رندر");
+        } else {
+          if (st) st.textContent = "ارسال نشد: " + ((x.j && (x.j.message || x.j.error)) || "رندر در دسترس نیست");
+        }
+      });
+    };
+  }
+  function wrapPush(){
+    var fn = window.crmPushStateToServer;
+    if (typeof fn !== "function" || fn._v96) return;
+    var w = function(){
+      var r = fn.apply(this, arguments);
+      setTimeout(function(){ try { syncToRender(); } catch(e){} }, 1200);
+      return r;
+    };
+    w._v96 = true;
+    window.crmPushStateToServer = w;
+  }
+  paintBadge();
+  wrapPush();
+  [80,400,1200].forEach(function(ms){ setTimeout(function(){ paintBadge(); addBtn(); wrapPush(); }, ms); });
+})();
+/* v11.97.0: با نسخه جدید، داده نت‌افراز از رندر جایگزین می‌شود (خالی نمی‌نویسد) */
+(function(){
+  "use strict";
+  window.v97CanonSync = true;
+  var BUILD = String(window.CRM_APP_VERSION || "11.97.0");
+  var KEY = "CRM_CANON_BUILD";
+  function faVer(v){
+    var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
+    return String(v||BUILD).replace(/[0-9]/g, function(d){ return map[d]; });
+  }
+  function paintBadge(){
+    var el = document.getElementById("crmBuildBadge");
+    if (el) el.textContent = "نسخه " + faVer(BUILD);
+  }
+  function isMirrorHost(){
+    var h = location.hostname || "";
+    var p = String((window.__CRM_RUNTIME || {}).platform || "");
+    if (p === "static" || p === "static-php") return true;
+    return /(^|\.)mehraeinpharma\.ir$|(^|\.)ndcohub\.ir$/.test(h);
+  }
+  function hollow(d){
+    if (!d || typeof d !== "object") return true;
+    return !(d.pharmacies||[]).length && !(d.doctors||[]).length && ((d.users||[]).length <= 1);
+  }
+  function adopt(){
+    if (!isMirrorHost()) return;
+    try {
+      if (sessionStorage.getItem("CRM_V97_RELOADED") === "1") return;
+      if (localStorage.getItem(KEY) === BUILD) return;
+    } catch (e) {}
+    var bar = document.getElementById("v97CanonBar");
+    if (!bar && document.body) {
+      bar = document.createElement("div");
+      bar.id = "v97CanonBar";
+      bar.style.cssText = "position:fixed;top:0;left:0;right:0;z-index:99999;background:#0f766e;color:#fff;padding:10px;text-align:center;font-family:Tahoma,Arial,sans-serif;font-size:14px";
+      bar.textContent = "در حال یکی‌کردن اطلاعات با رندر…";
+      document.body.appendChild(bar);
+    }
+    fetch("/api/sync?target=pull&mode=replace", { cache: "no-store", headers: { "X-CRM-Request": "1" } })
+      .catch(function(){ return null; })
+      .then(function(){ return fetch("/api/state?__v97=" + Date.now(), { cache: "no-store", headers: { "X-CRM-Request": "1" } }); })
+      .then(function(r){ return r && r.json ? r.json() : null; })
+      .then(function(j){
+        var data = j && j.data ? j.data : (j && j.status === "success" ? j : null);
+        if (!data || hollow(data) || (j && (j.status === "empty" || j.ignored))) {
+          try { localStorage.setItem(KEY, BUILD); } catch (e2) {}
+          if (bar) bar.remove();
+          return;
+        }
+        try {
+          localStorage.setItem("CRM_APP_STATE_V2", JSON.stringify(data));
+          localStorage.setItem(KEY, BUILD);
+          sessionStorage.setItem("CRM_V97_RELOADED", "1");
+        } catch (e3) {}
+        location.reload();
+      })
+      .catch(function(){
+        try { localStorage.setItem(KEY, BUILD); } catch (e4) {}
+        if (bar) bar.textContent = "الان به رندر وصل نشد؛ داده محلی ماند.";
+      });
+  }
+  paintBadge();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function(){ setTimeout(adopt, 40); paintBadge(); });
+  else setTimeout(adopt, 40);
+  setTimeout(paintBadge, 500);
+})();
