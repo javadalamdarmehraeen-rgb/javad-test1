@@ -73,3 +73,12 @@ crm-app-all-in-one.html
 # خروجی کامپایل پایتون
 __pycache__/
 *.pyc
+
+download-v11.*.html
+backups/
+**/backups/
+static-build/
+crm-netafraz-data.json
+crm-netafraz-bulk.json
+public/crm-netafraz-data.json
+public/crm-netafraz-bulk.json

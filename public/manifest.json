@@ -3,7 +3,7 @@
   "name": "سیستم مدیریت ویزیت علمی — طنین طب طاها",
   "short_name": "نماینده علمی",
   "description": "برنامه مدیریت نمایندگان علمی، داروخانه‌ها، پزشکان و سفارشات",
-  "start_url": "/login?source=pwa",
+  "start_url": "/login.html?source=pwa",
   "scope": "/",
   "display": "standalone",
   "orientation": "any",

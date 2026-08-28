@@ -6,6 +6,27 @@
 
 const STORAGE_KEY = "CRM_APP_STATE_V2";
 let state = null;
+function bindLiveWindowState() {
+  try {
+    Object.defineProperty(window, "state", {
+      configurable: true,
+      enumerable: true,
+      get: function () { return state; },
+      set: function (v) {
+        if (!v || typeof v !== "object") return;
+        if (v === state) return;
+        if (!state || typeof state !== "object") { state = v; return; }
+        Object.keys(state).forEach(function (k) {
+          if (!Object.prototype.hasOwnProperty.call(v, k)) delete state[k];
+        });
+        Object.keys(v).forEach(function (k) { state[k] = v[k]; });
+      }
+    });
+    window.__CRM_STATE_BOUND = true;
+    window.__CRM_GET_STATE = function () { return state; };
+  } catch (eBind) {}
+}
+bindLiveWindowState();
 let autoBackupFileHandle = null;
 let autoBackupIntervalId = null;
 let isShowingAllPasswords = false;
@@ -25,7 +46,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "11.60.1";
+const CRM_APP_VERSION = "11.96.0";
 try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
@@ -48,9 +69,12 @@ const MENU_SECTIONS_LIST = [
   { id: "tab-leaves", label: "مرخصی‌ها", icon: "📝", badgeId: "badgeLeavesCount" },
   { id: "tab-notifications", label: "اعلان‌ها", icon: "🔔" },
   { id: "tab-monthly-reports", label: "گزارش ماهانه", icon: "📈" },
-  { id: "tab-sales-targets", label: "تارگت فروش", icon: "🎯" },
+  { id: "tab-define-routes", label: "تعریف مسیر نمایندگان", icon: "🗺️" },
+  { id: "tab-sales-targets", label: "تارگت فروش نمایندگان", icon: "🎯" },
+  { id: "tab-dist-targets", label: "تارگت فروش هرپخش", icon: "🎯" },
   { id: "tab-custom-fields", label: "افزودن‌ها", icon: "➕" },
   { id: "tab-columns-products", label: "ستون‌ها و کالاها", icon: "🧱" },
+  { id: "tab-product-pricing", label: "قیمت‌گذاری کالاها", icon: "💵" },
   { id: "tab-manual-design", label: "طراحی دستی تب‌ها", icon: "🎨" },
   { id: "tab-users-permissions", label: "کاربران و دسترسی", icon: "👤", badgeId: "badgeUsersCount" },
   { id: "tab-messengers", label: "پیام‌رسان‌ها", icon: "💬" },
@@ -90,6 +114,43 @@ function loadState() {
     if (!state.settings) state.settings = {};
     ["users","activityLog","repHomes","repRoutes","leaves","notifications","salesTargets","products","hospitals","visits","pharmacies","doctors","orders","reps"].forEach(function(k){ if (!Array.isArray(state[k])) state[k] = []; });
     if (!state.messengers) state.messengers = { channels: {}, allowPeerMessaging: false };
+    if (String(state._dataGen || "") !== "11.81.0") {
+      state._dataGen = "11.81.0";
+      state._schemaVersion = "11.81.0";
+    }
+    (function recoverWipedUserData(){
+      var keys=["pharmacies","doctors","orders"];
+      var sample={"ph-1":1,"ph-2":1,"ph-3":1,"doc-1":1,"doc-2":1,"ord-1":1};
+      keys.forEach(function(arr){
+        if (Array.isArray(state[arr]) && state[arr].length) return;
+        for (var i=0;i<localStorage.length;i++){
+          var k=localStorage.key(i);
+          if (!k || k===STORAGE_KEY) continue;
+          if (k.indexOf("CRM_APP_STATE_CORRUPT_ARCHIVE_")!==0) continue;
+          try {
+            var o=JSON.parse(localStorage.getItem(k));
+            if (!o || !Array.isArray(o[arr]) || !o[arr].length) continue;
+            var add=o[arr].filter(function(r){ return r && r.id && !sample[String(r.id)]; });
+            if (add.length) { state[arr]=add; break; }
+          } catch (e) {}
+        }
+      });
+    })();
+    (function stripLegacySeed(){
+      var ids={"ph-1":1,"ph-2":1,"ph-3":1,"doc-1":1,"doc-2":1,"rep-1":1,"rep-2":1,"rep-3":1,"ord-1":1,"u-2":1,"u-3":1,"u-4":1,"prod-1":1,"prod-2":1,"act-1":1,"act-2":1,"act-3":1,"home-1":1,"home-2":1,"rt-1":1,"rt-2":1,"lv-1":1,"lv-2":1,"v-1":1,"v-2":1,"v-3":1,"h-1":1,"h-2":1,"h-3":1,"h-4":1,"not-1":1,"not-2":1,"tgt-1":1,"tgt-2":1};
+      var names={"داروخانه دکتر عرفانی":1,"داروخانه شبانه‌روزی رازی":1,"داروخانه دکتر عقبایی":1,"دکتر کاوه سعیدی":1,"دکتر الناز تهرانی":1,"کپسول امپرازول ۲۰ میلی‌گرم":1,"آمپول نوروبیون ویتامین B کمپلکس":1};
+      ["pharmacies","doctors","orders","products","users","reps","leaves","visits","repRoutes","repHomes","hospitals","notifications","salesTargets","activityLog"].forEach(function(k){
+        if(!Array.isArray(state[k])) return;
+        state[k]=state[k].filter(function(r){
+          if(!r||typeof r!=="object") return false;
+          var id=r.id!=null?String(r.id):"";
+          if(id&&ids[id]) return false;
+          var name=String(r.name||r.fullName||r.pharmacyName||"");
+          if(name&&names[name]) return false;
+          return true;
+        });
+      });
+    })();
   } else {
     // نصب کاملاً تازه باید خالی باشد؛ داده و کاربران نمونه قدیمی نباید پس از حذف مدیر دوباره ظاهر شوند.
     // این مسیر فقط وقتی CRM_APP_STATE_V2 اصلاً وجود ندارد اجرا می‌شود و هرگز state واقعی موجود را تغییر نمی‌دهد.
@@ -98,6 +159,15 @@ function loadState() {
     ["pharmacies","doctors","orders","reps","activityLog","repHomes","repRoutes","leaves","notifications","salesTargets","visits","hospitals"].forEach(function (k) { state[k] = []; });
     state._freshInstallClean = true;
   }
+  (function v95CompanyName(){
+    try {
+      if (!state.settings) state.settings = {};
+      var old = String(state.settings.companyName || "");
+      if (!old || old === "شرکت پخش دارو و شبکه درمان نماینده علمی" || old === "سیستم مدیریت ویزیت علمی و شبکه درمان") {
+        state.settings.companyName = "طنین طب طاها";
+      }
+    } catch (e95c) {}
+  })();
   if (!state.formFieldMeta) state.formFieldMeta = {};
   if (!state.customFields) state.customFields = {};
   if (!state.selectExtraOptions) state.selectExtraOptions = {};
@@ -107,6 +177,7 @@ function loadState() {
   if (!state.tabOrder) state.tabOrder = {};
   if (!state.manualLayouts) state.manualLayouts = {};
   state._authoritativeState = true;
+  if (typeof bindLiveWindowState === "function") bindLiveWindowState();
   if (saved) { try { localStorage.setItem(STORAGE_KEY, serializeStateForLocalStorage(state)); } catch (e) {} }
   applyGeneralSettingsToUI();
 }
@@ -223,10 +294,18 @@ function switchTab(targetId) {
     setTimeout(() => {
       if (targetId === "tab-dashboard" && mapDashboardOverview) mapDashboardOverview.invalidateSize();
       if (targetId === "tab-pharmacies") {
+        try {
+          var phFn = (typeof window.renderPharmaciesList === "function") ? window.renderPharmaciesList : renderPharmaciesList;
+          if (typeof phFn === "function") phFn();
+        } catch (ePh) {}
         if (typeof initPharmacyDoctorMapsIfNeeded === "function") initPharmacyDoctorMapsIfNeeded();
         if (mapPharmacyForm) mapPharmacyForm.invalidateSize();
       }
       if (targetId === "tab-doctors") {
+        try {
+          var docFn = (typeof window.renderDoctorsList === "function") ? window.renderDoctorsList : renderDoctorsList;
+          if (typeof docFn === "function") docFn();
+        } catch (eDoc) {}
         if (typeof initPharmacyDoctorMapsIfNeeded === "function") initPharmacyDoctorMapsIfNeeded();
         if (mapDoctorForm) mapDoctorForm.invalidateSize();
       }
@@ -398,12 +477,7 @@ function createCustomMarker(lat, lng, type, name, mapInstance, onClickCallback =
 // ----------------------------------------------------------------------------
 function addFallbackTiles(map) {
   if (!map || typeof L === "undefined") return;
-  const layers = [
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-    "https://tile.openstreetmap.de/{z}/{x}/{y}.png"
-  ];
-  L.tileLayer(layers[0], { maxZoom: 19, attribution: "© OSM" }).addTo(map);
+  L.tileLayer("/api/tiles/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OSM", errorTileUrl: "" }).addTo(map);
 }
 
 function ensureMap(id, holderSetter, center, zoom, after) {
@@ -470,7 +544,7 @@ function initFullOverviewMap() {
   if (!el) return;
 
   mapFullOverview = L.map("map-full-overview").setView([35.7200, 51.4200], 11);
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  L.tileLayer("/api/tiles/{z}/{x}/{y}.png", {
     maxZoom: 19,
     attribution: "© OpenStreetMap contributors"
   }).addTo(mapFullOverview);
@@ -1867,9 +1941,13 @@ function setupLeavesModule() {
     });
   }
 
-  if (typeSel && hoursGrp) {
+  if (typeSel) {
     typeSel.addEventListener("change", () => {
-      hoursGrp.style.display = typeSel.value.includes("ساعتی") ? "block" : "none";
+      var hourly = typeSel.value.includes("ساعتی");
+      ["leaveFromTimeGroup","leaveToTimeGroup"].forEach(function(id){
+        var g = document.getElementById(id);
+        if (g) g.style.opacity = hourly ? "1" : "0.85";
+      });
     });
   }
 
@@ -2201,6 +2279,14 @@ function setupOrdersTab() {
       const status = document.getElementById("orderStatus").value;
       const priority = (document.getElementById("orderPriority")||{}).value || "عادی";
       const notes = document.getElementById("orderNotes").value.trim();
+      const pharmacyPhone = (document.getElementById("orderPharmacyPhone") || {}).value || "";
+      const orderManager = (document.getElementById("orderManager") || {}).value || "";
+      const orderManagerPhone = (document.getElementById("orderManagerPhone") || {}).value || "";
+      const orderPlate = (document.getElementById("orderPlate") || {}).value || "";
+      const orderFloor = (document.getElementById("orderFloor") || {}).value || "";
+      const isPercentage = ((document.getElementById("orderIsPercentage") || {}).value === "true");
+      const orderLat = Number((document.getElementById("orderLat") || {}).value) || null;
+      const orderLng = Number((document.getElementById("orderLng") || {}).value) || null;
       const customFieldsVals = extractCustomFieldValuesFromForm("order", "orderCustomFieldsContainer");
 
       if (typeof window.validateRequiredFields === "function" && !window.validateRequiredFields("tab-orders")) return;
@@ -2253,6 +2339,10 @@ function resetOrderForm() {
   document.getElementById("orderAddress").value = "";
   document.getElementById("orderDate").value = jalaliTodayEnglish();
   document.getElementById("orderNotes").value = "";
+  ["orderPharmacyPhone","orderManager","orderManagerPhone","orderPlate","orderFloor","orderLat","orderLng"].forEach(function(id){var el=document.getElementById(id);if(el)el.value="";});
+  var op=document.getElementById("orderIsPercentage");if(op)op.value="false";
+  var y=document.getElementById("btnOrdPercentageYes"),n=document.getElementById("btnOrdPercentageNo");
+  if(y)y.classList.remove("active");if(n)n.classList.add("active");
   document.getElementById("existingPharmacyTopAlert").style.display = "none";
 
   const provEl = document.getElementById("orderProvince");
@@ -2856,6 +2946,7 @@ function setupAuthAndRoleSwitching() {
         currentRoleIndex = 0;
         currentUserName = "مدیر سیستم";
         try { sessionStorage.removeItem("crmLoggedIn"); } catch(e) {}
+        try { localStorage.removeItem("CRM_LOGIN_OK"); localStorage.removeItem("CRM_LOGIN_EXP"); } catch(e) {}
         location.href = "/login";
         return;
       }
@@ -2922,7 +3013,7 @@ function testServerConnectivity() {
     if (box) {
       box.style.background = "#f0fdf4";
       box.style.color = "#166534";
-      box.textContent = "✅ ارتباط با سرور فعال (" + (location.host || "همین سرویس") + ") و ndcohub.ir برقرار است.";
+      box.textContent = "✅ ارتباط با سرور فعال (" + (location.host || "همین سرویس") + ") — ndcohub.ir و mehraeinpharma.ir و Render همگام‌اند.";
     }
     alert("✅ اتصال به سرور ابری و حافظه محلی با موفقیت تایید شد.");
   }, 700);
@@ -2998,16 +3089,15 @@ function downloadCSVFile(filename, headers, rows) {
 // ----------------------------------------------------------------------------
 function setupPWAServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
-  const build = "11.60.1";
+  const build = CRM_APP_VERSION;
   const markReady = () => { window.__CRM_SW_READY = true; };
   navigator.serviceWorker.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'CRM_BUILD_ACTIVE' && event.data.build !== build) {
-      const to = location.pathname + location.search + location.hash;
-      location.replace('/cache-reset?to=' + encodeURIComponent(to) + '&build=' + encodeURIComponent(event.data.build) + '&t=' + Date.now());
+      try { console.warn("نسخه SW متفاوت است؛ بارگذاری مجدد خودکار غیرفعال شد تا حلقه قطع شود."); } catch (e) {}
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.60.1', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.96.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -3806,7 +3896,7 @@ function renderSearchInfoResults(results) {
 
   if (!mapSearchInfoInstance && document.getElementById("map-search-info")) {
     mapSearchInfoInstance = L.map("map-search-info").setView([35.7200, 51.4200], 11);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    L.tileLayer("/api/tiles/{z}/{x}/{y}.png", {
       maxZoom: 19,
       attribution: "© OpenStreetMap contributors"
     }).addTo(mapSearchInfoInstance);
@@ -3961,7 +4051,7 @@ function openRowDetailsModal(rowObj, entityType) {
   setTimeout(() => {
     if (!mapRowDetailsMiniInstance && document.getElementById("rowDetailsMiniMap")) {
       mapRowDetailsMiniInstance = L.map("rowDetailsMiniMap").setView([rowObj.lat || 35.7200, rowObj.lng || 51.4200], 15);
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      L.tileLayer("/api/tiles/{z}/{x}/{y}.png", {
         maxZoom: 19,
         attribution: "© OpenStreetMap contributors"
       }).addTo(mapRowDetailsMiniInstance);
@@ -3991,8 +4081,12 @@ function setupColumnsProductsTab() {
   const handleSaveProd = () => {
     const nameEl = document.getElementById("productName");
     const name = nameEl ? nameEl.value.trim() : "";
+    const codeEl = document.getElementById("productCode");
+    const code = codeEl ? String(codeEl.value || "").trim() : "";
     const distPrice = parseInt(document.getElementById("productDistPrice") ? document.getElementById("productDistPrice").value : 40000) || 40000;
     const phPrice = parseInt(document.getElementById("productPrice") ? document.getElementById("productPrice").value : 45000) || 45000;
+    const consEl = document.getElementById("productConsumerPrice");
+    const consPrice = parseInt(consEl && consEl.value ? consEl.value : 0, 10) || 0;
     const stock = parseInt(document.getElementById("productStock") ? document.getElementById("productStock").value : 5000) || 5000;
     const customFieldsVals = (typeof extractCustomFieldValuesFromForm === "function")
       ? extractCustomFieldValuesFromForm("products", "productCustomFieldsContainer")
@@ -4008,13 +4102,15 @@ function setupColumnsProductsTab() {
     let idx = editId ? state.products.findIndex(p => p.id === editId) : -1;
     if (idx === -1) idx = state.products.findIndex(p => p.name === name);
     if (idx !== -1) {
-      state.products[idx] = { ...state.products[idx], name, distributorPrice: distPrice, pharmacyPrice: phPrice, stock, customFields: customFieldsVals };
+      state.products[idx] = { ...state.products[idx], name, code, distributorPrice: distPrice, pharmacyPrice: phPrice, consumerPrice: consPrice || phPrice, stock, customFields: customFieldsVals };
     } else {
       state.products.push({
         id: "prod-" + Date.now(),
         name,
+        code,
         distributorPrice: distPrice,
         pharmacyPrice: phPrice,
+        consumerPrice: consPrice || phPrice,
         stock,
         customFields: customFieldsVals
       });
@@ -4038,7 +4134,10 @@ function setupColumnsProductsTab() {
     setupSalesTargetsTab();
     mergeCatalogIntoOrderItems();
     updateNavBadges();
-    alert("کالا ثبت شد: «" + name + "» و در تب سفارشات با فیلد تعداد جایزه اضافه شد.");
+    try { if (typeof window.syncProductsEverywhere === "function") window.syncProductsEverywhere(); } catch (eSync) {}
+    try { if (typeof window.paintV77ProductPricing === "function") window.paintV77ProductPricing(); } catch (eP) {}
+    try { if (typeof window.applyV77ProductPricing === "function") window.applyV77ProductPricing(); } catch (eA) {}
+    alert("کالا ثبت شد: «" + name + "» و در همه تب‌های کالا همان لحظه اضافه شد.");
   };
 
   if (btnProd) btnProd.onclick = (e) => { e.preventDefault(); handleSaveProd(); };
@@ -4070,9 +4169,11 @@ function renderColumnsProductsTable() {
     const shownName = prod.name || window._lastSavedProductName || "—";
     tr.innerHTML = `
       <td>${index + 1}</td>
+      <td class="v20-product-code" data-no-number-group="1"><strong>${prod.code || "—"}</strong></td>
       <td class="product-name-cell"><strong>${shownName}</strong></td>
       <td><strong style="color:#1e40af;">${Number(prod.distributorPrice || prod.price || 40000).toLocaleString("fa-IR")} ریال</strong></td>
       <td><strong style="color:#0d9488;">${Number(prod.pharmacyPrice || prod.price || 45000).toLocaleString("fa-IR")} ریال</strong></td>
+      <td><strong style="color:#7c3aed;">${Number(prod.consumerPrice || prod.pharmacyPrice || prod.price || 0).toLocaleString("fa-IR")} ریال</strong></td>
       <td>${prod.stock || 5000} عدد</td>
       <td>
         <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
@@ -4090,12 +4191,16 @@ function editProductCatalogItem(id) {
   if (!prod) return;
   window._editingProductId = id;
   const nameEl = document.getElementById("productName");
+  const codeEl = document.getElementById("productCode");
   const distEl = document.getElementById("productDistPrice");
   const phEl = document.getElementById("productPrice");
+  const consEl = document.getElementById("productConsumerPrice");
   const stEl = document.getElementById("productStock");
   if (nameEl) nameEl.value = prod.name || "";
+  if (codeEl) codeEl.value = prod.code || "";
   if (distEl) distEl.value = prod.distributorPrice || prod.price || "";
   if (phEl) phEl.value = prod.pharmacyPrice || prod.price || "";
+  if (consEl) consEl.value = prod.consumerPrice || prod.pharmacyPrice || prod.price || "";
   if (stEl) stEl.value = prod.stock || "";
   const banner = document.getElementById("productSavedBanner");
   if (banner) {
@@ -4120,4 +4225,5 @@ function deleteProductCatalogItem(id) {
   setupSalesTargetsTab();
   mergeCatalogIntoOrderItems();
   updateNavBadges();
+  try { if (typeof window.syncProductsEverywhere === "function") window.syncProductsEverywhere(); } catch (eSync2) {}
 }
