@@ -19113,4 +19113,5 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   var b=document.getElementById("crmBuildBadge");
   if(b) b.textContent="نسخه ۱۱.۹۳.۰";
 })();
-
+/* v11.94.0: نت‌افراز مستقل با api.php + leaflet ریشه + بدون ۴۰۴ API */
+(function(){window.v94NetafrazIndependent=true;var b=document.getElementById("crmBuildBadge");if(b)b.textContent="نسخه ۱۱.۹۴.۰";})();

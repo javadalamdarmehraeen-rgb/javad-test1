@@ -4,4 +4,5 @@ Options -Indexes
 RewriteEngine On
 RewriteRule ^panel/?$ /index.html [L]
 RewriteRule ^login/?$ /login.html [L]
+RewriteRule ^api/(.*)$ api.php?path=$1 [QSA,L]
 </IfModule>

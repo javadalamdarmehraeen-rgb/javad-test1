@@ -1,0 +1,32 @@
+راهنمای نت‌افراز + Render — نسخه ۱۱.۹۴.۰
+========================================
+
+هدف: برنامه روی نت‌افراز جدا کار کند (حتی اگر Render در ایران قطع باشد).
+اگر کاربر چیزی ثبت کرد، وقتی شبکه اجازه دهد همان داده به Render هم می‌رود و برعکس.
+
+الف) نت‌افراز (mehraeinpharma.ir / ndcohub.ir)
+1. در VS Code:
+     npm run build-static
+   اگر همگام با Render هم می‌خواهید:
+     set BASE_URL=https://javad-test1.onrender.com
+     npm run build-static
+2. تمام محتویات پوشه static-build را در public_html آپلود کنید.
+   حتماً این‌ها باشند: leaflet.css, leaflet.js, images/, api.php, .htaccess, crm-app.js
+3. در پنل نت‌افراز:
+   - SSL / Let's Encrypt را روشن کنید (https بدون خطا).
+   - PHP 7.4+ فعال باشد.
+   - mod_rewrite معمولاً روشن است.
+4. تست: https://mehraeinpharma.ir/login.html سپس ورود.
+   /api/health باید JSON برگرداند نه ۴۰۴.
+
+ب) Render
+- مثل قبل: npm start و PLATFORM=fullstack
+- دامنه نت‌افراز در CORS از قبل مجاز است.
+
+ج) چرا اطلاعات قدیمی می‌ماند؟
+آپلود فایل جدید، حافظه مرورگر همان دامنه را پاک نمی‌کند.
+داده نت‌افراز در crm-netafraz-data.json روی هاست و در localStorage مرورگر است.
+نمونه قدیمی (ph-1 و مشابه) حذف می‌شود؛ داروخانه واقعی شما پاک نمی‌شود.
+
+د) خطای گواهی Service Worker
+تا SSL نت‌افراز درست نشود، PWA ثبت نمی‌شود. خود برنامه بدون آن کار می‌کند.

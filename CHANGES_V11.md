@@ -932,3 +932,10 @@ CLEAN_EXTRA_FILES.bat و بعد PUSH_GITHUB_CLEAN.bat را اجرا کن.
 2. `npm run sync "پیام"` به GitHub و در صورت وجود ریموت به GitLab می‌فرستد.
 3. آدرس‌ها از BASE_URL و CRM_HUBS می‌آیند. fetch با timeout و retry برای اینترنت ایران.
 4. اسکلت Next.js فعال نشد؛ runtime همان server.js + public است.
+
+## تحویل نوبت ۱۱۲ — نسخه ۱۱.۹۴.۰: نت‌افراز مستقل با PHP
+
+1. api.php + .htaccess روی هاست اشتراکی API می‌سازد؛ بدون Render هم ثبت کار می‌کند.
+2. leaflet.css/js در ریشه public تا ۴۰۴ vendor رفع شود.
+3. اگر API نباشد پاسخ جعلی داده می‌شود تا کنسول پر از ۴۰۴ نشود.
+4. همگام با Render فقط با BASE_URL هنگام build-static.

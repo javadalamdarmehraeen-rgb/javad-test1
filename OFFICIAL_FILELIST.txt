@@ -256,3 +256,7 @@ build-static.js
 public/crm-runtime.js
 public/crm-hub.js
 public/.htaccess
+public/api.php
+public/leaflet.css
+public/leaflet.js
+RAHNAMA_NETAFRAZ.txt

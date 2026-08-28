@@ -1730,3 +1730,6 @@ appendChild فرم هنگام فوکوس ورودی ممنوع. کاشی OSM ا�
 
 ## نوبت ۱۱۱ — نسخه ۱۱.۹۳.۰
 حالت fullstack/static، sync-all.js، build-static نت‌افراز، هاب env، timeout/retry. بدون Next.js.
+
+## نوبت ۱۱۲ — نسخه ۱۱.۹۴.۰
+نت‌افراز مستقل با api.php، leaflet ریشه، همگام اختیاری Render، راهنمای SSL.

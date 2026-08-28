@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /**
- * خروجی استاتیک برای هاست اشتراکی نت‌افراز (بدون Node)
+ * خروجی استاتیک نت‌افراز (بدون Node روی هاست)
  *   npm run build-static
- * پوشه static-build را در public_html آپلود کنید.
- * API روی BASE_URL (معمولاً Render) می‌ماند.
+ * کل static-build را در public_html آپلود کنید.
+ * برنامه با api.php مستقل کار می‌کند. همگام با Render فقط اگر BASE_URL ست شود.
  */
 const fs = require("fs");
 const path = require("path");
@@ -49,6 +49,9 @@ const runtime =
   "};\n";
 fs.writeFileSync(path.join(DEST, "crm-runtime.js"), runtime, "utf8");
 
+const apiCfg = "<?php\nreturn " + JSON.stringify({ baseUrl: base, hubs: hubs }, null, 2) + ";\n";
+fs.writeFileSync(path.join(DEST, "api-config.php"), apiCfg, "utf8");
+
 const htaccess = [
   "DirectoryIndex login.html index.html",
   "Options -Indexes",
@@ -56,25 +59,27 @@ const htaccess = [
   "RewriteEngine On",
   "RewriteRule ^panel/?$ /index.html [L]",
   "RewriteRule ^login/?$ /login.html [L]",
-  "</IfModule>",
-  "<IfModule mod_headers.c>",
-  "Header set Cache-Control \"no-cache, must-revalidate\"",
+  "RewriteRule ^api/(.*)$ api.php?path=$1 [QSA,L]",
   "</IfModule>",
   ""
 ].join("\n");
 fs.writeFileSync(path.join(DEST, ".htaccess"), htaccess, "utf8");
 
-const readme =
-  "آپلود نت‌افراز / هاست اشتراکی\n" +
-  "==============================\n" +
-  "1. تمام محتویات این پوشه را در public_html بریزید.\n" +
-  "2. ورود: /login.html   پنل: /index.html\n" +
-  "3. داده آنلاین از BASE_URL (Render) خوانده می‌شود. قبل از ساخت:\n" +
-  "     set BASE_URL=https://javad-test1.onrender.com\n" +
-  "     npm run build-static\n" +
-  "4. Node روی این هاست لازم نیست.\n";
+const readme = [
+  "آپلود نت‌افراز",
+  "==============",
+  "1. تمام محتویات این پوشه را در public_html بریزید (leaflet.css، images، vendor، api.php، .htaccess).",
+  "2. ورود: /login.html    پنل: /index.html",
+  "3. Node لازم نیست. api.php همان API است — برنامه بدون Render کار می‌کند.",
+  "4. برای همگام‌سازی با Render هنگام ساخت:",
+  "     set BASE_URL=https://javad-test1.onrender.com",
+  "     npm run build-static",
+  "5. در پنل نت‌افراز SSL رایگان (Let's Encrypt) را فعال کنید تا خطای گواهی و Service Worker رفع شود.",
+  "6. PHP 7.4 یا بالاتر لازم است.",
+  ""
+].join("\n");
 fs.writeFileSync(path.join(DEST, "README-NETAFRAZ.txt"), readme, "utf8");
 
 console.log("✅ خروجی استاتیک در static-build آماده است.");
-console.log("   platform=static  baseUrl=" + (base || "(خالی — فقط همین دامنه)"));
-console.log("   فایل‌ها را در public_html هاست آپلود کنید.");
+console.log("   platform=static  baseUrl=" + (base || "(خالی — نت‌افراز کاملاً مستقل)"));
+console.log("   کل پوشه را در public_html آپلود کنید.");
