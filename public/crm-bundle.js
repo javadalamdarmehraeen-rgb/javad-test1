@@ -18873,3 +18873,221 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   else setTimeout(boot, 80);
 })();
 
+/* v11.91.0: صفحه موبایل دیده شود + تخصص کامل در HTML + کلیک مسیر با pointerdown + فاصله فشرده */
+(function(){
+  "use strict";
+  function $(id){ return document.getElementById(id); }
+  function unveil(){
+    try { document.documentElement.classList.remove("crm-booting"); } catch(e){}
+    try { if (typeof window.__CRM_UNVEIL === "function") window.__CRM_UNVEIL(); } catch(e){}
+    document.documentElement.style.visibility = "visible";
+    if (document.body){
+      document.body.style.visibility = "visible";
+      document.body.style.opacity = "1";
+    }
+  }
+  function closeMenu(){
+    var d=$("sideMenuDrawer"), o=$("sideMenuOverlay");
+    if (d){ d.classList.remove("active"); d.style.transform=""; d.style.webkitTransform=""; }
+    if (o){ o.classList.remove("active"); o.style.display="none"; }
+    document.body.classList.remove("v90-drawer-open");
+    document.body.style.removeProperty("overflow");
+  }
+  function showPane(id){
+    if (!id) return;
+    document.querySelectorAll(".tab-pane").forEach(function(p){
+      var on = p.id === id;
+      p.classList.toggle("active", on);
+      if (on){
+        p.hidden = false;
+        p.style.removeProperty("display");
+        p.style.setProperty("display", "block", "important");
+        p.style.setProperty("visibility", "visible", "important");
+        p.style.setProperty("opacity", "1", "important");
+        delete p.dataset.permissionHidden;
+      }
+    });
+    document.querySelectorAll("#horizontalNavContainer .nav-item").forEach(function(b){
+      b.classList.toggle("active", b.getAttribute("data-target") === id);
+    });
+    document.querySelectorAll("#sideMenuItemsContainer .side-menu-item").forEach(function(b){
+      b.classList.toggle("active", b.getAttribute("data-side-target") === id);
+    });
+    var main = document.querySelector(".main-content");
+    if (main){
+      main.style.display = "block";
+      main.style.visibility = "visible";
+      main.style.opacity = "1";
+    }
+  }
+  window.v91ShowPane = showPane;
+
+  function unwrapSpecialty(){
+    var el = $("doctorSpecialty");
+    if (!el) return null;
+    var wrap = el.closest && el.closest(".crm-combo");
+    if (wrap && wrap.parentNode){
+      wrap.parentNode.insertBefore(el, wrap);
+      try { wrap.remove(); } catch(e){}
+    }
+    el.setAttribute("data-nocombo", "1");
+    el.classList.remove("crm-combo-src");
+    el.style.position = ""; el.style.opacity = ""; el.style.pointerEvents = "";
+    el.style.width = ""; el.style.height = ""; el.style.display = "";
+    return el;
+  }
+  function fillSpecialty(){
+    var el = unwrapSpecialty();
+    if (!el) return;
+    if (el.tagName !== "SELECT") return;
+    var list = (window.DOCTOR_SPECIALTIES && window.DOCTOR_SPECIALTIES.length) ? window.DOCTOR_SPECIALTIES.slice() : [];
+    var cur = el.value;
+    var have = {};
+    Array.prototype.forEach.call(el.options, function(o){ if (o.value) have[o.value] = 1; });
+    if (list.length && Object.keys(have).length < 20){
+      el.innerHTML = "";
+      var z = document.createElement("option"); z.value = ""; z.textContent = "انتخاب تخصص..."; el.appendChild(z);
+      list.forEach(function(s){
+        var o = document.createElement("option"); o.value = s; o.textContent = s; el.appendChild(o);
+      });
+    } else if (list.length){
+      list.forEach(function(s){
+        if (have[s]) return;
+        var o = document.createElement("option"); o.value = s; o.textContent = s; el.appendChild(o);
+        have[s] = 1;
+      });
+    }
+    if (cur){
+      if (!Array.prototype.some.call(el.options, function(o){ return o.value === cur; })){
+        var oc = document.createElement("option"); oc.value = cur; oc.textContent = cur; el.appendChild(oc);
+      }
+      el.value = cur;
+    }
+    el.setAttribute("data-nocombo", "1");
+  }
+  window.v91FillDoctorSpecialty = fillSpecialty;
+
+  function st(){
+    try { if (typeof window.__CRM_GET_STATE === "function") return window.__CRM_GET_STATE(); } catch(e){}
+    return window.state || {};
+  }
+  function save(){
+    try { if (typeof window.saveState === "function") window.saveState(); } catch(e){}
+  }
+  function editRoute(id){
+    try { if (typeof window.switchTab === "function") window.switchTab("tab-define-routes"); } catch(e){}
+    showPane("tab-define-routes");
+    setTimeout(function(){
+      var sel = $("routeManagerRep");
+      if (!sel) return;
+      sel.value = id;
+      if (sel.value !== String(id)){
+        Array.prototype.forEach.call(sel.options, function(o){
+          if (String(o.value) === String(id)) sel.value = o.value;
+        });
+      }
+      try { sel.dispatchEvent(new Event("change", { bubbles: true })); } catch(e){}
+      try { if (sel.onchange) sel.onchange(); } catch(e){}
+      var card = $("representativeRoutesCard");
+      if (card){
+        card.style.display = "block";
+        try { card.scrollIntoView({ behavior: "smooth", block: "start" }); } catch(e2){}
+      }
+    }, 60);
+  }
+  function delRoute(id){
+    var S = st();
+    var u = ((S.users) || []).filter(function(x){ return String(x.id) === String(id); })[0];
+    if (!u){ alert("نماینده پیدا نشد."); return; }
+    if (!confirm("مسیر «" + (u.fullName || u.username || "") + "» پاک شود؟")) return;
+    u.activityProvinces = []; u.activityCities = []; u.activityDistrictList = [];
+    u.activityProvince = ""; u.activityCity = ""; u.activityDistricts = ""; u.activityRouteLabel = "";
+    save();
+    try { if (typeof window.renderRepRoutesOverview === "function") window.renderRepRoutesOverview(); } catch(e){}
+    try { if (typeof window.setupRepresentativeRoutes === "function") window.setupRepresentativeRoutes(); } catch(e){}
+    alert("مسیر حذف شد.");
+  }
+  window.v91EditRoute = editRoute;
+  window.v91DelRoute = delRoute;
+
+  if (!window.__v91RouteBound){
+    window.__v91RouteBound = 1;
+    document.addEventListener("pointerdown", function(e){
+      var t = e.target;
+      if (!t || !t.closest) return;
+      var ed = t.closest("[class*='edit-route']");
+      var del = t.closest("[class*='del-route']");
+      if (!ed && !del) return;
+      var id = (ed || del).getAttribute("data-id") || "";
+      if (!id) return;
+      if (window.__v91RouteLock && Date.now() - window.__v91RouteLock < 500) return;
+      window.__v91RouteLock = Date.now();
+      e.preventDefault();
+      e.stopPropagation();
+      if (ed) editRoute(id);
+      else delRoute(id);
+    }, true);
+  }
+
+  if (window.switchTab && !window.switchTab._v91){
+    var sw = window.switchTab;
+    var w = function(id){
+      var r = sw.apply(this, arguments);
+      closeMenu();
+      showPane(id);
+      unveil();
+      if (id === "tab-doctors") setTimeout(fillSpecialty, 20);
+      return r;
+    };
+    w._v91 = true;
+    w._v90 = true;
+    window.switchTab = w;
+  }
+
+  var V91 = [
+    ["موبایل: محتوای تب بعد از منوی همبرگری دیگر سفید نمی‌ماند","applied"],
+    ["تب پزشکان: فهرست کامل تخصص‌ها داخل خود فیلد قرار گرفت (نه یک گزینه همه تخصص‌ها)","applied"],
+    ["تعریف مسیر نمایندگان: ویرایش و حذف با لمس پایدار کار می‌کند","applied"],
+    ["داشبورد و کارت‌ها: فاصله‌های بیهوده کم شد","applied"]
+  ];
+  function paintChanges(){
+    var host = $("v41ChangeHost");
+    if (!host || host.dataset.v91ch === "1") return;
+    host.insertAdjacentHTML("afterbegin", V91.map(function(c,i){
+      return "<div class='v87-change-row' style='border:1px solid #cbd5e1;border-radius:8px;padding:8px;margin:6px 0;display:flex;justify-content:space-between;gap:10px'><div>"+(i+1)+". "+c[0]+"</div><div style='color:#059669;font-weight:700'>✅ اعمال شد</div></div>";
+    }).join(""));
+    host.dataset.v91ch = "1";
+  }
+
+  function boot(){
+    unveil();
+    closeMenu();
+    fillSpecialty();
+    var active = document.querySelector(".tab-pane.active");
+    if (active) showPane(active.id);
+    var badge = $("crmBuildBadge");
+    if (badge) badge.textContent = "نسخه ۱۱.۹۱.۰";
+    paintChanges();
+  }
+  window.v91Boot = boot;
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function(){ setTimeout(boot, 50); });
+  else setTimeout(boot, 50);
+  setTimeout(boot, 400);
+})();
+
+(function(){
+  function keepSpec(){
+    var pane=document.getElementById("tab-doctors");
+    if(!pane||!pane.classList.contains("active"))return;
+    var el=document.getElementById("doctorSpecialty");
+    if(!el)return;
+    var wrap=el.closest&&el.closest(".crm-combo");
+    if(wrap&&wrap.parentNode){wrap.parentNode.insertBefore(el,wrap);try{wrap.remove();}catch(e){}}
+    el.setAttribute("data-nocombo","1");
+    if(el.tagName==="SELECT"&&el.options.length<10&&window.DOCTOR_SPECIALTIES){
+      try{if(typeof window.v91FillDoctorSpecialty==="function")window.v91FillDoctorSpecialty();}catch(e){}
+    }
+  }
+  setInterval(keepSpec, 800);
+})();
+

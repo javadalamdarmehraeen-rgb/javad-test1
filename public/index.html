@@ -31,10 +31,10 @@
         if (el && el.tagName === "INPUT" && el.type === "text" && el.dataset.wasPassword === "1") { el.type = "password"; }
       }, true);
     </script>
-  <style>html.crm-booting body{visibility:hidden!important;opacity:0!important}</style>
+  <style>html.crm-booting body{visibility:visible!important;opacity:1!important}</style>
   <script>
     (function(){
-      var BUILD="11.90.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="11.91.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       try{
         var GEN="11.81.0";
         var raw=localStorage.getItem("CRM_APP_STATE_V2");
@@ -69,7 +69,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.90.0" />
+  <link rel="stylesheet" href="style.css?v=11.91.0" />
 </head>
 <body>
 
@@ -89,7 +89,7 @@
         </div>
         <div class="logo-text">
           <h1 id="headerCompanyNameDisplay">سیستم مدیریت ویزیت علمی و شبکه درمان</h1>
-          <div id="crmBuildBadge" style="font-size:12px;font-weight:800;color:#0f766e">نسخه ۱۱.۹۰.۰</div>
+          <div id="crmBuildBadge" style="font-size:12px;font-weight:800;color:#0f766e">نسخه ۱۱.۹۱.۰</div>
           <p>طنین طب طاها — TENIN TEB TAHA</p>
         </div>
       </div>
@@ -580,8 +580,181 @@
             </div>
             <div class="form-group">
               <label class="form-label" for="doctorSpecialty">تخصص *</label>
-              <select id="doctorSpecialty" class="form-select" data-nocombo="1" autocomplete="off" required>
+              <select id="doctorSpecialty" class="form-select" data-nocombo="1" autocomplete="off" data-lpignore="true" required>
                 <option value="">انتخاب تخصص...</option>
+                <option value="پزشک عمومی">پزشک عمومی</option>
+                <option value="پزشک خانواده">پزشک خانواده</option>
+                <option value="اورژانس پیش‌بیمارستانی">اورژانس پیش‌بیمارستانی</option>
+                <option value="داخلی">داخلی</option>
+                <option value="قلب و عروق">قلب و عروق</option>
+                <option value="فوق تخصص قلب و عروق">فوق تخصص قلب و عروق</option>
+                <option value="اینترونشنال کاردیولوژی">اینترونشنال کاردیولوژی</option>
+                <option value="الکتروفیزیولوژی قلب">الکتروفیزیولوژی قلب</option>
+                <option value="نارسایی قلب و پیوند">نارسایی قلب و پیوند</option>
+                <option value="ریه و دستگاه تنفس">ریه و دستگاه تنفس</option>
+                <option value="فوق تخصص ریه">فوق تخصص ریه</option>
+                <option value="گوارش و کبد">گوارش و کبد</option>
+                <option value="فوق تخصص گوارش و کبد">فوق تخصص گوارش و کبد</option>
+                <option value="غدد درون‌ریز و متابولیسم">غدد درون‌ریز و متابولیسم</option>
+                <option value="دیابت">دیابت</option>
+                <option value="کلیه (نفرولوژی)">کلیه (نفرولوژی)</option>
+                <option value="روماتولوژی">روماتولوژی</option>
+                <option value="خون و سرطان بزرگسالان (هماتولوژی-آنکولوژی)">خون و سرطان بزرگسالان (هماتولوژی-آنکولوژی)</option>
+                <option value="بیماری‌های عفونی">بیماری‌های عفونی</option>
+                <option value="ایمونولوژی و آلرژی">ایمونولوژی و آلرژی</option>
+                <option value="مغز و اعصاب (نورولوژی)">مغز و اعصاب (نورولوژی)</option>
+                <option value="صرع">صرع</option>
+                <option value="سکته مغزی">سکته مغزی</option>
+                <option value="روان‌پزشکی">روان‌پزشکی</option>
+                <option value="روان‌پزشکی کودک و نوجوان">روان‌پزشکی کودک و نوجوان</option>
+                <option value="اعتیاد">اعتیاد</option>
+                <option value="اطفال">اطفال</option>
+                <option value="نوزادان">نوزادان</option>
+                <option value="قلب کودکان">قلب کودکان</option>
+                <option value="اعصاب کودکان">اعصاب کودکان</option>
+                <option value="غدد کودکان">غدد کودکان</option>
+                <option value="گوارش کودکان">گوارش کودکان</option>
+                <option value="خون و سرطان کودکان">خون و سرطان کودکان</option>
+                <option value="کلیه کودکان">کلیه کودکان</option>
+                <option value="عفونی کودکان">عفونی کودکان</option>
+                <option value="روماتولوژی کودکان">روماتولوژی کودکان</option>
+                <option value="ریه کودکان">ریه کودکان</option>
+                <option value="آلرژی کودکان">آلرژی کودکان</option>
+                <option value="جراحی عمومی">جراحی عمومی</option>
+                <option value="جراحی اطفال">جراحی اطفال</option>
+                <option value="جراحی قفسه سینه">جراحی قفسه سینه</option>
+                <option value="جراحی قلب و عروق">جراحی قلب و عروق</option>
+                <option value="جراحی عروق">جراحی عروق</option>
+                <option value="جراحی مغز و اعصاب">جراحی مغز و اعصاب</option>
+                <option value="جراحی ستون فقرات">جراحی ستون فقرات</option>
+                <option value="جراحی پلاستیک و ترمیمی">جراحی پلاستیک و ترمیمی</option>
+                <option value="جراحی دست">جراحی دست</option>
+                <option value="جراحی سوختگی">جراحی سوختگی</option>
+                <option value="جراحی سر و گردن">جراحی سر و گردن</option>
+                <option value="جراحی فک و صورت">جراحی فک و صورت</option>
+                <option value="جراحی زیبایی">جراحی زیبایی</option>
+                <option value="ارتوپدی">ارتوپدی</option>
+                <option value="جراحی زانو و مفصل">جراحی زانو و مفصل</option>
+                <option value="جراحی شانه">جراحی شانه</option>
+                <option value="پزشکی ورزشی ارتوپدی">پزشکی ورزشی ارتوپدی</option>
+                <option value="اورولوژی">اورولوژی</option>
+                <option value="اورولوژی کودکان">اورولوژی کودکان</option>
+                <option value="نازایی مردان">نازایی مردان</option>
+                <option value="زنان و زایمان">زنان و زایمان</option>
+                <option value="نازایی و IVF">نازایی و IVF</option>
+                <option value="پریناتولوژی">پریناتولوژی</option>
+                <option value="انکولوژی زنان">انکولوژی زنان</option>
+                <option value="لاپاراسکوپی زنان">لاپاراسکوپی زنان</option>
+                <option value="چشم‌پزشکی">چشم‌پزشکی</option>
+                <option value="شبکیه">شبکیه</option>
+                <option value="قرنیه">قرنیه</option>
+                <option value="گلوکوم">گلوکوم</option>
+                <option value="استرابیسم و چشم کودکان">استرابیسم و چشم کودکان</option>
+                <option value="اکولوپلاستی">اکولوپلاستی</option>
+                <option value="گوش و حلق و بینی">گوش و حلق و بینی</option>
+                <option value="جراحی گوش">جراحی گوش</option>
+                <option value="جراحی بینی و سینوس">جراحی بینی و سینوس</option>
+                <option value="جراحی حنجره">جراحی حنجره</option>
+                <option value="شنوایی‌شناسی بالینی">شنوایی‌شناسی بالینی</option>
+                <option value="پوست و مو">پوست و مو</option>
+                <option value="پوست و زیبایی">پوست و زیبایی</option>
+                <option value="لیزر پوست">لیزر پوست</option>
+                <option value="دندانپزشکی عمومی">دندانپزشکی عمومی</option>
+                <option value="ارتودنسی">ارتودنسی</option>
+                <option value="اندودنتیکس (عصب‌کشی)">اندودنتیکس (عصب‌کشی)</option>
+                <option value="پریودنتیکس (لثه)">پریودنتیکس (لثه)</option>
+                <option value="پروتزهای دندانی">پروتزهای دندانی</option>
+                <option value="دندانپزشکی کودکان">دندانپزشکی کودکان</option>
+                <option value="جراحی دهان و فک و صورت">جراحی دهان و فک و صورت</option>
+                <option value="ایمپلنتولوژی">ایمپلنتولوژی</option>
+                <option value="دندانپزشکی ترمیمی و زیبایی">دندانپزشکی ترمیمی و زیبایی</option>
+                <option value="رادیولوژی">رادیولوژی</option>
+                <option value="رادیولوژی مداخله‌ای">رادیولوژی مداخله‌ای</option>
+                <option value="سونوگرافی">سونوگرافی</option>
+                <option value="سی‌تی و ام‌آرآی">سی‌تی و ام‌آرآی</option>
+                <option value="رادیوتراپی آنکولوژی">رادیوتراپی آنکولوژی</option>
+                <option value="پزشکی هسته‌ای">پزشکی هسته‌ای</option>
+                <option value="آسیب‌شناسی (پاتولوژی)">آسیب‌شناسی (پاتولوژی)</option>
+                <option value="پاتولوژی بالینی">پاتولوژی بالینی</option>
+                <option value="پزشکی قانونی">پزشکی قانونی</option>
+                <option value="ژنتیک پزشکی">ژنتیک پزشکی</option>
+                <option value="طب اورژانس">طب اورژانس</option>
+                <option value="بیهوشی">بیهوشی</option>
+                <option value="مراقبت‌های ویژه (ICU)">مراقبت‌های ویژه (ICU)</option>
+                <option value="درد (کلینیک درد)">درد (کلینیک درد)</option>
+                <option value="طب تسکینی">طب تسکینی</option>
+                <option value="طب فیزیکی و توانبخشی">طب فیزیکی و توانبخشی</option>
+                <option value="فیزیوتراپی">فیزیوتراپی</option>
+                <option value="کاردرمانی">کاردرمانی</option>
+                <option value="گفتاردرمانی">گفتاردرمانی</option>
+                <option value="ارتوپدی فنی">ارتوپدی فنی</option>
+                <option value="طب کار">طب کار</option>
+                <option value="طب ورزشی">طب ورزشی</option>
+                <option value="طب سالمندان">طب سالمندان</option>
+                <option value="طب پیشگیری و بهداشت عمومی">طب پیشگیری و بهداشت عمومی</option>
+                <option value="اپیدمیولوژی">اپیدمیولوژی</option>
+                <option value="طب مسافرت">طب مسافرت</option>
+                <option value="تغذیه و رژیم درمانی">تغذیه و رژیم درمانی</option>
+                <option value="غدد و چاقی">غدد و چاقی</option>
+                <option value="داروسازی بالینی">داروسازی بالینی</option>
+                <option value="مامایی">مامایی</option>
+                <option value="پرستاری">پرستاری</option>
+                <option value="پرستاری ویژه">پرستاری ویژه</option>
+                <option value="طب سنتی ایرانی">طب سنتی ایرانی</option>
+                <option value="طب سوزنی">طب سوزنی</option>
+                <option value="هومیوپاتی">هومیوپاتی</option>
+                <option value="سلامت روان و مشاوره">سلامت روان و مشاوره</option>
+                <option value="علوم آزمایشگاهی">علوم آزمایشگاهی</option>
+                <option value="میکروب‌شناسی پزشکی">میکروب‌شناسی پزشکی</option>
+                <option value="ایمونوهماتولوژی و بانک خون">ایمونوهماتولوژی و بانک خون</option>
+                <option value="بینایی‌سنجی">بینایی‌سنجی</option>
+                <option value="شنوایی‌سنجی">شنوایی‌سنجی</option>
+                <option value="پروتزهای ارتوپدی">پروتزهای ارتوپدی</option>
+                <option value="آنکولوژی پزشکی">آنکولوژی پزشکی</option>
+                <option value="آنکولوژی جراحی">آنکولوژی جراحی</option>
+                <option value="پیوند اعضا">پیوند اعضا</option>
+                <option value="پیوند مغز استخوان">پیوند مغز استخوان</option>
+                <option value="طب خواب">طب خواب</option>
+                <option value="طب دردهای مزمن">طب دردهای مزمن</option>
+                <option value="طب بازتوانی قلبی">طب بازتوانی قلبی</option>
+                <option value="طب بازتوانی عصبی">طب بازتوانی عصبی</option>
+                <option value="پزشکی اجتماعی">پزشکی اجتماعی</option>
+                <option value="بهداشت مادر و کودک">بهداشت مادر و کودک</option>
+                <option value="سم‌شناسی بالینی">سم‌شناسی بالینی</option>
+                <option value="طب هوافضا">طب هوافضا</option>
+                <option value="طب زیرآبی و هایپرباریک">طب زیرآبی و هایپرباریک</option>
+                <option value="جراحی کولورکتال">جراحی کولورکتال</option>
+                <option value="جراحی هپاتوبیلیاری و پیوند کبد">جراحی هپاتوبیلیاری و پیوند کبد</option>
+                <option value="جراحی تروما">جراحی تروما</option>
+                <option value="جراحی چاقی (باریاتریک)">جراحی چاقی (باریاتریک)</option>
+                <option value="جراحی پستان">جراحی پستان</option>
+                <option value="جراحی تیروئید و پاراتیروئید">جراحی تیروئید و پاراتیروئید</option>
+                <option value="جراحی قاعده جمجمه">جراحی قاعده جمجمه</option>
+                <option value="نورورادیولوژی">نورورادیولوژی</option>
+                <option value="اکوکاردیوگرافی">اکوکاردیوگرافی</option>
+                <option value="پیوند کلیه">پیوند کلیه</option>
+                <option value="انکولوژی اطفال">انکولوژی اطفال</option>
+                <option value="جراحی اطفال نوزادان">جراحی اطفال نوزادان</option>
+                <option value="روان‌درمانی">روان‌درمانی</option>
+                <option value="طب اعتیاد">طب اعتیاد</option>
+                <option value="طب درد سرطان">طب درد سرطان</option>
+                <option value="فلوشیپ مراقبت ویژه نوزادان">فلوشیپ مراقبت ویژه نوزادان</option>
+                <option value="فلوشیپ آسم و آلرژی">فلوشیپ آسم و آلرژی</option>
+                <option value="فلوشیپ آرتروسکوپی">فلوشیپ آرتروسکوپی</option>
+                <option value="فلوشیپ ستون فقرات">فلوشیپ ستون فقرات</option>
+                <option value="داروسازی بیمارستانی">داروسازی بیمارستانی</option>
+                <option value="اطلاعات پزشکی و مدارک پزشکی">اطلاعات پزشکی و مدارک پزشکی</option>
+                <option value="اپتومتری پیشرفته">اپتومتری پیشرفته</option>
+                <option value="پروتز چشم">پروتز چشم</option>
+                <option value="طب مکمل و جایگزین">طب مکمل و جایگزین</option>
+                <option value="طب پیشگیری از سرطان">طب پیشگیری از سرطان</option>
+                <option value="ژنتیک بالینی سرطان">ژنتیک بالینی سرطان</option>
+                <option value="نفرولوژی پیوند">نفرولوژی پیوند</option>
+                <option value="کاردیوانکولوژی">کاردیوانکولوژی</option>
+                <option value="نورواونکولوژی">نورواونکولوژی</option>
+                <option value="عفونی پیوند">عفونی پیوند</option>
+                <option value="پزشکی بازساختی و سلول بنیادی">پزشکی بازساختی و سلول بنیادی</option>
+                <option value="سایر تخصص‌ها">سایر تخصص‌ها</option>
               </select>
             </div>
             <div class="form-group">
@@ -2437,9 +2610,9 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-data.js?v=11.90.0"></script>
-  <script src="crm-app.js?v=11.90.0"></script>
-          <script src="crm-bundle.js?v=11.90.0"></script>
+  <script src="crm-data.js?v=11.91.0"></script>
+  <script src="crm-app.js?v=11.91.0"></script>
+          <script src="crm-bundle.js?v=11.91.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />

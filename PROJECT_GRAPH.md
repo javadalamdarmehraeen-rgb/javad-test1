@@ -52,85 +52,15 @@
 - تعداد توابع داخلی: 179
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_STATE_BOUND`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `applyV77ProductPricing`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `paintV77ProductPricing`, `rememberPharmacyName`, `renderDoctorsList`, `renderExtraTabCustomFields`, `renderPharmaciesList`, `syncProductsEverywhere`, `validateRequiredFields`
 
-### `public/crm-bundle.js` (1162472 بایت)
+### `public/crm-bundle.js` (1171467 بایت)
 - نقش: * crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
-- تعداد توابع داخلی: 1184
+- تعداد توابع داخلی: 1187
 - نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `WIDGET_PALETTE`, `__CRM_APPLYING_SERVER`, `__CRM_BULK_PURGE`, `__CRM_BULK_READY`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_LAYOUT_APPLYING`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SERVER_READY`, `__CRM_SKIP_V64_STRIP`, `__CRM_SNAP`, `__CRM_UNVEIL`, `__CRM_V78_EDIT_PID`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__V68_WATCH`, `__V69_SYNC`, `__V70_SOLO`, `__V71_CLAIMED`, `__V72_BOOT`, `__V73_BOOT`, `__V73_WATCH`, `__V79_BOOT`, `__V80_BOOT`, `__V80_LOCK`, `__V81_BOOT`, `__V81_LOCK`, `__lastHealth`
 
-### `public/crm-data.js` (56151 بایت)
+### `public/crm-data.js` (57825 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 1
 - نام‌های window که تعریف/بازنویسی می‌کند: `DOCTOR_SPECIALTIES`
-
-### `public/crm-features-v10.js` (13643 بایت)
-- نقش: v10 — ورود جدا، ویجت داشبورد، تارگت، عیب‌یابی تصویری، افزودن لحظه‌ای، پنهان‌سازی دسترسی
-- تعداد توابع داخلی: 22
-- نام‌های window که تعریف/بازنویسی می‌کند: `__lastHealth`, `switchTab`
-
-### `public/crm-features-v11.js` (112307 بایت)
-- نقش: v11 — تغییر رمز، ردیف واقعی، اکسل خط‌کشی، ویزیت زنده، تارگت، ستون‌ها، دسترسی ریز
-- تعداد توابع داخلی: 101
-- نام‌های window که تعریف/بازنویسی می‌کند: `FA_FIELD_LABELS`, `_actMap`, `_actMarks`, `_activeColTab`, `_colDelPatched`, `_colEditScroll`, `_editingBoxId`, `_editingColField`, `_layoutBusy`, `_visitKeepAlive`, `addWidgetToActiveTab`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `applyFullFormLayout`, `applySelectExtraOptions`, `builtinFieldValue`, `changeUserPassword`, `cleanupOrphanCustomFields`, `deleteCustomField`, `downloadCSVFile`, `extraListColumns`, `getAllMenuSections`, `getMainGrid`, `getUnifiedFieldList`, `groupIsShared`, `isColShownInList`, `paintFieldBox`, `paintRequiredStar`, `refreshColumnsDesigner`, `renderAllSystemSelects`, `renderColBoxInfoTable`, `renderColBoxList`, `renderColBtnInfoTable`, `renderExtraTabCustomFields`, `renderUserCardsList`, `switchTab`, `validateRequiredFields`, `writeFieldSize`
-
-### `public/crm-features-v12.js` (44613 بایت)
-- نقش: v12 — نشستن فیلد روی تب اصلی، ویرایش کادر، کلیدهای اصلی در طراح، تب ساز مدیر
-- تعداد توابع داخلی: 37
-- نام‌های window که تعریف/بازنویسی می‌کند: `WIDGET_PALETTE`, `_activeColTab`, `_activeManualTab`, `_editingBoxId`, `_palDelegate`, `_v12OrderWrap`, `_v12Sw`, `addWidgetToActiveTab`, `applyCustomFieldOrderInForm`, `applyFullFormLayout`, `buildDesignerWidget`, `createUserTab`, `deleteUserTab`, `editUserTab`, `getAllMenuSections`, `iconFromTabLabel`, `placeFieldOnTab`, `refreshColumnsDesigner`, `refreshManualCanvas`, `renderColBoxList`, `switchTab`, `validateRequiredFields`
-
-### `public/crm-features-v13.js` (32088 بایت)
-- نقش: v13 — یک‌بار شدن امکانات آماده + تب طراحی دستی تب‌ها (درگ، اندازه، کپی چیدمان)
-- تعداد توابع داخلی: 44
-- نام‌های window که تعریف/بازنویسی می‌کند: `_activeManualTab`, `_v13LayoutWrap`, `_v13OrderId`, `_v13RenderWrap`, `_v13Sw`, `addWidgetToActiveTab`, `applyCustomFieldOrderInForm`, `applyFullFormLayout`, `copyPageToTab`, `dedupeTabWidgets`, `getAllMenuSections`, `getUnifiedFieldList`, `lockManualDesigner`, `placeFieldOnTab`, `refreshManualCanvas`, `renderCustomFieldsInForm`, `switchTab`
-
-### `public/crm-features-v14.js` (34125 بایت)
-- نقش: v14 — تب افزودن‌ها مثل ستون‌ها، گزینه کشویی با ویرایش/حذف، انتخاب داروخانه هم‌نام، فیلد کالا، ویرایش تب
-- تعداد توابع داخلی: 42
-- نام‌های window که تعریف/بازنویسی می‌کند: `_activeAddTab`, `_v14SavePatch`, `_v14Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `editUserTab`, `getAllMenuSections`, `iconFromTabLabel`, `refreshColumnsDesigner`, `setupAllFormSubmitHandlers`, `switchTab`
-
-### `public/crm-features-v15.js` (23014 بایت)
-- نقش: v15 — سایز واقعی فیلد، فریز سرستون+اسکرول افقی زیر آن، ذخیره افزودن، حفظ تنظیمات، طراح دستی بدون خراب کردن فرم/لیست
-- تعداد توابع داخلی: 29
-- نام‌های window که تعریف/بازنویسی می‌کند: `_manSelected`, `_v15Paint`, `_v15Sw`, `applyFullFormLayout`, `fieldKeyForTab`, `renderAddTabGrid`, `renderAddTabPanel`, `switchTab`, `writeFieldSize`
-
-### `public/crm-features-v16.js` (32795 بایت)
-- نقش: v16 — کشویی قابل تایپ/جستجو، افزودن شهر بعد از استان، نام داروخانه سراسری، فریز سرستون، قفل طراح دستی
-- تعداد توابع داخلی: 48
-- نام‌های window که تعریف/بازنویسی می‌کند: `_manPick`, `_manSelected`, `_v16Sw`, `_v16fly`, `_v16geoWrap`, `applyFieldPixelSize`, `attachInstantAdd`, `isKnownPharmacy`, `lockManualDesigner`, `populateCities`, `populateDistricts`, `populateProvinces`, `refreshFrozenTable`, `rememberPharmacyName`, `switchTab`
-
-### `public/crm-features-v17.js` (19662 بایت)
-- نقش: v17 — زیرهم، عرض در فرم ویرایش، اسکرول ویرایش، حذف بدون پنهان‌سازی بعدی،
-- تعداد توابع داخلی: 31
-- نام‌های window که تعریف/بازنویسی می‌کند: `_v17Sw`, `_v17delPh`, `_v17fly`, `attachInstantAdd`, `builtinFieldValue`, `deletePharmacy`, `lockManualDesigner`, `rememberPharmacyName`, `switchTab`
-
-### `public/crm-features-v18.js` (33040 بایت)
-- نقش: v18 — ستاره چسبیده، فونت نه عرض، ترتیب فرم/لیست جدا، ارتفاع واقعی،
-- تعداد توابع داخلی: 35
-- نام‌های window که تعریف/بازنویسی می‌کند: `_editingBoxId`, `_editingColField`, `_v18Confirm`, `_v18DefaultReq`, `_v18Sw`, `_v18Widget`, `applyAllFormLayouts`, `applyFullFormLayout`, `buildDesignerWidget`, `copyPageToTab`, `getUnifiedFieldList`, `lockManualDesigner`, `renderColBoxInfoTable`, `renderColBtnInfoTable`, `switchTab`, `validateRequiredFields`
-
-### `public/crm-features-v19.js` (61295 بایت)
-- نقش: v19 (11.15.0) — ستاره فقط تیک مدیر، کشویی‌های کنارهم + افزودن با تایپ،
-- تعداد توابع داخلی: 65
-- نام‌های window که تعریف/بازنویسی می‌کند: `_v18DefaultReq`, `_v19BackupLayoutGuard`, `_v19ComboHook`, `_v19Hist`, `_v19IcObs`, `_v19ProdTableWrap`, `_v19Sw`, `applyFullFormLayout`, `applySelectExtraOptions`, `extraListColumns`, `performAutoBackup`, `renderAllCustomFieldsInFormsAndTables`, `renderColumnsProductsTable`, `renderPharmaciesList`, `switchTab`, `testServerConnectivity`
-
-### `public/crm-features-v20.js` (304871 بایت)
-- نقش: ============================================================
-- تعداد توابع داخلی: 346
-- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_BULK_PURGE`, `__CRM_BULK_READY`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_RESCUING`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__v40LastPick`, `_editingProductId`, `_v20AutoSaveSig`, `_v20AutoSaveT`, `_v20Rendering`, `_v20TopupRows`, `applyFieldPermissions`, `applyFullFormLayout`, `applyUserRolePermissions`, `attachJalaliPicker`, `builtinFieldValue`, `createCustomMarker`, `deleteCustomField`, `deleteProductCatalogItem`, `deleteRepHome`, `deleteUserCard`, `editProductCatalogItem`, `editRepHome`, `editUserCard`, `extraListColumns`, `getUnifiedFieldList`, `open`, `openRowDetailsModal`, `performAutoBackup`, `renderActivityLogTable`, `renderActivityMapAndChart`, `renderAllCustomFieldsInFormsAndTables`
-
-### `public/crm-features-v9.js` (72007 بایت)
-- نقش: ===========================================================================
-- تعداد توابع داخلی: 104
-- نام‌های window که تعریف/بازنویسی می‌کند: `builtinFieldValue`, `downloadCSVFile`, `getOrderItemsFromUI`, `isColShownInList`, `renderDoctorsList`, `renderLiveLocationTab`, `renderOrdersList`, `renderPharmaciesList`, `setupLiveLocationTab`, `setupRepsTab`, `switchTab`, `validateRequiredFields`
-
-### `public/crm-jalali.js` (25683 بایت)
-- نقش: تقویم شمسی واقعی + نشانگر میلادی JAN..DEC + تقویم کنار فیلد تاریخ + افزودن لحظه‌ای
-- تعداد توابع داخلی: 38
-- نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `_jalaliBuildPatched`, `_jalaliLayoutPatched`, `_jalaliRenderPatched`, `_jalaliSw`, `activeDateInputForPicker`, `applyFullFormLayout`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `refreshAllDateBadges`, `renderCustomFieldsInForm`, `renderJalaliCalendarDays`, `setupInstantAddAll`, `setupJalaliCalendarPicker`, `setupJalaliDateAutoSlash`, `switchTab`
-
-### `public/iran-facilities.js` (11799 بایت)
-- نقش: پایگاه مرجع مراکز درمان ایران — مراکز شاخص هر استان (نه تک‌تک داروخانه‌های کشور)
-- تعداد توابع داخلی: 0
-- نام‌های window که تعریف/بازنویسی می‌کند: `IRAN_FACILITIES`
 
 ### `public/crm-features-v10.js` (13643 بایت)
 - نقش: v10 — ورود جدا، ویجت داشبورد، تارگت، عیب‌یابی تصویری، افزودن لحظه‌ای، پنهان‌سازی دسترسی
@@ -207,7 +137,7 @@
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (4414 بایت)
-- نقش: const BUILD = "11.90.0";
+- نقش: const BUILD = "11.91.0";
 - تعداد توابع داخلی: 4
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -1497,7 +1427,7 @@
 
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
-- نسخه سورس package: `11.90.0`
+- نسخه سورس package: `11.91.0`
 - مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a03a45-javad-test1`؛ push/PR فقط از همین شاخه.
 - Production فعال: `https://javad-test1.onrender.com` — نسخه سورس فعلی `11.66.0` است و تا push کاربر روی production همان آخرین دیپلوی قبلی می‌ماند.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.
