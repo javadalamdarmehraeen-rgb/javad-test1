@@ -2,12 +2,26 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
   <script>
-    (function(){var BUILD="11.60.1",key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}if(old&&old!==BUILD&&!rescued){go(BUILD);return;}try{localStorage.setItem(key,BUILD);sessionStorage.removeItem(rk);}catch(e){}fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD)go(d.version);}).catch(function(){});})();
+    (function(){var BUILD="11.92.0",key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{
+      var prev=localStorage.getItem(key)||"";
+      localStorage.setItem(key,BUILD);
+      if(prev&&prev!==BUILD&&sessionStorage.getItem("CRM_MOBILE_RELOAD")!==BUILD){
+        sessionStorage.setItem("CRM_MOBILE_RELOAD",BUILD);
+        var go=function(){location.reload();};
+        if(navigator.serviceWorker){
+          navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister();}));}).then(function(){
+            if(window.caches)return caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.delete(k);}));});
+          }).then(go).catch(go);
+        } else go();
+      }
+    }catch(e){}fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD){/* v11.70 no auto go(d.version) */}}).catch(function(){});})();
   </script>
   <title>ورود | طنین طب طاها</title>
 
@@ -44,6 +58,76 @@
   </style>
 </head>
 <body>
+  <script>
+    (function(){
+      var ORIGIN=location.origin;
+      var LIST=["https://javad-test1.onrender.com","https://ndcohub.ir","https://mehraeinpharma.ir"];
+      if(location.protocol==="http:") LIST=LIST.concat(["http://ndcohub.ir","http://mehraeinpharma.ir"]);
+      LIST.unshift(ORIGIN);
+      function hubs(){
+        var s={},o=[];
+        LIST.forEach(function(x){
+          try{
+            var u=new URL(x, ORIGIN);
+            if(location.protocol==="https:" && u.protocol==="http:") return;
+            if(!s[u.origin]){s[u.origin]=1;o.push(u.origin);}
+          }catch(e){}
+        });
+        return o;
+      }
+      window.CRM_HUBS=hubs();
+      var orig=window.fetch.bind(window);
+      window.__CRM_ORIG_FETCH=orig;
+      function isApi(url){
+        var s=String(url||"");
+        if(s.indexOf("/api/")===0) return true;
+        try{return new URL(s, ORIGIN).pathname.indexOf("/api/")===0;}catch(e){return false;}
+      }
+      function pathOf(url){
+        try{var u=new URL(String(url||""), ORIGIN); return u.pathname+u.search;}catch(e){return String(url||"");}
+      }
+      function hollowPost(opts){
+        try{
+          var b=opts&&opts.body; if(!b||typeof b!=="string") return false;
+          if(b.length<80) return true;
+          var j=JSON.parse(b);
+          var d=j&&j.data?j.data:j;
+          var ph=(d&&d.pharmacies)||[], doc=(d&&d.doctors)||[], us=(d&&d.users)||[];
+          return !ph.length && !doc.length && us.length<=1;
+        }catch(e){return false;}
+      }
+      window.fetch=function(url, opts){
+        if(!isApi(url)) return orig(url, opts);
+        opts=opts||{};
+        var path=pathOf(url);
+        var method=String(opts.method||"GET").toUpperCase();
+        var bases=window.CRM_HUBS.slice();
+        function hdrs(extra){
+          return Object.assign({"X-CRM-Request":"1"}, opts.headers||{}, extra||{});
+        }
+        function one(i){
+          if(i>=bases.length) return orig(url, opts);
+          var o=Object.assign({}, opts, {headers:hdrs()});
+          if(bases[i]!==ORIGIN) o.mode="cors";
+          return orig(bases[i]+path, o).then(function(r){ return (r&&r.ok)?r:one(i+1); }).catch(function(){ return one(i+1); });
+        }
+        if(method==="GET"||method==="HEAD") return one(0);
+        if(hollowPost(opts)) return one(0);
+        var posts=bases.map(function(base){
+          var o=Object.assign({}, opts, {headers:hdrs({"X-CRM-Hub-Sync":"1"})});
+          if(base!==ORIGIN) o.mode="cors";
+          return orig(base+path, o).then(function(r){return r;}).catch(function(){return null;});
+        });
+        return Promise.all(posts).then(function(rs){
+          var ok=null;
+          rs.forEach(function(r){ if(!ok && r && r.ok) ok=r; });
+          return ok||rs[0]||orig(url, opts);
+        });
+      };
+      window.v92HubFetch=true;
+    })();
+  </script>
+
   <div class="card">
     <img class="logo" src="logo.png" alt="Tanin Teb Taha">
     <h1>ورود به سامانه طنین طب طاها</h1>
@@ -66,13 +150,20 @@
     </form>
     <div class="ok" id="st"></div>
     <p class="hint">نمونه مدیر: admin / 123 — شماره 09120000000</p>
+    <p class="hint" id="crmBuildHint">نسخه ۱۱.۹۲.۰ — گوشی و ویندوز باید همین شماره را ببینند</p>
   </div>
   <script>
     (function(){
-      if (sessionStorage.getItem("crmLoggedIn") === "1") {
-        location.replace("/panel");
-        return;
+      function crmLogged(){
+        try{if(sessionStorage.getItem("crmLoggedIn")==="1")return true;}catch(e){}
+        try{if(localStorage.getItem("CRM_LOGIN_OK")==="1"){
+          var exp=Number(localStorage.getItem("CRM_LOGIN_EXP")||0);
+          if(!exp||exp>Date.now())return true;
+        }}catch(e){}
+        return false;
       }
+      /* v11.88: صفحه ورود همیشه دیده شود؛ پرش خودکار به پنل ممنوع */
+
       var USERS = [
         {username:"admin", password:"123", phone:"09120000000", name:"مدیر سیستم", role:"مدیر سیستم", phoneRequired:false},
         {username:"Taheri", password:"456", phone:"09120852097", name:"جواد علمدار", role:"نماینده علمی", phoneRequired:true},
@@ -100,7 +191,7 @@
       var err = document.getElementById("err");
       function showErr(m){ err.style.display="block"; err.textContent=m; }
       function hideErr(){ err.style.display="none"; }
-      fetch("/api/health").then(function(){ st.textContent="سرور آماده است"; }).catch(function(){ st.textContent="در حال بیدار کردن سرور..."; });
+      fetch("/api/health").then(function(r){return r.json();}).then(function(d){ st.textContent="سرور آماده است — نسخه "+((d&&d.version)||"۱۱.۹۲.۰"); var h=document.getElementById("crmBuildHint"); if(h&&d&&d.version&&d.version!=="11.92.0") h.textContent="گوشی نسخه قدیمی می‌بیند ("+d.version+") — یک‌بار کش را خالی کنید یا لینک را با Chrome باز کنید."; }).catch(function(){ st.textContent="در حال بیدار کردن سرور..."; });
       document.getElementById("f").addEventListener("submit", function(){
         hideErr();
         var u=document.getElementById("u").value.trim();
@@ -123,7 +214,14 @@
         sessionStorage.setItem("crmUserName", user.name);
         sessionStorage.setItem("crmUserRole", user.role);
         sessionStorage.setItem("crmUsername", user.username);
-        location.replace("/panel");
+        try{
+          localStorage.setItem("CRM_LOGIN_OK","1");
+          localStorage.setItem("CRM_LOGIN_EXP", String(Date.now()+7*24*3600*1000));
+          localStorage.setItem("crmUserName", user.name);
+          localStorage.setItem("crmUserRole", user.role);
+          localStorage.setItem("crmUsername", user.username);
+        }catch(e){}
+        location.replace("/index.html");
       });
     })();
   </script>
