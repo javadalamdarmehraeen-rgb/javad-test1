@@ -25,7 +25,7 @@ test('automated app entry loads health, HTML, all scripts and critical UI', asyn
   assert.equal(health.ok, true);
   assert.match(health.version, /^\d+\.\d+\.\d+$/);
 
-  const pageRes = await fetch(base + '/');
+  const pageRes = await fetch(base + '/panel');
   assert.equal(pageRes.status, 200);
   assert.match(pageRes.headers.get('cache-control') || '', /no-store/);
   assert.match(pageRes.headers.get('content-security-policy') || '', /object-src 'none'/);
@@ -46,7 +46,7 @@ test('automated app entry loads health, HTML, all scripts and critical UI', asyn
 
 test('state API round-trip preserves unrelated sentinel data', async () => {
   const base = `http://127.0.0.1:${port}`;
-  const sentinel = { _lastSavedAt: 42, users: [{ id:'sentinel-user', fullName:'اطلاعات قدیمی' }], formFieldMeta: { order: { sentinel: { order: 99 } } } };
+  const sentinel = { _dataGen: '11.81.0', _schemaVersion: '11.81.0', _lastSavedAt: 42, users: [{ id:'sentinel-user', fullName:'اطلاعات قدیمی' }], formFieldMeta: { order: { sentinel: { order: 99 } } } };
   const rejected = await fetch(base + '/api/state', { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify(sentinel) });
   assert.equal(rejected.status, 403);
   const post = await fetch(base + '/api/state', { method:'POST', headers:{'content-type':'application/json','x-crm-request':'1'}, body:JSON.stringify(sentinel) });

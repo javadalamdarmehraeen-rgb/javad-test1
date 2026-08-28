@@ -856,7 +856,7 @@ const DEFAULT_INITIAL_DATA = {
   },
   permissions: [], // ساختار قبلی برای پشتیبانی هم‌زمان
   settings: {
-    companyName: "شرکت پخش دارو و شبکه درمان نماینده علمی",
+    companyName: "طنین طب طاها",
     apiEndpointUrl: ((typeof location!=="undefined"&&location.origin)?location.origin:"")+"/api/state",
     defaultMapLat: 35.7200,
     defaultMapLng: 51.4200,

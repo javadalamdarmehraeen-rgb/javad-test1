@@ -1,4 +1,4 @@
-/* v11.94.0: نت‌افراز مستقل (بدون وابستگی به Render) + همگام اختیاری + بدون ۴۰۴ در کنسول */
+/* v11.95.0: نت‌افراز مستقل — فقط origin مگر BASE_URL/hubs صریح */
 (function () {
   "use strict";
   var ORIGIN = location.origin;
@@ -33,10 +33,11 @@
     }
     if (!skipOriginApi) add(ORIGIN);
     envHubs().forEach(add);
-    (window.CRM_HUBS || []).forEach(add);
+    /* v11.95: هرگز هاب پیش‌فرض رندر را به نت‌افراز وصل نکن — فقط BASE_URL/hubs صریح */
     if (!o.length) add(ORIGIN);
     return o;
   }
+  window.v95OriginOnly = true;
   window.crmHubList = hubs;
 
   function jsonResp(obj, status) {
@@ -49,10 +50,10 @@
   function fakeFor(path, method) {
     method = method || "GET";
     if (/health|ping|healthz/.test(path)) {
-      return jsonResp({ ok: true, status: "healthy", platform: "static-local", version: (window.CRM_APP_VERSION || "11.94.0"), offline: true });
+      return jsonResp({ ok: true, status: "healthy", platform: "static-local", version: (window.CRM_APP_VERSION || "11.95.0"), offline: true });
     }
     if (/runtime-config/.test(path)) {
-      return jsonResp({ platform: runtime().platform || "static", baseUrl: runtime().baseUrl || "", hubs: runtime().hubs || [], version: "11.94.0" });
+      return jsonResp({ platform: runtime().platform || "static", baseUrl: runtime().baseUrl || "", hubs: runtime().hubs || [], version: "11.95.0" });
     }
     if (/backup\/status/.test(path)) {
       return jsonResp({ status: "ok", cloud: false, local: true, platform: "static-local" });

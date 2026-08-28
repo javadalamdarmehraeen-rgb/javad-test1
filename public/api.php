@@ -100,7 +100,7 @@ if ($p === "health" || $p === "ping" || $p === "healthz" || $p === "") {
     "status" => "healthy",
     "message" => "OK",
     "service" => "namayandeelmi-netafraz",
-    "version" => "11.94.0",
+    "version" => "11.95.0",
     "platform" => "static-php",
     "host" => isset($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : ""
   ));
@@ -111,7 +111,7 @@ if ($p === "runtime-config") {
     "platform" => "static-php",
     "baseUrl" => isset($c["baseUrl"]) ? $c["baseUrl"] : "",
     "hubs" => isset($c["hubs"]) ? $c["hubs"] : array(),
-    "version" => "11.94.0"
+    "version" => "11.95.0"
   ));
 }
 if ($p === "backup/status") {

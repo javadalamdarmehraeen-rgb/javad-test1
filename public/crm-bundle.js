@@ -18858,8 +18858,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     lockRepPerms();
     wrapPrivacy();
     stdButtons();
-    var badge = $("crmBuildBadge");
-    if (badge) badge.textContent = "نسخه ۱۱.۹۰.۰";
+    /* v11.95: نشان نسخه فقط از CRM_APP_VERSION — بوت ۹۰ دیگر ۱۱.۹۰ نمی‌نویسد */
     setTimeout(function(){
       unveil();
       unhideCore();
@@ -19065,8 +19064,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     fillSpecialty();
     var active = document.querySelector(".tab-pane.active");
     if (active) showPane(active.id);
-    var badge = $("crmBuildBadge");
-    if (badge) badge.textContent = "نسخه ۱۱.۹۱.۰";
+    /* v11.95: نشان نسخه فقط از CRM_APP_VERSION — بوت ۹۱ دیگر ۱۱.۹۱ نمی‌نویسد */
     paintChanges();
   }
   window.v91Boot = boot;
@@ -19115,3 +19113,87 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 })();
 /* v11.94.0: نت‌افراز مستقل با api.php + leaflet ریشه + بدون ۴۰۴ API */
 (function(){window.v94NetafrazIndependent=true;var b=document.getElementById("crmBuildBadge");if(b)b.textContent="نسخه ۱۱.۹۴.۰";})();
+/* v11.95.0: نشان نسخه واحد + نت‌افراز بدون کشیدن داده رندر + نام شرکت طنین طب طاها */
+(function(){
+  "use strict";
+  window.v95OriginOnly = true;
+  window.v95SameBadge = true;
+  function ver(){ return String(window.CRM_APP_VERSION || "11.95.0"); }
+  function faVer(v){
+    var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
+    return String(v||"11.95.0").replace(/[0-9]/g, function(d){ return map[d]; });
+  }
+  function paintBadge(){
+    var label = "نسخه " + faVer(ver());
+    var b = document.getElementById("crmBuildBadge");
+    if (b) b.textContent = label;
+    var h = document.getElementById("crmBuildHint");
+    if (h) h.textContent = label + " — گوشی و ویندوز باید همین شماره را ببینند";
+  }
+  function originOnlyHubs(){
+    var rt = window.__CRM_RUNTIME || {};
+    var extra = [];
+    if (rt.baseUrl) extra.push(String(rt.baseUrl));
+    (rt.hubs || []).forEach(function(x){ if (x) extra.push(String(x)); });
+    var o = location.origin, seen = {}, hubs = [o];
+    extra.forEach(function(x){
+      try {
+        var u = new URL(x, o);
+        if (location.protocol === "https:" && u.protocol === "http:") return;
+        if (!seen[u.origin] && u.origin !== o) { seen[u.origin] = 1; hubs.push(u.origin); }
+      } catch (e) {}
+    });
+    window.CRM_HUBS = extra.length ? hubs : [o];
+  }
+  function migrateCompany(){
+    try {
+      var S = window.state;
+      if (!S) return;
+      if (!S.settings) S.settings = {};
+      var old = String(S.settings.companyName || "");
+      if (!old || old === "شرکت پخش دارو و شبکه درمان نماینده علمی" || old === "سیستم مدیریت ویزیت علمی و شبکه درمان") {
+        S.settings.companyName = "طنین طب طاها";
+      }
+      var el = document.getElementById("headerCompanyNameDisplay");
+      if (el) el.textContent = S.settings.companyName || "طنین طب طاها";
+    } catch (e) {}
+  }
+  function wrapOldBoots(){
+    ["v90Boot","v91Boot"].forEach(function(n){
+      var fn = window[n];
+      if (typeof fn !== "function" || fn._v95) return;
+      var w = function(){ try { fn.apply(this, arguments); } catch(e){} paintBadge(); migrateCompany(); };
+      w._v95 = true;
+      window[n] = w;
+    });
+  }
+  function addResetBox(){
+    var host = document.getElementById("tab-troubleshooting");
+    if (!host || document.getElementById("v95OriginReset")) return;
+    var box = document.createElement("div");
+    box.id = "v95OriginReset";
+    box.style.cssText = "background:#fff7ed;border:1px solid #fdba74;border-radius:10px;padding:12px;margin:12px 0";
+    box.innerHTML = "<h4 style='margin:0 0 8px'>🧹 داده قدیمی این دامنه</h4><p style='font-size:13px;margin:0 0 8px'>آپلود فایل جدید حافظه مرورگر را پاک نمی‌کند. برنامه داروخانه واقعی شما را خالی نمی‌کند. اگر می‌خواهید فقط همین دامنه از صفر شروع شود، مدیر می‌تواند دکمه زیر را بزند.</p><button type='button' id='btnV95OriginReset' class='btn btn-danger'>شروع تازه فقط روی این دامنه</button>";
+    var card = host.querySelector(".card") || host;
+    card.appendChild(box);
+    var btn = document.getElementById("btnV95OriginReset");
+    if (!btn) return;
+    btn.onclick = function(){
+      var u="", r="";
+      try { u = sessionStorage.getItem("crmUsername")||""; r = sessionStorage.getItem("crmUserRole")||""; } catch(e){}
+      if (u !== "admin" && !/مدیر/.test(r)) { alert("فقط مدیر سیستم می‌تواند این کار را بکند."); return; }
+      if (!confirm("فقط داده مرورگر همین دامنه («"+location.host+"») پاک شود؟ داروخانه‌های این مرورگر حذف می‌شوند. فایل سرور جدا است.")) return;
+      if (!confirm("تأیید دوم: شروع تازه روی این دامنه؟")) return;
+      try { localStorage.removeItem("CRM_APP_STATE_V2"); } catch(e){}
+      location.reload();
+    };
+  }
+  originOnlyHubs();
+  paintBadge();
+  wrapOldBoots();
+  [50,120,420,900,1600].forEach(function(ms){
+    setTimeout(function(){ originOnlyHubs(); paintBadge(); migrateCompany(); wrapOldBoots(); addResetBox(); }, ms);
+  });
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function(){ paintBadge(); migrateCompany(); addResetBox(); });
+  else { migrateCompany(); addResetBox(); }
+})();
