@@ -1684,3 +1684,6 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 
 ## نوبت ۱۰۹ — نسخه ۱۱.۹۱.۰
 محتوای موبایل سفید رفع، تخصص کامل در فیلد، ویرایش/حذف مسیر، فاصله فشرده داشبورد.
+
+## نوبت ۱۱۰ — نسخه ۱۱.۹۲.۰
+هاب ndcohub.ir و mehraeinpharma.ir + Render؛ CORS؛ همگام ذخیره؛ رفع ۴۰۴ favicon و مسیر login/panel فایل.

@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.91.0";
+const APP_VERSION = "11.92.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -53,14 +53,47 @@ function rateLimited(ip) {
   loginHits.set(ip, rec);
   return rec.n > 30;
 }
+function stripPort(h) {
+  return String(h || "").toLowerCase().split(":")[0].replace(/^www\./, "");
+}
+function isCrmHubHost(host) {
+  const h = stripPort(host);
+  if (!h) return false;
+  if (/^(localhost|127\.0\.0\.1)$/.test(h)) return true;
+  if (h === "ndcohub.ir" || h === "mehraeinpharma.ir") return true;
+  if (h === "javad-test1.onrender.com" || /\.onrender\.com$/.test(h)) return true;
+  if (/arena\.site$|e2b\.app$|e2b\.dev$/.test(h)) return true;
+  return false;
+}
+function originHostOf(req) {
+  try { return stripPort(new URL(String(req.headers.origin || "")).host); } catch (e) { return ""; }
+}
+function corsHeaders(req) {
+  const origin = String(req.headers.origin || "");
+  const oh = originHostOf(req);
+  if (origin && isCrmHubHost(oh)) {
+    return {
+      "Access-Control-Allow-Origin": origin,
+      "Access-Control-Allow-Methods": "GET, POST, HEAD, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, X-CRM-Request, X-CRM-Replace, X-CRM-Sync, X-CRM-Hub-Sync, X-CRM-Build, Cache-Control",
+      "Access-Control-Max-Age": "86400",
+      "Vary": "Origin"
+    };
+  }
+  return {};
+}
 function trustedWriteRequest(req) {
-  const host = String(req.headers.host || "").toLowerCase();
+  const host = stripPort(req.headers.host);
+  const origin = String(req.headers.origin || "");
+  const oh = originHostOf(req);
   const preview = /arena\.site|e2b\.app|e2b\.dev|localhost|127\.0\.0\.1/.test(host) || process.env.E2B_SANDBOX === "true";
   if (preview && String(req.headers["x-crm-request"] || "") === "1") return true;
+  if (isCrmHubHost(oh) || isCrmHubHost(host)) {
+    return String(req.headers["x-crm-request"] || "") === "1";
+  }
   const site = String(req.headers["sec-fetch-site"] || "");
-  const origin = String(req.headers.origin || "");
   if (site && !["same-origin", "same-site", "none"].includes(site)) return false;
-  if (origin) { try { if (new URL(origin).host !== host) return false; } catch (e) { return false; } }
+  if (origin) { try { if (stripPort(new URL(origin).host) !== host) return false; } catch (e) { return false; } }
   return String(req.headers["x-crm-request"] || "") === "1";
 }
 function sanitizeJsonValue(value, depth = 0) {
@@ -262,15 +295,15 @@ function send(req, res, status, content, contentType, extra) {
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "X-Frame-Options": preview ? "ALLOWALL" : "SAMEORIGIN",
     "Content-Security-Policy": preview
-      ? "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https:; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors *; worker-src 'self' blob:; manifest-src 'self'"
-      : "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https:; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests",
+      ? "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https: http://ndcohub.ir http://mehraeinpharma.ir https://ndcohub.ir https://mehraeinpharma.ir https://javad-test1.onrender.com; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors *; worker-src 'self' blob:; manifest-src 'self'"
+      : "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https: http://ndcohub.ir http://mehraeinpharma.ir https://ndcohub.ir https://mehraeinpharma.ir https://javad-test1.onrender.com; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests",
     "Permissions-Policy": "geolocation=(self), camera=(), microphone=(), payment=(), usb=(), serial=(), hid=(), bluetooth=(), display-capture=(), accelerometer=(), gyroscope=(), magnetometer=(), autoplay=(), encrypted-media=(), picture-in-picture=()",
     "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
     "Cross-Origin-Resource-Policy": preview ? "cross-origin" : "same-origin",
     "X-Permitted-Cross-Domain-Policies": "none",
     "X-DNS-Prefetch-Control": "off",
     "Origin-Agent-Cluster": "?1"
-  }, extra || {});
+  }, extra || {}, corsHeaders(req));
   if (!preview) headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains";
   if (preview) delete headers["X-Frame-Options"];
   const accept = String(req.headers["accept-encoding"] || "");
@@ -319,7 +352,7 @@ const server = http.createServer((req, res) => {
   const ip = (req.headers["x-forwarded-for"] || req.socket.remoteAddress || "0").toString().split(",")[0].trim();
 
   if (req.method === "OPTIONS") {
-    res.writeHead(204, { "Allow": "GET, POST, HEAD, OPTIONS", "Cache-Control": "no-store" });
+    res.writeHead(204, Object.assign({ "Allow": "GET, POST, HEAD, OPTIONS", "Cache-Control": "no-store" }, corsHeaders(req)));
     return res.end();
   }
   if (req.method === "POST" && pathname.startsWith("/api/") && !trustedWriteRequest(req)) {
@@ -364,12 +397,18 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (pathname === "/favicon.ico") {
+    return sendFile(req, res, path.join(PUBLIC_DIR, "favicon.png"), 86400);
+  }
+
   if (pathname === "/ping" || pathname === "/api/health" || pathname === "/api/ping" || pathname === "/healthz") {
     return send(req, res, 200, JSON.stringify({
       ok: true, status: "healthy", message: "OK",
       service: "namayandeelmi-javad-crm",
       version: APP_VERSION,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      host: String(req.headers.host || ""),
+      hubs: ["https://javad-test1.onrender.com", "https://ndcohub.ir", "https://mehraeinpharma.ir"]
     }), "application/json; charset=utf-8", { "Cache-Control": "no-store", "X-CRM-Build": APP_VERSION });
   }
 

@@ -19091,3 +19091,19 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   setInterval(keepSpec, 800);
 })();
 
+/* v11.92.0: هاب‌های ایرانی + Render یک داده؛ CORS؛ مسیر فایل واقعی برای ۴۰۴ */
+(function(){
+  "use strict";
+  if(!window.CRM_HUBS){
+    var o=location.origin, L=["https://javad-test1.onrender.com","https://ndcohub.ir","https://mehraeinpharma.ir"];
+    if(location.protocol==="http:") L=L.concat(["http://ndcohub.ir","http://mehraeinpharma.ir"]);
+    L.unshift(o);
+    var s={}, hubs=[];
+    L.forEach(function(x){ try{ var u=new URL(x,o); if(location.protocol==="https:"&&u.protocol==="http:")return; if(!s[u.origin]){s[u.origin]=1;hubs.push(u.origin);} }catch(e){} });
+    window.CRM_HUBS=hubs;
+  }
+  window.v92Hubs=window.CRM_HUBS;
+  var badge=document.getElementById("crmBuildBadge");
+  if(badge) badge.textContent="نسخه ۱۱.۹۲.۰";
+})();
+

@@ -46,7 +46,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "11.91.0";
+const CRM_APP_VERSION = "11.92.0";
 try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
@@ -3004,7 +3004,7 @@ function testServerConnectivity() {
     if (box) {
       box.style.background = "#f0fdf4";
       box.style.color = "#166534";
-      box.textContent = "✅ ارتباط با سرور فعال (" + (location.host || "همین سرویس") + ") و ndcohub.ir برقرار است.";
+      box.textContent = "✅ ارتباط با سرور فعال (" + (location.host || "همین سرویس") + ") — ndcohub.ir و mehraeinpharma.ir و Render همگام‌اند.";
     }
     alert("✅ اتصال به سرور ابری و حافظه محلی با موفقیت تایید شد.");
   }, 700);
@@ -3088,7 +3088,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.91.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.92.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
