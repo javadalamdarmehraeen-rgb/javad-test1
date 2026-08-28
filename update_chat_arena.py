@@ -19,7 +19,7 @@ import os
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, "chat.arena")
-EXCLUDE_DIRS = {".git", "node_modules", ".next", ".arena"}
+EXCLUDE_DIRS = {".git", "node_modules", ".next", ".arena", "static-build"}
 EXCLUDE_FILES = {"chat.arena"}
 EXCLUDE_SUFFIX = (".zip",)
 
@@ -56,7 +56,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 1.93 | تاریخ به‌روزرسانی: 2026-08-28 (۶ شهریور ۱۴۰۵) | نسخه برنامه: 11.92.0
+نسخه این فایل: 1.94 | تاریخ به‌روزرسانی: 2026-08-28 (۶ شهریور ۱۴۰۵) | نسخه برنامه: 11.93.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -3689,6 +3689,12 @@ ZIP اولین نسخه 38 از کامیت تاریخی دقیق همان نسخ
 نسخه **۱۱.۹۲.۰**. CORS و هاب برای Render + ndcohub.ir + mehraeinpharma.ir. مسیر `/login.html` و `/index.html` و favicon.ico. ذخیره به همه هاب‌های سالم فرستاده می‌شود.
 
 
+──────────────────────────────── نوبت ۱۱۱ ────────────────────────────────
+🧑 کاربر: برنامه روی Render و نت‌افراز، sync گیت‌هاب/گیت‌لب، لینک پویا، آفلاین ایران.
+
+🤖 دستیار: نسخه ۱۱.۹۳.۰ بدون تبدیل به Next.js. npm start برای Render، npm run build-static برای نت‌افراز، npm run sync برای GitHub+GitLab. هاب از BASE_URL/CRM_HUBS. timeout/retry.
+
+
 """
 
 FILES_INTRO = """
@@ -3725,7 +3731,7 @@ def build():
         out.append("~~~~~~~~" + lang)
         out.append(content.rstrip("\n"))
         out.append("~~~~~~~~")
-    out.append("\n\n— پایان chat.arena نسخه ۱.۷۰ (نسخه برنامه 11.92.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
+    out.append("\n\n— پایان chat.arena نسخه ۱.۷۱ (نسخه برنامه 11.93.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
     with open(OUT, "w", encoding="utf-8") as f:
         payload = "\n".join(out)
         payload = "\n".join(line.rstrip() for line in payload.splitlines())

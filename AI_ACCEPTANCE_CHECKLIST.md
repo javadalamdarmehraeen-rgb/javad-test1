@@ -301,3 +301,6 @@
 
 ## نوبت ۱۱۰ — نسخه ۱۱.۹۲.۰
 هاب ndcohub.ir و mehraeinpharma.ir + Render؛ CORS؛ همگام ذخیره؛ رفع ۴۰۴ favicon و مسیر login/panel فایل.
+
+## نوبت ۱۱۱ — نسخه ۱۱.۹۳.۰
+حالت fullstack/static، sync-all.js، build-static نت‌افراز، هاب env، timeout/retry. بدون Next.js.

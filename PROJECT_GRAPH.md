@@ -8,16 +8,18 @@
 ## الف) زنجیره لود اسکریپت‌ها (ترتیب اجرا در مرورگر)
 
 1. `vendor/leaflet.js`
-2. `crm-data.js`
-3. `crm-app.js`
-4. `crm-bundle.js`
+2. `crm-runtime.js`
+3. `crm-hub.js`
+4. `crm-data.js`
+5. `crm-app.js`
+6. `crm-bundle.js`
 
 ## ب) کارت فایل‌ها (نقش + توابع + نام‌های window که می‌سازد)
 
-### `server.js` (41774 بایت)
+### `server.js` (43052 بایت)
 - نقش: سرور سبک Node.js برای Render — ورود جدا، gzip، health، ژئوکد، محدودیت نرخ
-- تعداد توابع داخلی: 43
-- endpointهای سرور: `/api/backup`, `/api/backup/email`, `/api/backup/status`, `/api/bulk`, `/api/bulk`, `/api/feedback`, `/api/feedback`, `/api/push/public-key`, `/api/push/send`, `/api/push/subscribe`, `/api/state`, `/api/state`
+- تعداد توابع داخلی: 46
+- endpointهای سرور: `/api/backup`, `/api/backup/email`, `/api/backup/status`, `/api/bulk`, `/api/bulk`, `/api/feedback`, `/api/feedback`, `/api/push/public-key`, `/api/push/send`, `/api/push/subscribe`, `/api/runtime-config`, `/api/state`, `/api/state`
 
 ### `scripts/build-sw.mjs` (2656 بایت)
 - نقش: #!/usr/bin/env node
@@ -52,7 +54,7 @@
 - تعداد توابع داخلی: 179
 - نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_STATE_BOUND`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `applyV77ProductPricing`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `getAllMenuSections`, `paintV77ProductPricing`, `rememberPharmacyName`, `renderDoctorsList`, `renderExtraTabCustomFields`, `renderPharmaciesList`, `syncProductsEverywhere`, `validateRequiredFields`
 
-### `public/crm-bundle.js` (1172260 بایت)
+### `public/crm-bundle.js` (1172506 بایت)
 - نقش: * crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
 - تعداد توابع داخلی: 1187
 - نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `CRM_HUBS`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `WIDGET_PALETTE`, `__CRM_APPLYING_SERVER`, `__CRM_BULK_PURGE`, `__CRM_BULK_READY`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_LAYOUT_APPLYING`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SERVER_READY`, `__CRM_SKIP_V64_STRIP`, `__CRM_SNAP`, `__CRM_UNVEIL`, `__CRM_V78_EDIT_PID`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__V68_WATCH`, `__V69_SYNC`, `__V70_SOLO`, `__V71_CLAIMED`, `__V72_BOOT`, `__V73_BOOT`, `__V73_WATCH`, `__V79_BOOT`, `__V80_BOOT`, `__V80_LOCK`, `__V81_BOOT`, `__V81_LOCK`
@@ -122,10 +124,20 @@
 - تعداد توابع داخلی: 104
 - نام‌های window که تعریف/بازنویسی می‌کند: `builtinFieldValue`, `downloadCSVFile`, `getOrderItemsFromUI`, `isColShownInList`, `renderDoctorsList`, `renderLiveLocationTab`, `renderOrdersList`, `renderPharmaciesList`, `setupLiveLocationTab`, `setupRepsTab`, `switchTab`, `validateRequiredFields`
 
+### `public/crm-hub.js` (4336 بایت)
+- نقش: * v11.93.0: هاب پویا + timeout/retry برای اینترنت ایران — بدون آدرس ثابت اجباری */
+- تعداد توابع داخلی: 14
+- نام‌های window که تعریف/بازنویسی می‌کند: `CRM_HUBS`, `__CRM_ORIG_FETCH`, `__CRM_RUNTIME`, `crmHubList`, `fetch`, `v92HubFetch`, `v93HubFetch`
+
 ### `public/crm-jalali.js` (25683 بایت)
 - نقش: تقویم شمسی واقعی + نشانگر میلادی JAN..DEC + تقویم کنار فیلد تاریخ + افزودن لحظه‌ای
 - تعداد توابع داخلی: 38
 - نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `_jalaliBuildPatched`, `_jalaliLayoutPatched`, `_jalaliRenderPatched`, `_jalaliSw`, `activeDateInputForPicker`, `applyFullFormLayout`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `refreshAllDateBadges`, `renderCustomFieldsInForm`, `renderJalaliCalendarDays`, `setupInstantAddAll`, `setupJalaliCalendarPicker`, `setupJalaliDateAutoSlash`, `switchTab`
+
+### `public/crm-runtime.js` (228 بایت)
+- نقش: * تنظیمات اجرای پویا — با env در Render یا build-static برای نت‌افراز پر می‌شود */
+- تعداد توابع داخلی: 0
+- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_RUNTIME`
 
 ### `public/iran-facilities.js` (11799 بایت)
 - نقش: پایگاه مرجع مراکز درمان ایران — مراکز شاخص هر استان (نه تک‌تک داروخانه‌های کشور)
@@ -137,7 +149,7 @@
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (4414 بایت)
-- نقش: const BUILD = "11.92.0";
+- نقش: const BUILD = "11.93.0";
 - تعداد توابع داخلی: 4
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -148,6 +160,7 @@
 ## ج) گراف بازنویسی نام‌های window (چه فایلی روی چه فایلی سوار می‌شود)
 
 - `CRMJalali`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-jalali.js`
+- `CRM_HUBS`: تعریف/بازنویسی به ترتیب لود → `public/crm-hub.js` ← `public/crm-bundle.js`
 - `FA_FIELD_LABELS`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v11.js`
 - `IRAN_FACILITIES`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/iran-facilities.js`
 - `WIDGET_PALETTE`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v12.js`
@@ -159,6 +172,7 @@
 - `__CRM_MANAGER_LAYOUT_INTENT`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
 - `__CRM_MANAGER_LAYOUT_TIMER`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
 - `__CRM_ORIGIN_BOOTSTRAP_CHECKED`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
+- `__CRM_RUNTIME`: تعریف/بازنویسی به ترتیب لود → `public/crm-runtime.js` ← `public/crm-hub.js`
 - `__CRM_SAFE_BROWSER_GUARDS`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
 - `__CRM_WD`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
 - `__V40_REFADD`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
@@ -247,6 +261,7 @@
 - `editUserCard`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
 - `editUserTab`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v12.js` ← `public/crm-features-v14.js`
 - `extraListColumns`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v11.js` ← `public/crm-features-v19.js` ← `public/crm-features-v20.js`
+- `fetch`: تعریف/بازنویسی به ترتیب لود → `public/crm-hub.js` ← `public/crm-bundle.js`
 - `fieldKeyForTab`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v15.js`
 - `getAllMenuSections`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js` ← `public/crm-features-v11.js` ← `public/crm-features-v12.js` ← `public/crm-features-v13.js` ← `public/crm-features-v14.js`
 - `getMainGrid`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v11.js`
@@ -332,6 +347,7 @@
 - `/api/push/send` [POST] — مصرف‌کننده: `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `/api/push/subscribe` [POST] — مصرف‌کننده: `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `/api/reverse?lat=` [؟] — مصرف‌کننده: `public/crm-app.js`, `public/crm-bundle.js`, `public/crm-features-v20.js`
+- `/api/runtime-config` [GET] — مصرف‌کننده: —
 - `/api/state` [GET] — مصرف‌کننده: `public/crm-bundle.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`
 - `/api/state?__v60=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
 - `/api/state?__v65=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
@@ -567,7 +583,7 @@
 - `$` ← `public/crm-bundle.js`, `public/crm-features-v10.js`, `public/crm-features-v11.js`, `public/crm-features-v12.js`, `public/crm-features-v13.js`, `public/crm-features-v14.js`, `public/crm-features-v15.js`, `public/crm-features-v16.js`, `public/crm-features-v17.js`, `public/crm-features-v18.js`, `public/crm-features-v19.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`, `public/crm-jalali.js`
 - `GPS_SVG` ← `public/crm-bundle.js`, `public/crm-features-v19.js`
 - `abs` ← `public/crm-bundle.js`, `public/crm-features-v9.js`
-- `add` ← `server.js`, `public/crm-bundle.js`, `public/crm-features-v20.js`
+- `add` ← `server.js`, `public/crm-bundle.js`, `public/crm-features-v20.js`, `public/crm-hub.js`
 - `addClearButtons` ← `public/crm-bundle.js`, `public/crm-features-v19.js`
 - `addExtraCity` ← `public/crm-bundle.js`, `public/crm-features-v16.js`
 - `addExtraDistrict` ← `public/crm-bundle.js`, `public/crm-features-v16.js`
@@ -884,6 +900,7 @@
 - `hardenManualCanvas` ← `public/crm-bundle.js`, `public/crm-features-v17.js`
 - `hasBulk` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `hav` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
+- `hdrs` ← `public/crm-bundle.js`, `public/crm-hub.js`
 - `hidePlacedOrderNotices` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `hideTab` ← `public/crm-bundle.js`, `public/crm-features-v11.js`
 - `hist` ← `public/crm-bundle.js`, `public/crm-features-v19.js`
@@ -1050,7 +1067,7 @@
 - `persistRename` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `persistUsersToAuth` ← `public/crm-bundle.js`, `public/crm-features-v11.js`
 - `personMatch` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
-- `ph` ← `public/crm-app.js`, `public/crm-bundle.js`, `public/crm-features-v10.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`
+- `ph` ← `public/crm-app.js`, `public/crm-bundle.js`, `public/crm-features-v10.js`, `public/crm-features-v20.js`, `public/crm-features-v9.js`, `public/crm-hub.js`
 - `phFields` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `phId` ← `public/crm-bundle.js`, `public/crm-features-v14.js`
 - `pick` ← `public/crm-bundle.js`, `public/crm-features-v16.js`
@@ -1427,7 +1444,7 @@
 
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
-- نسخه سورس package: `11.92.0`
+- نسخه سورس package: `11.93.0`
 - مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a03a45-javad-test1`؛ push/PR فقط از همین شاخه.
 - Production فعال: `https://javad-test1.onrender.com` — نسخه سورس فعلی `11.66.0` است و تا push کاربر روی production همان آخرین دیپلوی قبلی می‌ماند.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.

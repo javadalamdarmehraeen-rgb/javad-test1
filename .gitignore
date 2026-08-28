@@ -77,3 +77,4 @@ __pycache__/
 download-v11.*.html
 backups/
 **/backups/
+static-build/

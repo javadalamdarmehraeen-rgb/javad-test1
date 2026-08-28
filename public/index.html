@@ -34,7 +34,7 @@
   <style>html.crm-booting body{visibility:visible!important;opacity:1!important}</style>
   <script>
     (function(){
-      var BUILD="11.92.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="11.93.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       try{
         var GEN="11.81.0";
         var raw=localStorage.getItem("CRM_APP_STATE_V2");
@@ -69,7 +69,7 @@
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.92.0" />
+  <link rel="stylesheet" href="style.css?v=11.93.0" />
 </head>
 <body>
 
@@ -89,7 +89,7 @@
         </div>
         <div class="logo-text">
           <h1 id="headerCompanyNameDisplay">سیستم مدیریت ویزیت علمی و شبکه درمان</h1>
-          <div id="crmBuildBadge" style="font-size:12px;font-weight:800;color:#0f766e">نسخه ۱۱.۹۲.۰</div>
+          <div id="crmBuildBadge" style="font-size:12px;font-weight:800;color:#0f766e">نسخه ۱۱.۹۳.۰</div>
           <p>طنین طب طاها — TENIN TEB TAHA</p>
         </div>
       </div>
@@ -2610,78 +2610,12 @@
   <script src="vendor/leaflet.js"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script>
-    (function(){
-      var ORIGIN=location.origin;
-      var LIST=["https://javad-test1.onrender.com","https://ndcohub.ir","https://mehraeinpharma.ir"];
-      if(location.protocol==="http:") LIST=LIST.concat(["http://ndcohub.ir","http://mehraeinpharma.ir"]);
-      LIST.unshift(ORIGIN);
-      function hubs(){
-        var s={},o=[];
-        LIST.forEach(function(x){
-          try{
-            var u=new URL(x, ORIGIN);
-            if(location.protocol==="https:" && u.protocol==="http:") return;
-            if(!s[u.origin]){s[u.origin]=1;o.push(u.origin);}
-          }catch(e){}
-        });
-        return o;
-      }
-      window.CRM_HUBS=hubs();
-      var orig=window.fetch.bind(window);
-      window.__CRM_ORIG_FETCH=orig;
-      function isApi(url){
-        var s=String(url||"");
-        if(s.indexOf("/api/")===0) return true;
-        try{return new URL(s, ORIGIN).pathname.indexOf("/api/")===0;}catch(e){return false;}
-      }
-      function pathOf(url){
-        try{var u=new URL(String(url||""), ORIGIN); return u.pathname+u.search;}catch(e){return String(url||"");}
-      }
-      function hollowPost(opts){
-        try{
-          var b=opts&&opts.body; if(!b||typeof b!=="string") return false;
-          if(b.length<80) return true;
-          var j=JSON.parse(b);
-          var d=j&&j.data?j.data:j;
-          var ph=(d&&d.pharmacies)||[], doc=(d&&d.doctors)||[], us=(d&&d.users)||[];
-          return !ph.length && !doc.length && us.length<=1;
-        }catch(e){return false;}
-      }
-      window.fetch=function(url, opts){
-        if(!isApi(url)) return orig(url, opts);
-        opts=opts||{};
-        var path=pathOf(url);
-        var method=String(opts.method||"GET").toUpperCase();
-        var bases=window.CRM_HUBS.slice();
-        function hdrs(extra){
-          return Object.assign({"X-CRM-Request":"1"}, opts.headers||{}, extra||{});
-        }
-        function one(i){
-          if(i>=bases.length) return orig(url, opts);
-          var o=Object.assign({}, opts, {headers:hdrs()});
-          if(bases[i]!==ORIGIN) o.mode="cors";
-          return orig(bases[i]+path, o).then(function(r){ return (r&&r.ok)?r:one(i+1); }).catch(function(){ return one(i+1); });
-        }
-        if(method==="GET"||method==="HEAD") return one(0);
-        if(hollowPost(opts)) return one(0);
-        var posts=bases.map(function(base){
-          var o=Object.assign({}, opts, {headers:hdrs({"X-CRM-Hub-Sync":"1"})});
-          if(base!==ORIGIN) o.mode="cors";
-          return orig(base+path, o).then(function(r){return r;}).catch(function(){return null;});
-        });
-        return Promise.all(posts).then(function(rs){
-          var ok=null;
-          rs.forEach(function(r){ if(!ok && r && r.ok) ok=r; });
-          return ok||rs[0]||orig(url, opts);
-        });
-      };
-      window.v92HubFetch=true;
-    })();
-  </script>
-  <script src="crm-data.js?v=11.92.0"></script>
-  <script src="crm-app.js?v=11.92.0"></script>
-          <script src="crm-bundle.js?v=11.92.0"></script>
+  <script src="crm-runtime.js?v=11.93.0"></script>
+  <script src="crm-hub.js?v=11.93.0"></script>
+  <script>window.v92HubFetch=true;</script>
+  <script src="crm-data.js?v=11.93.0"></script>
+  <script src="crm-app.js?v=11.93.0"></script>
+          <script src="crm-bundle.js?v=11.93.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />

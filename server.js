@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "11.92.0";
+const APP_VERSION = "11.93.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -56,6 +56,23 @@ function rateLimited(ip) {
 function stripPort(h) {
   return String(h || "").toLowerCase().split(":")[0].replace(/^www\./, "");
 }
+function envHubList() {
+  const raw = [process.env.BASE_URL, process.env.PUBLIC_BASE_URL, process.env.CRM_HUBS].filter(Boolean).join(",");
+  return raw.split(",").map(function (s) { return String(s).trim().replace(/\/$/, ""); }).filter(Boolean);
+}
+function envHubHosts() {
+  return envHubList().map(function (u) {
+    try { return stripPort(new URL(u).host); } catch (e) { return stripPort(u); }
+  }).filter(Boolean);
+}
+function runtimeHubs() {
+  const extra = envHubList();
+  const defaults = ["https://javad-test1.onrender.com", "https://ndcohub.ir", "https://mehraeinpharma.ir"];
+  const out = [];
+  extra.concat(defaults).forEach(function (h) { if (h && out.indexOf(h) < 0) out.push(h); });
+  return out;
+}
+const PLATFORM = String(process.env.PLATFORM || process.env.CRM_PLATFORM || "fullstack").toLowerCase();
 function isCrmHubHost(host) {
   const h = stripPort(host);
   if (!h) return false;
@@ -63,6 +80,7 @@ function isCrmHubHost(host) {
   if (h === "ndcohub.ir" || h === "mehraeinpharma.ir") return true;
   if (h === "javad-test1.onrender.com" || /\.onrender\.com$/.test(h)) return true;
   if (/arena\.site$|e2b\.app$|e2b\.dev$/.test(h)) return true;
+  if (envHubHosts().indexOf(h) >= 0) return true;
   return false;
 }
 function originHostOf(req) {
@@ -408,7 +426,16 @@ const server = http.createServer((req, res) => {
       version: APP_VERSION,
       timestamp: new Date().toISOString(),
       host: String(req.headers.host || ""),
-      hubs: ["https://javad-test1.onrender.com", "https://ndcohub.ir", "https://mehraeinpharma.ir"]
+      hubs: runtimeHubs(), platform: PLATFORM, baseUrl: process.env.BASE_URL || process.env.PUBLIC_BASE_URL || ""
+    }), "application/json; charset=utf-8", { "Cache-Control": "no-store", "X-CRM-Build": APP_VERSION });
+  }
+
+  if (pathname === "/api/runtime-config" && req.method === "GET") {
+    return send(req, res, 200, JSON.stringify({
+      platform: PLATFORM,
+      baseUrl: process.env.BASE_URL || process.env.PUBLIC_BASE_URL || "",
+      hubs: runtimeHubs(),
+      version: APP_VERSION
     }), "application/json; charset=utf-8", { "Cache-Control": "no-store", "X-CRM-Build": APP_VERSION });
   }
 
@@ -660,7 +687,7 @@ function listenOn(port) {
   return s;
 }
 server.listen(PORT, "0.0.0.0", () => {
-  console.log("CRM v" + APP_VERSION + " listening on 0.0.0.0:" + PORT);
+  console.log("CRM v" + APP_VERSION + " (" + PLATFORM + ") listening on 0.0.0.0:" + PORT);
   startQuarterHourBackup();
 });
 if (process.env.E2B_SANDBOX === "true") {

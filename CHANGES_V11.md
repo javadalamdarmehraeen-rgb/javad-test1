@@ -925,3 +925,10 @@ CLEAN_EXTRA_FILES.bat و بعد PUSH_GITHUB_CLEAN.bat را اجرا کن.
 1. دامنه‌های ndcohub.ir و mehraeinpharma.ir در CORS و نوشتن API مجازند.
 2. `/favicon.ico` دیگر ۴۰۴ نمی‌دهد. ورود با `/login.html` و پنل با `/index.html` روی هاست فایل هم کار می‌کند.
 3. هر ذخیره به همه هاب‌های سالم (Render + دو دامنه ایرانی) فرستاده می‌شود تا ثبت در یک لینک در بقیه هم دیده شود.
+
+## تحویل نوبت ۱۱۱ — نسخه ۱۱.۹۳.۰: Render + نت‌افراز، sync یک‌دستوری، لینک پویا
+
+1. Full-stack روی Render (`npm start`) و خروجی استاتیک نت‌افراز (`npm run build-static` → static-build).
+2. `npm run sync "پیام"` به GitHub و در صورت وجود ریموت به GitLab می‌فرستد.
+3. آدرس‌ها از BASE_URL و CRM_HUBS می‌آیند. fetch با timeout و retry برای اینترنت ایران.
+4. اسکلت Next.js فعال نشد؛ runtime همان server.js + public است.

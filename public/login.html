@@ -9,7 +9,7 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
   <script>
-    (function(){var BUILD="11.92.0",key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{
+    (function(){var BUILD="11.93.0",key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{
       var prev=localStorage.getItem(key)||"";
       localStorage.setItem(key,BUILD);
       if(prev&&prev!==BUILD&&sessionStorage.getItem("CRM_MOBILE_RELOAD")!==BUILD){
@@ -58,75 +58,8 @@
   </style>
 </head>
 <body>
-  <script>
-    (function(){
-      var ORIGIN=location.origin;
-      var LIST=["https://javad-test1.onrender.com","https://ndcohub.ir","https://mehraeinpharma.ir"];
-      if(location.protocol==="http:") LIST=LIST.concat(["http://ndcohub.ir","http://mehraeinpharma.ir"]);
-      LIST.unshift(ORIGIN);
-      function hubs(){
-        var s={},o=[];
-        LIST.forEach(function(x){
-          try{
-            var u=new URL(x, ORIGIN);
-            if(location.protocol==="https:" && u.protocol==="http:") return;
-            if(!s[u.origin]){s[u.origin]=1;o.push(u.origin);}
-          }catch(e){}
-        });
-        return o;
-      }
-      window.CRM_HUBS=hubs();
-      var orig=window.fetch.bind(window);
-      window.__CRM_ORIG_FETCH=orig;
-      function isApi(url){
-        var s=String(url||"");
-        if(s.indexOf("/api/")===0) return true;
-        try{return new URL(s, ORIGIN).pathname.indexOf("/api/")===0;}catch(e){return false;}
-      }
-      function pathOf(url){
-        try{var u=new URL(String(url||""), ORIGIN); return u.pathname+u.search;}catch(e){return String(url||"");}
-      }
-      function hollowPost(opts){
-        try{
-          var b=opts&&opts.body; if(!b||typeof b!=="string") return false;
-          if(b.length<80) return true;
-          var j=JSON.parse(b);
-          var d=j&&j.data?j.data:j;
-          var ph=(d&&d.pharmacies)||[], doc=(d&&d.doctors)||[], us=(d&&d.users)||[];
-          return !ph.length && !doc.length && us.length<=1;
-        }catch(e){return false;}
-      }
-      window.fetch=function(url, opts){
-        if(!isApi(url)) return orig(url, opts);
-        opts=opts||{};
-        var path=pathOf(url);
-        var method=String(opts.method||"GET").toUpperCase();
-        var bases=window.CRM_HUBS.slice();
-        function hdrs(extra){
-          return Object.assign({"X-CRM-Request":"1"}, opts.headers||{}, extra||{});
-        }
-        function one(i){
-          if(i>=bases.length) return orig(url, opts);
-          var o=Object.assign({}, opts, {headers:hdrs()});
-          if(bases[i]!==ORIGIN) o.mode="cors";
-          return orig(bases[i]+path, o).then(function(r){ return (r&&r.ok)?r:one(i+1); }).catch(function(){ return one(i+1); });
-        }
-        if(method==="GET"||method==="HEAD") return one(0);
-        if(hollowPost(opts)) return one(0);
-        var posts=bases.map(function(base){
-          var o=Object.assign({}, opts, {headers:hdrs({"X-CRM-Hub-Sync":"1"})});
-          if(base!==ORIGIN) o.mode="cors";
-          return orig(base+path, o).then(function(r){return r;}).catch(function(){return null;});
-        });
-        return Promise.all(posts).then(function(rs){
-          var ok=null;
-          rs.forEach(function(r){ if(!ok && r && r.ok) ok=r; });
-          return ok||rs[0]||orig(url, opts);
-        });
-      };
-      window.v92HubFetch=true;
-    })();
-  </script>
+  <script src="crm-runtime.js?v=11.93.0"></script>
+  <script src="crm-hub.js?v=11.93.0"></script>
 
   <div class="card">
     <img class="logo" src="logo.png" alt="Tanin Teb Taha">
@@ -150,7 +83,8 @@
     </form>
     <div class="ok" id="st"></div>
     <p class="hint">نمونه مدیر: admin / 123 — شماره 09120000000</p>
-    <p class="hint" id="crmBuildHint">نسخه ۱۱.۹۲.۰ — گوشی و ویندوز باید همین شماره را ببینند</p>
+    <p class="hint">هاب‌ها از BASE_URL/CRM_HUBS خوانده می‌شوند (Render، ndcohub.ir، mehraeinpharma.ir).</p>
+    <p class="hint" id="crmBuildHint">نسخه ۱۱.۹۳.۰ — گوشی و ویندوز باید همین شماره را ببینند</p>
   </div>
   <script>
     (function(){
@@ -191,7 +125,7 @@
       var err = document.getElementById("err");
       function showErr(m){ err.style.display="block"; err.textContent=m; }
       function hideErr(){ err.style.display="none"; }
-      fetch("/api/health").then(function(r){return r.json();}).then(function(d){ st.textContent="سرور آماده است — نسخه "+((d&&d.version)||"۱۱.۹۲.۰"); var h=document.getElementById("crmBuildHint"); if(h&&d&&d.version&&d.version!=="11.92.0") h.textContent="گوشی نسخه قدیمی می‌بیند ("+d.version+") — یک‌بار کش را خالی کنید یا لینک را با Chrome باز کنید."; }).catch(function(){ st.textContent="در حال بیدار کردن سرور..."; });
+      fetch("/api/health").then(function(r){return r.json();}).then(function(d){ st.textContent="سرور آماده است — نسخه "+((d&&d.version)||"۱۱.۹۳.۰"); var h=document.getElementById("crmBuildHint"); if(h&&d&&d.version&&d.version!=="11.93.0") h.textContent="گوشی نسخه قدیمی می‌بیند ("+d.version+") — یک‌بار کش را خالی کنید یا لینک را با Chrome باز کنید."; }).catch(function(){ st.textContent="در حال بیدار کردن سرور..."; });
       document.getElementById("f").addEventListener("submit", function(){
         hideErr();
         var u=document.getElementById("u").value.trim();

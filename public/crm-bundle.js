@@ -19107,3 +19107,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   if(badge) badge.textContent="نسخه ۱۱.۹۲.۰";
 })();
 
+/* v11.93.0: Render+نت‌افراز استاتیک، هاب env، timeout/retry، sync-all */
+(function(){
+  window.v93PlatformStatic=true;
+  var b=document.getElementById("crmBuildBadge");
+  if(b) b.textContent="نسخه ۱۱.۹۳.۰";
+})();
+

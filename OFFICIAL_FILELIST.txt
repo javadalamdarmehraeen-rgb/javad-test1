@@ -250,3 +250,9 @@ tests/version-11.24-regressions.test.mjs
 tsconfig.json
 update_chat_arena.py
 update_project_graph.py
+sync-all.js
+build-static.js
+.env.example
+public/crm-runtime.js
+public/crm-hub.js
+public/.htaccess
