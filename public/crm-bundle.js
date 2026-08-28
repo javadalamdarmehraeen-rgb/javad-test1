@@ -18576,3 +18576,300 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,120);});
   else setTimeout(boot,120);
 })();
+
+/* v11.90.0: موبایل سفید + منوی همبرگری + تخصص پزشک + حریم نماینده + رصد تردد + کلید استاندارد */
+(function(){
+  "use strict";
+  function $(id){ return document.getElementById(id); }
+  function role(){ return String(sessionStorage.getItem("crmUserRole") || ""); }
+  function uname(){ return String(sessionStorage.getItem("crmUsername") || ""); }
+  function logged(){ try { return sessionStorage.getItem("crmLoggedIn") === "1"; } catch(e){ return false; } }
+  function isManager(){
+    if (!logged()) return true;
+    var r = role(), u = uname();
+    return u === "admin" || /مدیر|admin/i.test(r);
+  }
+  function ownOnly(){
+    if (!logged() || isManager()) return false;
+    if (/سرپرست/.test(role())) return false;
+    return true;
+  }
+  function me(){
+    return {
+      id: sessionStorage.getItem("crmUserId") || "",
+      name: sessionStorage.getItem("crmUserName") || ""
+    };
+  }
+  function isOwn(rec){
+    if (!rec) return false;
+    var o = me();
+    if (o.id && String(rec.repId || rec.ownerUserId || rec.userId || "") === String(o.id)) return true;
+    if (o.name && String(rec.repName || rec.name || rec.fullName || "") === String(o.name)) return true;
+    return false;
+  }
+  window.v90OwnOnly = ownOnly;
+  window.v90IsOwnRecord = isOwn;
+
+  function unveil(){
+    try { document.documentElement.classList.remove("crm-booting"); } catch(e){}
+    try { if (typeof window.__CRM_UNVEIL === "function") window.__CRM_UNVEIL(); } catch(e){}
+  }
+
+  function openMenu(){
+    var d = $("sideMenuDrawer"), o = $("sideMenuOverlay");
+    if (d){ d.classList.add("active"); d.style.right = "0"; d.style.transform = "translateX(0)"; d.style.webkitTransform = "translateX(0)"; d.style.visibility = "visible"; d.style.display = "flex"; }
+    if (o){ o.classList.add("active"); o.style.display = "block"; }
+    document.body.classList.add("v90-drawer-open");
+  }
+  function closeMenu(){
+    var d = $("sideMenuDrawer"), o = $("sideMenuOverlay");
+    if (d){ d.classList.remove("active"); d.style.transform = ""; d.style.webkitTransform = ""; }
+    if (o){ o.classList.remove("active"); o.style.display = ""; }
+    document.body.classList.remove("v90-drawer-open");
+  }
+  window.openSideMenu = openMenu;
+  window.closeSideMenu = closeMenu;
+
+  function bindHamburger(){
+    var btn = $("btnToggleSideMenu"), closeBtn = $("btnCloseSideMenu"), overlay = $("sideMenuOverlay");
+    if (btn && !btn.dataset.v90){
+      btn.dataset.v90 = "1";
+      btn.addEventListener("click", function(e){ e.preventDefault(); e.stopPropagation(); openMenu(); }, true);
+      btn.addEventListener("touchend", function(e){ e.preventDefault(); openMenu(); }, {passive:false});
+    }
+    if (closeBtn && !closeBtn.dataset.v90){ closeBtn.dataset.v90 = "1"; closeBtn.addEventListener("click", closeMenu); }
+    if (overlay && !overlay.dataset.v90){ overlay.dataset.v90 = "1"; overlay.addEventListener("click", closeMenu); }
+  }
+
+  var CORE_TABS = ["tab-dashboard","tab-pharmacies","tab-doctors","tab-orders","tab-activity-log","tab-my-visit","tab-leaves","tab-rep-routes","tab-notifications","tab-install-app"];
+  function unhideCore(){
+    CORE_TABS.forEach(function(id){
+      var pane = $(id);
+      if (pane){
+        pane.style.removeProperty("display");
+        delete pane.dataset.permissionHidden;
+      }
+      document.querySelectorAll('[data-target="'+id+'"],[data-side-target="'+id+'"]').forEach(function(n){
+        n.style.removeProperty("display");
+        delete n.dataset.permissionHidden;
+        n.removeAttribute("data-permission-hidden");
+      });
+    });
+    var active = document.querySelector(".tab-pane.active");
+    if (active && (active.style.display === "none" || active.dataset.permissionHidden === "1")){
+      var dash = $("tab-dashboard");
+      if (dash){
+        document.querySelectorAll(".tab-pane").forEach(function(p){ p.classList.remove("active"); });
+        dash.classList.add("active");
+        dash.style.removeProperty("display");
+      }
+    }
+    var items = document.querySelectorAll("#sideMenuItemsContainer .side-menu-item");
+    var vis = 0;
+    items.forEach(function(n){ if (n.style.display !== "none") vis++; });
+    if (vis < 3){
+      items.forEach(function(n){
+        var t = n.getAttribute("data-side-target") || "";
+        if (CORE_TABS.indexOf(t) >= 0){
+          n.style.removeProperty("display");
+          n.style.display = "flex";
+        }
+      });
+    }
+  }
+
+  var SPECS = (typeof window.DOCTOR_SPECIALTIES !== "undefined" && window.DOCTOR_SPECIALTIES) || [];
+  function fillSpecialty(){
+    var el = $("doctorSpecialty");
+    if (!el) return;
+    if (el.tagName === "INPUT"){
+      var sel = document.createElement("select");
+      sel.id = "doctorSpecialty";
+      sel.className = "form-select";
+      sel.setAttribute("data-nocombo","1");
+      sel.required = true;
+      el.parentNode.replaceChild(sel, el);
+      el = sel;
+    }
+    if (el.tagName !== "SELECT") return;
+    var cur = el.value;
+    if (el.dataset.v90spec === "1" && el.options.length > 20){
+      if (cur && !Array.prototype.some.call(el.options, function(o){ return o.value === cur; })){
+        var extra = document.createElement("option"); extra.value = cur; extra.textContent = cur; el.appendChild(extra); el.value = cur;
+      }
+      return;
+    }
+    el.innerHTML = "";
+    var z = document.createElement("option"); z.value = ""; z.textContent = "انتخاب تخصص..."; el.appendChild(z);
+    SPECS.forEach(function(s){
+      var o = document.createElement("option"); o.value = s; o.textContent = s; el.appendChild(o);
+    });
+    if (cur){
+      if (!Array.prototype.some.call(el.options, function(o){ return o.value === cur; })){
+        var oc = document.createElement("option"); oc.value = cur; oc.textContent = cur; el.appendChild(oc);
+      }
+      el.value = cur;
+    }
+    el.dataset.v90spec = "1";
+    el.setAttribute("data-nocombo","1");
+  }
+  window.v90FillDoctorSpecialty = fillSpecialty;
+
+  function lockRepPerms(){
+    if (!ownOnly() || !window.state) return;
+    var id = me().id, user = uname();
+    (window.state.users || []).forEach(function(u){
+      if (!u) return;
+      if ((id && String(u.id) === String(id)) || (user && u.username === user)){
+        u.permissions = u.permissions || {};
+        ["ph_all_reps","doc_all_reps","ord_all_reps","fld_all_routes","fld_all_homes","hr_all_leaves","target_all_reps","rep_all_reports","live_all_reps","dash_all_reps"].forEach(function(k){ u.permissions[k] = false; });
+      }
+    });
+  }
+
+  function wrapNamed(name, keys){
+    var old = window[name];
+    if (typeof old !== "function" || old._v90own) return;
+    var w = function(){
+      if (!ownOnly() || !window.state) return old.apply(this, arguments);
+      var S = window.state, bak = {};
+      keys.forEach(function(k){ bak[k] = S[k]; S[k] = (S[k] || []).filter(isOwn); });
+      try { return old.apply(this, arguments); }
+      finally { keys.forEach(function(k){ S[k] = bak[k]; }); }
+    };
+    w._v90own = true;
+    window[name] = w;
+  }
+
+  function wrapPrivacy(){
+    wrapNamed("renderPharmaciesList", ["pharmacies"]);
+    wrapNamed("renderDoctorsList", ["doctors"]);
+    wrapNamed("renderOrdersList", ["orders"]);
+    wrapNamed("renderActivityLogTable", ["activityLog"]);
+    wrapNamed("renderActivityMapAndChart", ["activityLog"]);
+    wrapNamed("renderRepRoutesTable", ["repRoutes"]);
+    wrapNamed("renderRepHomesTable", ["repHomes"]);
+    wrapNamed("renderLeavesTable", ["leaves"]);
+    wrapNamed("renderMonthlyReportsTable", ["visits","orders"]);
+    wrapNamed("renderSalesTargetsTable", ["salesTargets"]);
+    wrapNamed("renderNotificationsTable", ["notifications"]);
+    wrapNamed("paintV84Dashboard", ["pharmacies","doctors","orders","visits"]);
+    var badges = window.updateNavBadges;
+    if (typeof badges === "function" && !badges._v90own){
+      var wb = function(){
+        if (!ownOnly() || !window.state) return badges.apply(this, arguments);
+        var S = window.state;
+        var ph = S.pharmacies, dc = S.doctors, od = S.orders, lv = S.leaves;
+        S.pharmacies = (ph||[]).filter(isOwn);
+        S.doctors = (dc||[]).filter(isOwn);
+        S.orders = (od||[]).filter(isOwn);
+        S.leaves = (lv||[]).filter(isOwn);
+        try { return badges.apply(this, arguments); }
+        finally { S.pharmacies = ph; S.doctors = dc; S.orders = od; S.leaves = lv; }
+      };
+      wb._v90own = true;
+      window.updateNavBadges = wb;
+    }
+  }
+
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[c];}); }
+  function paintRoutesClean(){
+    var search = $("v20RouteSearch");
+    if (search) search.value = "";
+    var body = $("tableRepRoutesBody");
+    if (!body) return;
+    var table = body.closest("table");
+    var head = table && table.querySelector("thead tr");
+    if (head) head.innerHTML = "<th>ردیف</th><th>نام نماینده</th><th>تاریخ</th><th>شروع</th><th>پایان</th><th>مسافت (متر)</th><th>توقف (دقیقه)</th><th>نقاط</th><th>وضعیت</th>";
+    var rows = (((window.state||{}).repRoutes)||[]).slice();
+    if (ownOnly()) rows = rows.filter(isOwn);
+    rows.sort(function(a,b){ return Number(b.endedAt||b.startedAt||0)-Number(a.endedAt||a.startedAt||0); });
+    var q = "";
+    body.innerHTML = rows.map(function(r,i){
+      return "<tr><td>"+(i+1)+"</td><td><strong>"+esc(r.repName||"—")+"</strong></td><td>"+esc(r.date||"—")+"</td><td>"+esc(r.startTime||"—")+"</td><td>"+esc(r.endTime||"—")+"</td><td>"+Math.round(r.distance||0)+"</td><td>"+Math.round((r.stopMs||0)/60000)+"</td><td>"+((r.points||[]).length||r.visited||0)+"</td><td>"+esc(r.status||"—")+"</td></tr>";
+    }).join("") || "<tr><td colspan='9'>مسیر ترددی ثبت نشده است.</td></tr>";
+    Array.prototype.forEach.call(body.rows, function(tr){ tr.style.display=""; tr.removeAttribute("data-v55done"); });
+  }
+  window.v90PaintRoutes = paintRoutesClean;
+
+  function stdButtons(root){
+    var scope = root || document;
+    var nodes = scope.querySelectorAll("button, .btn, a.btn");
+    Array.prototype.forEach.call(nodes, function(btn){
+      if (btn.dataset.v90std === "1") return;
+      var raw = String(btn.textContent || "").replace(/\s+/g, " ").trim();
+      if (!raw) return;
+      if (/حذف|delete/i.test(raw) || /btn-danger/.test(btn.className || "")){
+        btn.classList.add("btn", "btn-danger");
+        if (!/btn-sm/.test(btn.className) && btn.closest("td, .col-ops, .v72-ops, .v73-ops")) btn.classList.add("btn-sm");
+      } else if (/ویرایش|edit/i.test(raw)){
+        btn.classList.add("btn", "btn-outline", "btn-sm", "btn-std-edit");
+      } else if (/ذخیره|ثبت اطلاعات|ثبت و ذخیره|ثبت درخواست|ایجاد کاربر/.test(raw)){
+        btn.classList.add("btn", "btn-primary", "btn-std-save");
+      } else if (/پاک کردن|پاک‌کردن|پاک كردن/.test(raw)){
+        btn.classList.add("btn", "btn-outline", "btn-std-clear");
+      }
+      btn.dataset.v90std = "1";
+    });
+  }
+  window.v90StdButtons = stdButtons;
+
+  var V90_CHANGES = [
+    ["موبایل: صفحه سفید رفع شد؛ منوی همبرگری تب‌ها را نشان می‌دهد و نوار افقی در گوشی مخفی است","applied"],
+    ["تب پزشکان: فیلد تخصص با فهرست کامل تخصص‌های پزشکی پر شد","applied"],
+    ["پنل نماینده علمی فقط اطلاعات و فعالیت خودش را می‌بیند","applied"],
+    ["رصد تردد: لیست در ورود اول مرتب است و دیگر نیاز به پاک‌کردن جستجو نیست","applied"],
+    ["کلیدها یکسان شدند: حذف قرمز با سطل، ویرایش، ذخیره و پاک‌کردن استاندارد","applied"]
+  ];
+  function paintChanges(){
+    var host = $("v41ChangeHost");
+    if (!host) return;
+    if (host.dataset.v90ch === "1") return;
+    var html = V90_CHANGES.map(function(c, i){
+      return "<div class='v87-change-row' style='border:1px solid #cbd5e1;border-radius:8px;padding:8px;margin:6px 0;display:flex;justify-content:space-between;gap:10px;align-items:center'><div>"+(i+1)+". "+c[0]+"</div><div style='color:#059669;font-weight:700'>✅ اعمال شد</div></div>";
+    }).join("");
+    host.insertAdjacentHTML("afterbegin", html);
+    host.dataset.v90ch = "1";
+  }
+
+  if (window.switchTab && !window.switchTab._v90){
+    var sw = window.switchTab;
+    var wsw = function(id){
+      var r = sw.apply(this, arguments);
+      closeMenu();
+      if (id === "tab-rep-routes"){
+        setTimeout(paintRoutesClean, 40);
+        setTimeout(paintRoutesClean, 220);
+      }
+      if (id === "tab-doctors") setTimeout(fillSpecialty, 30);
+      if (id === "tab-changelog") setTimeout(paintChanges, 40);
+      setTimeout(stdButtons, 60);
+      return r;
+    };
+    wsw._v90 = true;
+    window.switchTab = wsw;
+  }
+
+  function boot(){
+    unveil();
+    bindHamburger();
+    unhideCore();
+    fillSpecialty();
+    lockRepPerms();
+    wrapPrivacy();
+    stdButtons();
+    var badge = $("crmBuildBadge");
+    if (badge) badge.textContent = "نسخه ۱۱.۹۰.۰";
+    setTimeout(function(){
+      unveil();
+      unhideCore();
+      wrapPrivacy();
+      if (document.getElementById("tab-rep-routes") && document.getElementById("tab-rep-routes").classList.contains("active")) paintRoutesClean();
+    }, 300);
+    setTimeout(unveil, 1200);
+  }
+  window.v90Boot = boot;
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function(){ setTimeout(boot, 80); });
+  else setTimeout(boot, 80);
+})();
+

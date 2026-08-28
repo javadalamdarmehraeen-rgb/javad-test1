@@ -1678,3 +1678,6 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 ## 11.89.0
 توقف wipe داروخانه، مسیر، موبایل.
 - [ ] push کاربر → health=11.89.0 و force main برای Render موبایل
+
+## نوبت ۱۰۸ — نسخه ۱۱.۹۰.۰ (۲۰۲۶-۰۸-۲۸)
+موبایل سفید/همبرگری، تخصص پزشک، حریم نماینده، رصد تردد یک‌باره، کلید استاندارد.
