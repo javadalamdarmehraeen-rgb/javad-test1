@@ -2,7 +2,7 @@
 /**
  * API نت‌افراز بدون Node — برنامه روی هاست اشتراکی مستقل از Render کار می‌کند.
  * ذخیره همیشه محلی است. ارسال به رندر با POST /api/state و GET/POST /api/sync?target=render.
- * اگر api-config.php خالی باشد، مقصد پیش‌فرض https://javad-test1.onrender.com است (فقط ارسال، نه کشیدن خودکار).
+ * دادهٔ زنده با رندر یکی است: GET/state و /api/sync?target=pull&mode=replace از رندر می‌کشند (خالی نمی‌نویسند).
  */
 header("X-Content-Type-Options: nosniff");
 $origin = isset($_SERVER["HTTP_ORIGIN"]) ? $_SERVER["HTTP_ORIGIN"] : "";
@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
-define("CRM_APP_VERSION", "11.96.0");
+define("CRM_APP_VERSION", "11.97.0");
 
 function cfg() {
   $f = __DIR__ . "/api-config.php";
@@ -155,8 +155,7 @@ function push_render($data) {
   );
 }
 function pull_render() {
-  $c = cfg();
-  $base = isset($c["baseUrl"]) ? rtrim(strval($c["baseUrl"]), "/") : "";
+  $base = render_base(true);
   if ($base === "") return null;
   $res = http_json("GET", $base . "/api/state", null);
   if (empty($res["ok"]) || empty($res["raw"])) return null;
@@ -256,25 +255,25 @@ if ($p === "sync" || strpos($p, "sync/") === 0) {
     ));
   }
   if ($target === "pull" || $target === "netafraz") {
+    $mode = isset($_GET["mode"]) ? strval($_GET["mode"]) : "";
     $remote = pull_render();
     if (!$remote) {
-      $base = render_base(false);
-      if ($base === "") send_json(array("status" => "error", "message" => "baseUrl not configured"), 400);
-      send_json(array("status" => "error", "message" => "render unavailable"), 502);
+      send_json(array("status" => "error", "message" => "render unavailable", "target" => render_base(true)), 502);
     }
     $remote = strip_sample($remote);
-    if ($local && too_empty($remote, $local)) {
+    if (hollow_state($remote) || ($local && too_empty($remote, $local))) {
       send_json(array("status" => "success", "ignored" => true, "reason" => "empty-rejected", "data" => $local));
     }
-    if ($local && is_array($local)) {
+    if ($mode === "replace" || !$local) {
+      $local = stamp_gen($remote);
+    } else {
       foreach (array("pharmacies","doctors","orders","users","products") as $k) {
         $local[$k] = merge_by_id(isset($local[$k])?$local[$k]:array(), isset($remote[$k])?$remote[$k]:array());
       }
-    } else {
-      $local = $remote;
+      $local = stamp_gen($local);
     }
     write_json($DATA, $local);
-    send_json(array("status" => "success", "message" => "pulled from render", "data" => $local));
+    send_json(array("status" => "success", "message" => $mode === "replace" ? "replaced from render" : "pulled from render", "data" => $local));
   }
   send_json(array("status" => "error", "message" => "invalid target", "target" => $target), 400);
 }
@@ -285,17 +284,10 @@ if (strpos($p, "state") === 0) {
     $remote = pull_render();
     if ($remote && is_array($remote)) {
       $remote = strip_sample($remote);
-      if ($local && too_empty($remote, $local)) {
-        send_json($local ? array("status" => "success", "data" => $local) : array("status" => "empty"));
+      if (!hollow_state($remote) && !($local && too_empty($remote, $local))) {
+        $local = stamp_gen($remote);
+        write_json($DATA, $local);
       }
-      if ($local && is_array($local)) {
-        foreach (array("pharmacies","doctors","orders","users","products") as $k) {
-          $local[$k] = merge_by_id(isset($local[$k])?$local[$k]:array(), isset($remote[$k])?$remote[$k]:array());
-        }
-      } else {
-        $local = $remote;
-      }
-      write_json($DATA, $local);
     }
     send_json($local ? array("status" => "success", "data" => $local) : array("status" => "empty"));
   }

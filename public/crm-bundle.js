@@ -19256,3 +19256,69 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   wrapPush();
   [80,400,1200].forEach(function(ms){ setTimeout(function(){ paintBadge(); addBtn(); wrapPush(); }, ms); });
 })();
+/* v11.97.0: با نسخه جدید، داده نت‌افراز از رندر جایگزین می‌شود (خالی نمی‌نویسد) */
+(function(){
+  "use strict";
+  window.v97CanonSync = true;
+  var BUILD = String(window.CRM_APP_VERSION || "11.97.0");
+  var KEY = "CRM_CANON_BUILD";
+  function faVer(v){
+    var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
+    return String(v||BUILD).replace(/[0-9]/g, function(d){ return map[d]; });
+  }
+  function paintBadge(){
+    var el = document.getElementById("crmBuildBadge");
+    if (el) el.textContent = "نسخه " + faVer(BUILD);
+  }
+  function isMirrorHost(){
+    var h = location.hostname || "";
+    var p = String((window.__CRM_RUNTIME || {}).platform || "");
+    if (p === "static" || p === "static-php") return true;
+    return /(^|\.)mehraeinpharma\.ir$|(^|\.)ndcohub\.ir$/.test(h);
+  }
+  function hollow(d){
+    if (!d || typeof d !== "object") return true;
+    return !(d.pharmacies||[]).length && !(d.doctors||[]).length && ((d.users||[]).length <= 1);
+  }
+  function adopt(){
+    if (!isMirrorHost()) return;
+    try {
+      if (sessionStorage.getItem("CRM_V97_RELOADED") === "1") return;
+      if (localStorage.getItem(KEY) === BUILD) return;
+    } catch (e) {}
+    var bar = document.getElementById("v97CanonBar");
+    if (!bar && document.body) {
+      bar = document.createElement("div");
+      bar.id = "v97CanonBar";
+      bar.style.cssText = "position:fixed;top:0;left:0;right:0;z-index:99999;background:#0f766e;color:#fff;padding:10px;text-align:center;font-family:Tahoma,Arial,sans-serif;font-size:14px";
+      bar.textContent = "در حال یکی‌کردن اطلاعات با رندر…";
+      document.body.appendChild(bar);
+    }
+    fetch("/api/sync?target=pull&mode=replace", { cache: "no-store", headers: { "X-CRM-Request": "1" } })
+      .catch(function(){ return null; })
+      .then(function(){ return fetch("/api/state?__v97=" + Date.now(), { cache: "no-store", headers: { "X-CRM-Request": "1" } }); })
+      .then(function(r){ return r && r.json ? r.json() : null; })
+      .then(function(j){
+        var data = j && j.data ? j.data : (j && j.status === "success" ? j : null);
+        if (!data || hollow(data) || (j && (j.status === "empty" || j.ignored))) {
+          try { localStorage.setItem(KEY, BUILD); } catch (e2) {}
+          if (bar) bar.remove();
+          return;
+        }
+        try {
+          localStorage.setItem("CRM_APP_STATE_V2", JSON.stringify(data));
+          localStorage.setItem(KEY, BUILD);
+          sessionStorage.setItem("CRM_V97_RELOADED", "1");
+        } catch (e3) {}
+        location.reload();
+      })
+      .catch(function(){
+        try { localStorage.setItem(KEY, BUILD); } catch (e4) {}
+        if (bar) bar.textContent = "الان به رندر وصل نشد؛ داده محلی ماند.";
+      });
+  }
+  paintBadge();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function(){ setTimeout(adopt, 40); paintBadge(); });
+  else setTimeout(adopt, 40);
+  setTimeout(paintBadge, 500);
+})();

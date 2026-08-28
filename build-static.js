@@ -18,6 +18,7 @@ function copyDir(src, dest) {
     const from = path.join(src, name);
     const to = path.join(dest, name);
     const st = fs.statSync(from);
+    if (name === "crm-netafraz-data.json" || name === "crm-netafraz-bulk.json") continue;
     if (st.isDirectory()) copyDir(from, to);
     else fs.copyFileSync(from, to);
   }
@@ -31,7 +32,8 @@ if (!fs.existsSync(SRC)) {
 fs.rmSync(DEST, { recursive: true, force: true });
 copyDir(SRC, DEST);
 
-const base = String(process.env.BASE_URL || process.env.PUBLIC_BASE_URL || "").replace(/\/$/, "");
+const DEFAULT_RENDER = "https://javad-test1.onrender.com";
+const base = String(process.env.BASE_URL || process.env.PUBLIC_BASE_URL || DEFAULT_RENDER).replace(/\/$/, "");
 const extra = String(process.env.CRM_HUBS || "")
   .split(",")
   .map(function (s) { return s.trim(); })
@@ -81,5 +83,5 @@ const readme = [
 fs.writeFileSync(path.join(DEST, "README-NETAFRAZ.txt"), readme, "utf8");
 
 console.log("✅ خروجی استاتیک در static-build آماده است.");
-console.log("   platform=static  baseUrl=" + (base || "(خالی — نت‌افراز کاملاً مستقل)"));
+console.log("   platform=static  baseUrl=" + (base || DEFAULT_RENDER));
 console.log("   کل پوشه را در public_html آپلود کنید.");
