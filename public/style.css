@@ -2512,3 +2512,78 @@ html, body { overflow-x: clip; }
 @media (max-width: 900px) {
   body.v90-drawer-open { overflow: hidden; }
 }
+
+/* v11.91.0: صفحه موبایل سفید نماند + فاصله فشرده سراسری + تخصص بومی */
+html.crm-booting body {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+.main-content {
+  margin: 0.7rem auto 0;
+  padding: 0 0.85rem 2rem;
+}
+.card {
+  padding: 10px 12px;
+  margin-bottom: 10px;
+}
+.card-header {
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+}
+.form-grid { gap: 8px !important; }
+.stats-grid { gap: 8px; margin-bottom: 10px; }
+.stat-card { padding: 10px 12px; }
+#tab-dashboard .card,
+#tab-define-routes .card,
+#tab-pharmacies .card,
+#tab-doctors .card,
+#tab-orders .card,
+#tab-rep-routes .card {
+  padding: 10px 12px;
+  margin-bottom: 8px;
+}
+#v84DashFilters {
+  gap: 6px !important;
+  margin-bottom: 8px !important;
+}
+#v84DashFilters .form-group { gap: 2px; }
+.v84-kpi, .v84-charts { gap: 6px !important; margin-bottom: 8px !important; }
+#dashboardWidgetManager { margin-bottom: 8px !important; padding: 8px 10px !important; }
+#tab-dashboard #map-dashboard-overview,
+#tab-dashboard #map-dashboard-overview.map-container-large { height: 240px !important; }
+.tab-pane.active {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  min-height: 40vh;
+}
+#doctorSpecialty { min-height: 42px; }
+
+@media (max-width: 900px) {
+  html.crm-booting body,
+  body {
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  .app-nav { display: none !important; }
+  .main-content {
+    display: block !important;
+    visibility: visible !important;
+    position: relative;
+    z-index: 2;
+    margin-top: 8px;
+    padding: 0 10px 24px;
+    min-height: 60vh;
+  }
+  .tab-pane.active {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-height: 60vh;
+    background: #f8fafc;
+  }
+  .side-menu-overlay.active { pointer-events: auto; }
+  body.v90-drawer-open .main-content { pointer-events: none; }
+  #v84DashFilters { grid-template-columns: 1fr 1fr !important; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+}
