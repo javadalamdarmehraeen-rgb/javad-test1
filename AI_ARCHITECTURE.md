@@ -1235,3 +1235,66 @@ Then change only what is requested.
 
 ## معماری دروازه تحویل — نوبت ۶۲ (2026-08-22)
 دروازه تحویل استاندارد شد: قبل از هر ZIP، سرور واقعی spawn و تست app-smoke (health/HTML/اسکریپت‌ها/UI حیاتی + round-trip داده + VAPID) باید پاس شود؛ این دروازه در قانون ۹۲ AI_RULES اجباری است و نتیجه‌اش در AI_ACCEPTANCE_CHECKLIST همان نوبت ثبت می‌شود.
+
+## معماری تحویل ZIP — نوبت ۸۶ (2026-08-26)
+فایل تحویلی باید PKZIP سازگار با ویندوز باشد (`create_system=0`). پیش‌نمایش خام `.zip`
+در Arena فرمت معتبر کاربر نیست. دروازه دیداری کاربر صفحه HTML پورت 8000 است که فایل
+را با `Content-Type: application/zip` و `Content-Disposition: attachment` می‌دهد.
+
+
+## لایه v11.68
+- `#v68SalesTargetOps` / `#v68DistTargetOps` جدا از host گزارش‌ها.
+- `gapBeforeMm` / `gapAfterMm` / `rowNo` در formFieldMeta.
+
+## 11.69.0 / نوبت ۸۹
+سرور منبع حقیقت است؛ حذف با _deletedIds روی ادغام اعمال می‌شود؛ رکوردهای هم‌نام ادغام می‌شوند؛ poll سبک ۲۵ثانیه؛ ویرایش/حذف تارگت و فاصله/سطر زنده.
+
+## 11.70.0 / نوبت ۹۰
+حلقه cache-reset قطع شد. سرور فقط اطلاعات همین دستگاه را نگه می‌دارد (_soloOnly / replace).
+
+## 11.71.0 / نوبت ۹۱
+اسکریپت یک‌بار؛ ۴۰۴ بدون login.html؛ سرور فقط داده همین دستگاه.
+
+## لایه v11.72
+- `bootServerFirst` / `adoptServerExact` / `paintV72TargetOps`
+- `#v72DistGrandBox` + `#v72DistBoxes` + `distAchievedQty`
+- hide `#v68SalesTargetOps` / `.v67-ops-table`
+
+## لایه v11.73
+- `bindLiveWindowState` / `__CRM_GET_STATE` / setter درجا
+- `__CRM_UNVEIL` بعد از `adoptExact` / `__v73boot`
+- `saveDistTargetsV73` / `matchDist` / `parsePeriod` / `killOldOpsHosts`
+
+## لایه v11.74
+- `MASHATEB_CODE_MAP` / `mashatebDbCode` / `distProductDbCode` / `isMappedDist`
+- distSchema mashateb: qty=10, giftQty=11, pharmacy=9
+
+## لایه v11.75
+- applyDesignerNow / applyPaintedMeta
+- distLastDate mashateb=2
+- db-ph-edit / db-ph-del / db-inv-edit / db-inv-del
+- locationDup نام+استان+شهر+منطقه+آدرس
+
+## 11.80.0
+ملاک فقط سرور؛ قفل ورود داده نسخه قبلی؛ مصرف‌کننده جدید = فعلی × (۱+افزایش).
+
+## 11.81.0
+پاکسازی قطعی داده سیستم قبلی؛ ملاک فقط سرور نسل ۱۱.۸۱؛ مصرف‌کننده جدید = فعلی × افزایش.
+
+## 11.82.0
+اعمال قطعی شماره ترتیب و اندازه طراح ستون‌ها روی فرم/لیست واقعی.
+
+## 11.83.0
+توقف پرش تایپ در داروخانه/پزشک؛ کاشی نقشه از سرور؛ ورود پایدار موبایل ایران.
+
+## 11.84.0
+داشبورد تحلیلی زنده با فیلتر؛ بدون پرش تایپ؛ ترتیب سفارشات پایدار.
+
+## 11.85.0
+یک ستون عملیات مسیر؛ جستجو و همه جغرافیا؛ داشبورد خوانا.
+
+## 11.89.0
+هرگز داروخانه کاربر پاک نشود؛ مسیر قابل کلیک؛ نسخه یکسان موبایل/ویندوز.
+
+## نوبت ۱۰۸ — نسخه ۱۱.۹۰.۰ (۲۰۲۶-۰۸-۲۸)
+موبایل سفید/همبرگری، تخصص پزشک، حریم نماینده، رصد تردد یک‌باره، کلید استاندارد.
