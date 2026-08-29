@@ -1001,3 +1001,7 @@ CLEAN_EXTRA_FILES.bat و بعد PUSH_GITHUB_CLEAN.bat را اجرا کن.
 ## تحویل نوبت ۱۲۲ — نسخه ۱۲.۰۴.۰: پوشه data برای داده زنده
 
 crm-live-data.json در ریشه static-build نیست. در پوشه data ساخته می‌شود تا با آپلود JS پاک نشود. PHP اگر نباشد خودش می‌سازد.
+
+## تحویل نوبت ۱۲۳ — نسخه ۱۲.۰۵.۰: static-build فقط فایل + پر کردن از رندر
+
+static-build بدون پوشه است. اگر crm-live-data خالی باشد PHP از رندر پر می‌کند. npm run build-static در دستور اصلی است.
