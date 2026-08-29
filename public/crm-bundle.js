@@ -19270,12 +19270,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     var el = document.getElementById("crmBuildBadge");
     if (el) el.textContent = "نسخه " + faVer(BUILD);
   }
-  function isMirrorHost(){
-    var h = location.hostname || "";
-    var p = String((window.__CRM_RUNTIME || {}).platform || "");
-    if (p === "static" || p === "static-php") return true;
-    return /(^|\.)mehraeinpharma\.ir$|(^|\.)ndcohub\.ir$/.test(h);
-  }
+  function isMirrorHost(){ return false; /* v11.99: boot never waits on Render */ }
   function hollow(d){
     if (!d || typeof d !== "object") return true;
     return !(d.pharmacies||[]).length && !(d.doctors||[]).length && ((d.users||[]).length <= 1);
@@ -19351,4 +19346,91 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   paintBadge();
   [30,80,200,500,900,1600,2500].forEach(function(ms){ setTimeout(paintBadge, ms); });
+})();
+/* v11.99.0: نت‌افراز مستقل و سریع + همگام پس‌زمینه + نادیده گرفتن فایل قدیمی */
+(function(){
+  "use strict";
+  window.v99FastIndependent = true;
+  function ver(){ return String(window.CRM_APP_VERSION || "11.99.0"); }
+  function faVer(v){
+    var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
+    return String(v||"11.99.0").replace(/[0-9]/g, function(d){ return map[d]; });
+  }
+  function paintBadge(){
+    var el = document.getElementById("crmBuildBadge");
+    if (el) el.textContent = "نسخه " + faVer(ver());
+  }
+  function arrKeys(){ return ["pharmacies","doctors","orders","reps","products","visits","hospitals","leaves","notifications","salesTargets","repHomes","repRoutes","activityLog","users"]; }
+  function hollow(d){
+    if (!d || typeof d !== "object") return true;
+    return !(d.pharmacies||[]).length && !(d.doctors||[]).length && ((d.users||[]).length <= 1);
+  }
+  function mergeArr(local, remote){
+    var map = {}, out = [];
+    function put(r){
+      if (!r || typeof r !== "object") return;
+      var id = r.id != null ? String(r.id) : (r.username ? String(r.username) : "");
+      if (!id) { out.push(r); return; }
+      if (!map[id]) { map[id] = r; out.push(r); return; }
+      var lt = Number(map[id].updatedAt || map[id]._lastSavedAt || 0);
+      var rt = Number(r.updatedAt || r._lastSavedAt || 0);
+      if (rt >= lt) {
+        var i = out.indexOf(map[id]);
+        if (i >= 0) out[i] = r;
+        map[id] = r;
+      }
+    }
+    (local||[]).forEach(put);
+    (remote||[]).forEach(put);
+    return out;
+  }
+  function applyPeer(remote){
+    if (hollow(remote)) return false;
+    var st = window.state;
+    if (!st || typeof st !== "object") return false;
+    arrKeys().forEach(function(k){ if (Array.isArray(remote[k])) st[k] = mergeArr(st[k], remote[k]); });
+    try {
+      if (typeof saveState === "function") saveState(false);
+      else if (typeof window.saveState === "function") window.saveState(false);
+    } catch (eS) {}
+    return true;
+  }
+  function pullPeers(){
+    var orig = window.__CRM_ORIG_FETCH || window.fetch;
+    var list = [];
+    try { if (typeof window.v99Peers === "function") list = window.v99Peers() || []; } catch (eP) {}
+    if (!list.length) {
+      try {
+        var rt = window.__CRM_RUNTIME || {};
+        if (rt.baseUrl) list.push(String(rt.baseUrl));
+        (rt.hubs || []).forEach(function(h){ if (h) list.push(String(h)); });
+      } catch (eR) {}
+    }
+    var seen = {};
+    list.forEach(function(base){
+      try {
+        var u = new URL(String(base), location.origin);
+        if (u.origin === location.origin) return;
+        if (seen[u.origin]) return;
+        seen[u.origin] = 1;
+        var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
+        var t = setTimeout(function(){ try { if (ctrl) ctrl.abort(); } catch (eA) {} }, 4000);
+        orig(u.origin + "/api/state", { cache: "no-store", mode: "cors", headers: { "X-CRM-Request": "1" }, signal: ctrl ? ctrl.signal : undefined })
+          .then(function(r){ clearTimeout(t); return r && r.ok ? r.json() : null; })
+          .then(function(j){
+            var d = j && j.data ? j.data : j;
+            applyPeer(d);
+          })
+          .catch(function(){ clearTimeout(t); });
+      } catch (eF) {}
+    });
+  }
+  function bgSync(){
+    try { pullPeers(); } catch (e1) {}
+    try { if (typeof window.crmPushStateToServer === "function") window.crmPushStateToServer(); } catch (e2) {}
+  }
+  paintBadge();
+  [40,200,800].forEach(function(ms){ setTimeout(paintBadge, ms); });
+  setTimeout(bgSync, 2500);
+  setTimeout(bgSync, 12000);
 })();

@@ -46,7 +46,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "11.98.0";
+const CRM_APP_VERSION = "11.99.0";
 try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
@@ -106,6 +106,19 @@ function loadState() {
       state = JSON.parse(saved);
       if (!state || typeof state !== "object") throw new Error("invalid current state");
       cleanupObsoleteAutoBackups();
+      (function v99DropOldProgramFiles(){
+        try {
+          var host = (typeof location !== "undefined" && location.hostname) ? String(location.hostname) : "";
+          if (!/(^|\.)mehraeinpharma\.ir$|(^|\.)ndcohub\.ir$/.test(host)) return;
+          if (String(state._uiBuild || "") === String(CRM_APP_VERSION)) return;
+          try { localStorage.setItem("CRM_APP_STATE_OLDFILE_ARCHIVE_" + Date.now(), saved); } catch (eA) {}
+          state = JSON.parse(JSON.stringify(DEFAULT_INITIAL_DATA));
+          state.users = (state.users || []).filter(function (u) { return u && (u.username === "admin" || /مدیر سیستم/.test(String(u.role || u.fullName || ""))); });
+          ["pharmacies","doctors","orders","reps","activityLog","repHomes","repRoutes","leaves","notifications","salesTargets","visits","hospitals"].forEach(function (k) { state[k] = []; });
+          state._uiBuild = CRM_APP_VERSION;
+          state._freshFromOldFiles = true;
+        } catch (e99) {}
+      })();
     } catch (err) {
       try { localStorage.setItem("CRM_APP_STATE_CORRUPT_ARCHIVE_" + Date.now(), saved); } catch (e) {}
       state = { settings: {}, users: [], pharmacies: [], doctors: [], orders: [], products: [], _stateLoadError: true };
@@ -119,6 +132,7 @@ function loadState() {
       state._schemaVersion = "11.81.0";
     }
     (function recoverWipedUserData(){
+      if (state && state._freshFromOldFiles) return;
       var keys=["pharmacies","doctors","orders"];
       var sample={"ph-1":1,"ph-2":1,"ph-3":1,"doc-1":1,"doc-2":1,"ord-1":1};
       keys.forEach(function(arr){
@@ -185,6 +199,7 @@ function loadState() {
 function saveState(triggerAutoBackup = true) {
   // وضعیت جاری مستقیماً ذخیره می‌شود؛ هیچ rolling backup خودکاری ساخته نمی‌شود.
   state._lastSavedAt = Date.now();
+  state._uiBuild = CRM_APP_VERSION;
   localStorage.setItem(STORAGE_KEY, serializeStateForLocalStorage(state));
   if (triggerAutoBackup && window.__CRM_BULK_READY !== false && state.settings && state.settings.autoBackupEnabled) {
     performAutoBackup();
@@ -3097,7 +3112,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.98.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=11.99.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
