@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
-define("CRM_APP_VERSION", "12.03.0");
+define("CRM_APP_VERSION", "12.04.0");
 
 function cfg() {
   $jf = __DIR__ . "/api-config.json";
@@ -54,11 +54,17 @@ function read_json($file) {
   $j = json_decode($raw, true);
   return is_array($j) ? $j : null;
 }
+function ensure_dir($file) {
+  $d = dirname($file);
+  if ($d && !is_dir($d)) @mkdir($d, 0775, true);
+}
 function write_json($file, $data) {
+  ensure_dir($file);
+  $json = json_encode($data, JSON_UNESCAPED_UNICODE);
   $tmp = $file . ".tmp";
-  $ok = @file_put_contents($tmp, json_encode($data, JSON_UNESCAPED_UNICODE), LOCK_EX);
-  if ($ok === false) return false;
-  return @rename($tmp, $file);
+  $ok = @file_put_contents($tmp, $json, LOCK_EX);
+  if ($ok !== false && @rename($tmp, $file)) return true;
+  return @file_put_contents($file, $json, LOCK_EX) !== false;
 }
 function send_json($arr, $code = 200) {
   http_response_code($code);
@@ -178,9 +184,16 @@ function pull_render() {
   return $j;
 }
 
-$DATA = __DIR__ . "/crm-live-data.json";
-$BULK = __DIR__ . "/crm-live-bulk.json";
+$DATA_DIR = __DIR__ . "/data";
+if (!is_dir($DATA_DIR)) @mkdir($DATA_DIR, 0775, true);
+$DATA = $DATA_DIR . "/crm-live-data.json";
+$BULK = $DATA_DIR . "/crm-live-bulk.json";
+/* crm-live-data.json — اگر نصب قدیمی در ریشه بود همان خوانده می‌شود */
+if (!is_file($DATA) && is_file(__DIR__ . "/crm-live-data.json")) $DATA = __DIR__ . "/crm-live-data.json";
+if (!is_file($BULK) && is_file(__DIR__ . "/crm-live-bulk.json")) $BULK = __DIR__ . "/crm-live-bulk.json";
 /* crm-netafraz-data.json فایل قدیمی است و دیگر خوانده نمی‌شود */
+if (!is_file($DATA)) @file_put_contents($DATA, "{}", LOCK_EX);
+if (!is_file($BULK)) @file_put_contents($BULK, "{}", LOCK_EX);
 $p = path_info();
 $method = $_SERVER["REQUEST_METHOD"];
 

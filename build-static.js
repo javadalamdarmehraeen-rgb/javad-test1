@@ -92,12 +92,19 @@ const readme = [
 ].join("\n");
 fs.writeFileSync(path.join(DEST, "README-NETAFRAZ.txt"), readme, "utf8");
 
+const dataDir = path.join(DEST, "data");
+fs.mkdirSync(dataDir, { recursive: true });
+if (!fs.existsSync(path.join(dataDir, "crm-live-data.json"))) {
+  fs.writeFileSync(path.join(dataDir, "crm-live-data.json"), "{}\n", "utf8");
+}
+if (!fs.existsSync(path.join(dataDir, "crm-live-bulk.json"))) {
+  fs.writeFileSync(path.join(dataDir, "crm-live-bulk.json"), "{}\n", "utf8");
+}
 fs.writeFileSync(path.join(DEST, "KHANAN-APLOAD.txt"), [
-  "روی هاست این فایل‌ها را حذف یا جایگزین نکنید:",
-  "  crm-live-data.json",
-  "  crm-live-bulk.json",
-  "اگر کل public_html را خالی کنید، داده ثبت‌شده نت‌افراز پاک می‌شود.",
-  "فقط فایل‌های برنامه (js/css/html/php) را جایگزین کنید.",
+  "داده زنده در پوشه data است (crm-live-data.json).",
+  "نصب اول: پوشه data را هم آپلود کنید.",
+  "آپلودهای بعدی: پوشه data را جایگزین نکنید تا داروخانه پاک نشود.",
+  "ریشه static-build فایل crm-live-data.json ندارد تا با JS قاطی نشود.",
   ""
 ].join("\n"), "utf8");
 console.log("✅ خروجی استاتیک در static-build آماده است.");

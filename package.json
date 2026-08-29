@@ -1,6 +1,6 @@
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "12.03.0",
+  "version": "12.04.0",
   "description": "سیستم جامع مدیریت و ویزیت علمی، داروخانه‌ها، پزشکان و سفارشات (CRM / PWA) هماهنگ با Render و Neon",
   "main": "server.js",
   "engines": {
