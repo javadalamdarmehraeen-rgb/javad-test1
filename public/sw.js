@@ -1,4 +1,4 @@
-const BUILD = "11.98.0";
+const BUILD = "11.99.0";
 const CACHE = "crm-static-v" + BUILD;
 
 async function purgeEveryCache() {
@@ -66,6 +66,7 @@ function fallbackResponse(request) {
 self.addEventListener("fetch", function (event) {
   const request = event.request;
   if (request.method !== "GET") return;
+  if (request.mode === "navigate") return;
   var url;
   try { url = new URL(request.url); } catch (e) { return; }
   if (url.origin !== self.location.origin) return;

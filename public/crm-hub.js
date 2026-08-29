@@ -1,4 +1,4 @@
-/* v11.95.0: نت‌افراز مستقل — فقط origin مگر BASE_URL/hubs صریح */
+/* v11.99.0: نت‌افراز مستقل و سریع — GET فقط origin؛ همگام پس‌زمینه بدون توقف UI */
 (function () {
   "use strict";
   var ORIGIN = location.origin;
@@ -6,7 +6,6 @@
   window.__CRM_ORIG_FETCH = orig;
   window.v92HubFetch = true;
   var skipOriginApi = false;
-  var originChecked = false;
 
   function runtime() {
     return window.__CRM_RUNTIME || {};
@@ -22,23 +21,25 @@
     (rt.hubs || []).forEach(function (h) { if (h) list.push(String(h)); });
     return list;
   }
-  function hubs() {
+  function peers() {
     var s = {}, o = [];
     function add(x) {
       try {
         var u = new URL(x, ORIGIN);
         if (location.protocol === "https:" && u.protocol === "http:") return;
+        if (u.origin === ORIGIN) return;
         if (!s[u.origin]) { s[u.origin] = 1; o.push(u.origin); }
       } catch (e) {}
     }
-    if (!skipOriginApi) add(ORIGIN);
     envHubs().forEach(add);
-    /* v11.95: هرگز هاب پیش‌فرض رندر را به نت‌افراز وصل نکن — فقط BASE_URL/hubs صریح */
-    if (!o.length) add(ORIGIN);
     return o;
+  }
+  function hubs() {
+    return skipOriginApi ? [] : [ORIGIN];
   }
   window.v95OriginOnly = true;
   window.crmHubList = hubs;
+  window.v99Peers = peers;
 
   function jsonResp(obj, status) {
     status = status || 200;
@@ -50,10 +51,10 @@
   function fakeFor(path, method) {
     method = method || "GET";
     if (/health|ping|healthz/.test(path)) {
-      return jsonResp({ ok: true, status: "healthy", platform: "static-local", version: (window.CRM_APP_VERSION || "11.98.0"), offline: true });
+      return jsonResp({ ok: true, status: "healthy", platform: "static-local", version: (window.CRM_APP_VERSION || "11.99.0"), offline: true });
     }
     if (/runtime-config/.test(path)) {
-      return jsonResp({ platform: runtime().platform || "static", baseUrl: runtime().baseUrl || "", hubs: runtime().hubs || [], version: "11.98.0" });
+      return jsonResp({ platform: runtime().platform || "static", baseUrl: runtime().baseUrl || "", hubs: runtime().hubs || [], version: "11.99.0" });
     }
     if (/backup\/status/.test(path)) {
       return jsonResp({ status: "ok", cloud: false, local: true, platform: "static-local" });
@@ -71,8 +72,9 @@
     return jsonResp({ status: "empty" });
   }
 
+  var LEGACY_TIMEOUT = 12000; /* live GET uses 4000; peers fire-and-forget */
   function fetchTimeout(url, opts, ms) {
-    ms = ms || 12000;
+    ms = ms || 4000;
     var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
     var timer = setTimeout(function () { try { if (ctrl) ctrl.abort(); } catch (e) {} }, ms);
     var o = Object.assign({}, opts || {});
@@ -109,43 +111,33 @@
     opts = opts || {};
     var path = pathOf(url);
     var method = String(opts.method || "GET").toUpperCase();
-    var bases = hubs();
     function hdrs(extra) {
       return Object.assign({ "X-CRM-Request": "1" }, opts.headers || {}, extra || {});
     }
-    function markOriginFail(base, r) {
-      if (base === ORIGIN && r && (r.status === 404 || r.status === 405)) skipOriginApi = true;
-    }
-    function one(i) {
-      if (i >= bases.length) return Promise.resolve(fakeFor(path, method));
-      var base = bases[i];
+    if (method === "GET" || method === "HEAD" || hollowPost(opts)) {
+      if (skipOriginApi) return Promise.resolve(fakeFor(path, method));
       var o = Object.assign({}, opts, { headers: hdrs() });
-      if (base !== ORIGIN) o.mode = "cors";
-      return retry(function () { return fetchTimeout(base + path, o, 10000); }, 1)
-        .then(function (r) {
-          markOriginFail(base, r);
-          if (r && r.ok) return r;
-          return one(i + 1);
-        })
-        .catch(function () {
-          if (base === ORIGIN) skipOriginApi = true;
-          return one(i + 1);
-        });
+      return fetchTimeout(ORIGIN + path, o, 4000).then(function (r) {
+        if (r && (r.status === 404 || r.status === 405)) skipOriginApi = true;
+        if (r && r.ok) return r;
+        return fakeFor(path, method);
+      }).catch(function () {
+        skipOriginApi = true;
+        return fakeFor(path, method);
+      });
     }
-    if (method === "GET" || method === "HEAD") return one(0);
-    if (hollowPost(opts)) return one(0);
-    var posts = bases.map(function (base) {
-      var o = Object.assign({}, opts, { headers: hdrs({ "X-CRM-Hub-Sync": "1" }) });
-      if (base !== ORIGIN) o.mode = "cors";
-      return retry(function () { return fetchTimeout(base + path, o, 12000); }, 1)
-        .then(function (r) { markOriginFail(base, r); return r; })
-        .catch(function () { if (base === ORIGIN) skipOriginApi = true; return null; });
+    var originReq = Object.assign({}, opts, { headers: hdrs({ "X-CRM-Hub-Sync": "1" }) });
+    var originP = skipOriginApi
+      ? Promise.resolve(null)
+      : fetchTimeout(ORIGIN + path, originReq, 4000).then(function (r) {
+          if (r && (r.status === 404 || r.status === 405)) skipOriginApi = true;
+          return r && r.ok ? r : null;
+        }).catch(function () { skipOriginApi = true; return null; });
+    peers().forEach(function (base) {
+      var po = Object.assign({}, opts, { headers: hdrs({ "X-CRM-Hub-Sync": "1" }), mode: "cors" });
+      fetchTimeout(base + path, po, 4000).catch(function () {});
     });
-    return Promise.all(posts).then(function (rs) {
-      var ok = null;
-      rs.forEach(function (r) { if (!ok && r && r.ok) ok = r; });
-      return ok || fakeFor(path, method);
-    });
+    return originP.then(function (r) { return r || fakeFor(path, method); });
   }
 
   window.fetch = function (url, opts) {
@@ -155,12 +147,12 @@
   window.v92HubFetch = true;
   window.v93HubFetch = hubFetch;
   window.v94StaticLocal = true;
+  window.v99FastLocal = true;
 
   if (!isStaticRuntime()) {
     orig("/api/runtime-config", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (c) {
       if (!c || typeof c !== "object") return;
       window.__CRM_RUNTIME = Object.assign({}, runtime(), c);
-      window.CRM_HUBS = hubs();
     }).catch(function () {});
   }
 })();

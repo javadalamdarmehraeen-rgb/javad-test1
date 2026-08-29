@@ -2,7 +2,8 @@
 /**
  * API نت‌افراز بدون Node — برنامه روی هاست اشتراکی مستقل از Render کار می‌کند.
  * ذخیره همیشه محلی است. ارسال به رندر با POST /api/state و GET/POST /api/sync?target=render.
- * دادهٔ زنده با رندر یکی است: GET/state و /api/sync?target=pull&mode=replace از رندر می‌کشند (خالی نمی‌نویسند).
+ * GET /api/state فقط فایل محلی crm-live-data.json را می‌خواند و منتظر رندر نمی‌ماند.
+ * POST فوری پاسخ می‌دهد (queued) و بعد در پس‌زمینه به رندر می‌فرستد.
  */
 header("X-Content-Type-Options: nosniff");
 $origin = isset($_SERVER["HTTP_ORIGIN"]) ? $_SERVER["HTTP_ORIGIN"] : "";
@@ -18,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
-define("CRM_APP_VERSION", "11.98.0");
+define("CRM_APP_VERSION", "11.99.0");
 
 function cfg() {
   $jf = __DIR__ . "/api-config.json";
@@ -34,7 +35,7 @@ function cfg() {
       if (is_array($c)) return $c;
     }
   }
-  return array("baseUrl" => CRM_DEFAULT_RENDER, "hubs" => array(CRM_DEFAULT_RENDER));
+  return array("baseUrl" => "", "hubs" => array());
 }
 function path_info() {
   if (!empty($_GET["path"])) return trim($_GET["path"], "/");
@@ -105,8 +106,8 @@ function http_json($method, $url, $body = null) {
   if (function_exists("curl_init")) {
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 8);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 14);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 2);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 4);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
@@ -126,7 +127,7 @@ function http_json($method, $url, $body = null) {
     "http" => array(
       "method" => strtoupper($method),
       "header" => $hdr,
-      "timeout" => 14,
+      "timeout" => 4,
       "ignore_errors" => true
     ),
     "ssl" => array("verify_peer" => true, "verify_peer_name" => true)
@@ -173,8 +174,9 @@ function pull_render() {
   return $j;
 }
 
-$DATA = __DIR__ . "/crm-netafraz-data.json";
-$BULK = __DIR__ . "/crm-netafraz-bulk.json";
+$DATA = __DIR__ . "/crm-live-data.json";
+$BULK = __DIR__ . "/crm-live-bulk.json";
+/* crm-netafraz-data.json فایل قدیمی است و دیگر خوانده نمی‌شود */
 $p = path_info();
 $method = $_SERVER["REQUEST_METHOD"];
 
@@ -289,14 +291,6 @@ if ($p === "sync" || strpos($p, "sync/") === 0) {
 if (strpos($p, "state") === 0) {
   if ($method === "GET") {
     $local = read_json($DATA);
-    $remote = pull_render();
-    if ($remote && is_array($remote)) {
-      $remote = strip_sample($remote);
-      if (!hollow_state($remote) && !($local && too_empty($remote, $local))) {
-        $local = stamp_gen($remote);
-        write_json($DATA, $local);
-      }
-    }
     send_json($local ? array("status" => "success", "data" => $local) : array("status" => "empty"));
   }
   if ($method === "POST") {
@@ -308,8 +302,17 @@ if (strpos($p, "state") === 0) {
       send_json(array("status" => "success", "data" => $existing, "ignored" => true, "reason" => "empty-rejected"));
     }
     write_json($DATA, $incoming);
-    $sync = push_render($incoming);
-    send_json(array("status" => "success", "data" => $incoming, "sync" => $sync));
+    header("Content-Type: application/json; charset=utf-8");
+    header("Cache-Control: no-store");
+    echo json_encode(array("status" => "success", "data" => $incoming, "sync" => array("queued" => true)), JSON_UNESCAPED_UNICODE);
+    if (function_exists("fastcgi_finish_request")) {
+      fastcgi_finish_request();
+    } else {
+      if (function_exists("ob_end_flush")) { @ob_end_flush(); }
+      @flush();
+    }
+    push_render($incoming);
+    exit;
   }
 }
 if (strpos($p, "bulk") === 0) {
