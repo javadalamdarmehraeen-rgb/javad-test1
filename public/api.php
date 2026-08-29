@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
-define("CRM_APP_VERSION", "11.99.0");
+define("CRM_APP_VERSION", "12.00.0");
 
 function cfg() {
   $jf = __DIR__ . "/api-config.json";

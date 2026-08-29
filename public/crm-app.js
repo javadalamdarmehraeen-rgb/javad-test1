@@ -46,7 +46,14 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "11.99.0";
+const CRM_APP_VERSION = "12.00.0";
+window.CRM_APP_VERSION = CRM_APP_VERSION;
+function v12CanonicalCompany(name) {
+  var s = String(name || "").trim();
+  if (!s || /پخش\s*دارو|شبکه\s*درمان\s*نماینده|سیستم مدیریت ویزیت علمی/.test(s)) return "طنین طب طاها";
+  return s;
+}
+window.v12TahaName = true;
 try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
@@ -177,9 +184,7 @@ function loadState() {
     try {
       if (!state.settings) state.settings = {};
       var old = String(state.settings.companyName || "");
-      if (!old || old === "شرکت پخش دارو و شبکه درمان نماینده علمی" || old === "سیستم مدیریت ویزیت علمی و شبکه درمان") {
-        state.settings.companyName = "طنین طب طاها";
-      }
+      state.settings.companyName = v12CanonicalCompany(old);
     } catch (e95c) {}
   })();
   if (!state.formFieldMeta) state.formFieldMeta = {};
@@ -208,9 +213,10 @@ function saveState(triggerAutoBackup = true) {
 
 function applyGeneralSettingsToUI() {
   if (!state.settings) return;
+  state.settings.companyName = v12CanonicalCompany(state.settings.companyName);
   const compHeader = document.getElementById("headerCompanyNameDisplay");
-  if (compHeader && state.settings.companyName) {
-    compHeader.textContent = state.settings.companyName;
+  if (compHeader) {
+    compHeader.textContent = state.settings.companyName || "طنین طب طاها";
   }
 }
 
@@ -3112,7 +3118,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=11.99.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=12.00.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;

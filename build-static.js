@@ -57,12 +57,13 @@ fs.writeFileSync(path.join(DEST, "api-config.php"), apiCfg, "utf8");
 fs.writeFileSync(path.join(DEST, "api-config.json"), JSON.stringify({ baseUrl: base, hubs: hubs }, null, 2), "utf8");
 
 const htaccess = [
-  "DirectoryIndex login.html index.html",
+  "DirectoryIndex index.php login.html index.html",
   "<IfModule mod_rewrite.c>",
   "RewriteEngine On",
-  "RewriteRule ^panel/?$ /index.html [L]",
-  "RewriteRule ^login/?$ /login.html [L]",
-  "RewriteRule ^api/(.*)$ api.php?path=$1 [QSA,L]",
+  "RewriteBase /",
+  "RewriteRule ^panel/?$ index.html [L,QSA]",
+  "RewriteRule ^login/?$ login.html [L,QSA]",
+  "RewriteRule ^api/?(.*)$ api.php?path=$1 [QSA,L]",
   "</IfModule>",
   ""
 ].join("\n");
