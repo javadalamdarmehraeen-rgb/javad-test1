@@ -2616,3 +2616,21 @@ html.crm-booting body {
   table.data-table { font-size: 12px; }
   .header-actions .btn { padding: 6px 8px !important; font-size: 12px !important; }
 }
+
+/* v12.07.0: هدر سبز و همبرگر روی موبایل فریز */
+@media (max-width: 900px) {
+  .app-header {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 4600 !important;
+    padding: 0.55rem 0.75rem !important;
+  }
+  .btn-menu-hamburger {
+    position: relative !important;
+    z-index: 4601 !important;
+  }
+  body { padding-top: 62px !important; }
+  #tab-orders.tab-pane { scroll-margin-top: 70px; }
+}
