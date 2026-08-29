@@ -1,4 +1,4 @@
-const BUILD = "11.60.1";
+const BUILD = "11.98.0";
 const CACHE = "crm-static-v" + BUILD;
 
 async function purgeEveryCache() {
@@ -49,31 +49,74 @@ self.addEventListener("notificationclick", function (event) {
   }));
 });
 
+function fetchWithTimeout(req, ms) {
+  const ac = typeof AbortController !== "undefined" ? new AbortController() : null;
+  const to = setTimeout(function () { try { if (ac) ac.abort(); } catch (e) {} }, ms || 8000);
+  const opts = ac ? { signal: ac.signal } : {};
+  return fetch(req, opts).then(function (r) { clearTimeout(to); return r; }, function (err) { clearTimeout(to); throw err; });
+}
+
+function fallbackResponse(request) {
+  if (request && request.mode === "navigate") {
+    return new Response("<!doctype html><meta charset='utf-8'><title>اتصال لازم است</title><body dir='rtl' style='font-family:Tahoma;text-align:center;padding:40px'><h2>اتصال ضعیف است. دوباره تلاش کنید.</h2><p><a href='/?nosw=1'>باز کردن بدون کش</a></p><button onclick='location.reload()'>تلاش دوباره</button></body>", { status: 503, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" } });
+  }
+  return new Response("نسخه تازه در دسترس نیست", { status: 503, headers: { "Cache-Control": "no-store" } });
+}
+
 self.addEventListener("fetch", function (event) {
   const request = event.request;
   if (request.method !== "GET") return;
-  const url = new URL(request.url);
+  var url;
+  try { url = new URL(request.url); } catch (e) { return; }
   if (url.origin !== self.location.origin) return;
 
   const isApi = url.pathname.indexOf("/api/") === 0;
   const mustBeFresh = request.mode === "navigate" || /\.(?:html|js|css|json|webmanifest)$/.test(url.pathname) || url.pathname === "/sw.js";
 
+  function asResponse(r) {
+    if (r && typeof r.status === "number") return r;
+    return fallbackResponse(request);
+  }
+
   if (isApi || mustBeFresh) {
-    const fresh = isApi ? new Request(request, { cache: "no-store" }) : new Request(request, { cache: "reload" });
-    event.respondWith(fetch(fresh).catch(function () {
-      if (request.mode === "navigate") {
-        return new Response("<!doctype html><meta charset='utf-8'><title>اتصال لازم است</title><body dir='rtl' style='font-family:Tahoma;text-align:center;padding:40px'><h2>برای دریافت آخرین نسخه، اینترنت را وصل کنید.</h2><button onclick='location.reload()'>تلاش دوباره</button></body>", { status: 503, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" } });
+    event.respondWith(Promise.resolve().then(function () {
+      var fresh = request;
+      try {
+        fresh = isApi ? new Request(request, { cache: "no-store" }) : new Request(request, { cache: "reload" });
+      } catch (eReq) { fresh = request; }
+      var ms = request.mode === "navigate" ? 25000 : (isApi ? 12000 : 8000);
+      return fetchWithTimeout(fresh, ms);
+    }).then(function (response) {
+      if (response && response.ok && !isApi) {
+        try {
+          const copy = response.clone();
+          caches.open(CACHE).then(function (cache) { cache.put(request, copy); });
+        } catch (ePut) {}
       }
-      return new Response("نسخه تازه در دسترس نیست", { status: 503, headers: { "Cache-Control": "no-store" } });
+      return asResponse(response);
+    }).catch(function () {
+      return caches.match(request).then(function (hit) {
+        return asResponse(hit);
+      }).catch(function () { return fallbackResponse(request); });
     }));
     return;
   }
 
-  event.respondWith(fetch(new Request(request, { cache: "no-cache" })).then(function (response) {
-    if (response.ok && /\.(?:png|jpg|jpeg|ico|woff2)$/.test(url.pathname)) {
-      const copy = response.clone();
-      caches.open(CACHE).then(function (cache) { cache.put(request, copy); });
+  event.respondWith(Promise.resolve().then(function () {
+    var req = request;
+    try { req = new Request(request, { cache: "no-cache" }); } catch (e2) { req = request; }
+    return fetchWithTimeout(req, 8000);
+  }).then(function (response) {
+    if (response && response.ok && /\.(?:png|jpg|jpeg|ico|woff2)$/.test(url.pathname)) {
+      try {
+        const copy = response.clone();
+        caches.open(CACHE).then(function (cache) { cache.put(request, copy); });
+      } catch (ePut2) {}
     }
-    return response;
-  }).catch(function () { return caches.match(request); }));
+    return asResponse(response);
+  }).catch(function () {
+    return caches.match(request).then(function (hit) {
+      return asResponse(hit);
+    }).catch(function () { return fallbackResponse(request); });
+  }));
 });
