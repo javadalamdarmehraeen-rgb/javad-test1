@@ -46,7 +46,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "12.02.0";
+const CRM_APP_VERSION = "12.03.0";
 window.CRM_APP_VERSION = CRM_APP_VERSION;
 function v12CanonicalCompany(name) {
   var s = String(name || "").trim();
@@ -59,14 +59,29 @@ function v12TakeRegisteredOnly(from, into) {
   var keys = ["pharmacies","doctors","orders","reps","products","visits","hospitals","leaves","users","activityLog","repHomes","repRoutes","notifications","salesTargets"];
   var base = into && typeof into === "object" ? into : JSON.parse(JSON.stringify(DEFAULT_INITIAL_DATA));
   keys.forEach(function (k) {
-    if (from && Array.isArray(from[k])) base[k] = from[k];
+    if (!from || !Array.isArray(from[k]) || !from[k].length) return;
+    var map = {};
+    var out = [];
+    (base[k] || []).forEach(function (r) {
+      if (!r || typeof r !== "object") return;
+      var id = r.id != null ? String(r.id) : "";
+      if (id) map[id] = r;
+      out.push(r);
+    });
+    from[k].forEach(function (r) {
+      if (!r || typeof r !== "object") return;
+      var id = r.id != null ? String(r.id) : "";
+      if (!id) { out.push(r); return; }
+      if (!map[id]) { map[id] = r; out.push(r); return; }
+      var i = out.indexOf(map[id]);
+      if (i >= 0) out[i] = r;
+      map[id] = r;
+    });
+    base[k] = out;
   });
   if (!base.settings) base.settings = {};
   base.settings.companyName = "طنین طب طاها";
   if (typeof CRM_APP_VERSION !== "undefined") base._uiBuild = CRM_APP_VERSION;
-  base.formBoxes = {};
-  base.manualLayouts = {};
-  base.formFieldMeta = {};
   return base;
 }
 window.v12TakeRegisteredOnly = v12TakeRegisteredOnly;
@@ -133,13 +148,12 @@ function loadState() {
         try {
           var host = (typeof location !== "undefined" && location.hostname) ? String(location.hostname) : "";
           if (!/(^|\.)mehraeinpharma\.ir$|(^|\.)ndcohub\.ir$/.test(host)) return;
-          if (String(state._uiBuild || "") === String(CRM_APP_VERSION)) return;
-          try { localStorage.setItem("CRM_APP_STATE_OLDFILE_ARCHIVE_" + Date.now(), saved); } catch (eA) {}
-          state = JSON.parse(JSON.stringify(DEFAULT_INITIAL_DATA));
-          state.users = (state.users || []).filter(function (u) { return u && (u.username === "admin" || /مدیر سیستم/.test(String(u.role || u.fullName || ""))); });
-          ["pharmacies","doctors","orders","reps","activityLog","repHomes","repRoutes","leaves","notifications","salesTargets","visits","hospitals"].forEach(function (k) { state[k] = []; });
+          /* v12.03: هرگز داروخانه/پزشک/سفارش را با آپلود نسخه خالی نکن */
+          if (state && state.settings && typeof v12CanonicalCompany === "function") {
+            state.settings.companyName = v12CanonicalCompany(state.settings.companyName);
+          }
           state._uiBuild = CRM_APP_VERSION;
-          state._freshFromOldFiles = true;
+          state._freshFromOldFiles = false;
         } catch (e99) {}
       })();
     } catch (err) {
@@ -155,7 +169,6 @@ function loadState() {
       state._schemaVersion = "11.81.0";
     }
     (function recoverWipedUserData(){
-      if (state && state._freshFromOldFiles) return;
       var keys=["pharmacies","doctors","orders"];
       var sample={"ph-1":1,"ph-2":1,"ph-3":1,"doc-1":1,"doc-2":1,"ord-1":1};
       keys.forEach(function(arr){
@@ -3157,7 +3170,7 @@ function setupPWAServiceWorker() {
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
   if (!/(^|\\.)ndcohub\\.ir$|(^|\\.)mehraeinpharma\\.ir$/.test(location.hostname || "")) {
-  navigator.serviceWorker.register('/sw.js?v=12.02.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=12.03.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;

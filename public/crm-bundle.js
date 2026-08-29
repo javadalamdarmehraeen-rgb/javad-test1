@@ -12852,7 +12852,7 @@ button.v19-gps svg{display:block}
       if(ch) ch.textContent=window.state.settings.companyName||"طنین طب طاها";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.02.0");
+        var ver=String(window.CRM_APP_VERSION||"12.03.0");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -14389,7 +14389,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(ch) ch.textContent=window.state.settings.companyName||"طنین طب طاها";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.02.0");
+        var ver=String(window.CRM_APP_VERSION||"12.03.0");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -19150,10 +19150,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.02.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.03.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.02.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.03.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19233,10 +19233,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.02.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.03.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.02.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.03.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -19292,7 +19292,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.02.0");
+  var BUILD = String(window.CRM_APP_VERSION || "12.03.0");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
@@ -19353,10 +19353,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.02.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.03.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.02.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.03.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19383,10 +19383,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.02.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.03.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.02.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.03.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -19471,7 +19471,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.02.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.03.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -19625,4 +19625,9 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     setTimeout(pullRender, 15000);
     setInterval(pullRender, 45000);
   }
+})();
+/* v12.03.0: آپلود نسخه داده را پاک نمی‌کند؛ همگام ادغام است نه جایگزینی خالی */
+(function(){
+  "use strict";
+  window.v1203KeepData = true;
 })();

@@ -18,7 +18,7 @@ function copyDir(src, dest) {
     const from = path.join(src, name);
     const to = path.join(dest, name);
     const st = fs.statSync(from);
-    if (name === "crm-netafraz-data.json" || name === "crm-netafraz-bulk.json") continue;
+    if (/^crm-(netafraz|live)-(data|bulk)\.json$/.test(name) || name === "user-data.json") continue; /* crm-netafraz-data.json */
     if (st.isDirectory()) copyDir(from, to);
     else fs.copyFileSync(from, to);
   }
@@ -92,6 +92,14 @@ const readme = [
 ].join("\n");
 fs.writeFileSync(path.join(DEST, "README-NETAFRAZ.txt"), readme, "utf8");
 
+fs.writeFileSync(path.join(DEST, "KHANAN-APLOAD.txt"), [
+  "روی هاست این فایل‌ها را حذف یا جایگزین نکنید:",
+  "  crm-live-data.json",
+  "  crm-live-bulk.json",
+  "اگر کل public_html را خالی کنید، داده ثبت‌شده نت‌افراز پاک می‌شود.",
+  "فقط فایل‌های برنامه (js/css/html/php) را جایگزین کنید.",
+  ""
+].join("\n"), "utf8");
 console.log("✅ خروجی استاتیک در static-build آماده است.");
 console.log("   platform=static  baseUrl=" + (base || DEFAULT_RENDER));
 console.log("   کل پوشه را در public_html آپلود کنید.");
