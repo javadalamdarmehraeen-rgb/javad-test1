@@ -46,7 +46,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "12.01.0";
+const CRM_APP_VERSION = "12.02.0";
 window.CRM_APP_VERSION = CRM_APP_VERSION;
 function v12CanonicalCompany(name) {
   var s = String(name || "").trim();
@@ -54,6 +54,22 @@ function v12CanonicalCompany(name) {
   return s;
 }
 window.v12TahaName = true;
+window.v12OpsOnlyRestore = true;
+function v12TakeRegisteredOnly(from, into) {
+  var keys = ["pharmacies","doctors","orders","reps","products","visits","hospitals","leaves","users","activityLog","repHomes","repRoutes","notifications","salesTargets"];
+  var base = into && typeof into === "object" ? into : JSON.parse(JSON.stringify(DEFAULT_INITIAL_DATA));
+  keys.forEach(function (k) {
+    if (from && Array.isArray(from[k])) base[k] = from[k];
+  });
+  if (!base.settings) base.settings = {};
+  base.settings.companyName = "طنین طب طاها";
+  if (typeof CRM_APP_VERSION !== "undefined") base._uiBuild = CRM_APP_VERSION;
+  base.formBoxes = {};
+  base.manualLayouts = {};
+  base.formFieldMeta = {};
+  return base;
+}
+window.v12TakeRegisteredOnly = v12TakeRegisteredOnly;
 try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
@@ -2945,7 +2961,7 @@ function setupRestoreSection() {
   if (btnConfirm) {
     btnConfirm.addEventListener("click", () => {
       if (!tempRestoreData) return;
-      state = tempRestoreData;
+      state = v12TakeRegisteredOnly(tempRestoreData, JSON.parse(JSON.stringify(DEFAULT_INITIAL_DATA)));
       if (!state.users) state.users = [];
       if (!state.settings) state.settings = {};
 
@@ -3140,7 +3156,8 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=12.01.0', { scope: '/', updateViaCache: 'none' })
+  if (!/(^|\\.)ndcohub\\.ir$|(^|\\.)mehraeinpharma\\.ir$/.test(location.hostname || "")) {
+  navigator.serviceWorker.register('/sw.js?v=12.02.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -3153,6 +3170,7 @@ function setupPWAServiceWorker() {
       window.__CRM_SW_READY = false;
       console.warn('عدم ثبت سرویس‌ورکر در محیط تستی:', err);
     });
+} else { window.__CRM_SW_READY = false; }
 }
 
 // ----------------------------------------------------------------------------

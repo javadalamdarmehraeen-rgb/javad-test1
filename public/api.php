@@ -7,19 +7,23 @@
  */
 header("X-Content-Type-Options: nosniff");
 $origin = isset($_SERVER["HTTP_ORIGIN"]) ? $_SERVER["HTTP_ORIGIN"] : "";
-if ($origin) {
+$allow = array("https://javad-test1.onrender.com", "https://mehraeinpharma.ir", "https://ndcohub.ir");
+if ($origin && in_array($origin, $allow, true)) {
   header("Access-Control-Allow-Origin: " . $origin);
-  header("Vary: Origin");
+} else {
+  header("Access-Control-Allow-Origin: https://javad-test1.onrender.com");
 }
+header("Vary: Origin");
 header("Access-Control-Allow-Methods: GET, POST, HEAD, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, X-CRM-Request, X-CRM-Replace, X-CRM-Sync, X-CRM-Hub-Sync, X-CRM-Build, Cache-Control");
+header("Access-Control-Max-Age: 86400");
 if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
   http_response_code(204);
   exit;
 }
 
 define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
-define("CRM_APP_VERSION", "12.01.0");
+define("CRM_APP_VERSION", "12.02.0");
 
 function cfg() {
   $jf = __DIR__ . "/api-config.json";

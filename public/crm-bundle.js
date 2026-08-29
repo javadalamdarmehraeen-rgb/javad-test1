@@ -12852,7 +12852,7 @@ button.v19-gps svg{display:block}
       if(ch) ch.textContent=window.state.settings.companyName||"طنین طب طاها";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.01.0");
+        var ver=String(window.CRM_APP_VERSION||"12.02.0");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -14389,7 +14389,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(ch) ch.textContent=window.state.settings.companyName||"طنین طب طاها";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.01.0");
+        var ver=String(window.CRM_APP_VERSION||"12.02.0");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -19150,10 +19150,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.01.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.02.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.01.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.02.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19233,10 +19233,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.01.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.02.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.01.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.02.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -19292,7 +19292,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.01.0");
+  var BUILD = String(window.CRM_APP_VERSION || "12.02.0");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
@@ -19353,10 +19353,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.01.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.02.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.01.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.02.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19383,10 +19383,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.01.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.02.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.01.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.02.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -19471,7 +19471,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.01.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.02.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -19527,7 +19527,6 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       (rt.hubs || []).forEach(add);
     } catch (e2) {}
     if (!/onrender\.com$/i.test(location.hostname)) add("https://javad-test1.onrender.com");
-    else add("https://mehraeinpharma.ir");
     return out;
   }
   function applyPeer(remote){
@@ -19579,4 +19578,51 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   setTimeout(pullThenPush, 600);
   setTimeout(pullThenPush, 5000);
   setTimeout(pullThenPush, 20000);
+})();
+/* v12.02.0: همگام فقط نت‌افراز←رندر، بازیابی فقط داده ثبت‌شده، موبایل فشرده، آفلاین بدون SW خراب */
+(function(){
+  "use strict";
+  window.v1202AutoSync = true;
+  function iranian(){ return /(^|\.)ndcohub\.ir$|(^|\.)mehraeinpharma\.ir$/.test(location.hostname||""); }
+  function hollow(d){
+    if (!d || typeof d !== "object") return true;
+    return !(d.pharmacies||[]).length && !(d.doctors||[]).length && ((d.users||[]).length <= 1);
+  }
+  function takeOps(remote){
+    if (typeof window.v12TakeRegisteredOnly === "function") {
+      window.state = window.v12TakeRegisteredOnly(remote, window.state || {});
+      return true;
+    }
+    if (hollow(remote) || !window.state) return false;
+    ["pharmacies","doctors","orders","reps","products","visits","hospitals","leaves","users"].forEach(function(k){
+      if (Array.isArray(remote[k]) && remote[k].length) window.state[k] = remote[k];
+    });
+    if (!window.state.settings) window.state.settings = {};
+    window.state.settings.companyName = "طنین طب طاها";
+    return true;
+  }
+  function pullRender(){
+    if (!iranian()) return;
+    if (typeof navigator !== "undefined" && navigator.onLine === false) return;
+    var orig = window.__CRM_ORIG_FETCH || window.fetch;
+    var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
+    var t = setTimeout(function(){ try { if (ctrl) ctrl.abort(); } catch (e) {} }, 20000);
+    orig("https://javad-test1.onrender.com/api/state", { cache: "no-store", mode: "cors", signal: ctrl ? ctrl.signal : undefined })
+      .then(function(r){ clearTimeout(t); return r && r.ok ? r.json() : null; })
+      .then(function(j){
+        var d = j && j.data ? j.data : j;
+        if (hollow(d)) return;
+        if (takeOps(d)) {
+          try { if (typeof saveState === "function") saveState(false); } catch (eS) {}
+          try { if (typeof window.crmPushStateToServer === "function") window.crmPushStateToServer(); } catch (eP) {}
+        }
+      })
+      .catch(function(){ clearTimeout(t); });
+  }
+  if (iranian()) {
+    setTimeout(pullRender, 400);
+    setTimeout(pullRender, 4000);
+    setTimeout(pullRender, 15000);
+    setInterval(pullRender, 45000);
+  }
 })();

@@ -1,4 +1,4 @@
-const BUILD = "12.01.0";
+const BUILD = "12.02.0";
 const CACHE = "crm-static-v" + BUILD;
 
 async function purgeEveryCache() {

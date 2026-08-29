@@ -58,9 +58,17 @@ fs.writeFileSync(path.join(DEST, "api-config.json"), JSON.stringify({ baseUrl: b
 
 const htaccess = [
   "DirectoryIndex index.php login.html index.html",
+  "<IfModule mod_headers.c>",
+  "Header always set Access-Control-Allow-Origin \"https://javad-test1.onrender.com\"",
+  "Header always set Access-Control-Allow-Methods \"GET, POST, HEAD, OPTIONS\"",
+  "Header always set Access-Control-Allow-Headers \"Content-Type, X-CRM-Request, X-CRM-Replace, X-CRM-Sync, X-CRM-Hub-Sync, X-CRM-Build, Cache-Control\"",
+  "Header always set Access-Control-Max-Age \"86400\"",
+  "</IfModule>",
   "<IfModule mod_rewrite.c>",
   "RewriteEngine On",
   "RewriteBase /",
+  "RewriteCond %{REQUEST_METHOD} OPTIONS",
+  "RewriteRule ^api/ api.php?path=preflight [QSA,L]",
   "RewriteRule ^panel/?$ index.html [L,QSA]",
   "RewriteRule ^login/?$ login.html [L,QSA]",
   "RewriteRule ^api/?(.*)$ api.php?path=$1 [QSA,L]",
