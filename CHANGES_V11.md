@@ -959,3 +959,10 @@ CLEAN_EXTRA_FILES.bat و بعد PUSH_GITHUB_CLEAN.bat را اجرا کن.
 1. با نصب نسخه جدید روی نت‌افراز، localStorage و crm-netafraz-data.json از رندر جایگزین می‌شوند (اگر رندر خالی نباشد).
 2. npm run build-static بدون env هم BASE_URL رندر را در api-config.php می‌نویسد.
 3. GET /api/state روی PHP از رندر می‌کشد و فایل محلی را با داده رندر عوض می‌کند؛ خالی نمی‌نویسد.
+
+## تحویل نوبت ۱۱۶ — نسخه ۱۱.۹۸.۰: باز شدن لینک‌ها
+
+1. SW همیشه Response می‌دهد تا صفحه سفید/شبکه ارور نشود.
+2. Options -Indexes از htaccess حذف شد (۵۰۰ نت‌افراز).
+3. api-config.php آرایه PHP معتبر است؛ JSON خراب دیگر include نمی‌شود.
+4. نشان نسخه از CRM_APP_VERSION است و بوت‌های قدیمی آن را به ۹۵ برنمی‌گردانند.

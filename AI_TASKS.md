@@ -1702,3 +1702,6 @@ Pending user verification: same list, in browser after Ctrl+Shift+R.
 
 ## نوبت ۱۱۵ — نسخه ۱۱.۹۷.۰
 آپلود فایل جدید دیگر داده قدیمی نت‌افراز را نگه نمی‌دارد: با نسخه جدید، داده از رندر جایگزین می‌شود (اگر رندر خالی نباشد). npm run build-static پیش‌فرض BASE_URL رندر را می‌نویسد.
+
+## نوبت ۱۱۶ — نسخه ۱۱.۹۸.۰
+سرویس‌ورکر دیگر بدون Response رد نمی‌شود. Options از htaccess برداشته شد تا نت‌افراز ۵۰۰ ندهد. api-config معتبر PHP/JSON. نشان نسخه واحد.

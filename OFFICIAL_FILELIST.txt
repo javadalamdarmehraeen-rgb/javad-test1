@@ -263,3 +263,5 @@ RAHNAMA_NETAFRAZ.txt
 public/images/marker-icon.png
 public/images/marker-icon-2x.png
 public/images/marker-shadow.png
+public/api-config.php
+public/api-config.json

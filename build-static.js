@@ -51,12 +51,13 @@ const runtime =
   "};\n";
 fs.writeFileSync(path.join(DEST, "crm-runtime.js"), runtime, "utf8");
 
-const apiCfg = "<?php\nreturn " + JSON.stringify({ baseUrl: base, hubs: hubs }, null, 2) + ";\n";
+function phpStr(s) { return "'" + String(s).replace(/\\\\/g, "\\\\").replace(/'/g, "\\'") + "'"; }
+const apiCfg = "<?php\nreturn array(\n  'baseUrl' => " + phpStr(base) + ",\n  'hubs' => array(" + hubs.map(phpStr).join(", ") + "),\n);\n";
 fs.writeFileSync(path.join(DEST, "api-config.php"), apiCfg, "utf8");
+fs.writeFileSync(path.join(DEST, "api-config.json"), JSON.stringify({ baseUrl: base, hubs: hubs }, null, 2), "utf8");
 
 const htaccess = [
   "DirectoryIndex login.html index.html",
-  "Options -Indexes",
   "<IfModule mod_rewrite.c>",
   "RewriteEngine On",
   "RewriteRule ^panel/?$ /index.html [L]",

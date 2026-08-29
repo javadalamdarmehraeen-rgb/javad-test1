@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <script>
+    <script>(function(){try{if(location.search.indexOf("nosw")!==-1&&navigator.serviceWorker){navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister();}));}).then(function(){if(window.caches)return caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.delete(k);}));});}).then(function(){location.replace(location.pathname+(location.hash||""));}).catch(function(){location.reload();});}}catch(e){}})();
+
       window.__CRM_ERRS = [];
       window.addEventListener("error", function (e) {
         try { window.__CRM_ERRS.push({ msg: String(e.message || "").slice(0, 300), src: String(e.filename || "").slice(0, 160), line: e.lineno || 0, at: Date.now() }); } catch (x) {}
@@ -34,7 +35,7 @@
   <style>html.crm-booting body{visibility:visible!important;opacity:1!important}</style>
   <script>
     (function(){
-      var BUILD="11.97.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="11.98.0",key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       try{
         var GEN="11.81.0";
         var raw=localStorage.getItem("CRM_APP_STATE_V2");
@@ -62,14 +63,14 @@
   <meta name="application-name" content="طنین طب طاها" />
   
   <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="leaflet.css?v=11.97.0" />
+  <link rel="stylesheet" href="leaflet.css?v=11.98.0" />
   
   <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=11.97.0" />
+  <link rel="stylesheet" href="style.css?v=11.98.0" />
 </head>
 <body>
 
@@ -89,7 +90,7 @@
         </div>
         <div class="logo-text">
           <h1 id="headerCompanyNameDisplay">طنین طب طاها</h1>
-          <div id="crmBuildBadge" style="font-size:12px;font-weight:800;color:#0f766e">نسخه ۱۱.۹۷.۰</div>
+          <div id="crmBuildBadge" style="font-size:12px;font-weight:800;color:#0f766e">نسخه ۱۱.۹۸.۰</div>
           <p>طنین طب طاها — TENIN TEB TAHA</p>
         </div>
       </div>
@@ -2607,15 +2608,15 @@
   </div>
 
   <!-- Leaflet JS -->
-  <script src="leaflet.js?v=11.97.0"></script>
+  <script src="leaflet.js?v=11.98.0"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-runtime.js?v=11.97.0"></script>
-  <script src="crm-hub.js?v=11.97.0"></script>
+  <script src="crm-runtime.js?v=11.98.0"></script>
+  <script src="crm-hub.js?v=11.98.0"></script>
   <script>window.v92HubFetch=true;</script>
-  <script src="crm-data.js?v=11.97.0"></script>
-  <script src="crm-app.js?v=11.97.0"></script>
-          <script src="crm-bundle.js?v=11.97.0"></script>
+  <script src="crm-data.js?v=11.98.0"></script>
+  <script src="crm-app.js?v=11.98.0"></script>
+          <script src="crm-bundle.js?v=11.98.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />

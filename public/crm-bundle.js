@@ -18289,7 +18289,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     }
   },true);
   var badge=$("crmBuildBadge");
-  if(badge)badge.textContent="نسخه ۱۱.۸۶.۰";
+  /* v11.98 no stale badge */
 })();
 
 /* v11.87.0: توقف لرزش مسیر + حذف فیلد تکراری پیام‌رسان + changelog زنده + نشست ورود + پشتیبان ابری + جمع تارگت پخش + مرخصی مرتب */
@@ -18416,7 +18416,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
 
   var badge=$("crmBuildBadge");
-  if(badge)badge.textContent="نسخه ۱۱.۸۷.۰";
+  /* v11.98 no stale badge */
 
   function boot(){
     wrapSwitch();
@@ -18491,7 +18491,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
 
   var badge=$("crmBuildBadge");
-  if(badge)badge.textContent="نسخه ۱۱.۸۹.۰";
+  /* v11.98 no stale badge */
 
   function boot(){
     wrapPainters();
@@ -18571,7 +18571,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     };
     w._v89=true; window.switchTab=w;
   }
-  var badge=$("crmBuildBadge"); if(badge)badge.textContent="نسخه ۱۱.۸۹.۰";
+  var badge=$("crmBuildBadge"); /* v11.98 no stale badge */
   function boot(){wrap();oneOps();setTimeout(oneOps,500);}
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,120);});
   else setTimeout(boot,120);
@@ -19102,17 +19102,17 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   window.v92Hubs=window.CRM_HUBS;
   var badge=document.getElementById("crmBuildBadge");
-  if(badge) badge.textContent="نسخه ۱۱.۹۲.۰";
+  /* v11.98 no stale badge */
 })();
 
 /* v11.93.0: Render+نت‌افراز استاتیک، هاب env، timeout/retry، sync-all */
 (function(){
   window.v93PlatformStatic=true;
   var b=document.getElementById("crmBuildBadge");
-  if(b) b.textContent="نسخه ۱۱.۹۳.۰";
+  /* v11.98 no stale badge */
 })();
 /* v11.94.0: نت‌افراز مستقل با api.php + leaflet ریشه + بدون ۴۰۴ API */
-(function(){window.v94NetafrazIndependent=true;var b=document.getElementById("crmBuildBadge");if(b)b.textContent="نسخه ۱۱.۹۴.۰";})();
+(function(){window.v94NetafrazIndependent=true;var b=document.getElementById("crmBuildBadge");/* v11.98 no stale badge */})();
 /* v11.95.0: نشان نسخه واحد + نت‌افراز بدون کشیدن داده رندر + نام شرکت طنین طب طاها */
 (function(){
   "use strict";
@@ -19321,4 +19321,34 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function(){ setTimeout(adopt, 40); paintBadge(); });
   else setTimeout(adopt, 40);
   setTimeout(paintBadge, 500);
+})();
+/* v11.98.0: SW همیشه Response + نت‌افراز بدون ۵۰۰ + نشان نسخه واحد */
+(function(){
+  "use strict";
+  window.v98BootFix = true;
+  function ver(){ return String(window.CRM_APP_VERSION || "11.98.0"); }
+  function faVer(v){
+    var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
+    return String(v||"11.98.0").replace(/[0-9]/g, function(d){ return map[d]; });
+  }
+  function paintBadge(){
+    var label = "نسخه " + faVer(ver());
+    var el = document.getElementById("crmBuildBadge");
+    if (el) el.textContent = label;
+    var h = document.getElementById("crmBuildHint");
+    if (h) h.textContent = label + " — گوشی و ویندوز باید همین شماره را ببینند";
+    try {
+      var S = window.state;
+      if (S && S.settings) {
+        var old = String(S.settings.companyName || "");
+        if (!old || old === "شرکت پخش دارو و شبکه درمان نماینده علمی" || old === "سیستم مدیریت ویزیت علمی و شبکه درمان") {
+          S.settings.companyName = "طنین طب طاها";
+          var c = document.getElementById("headerCompanyNameDisplay");
+          if (c) c.textContent = "طنین طب طاها";
+        }
+      }
+    } catch (e) {}
+  }
+  paintBadge();
+  [30,80,200,500,900,1600,2500].forEach(function(ms){ setTimeout(paintBadge, ms); });
 })();

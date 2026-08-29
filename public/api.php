@@ -18,15 +18,23 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
-define("CRM_APP_VERSION", "11.97.0");
+define("CRM_APP_VERSION", "11.98.0");
 
 function cfg() {
+  $jf = __DIR__ . "/api-config.json";
+  if (is_file($jf)) {
+    $j = json_decode(@file_get_contents($jf), true);
+    if (is_array($j)) return $j;
+  }
   $f = __DIR__ . "/api-config.php";
   if (is_file($f)) {
-    $c = include $f;
-    if (is_array($c)) return $c;
+    $raw = @file_get_contents($f);
+    if ($raw !== false && strpos($raw, "array(") !== false) {
+      $c = @include $f;
+      if (is_array($c)) return $c;
+    }
   }
-  return array("baseUrl" => "", "hubs" => array());
+  return array("baseUrl" => CRM_DEFAULT_RENDER, "hubs" => array(CRM_DEFAULT_RENDER));
 }
 function path_info() {
   if (!empty($_GET["path"])) return trim($_GET["path"], "/");
