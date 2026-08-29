@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
-define("CRM_APP_VERSION", "12.04.0");
+define("CRM_APP_VERSION", "12.05.0");
 
 function cfg() {
   $jf = __DIR__ . "/api-config.json";
@@ -184,16 +184,22 @@ function pull_render() {
   return $j;
 }
 
-$DATA_DIR = __DIR__ . "/data";
-if (!is_dir($DATA_DIR)) @mkdir($DATA_DIR, 0775, true);
+$DATA_DIR = __DIR__; /* بدون پوشه — نت‌افراز فولدر آپلود نمی‌کند */
 $DATA = $DATA_DIR . "/crm-live-data.json";
 $BULK = $DATA_DIR . "/crm-live-bulk.json";
-/* crm-live-data.json — اگر نصب قدیمی در ریشه بود همان خوانده می‌شود */
-if (!is_file($DATA) && is_file(__DIR__ . "/crm-live-data.json")) $DATA = __DIR__ . "/crm-live-data.json";
-if (!is_file($BULK) && is_file(__DIR__ . "/crm-live-bulk.json")) $BULK = __DIR__ . "/crm-live-bulk.json";
+if (!is_file($DATA) && is_file(__DIR__ . "/data/crm-live-data.json")) $DATA = __DIR__ . "/data/crm-live-data.json";
+if (!is_file($BULK) && is_file(__DIR__ . "/data/crm-live-bulk.json")) $BULK = __DIR__ . "/data/crm-live-bulk.json";
 /* crm-netafraz-data.json فایل قدیمی است و دیگر خوانده نمی‌شود */
-if (!is_file($DATA)) @file_put_contents($DATA, "{}", LOCK_EX);
-if (!is_file($BULK)) @file_put_contents($BULK, "{}", LOCK_EX);
+function fill_if_empty($local, $file) {
+  if ($local && is_array($local) && !hollow_state($local)) return $local;
+  $remote = pull_render();
+  if ($remote && is_array($remote) && !hollow_state($remote)) {
+    $remote = stamp_gen($remote);
+    write_json($file, $remote);
+    return $remote;
+  }
+  return $local;
+}
 $p = path_info();
 $method = $_SERVER["REQUEST_METHOD"];
 
@@ -313,7 +319,7 @@ if ($p === "sync" || strpos($p, "sync/") === 0) {
 
 if (strpos($p, "state") === 0) {
   if ($method === "GET") {
-    $local = read_json($DATA);
+    $local = fill_if_empty(read_json($DATA), $DATA);
     send_json($local ? array("status" => "success", "data" => $local) : array("status" => "empty"));
   }
   if ($method === "POST") {

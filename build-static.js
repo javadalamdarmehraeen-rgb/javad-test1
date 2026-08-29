@@ -12,16 +12,23 @@ const ROOT = __dirname;
 const SRC = path.join(ROOT, "public");
 const DEST = path.join(ROOT, "static-build");
 
-function copyDir(src, dest) {
+function copyFlat(src, dest) {
   fs.mkdirSync(dest, { recursive: true });
-  for (const name of fs.readdirSync(src)) {
-    const from = path.join(src, name);
-    const to = path.join(dest, name);
-    const st = fs.statSync(from);
-    if (/^crm-(netafraz|live)-(data|bulk)\.json$/.test(name) || name === "user-data.json") continue; /* crm-netafraz-data.json */
-    if (st.isDirectory()) copyDir(from, to);
-    else fs.copyFileSync(from, to);
+  function walk(dir) {
+    for (const name of fs.readdirSync(dir)) {
+      const from = path.join(dir, name);
+      const stt = fs.statSync(from);
+      if (stt.isDirectory()) {
+        if (name === "data") continue;
+        walk(from);
+        continue;
+      }
+      if (/^crm-(netafraz|live)-(data|bulk)\.json$/.test(name) || name === "user-data.json") continue; /* crm-netafraz-data.json */
+      const to = path.join(dest, name);
+      if (!fs.existsSync(to)) fs.copyFileSync(from, to);
+    }
   }
+  walk(src);
 }
 
 if (!fs.existsSync(SRC)) {
@@ -30,7 +37,22 @@ if (!fs.existsSync(SRC)) {
 }
 
 fs.rmSync(DEST, { recursive: true, force: true });
-copyDir(SRC, DEST);
+copyFlat(SRC, DEST);
+
+(function patchFlat() {
+  const man = path.join(DEST, "manifest.json");
+  if (fs.existsSync(man)) {
+    let t = fs.readFileSync(man, "utf8");
+    t = t.replace(/\/icons\//g, "/");
+    fs.writeFileSync(man, t, "utf8");
+  }
+  const lc = path.join(DEST, "leaflet.css");
+  if (fs.existsSync(lc)) {
+    let t = fs.readFileSync(lc, "utf8");
+    t = t.replace(/url\(images\//g, "url(");
+    fs.writeFileSync(lc, t, "utf8");
+  }
+})();
 
 const DEFAULT_RENDER = "https://javad-test1.onrender.com";
 const base = String(process.env.BASE_URL || process.env.PUBLIC_BASE_URL || DEFAULT_RENDER).replace(/\/$/, "");
@@ -80,7 +102,7 @@ fs.writeFileSync(path.join(DEST, ".htaccess"), htaccess, "utf8");
 const readme = [
   "آپلود نت‌افراز",
   "==============",
-  "1. تمام محتویات این پوشه را در public_html بریزید (leaflet.css، images، vendor، api.php، .htaccess).",
+  "1. همه فایل‌های این پوشه را مستقیم در public_html بریزید (بدون زیرپوشه).",
   "2. ورود: /login.html    پنل: /index.html",
   "3. Node لازم نیست. api.php همان API است — برنامه بدون Render کار می‌کند.",
   "4. برای همگام‌سازی با Render هنگام ساخت:",
@@ -92,19 +114,11 @@ const readme = [
 ].join("\n");
 fs.writeFileSync(path.join(DEST, "README-NETAFRAZ.txt"), readme, "utf8");
 
-const dataDir = path.join(DEST, "data");
-fs.mkdirSync(dataDir, { recursive: true });
-if (!fs.existsSync(path.join(dataDir, "crm-live-data.json"))) {
-  fs.writeFileSync(path.join(dataDir, "crm-live-data.json"), "{}\n", "utf8");
-}
-if (!fs.existsSync(path.join(dataDir, "crm-live-bulk.json"))) {
-  fs.writeFileSync(path.join(dataDir, "crm-live-bulk.json"), "{}\n", "utf8");
-}
+/* path.join(DEST, "data") unused — flattened, no folders */
 fs.writeFileSync(path.join(DEST, "KHANAN-APLOAD.txt"), [
-  "داده زنده در پوشه data است (crm-live-data.json).",
-  "نصب اول: پوشه data را هم آپلود کنید.",
-  "آپلودهای بعدی: پوشه data را جایگزین نکنید تا داروخانه پاک نشود.",
-  "ریشه static-build فایل crm-live-data.json ندارد تا با JS قاطی نشود.",
+  "static-build فقط فایل است (بدون پوشه). همه را در public_html بریزید.",
+  "crm-live-data.json را آپلود نکنید؛ PHP می‌سازد و از رندر پر می‌کند اگر خالی باشد.",
+  "SSL نت‌افراز را روشن کنید.",
   ""
 ].join("\n"), "utf8");
 console.log("✅ خروجی استاتیک در static-build آماده است.");
