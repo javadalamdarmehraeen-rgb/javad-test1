@@ -613,6 +613,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]    13359 بایت  update_project_graph.py
   [متنی ]     2558 بایت  .github/workflows/deploy.yml
   [متنی ]      206 بایت  .github/workflows/keep_alive.yml
+  [متنی ]      286 بایت  backups/crm-2026-08-28-20-45.json
   [متنی ]     7164 بایت  mobile/App.tsx
   [متنی ]     9805 بایت  mobile/README.md
   [متنی ]     9966 بایت  mobile/src/simAuth.ts
@@ -23497,6 +23498,13 @@ jobs:
     steps:
       - name: Call Render App
         run: curl -I  https://javad-test1.onrender.com
+~~~~~~~~
+
+──────────────────────────────────────────────────────────────────────────────────
+فایل: backups/crm-2026-08-28-20-45.json (286 بایت)
+──────────────────────────────────────────────────────────────────────────────────
+~~~~~~~~json
+{"_dataGen":"11.81.0","_schemaVersion":"11.81.0","_lastSavedAt":42,"users":[{"id":"sentinel-user","fullName":"اطلاعات قدیمی"}],"formFieldMeta":{"order":{"sentinel":{"order":99}}},"_soloOnly":true,"_soloEpoch":1787950728798,"_soloAt":1787950728798,"_unifiedAt":1787950728798}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
