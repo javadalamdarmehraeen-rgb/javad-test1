@@ -2587,3 +2587,32 @@ html.crm-booting body {
   #v84DashFilters { grid-template-columns: 1fr 1fr !important; }
   .stats-grid { grid-template-columns: 1fr 1fr; }
 }
+
+/* v12.02.0: موبایل فشرده — کلیدها بزرگ و به‌هم‌ریخته نباشند */
+@media (max-width: 900px) {
+  .tab-pane.active { min-height: auto; }
+  .main-content { min-height: auto; padding: 0 8px 16px; }
+  .btn, button.btn, .form-actions .btn, .btn-primary, .btn-success, .btn-warning, .btn-danger, .btn-secondary,
+  input[type="submit"], input[type="button"] {
+    padding: 7px 10px !important;
+    font-size: 13px !important;
+    min-height: 34px !important;
+    line-height: 1.25 !important;
+    gap: 4px !important;
+  }
+  .btn-menu-hamburger {
+    min-width: 40px !important;
+    min-height: 40px !important;
+    padding: 6px !important;
+  }
+  .nav-item, .side-menu-item {
+    font-size: 13px !important;
+    padding: 8px 10px !important;
+  }
+  .card { padding: 8px 10px; }
+  .logo-text h1 { font-size: 0.95rem !important; }
+  .logo-text p { font-size: 0.7rem !important; }
+  #crmBuildBadge { font-size: 11px !important; }
+  table.data-table { font-size: 12px; }
+  .header-actions .btn { padding: 6px 8px !important; font-size: 12px !important; }
+}

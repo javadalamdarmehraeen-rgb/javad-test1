@@ -23,16 +23,18 @@
   }
   function peers() {
     var s = {}, o = [];
+    if (/onrender\.com$/i.test(location.hostname)) return o; /* v12.02: Render never fetches Netafraz (CORS/SSL); ndcohub.ir not fetched */
     function add(x) {
       try {
         var u = new URL(x, ORIGIN);
         if (location.protocol === "https:" && u.protocol === "http:") return;
         if (u.origin === ORIGIN) return;
-        if (/ndcohub\.ir$/i.test(u.hostname)) return; /* v12.01: cert CN invalid */
+        if (!/onrender\.com$/i.test(u.hostname)) return; /* only pull/push Render */
         if (!s[u.origin]) { s[u.origin] = 1; o.push(u.origin); }
       } catch (e) {}
     }
     envHubs().forEach(add);
+    add("https://javad-test1.onrender.com");
     return o;
   }
   function hubs() {
@@ -52,10 +54,10 @@
   function fakeFor(path, method) {
     method = method || "GET";
     if (/health|ping|healthz/.test(path)) {
-      return jsonResp({ ok: true, status: "healthy", platform: "static-local", version: (window.CRM_APP_VERSION || "12.01.0"), offline: true });
+      return jsonResp({ ok: true, status: "healthy", platform: "static-local", version: (window.CRM_APP_VERSION || "12.02.0"), offline: true });
     }
     if (/runtime-config/.test(path)) {
-      return jsonResp({ platform: runtime().platform || "static", baseUrl: runtime().baseUrl || "", hubs: runtime().hubs || [], version: "12.01.0" });
+      return jsonResp({ platform: runtime().platform || "static", baseUrl: runtime().baseUrl || "", hubs: runtime().hubs || [], version: "12.02.0" });
     }
     if (/backup\/status/.test(path)) {
       return jsonResp({ status: "ok", cloud: false, local: true, platform: "static-local" });
@@ -112,6 +114,7 @@
     opts = opts || {};
     var path = pathOf(url);
     var method = String(opts.method || "GET").toUpperCase();
+    if (typeof navigator !== "undefined" && navigator.onLine === false) return Promise.resolve(fakeFor(path, method));
     function hdrs(extra) {
       return Object.assign({ "X-CRM-Request": "1" }, opts.headers || {}, extra || {});
     }

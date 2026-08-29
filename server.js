@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "12.01.0";
+const APP_VERSION = "12.02.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -67,7 +67,7 @@ function envHubHosts() {
 }
 function runtimeHubs() {
   const extra = envHubList();
-  const defaults = ["https://javad-test1.onrender.com", "https://mehraeinpharma.ir"]; /* dead-cert hub omitted from default list — CORS host still allowed */
+  const defaults = ["https://javad-test1.onrender.com"]; /* Iranian hosts PULL render; Render does not fetch them */
   const out = [];
   extra.concat(defaults).forEach(function (h) { if (h && out.indexOf(h) < 0) out.push(h); });
   return out;
