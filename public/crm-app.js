@@ -46,7 +46,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "12.05.0";
+const CRM_APP_VERSION = "12.06.0";
 window.CRM_APP_VERSION = CRM_APP_VERSION;
 function v12CanonicalCompany(name) {
   var s = String(name || "").trim();
@@ -235,6 +235,10 @@ function saveState(triggerAutoBackup = true) {
   state._lastSavedAt = Date.now();
   state._uiBuild = CRM_APP_VERSION;
   localStorage.setItem(STORAGE_KEY, serializeStateForLocalStorage(state));
+  try {
+    if (window.__v12PushLock) { /* skip nested */ }
+    else if (typeof window.crmPushStateToServer === "function") window.crmPushStateToServer();
+  } catch (ePush) {}
   if (triggerAutoBackup && window.__CRM_BULK_READY !== false && state.settings && state.settings.autoBackupEnabled) {
     performAutoBackup();
   }
@@ -3170,7 +3174,7 @@ function setupPWAServiceWorker() {
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
   if (!/(^|\\.)ndcohub\\.ir$|(^|\\.)mehraeinpharma\\.ir$/.test(location.hostname || "")) {
-  navigator.serviceWorker.register('/sw.js?v=12.05.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=12.06.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
