@@ -54,10 +54,10 @@
   function fakeFor(path, method) {
     method = method || "GET";
     if (/health|ping|healthz/.test(path)) {
-      return jsonResp({ ok: true, status: "healthy", platform: "static-local", version: (window.CRM_APP_VERSION || "12.05.0"), offline: true });
+      return jsonResp({ ok: true, status: "healthy", platform: "static-local", version: (window.CRM_APP_VERSION || "12.06.0"), offline: true });
     }
     if (/runtime-config/.test(path)) {
-      return jsonResp({ platform: runtime().platform || "static", baseUrl: runtime().baseUrl || "", hubs: runtime().hubs || [], version: "12.05.0" });
+      return jsonResp({ platform: runtime().platform || "static", baseUrl: runtime().baseUrl || "", hubs: runtime().hubs || [], version: "12.06.0" });
     }
     if (/backup\/status/.test(path)) {
       return jsonResp({ status: "ok", cloud: false, local: true, platform: "static-local" });
@@ -110,6 +110,25 @@
     } catch (e) { return false; }
   }
 
+  function altApi(path) {
+    var p = String(path || "");
+    if (p.indexOf("api.php") !== -1) return p;
+    var rest = p.replace(/^\/?api\/?/, "");
+    return "/api.php?path=" + rest;
+  }
+  function tryOrigin(path, opts, ms) {
+    ms = ms || 8000;
+    return fetchTimeout(ORIGIN + path, opts, ms).then(function (r) {
+      if (r && r.ok) return r;
+      if (r && (r.status === 404 || r.status === 405) && path.indexOf("api.php") === -1) {
+        return fetchTimeout(ORIGIN + altApi(path), opts, ms);
+      }
+      return r;
+    }, function () {
+      if (path.indexOf("api.php") === -1) return fetchTimeout(ORIGIN + altApi(path), opts, ms);
+      throw new Error("origin-fail");
+    });
+  }
   function hubFetch(url, opts) {
     opts = opts || {};
     var path = pathOf(url);
@@ -119,29 +138,16 @@
       return Object.assign({ "X-CRM-Request": "1" }, opts.headers || {}, extra || {});
     }
     if (method === "GET" || method === "HEAD" || hollowPost(opts)) {
-      if (skipOriginApi) return Promise.resolve(fakeFor(path, method));
       var o = Object.assign({}, opts, { headers: hdrs() });
-      return fetchTimeout(ORIGIN + path, o, 4000).then(function (r) {
-        if (r && (r.status === 404 || r.status === 405)) skipOriginApi = true;
+      return tryOrigin(path, o, 8000).then(function (r) {
         if (r && r.ok) return r;
         return fakeFor(path, method);
-      }).catch(function () {
-        skipOriginApi = true;
-        return fakeFor(path, method);
-      });
+      }).catch(function () { return fakeFor(path, method); });
     }
     var originReq = Object.assign({}, opts, { headers: hdrs({ "X-CRM-Hub-Sync": "1" }) });
-    var originP = skipOriginApi
-      ? Promise.resolve(null)
-      : fetchTimeout(ORIGIN + path, originReq, 4000).then(function (r) {
-          if (r && (r.status === 404 || r.status === 405)) skipOriginApi = true;
-          return r && r.ok ? r : null;
-        }).catch(function () { skipOriginApi = true; return null; });
-    peers().forEach(function (base) {
-      var po = Object.assign({}, opts, { headers: hdrs({ "X-CRM-Hub-Sync": "1" }), mode: "cors" });
-      fetchTimeout(base + path, po, 4000).catch(function () {});
-    });
-    return originP.then(function (r) { return r || fakeFor(path, method); });
+    return tryOrigin(path, originReq, 8000).then(function (r) {
+      return r && r.ok ? r : fakeFor(path, method);
+    }).catch(function () { return fakeFor(path, method); });
   }
 
   window.fetch = function (url, opts) {

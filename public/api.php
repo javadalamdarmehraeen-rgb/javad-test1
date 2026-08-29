@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
-define("CRM_APP_VERSION", "12.05.0");
+define("CRM_APP_VERSION", "12.06.0");
 
 function cfg() {
   $jf = __DIR__ . "/api-config.json";
@@ -191,13 +191,7 @@ if (!is_file($DATA) && is_file(__DIR__ . "/data/crm-live-data.json")) $DATA = __
 if (!is_file($BULK) && is_file(__DIR__ . "/data/crm-live-bulk.json")) $BULK = __DIR__ . "/data/crm-live-bulk.json";
 /* crm-netafraz-data.json فایل قدیمی است و دیگر خوانده نمی‌شود */
 function fill_if_empty($local, $file) {
-  if ($local && is_array($local) && !hollow_state($local)) return $local;
-  $remote = pull_render();
-  if ($remote && is_array($remote) && !hollow_state($remote)) {
-    $remote = stamp_gen($remote);
-    write_json($file, $remote);
-    return $remote;
-  }
+  /* v12.06: مبنای داده نت‌افراز است؛ از رندر پر نمی‌شود */
   return $local;
 }
 $p = path_info();
