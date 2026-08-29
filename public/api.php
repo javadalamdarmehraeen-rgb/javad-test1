@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
-define("CRM_APP_VERSION", "12.00.0");
+define("CRM_APP_VERSION", "12.01.0");
 
 function cfg() {
   $jf = __DIR__ . "/api-config.json";
@@ -241,12 +241,18 @@ if ($p === "sync" || strpos($p, "sync/") === 0) {
   }
   $local = read_json($DATA);
   if ($target === "render" || $target === "push") {
-    if (!$local || !is_array($local)) {
-      send_json(array("status" => "error", "message" => "no local data", "path" => "sync"), 400);
+    if (!$local || !is_array($local) || hollow_state($local)) {
+      $remote = pull_render();
+      if ($remote && is_array($remote) && !hollow_state($remote)) {
+        $local = stamp_gen($remote);
+        write_json($DATA, $local);
+        send_json(array("status" => "success", "message" => "filled from render", "pulled" => true, "data" => $local));
+      }
+      send_json(array("status" => "skipped", "message" => "no local data", "queued" => true));
     }
     $sync = push_render($local);
     if (!empty($sync["skipped"]) && isset($sync["error"]) && $sync["error"] === "too_empty") {
-      send_json(array("status" => "error", "message" => "too_empty", "sync" => $sync), 400);
+      send_json(array("status" => "skipped", "message" => "too_empty", "sync" => $sync));
     }
     if (empty($sync["ok"])) {
       send_json(array(
@@ -327,5 +333,34 @@ if (strpos($p, "bulk") === 0) {
     write_json($BULK, $incoming);
     send_json(array("status" => "success"));
   }
+}
+if (strpos($p, "tiles/") === 0) {
+  if (!preg_match('#^tiles/([0-9]+)/([0-9]+)/([0-9]+)#', $p, $tm)) {
+    http_response_code(204);
+    exit;
+  }
+  $z = $tm[1]; $x = $tm[2]; $y = $tm[3];
+  $srcs = array(
+    "https://tile.openstreetmap.de/" . $z . "/" . $x . "/" . $y . ".png",
+    "https://tile.openstreetmap.org/" . $z . "/" . $x . "/" . $y . ".png"
+  );
+  foreach ($srcs as $src) {
+    $ch = curl_init($src);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 2);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 4);
+    curl_setopt($ch, CURLOPT_USERAGENT, "namayandeelmi-tile/12.01");
+    $bin = curl_exec($ch);
+    $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    if ($bin !== false && $code >= 200 && $code < 300 && strlen($bin) > 80) {
+      header("Content-Type: image/png");
+      header("Cache-Control: public, max-age=86400");
+      echo $bin;
+      exit;
+    }
+  }
+  http_response_code(204);
+  exit;
 }
 send_json(array("status" => "error", "message" => "not found", "path" => $p), 404);

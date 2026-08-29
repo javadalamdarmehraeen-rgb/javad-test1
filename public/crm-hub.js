@@ -28,6 +28,7 @@
         var u = new URL(x, ORIGIN);
         if (location.protocol === "https:" && u.protocol === "http:") return;
         if (u.origin === ORIGIN) return;
+        if (/ndcohub\.ir$/i.test(u.hostname)) return; /* v12.01: cert CN invalid */
         if (!s[u.origin]) { s[u.origin] = 1; o.push(u.origin); }
       } catch (e) {}
     }
@@ -51,10 +52,10 @@
   function fakeFor(path, method) {
     method = method || "GET";
     if (/health|ping|healthz/.test(path)) {
-      return jsonResp({ ok: true, status: "healthy", platform: "static-local", version: (window.CRM_APP_VERSION || "12.00.0"), offline: true });
+      return jsonResp({ ok: true, status: "healthy", platform: "static-local", version: (window.CRM_APP_VERSION || "12.01.0"), offline: true });
     }
     if (/runtime-config/.test(path)) {
-      return jsonResp({ platform: runtime().platform || "static", baseUrl: runtime().baseUrl || "", hubs: runtime().hubs || [], version: "12.00.0" });
+      return jsonResp({ platform: runtime().platform || "static", baseUrl: runtime().baseUrl || "", hubs: runtime().hubs || [], version: "12.01.0" });
     }
     if (/backup\/status/.test(path)) {
       return jsonResp({ status: "ok", cloud: false, local: true, platform: "static-local" });

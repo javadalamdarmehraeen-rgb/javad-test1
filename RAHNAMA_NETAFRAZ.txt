@@ -1,29 +1,18 @@
-راهنمای نت‌افراز + Render — نسخه ۱۲.۰۰.۰
+راهنمای نت‌افراز + Render — نسخه ۱۲.۰۱.۰
 ========================================
 
-هدف: برنامه روی نت‌افراز باز شود (بدون Forbidden)، نسخه کنار لوگو با سرور یکی باشد،
-نام شرکت طنین طب طاها باشد. همگام در پس‌زمینه است؛ باز شدن صفحه منتظر رندر نمی‌ماند.
+همگام خودکار: نت‌افراز اول داده را از رندر می‌کشد (تا ۲۰ ثانیه، بدون توقف صفحه)،
+بعد اگر خالی نبود برای خودش ذخیره و به رندر می‌فرستد.
+ndcohub.ir به خاطر گواهی SSL خراب دیگر صدا زده نمی‌شود.
 
-الف) نت‌افراز — رفع Forbidden
+الف) نت‌افراز
 1. npm run build-static
-2. محتوای static-build را مستقیم داخل public_html بریزید (نه داخل پوشه تو در تو).
-   حتماً کنار هم باشند: index.php, login.html, index.html, api.php, .htaccess,
-   api-config.php, crm-app.js, crm-bundle.js, crm-hub.js, leaflet.css, leaflet.js
-3. .htaccess نباید Options داشته باشد. RewriteRule نباید با /index.html شروع شود.
-4. اگر باز هم Forbidden بود، فقط index.php و login.html را در ریشه public_html چک کنید.
-5. تست: https://mehraeinpharma.ir/login.html?nosw=1
-   و https://mehraeinpharma.ir/  باید به login.html برود نه ۴۰۳.
+2. کل static-build را مستقیم در public_html بریزید (index.php، login.html، api.php، .htaccess).
+3. SSL / Let\'s Encrypt را برای mehraeinpharma.ir روشن کنید تا Service Worker ثبت شود.
+   برنامه بدون SW هم کار می‌کند.
+4. نقشه روی نت‌افراز از کاشی OSM است؛ /api/tiles دیگر لازم نیست.
 
-ب) Render
-لینک نجات: https://javad-test1.onrender.com/login.html?nosw=1
+ب) اگر همگام ندیدید
+لینک نجات: https://mehraeinpharma.ir/login.html?nosw=1
+رندر: https://javad-test1.onrender.com/login.html?nosw=1
 ورود: admin / 123
-
-ج) نشان نسخه و نام شرکت
-- کادر ورود و کنار لوگو باید هر دو ۱۲.۰۰.۰ باشند.
-- اگر کنار لوگو ۹۸ ماند، کش است: ?nosw=1 یا Clear site data.
-- نام «شرکت پخش دارو و شبکه درمان نماینده علمی» کهنه است و به «طنین طب طاها» برمی‌گردد.
-- داروخانه/پزشک واقعی شما پاک نمی‌شود.
-
-د) همگام
-GET محلی است. POST فوری queued می‌شود و بعد به همتا می‌رود.
-اگر رندر قطع باشد نت‌افراز کار می‌کند.
