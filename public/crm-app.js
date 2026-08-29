@@ -46,7 +46,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "12.00.0";
+const CRM_APP_VERSION = "12.01.0";
 window.CRM_APP_VERSION = CRM_APP_VERSION;
 function v12CanonicalCompany(name) {
   var s = String(name || "").trim();
@@ -498,8 +498,33 @@ function createCustomMarker(lat, lng, type, name, mapInstance, onClickCallback =
 // ----------------------------------------------------------------------------
 function addFallbackTiles(map) {
   if (!map || typeof L === "undefined") return;
-  L.tileLayer("/api/tiles/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OSM", errorTileUrl: "" }).addTo(map);
+  if (map.__crmTiles) return;
+  map.__crmTiles = 1;
+  var plat = "";
+  try { plat = String((window.__CRM_RUNTIME || {}).platform || ""); } catch (eP) {}
+  var staticPlat = plat === "static" || plat === "static-php";
+  var urls = [];
+  if (!staticPlat) urls.push("/api/tiles/{z}/{x}/{y}.png");
+  urls.push("https://tile.openstreetmap.de/{z}/{x}/{y}.png");
+  urls.push("https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png");
+  var i = 0;
+  function use(idx) {
+    if (idx >= urls.length) return;
+    var layer = L.tileLayer(urls[idx], { maxZoom: 19, attribution: "© OSM" });
+    var bad = 0;
+    layer.on("tileerror", function () {
+      bad++;
+      if (bad >= 4 && !map.__crmTileSwitched) {
+        map.__crmTileSwitched = 1;
+        try { map.removeLayer(layer); } catch (eR) {}
+        use(idx + 1);
+      }
+    });
+    layer.addTo(map);
+  }
+  use(0);
 }
+window.crmAddMapTiles = addFallbackTiles;
 
 function ensureMap(id, holderSetter, center, zoom, after) {
   if (typeof L === "undefined") return null;
@@ -565,10 +590,7 @@ function initFullOverviewMap() {
   if (!el) return;
 
   mapFullOverview = L.map("map-full-overview").setView([35.7200, 51.4200], 11);
-  L.tileLayer("/api/tiles/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    attribution: "© OpenStreetMap contributors"
-  }).addTo(mapFullOverview);
+  addFallbackTiles(mapFullOverview);
 
   renderFullOverviewMap();
 }
@@ -3118,7 +3140,7 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  navigator.serviceWorker.register('/sw.js?v=12.00.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=12.01.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -3917,10 +3939,7 @@ function renderSearchInfoResults(results) {
 
   if (!mapSearchInfoInstance && document.getElementById("map-search-info")) {
     mapSearchInfoInstance = L.map("map-search-info").setView([35.7200, 51.4200], 11);
-    L.tileLayer("/api/tiles/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      attribution: "© OpenStreetMap contributors"
-    }).addTo(mapSearchInfoInstance);
+    addFallbackTiles(mapSearchInfoInstance);
   }
 
   if (mapSearchInfoInstance) {
@@ -4072,10 +4091,7 @@ function openRowDetailsModal(rowObj, entityType) {
   setTimeout(() => {
     if (!mapRowDetailsMiniInstance && document.getElementById("rowDetailsMiniMap")) {
       mapRowDetailsMiniInstance = L.map("rowDetailsMiniMap").setView([rowObj.lat || 35.7200, rowObj.lng || 51.4200], 15);
-      L.tileLayer("/api/tiles/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution: "© OpenStreetMap contributors"
-      }).addTo(mapRowDetailsMiniInstance);
+      addFallbackTiles(mapRowDetailsMiniInstance);
     }
     if (mapRowDetailsMiniInstance) {
       mapRowDetailsMiniInstance.invalidateSize();

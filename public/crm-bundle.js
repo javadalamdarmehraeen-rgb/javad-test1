@@ -1028,7 +1028,7 @@
       return window[holderName];
     }
     const map = L.map(id).setView(center || [35.72, 51.42], zoom || 11);
-    L.tileLayer("/api/tiles/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OpenStreetMap" }).addTo(map);
+    (window.crmAddMapTiles||function(m){L.tileLayer("/api/tiles/{z}/{x}/{y}.png",{maxZoom:19}).addTo(m);})(map);
     window[holderName] = map;
     return map;
   }
@@ -2113,7 +2113,7 @@ window.IRAN_FACILITIES = [
     var el = $("map-my-visit");
     if (el && !visitMap) {
       visitMap = L.map("map-my-visit").setView([35.72, 51.42], 13);
-      L.tileLayer("/api/tiles/{z}/{x}/{y}.png", { maxZoom: 19 }).addTo(visitMap);
+      (window.crmAddMapTiles||function(m){L.tileLayer("/api/tiles/{z}/{x}/{y}.png",{maxZoom:19}).addTo(m);})(visitMap);
     }
     if (visitMap && visitSession && visitSession.points.length) {
       if (visitMap._line) visitMap.removeLayer(visitMap._line);
@@ -2154,7 +2154,7 @@ window.IRAN_FACILITIES = [
     if (el && typeof L !== "undefined") {
       if (!window._actMap) {
         window._actMap = L.map("map-activity-log").setView([35.72, 51.42], 11);
-        L.tileLayer("/api/tiles/{z}/{x}/{y}.png", { maxZoom: 19 }).addTo(window._actMap);
+        (window.crmAddMapTiles||function(m){L.tileLayer("/api/tiles/{z}/{x}/{y}.png",{maxZoom:19}).addTo(m);})(window._actMap);
       }
       if (window._actMarks) window._actMarks.forEach(function (m) { window._actMap.removeLayer(m); });
       window._actMarks = [];
@@ -4436,7 +4436,7 @@ window.IRAN_FACILITIES = [
     var el = $("map-" + fid);
     if (!el || el._leaflet_id) return;
     var map = L.map("map-" + fid).setView([35.72, 51.42], 12);
-    L.tileLayer("/api/tiles/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OSM" }).addTo(map);
+    (window.crmAddMapTiles||function(m){L.tileLayer("/api/tiles/{z}/{x}/{y}.png",{maxZoom:19}).addTo(m);})(map);
     var marker = L.marker([35.72, 51.42]).addTo(map);
     userMaps[fid] = { map: map, marker: marker };
     map.on("click", function (e) {
@@ -12852,7 +12852,7 @@ button.v19-gps svg{display:block}
       if(ch) ch.textContent=window.state.settings.companyName||"طنین طب طاها";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.00.0");
+        var ver=String(window.CRM_APP_VERSION||"12.01.0");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -14389,7 +14389,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(ch) ch.textContent=window.state.settings.companyName||"طنین طب طاها";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.00.0");
+        var ver=String(window.CRM_APP_VERSION||"12.01.0");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -16802,7 +16802,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     var el=$("map-activity-log");if(!el||typeof L==="undefined")return null;
     if(!window._actMap){
       window._actMap=L.map("map-activity-log").setView([32.4,53.7],5);
-      L.tileLayer("/api/tiles/{z}/{x}/{y}.png",{maxZoom:19}).addTo(window._actMap);
+      (window.crmAddMapTiles||function(m){L.tileLayer("/api/tiles/{z}/{x}/{y}.png",{maxZoom:19}).addTo(m);})(window._actMap);
     }
     return window._actMap;
   }
@@ -19125,8 +19125,8 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   if(!window.CRM_HUBS){
-    var o=location.origin, L=["https://javad-test1.onrender.com","https://ndcohub.ir","https://mehraeinpharma.ir"];
-    if(location.protocol==="http:") L=L.concat(["http://ndcohub.ir","http://mehraeinpharma.ir"]);
+    var o=location.origin, L=["https://javad-test1.onrender.com","https://mehraeinpharma.ir"];
+    if(location.protocol==="http:") L=L.concat(["http://mehraeinpharma.ir"]);
     L.unshift(o);
     var s={}, hubs=[];
     L.forEach(function(x){ try{ var u=new URL(x,o); if(location.protocol==="https:"&&u.protocol==="http:")return; if(!s[u.origin]){s[u.origin]=1;hubs.push(u.origin);} }catch(e){} });
@@ -19150,10 +19150,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.00.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.01.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.00.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.01.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19233,10 +19233,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.00.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.01.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.00.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.01.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -19292,7 +19292,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.00.0");
+  var BUILD = String(window.CRM_APP_VERSION || "12.01.0");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
@@ -19353,10 +19353,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.00.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.01.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.00.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.01.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19383,10 +19383,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.00.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.01.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.00.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.01.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -19446,7 +19446,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         if (seen[u.origin]) return;
         seen[u.origin] = 1;
         var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
-        var t = setTimeout(function(){ try { if (ctrl) ctrl.abort(); } catch (eA) {} }, 4000);
+        var t = setTimeout(function(){ try { if (ctrl) ctrl.abort(); } catch (eA) {} }, 20000);
         orig(u.origin + "/api/state", { cache: "no-store", mode: "cors", headers: { "X-CRM-Request": "1" }, signal: ctrl ? ctrl.signal : undefined })
           .then(function(r){ clearTimeout(t); return r && r.ok ? r.json() : null; })
           .then(function(j){
@@ -19471,7 +19471,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.00.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.01.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -19498,4 +19498,85 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   paint();
   [30,80,200,500,900,1600,2500,4000,7000].forEach(function(ms){ setTimeout(paint, ms); });
+})();
+/* v12.01.0: بدون ndcohub خراب، کاشی OSM روی نت‌افراز، اول بکش از رندر بعد بفرست */
+(function(){
+  "use strict";
+  window.v1201CertTilesSync = true;
+  function hollow(d){
+    if (!d || typeof d !== "object") return true;
+    return !(d.pharmacies||[]).length && !(d.doctors||[]).length && ((d.users||[]).length <= 1);
+  }
+  function peerList(){
+    var out = [], seen = {};
+    function add(x){
+      try {
+        var u = new URL(String(x), location.origin);
+        if (u.origin === location.origin) return;
+        if (/ndcohub\.ir$/i.test(u.hostname)) return;
+        if (location.protocol === "https:" && u.protocol === "http:") return;
+        if (seen[u.origin]) return;
+        seen[u.origin] = 1;
+        out.push(u.origin);
+      } catch (e) {}
+    }
+    try { if (typeof window.v99Peers === "function") (window.v99Peers()||[]).forEach(add); } catch (e1) {}
+    try {
+      var rt = window.__CRM_RUNTIME || {};
+      if (rt.baseUrl) add(rt.baseUrl);
+      (rt.hubs || []).forEach(add);
+    } catch (e2) {}
+    if (!/onrender\.com$/i.test(location.hostname)) add("https://javad-test1.onrender.com");
+    else add("https://mehraeinpharma.ir");
+    return out;
+  }
+  function applyPeer(remote){
+    if (hollow(remote)) return false;
+    var st = window.state;
+    if (!st || typeof st !== "object") return false;
+    ["pharmacies","doctors","orders","reps","products","visits","hospitals","leaves","notifications","salesTargets","repHomes","repRoutes","activityLog","users"].forEach(function(k){
+      if (!Array.isArray(remote[k])) return;
+      var map = {};
+      (st[k]||[]).forEach(function(r){ if (r && r.id != null) map[String(r.id)] = r; });
+      (remote[k]||[]).forEach(function(r){
+        if (!r || typeof r !== "object") return;
+        var id = r.id != null ? String(r.id) : "";
+        if (!id) { (st[k]=st[k]||[]).push(r); return; }
+        if (!map[id]) { map[id]=r; (st[k]=st[k]||[]).push(r); }
+      });
+    });
+    try {
+      if (typeof saveState === "function") saveState(false);
+      else if (typeof window.saveState === "function") window.saveState(false);
+    } catch (eS) {}
+    return true;
+  }
+  function pushIfFilled(){
+    try {
+      var st = window.state;
+      if (hollow(st)) return;
+      if (typeof window.crmPushStateToServer === "function") window.crmPushStateToServer();
+    } catch (e) {}
+  }
+  function pullThenPush(){
+    var orig = window.__CRM_ORIG_FETCH || window.fetch;
+    var list = peerList();
+    if (!list.length) { pushIfFilled(); return; }
+    var left = list.length;
+    list.forEach(function(base){
+      var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
+      var t = setTimeout(function(){ try { if (ctrl) ctrl.abort(); } catch (eA) {} }, 20000);
+      orig(base + "/api/state", { cache: "no-store", mode: "cors", headers: { "X-CRM-Request": "1" }, signal: ctrl ? ctrl.signal : undefined })
+        .then(function(r){ clearTimeout(t); return r && r.ok ? r.json() : null; })
+        .then(function(j){
+          var d = j && j.data ? j.data : j;
+          applyPeer(d);
+        })
+        .catch(function(){ clearTimeout(t); })
+        .then(function(){ left--; if (left <= 0) pushIfFilled(); });
+    });
+  }
+  setTimeout(pullThenPush, 600);
+  setTimeout(pullThenPush, 5000);
+  setTimeout(pullThenPush, 20000);
 })();
