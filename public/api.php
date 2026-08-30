@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
-define("CRM_APP_VERSION", "12.09.0");
+define("CRM_APP_VERSION", "12.10.0");
 
 function cfg() {
   $jf = __DIR__ . "/api-config.json";
@@ -323,6 +323,11 @@ if (strpos($p, "state") === 0) {
     $existing = read_json($DATA);
     if (too_empty($incoming, $existing)) {
       send_json(array("status" => "success", "data" => $existing, "ignored" => true, "reason" => "empty-rejected"));
+    }
+    $inAt = isset($incoming["_lastSavedAt"]) ? intval($incoming["_lastSavedAt"]) : 0;
+    $exAt = ($existing && isset($existing["_lastSavedAt"])) ? intval($existing["_lastSavedAt"]) : 0;
+    if ($existing && $exAt && $inAt && $inAt < $exAt) {
+      send_json(array("status" => "success", "data" => $existing, "ignored" => true, "reason" => "stale"));
     }
     write_json($DATA, $incoming);
     header("Content-Type: application/json; charset=utf-8");

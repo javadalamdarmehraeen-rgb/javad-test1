@@ -571,28 +571,28 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]      849 بایت  .gitattributes
   [متنی ]     1409 بایت  .gitignore
   [متنی ]     2041 بایت  .gitlab-ci.yml
-  [متنی ]    43768 بایت  AI_ACCEPTANCE_CHECKLIST.md
+  [متنی ]    44291 بایت  AI_ACCEPTANCE_CHECKLIST.md
   [متنی ]    41835 بایت  AI_ARCHITECTURE.md
-  [متنی ]    85798 بایت  AI_DECISION_LOG.md
+  [متنی ]    86079 بایت  AI_DECISION_LOG.md
   [متنی ]    47947 بایت  AI_PROJECT_CONTEXT.md
   [متنی ]    52066 بایت  AI_RULES.md
-  [متنی ]    61180 بایت  AI_TASKS.md
-  [متنی ]    56184 بایت  ARENA_HANDOFF_PROMPT.md
+  [متنی ]    61609 بایت  AI_TASKS.md
+  [متنی ]    56180 بایت  ARENA_HANDOFF_PROMPT.md
   [متنی ]      600 بایت  CHANGES_V10.md
-  [متنی ]   145629 بایت  CHANGES_V11.md
+  [متنی ]   146516 بایت  CHANGES_V11.md
   [متنی ]     3939 بایت  CHANGES_V9.md
   [متنی ]     1806 بایت  CLEAN_EXTRA_FILES.bat
-  [متنی ]    42439 بایت  GITHUB_REVIEW_HANDOFF.md
+  [متنی ]    42441 بایت  GITHUB_REVIEW_HANDOFF.md
   [متنی ]      694 بایت  KEEP_ONLY_GITHUB.bat
   [متنی ]     6816 بایت  OFFICIAL_FILELIST.txt
   [متنی ]     1171 بایت  PAKSAZI_EZAFI.bat
-  [متنی ]   137537 بایت  PROJECT_GRAPH.md
+  [متنی ]   137822 بایت  PROJECT_GRAPH.md
   [متنی ]     2707 بایت  PUSH_FRESH_GITHUB.bat
   [متنی ]     2680 بایت  PUSH_GITHUB_CLEAN.bat
   [متنی ]     6579 بایت  RAHNAMA_GITLAB.txt
   [متنی ]     1059 بایت  RAHNAMA_NETAFRAZ.txt
   [متنی ]     2852 بایت  RAHNAMA_PAKSAZI.txt
-  [متنی ]    14497 بایت  README.md
+  [متنی ]    14890 بایت  README.md
   [متنی ]     4731 بایت  README_FA_COMPLETE.md
   [متنی ]     2766 بایت  SYNC_ALL.bat
   [متنی ]     1273 بایت  SYNC_OFFICIAL_OVER_FOLDER.bat
@@ -609,21 +609,21 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     2355 بایت  sync-all.js
   [متنی ]     2426 بایت  sync_all.sh
   [متنی ]      738 بایت  tsconfig.json
-  [متنی ]   388357 بایت  update_chat_arena.py
+  [متنی ]   389333 بایت  update_chat_arena.py
   [متنی ]    13359 بایت  update_project_graph.py
   [متنی ]     2558 بایت  .github/workflows/deploy.yml
   [متنی ]      206 بایت  .github/workflows/keep_alive.yml
-  [متنی ]      286 بایت  backups/crm-2026-08-30-10-00.json
+  [متنی ]      286 بایت  backups/crm-2026-08-30-20-00.json
   [متنی ]     7164 بایت  mobile/App.tsx
   [متنی ]     9805 بایت  mobile/README.md
   [متنی ]     9966 بایت  mobile/src/simAuth.ts
   [متنی ]      729 بایت  public/.htaccess
   [متنی ]      100 بایت  public/api-config.json
   [متنی ]      129 بایت  public/api-config.php
-  [متنی ]    15620 بایت  public/api.php
+  [متنی ]    15977 بایت  public/api.php
   [متنی ]     8066 بایت  public/cloudflare-worker.js
-  [متنی ]   189581 بایت  public/crm-app.js
-  [متنی ]  1210063 بایت  public/crm-bundle.js
+  [متنی ]   190848 بایت  public/crm-app.js
+  [متنی ]  1222568 بایت  public/crm-bundle.js
   [متنی ]    57777 بایت  public/crm-data.js
   [متنی ]    13643 بایت  public/crm-features-v10.js
   [متنی ]   112307 بایت  public/crm-features-v11.js
@@ -640,7 +640,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     6622 بایت  public/crm-hub.js
   [متنی ]    25683 بایت  public/crm-jalali.js
   [متنی ]      228 بایت  public/crm-runtime.js
-  [متنی ]   180978 بایت  public/index.html
+  [متنی ]   181263 بایت  public/index.html
   [متنی ]      834 بایت  public/index.php
   [متنی ]    11799 بایت  public/iran-facilities.js
   [متنی ]    14145 بایت  public/leaflet.css
@@ -802,8 +802,8 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     3346 بایت  src/lib/zip.ts
   [متنی ]     4980 بایت  tests/app-smoke.test.mjs
   [متنی ]    19979 بایت  tests/state-preservation.test.mjs
-  [متنی ]    93132 بایت  tests/version-11.24-regressions.test.mjs
-  [تصویر]   392393 بایت  __pycache__/update_chat_arena.cpython-311.pyc
+  [متنی ]    93832 بایت  tests/version-11.24-regressions.test.mjs
+  [تصویر]   393369 بایت  __pycache__/update_chat_arena.cpython-311.pyc
   [تصویر]    23282 بایت  public/apple-touch-icon.png
   [تصویر]     4527 بایت  public/favicon.png
   [تصویر]    26208 بایت  public/icon-192.png
@@ -4005,6 +4005,11 @@ ZIP اولین نسخه 38 از کامیت تاریخی دقیق همان نسخ
 
 🤖 دستیار: نسخه ۱۲.۰۹.۰. formFieldMeta روی نت‌افراز همگام. consVat در کادر جدید. تخصص select+جستجو. GPS همان موتور داروخانه.
 
+──────────────────────────────── نوبت ۱۲۸ ────────────────────────────────
+🧑 کاربر: GPS منزل بگیرونگیر؛ پلاک و طبقه در لیست؛ استان/شهر/منطقه هر بار عوض می‌شود؛ درصد افزایش باید در کادر قیمت جدید بنشیند؛ ویرایش مصرف‌کننده با ارزش افزوده با باقیمانده درصد؛ همگام باید لحظه‌ای باشد نه رفرش دستی.
+
+🤖 دستیار: نسخه ۱۲.۱۰.۰. GPS با getCurrentPosition+watch و دقت ۸۰متر. پلاک/طبقه ستون لیست. جغرافیا بدون rebuild و بدون فیلتر مسیر روی فرم. افزایش همان لحظه dist/ph/cons. consVat×(۱−vat٪) سپس fromCons. پول بدون پوش هنگام pull و last-write-wins روی PHP.
+
 
 
 ══════════════════════════════════════════════════════════════════════════════════
@@ -4253,10 +4258,17 @@ sync-after-deploy:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_ACCEPTANCE_CHECKLIST.md (43768 بایت)
+فایل: AI_ACCEPTANCE_CHECKLIST.md (44291 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # AI_ACCEPTANCE_CHECKLIST — چک‌لیست اجباری تحویل واقعی
+
+## نوبت ۱۲۸ / نسخه 12.10.0
+- منزل: موقعیت فعلی من با GPS پایدار؛ پلاک و طبقه در لیست ✅
+- جغرافیا: استان/شهر/منطقه ثابت می‌ماند ✅
+- قیمت: درصد افزایش همان لحظه در کادر جدید؛ ویرایش مصرف‌کننده با ارزش افزوده با باقیمانده درصد ✅
+- همگام: تغییرات ویندوز/گوشی بدون رفرش دستی (poll ۴ثانیه + LWW) ✅
+- تست: 131/131 ✅
 
 این فایل برای پرامپت‌های چندبخشی کاربر است و در هر نوبت باید قبل از تحویل به‌روز شود.
 
@@ -5976,9 +5988,12 @@ static-build فقط فایل. داده خالی از رندر پر می‌شود
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_DECISION_LOG.md (85798 بایت)
+فایل: AI_DECISION_LOG.md (86079 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
+## 12.10.0
+GPS منزل پایدار + پلاک/طبقه در لیست؛ جغرافیا قفل؛ قیمت جدید لحظه‌ای از درصد افزایش و consVat با باقیمانده درصد؛ همگام لحظه‌ای last-write-wins بدون پوش هنگام pull.
+
 ## 11.77.0
 تب قیمت‌گذاری کالاها با دو کادر فعلی/جدید و اعمال زمان‌بندی‌شده.
 
@@ -10544,9 +10559,15 @@ static-build فقط فایل. داده خالی از رندر پر می‌شود
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: AI_TASKS.md (61180 بایت)
+فایل: AI_TASKS.md (61609 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
+## 12.10.0
+- [x] GPS منزل بگیر/نگیر → getCurrentPosition+watch، دقت ۸۰م، پلاک/طبقه در جدول
+- [x] استان/شهر/منطقه ثابت → populate بدون rebuild + skip v56 روی فرم
+- [x] درصد افزایش در کادر قیمت جدید همان لحظه + consVat باقیمانده سپس fromCons
+- [x] همگام لحظه‌ای بدون رفرش دستی؛ PHP _lastSavedAt
+
 ## 11.77.0
 تب قیمت‌گذاری کالاها با دو کادر فعلی/جدید و اعمال زمان‌بندی‌شده.
 
@@ -12290,7 +12311,7 @@ static-build فقط فایل. داده خالی از رندر پر می‌شود
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: ARENA_HANDOFF_PROMPT.md (56184 بایت)
+فایل: ARENA_HANDOFF_PROMPT.md (56180 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # ARENA AI MASTER HANDOFF PROMPT
@@ -13667,7 +13688,7 @@ ADDENDUM v11.16.1 (2026-08-16)
 نسخه 11.66.0. تب tab-define-routes (چک‌باکس مسیر) و tab-dist-targets (تارگت پخش). تارگت فروش = تارگت فروش نمایندگان.
 
 ## شروع اجباری بعد از نوبت ۸۶
-نسخه برنامه همچنان 11.66.0. اگر کاربر گفت «زیپ با فرمت دیگری ظاهر شده»، ZIP را PKZIP ویندوز بساز و صفحه دانلود پورت 8000 را نشان بده؛ present_file خام ZIP در Arena ممکن است سفید/باینری باشد. نسخه را بدون تغییر کد bump نکن.
+نسخه برنامه فعلی 12.10.0. اگر کاربر گفت «زیپ با فرمت دیگری ظاهر شده»، ZIP را PKZIP ویندوز بساز و صفحه دانلود پورت 8000 را نشان بده؛ present_file خام ZIP در Arena ممکن است سفید/باینری باشد. نسخه را بدون تغییر کد bump نکن.
 
 ## شروع اجباری بعد از نوبت ۸۷
 نسخه 11.67.0. عرض/ارتفاع ذخیره‌شده مدیر اعمال شود. سطرهای تارگت/مسیر ویرایش و حذف دارند. سرور منبع واحد است (merge با _updatedAt + poll 8s).
@@ -13795,9 +13816,17 @@ Leaflet محلی. فونت گوگل حذف شد. gzip روی JS/CSS/HTML.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: CHANGES_V11.md (145629 بایت)
+فایل: CHANGES_V11.md (146516 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
+
+## 12.10.0 — ۱۴۰۵/۰۶/۰۸
+- موقعیت فعلی منزل پایدار (getCurrentPosition + watch، پذیرش دقت ۸۰متر بعد از ۴ ثانیه)
+- پلاک و طبقه در فرم و ستون‌های لیست منزل نمایندگان
+- استان/شهر/منطقه دیگر با هر کلیک عوض نمی‌شود (بدون rebuild و بدون فیلتر مسیر روی فرم)
+- درصد افزایش همان لحظه قیمت پخش/داروخانه/مصرف‌کننده را در کادر قیمت جدید می‌نویسد
+- ویرایش مصرف‌کننده با ارزش افزوده: باقیمانده درصد ارزش افزوده سپس مابه التفاوت‌ها (fromCons)
+- همگام لحظه‌ای ویندوز/گوشی: pull بدون پوش، last-write-wins با _lastSavedAt، بازآرایی لیست بدون رفرش دستی
 
 ## 11.89.0 — ۱۴۰۵/۰۶/۰۶
 - رفع اخطار کنسول «نسخه SW متفاوت است» با هم‌نسخه کردن سرویس‌ورکر
@@ -14954,14 +14983,14 @@ pause
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: GITHUB_REVIEW_HANDOFF.md (42439 بایت)
+فایل: GITHUB_REVIEW_HANDOFF.md (42441 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # GITHUB_REVIEW_HANDOFF — تحویل مویرگی برای بررسی GitHub و هوش مصنوعی بعدی
 
-**تاریخ این تحویل:** 2026-08-27 / ۵ شهریور 1405 (به‌روزرسانی نوبت ۹۵)
-**نسخه آماده سورس:** `12.09.0` (فایل واحد crm-bundle + آینه crm-features-v20)
-**نسخه chat.arena پس از بازسازی این نوبت:** `1.87`
+**تاریخ این تحویل:** 2026-08-30 / ۸ شهریور 1405 (به‌روزرسانی نوبت ۱۲۸)
+**نسخه آماده سورس:** `12.10.0` (فایل واحد crm-bundle + آینه crm-features-v20)
+**نسخه chat.arena پس از بازسازی این نوبت:** `1.88`
 **شاخه اجباری این جلسه:** `arena/01a03a45-javad-test1`
 **مخزن:** `javadalamdarmehraeen-rgb/javad-test1`
 **Production فعال:** `https://javad-test1.onrender.com` — 11.38.0 سرو می‌کند؛ با push نسخه 11.38.1 توسط کاربر، Render دیپلوی می‌کند
@@ -15961,7 +15990,7 @@ pause
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: PROJECT_GRAPH.md (137537 بایت)
+فایل: PROJECT_GRAPH.md (137822 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # 🕸️ گراف دانش پروژه «نماینده علمی» (PROJECT_GRAPH.md)
@@ -16015,14 +16044,14 @@ pause
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (189581 بایت)
+### `public/crm-app.js` (190848 بایت)
 - نقش: ============================================================================
-- تعداد توابع داخلی: 183
-- نام‌های window که تعریف/بازنویسی می‌کند: `CRM_APP_VERSION`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_STATE_BOUND`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `applyV77ProductPricing`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `crmAddMapTiles`, `crmPushStateToServer`, `getAllMenuSections`, `paintV77ProductPricing`, `rememberPharmacyName`, `renderDoctorsList`, `renderExtraTabCustomFields`, `renderPharmaciesList`, `syncProductsEverywhere`, `v12OpsOnlyRestore`, `v12TahaName`, `v12TakeRegisteredOnly`, `validateRequiredFields`
+- تعداد توابع داخلی: 185
+- نام‌های window که تعریف/بازنویسی می‌کند: `CRM_APP_VERSION`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_STATE_BOUND`, `__CRM_SW_READY`, `__v12HomePos`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `applyV77ProductPricing`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `crmAddMapTiles`, `crmPushStateToServer`, `getAllMenuSections`, `paintV77ProductPricing`, `rememberPharmacyName`, `renderDoctorsList`, `renderExtraTabCustomFields`, `renderPharmaciesList`, `syncProductsEverywhere`, `v12OpsOnlyRestore`, `v12TahaName`, `v12TakeRegisteredOnly`, `validateRequiredFields`
 
-### `public/crm-bundle.js` (1210063 بایت)
+### `public/crm-bundle.js` (1222568 بایت)
 - نقش: * crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
-- تعداد توابع داخلی: 1227
+- تعداد توابع داخلی: 1241
 - نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `CRM_HUBS`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `IRAN_GEO_DATA`, `WIDGET_PALETTE`, `__CRM_APPLYING_SERVER`, `__CRM_BULK_PURGE`, `__CRM_BULK_READY`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_LAYOUT_APPLYING`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SERVER_READY`, `__CRM_SKIP_V64_STRIP`, `__CRM_SNAP`, `__CRM_UNVEIL`, `__CRM_V78_EDIT_PID`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__V68_WATCH`, `__V69_SYNC`, `__V70_SOLO`, `__V71_CLAIMED`, `__V72_BOOT`, `__V73_BOOT`, `__V73_WATCH`, `__V79_BOOT`, `__V80_BOOT`, `__V80_LOCK`, `__V81_BOOT`
 
 ### `public/crm-data.js` (57777 بایت)
@@ -16120,7 +16149,7 @@ pause
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (5417 بایت)
-- نقش: const BUILD = "12.09.0";
+- نقش: const BUILD = "12.10.0";
 - تعداد توابع داخلی: 6
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -16151,6 +16180,7 @@ pause
 - `__V42CD`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
 - `__V42CSS`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
 - `__lastHealth`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v10.js`
+- `__v12HomePos`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
 - `__v40LastPick`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
 - `_actMap`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v11.js`
 - `_actMarks`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v11.js`
@@ -16519,7 +16549,7 @@ pause
 - `public/crm-bundle.js` → 3 شناسه (مثل: `btnSaveProductPricing`, `v77CurrentPricesBody`, `v77NewPricesBody`)
 
 ### tab-rep-homes «🏠 منزل نمایندگان»
-- `public/crm-app.js` → 3 شناسه (مثل: `repHomeAddressInput`, `repHomeSelect`, `tableRepHomesBody`)
+- `public/crm-app.js` → 5 شناسه (مثل: `repHomeAddressInput`, `repHomeFloor`, `repHomePlate`, `repHomeSelect`, `tableRepHomesBody`)
 - `public/crm-bundle.js` → 6 شناسه (مثل: `btnRepHomeCurrentLocation`, `repHomeAddressInput`, `repHomeFloor`, `repHomePlate`, `repHomeSelect`, `tableRepHomesBody`)
 - `public/crm-features-v20.js` → 1 شناسه (مثل: `tableRepHomesBody`)
 - `public/crm-features-v9.js` → 2 شناسه (مثل: `btnRepHomeCurrentLocation`, `repHomeSelect`)
@@ -16745,6 +16775,7 @@ pause
 - `distStore` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `distributorMetrics` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `districtNames` ← `public/crm-bundle.js`, `public/crm-features-v16.js`
+- `districts` ← `public/crm-app.js`, `public/crm-bundle.js`
 - `div` ← `public/crm-bundle.js`, `public/crm-jalali.js`
 - `doAddressSearch` ← `public/crm-bundle.js`, `public/crm-features-v9.js`
 - `doc` ← `public/crm-app.js`, `public/crm-bundle.js`, `public/crm-features-v10.js`
@@ -16887,6 +16918,7 @@ pause
 - `hist` ← `public/crm-bundle.js`, `public/crm-features-v19.js`
 - `hit` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `hits` ← `public/crm-bundle.js`, `public/crm-features-v14.js`, `public/crm-features-v16.js`, `public/crm-features-v17.js`
+- `hm` ← `public/crm-app.js`, `public/crm-bundle.js`
 - `hook` ← `public/crm-bundle.js`, `public/crm-features-v17.js`
 - `hookComboInstantAdd` ← `public/crm-bundle.js`, `public/crm-features-v19.js`
 - `hookDesignerSizeDisplay` ← `public/crm-bundle.js`, `public/crm-features-v15.js`
@@ -17427,7 +17459,7 @@ pause
 
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
-- نسخه سورس package: `12.09.0`
+- نسخه سورس package: `12.10.0`
 - مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a03a45-javad-test1`؛ push/PR فقط از همین شاخه.
 - Production فعال: `https://javad-test1.onrender.com` — نسخه سورس فعلی `11.66.0` است و تا push کاربر روی production همان آخرین دیپلوی قبلی می‌ماند.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.
@@ -17782,7 +17814,7 @@ ndcohub.ir به خاطر گواهی SSL خراب دیگر صدا زده نمی�
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: README.md (14497 بایت)
+فایل: README.md (14890 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # نماینده علمی — طنین طب طاها
@@ -18241,6 +18273,9 @@ git push gitlab main             #   GitLab
 
 ## 12.00.0
 رفع Forbidden نت‌افراز؛ نشان نسخه کنار لوگو با سرور یکی؛ نام شرکت طنین طب طاها.
+
+## 12.10.0
+موقعیت منزل پایدار با پلاک و طبقه در لیست. استان/شهر/منطقه ثابت. درصد افزایش همان لحظه در کادر قیمت جدید؛ ویرایش مصرف‌کننده با ارزش افزوده با باقیمانده درصد ستون‌ها. همگام لحظه‌ای ویندوز و گوشی بدون رفرش دستی.
 
 ## 12.09.0
 بدون fetch به ndcohub خراب؛ کاشی OSM روی نت‌افراز؛ همگام اول از رندر.
@@ -18723,7 +18758,7 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "12.09.0",
+  "version": "12.10.0",
   "description": "سیستم جامع مدیریت و ویزیت علمی، داروخانه‌ها، پزشکان و سفارشات (CRM / PWA) هماهنگ با Render و Neon",
   "main": "server.js",
   "engines": {
@@ -18831,7 +18866,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "12.09.0";
+const APP_VERSION = "12.10.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -19726,7 +19761,7 @@ git status -sb
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: update_chat_arena.py (388357 بایت)
+فایل: update_chat_arena.py (389333 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~python
 #!/usr/bin/env python3
@@ -23516,6 +23551,11 @@ ZIP اولین نسخه 38 از کامیت تاریخی دقیق همان نسخ
 
 🤖 دستیار: نسخه ۱۲.۰۹.۰. formFieldMeta روی نت‌افراز همگام. consVat در کادر جدید. تخصص select+جستجو. GPS همان موتور داروخانه.
 
+──────────────────────────────── نوبت ۱۲۸ ────────────────────────────────
+🧑 کاربر: GPS منزل بگیرونگیر؛ پلاک و طبقه در لیست؛ استان/شهر/منطقه هر بار عوض می‌شود؛ درصد افزایش باید در کادر قیمت جدید بنشیند؛ ویرایش مصرف‌کننده با ارزش افزوده با باقیمانده درصد؛ همگام باید لحظه‌ای باشد نه رفرش دستی.
+
+🤖 دستیار: نسخه ۱۲.۱۰.۰. GPS با getCurrentPosition+watch و دقت ۸۰متر. پلاک/طبقه ستون لیست. جغرافیا بدون rebuild و بدون فیلتر مسیر روی فرم. افزایش همان لحظه dist/ph/cons. consVat×(۱−vat٪) سپس fromCons. پول بدون پوش هنگام pull و last-write-wins روی PHP.
+
 """
 
 FILES_INTRO = """
@@ -23552,7 +23592,7 @@ def build():
         out.append("~~~~~~~~" + lang)
         out.append(content.rstrip("\n"))
         out.append("~~~~~~~~")
-    out.append("\n\n— پایان chat.arena نسخه ۱.۸۷ (نسخه برنامه 12.09.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
+    out.append("\n\n— پایان chat.arena نسخه ۱.۸۸ (نسخه برنامه 12.10.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —")
     with open(OUT, "w", encoding="utf-8") as f:
         payload = "\n".join(out)
         payload = "\n".join(line.rstrip() for line in payload.splitlines())
@@ -23910,10 +23950,10 @@ jobs:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: backups/crm-2026-08-30-10-00.json (286 بایت)
+فایل: backups/crm-2026-08-30-20-00.json (286 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~json
-{"_dataGen":"11.81.0","_schemaVersion":"11.81.0","_lastSavedAt":42,"users":[{"id":"sentinel-user","fullName":"اطلاعات قدیمی"}],"formFieldMeta":{"order":{"sentinel":{"order":99}}},"_soloOnly":true,"_soloEpoch":1788084757622,"_soloAt":1788084757622,"_unifiedAt":1788084757622}
+{"_dataGen":"11.81.0","_schemaVersion":"11.81.0","_lastSavedAt":42,"users":[{"id":"sentinel-user","fullName":"اطلاعات قدیمی"}],"formFieldMeta":{"order":{"sentinel":{"order":99}}},"_soloOnly":true,"_soloEpoch":1788120242018,"_soloAt":1788120242018,"_unifiedAt":1788120242018}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -24703,7 +24743,7 @@ return array(
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/api.php (15620 بایت)
+فایل: public/api.php (15977 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~text
 <?php
@@ -24731,7 +24771,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
-define("CRM_APP_VERSION", "12.09.0");
+define("CRM_APP_VERSION", "12.10.0");
 
 function cfg() {
   $jf = __DIR__ . "/api-config.json";
@@ -25032,6 +25072,11 @@ if (strpos($p, "state") === 0) {
     if (too_empty($incoming, $existing)) {
       send_json(array("status" => "success", "data" => $existing, "ignored" => true, "reason" => "empty-rejected"));
     }
+    $inAt = isset($incoming["_lastSavedAt"]) ? intval($incoming["_lastSavedAt"]) : 0;
+    $exAt = ($existing && isset($existing["_lastSavedAt"])) ? intval($existing["_lastSavedAt"]) : 0;
+    if ($existing && $exAt && $inAt && $inAt < $exAt) {
+      send_json(array("status" => "success", "data" => $existing, "ignored" => true, "reason" => "stale"));
+    }
     write_json($DATA, $incoming);
     header("Content-Type: application/json; charset=utf-8");
     header("Cache-Control: no-store");
@@ -25318,7 +25363,7 @@ async function sendWhatsappCloud(text, to, token) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-app.js (189581 بایت)
+فایل: public/crm-app.js (190848 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // ============================================================================
@@ -25369,7 +25414,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "12.09.0";
+const CRM_APP_VERSION = "12.10.0";
 window.CRM_APP_VERSION = CRM_APP_VERSION;
 function v12CanonicalCompany(name) {
   var s = String(name || "").trim();
@@ -25755,43 +25800,63 @@ function setupDropdownAutoClear() {
 // 3. پیاده‌سازی ویژگی ۴: استان‌ها، شهرها و مناطق مرتب بدون تکرار (Requirement 4)
 // ----------------------------------------------------------------------------
 function populateProvinces(selectElement, selectedValue = "") {
+  if (!selectElement) return;
+  const keep = selectedValue || selectElement.value || "";
+  const keys = Object.keys(IRAN_GEO_DATA || {});
+  const sig = "p|" + keys.join("\n");
+  if (selectElement.dataset.geoSig === sig) {
+    if (keep) selectElement.value = keep;
+    return;
+  }
+  selectElement.dataset.geoSig = sig;
   selectElement.innerHTML = `<option value="">انتخاب استان...</option>`;
-  Object.keys(IRAN_GEO_DATA).forEach(province => {
+  keys.forEach(province => {
     const opt = document.createElement("option");
     opt.value = province;
     opt.textContent = province;
-    if (province === selectedValue) opt.selected = true;
     selectElement.appendChild(opt);
   });
+  if (keep) selectElement.value = keep;
 }
 
 function populateCities(provinceName, selectElement, selectedValue = "") {
+  if (!selectElement) return;
+  const keep = selectedValue || selectElement.value || "";
+  const cities = (!provinceName || !IRAN_GEO_DATA || !IRAN_GEO_DATA[provinceName]) ? [] : Object.keys(IRAN_GEO_DATA[provinceName]);
+  const sig = "c|" + String(provinceName || "") + "|" + cities.join("\n");
+  if (selectElement.dataset.geoSig === sig) {
+    if (keep) selectElement.value = keep;
+    return;
+  }
+  selectElement.dataset.geoSig = sig;
   selectElement.innerHTML = `<option value="">انتخاب شهر...</option>`;
-  if (!provinceName || !IRAN_GEO_DATA[provinceName]) return;
-
-  Object.keys(IRAN_GEO_DATA[provinceName]).forEach(city => {
+  cities.forEach(city => {
     const opt = document.createElement("option");
     opt.value = city;
     opt.textContent = city;
-    if (city === selectedValue) opt.selected = true;
     selectElement.appendChild(opt);
   });
+  if (keep) selectElement.value = keep;
 }
 
 function populateDistricts(provinceName, cityName, selectElement, selectedValue = "") {
-  selectElement.innerHTML = `<option value="">انتخاب منطقه...</option>`;
-  if (!provinceName || !cityName || !IRAN_GEO_DATA[provinceName] || !IRAN_GEO_DATA[provinceName][cityName]) {
+  if (!selectElement) return;
+  const keep = selectedValue || selectElement.value || "";
+  const districts = (!provinceName || !cityName || !IRAN_GEO_DATA || !IRAN_GEO_DATA[provinceName] || !IRAN_GEO_DATA[provinceName][cityName]) ? [] : IRAN_GEO_DATA[provinceName][cityName];
+  const sig = "d|" + String(provinceName || "") + "|" + String(cityName || "") + "|" + (districts || []).join("\n");
+  if (selectElement.dataset.geoSig === sig) {
+    if (keep) selectElement.value = keep;
     return;
   }
-
-  const districts = IRAN_GEO_DATA[provinceName][cityName];
-  districts.forEach(district => {
+  selectElement.dataset.geoSig = sig;
+  selectElement.innerHTML = `<option value="">انتخاب منطقه...</option>`;
+  (districts || []).forEach(district => {
     const opt = document.createElement("option");
     opt.value = district;
     opt.textContent = district;
-    if (district === selectedValue) opt.selected = true;
     selectElement.appendChild(opt);
   });
+  if (keep) selectElement.value = keep;
 }
 
 function setupCascadingGeoSelectors(provinceId, cityId, districtId) {
@@ -27312,9 +27377,11 @@ function renderRepHomesTable() {
   (state.repHomes || []).forEach(hm => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td><strong style="color:#0f172a;">${hm.repName}</strong></td>
-      <td>${hm.address}</td>
-      <td style="direction:ltr;">${hm.lat}, ${hm.lng}</td>
+      <td><strong style="color:#0f172a;">${hm.repName || ""}</strong></td>
+      <td>${hm.address || ""}</td>
+      <td>${hm.plate || "—"}</td>
+      <td>${hm.floor || "—"}</td>
+      <td style="direction:ltr;">${hm.lat || ""}, ${hm.lng || ""}</td>
       <td>
         <button class="btn btn-outline btn-sm" onclick="alert('نمایش آدرس منزل روی نقشه جامع فعال شد.')">📍 نمایش</button>
         <button class="btn btn-outline btn-sm" onclick="editRepHome('${hm.id}')">✏️ ویرایش</button>
@@ -27326,7 +27393,11 @@ function renderRepHomesTable() {
 }
 function editRepHome(id) {
   const hm=(state.repHomes||[]).find(x=>String(x.id)===String(id));if(!hm)return;
-  const rep=document.getElementById("repHomeSelect"),addr=document.getElementById("repHomeAddressInput");if(rep)rep.value=hm.repName||"";if(addr){addr.value=hm.address||"";addr.focus();}
+  const rep=document.getElementById("repHomeSelect"),addr=document.getElementById("repHomeAddressInput");
+  const pl=document.getElementById("repHomePlate"),fl=document.getElementById("repHomeFloor");
+  if(rep)rep.value=hm.repName||"";if(addr){addr.value=hm.address||"";addr.focus();}
+  if(pl)pl.value=hm.plate||"";if(fl)fl.value=hm.floor||"";
+  if(hm.lat&&hm.lng) window.__v12HomePos={lat:hm.lat,lng:hm.lng};
   window._editingRepHomeId=hm.id;
 }
 function deleteRepHome(id) {
@@ -28503,7 +28574,7 @@ function setupPWAServiceWorker() {
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
   if (!/(^|\\.)ndcohub\\.ir$|(^|\\.)mehraeinpharma\\.ir$/.test(location.hostname || "")) {
-  navigator.serviceWorker.register('/sw.js?v=12.09.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=12.10.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -29631,7 +29702,7 @@ function deleteProductCatalogItem(id) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-bundle.js (1210063 بایت)
+فایل: public/crm-bundle.js (1222568 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 /* crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
@@ -29972,10 +30043,20 @@ function deleteProductCatalogItem(id) {
     return new Promise(function (resolve) {
       if (!navigator.geolocation) { resolve({ error: true, message: "GPS این دستگاه در دسترس نیست." }); return; }
       var best=null,done=false,watch=null;
-      function finish(result){if(done)return;done=true;if(watch!=null)try{navigator.geolocation.clearWatch(watch);}catch(e){}clearTimeout(timer);resolve(result);}
-      // هدف دقت ۱۰ متر ثابت است؛ reverse geocode هم‌زمان با دریافت نقطه اجرا می‌شود تا زمان انتظار جمع نشود.
-      var timer=setTimeout(function(){if(best)finish(best);else finish({error:true,message:"موقعیت دقیق دریافت نشد؛ GPS را روشن و دوباره تلاش کنید."});},15000);
-      watch=navigator.geolocation.watchPosition(function(pos){var cur={lat:pos.coords.latitude,lng:pos.coords.longitude,accuracy:Number(pos.coords.accuracy)||9999,fallback:false};cur.addressPromise=geoReverse(cur.lat,cur.lng);if(!best||cur.accuracy<best.accuracy)best=cur;if(cur.accuracy<=10)finish(cur);},function(err){if(err&&err.code===1)finish({error:true,message:"اجازه GPS داده نشده است."});},{enableHighAccuracy:true,timeout:15000,maximumAge:0});
+      function finish(result){if(done)return;done=true;if(watch!=null)try{navigator.geolocation.clearWatch(watch);}catch(e){}clearTimeout(timer);clearTimeout(early);resolve(result);}
+      function accept(pos){
+        if(!pos||!pos.coords)return;
+        var cur={lat:pos.coords.latitude,lng:pos.coords.longitude,accuracy:Number(pos.coords.accuracy)||9999,fallback:false};
+        try{cur.addressPromise=geoReverse(cur.lat,cur.lng);}catch(e){cur.addressPromise=null;}
+        if(!best||cur.accuracy<best.accuracy)best=cur;
+        if(cur.accuracy<=10)finish(cur);
+        else if(cur.accuracy<=80)finish(cur);
+      }
+      function onErr(err){ if(err&&err.code===1)finish({error:true,message:"اجازه GPS داده نشده است."}); }
+      var timer=setTimeout(function(){if(best)finish(best);else finish({error:true,message:"موقعیت گرفته نشد. GPS را روشن کنید. روی HTTP (Not Secure) مرورگر موقعیت را مسدود می‌کند."});},15000);
+      var early=setTimeout(function(){if(best)finish(best);},4000);
+      try{navigator.geolocation.getCurrentPosition(accept,onErr,{enableHighAccuracy:true,timeout:10000,maximumAge:8000});}catch(eG){}
+      try{watch=navigator.geolocation.watchPosition(accept,onErr,{enableHighAccuracy:true,timeout:15000,maximumAge:0});}catch(eW){}
     });
   }
   window.getCurrentPositionSafe = getCurrentPositionSafe;
@@ -30768,13 +30849,12 @@ function deleteProductCatalogItem(id) {
         if (!state.repHomes) state.repHomes = [];
         const idx = state.repHomes.findIndex(function (h) { return h.repName === name; });
         const owner = ((state && state.users) || []).find(function (u) { return u && u.fullName === name; });
-        const rec = { id: "home-" + Date.now(), repId: owner ? owner.id : (sessionStorage.getItem("crmUserId") || ""), repName: name, address: addr, lat: pos.lat, lng: pos.lng };
-        if (idx === -1) state.repHomes.push(rec);
-        else state.repHomes[idx] = Object.assign({}, state.repHomes[idx], rec);
-        saveState();
-        initRepHomesMap();
-        if (mapRepHomes) mapRepHomes.setView([pos.lat, pos.lng], 16);
-        safeAlert("لوکیشن منزل «" + name + "» ثبت شد و آدرس در فیلد نشست.");
+        window.__v12HomePos = { lat: pos.lat, lng: pos.lng };
+        if (mapRepHomes) {
+          mapRepHomes.setView([pos.lat, pos.lng], 16);
+          try { if (typeof createCustomMarker === "function") createCustomMarker(pos.lat, pos.lng, "rep", "منزل " + name, mapRepHomes); } catch (eM) {}
+        }
+        safeAlert("موقعیت منزل گرفته شد. پلاک و طبقه را بنویسید و ذخیره را بزنید.");
       });
     }
   }
@@ -42030,6 +42110,10 @@ button.v19-gps svg{display:block}
 
   /* ---------- v11.41 / turn 73: تب «تغییرات در نسخه جدید» + گزارش اعمال‌نشده‌ها ---------- */
   var V41_CHANGES=[
+    ["۱۲.۱۰: موقعیت منزل پایدار + پلاک و طبقه در لیست","applied"],
+    ["۱۲.۱۰: استان/شهر/منطقه دیگر با هر کلیک عوض نمی‌شود","applied"],
+    ["۱۲.۱۰: درصد افزایش همان لحظه در کادر قیمت جدید؛ ویرایش مصرف‌کننده با ارزش افزوده با باقیمانده درصد","applied"],
+    ["۱۲.۱۰: همگام لحظه‌ای ویندوز و گوشی بدون رفرش دستی","applied"],
     ["۱۲.۰۹: نام و جای فیلدها بین ویندوز و گوشی؛ مصرف‌کننده با ارزش افزوده قابل ویرایش؛ تخصص لیست+جستجو","applied"],
     ["۱۲.۰۸: ذخیره بعد از رفرش نماند؛ ستاره فقط فیلد ستاره‌دار؛ تخصص یک فیلد جستجوپذیر؛ جغرافیا ثابت؛ منزل GPS کم‌رنگ؛ قیمت بدون دوبرابر VAT","applied"],
     ["۱۲.۰۷: ذخیره گوشی روی سرور نت‌افراز؛ هدر و همبرگر موبایل چسبان","applied"],
@@ -42498,7 +42582,7 @@ button.v19-gps svg{display:block}
       if(ch) ch.textContent=window.state.settings.companyName||"طنین طب طاها";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.09.0");
+        var ver=String(window.CRM_APP_VERSION||"12.10.0");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -42997,6 +43081,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   function v56applyToSelect(sel,allowed){
     if(!sel||!allowed)return;
+    if(/^(pharmacy|doctor|order)(Province|City|District)$/.test(sel.id||""))return;
     var isProv=/Province|استان/.test(sel.id||"");
     Array.prototype.forEach.call(sel.options,function(o){
       if(!o.value||o.value==="ایران")return;
@@ -43006,6 +43091,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   function v56routeGeoFilter(){
     var allowed=v56allowed();if(!allowed)return;
     document.querySelectorAll("select[id]").forEach(function(sel){
+      if(/^(pharmacy|doctor|order)(Province|City|District)$/.test(sel.id||""))return;
       if(/Province/.test(sel.id))v56applyToSelect(sel,allowed);
     });
   }
@@ -44035,7 +44121,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(ch) ch.textContent=window.state.settings.companyName||"طنین طب طاها";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.09.0");
+        var ver=String(window.CRM_APP_VERSION||"12.10.0");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -46716,11 +46802,11 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         "<td><button type='button' class='btn btn-outline btn-sm v78-edit-price' data-pid='"+pid+"'>"+(editingPid===String(p.id||p.name)?"✅ ثبت":"✏️ ویرایش")+"</button></td></tr>";
       newRows+="<tr data-pid='"+pid+"'>"+
         "<td><strong>"+esc(p.name)+"</strong></td>"+
-        "<td style='direction:ltr'>"+faN(d.dist)+"</td>"+
+        "<td class='v81-new-dist' data-pid='"+pid+"' style='direction:ltr'>"+faN(d.dist)+"</td>"+
         "<td><input class='form-input v77-inp qty-no-spin' data-k='marginDistPh' data-pid='"+pid+"' inputmode='decimal' "+ro+" value='"+faP(d.marginDistPh)+"'></td>"+
-        "<td style='direction:ltr'>"+faN(d.ph)+"</td>"+
+        "<td class='v81-new-ph' data-pid='"+pid+"' style='direction:ltr'>"+faN(d.ph)+"</td>"+
         "<td><input class='form-input v77-inp qty-no-spin' data-k='marginPhCons' data-pid='"+pid+"' inputmode='decimal' "+ro+" value='"+faP(d.marginPhCons)+"'></td>"+
-        "<td class='v81-new-cons' data-pid='"+pid+"' style='direction:ltr'>"+faN(Math.round((Number(cur.cons)||0)*(1+(Number(d.increasePct)||0)/100)))+"</td>"+
+        "<td class='v81-new-cons' data-pid='"+pid+"' style='direction:ltr'>"+faN(d.cons)+"</td>"+
         (editingPid===String(p.id||p.name)
           ? "<td><input class='form-input v77-inp qty-no-spin' data-k='vatPercent' data-box='new' data-pid='"+pid+"' inputmode='decimal' value='"+faP(d.vat)+"'></td>"
           : "<td style='direction:ltr'>"+faP(d.vat)+"٪</td>")+
@@ -46751,8 +46837,8 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       var vat=Number(d.vat!=null?d.vat:pricesOf(p).vat)||0;
       if(vat>=100)vat=99.99;
       var cv=num(raw);
-      var net=vat>0?cv/(1+vat/100):cv;
-      d.cons=Math.round(net);
+      var net=Math.round(cv*(1-vat/100));
+      d.cons=net;
       d.increasePct="";
       d.consLocked=1;
       var back=fromCons(d.cons, Number(d.marginDistPh)||0, Number(d.marginPhCons)||0);
@@ -46784,11 +46870,20 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       inp.addEventListener("input",function(){
         if(inp.getAttribute("data-k")!=="increasePct")return;
         var pid=inp.getAttribute("data-pid");
-        var inc=Number(String(inp.value||"").replace(/[^\d.-]/g,""))||0;
         var p=findProd(pid);if(!p)return;
-        var cur=pricesOf(p);
-        var cell=document.querySelector("#v77NewPricesBody td.v81-new-cons[data-pid='"+pid+"']");
-        if(cell)cell.textContent=faN(Math.round((Number(cur.cons)||0)*(1+inc/100)));
+        var d=ensureDraft(p);
+        d.consLocked=0;
+        d.increasePct=inp.value===""?"":num(inp.value);
+        computeNew(p);
+        var q="[data-pid='"+pid+"']";
+        var dist=document.querySelector("#v77NewPricesBody td.v81-new-dist"+q);
+        var ph=document.querySelector("#v77NewPricesBody td.v81-new-ph"+q);
+        var cons=document.querySelector("#v77NewPricesBody td.v81-new-cons"+q);
+        var vatEl=document.querySelector("#v77NewPricesBody tr"+q+" td:nth-child(8)");
+        if(dist)dist.textContent=faN(d.dist);
+        if(ph)ph.textContent=faN(d.ph);
+        if(cons)cons.textContent=faN(d.cons);
+        if(vatEl && !vatEl.querySelector("input")) vatEl.textContent=faN(Math.round((Number(d.cons)||0)*(1+(Number(d.vat)||0)/100)));
       });
       inp.addEventListener("change",function(){
         onField(inp.getAttribute("data-pid"),inp.getAttribute("data-k"),inp.value);
@@ -48814,10 +48909,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.09.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.10.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.09.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.10.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -48897,10 +48992,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.09.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.10.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.09.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.10.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -48956,7 +49051,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.09.0");
+  var BUILD = String(window.CRM_APP_VERSION || "12.10.0");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
@@ -49017,10 +49112,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.09.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.10.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.09.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.10.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -49047,10 +49142,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.09.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.10.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.09.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.10.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -49135,7 +49230,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.09.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.10.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -49328,17 +49423,13 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if (typeof serializeStateForLocalStorage === "function")
         localStorage.setItem("CRM_APP_STATE_V2", serializeStateForLocalStorage(st));
     } catch (e) {}
-    try {
-      ["tab-pharmacies","tab-doctors","tab-orders"].forEach(function(tid){
-        if (typeof applyFullFormLayout === "function") applyFullFormLayout(tid);
-      });
-    } catch (eL) {}
+    /* v12.10: applyFullFormLayout روی pull استان/شهر را عوض می‌کرد و صفحه را می‌پراند */
     return true;
   }
   function pullOrigin(){
     if (typeof navigator !== "undefined" && navigator.onLine === false) return;
     var st = window.state;
-    if (recN(st)>0) { try { pushOrigin(); } catch (e) {} }
+    /* v12.10: هنگام pull پوش نکن — داده قدیمی گوشی ذخیره تازه‌تر ویندوز را خراب می‌کرد */
     var list = urls();
     var i = 0;
     function next(){
@@ -49520,6 +49611,245 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else setTimeout(boot, 300);
   setTimeout(boot, 1200);
+})();
+
+/* v12.10.0: GPS منزل پایدار، جغرافیا ثابت، قیمت لحظه‌ای، همگام بدون رفرش */
+(function(){
+  "use strict";
+  window.v1210LiveSync = true;
+  window.v1210HomeGps = true;
+  function $(id){ return document.getElementById(id); }
+  function typing(){
+    var a = document.activeElement;
+    if (!a) return false;
+    var tag = String(a.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea" || tag === "select") return true;
+    if (a.isContentEditable) return true;
+    return false;
+  }
+  function recN(d){
+    if (!d) return 0;
+    return ((d.pharmacies||[]).length)+((d.doctors||[]).length)+((d.orders||[]).length)+((d.products||[]).length)+((d.repHomes||[]).length);
+  }
+  function hollow(d){
+    if (!d || typeof d !== "object") return true;
+    return !(d.pharmacies||[]).length && !(d.doctors||[]).length && ((d.users||[]).length <= 1);
+  }
+  function origFetch(){ return window.__CRM_ORIG_FETCH || window.fetch; }
+
+  function freezeGeo(){
+    var ids = ["pharmacyProvince","pharmacyCity","pharmacyDistrict","doctorProvince","doctorCity","doctorDistrict","orderProvince","orderCity","orderDistrict"];
+    ids.forEach(function(id){
+      var el = $(id); if (!el || el.dataset.v1210geo) return;
+      el.dataset.v1210geo = "1";
+      function remember(){ el.dataset.chosen = el.value || el.dataset.chosen || ""; }
+      el.addEventListener("change", remember);
+      el.addEventListener("blur", remember);
+      try {
+        var obs = new MutationObserver(function(){
+          var ch = el.dataset.chosen;
+          if (!ch) return;
+          if (document.activeElement === el) return;
+          var has = false;
+          for (var i = 0; i < el.options.length; i++) if (el.options[i].value === ch) has = true;
+          if (has && el.value !== ch) el.value = ch;
+        });
+        obs.observe(el, { childList: true });
+      } catch (e) {}
+    });
+  }
+
+  function paintHomeTable(){
+    var tbody = $("tableRepHomesBody");
+    if (!tbody) return;
+    var st = window.state; if (!st) return;
+    tbody.innerHTML = "";
+    (st.repHomes || []).forEach(function(hm){
+      var tr = document.createElement("tr");
+      tr.innerHTML = "<td><strong>"+(hm.repName||"")+"</strong></td>"+
+        "<td>"+(hm.address||"")+"</td>"+
+        "<td>"+(hm.plate||"—")+"</td>"+
+        "<td>"+(hm.floor||"—")+"</td>"+
+        "<td style='direction:ltr'>"+(hm.lat||"")+", "+(hm.lng||"")+"</td>"+
+        "<td><button type='button' class='btn btn-outline btn-sm' data-home-edit='"+(hm.id||"")+"'>✏️ ویرایش</button> "+
+        "<button type='button' class='btn btn-danger btn-sm' data-home-del='"+(hm.id||"")+"'>🗑️ حذف</button></td>";
+      tbody.appendChild(tr);
+    });
+  }
+  window.renderRepHomesTable = paintHomeTable;
+
+  function placeHomeMarker(lat, lng, name){
+    var map = window.mapRepHomes || window._mapRepHomes;
+    if (!map || !isFinite(lat) || !isFinite(lng)) return;
+    try { map.setView([lat, lng], 16); } catch (e) {}
+    try {
+      if (typeof createCustomMarker === "function") createCustomMarker(lat, lng, "rep", "منزل " + (name||""), map);
+      else if (typeof L !== "undefined") L.marker([lat, lng]).addTo(map);
+    } catch (e2) {}
+  }
+
+  function bindHomeGps(){
+    if (document.body.dataset.v1210home) return;
+    document.body.dataset.v1210home = "1";
+    document.addEventListener("click", function(e){
+      var b = e.target && e.target.closest && e.target.closest("#btnRepHomeCurrentLocation");
+      if (!b) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      b.disabled = true; b.style.opacity = "0.55";
+      function done(){ b.disabled = false; b.style.opacity = ""; }
+      var run = (typeof window.getCurrentPositionSafe === "function")
+        ? window.getCurrentPositionSafe()
+        : new Promise(function(resolve){
+            if (!navigator.geolocation) { resolve({error:true,message:"GPS نیست"}); return; }
+            navigator.geolocation.getCurrentPosition(function(p){
+              resolve({lat:p.coords.latitude,lng:p.coords.longitude,addressPromise:null});
+            }, function(err){
+              resolve({error:true,message:(err&&err.code===1)?"اجازه GPS داده نشده":"موقعیت گرفته نشد (Not Secure؟)"});
+            }, {enableHighAccuracy:true, timeout:12000, maximumAge:8000});
+          });
+      run.then(function(pos){
+        if (!pos || pos.error) { done(); alert((pos && pos.message) || "موقعیت گرفته نشد."); return; }
+        window.__v12HomePos = { lat: pos.lat, lng: pos.lng };
+        var name = (($("repHomeSelect")||{}).value) || "";
+        placeHomeMarker(pos.lat, pos.lng, name);
+        var addrP = pos.addressPromise;
+        if (!addrP && typeof reverseGeocodeCoordinates === "function") addrP = reverseGeocodeCoordinates(pos.lat, pos.lng);
+        Promise.resolve(addrP || "").then(function(addr){
+          var a = $("repHomeAddressInput");
+          if (a) a.value = addr || a.value || (pos.lat + ", " + pos.lng);
+          done();
+        }).catch(function(){ done(); });
+      }).catch(function(){ done(); alert("موقعیت گرفته نشد."); });
+    }, true);
+    document.addEventListener("click", function(e){
+      var s = e.target && e.target.closest && e.target.closest("#btnSaveRepHome");
+      if (!s) return;
+      var st = window.state; if (!st) return;
+      if (!st.repHomes) st.repHomes = [];
+      var name = (($("repHomeSelect")||{}).value) || "";
+      var addr = (($("repHomeAddressInput")||{}).value||"").trim();
+      var plate = (($("repHomePlate")||{}).value||"").trim();
+      var floor = (($("repHomeFloor")||{}).value||"").trim();
+      var pos = window.__v12HomePos || {};
+      var idx = st.repHomes.findIndex(function(h){ return h.repName === name; });
+      var rec = {
+        id: idx >= 0 ? st.repHomes[idx].id : ("home-" + Date.now()),
+        repName: name, address: addr, plate: plate, floor: floor,
+        lat: pos.lat || (idx>=0 ? st.repHomes[idx].lat : null),
+        lng: pos.lng || (idx>=0 ? st.repHomes[idx].lng : null)
+      };
+      if (idx === -1) st.repHomes.push(rec); else st.repHomes[idx] = Object.assign({}, st.repHomes[idx], rec);
+      if (typeof saveState === "function") saveState();
+      paintHomeTable();
+      placeHomeMarker(rec.lat, rec.lng, name);
+      alert("اطلاعات منزل ذخیره شد.");
+    }, true);
+    document.addEventListener("click", function(e){
+      var ed = e.target && e.target.closest && e.target.closest("[data-home-edit]");
+      var del = e.target && e.target.closest && e.target.closest("[data-home-del]");
+      var st = window.state; if (!st) return;
+      if (ed) {
+        var id = ed.getAttribute("data-home-edit");
+        var hm = (st.repHomes||[]).filter(function(x){ return String(x.id)===String(id); })[0];
+        if (!hm) return;
+        if ($("repHomeSelect")) $("repHomeSelect").value = hm.repName || "";
+        if ($("repHomeAddressInput")) $("repHomeAddressInput").value = hm.address || "";
+        if ($("repHomePlate")) $("repHomePlate").value = hm.plate || "";
+        if ($("repHomeFloor")) $("repHomeFloor").value = hm.floor || "";
+        if (hm.lat && hm.lng) window.__v12HomePos = { lat: hm.lat, lng: hm.lng };
+      }
+      if (del) {
+        var id2 = del.getAttribute("data-home-del");
+        if (!confirm("این آدرس منزل حذف شود؟")) return;
+        st.repHomes = (st.repHomes||[]).filter(function(x){ return String(x.id)!==String(id2); });
+        if (typeof saveState === "function") saveState();
+        paintHomeTable();
+      }
+    }, true);
+  }
+
+  var lastApply = 0;
+  var lastPushAt = 0;
+  function refreshViews(){
+    try { if (typeof renderPharmaciesList === "function") renderPharmaciesList(); } catch (e1) {}
+    try { if (typeof renderDoctorsList === "function") renderDoctorsList(); } catch (e2) {}
+    try { if (typeof renderOrdersList === "function") renderOrdersList(); } catch (e3) {}
+    try { paintHomeTable(); } catch (e4) {}
+    try { if (typeof renderColumnsProductsTable === "function") renderColumnsProductsTable(); } catch (e5) {}
+    try { if (typeof renderRepRoutesTable === "function") renderRepRoutesTable(); } catch (e6) {}
+  }
+  function applyLive(d){
+    if (!d || typeof d !== "object" || hollow(d)) return false;
+    if (typing()) return false;
+    var st = window.state; if (!st) return false;
+    var sAt = Number(d._lastSavedAt) || 0;
+    var lAt = Number(st._lastSavedAt) || 0;
+    if (Date.now() - lastPushAt < 1500) return false;
+    if (lAt && sAt && sAt <= lAt) return false;
+    if (!sAt && recN(d) < recN(st)) return false;
+    if (sAt && lAt && sAt === lAt && recN(d) === recN(st)) return false;
+    ["pharmacies","doctors","orders","reps","products","visits","hospitals","leaves","users","activityLog","repHomes","repRoutes","notifications","salesTargets"].forEach(function(k){
+      if (Array.isArray(d[k])) st[k] = d[k];
+    });
+    ["formFieldMeta","formBoxes","manualLayouts","tabOrder","customFields","selectExtraOptions","customRecords"].forEach(function(k){
+      if (d[k] && typeof d[k] === "object") st[k] = d[k];
+    });
+    if (sAt) st._lastSavedAt = sAt;
+    try {
+      if (typeof serializeStateForLocalStorage === "function")
+        localStorage.setItem("CRM_APP_STATE_V2", serializeStateForLocalStorage(st));
+    } catch (e) {}
+    lastApply = Date.now();
+    refreshViews();
+    return true;
+  }
+  function pullLive(){
+    if (typeof navigator !== "undefined" && navigator.onLine === false) return;
+    if (typing()) return;
+    var f = origFetch();
+    var urls = ["/api.php?path=state", "/api/state"];
+    var i = 0;
+    function next(){
+      if (i >= urls.length) return;
+      var u = urls[i++];
+      f(u, { cache: "no-store" }).then(function(r){ return r && r.ok ? r.json() : null; }).then(function(j){
+        var d = j && j.data ? j.data : j;
+        if (!d || hollow(d)) { next(); return; }
+        applyLive(d);
+      }).catch(function(){ next(); });
+    }
+    next();
+  }
+  function wrapSave(){
+    var old = window.saveState;
+    if (typeof old !== "function" || old._v1210) return;
+    var w = function(){
+      try { if (window.state) window.state._lastSavedAt = Date.now(); } catch (e) {}
+      lastPushAt = Date.now();
+      var r = old.apply(this, arguments);
+      setTimeout(function(){
+        try { if (typeof window.crmPushStateToServer === "function") window.crmPushStateToServer(); } catch (e2) {}
+        try { if (typeof window.v12PushNetafraz === "function") window.v12PushNetafraz(); } catch (e3) {}
+      }, 80);
+      return r;
+    };
+    w._v1210 = true;
+    window.saveState = w;
+  }
+
+  function boot(){
+    freezeGeo();
+    bindHomeGps();
+    wrapSave();
+    paintHomeTable();
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function(){ setTimeout(boot, 200); });
+  else setTimeout(boot, 200);
+  setTimeout(boot, 1400);
+  setTimeout(pullLive, 800);
+  setInterval(pullLive, 4000);
+  document.addEventListener("visibilitychange", function(){ if (!document.hidden) pullLive(); });
 })();
 ~~~~~~~~
 
@@ -62565,10 +62895,10 @@ button.v19-gps svg{display:block}
   function fakeFor(path, method) {
     method = method || "GET";
     if (/health|ping|healthz/.test(path)) {
-      return jsonResp({ ok: true, status: "healthy", platform: "static-local", version: (window.CRM_APP_VERSION || "12.09.0"), offline: true });
+      return jsonResp({ ok: true, status: "healthy", platform: "static-local", version: (window.CRM_APP_VERSION || "12.10.0"), offline: true });
     }
     if (/runtime-config/.test(path)) {
-      return jsonResp({ platform: runtime().platform || "static", baseUrl: runtime().baseUrl || "", hubs: runtime().hubs || [], version: "12.09.0" });
+      return jsonResp({ platform: runtime().platform || "static", baseUrl: runtime().baseUrl || "", hubs: runtime().hubs || [], version: "12.10.0" });
     }
     if (/backup\/status/.test(path)) {
       return jsonResp({ status: "ok", cloud: false, local: true, platform: "static-local" });
@@ -63389,7 +63719,7 @@ window.__CRM_RUNTIME = window.__CRM_RUNTIME || {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/index.html (180978 بایت)
+فایل: public/index.html (181263 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~html
 <!DOCTYPE html>
@@ -63429,7 +63759,7 @@ window.__CRM_RUNTIME = window.__CRM_RUNTIME || {
   <style>html.crm-booting body{visibility:visible!important;opacity:1!important}</style>
   <script>
     (function(){
-      var BUILD="12.09.0";window.CRM_APP_VERSION=BUILD;var key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="12.10.0";window.CRM_APP_VERSION=BUILD;var key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       try{
         var GEN="11.81.0";
         var raw=localStorage.getItem("CRM_APP_STATE_V2");
@@ -63457,14 +63787,14 @@ window.__CRM_RUNTIME = window.__CRM_RUNTIME || {
   <meta name="application-name" content="طنین طب طاها" />
 
   <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="leaflet.css?v=12.09.0" />
+  <link rel="stylesheet" href="leaflet.css?v=12.10.0" />
 
   <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0d9488" />
 
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=12.09.0" />
+  <link rel="stylesheet" href="style.css?v=12.10.0" />
 </head>
 <body>
 
@@ -63484,7 +63814,7 @@ window.__CRM_RUNTIME = window.__CRM_RUNTIME || {
         </div>
         <div class="logo-text">
           <h1 id="headerCompanyNameDisplay">طنین طب طاها</h1>
-          <div id="crmBuildBadge" style="font-size:12px;font-weight:800;color:#0f766e">نسخه ۱۲.۰۹.۰</div>
+          <div id="crmBuildBadge" style="font-size:12px;font-weight:800;color:#0f766e">نسخه ۱۲.۱۰.۰</div>
           <p>طنین طب طاها — TENIN TEB TAHA</p>
         </div>
       </div>
@@ -64840,9 +65170,12 @@ window.__CRM_RUNTIME = window.__CRM_RUNTIME || {
           <div class="form-group full-width">
             <label class="form-label" for="repHomeAddressInput">آدرس منزل</label>
             <input type="text" id="repHomeAddressInput" class="form-input" placeholder="آدرس منزل یا موقعیت فعلی..." />
-
-              <input type="text" id="repHomePlate" class="form-input" placeholder="پلاک" style="max-width:120px;display:inline-block" />
-              <input type="text" id="repHomeFloor" class="form-input" placeholder="طبقه" style="max-width:120px;display:inline-block" /></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+              <div><label class="form-label" for="repHomePlate">پلاک</label>
+              <input type="text" id="repHomePlate" class="form-input" placeholder="پلاک" style="max-width:120px" /></div>
+              <div><label class="form-label" for="repHomeFloor">طبقه</label>
+              <input type="text" id="repHomeFloor" class="form-input" placeholder="طبقه" style="max-width:120px" /></div>
+            </div></div>
         </div>
         <div id="map-rep-homes" class="map-container" style="height: 360px; margin-bottom: 1.5rem;"></div>
 
@@ -64852,6 +65185,8 @@ window.__CRM_RUNTIME = window.__CRM_RUNTIME || {
               <tr>
                 <th>نام نماینده علمی</th>
                 <th>آدرس منزل</th>
+                <th>پلاک</th>
+                <th>طبقه</th>
                 <th>مختصات جغرافیایی</th>
                 <th>عملیات روی نقشه</th>
               </tr>
@@ -66002,15 +66337,15 @@ window.__CRM_RUNTIME = window.__CRM_RUNTIME || {
   </div>
 
   <!-- Leaflet JS -->
-  <script src="leaflet.js?v=12.09.0"></script>
+  <script src="leaflet.js?v=12.10.0"></script>
 
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-runtime.js?v=12.09.0"></script>
-  <script src="crm-hub.js?v=12.09.0"></script>
+  <script src="crm-runtime.js?v=12.10.0"></script>
+  <script src="crm-hub.js?v=12.10.0"></script>
   <script>window.v92HubFetch=true;</script>
-  <script src="crm-data.js?v=12.09.0"></script>
-  <script src="crm-app.js?v=12.09.0"></script>
-          <script src="crm-bundle.js?v=12.09.0"></script>
+  <script src="crm-data.js?v=12.10.0"></script>
+  <script src="crm-app.js?v=12.10.0"></script>
+          <script src="crm-bundle.js?v=12.10.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
@@ -66791,7 +67126,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
   <script>
-    (function(){var BUILD="12.09.0";window.CRM_APP_VERSION=BUILD;var key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{
+    (function(){var BUILD="12.10.0";window.CRM_APP_VERSION=BUILD;var key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{
       var prev=localStorage.getItem(key)||"";
       localStorage.setItem(key,BUILD);
       if(prev&&prev!==BUILD&&sessionStorage.getItem("CRM_MOBILE_RELOAD")!==BUILD){
@@ -66840,8 +67175,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
   </style>
 </head>
 <body>
-  <script src="crm-runtime.js?v=12.09.0"></script>
-  <script src="crm-hub.js?v=12.09.0"></script>
+  <script src="crm-runtime.js?v=12.10.0"></script>
+  <script src="crm-hub.js?v=12.10.0"></script>
 
   <div class="card">
     <img class="logo" src="logo.png" alt="Tanin Teb Taha">
@@ -66866,7 +67201,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
     <div class="ok" id="st"></div>
     <p class="hint">نمونه مدیر: admin / 123 — شماره 09120000000</p>
     <p class="hint">هاب‌ها از BASE_URL/CRM_HUBS خوانده می‌شوند (Render، ndcohub.ir، mehraeinpharma.ir).</p>
-    <p class="hint" id="crmBuildHint">نسخه ۱۲.۰۹.۰ — گوشی و ویندوز باید همین شماره را ببینند</p>
+    <p class="hint" id="crmBuildHint">نسخه ۱۲.۱۰.۰ — گوشی و ویندوز باید همین شماره را ببینند</p>
   </div>
   <script>
     (function(){
@@ -66907,7 +67242,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
       var err = document.getElementById("err");
       function showErr(m){ err.style.display="block"; err.textContent=m; }
       function hideErr(){ err.style.display="none"; }
-      fetch("/api/health").then(function(r){return r.json();}).then(function(d){ st.textContent="سرور آماده است — نسخه "+((d&&d.version)||"۱۲.۰۹.۰"); var h=document.getElementById("crmBuildHint"); if(h&&d&&d.version&&d.version!=="12.09.0") h.textContent="گوشی نسخه قدیمی می‌بیند ("+d.version+") — یک‌بار کش را خالی کنید یا لینک را با Chrome باز کنید."; }).catch(function(){ st.textContent="در حال بیدار کردن سرور..."; });
+      fetch("/api/health").then(function(r){return r.json();}).then(function(d){ st.textContent="سرور آماده است — نسخه "+((d&&d.version)||"۱۲.۱۰.۰"); var h=document.getElementById("crmBuildHint"); if(h&&d&&d.version&&d.version!=="12.10.0") h.textContent="گوشی نسخه قدیمی می‌بیند ("+d.version+") — یک‌بار کش را خالی کنید یا لینک را با Chrome باز کنید."; }).catch(function(){ st.textContent="در حال بیدار کردن سرور..."; });
       document.getElementById("f").addEventListener("submit", function(){
         hideErr();
         var u=document.getElementById("u").value.trim();
@@ -70233,7 +70568,7 @@ self.addEventListener("fetch", (event) => {
 فایل: public/sw.js (5417 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
-const BUILD = "12.09.0";
+const BUILD = "12.10.0";
 const CACHE = "crm-static-v" + BUILD;
 
 async function purgeEveryCache() {
@@ -96093,7 +96428,7 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/version-11.24-regressions.test.mjs (93132 بایت)
+فایل: tests/version-11.24-regressions.test.mjs (93832 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 import test from 'node:test';
@@ -96415,7 +96750,7 @@ test('multi-part prompts require a real acceptance checklist before ZIP delivery
 });
 
 test('next-chat GitHub handoff records exact publish truth and engine map', () => {
-  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*12\.09.0/);
+  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*12\.10.0/);
   assert.match(githubHandoff,/4984d17/);assert.match(githubHandoff,/Resource not accessible by integration/);
   assert.match(githubHandoff,/Production[\s\S]*11\.20\.0/);
   assert.match(githubHandoff,/موتور پاک‌سازی خودکار کش/);assert.match(githubHandoff,/موتورهای پایداری داده/);
@@ -96467,7 +96802,7 @@ test('new build clears only old asset caches before revealing app and prevents m
 test('v38 cache rescue automatically forces a fresh build without deleting CRM data', () => {
   const login = read('../public/login.html');
   assert.match(server,/pathname === "\/cache-reset"/);assert.match(server,/Clear-Site-Data/);
-  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "12\.09.0"/);
+  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "12\.10.0"/);
   assert.match(html,/\/api\/health\?__crm_nocache=/);assert.match(html,/\/cache-reset\?to=/);assert.match(html,/d\.version!==BUILD/);
   assert.match(login,/CRM_CACHE_RESCUED_/);assert.match(login,/\/cache-reset\?to=/);
   assert.match(sw,/function purgeEveryCache/);assert.match(sw,/CRM_BUILD_ACTIVE/);assert.match(sw,/cache: "reload"/);
@@ -96477,7 +96812,7 @@ test('v38 cache rescue automatically forces a fresh build without deleting CRM d
     assert.doesNotMatch(source,/indexedDB\.deleteDatabase\s*\(/);
     assert.doesNotMatch(source,/removeItem\(["']CRM_APP_STATE_V2/);
   }
-  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=12\.09.0'/);
+  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=12\.10.0'/);
 });
 
 test('security hardening blocks dangerous device APIs, cross-origin writes, executables and formula injection', () => {
@@ -96492,7 +96827,7 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=12\.09.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=12\.10.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
@@ -96587,7 +96922,7 @@ test('v11.43.1 engine button feedback + permanent version watchdog', () => {
 test('v11.61.0 safe cache-hardening', () => {
   const html = read('../public/index.html'); const app = read('../public/crm-app.js');
   assert.match(html,/http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/);
-  assert.match(app,/CRM_APP_VERSION = "12.09.0"/);
+  assert.match(app,/CRM_APP_VERSION = "12.10.0"/);
   assert.match(app,/بارگذاری شد/);
 });
 
@@ -96829,8 +97164,8 @@ test('v11.72.0 durable target ops + mm gap + row number', () => {
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(b, /v11\.68\.0/);
   assert.match(b, /v68-edit-tgt/);
   assert.match(b, /v68-del-tgt/);
@@ -96850,8 +97185,8 @@ test('v11.72.0 server-authoritative unify + durable delete + live mm/row', () =>
   const b = read('../public/crm-bundle.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(srv, /function naturalRecordKey/);
   assert.match(srv, /if \(id && deleted && deleted\[id\] && recStamp\(r\) <= Number\(deleted\[id\]\)\) return/);
   assert.match(b, /v11\.69\.0/);
@@ -96873,8 +97208,8 @@ test('v11.72.0 solo device + no cache-reset loop', () => {
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(srv, /x-crm-replace/);
   assert.match(srv, /_soloOnly/);
   assert.match(srv, /CRM_RESET_LOCK/);
@@ -96895,8 +97230,8 @@ test('v11.72.0 single script load + 404 not login + solo replace', () => {
   assert.equal((html.match(/crm-app\.js\?v=/g)||[]).length, 1);
   assert.equal((html.match(/crm-bundle\.js\?v=/g)||[]).length, 1);
   assert.equal((html.match(/<\/html>/g)||[]).length, 1);
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(srv, /v11.71: Clear-Site-Data/);
   assert.match(b, /v11\.71\.0/);
   assert.match(b, /CRM_SOLO_CLAIM/);
@@ -96909,9 +97244,9 @@ test('v11.72.0 server-first paint + no-spin qty + per-row ops + dist achieved/re
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
-  assert.match(app, /register\('\/sw\.js\?v=12\.09.0'/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
+  assert.match(app, /register\('\/sw\.js\?v=12\.10.0'/);
   assert.match(b, /v11\.72\.0/);
   assert.match(b, /__v72boot/);
   assert.match(b, /function adoptServerExact/);
@@ -96942,17 +97277,17 @@ test('v11.73.0 live state bind + delayed unveil + durable dist save + kill old o
   const html = read('../public/index.html');
   const sw = read('../public/sw.js');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
-  assert.match(sw, /const BUILD = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
+  assert.match(sw, /const BUILD = "12.10.0"/);
   assert.match(app, /function bindLiveWindowState/);
   assert.match(app, /window\.__CRM_GET_STATE/);
   assert.match(app, /window\.renderPharmaciesList/);
-  assert.match(html, /var BUILD="12.09.0"/);
+  assert.match(html, /var BUILD="12.10.0"/);
   assert.match(html, /window\.__CRM_UNVEIL/);
   assert.match(html, /if\(!window\.__CRM_UNVEILED\)window\.__CRM_UNVEIL\(\);},5000\)/);
   assert.doesNotMatch(html, /classList\.remove\("crm-booting"\);},800\)/);
-  assert.match(login, /var BUILD="12.09.0"/);
+  assert.match(login, /var BUILD="12.10.0"/);
   assert.match(b, /v11\.73\.0/);
   assert.match(b, /__v73boot/);
   assert.match(b, /function adoptExact/);
@@ -96974,8 +97309,8 @@ test('v11.74.0 mashateb sales mapping like daya/shafaarad', () => {
   const v20file = read('../public/crm-features-v20.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(b, /MASHATEB_CODE_MAP=\{1001:186101,1002:186102,1003:186103,1004:186104,1005:186105,1006:186106,1007:186107\}/);
   assert.match(v20file, /MASHATEB_CODE_MAP=\{1001:186101,1002:186102,1003:186103,1004:186104,1005:186105,1006:186106,1007:186107\}/);
   assert.match(b, /else if\(id==="mashateb"\)\{x\.date=2;x\.qty=10;x\.giftQty=11;x\.pharmacy=9;/);
@@ -97000,8 +97335,8 @@ test('v11.76.0 designer live apply + geo autofill off + mashateb col3 date + db 
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const v20file = read('../public/crm-features-v20.js');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(b, /v11\.75\.0/);
   assert.match(b, /function applyDesignerNow/);
   assert.match(b, /function applyPaintedMeta/);
@@ -97024,8 +97359,8 @@ test('v11.76.0 bulk archive lock + geo nocombo + pharmacy name no subsets + acti
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const v20file = read('../public/crm-features-v20.js');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(b, /v11\.76\.0/);
   assert.match(b, /function bulkUnion/);
   assert.match(b, /function bulkCount/);
@@ -97054,8 +97389,8 @@ test('v11.77.0 product pricing tab current/new boxes + reverse calc + jalali app
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const data = read('../public/crm-data.js');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(app, /tab-product-pricing/);
   assert.match(html, /id="tab-product-pricing"/);
   assert.match(html, /id="v77CurrentPricesBody"/);
@@ -97090,8 +97425,8 @@ test('v11.78.0 consumer price + legal margin + row edit VAT + live designer + in
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(html, /id="productConsumerPrice"/);
   assert.match(html, /قیمت مصرف‌کننده \(ریال\)/);
   assert.match(app, /consumerPrice: consPrice \|\| phPrice/);
@@ -97120,8 +97455,8 @@ test('v11.79.0 this-device-only restore + no duplicate product code column', () 
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(app, /v20-product-code/);
   assert.ok(b.includes("v11.79.0"));
   assert.ok(b.includes("v11.79.0"));
@@ -97138,15 +97473,15 @@ test('v11.80.0 server-only lock + new consumer from current times increase', () 
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const data = read('../public/crm-data.js');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.ok(b.includes("v11.80.0"));
   assert.match(b, /function restoreThisDevice/);
   assert.match(b, /d\.cons=newCons/);
   assert.match(b, /legacy-locked/);
   assert.match(srv, /function stripLegacySample/);
   assert.match(srv, /reason: "legacy-locked"/);
-  assert.match(html, /var BUILD="12.09.0"/);
+  assert.match(html, /var BUILD="12.10.0"/);
   assert.match(data, /pharmacies: \[\]/);
   assert.ok(!data.includes("داروخانه دکتر عرفانی"));
   const ctx={result:null};
@@ -97162,8 +97497,8 @@ test('v11.81.0 purge previous-system data + new consumer formula cell', () => {
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.ok(b.includes("v11.81.0"));
   assert.match(b, /v81-new-cons/);
   assert.match(srv, /function fenceOldSystem/);
@@ -97182,8 +97517,8 @@ test('v11.82.0 designer order applies to live form and list', () => {
   const b = read('../public/crm-bundle.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.ok(b.includes("v11.82.0"));
   assert.match(b, /function applySavedLayout/);
   assert.match(b, /window.applySavedLayoutV82/);
@@ -97199,8 +97534,8 @@ test('v11.83.0 no jump typing + iran mobile tiles and login persist', () => {
   const login = read('../public/login.html');
   const html = read('../public/index.html');
   const official = read('../OFFICIAL_FILELIST.txt');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.ok(b.includes("v11.83.0"));
   assert.match(b, /function typingInLiveForm/);
   assert.match(srv, /\/api\/tiles\//);
@@ -97218,8 +97553,8 @@ test('v11.84.0 live dashboard filters + no form jump + stable order lock', () =>
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.ok(b.includes("v11.84.0"));
   assert.match(html, /id="v84DashYear"/);
   assert.match(html, /id="v84DashProvince"/);
@@ -97233,8 +97568,8 @@ test('v11.85.0 routes one ops column + geo search all + dashboard labels', () =>
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.ok(b.includes("v11.85.0"));
   assert.match(html, /v85-geo-search/);
   assert.match(html, /data-for="routeManagerProvince"/);
@@ -97250,8 +97585,8 @@ test('v11.86.0 never wipe user pharmacies + route click + same mobile version', 
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.ok(b.includes("v11.86.0"));
   assert.match(app, /recoverWipedUserData/);
   assert.doesNotMatch(srv, /LEGACY_WIPE_KEYS\.forEach/);
@@ -97266,8 +97601,8 @@ test('v11.87.0 route no shake + share dedupe + login session + dist grand + leav
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.ok(b.includes("v11.87.0"));
   assert.match(b, /data-v87sig/);
   assert.match(b, /window.v87ShareDedupe/);
@@ -97289,8 +97624,8 @@ test('v11.88.0 one route ops + login page required', () => {
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.ok(b.includes("v11.88.0"));
   assert.match(b, /window.v88OneColumnRouteOps/);
   assert.match(srv, /pathname === "\/" \|\| pathname === "\/login"/);
@@ -97305,8 +97640,8 @@ test('v11.89.0 sw same build + 15min backup + compact routes', () => {
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.ok(b.includes("v11.89.0"));
   assert.match(app, /const build = CRM_APP_VERSION/);
   assert.match(srv, /15 \* 60 \* 1000/);
@@ -97324,8 +97659,8 @@ test('v11.90.0 mobile menu + specialty + own-data + routes + std buttons', () =>
   const html = read('../public/index.html');
   const data = read('../public/crm-data.js');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.ok(b.includes("v11.90.0"));
   assert.match(b, /window.v90OwnOnly/);
   assert.match(b, /window.v90PaintRoutes/);
@@ -97347,8 +97682,8 @@ test('v11.91.0 mobile pane visible + full specialty options + route pointerdown 
   const html = read('../public/index.html');
   const data = read('../public/crm-data.js');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.ok(b.includes("v11.91.0"));
   assert.match(b, /window.v91ShowPane/);
   assert.match(b, /window.v91FillDoctorSpecialty/);
@@ -97370,8 +97705,8 @@ test('v11.92.0 iranian hubs cors + favicon + file login/panel + hub fetch', () =
   const html = read('../public/index.html');
   const login = read('../public/login.html');
   const man = read('../public/manifest.json');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.ok(b.includes("v11.92.0"));
   assert.match(srv, /function isCrmHubHost/);
   assert.match(srv, /ndcohub\.ir/);
@@ -97397,13 +97732,13 @@ test('v11.93.0 static netafraz + env hubs + sync-all + timeout hub', () => {
   const sync = read('../sync-all.js');
   const st = read('../build-static.js');
   const gitignore = read('../.gitignore');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(srv, /function runtimeHubs/);
   assert.match(srv, /\/api\/runtime-config/);
   assert.match(srv, /PLATFORM/);
-  assert.match(html, /crm-hub\.js\?v=12\.09.0/);
-  assert.match(html, /crm-runtime\.js\?v=12\.09.0/);
+  assert.match(html, /crm-hub\.js\?v=12\.10.0/);
+  assert.match(html, /crm-runtime\.js\?v=12\.10.0/);
   assert.match(hub, /12000/);
   assert.match(hub, /function retry/);
   assert.match(rt, /__CRM_RUNTIME/);
@@ -97428,10 +97763,10 @@ test('v11.94.0 netafraz php api independent + leaflet root + no api 404 fake', (
   const php = read('../public/api.php');
   const ht = read('../public/.htaccess');
   const st = read('../build-static.js');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
-  assert.match(html, /leaflet.css\?v=12\.09.0/);
-  assert.match(html, /leaflet.js\?v=12\.09.0/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
+  assert.match(html, /leaflet.css\?v=12\.10.0/);
+  assert.match(html, /leaflet.js\?v=12\.10.0/);
   assert.match(hub, /v94StaticLocal/);
   assert.match(hub, /fakeFor/);
   assert.match(php, /crm-netafraz-data.json/);
@@ -97448,8 +97783,8 @@ test('v11.95.0 same version badge + origin-only hubs + taha company name', () =>
   const b = read('../public/crm-bundle.js');
   const hub = read('../public/crm-hub.js');
   const data = read('../public/crm-data.js');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.ok(b.includes("v11.95.0"));
   assert.match(b, /window.v95OriginOnly/);
   assert.match(b, /window.v95SameBadge/);
@@ -97457,9 +97792,9 @@ test('v11.95.0 same version badge + origin-only hubs + taha company name', () =>
   assert.match(hub, /v95OriginOnly/);
   assert.doesNotMatch(hub, /\(window\.CRM_HUBS \|\| \[\]\)\.forEach/);
   assert.match(data, /companyName: "طنین طب طاها"/);
-  assert.match(html, /نسخه ۱۲\.۰۹\.۰/);
+  assert.match(html, /نسخه ۱۲\.۱۰\.۰/);
   assert.match(html, /id="headerCompanyNameDisplay">طنین طب طاها/);
-  assert.match(login, /نسخه ۱۲\.۰۹\.۰/);
+  assert.match(login, /نسخه ۱۲\.۱۰\.۰/);
   assert.match(app, /v95CompanyName/);
 });
 test('v11.96.0 netafraz api/sync to render + gen stamp + no empty wipe', () => {
@@ -97469,8 +97804,8 @@ test('v11.96.0 netafraz api/sync to render + gen stamp + no empty wipe', () => {
   const hub = read('../public/crm-hub.js');
   const b = read('../public/crm-bundle.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(srv, /pathname === "\/api\/sync"/);
   assert.match(php, /\$p === "sync"/);
   assert.match(php, /target=render|target === "render"/);
@@ -97486,7 +97821,7 @@ test('v11.96.0 netafraz api/sync to render + gen stamp + no empty wipe', () => {
   assert.ok(b.includes("v11.96.0"));
   assert.match(b, /window.v96NetafrazSync/);
   assert.match(b, /\/api\/sync\?target=render/);
-  assert.match(html, /crm-app\.js\?v=12\.09.0/);
+  assert.match(html, /crm-app\.js\?v=12\.10.0/);
 });
 test('v11.97.0 netafraz adopts render data on new build without empty wipe', () => {
   const app = read('../public/crm-app.js');
@@ -97495,8 +97830,8 @@ test('v11.97.0 netafraz adopts render data on new build without empty wipe', () 
   const st = read('../build-static.js');
   const b = read('../public/crm-bundle.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.ok(b.includes("v11.97.0"));
   assert.match(b, /window.v97CanonSync/);
   assert.match(b, /mode=replace/);
@@ -97509,7 +97844,7 @@ test('v11.97.0 netafraz adopts render data on new build without empty wipe', () 
   assert.match(st, /DEFAULT_RENDER/);
   assert.match(st, /javad-test1\.onrender\.com/);
   assert.match(st, /crm-netafraz-data\.json/);
-  assert.match(html, /نسخه ۱۲\.۰۹\.۰/);
+  assert.match(html, /نسخه ۱۲\.۱۰\.۰/);
 });
 test('v11.98.0 sw always returns Response + netafraz no Options 500 + valid api-config', () => {
   const app = read('../public/crm-app.js');
@@ -97522,9 +97857,9 @@ test('v11.98.0 sw always returns Response + netafraz no Options 500 + valid api-
   const html = read('../public/index.html');
   const login = read('../public/login.html');
   const cfg = read('../public/api-config.php');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
-  assert.match(sw, /const BUILD = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
+  assert.match(sw, /const BUILD = "12.10.0"/);
   assert.match(sw, /function fallbackResponse/);
   assert.match(sw, /asResponse/);
   assert.match(sw, /fetchWithTimeout/);
@@ -97541,7 +97876,7 @@ test('v11.98.0 sw always returns Response + netafraz no Options 500 + valid api-
   assert.match(b, /window.v98BootFix/);
   assert.match(html, /nosw/);
   assert.match(login, /nosw/);
-  assert.match(html, /نسخه ۱۲\.۰۹\.۰/);
+  assert.match(html, /نسخه ۱۲\.۱۰\.۰/);
 });
 test('v11.99.0 independent fast netafraz + background peer sync + ignore old files', () => {
   const app = read('../public/crm-app.js');
@@ -97550,8 +97885,8 @@ test('v11.99.0 independent fast netafraz + background peer sync + ignore old fil
   const hub = read('../public/crm-hub.js');
   const sw = read('../public/sw.js');
   const b = read('../public/crm-bundle.js');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(php, /crm-live-data.json/);
   assert.match(php, /crm-netafraz-data.json/);
   assert.match(php, /queued/);
@@ -97575,8 +97910,8 @@ test('v12.00.0 netafraz index.php no 403 + same badge + taha company', () => {
   const b = read('../public/crm-bundle.js');
   const html = read('../public/index.html');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(app, /window.CRM_APP_VERSION = CRM_APP_VERSION/);
   assert.match(app, /window.v12TahaName/);
   assert.match(app, /v12CanonicalCompany/);
@@ -97590,7 +97925,7 @@ test('v12.00.0 netafraz index.php no 403 + same badge + taha company', () => {
   assert.match(b, /window.v12SameBadge/);
   assert.match(html, /window.CRM_APP_VERSION=BUILD/);
   assert.match(login, /window.CRM_APP_VERSION=BUILD/);
-  assert.match(html, /نسخه ۱۲\.۰۹\.۰/);
+  assert.match(html, /نسخه ۱۲\.۱۰\.۰/);
 });
 test('v12.01.0 no ndcohub cert fetch + osm tiles on static + pull then push', () => {
   const app = read('../public/crm-app.js');
@@ -97598,8 +97933,8 @@ test('v12.01.0 no ndcohub cert fetch + osm tiles on static + pull then push', ()
   const php = read('../public/api.php');
   const hub = read('../public/crm-hub.js');
   const b = read('../public/crm-bundle.js');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(hub, /ndcohub/);
   assert.match(app, /tile\.openstreetmap\.de/);
   assert.match(app, /\/api\/tiles\/\{z\}\/\{x\}\/\{y\}\.png/);
@@ -97619,8 +97954,8 @@ test('v12.02.0 auto pull render only + ops restore + compact mobile', () => {
   const b = read('../public/crm-bundle.js');
   const css = read('../public/style.css');
   const ht = read('../public/.htaccess');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(app, /v12TakeRegisteredOnly/);
   assert.match(app, /window.v12OpsOnlyRestore/);
   assert.match(hub, /Render never fetches Netafraz/);
@@ -97634,8 +97969,8 @@ test('v12.03.0 upload does not wipe pharmacies + skip live json in static', () =
   const srv = read('../server.js');
   const st = read('../build-static.js');
   const b = read('../public/crm-bundle.js');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(app, /v99DropOldProgramFiles/);
   assert.match(app, /هرگز داروخانه\/پزشک\/سفارش را با آپلود نسخه خالی نکن/);
   assert.match(st, /crm-live-data\.json/);
@@ -97648,8 +97983,8 @@ test('v12.04.0 data folder live json auto-create not in js root', () => {
   const srv = read('../server.js');
   const php = read('../public/api.php');
   const st = read('../build-static.js');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(php, /crm-live-data.json/);
   assert.match(php, /\$DATA_DIR/);
   assert.match(php, /function ensure_dir/);
@@ -97661,8 +97996,8 @@ test('v12.05.0 flat static-build files only + fill empty from render', () => {
   const srv = read('../server.js');
   const php = read('../public/api.php');
   const st = read('../build-static.js');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(st, /function copyFlat/);
   assert.match(st, /crm-netafraz-data.json/);
   assert.match(php, /function fill_if_empty/);
@@ -97677,8 +98012,8 @@ test('v12.06.0 device sync netafraz origin api.php path state', () => {
   const hub = read('../public/crm-hub.js');
   const b = read('../public/crm-bundle.js');
   const php = read('../public/api.php');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(hub, /function altApi/);
   assert.match(hub, /api\.php\?path=/);
   assert.match(b, /window.v1206DeviceSync/);
@@ -97692,8 +98027,8 @@ test('v12.07.0 form header pricing routes homes persist', () => {
   const b = read('../public/crm-bundle.js');
   const css = read('../public/style.css');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(b, /window.v1207FormFix/);
   assert.match(b, /roundNice/);
   assert.match(css, /v12\.07\.0: هدر سبز/);
@@ -97703,8 +98038,8 @@ test('v12.08.0 persist no wipe + one specialty field + no geo loop', () => {
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const b = read('../public/crm-bundle.js');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(b, /window.v1208PersistFix/);
   assert.match(b, /window.v1207FormFix/);
   assert.match(b, /v12-spec-combo/);
@@ -97714,14 +98049,31 @@ test('v12.09.0 layout sync + consVat edit + specialty combo', () => {
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const b = read('../public/crm-bundle.js');
-  assert.match(app, /CRM_APP_VERSION = "12.09.0"/);
-  assert.match(srv, /const APP_VERSION = "12.09.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
   assert.match(app, /formFieldMeta/);
   assert.match(b, /data-k='consVat'/);
   assert.match(b, /getCurrentPositionSafe/);
   assert.match(b, /v12-spec-combo/);
 });
+
+test('v12.10.0 live sync + home gps plate + geo freeze + consVat remainder', () => {
+  const app = read('../public/crm-app.js');
+  const srv = read('../server.js');
+  const b = read('../public/crm-bundle.js');
+  const php = read('../public/api.php');
+  const html = read('../public/index.html');
+  assert.match(app, /CRM_APP_VERSION = "12.10.0"/);
+  assert.match(srv, /const APP_VERSION = "12.10.0"/);
+  assert.match(b, /window.v1210LiveSync/);
+  assert.match(b, /window.v1210HomeGps/);
+  assert.match(b, /cv\*\(1-vat\/100\)/);
+  assert.match(php, /_lastSavedAt/);
+  assert.match(app, /hm\.plate/);
+  assert.match(html, /<th>پلاک<\/th>/);
+  assert.match(b, /هنگام pull پوش نکن/);
+});
 ~~~~~~~~
 
 
-— پایان chat.arena نسخه ۱.۸۷ (نسخه برنامه 12.09.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —
+— پایان chat.arena نسخه ۱.۸۸ (نسخه برنامه 12.10.0) — این فایل با هر گفتگو/نسخه به‌روزرسانی می‌شود —

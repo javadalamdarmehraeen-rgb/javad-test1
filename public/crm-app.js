@@ -46,7 +46,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "12.09.0";
+const CRM_APP_VERSION = "12.10.0";
 window.CRM_APP_VERSION = CRM_APP_VERSION;
 function v12CanonicalCompany(name) {
   var s = String(name || "").trim();
@@ -432,43 +432,63 @@ function setupDropdownAutoClear() {
 // 3. پیاده‌سازی ویژگی ۴: استان‌ها، شهرها و مناطق مرتب بدون تکرار (Requirement 4)
 // ----------------------------------------------------------------------------
 function populateProvinces(selectElement, selectedValue = "") {
+  if (!selectElement) return;
+  const keep = selectedValue || selectElement.value || "";
+  const keys = Object.keys(IRAN_GEO_DATA || {});
+  const sig = "p|" + keys.join("\n");
+  if (selectElement.dataset.geoSig === sig) {
+    if (keep) selectElement.value = keep;
+    return;
+  }
+  selectElement.dataset.geoSig = sig;
   selectElement.innerHTML = `<option value="">انتخاب استان...</option>`;
-  Object.keys(IRAN_GEO_DATA).forEach(province => {
+  keys.forEach(province => {
     const opt = document.createElement("option");
     opt.value = province;
     opt.textContent = province;
-    if (province === selectedValue) opt.selected = true;
     selectElement.appendChild(opt);
   });
+  if (keep) selectElement.value = keep;
 }
 
 function populateCities(provinceName, selectElement, selectedValue = "") {
+  if (!selectElement) return;
+  const keep = selectedValue || selectElement.value || "";
+  const cities = (!provinceName || !IRAN_GEO_DATA || !IRAN_GEO_DATA[provinceName]) ? [] : Object.keys(IRAN_GEO_DATA[provinceName]);
+  const sig = "c|" + String(provinceName || "") + "|" + cities.join("\n");
+  if (selectElement.dataset.geoSig === sig) {
+    if (keep) selectElement.value = keep;
+    return;
+  }
+  selectElement.dataset.geoSig = sig;
   selectElement.innerHTML = `<option value="">انتخاب شهر...</option>`;
-  if (!provinceName || !IRAN_GEO_DATA[provinceName]) return;
-
-  Object.keys(IRAN_GEO_DATA[provinceName]).forEach(city => {
+  cities.forEach(city => {
     const opt = document.createElement("option");
     opt.value = city;
     opt.textContent = city;
-    if (city === selectedValue) opt.selected = true;
     selectElement.appendChild(opt);
   });
+  if (keep) selectElement.value = keep;
 }
 
 function populateDistricts(provinceName, cityName, selectElement, selectedValue = "") {
-  selectElement.innerHTML = `<option value="">انتخاب منطقه...</option>`;
-  if (!provinceName || !cityName || !IRAN_GEO_DATA[provinceName] || !IRAN_GEO_DATA[provinceName][cityName]) {
+  if (!selectElement) return;
+  const keep = selectedValue || selectElement.value || "";
+  const districts = (!provinceName || !cityName || !IRAN_GEO_DATA || !IRAN_GEO_DATA[provinceName] || !IRAN_GEO_DATA[provinceName][cityName]) ? [] : IRAN_GEO_DATA[provinceName][cityName];
+  const sig = "d|" + String(provinceName || "") + "|" + String(cityName || "") + "|" + (districts || []).join("\n");
+  if (selectElement.dataset.geoSig === sig) {
+    if (keep) selectElement.value = keep;
     return;
   }
-
-  const districts = IRAN_GEO_DATA[provinceName][cityName];
-  districts.forEach(district => {
+  selectElement.dataset.geoSig = sig;
+  selectElement.innerHTML = `<option value="">انتخاب منطقه...</option>`;
+  (districts || []).forEach(district => {
     const opt = document.createElement("option");
     opt.value = district;
     opt.textContent = district;
-    if (district === selectedValue) opt.selected = true;
     selectElement.appendChild(opt);
   });
+  if (keep) selectElement.value = keep;
 }
 
 function setupCascadingGeoSelectors(provinceId, cityId, districtId) {
@@ -1989,9 +2009,11 @@ function renderRepHomesTable() {
   (state.repHomes || []).forEach(hm => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td><strong style="color:#0f172a;">${hm.repName}</strong></td>
-      <td>${hm.address}</td>
-      <td style="direction:ltr;">${hm.lat}, ${hm.lng}</td>
+      <td><strong style="color:#0f172a;">${hm.repName || ""}</strong></td>
+      <td>${hm.address || ""}</td>
+      <td>${hm.plate || "—"}</td>
+      <td>${hm.floor || "—"}</td>
+      <td style="direction:ltr;">${hm.lat || ""}, ${hm.lng || ""}</td>
       <td>
         <button class="btn btn-outline btn-sm" onclick="alert('نمایش آدرس منزل روی نقشه جامع فعال شد.')">📍 نمایش</button>
         <button class="btn btn-outline btn-sm" onclick="editRepHome('${hm.id}')">✏️ ویرایش</button>
@@ -2003,7 +2025,11 @@ function renderRepHomesTable() {
 }
 function editRepHome(id) {
   const hm=(state.repHomes||[]).find(x=>String(x.id)===String(id));if(!hm)return;
-  const rep=document.getElementById("repHomeSelect"),addr=document.getElementById("repHomeAddressInput");if(rep)rep.value=hm.repName||"";if(addr){addr.value=hm.address||"";addr.focus();}
+  const rep=document.getElementById("repHomeSelect"),addr=document.getElementById("repHomeAddressInput");
+  const pl=document.getElementById("repHomePlate"),fl=document.getElementById("repHomeFloor");
+  if(rep)rep.value=hm.repName||"";if(addr){addr.value=hm.address||"";addr.focus();}
+  if(pl)pl.value=hm.plate||"";if(fl)fl.value=hm.floor||"";
+  if(hm.lat&&hm.lng) window.__v12HomePos={lat:hm.lat,lng:hm.lng};
   window._editingRepHomeId=hm.id;
 }
 function deleteRepHome(id) {
@@ -3180,7 +3206,7 @@ function setupPWAServiceWorker() {
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
   if (!/(^|\\.)ndcohub\\.ir$|(^|\\.)mehraeinpharma\\.ir$/.test(location.hostname || "")) {
-  navigator.serviceWorker.register('/sw.js?v=12.09.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=12.10.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;

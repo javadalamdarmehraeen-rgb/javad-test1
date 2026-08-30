@@ -10,7 +10,7 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
   <script>
-    (function(){var BUILD="12.09.0";window.CRM_APP_VERSION=BUILD;var key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{
+    (function(){var BUILD="12.10.0";window.CRM_APP_VERSION=BUILD;var key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{
       var prev=localStorage.getItem(key)||"";
       localStorage.setItem(key,BUILD);
       if(prev&&prev!==BUILD&&sessionStorage.getItem("CRM_MOBILE_RELOAD")!==BUILD){
@@ -59,8 +59,8 @@
   </style>
 </head>
 <body>
-  <script src="crm-runtime.js?v=12.09.0"></script>
-  <script src="crm-hub.js?v=12.09.0"></script>
+  <script src="crm-runtime.js?v=12.10.0"></script>
+  <script src="crm-hub.js?v=12.10.0"></script>
 
   <div class="card">
     <img class="logo" src="logo.png" alt="Tanin Teb Taha">
@@ -85,7 +85,7 @@
     <div class="ok" id="st"></div>
     <p class="hint">نمونه مدیر: admin / 123 — شماره 09120000000</p>
     <p class="hint">هاب‌ها از BASE_URL/CRM_HUBS خوانده می‌شوند (Render، ndcohub.ir، mehraeinpharma.ir).</p>
-    <p class="hint" id="crmBuildHint">نسخه ۱۲.۰۹.۰ — گوشی و ویندوز باید همین شماره را ببینند</p>
+    <p class="hint" id="crmBuildHint">نسخه ۱۲.۱۰.۰ — گوشی و ویندوز باید همین شماره را ببینند</p>
   </div>
   <script>
     (function(){
@@ -126,7 +126,7 @@
       var err = document.getElementById("err");
       function showErr(m){ err.style.display="block"; err.textContent=m; }
       function hideErr(){ err.style.display="none"; }
-      fetch("/api/health").then(function(r){return r.json();}).then(function(d){ st.textContent="سرور آماده است — نسخه "+((d&&d.version)||"۱۲.۰۹.۰"); var h=document.getElementById("crmBuildHint"); if(h&&d&&d.version&&d.version!=="12.09.0") h.textContent="گوشی نسخه قدیمی می‌بیند ("+d.version+") — یک‌بار کش را خالی کنید یا لینک را با Chrome باز کنید."; }).catch(function(){ st.textContent="در حال بیدار کردن سرور..."; });
+      fetch("/api/health").then(function(r){return r.json();}).then(function(d){ st.textContent="سرور آماده است — نسخه "+((d&&d.version)||"۱۲.۱۰.۰"); var h=document.getElementById("crmBuildHint"); if(h&&d&&d.version&&d.version!=="12.10.0") h.textContent="گوشی نسخه قدیمی می‌بیند ("+d.version+") — یک‌بار کش را خالی کنید یا لینک را با Chrome باز کنید."; }).catch(function(){ st.textContent="در حال بیدار کردن سرور..."; });
       document.getElementById("f").addEventListener("submit", function(){
         hideErr();
         var u=document.getElementById("u").value.trim();
