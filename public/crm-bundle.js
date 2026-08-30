@@ -12393,6 +12393,7 @@ button.v19-gps svg{display:block}
   
   /* ---------- v11.41 / turn 73: تب «تغییرات در نسخه جدید» + گزارش اعمال‌نشده‌ها ---------- */
   var V41_CHANGES=[
+    ["۱۲.۰۸: ذخیره بعد از رفرش نماند؛ ستاره فقط فیلد ستاره‌دار؛ تخصص یک فیلد جستجوپذیر؛ جغرافیا ثابت؛ منزل GPS کم‌رنگ؛ قیمت بدون دوبرابر VAT","applied"],
     ["۱۲.۰۷: ذخیره گوشی روی سرور نت‌افراز؛ هدر و همبرگر موبایل چسبان","applied"],
     ["۱۲.۰۷: داروخانه با نام متفاوت تکراری حساب نشود (اکبری ≠ محبوبی)","applied"],
     ["۱۲.۰۷: اعتبارسنجی پزشک فقط فیلدهای ستاره‌دار","applied"],
@@ -12859,7 +12860,7 @@ button.v19-gps svg{display:block}
       if(ch) ch.textContent=window.state.settings.companyName||"طنین طب طاها";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.07.0");
+        var ver=String(window.CRM_APP_VERSION||"12.08.0");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -14396,7 +14397,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(ch) ch.textContent=window.state.settings.companyName||"طنین طب طاها";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.07.0");
+        var ver=String(window.CRM_APP_VERSION||"12.08.0");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -16992,11 +16993,8 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     var d=ensureDraft(p);
     var inc=Number(d.increasePct)||0;
     var currentCons=Number(cur.cons)||0;
-    function roundNice(n){n=Number(n)||0;if(n<=0)return 0;var c5=Math.round(n/5)*5,c10=Math.round(n/10)*10;var d5=Math.abs(n-c5),d10=Math.abs(n-c10);return d10<d5?c10:c5;}
-    var vatN=Number(cur.vat)||0;
-    var consVat=vatN>0?(currentCons*(1+vatN/100)):currentCons;
-    var newCons=roundNice(consVat*(1+inc/100));
-    if(vatN>0) newCons=roundNice(newCons);
+    function roundNice(n){n=Number(n)||0;if(n<=0)return 0;var c5=Math.round(n/5)*5,c10=Math.round(n/10)*10;var d5=Math.abs(n-c5),d10=Math.abs(n-c10);if(d10<d5)return c10;return c5;}
+    var newCons=roundNice(currentCons*(1+inc/100));
     var m3=Number(d.marginDistPh);if(!isFinite(m3))m3=margin(cur.dist,cur.ph);
     var m5=Number(d.marginPhCons);
     if(!isFinite(m5))m5=margin(cur.ph,currentCons);
@@ -19161,10 +19159,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.07.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.08.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.07.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.08.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19244,10 +19242,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.07.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.08.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.07.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.08.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -19303,7 +19301,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.07.0");
+  var BUILD = String(window.CRM_APP_VERSION || "12.08.0");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
@@ -19364,10 +19362,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.07.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.08.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.07.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.08.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19394,10 +19392,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.07.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.08.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.07.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.08.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -19482,7 +19480,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.07.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.08.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -19654,27 +19652,33 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   function urls(){
     return ["/api.php?path=state", "/api/state"];
   }
+  function recN(d){
+    if (!d) return 0;
+    return ((d.pharmacies||[]).length)+((d.doctors||[]).length)+((d.orders||[]).length);
+  }
   function applyServer(d){
-    if (!d || typeof d !== "object") return false;
+    if (!d || typeof d !== "object" || hollow(d)) return false;
     var st = window.state;
     if (!st) return false;
+    if (recN(st)>0 && recN(d)<recN(st)) return false;
     if (typeof window.v12TakeRegisteredOnly === "function") {
       window.state = window.v12TakeRegisteredOnly(d, st);
       st = window.state;
-    } else if (!hollow(d)) {
+    } else {
       ["pharmacies","doctors","orders","reps","users"].forEach(function(k){
         if (Array.isArray(d[k]) && d[k].length) st[k] = d[k];
       });
     }
     try {
-      window.__v12PushLock = true;
-      if (typeof saveState === "function") saveState(false);
+      if (typeof serializeStateForLocalStorage === "function")
+        localStorage.setItem("CRM_APP_STATE_V2", serializeStateForLocalStorage(st));
     } catch (e) {}
-    window.__v12PushLock = false;
     return true;
   }
   function pullOrigin(){
     if (typeof navigator !== "undefined" && navigator.onLine === false) return;
+    var st = window.state;
+    if (recN(st)>0) { try { pushOrigin(); } catch (e) {} }
     var list = urls();
     var i = 0;
     function next(){
@@ -19683,6 +19687,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       orig(u, { cache: "no-store" }).then(function(r){ return r && r.ok ? r.json() : null; }).then(function(j){
         var d = j && j.data ? j.data : j;
         if (hollow(d)) { next(); return; }
+        if (recN(st)>0 && recN(d)<recN(st)) return;
         applyServer(d);
       }).catch(function(){ next(); });
     }
@@ -19706,162 +19711,143 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   document.addEventListener("visibilitychange", function(){ if (!document.hidden) pullOrigin(); });
 })();
 /* v12.07.0: نت‌افراز پایدار، هدر چسبان، فرم‌ها، مسیر، قیمت */
+/* v12.08.0: ذخیره نماند؛ ستاره؛ تخصص یک فیلد؛ جغرافیا؛ منزل GPS؛ مسیر؛ قیمت */
 (function(){
   "use strict";
   window.v1207FormFix = true;
+  window.v1208PersistFix = true;
   function $(id){ return document.getElementById(id); }
-  function geo(){ return (typeof IRAN_GEO_DATA!=="undefined" && IRAN_GEO_DATA) || window.IRAN_GEO_DATA || {}; }
+  function geo(){
+    var g = (typeof IRAN_GEO_DATA !== "undefined" && IRAN_GEO_DATA) || window.IRAN_GEO_DATA || {};
+    window.IRAN_GEO_DATA = g;
+    return g;
+  }
 
-  /* فقط لیبل ستاره‌دار */
-  var prevReq = window.validateRequiredFields;
+  document.querySelectorAll("form").forEach(function(f){ try { f.setAttribute("novalidate","novalidate"); } catch(e){} });
+
   window.validateRequiredFields = function(tabId){
-    var pane = tabId ? document.getElementById(tabId) : null;
-    if (!pane) return typeof prevReq==="function" ? prevReq(tabId) : true;
-    var missing=[];
-    pane.querySelectorAll(".form-group").forEach(function(g){
-      var lab=g.querySelector(".form-label, label");
-      if(!lab || String(lab.textContent||"").indexOf("*")<0) return;
-      var el=g.querySelector("input:not([type=hidden]):not([type=button]):not([type=submit]), select, textarea");
-      if(!el || el.disabled || el.offsetParent===null) return;
-      if(!(String(el.value||"").trim())){
-        missing.push(String(lab.textContent||"").replace(/\*/g,"").replace(/\s+/g," ").trim());
-      }
+    var pane = tabId ? document.getElementById(tabId) : document;
+    if (!pane) return true;
+    var missing = [];
+    pane.querySelectorAll("label.form-label, label").forEach(function(lab){
+      if (String(lab.textContent || "").indexOf("*") < 0) return;
+      var id = lab.getAttribute("for");
+      var el = id ? document.getElementById(id) : null;
+      if (!el) return;
+      if (el.disabled || el.type === "hidden") return;
+      if (!(String(el.value || "").trim()))
+        missing.push(String(lab.textContent || "").replace(/\*/g,"").replace(/\s+/g," ").trim());
     });
-    if(missing.length){
-      alert(missing.map(function(n){ return "فیلد «"+n+"» خالی است و باید پر شود."; }).join("\n"));
+    if (missing.length) {
+      alert(missing.map(function(n){ return "فیلد «" + n + "» خالی است و باید پر شود."; }).join("\n"));
       return false;
     }
     return true;
   };
 
-  function fillDistricts(provId, cityId, distId){
-    var p=$(provId), c=$(cityId), d=$(distId);
-    if(!p||!c||!d) return;
-    if(typeof populateDistricts==="function"){
-      populateDistricts(p.value, c.value, d, d.value);
-      return;
-    }
-    var G=geo(), list=(G[p.value]&&G[p.value][c.value])||[];
-    var cur=d.value;
-    d.innerHTML='<option value="">انتخاب منطقه...</option>';
-    list.forEach(function(x){
-      var o=document.createElement("option"); o.value=x; o.textContent=x;
-      if(x===cur) o.selected=true; d.appendChild(o);
+  function specOneField(){
+    var extra = $("doctorSpecialtySearch");
+    if (extra && extra.parentNode) extra.parentNode.removeChild(extra);
+    var sel = $("doctorSpecialty");
+    if (!sel || sel.tagName !== "SELECT" || sel.dataset.v12combo === "1") return;
+    sel.dataset.v12combo = "1";
+    var list = document.createElement("datalist");
+    list.id = "doctorSpecialtyList";
+    [].forEach.call(sel.options, function(o){
+      if (!o.value) return;
+      var opt = document.createElement("option");
+      opt.value = o.value;
+      list.appendChild(opt);
     });
+    var inp = document.createElement("input");
+    inp.type = "text";
+    inp.id = "doctorSpecialty";
+    inp.className = sel.className || "form-select";
+    inp.setAttribute("list", "doctorSpecialtyList");
+    inp.setAttribute("autocomplete", "off");
+    inp.value = sel.value || "";
+    inp.placeholder = "تخصص را بنویسید یا از لیست انتخاب کنید";
+    sel.parentNode.insertBefore(list, sel);
+    sel.parentNode.replaceChild(inp, sel);
   }
-  function bindGeo(){
+
+  function bindGeoOnce(){
+    if (window.__v12GeoOnce) return;
+    window.__v12GeoOnce = 1;
+    geo();
     [["pharmacyProvince","pharmacyCity","pharmacyDistrict"],
      ["doctorProvince","doctorCity","doctorDistrict"],
      ["orderProvince","orderCity","orderDistrict"]].forEach(function(ids){
-      var p=$(ids[0]), c=$(ids[1]);
-      if(c && !c.dataset.v12geo){
-        c.dataset.v12geo="1";
-        c.addEventListener("change", function(){ fillDistricts(ids[0], ids[1], ids[2]); });
+      var p=$(ids[0]), c=$(ids[1]), d=$(ids[2]);
+      if (!p || !c || !d) return;
+      function refill(){
+        if (typeof populateCities === "function") populateCities(p.value, c, c.value);
+        if (typeof populateDistricts === "function") populateDistricts(p.value, c.value, d, d.value);
       }
-      if(p && !p.dataset.v12geo){
-        p.dataset.v12geo="1";
-        p.addEventListener("change", function(){ fillDistricts(ids[0], ids[1], ids[2]); });
-      }
-      fillDistricts(ids[0], ids[1], ids[2]);
-    });
-  }
-
-  function specSearch(){
-    var sel=$("doctorSpecialty");
-    if(!sel || $("doctorSpecialtySearch")) return;
-    var inp=document.createElement("input");
-    inp.type="text"; inp.id="doctorSpecialtySearch"; inp.className="form-input";
-    inp.placeholder="جستجوی تخصص..."; inp.autocomplete="off";
-    sel.parentNode.insertBefore(inp, sel);
-    var all=[].map.call(sel.options, function(o){ return {v:o.value, t:o.textContent}; });
-    inp.addEventListener("input", function(){
-      var q=String(inp.value||"").trim();
-      var cur=sel.value;
-      sel.innerHTML="";
-      all.forEach(function(o){
-        if(q && String(o.t).indexOf(q)<0 && String(o.v).indexOf(q)<0) return;
-        var opt=document.createElement("option"); opt.value=o.v; opt.textContent=o.t; sel.appendChild(opt);
+      p.addEventListener("change", refill);
+      c.addEventListener("change", function(){
+        if (typeof populateDistricts === "function") populateDistricts(p.value, c.value, d, d.value);
       });
-      if(cur) sel.value=cur;
     });
   }
 
   function bindHome(){
-    var btn=$("btnRepHomeCurrentLocation");
-    if(btn && !btn.dataset.v12home){
-      btn.dataset.v12home="1";
-      var n=btn.cloneNode(true);
+    var btn = $("btnRepHomeCurrentLocation");
+    if (btn && !btn.dataset.v12home8){
+      btn.dataset.v12home8 = "1";
+      var n = btn.cloneNode(true);
       btn.parentNode.replaceChild(n, btn);
       n.addEventListener("click", function(){
+        n.disabled = true; n.style.opacity = "0.55";
         function done(lat,lng,addr){
-          window.__v12HomePos={lat:lat,lng:lng};
-          var a=$("repHomeAddressInput"); if(a) a.value=addr||a.value;
+          n.disabled = false; n.style.opacity = "";
+          window.__v12HomePos = {lat:lat, lng:lng};
+          var a = $("repHomeAddressInput"); if (a) a.value = addr || a.value || (lat+", "+lng);
         }
-        if(typeof getCurrentPositionSafe==="function"){
-          getCurrentPositionSafe().then(function(pos){
-            if(pos && pos.error){ alert(pos.message||"موقعیت گرفته نشد"); return; }
-            var lat=pos.lat, lng=pos.lng;
-            Promise.resolve(pos.addressPromise|| (typeof geoReverse==="function"?geoReverse(lat,lng): "")).then(function(addr){ done(lat,lng,addr); });
-          });
-        } else if(navigator.geolocation){
-          navigator.geolocation.getCurrentPosition(function(p){ done(p.coords.latitude,p.coords.longitude,""); });
+        function fail(msg){
+          n.disabled = false; n.style.opacity = "";
+          alert(msg || "موقعیت گرفته نشد.");
         }
+        if (!navigator.geolocation) { fail("مرورگر موقعیت را پشتیبانی نمی‌کند."); return; }
+        navigator.geolocation.getCurrentPosition(function(p){
+          var lat=p.coords.latitude, lng=p.coords.longitude;
+          var addr = "";
+          if (typeof reverseGeocodeCoordinates === "function") {
+            Promise.resolve(reverseGeocodeCoordinates(lat,lng)).then(function(a){ done(lat,lng,a); }).catch(function(){ done(lat,lng,""); });
+          } else done(lat,lng,"");
+        }, function(){ fail("اجازه GPS داده نشد یا صفحه Not Secure است."); }, {enableHighAccuracy:true, timeout:15000, maximumAge:0});
       });
     }
-    var host=$("btnRepHomeCurrentLocation") && $("btnRepHomeCurrentLocation").parentNode;
-    if(host && !$("btnSaveRepHome")){
-      var s=document.createElement("button");
-      s.type="button"; s.id="btnSaveRepHome"; s.className="btn btn-success btn-sm";
-      s.textContent="💾 ذخیره اطلاعات منزل";
+    var host = $("btnRepHomeCurrentLocation") && $("btnRepHomeCurrentLocation").parentNode;
+    if (host && !$("btnSaveRepHome")) {
+      var s = document.createElement("button");
+      s.type = "button"; s.id = "btnSaveRepHome"; s.className = "btn btn-success btn-sm";
+      s.textContent = "💾 ذخیره اطلاعات منزل";
       host.appendChild(s);
       s.addEventListener("click", function(){
-        var st=window.state; if(!st) return;
-        if(!st.repHomes) st.repHomes=[];
-        var name=(($("repHomeSelect")||{}).value)||"";
-        var addr=(($("repHomeAddressInput")||{}).value||"").trim();
-        var plate=(($("repHomePlate")||{}).value||"").trim();
-        var floor=(($("repHomeFloor")||{}).value||"").trim();
-        var pos=window.__v12HomePos||{};
-        var idx=st.repHomes.findIndex(function(h){ return h.repName===name; });
-        var rec={ id: idx>=0?st.repHomes[idx].id:("home-"+Date.now()), repName:name, address:addr, plate:plate, floor:floor,
-          lat:pos.lat|| (idx>=0?st.repHomes[idx].lat:null), lng:pos.lng|| (idx>=0?st.repHomes[idx].lng:null) };
-        if(idx===-1) st.repHomes.push(rec); else st.repHomes[idx]=Object.assign({}, st.repHomes[idx], rec);
-        if(typeof saveState==="function") saveState();
+        var st = window.state; if (!st) return;
+        if (!st.repHomes) st.repHomes = [];
+        var name = (($("repHomeSelect")||{}).value)||"";
+        var addr = (($("repHomeAddressInput")||{}).value||"").trim();
+        var plate = (($("repHomePlate")||{}).value||"").trim();
+        var floor = (($("repHomeFloor")||{}).value||"").trim();
+        var pos = window.__v12HomePos || {};
+        var idx = st.repHomes.findIndex(function(h){ return h.repName===name; });
+        var rec = { id: idx>=0 ? st.repHomes[idx].id : ("home-"+Date.now()), repName:name, address:addr, plate:plate, floor:floor,
+          lat: pos.lat || (idx>=0?st.repHomes[idx].lat:null), lng: pos.lng || (idx>=0?st.repHomes[idx].lng:null) };
+        if (idx===-1) st.repHomes.push(rec); else st.repHomes[idx] = Object.assign({}, st.repHomes[idx], rec);
+        if (typeof saveState === "function") saveState();
         alert("اطلاعات منزل ذخیره شد.");
       });
     }
   }
 
-  function refillRoutes(){
-    var G=geo();
-    var ps=$("routeManagerProvince"), cs=$("routeManagerCity"), ds=$("routeManagerDistrict");
-    if(typeof routeGeoValues==="function" && typeof setupRepresentativeRoutes==="function"){
-      try{ setupRepresentativeRoutes(); }catch(e){}
-    }
-    if(ps && ps.children.length<5 && typeof routeFill==="function" && typeof routeGeoValues==="function"){
-      try{ routeFill(ps, routeGeoValues("province"), []); }catch(e){}
-    }
-  }
-
-  if(!window.__v12RouteClick){
-    window.__v12RouteClick=1;
-    document.addEventListener("click", function(e){
-      var t=e.target; if(!t||!t.closest) return;
-      var ed=t.closest("[class*='edit-route']");
-      var del=t.closest("[class*='del-route']");
-      if(!ed && !del) return;
-      e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
-      var id=(ed||del).getAttribute("data-id")||"";
-      if(!id) return;
-      if(ed && typeof window.v91EditRoute==="function") window.v91EditRoute(id);
-      else if(del && typeof window.v91DelRoute==="function") window.v91DelRoute(id);
-    }, true);
-  }
-
   function boot(){
-    bindGeo(); specSearch(); bindHome(); refillRoutes();
+    bindGeoOnce();
+    specOneField();
+    bindHome();
   }
-  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", boot);
-  else setTimeout(boot, 200);
-  [600,1500,4000].forEach(function(ms){ setTimeout(boot, ms); });
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else setTimeout(boot, 300);
+  setTimeout(boot, 1200);
 })();
