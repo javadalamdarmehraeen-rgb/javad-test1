@@ -146,6 +146,12 @@
     }
     var originReq = Object.assign({}, opts, { headers: hdrs({ "X-CRM-Hub-Sync": "1" }) });
     return tryOrigin(path, originReq, 8000).then(function (r) {
+      if (r && r.ok && method === "POST" && /state/.test(path) && !hollowPost(opts)) {
+        try { orig(ORIGIN + "/api.php?path=sync&target=render", { method: "GET", cache: "no-store" }).catch(function () {}); } catch (eS) {}
+        peers().forEach(function (origin) {
+          orig(origin + "/api/state", Object.assign({}, opts, { headers: hdrs({ "X-CRM-Hub-Sync": "1", "X-CRM-Sync": "v81" }) })).catch(function () {});
+        });
+      }
       return r && r.ok ? r : fakeFor(path, method);
     }).catch(function () { return fakeFor(path, method); });
   }

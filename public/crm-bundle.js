@@ -12405,6 +12405,8 @@ button.v19-gps svg{display:block}
   
   /* ---------- v11.41 / turn 73: تب «تغییرات در نسخه جدید» + گزارش اعمال‌نشده‌ها ---------- */
   var V41_CHANGES=[
+    ["۱۲.۱۲: همگام لحظه‌ای ویندوز/گوشی + پل نت‌افراز به رندر","applied"],
+    ["۱۲.۱۲: هدر برنامه ویزیت و گزارشات (مهر آیین نیک دارو) + طنین طب طاها TANIN TEB TAHA","applied"],
     ["۱۲.۱۱: موقعیت منزل پایدار با تلاش دوباره + پلاک و طبقه در لیست","applied"],
     ["۱۲.۱۱: استان/شهر/منطقه دیگر با لیست سراسری قاطی نمی‌شود","applied"],
     ["۱۲.۱۱: درصد افزایش و ویرایش مصرف‌کننده با ارزش افزوده همان لحظه در کادر قیمت جدید","applied"],
@@ -20155,12 +20157,15 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     if (typeof navigator !== "undefined" && navigator.onLine === false) return;
     if (typing()) return;
     var f = origFetch();
-    var urls = ["/api.php?path=state", "/api/state"];
+    var since = 0;
+    try { since = Number((window.state && window.state._lastSavedAt) || 0) || 0; } catch (eS) {}
+    var urls = ["/api.php?path=state" + (since ? ("&since=" + since) : ""), "/api/state" + (since ? ("?since=" + since) : "")];
     var i = 0;
     function next(){
       if (i >= urls.length) return;
       var u = urls[i++];
       f(u, { cache: "no-store" }).then(function(r){ return r && r.ok ? r.json() : null; }).then(function(j){
+        if (j && j.status === "not-modified") return;
         var d = j && j.data ? j.data : j;
         if (!d || hollow(d)) { next(); return; }
         applyLive(d);
@@ -20195,7 +20200,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   else setTimeout(boot, 200);
   setTimeout(boot, 1400);
   setTimeout(pullLive, 800);
-  setInterval(pullLive, 2000);
+  setInterval(function(){ if (!document.hidden) pullLive(); }, 800);
   document.addEventListener("visibilitychange", function(){ if (!document.hidden) pullLive(); });
 })();
 
@@ -20214,5 +20219,67 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     try { if (typeof renderRepRoutesTable === "function") renderRepRoutesTable(); } catch (e7) {}
     try { if (typeof updateNavBadges === "function") updateNavBadges(); } catch (e8) {}
   };
+})();
+
+/* v12.12.0: همگام لحظه‌ای نت‌افراز↔رندر + هدر مهر آیین نیک دارو */
+(function(){
+  "use strict";
+  window.v1212LiveSync = true;
+  window.v1212RenderBridge = true;
+  var TITLE = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
+  var COMPANY = "طنین طب طاها  TANIN TEB TAHA";
+  function pinHeader(){
+    var h = document.getElementById("headerAppTitle");
+    if (h && h.textContent !== TITLE) h.textContent = TITLE;
+    var c = document.getElementById("headerCompanyNameDisplay");
+    if (c && c.textContent !== COMPANY) c.textContent = COMPANY;
+  }
+  pinHeader();
+  [40,180,500,1200,2500,4000].forEach(function(ms){ setTimeout(pinHeader, ms); });
+  function origFetch(){ return window.__CRM_ORIG_FETCH || window.fetch; }
+  function hollow(d){
+    if (!d || typeof d !== "object") return true;
+    return !(d.pharmacies||[]).length && !(d.doctors||[]).length && ((d.users||[]).length <= 1);
+  }
+  function pushRenderBridge(){
+    try {
+      var st = window.state;
+      if (hollow(st)) return;
+      var f = origFetch();
+      f("/api.php?path=sync&target=render", { method: "GET", cache: "no-store" }).catch(function(){});
+      if (typeof window.v99Peers === "function") {
+        var body = (typeof serializeStateForLocalStorage === "function") ? serializeStateForLocalStorage(st) : JSON.stringify(st);
+        window.v99Peers().forEach(function(origin){
+          f(origin + "/api/state", { method: "POST", headers: { "Content-Type": "application/json", "X-CRM-Sync": "v81" }, body: body, cache: "no-store" }).catch(function(){});
+        });
+      }
+    } catch (e) {}
+  }
+  window.v12PushRenderBridge = pushRenderBridge;
+  var ch = null;
+  try { ch = new BroadcastChannel("crm-live-v12"); } catch (eB) {}
+  function ping(){ try { if (ch) ch.postMessage({ at: Date.now() }); } catch (eP) {} }
+  if (ch) ch.onmessage = function(){ try { if (typeof window.v1211Refresh === "function") window.v1211Refresh(); } catch (eM) {} };
+  window.addEventListener("storage", function(ev){
+    if (ev && ev.key === "CRM_APP_STATE_V2") {
+      try { if (typeof window.v1211Refresh === "function") window.v1211Refresh(); } catch (eS) {}
+    }
+  });
+  function wrapSave(){
+    var old = window.saveState;
+    if (typeof old !== "function" || old._v1212) return;
+    var w = function(){
+      var r = old.apply(this, arguments);
+      ping();
+      setTimeout(pushRenderBridge, 160);
+      return r;
+    };
+    w._v1212 = true;
+    window.saveState = w;
+  }
+  function boot(){ pinHeader(); wrapSave(); }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function(){ setTimeout(boot, 80); });
+  else setTimeout(boot, 80);
+  setTimeout(boot, 900);
 })();
 

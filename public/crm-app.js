@@ -46,7 +46,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "12.11.0";
+const CRM_APP_VERSION = "12.12.0";
 window.CRM_APP_VERSION = CRM_APP_VERSION;
 function v12CanonicalCompany(name) {
   var s = String(name || "").trim();
@@ -255,8 +255,12 @@ function applyGeneralSettingsToUI() {
   state.settings.companyName = v12CanonicalCompany(state.settings.companyName);
   const compHeader = document.getElementById("headerCompanyNameDisplay");
   if (compHeader) {
-    compHeader.textContent = state.settings.companyName || "طنین طب طاها";
+    var nm = state.settings.companyName || "طنین طب طاها";
+    if (!/TANIN TEB TAHA/i.test(nm)) nm = nm + "  TANIN TEB TAHA";
+    compHeader.textContent = nm;
   }
+  var appTitle = document.getElementById("headerAppTitle");
+  if (appTitle) appTitle.textContent = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
 }
 
 // ----------------------------------------------------------------------------
@@ -3210,7 +3214,7 @@ function setupPWAServiceWorker() {
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
   if (!/(^|\\.)ndcohub\\.ir$|(^|\\.)mehraeinpharma\\.ir$/.test(location.hostname || "")) {
-  navigator.serviceWorker.register('/sw.js?v=12.11.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=12.12.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;

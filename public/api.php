@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
-define("CRM_APP_VERSION", "12.11.0");
+define("CRM_APP_VERSION", "12.12.0");
 
 function cfg() {
   $jf = __DIR__ . "/api-config.json";
@@ -314,7 +314,13 @@ if ($p === "sync" || strpos($p, "sync/") === 0) {
 if (strpos($p, "state") === 0) {
   if ($method === "GET") {
     $local = fill_if_empty(read_json($DATA), $DATA);
-    send_json($local ? array("status" => "success", "data" => $local) : array("status" => "empty"));
+    $at = ($local && isset($local["_lastSavedAt"])) ? intval($local["_lastSavedAt"]) : 0;
+    header("X-CRM-Saved-At: " . $at);
+    $have = isset($_GET["since"]) ? intval($_GET["since"]) : 0;
+    if ($have && $at && $have >= $at) {
+      send_json(array("status" => "not-modified", "at" => $at));
+    }
+    send_json($local ? array("status" => "success", "data" => $local, "at" => $at) : array("status" => "empty"));
   }
   if ($method === "POST") {
     $raw = file_get_contents("php://input");
