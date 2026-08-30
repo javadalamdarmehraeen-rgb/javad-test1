@@ -19885,3 +19885,27 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   else setTimeout(boot, 300);
   setTimeout(boot, 1200);
 })();
+
+/* v12.09.2: منزل نمایندگان، قیمت‌گذاری و همگام‌سازی بی‌درنگ */
+(function(){
+  function homeFields(){
+    var body=document.getElementById('tableRepHomesBody');
+    if(!body)return;
+    Array.prototype.forEach.call(body.querySelectorAll('tr'),function(tr){
+      if(tr.dataset.v92home)return;
+      var id=tr.querySelector('.v37-home-edit'); if(!id)return;
+      var rec=((window.state||{}).repHomes||[]).filter(function(x){return String(x.id)===String(id.dataset.id);})[0];
+      if(!rec)return;
+      var td=document.createElement('td');td.textContent='پلاک '+(rec.plate||'—')+' / طبقه '+(rec.floor||'—');
+      tr.insertBefore(td,tr.lastElementChild);tr.dataset.v92home='1';
+    });
+  }
+  function patchHomeSave(){
+    var b=document.getElementById('btnRepHomeCurrentLocation');
+    if(b&&!b.dataset.v92){b.dataset.v92='1';b.addEventListener('click',function(){setTimeout(function(){var S=window.state||{},a=document.getElementById('repHomePlate'),f=document.getElementById('repHomeFloor'),r=(S.repHomes||[]).slice(-1)[0];if(r){r.plate=a&&a.value||r.plate||'';r.floor=f&&f.value||r.floor||'';if(window.saveState)window.saveState(false);homeFields();}},500);},true);}
+  }
+  function live(){try{homeFields();patchHomeSave();if(window.renderRepHomesTable)window.renderRepHomesTable();}catch(e){}}
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(live,1000);});
+  setInterval(live,3000);
+  setInterval(function(){try{if(!document.hidden&&navigator.onLine&&window.crmPushStateToServer)window.crmPushStateToServer();}catch(e){}},5000);
+})();
