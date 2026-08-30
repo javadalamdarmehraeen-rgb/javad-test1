@@ -46,7 +46,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "12.08.0";
+const CRM_APP_VERSION = "12.09.0";
 window.CRM_APP_VERSION = CRM_APP_VERSION;
 function v12CanonicalCompany(name) {
   var s = String(name || "").trim();
@@ -79,6 +79,12 @@ function v12TakeRegisteredOnly(from, into) {
     });
     base[k] = out;
   });
+  ["formFieldMeta","formBoxes","manualLayouts","tabOrder","customFields","selectExtraOptions","customRecords"].forEach(function (k) {
+    if (from && from[k] && typeof from[k] === "object" && !Array.isArray(from[k]) && Object.keys(from[k]).length) {
+      base[k] = JSON.parse(JSON.stringify(from[k]));
+    }
+  });
+  if (from && Array.isArray(from.userTabs) && from.userTabs.length) base.userTabs = from.userTabs;
   if (!base.settings) base.settings = {};
   base.settings.companyName = "طنین طب طاها";
   if (typeof CRM_APP_VERSION !== "undefined") base._uiBuild = CRM_APP_VERSION;
@@ -3174,7 +3180,7 @@ function setupPWAServiceWorker() {
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
   if (!/(^|\\.)ndcohub\\.ir$|(^|\\.)mehraeinpharma\\.ir$/.test(location.hostname || "")) {
-  navigator.serviceWorker.register('/sw.js?v=12.08.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=12.09.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
