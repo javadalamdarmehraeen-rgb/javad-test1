@@ -342,6 +342,7 @@
       watch=navigator.geolocation.watchPosition(function(pos){var cur={lat:pos.coords.latitude,lng:pos.coords.longitude,accuracy:Number(pos.coords.accuracy)||9999,fallback:false};cur.addressPromise=geoReverse(cur.lat,cur.lng);if(!best||cur.accuracy<best.accuracy)best=cur;if(cur.accuracy<=10)finish(cur);},function(err){if(err&&err.code===1)finish({error:true,message:"اجازه GPS داده نشده است."});},{enableHighAccuracy:true,timeout:15000,maximumAge:0});
     });
   }
+  window.getCurrentPositionSafe = getCurrentPositionSafe;
 
   function setupTwoWayLocationSync() {
     const btnPhCur = replaceNode($("btnPharmacyCurrentLocation"));
@@ -12393,6 +12394,7 @@ button.v19-gps svg{display:block}
   
   /* ---------- v11.41 / turn 73: تب «تغییرات در نسخه جدید» + گزارش اعمال‌نشده‌ها ---------- */
   var V41_CHANGES=[
+    ["۱۲.۰۹: نام و جای فیلدها بین ویندوز و گوشی؛ مصرف‌کننده با ارزش افزوده قابل ویرایش؛ تخصص لیست+جستجو","applied"],
     ["۱۲.۰۸: ذخیره بعد از رفرش نماند؛ ستاره فقط فیلد ستاره‌دار؛ تخصص یک فیلد جستجوپذیر؛ جغرافیا ثابت؛ منزل GPS کم‌رنگ؛ قیمت بدون دوبرابر VAT","applied"],
     ["۱۲.۰۷: ذخیره گوشی روی سرور نت‌افراز؛ هدر و همبرگر موبایل چسبان","applied"],
     ["۱۲.۰۷: داروخانه با نام متفاوت تکراری حساب نشود (اکبری ≠ محبوبی)","applied"],
@@ -12860,7 +12862,7 @@ button.v19-gps svg{display:block}
       if(ch) ch.textContent=window.state.settings.companyName||"طنین طب طاها";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.08.0");
+        var ver=String(window.CRM_APP_VERSION||"12.09.0");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -14397,7 +14399,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(ch) ch.textContent=window.state.settings.companyName||"طنین طب طاها";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.08.0");
+        var ver=String(window.CRM_APP_VERSION||"12.09.0");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -16994,7 +16996,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     var inc=Number(d.increasePct)||0;
     var currentCons=Number(cur.cons)||0;
     function roundNice(n){n=Number(n)||0;if(n<=0)return 0;var c5=Math.round(n/5)*5,c10=Math.round(n/10)*10;var d5=Math.abs(n-c5),d10=Math.abs(n-c10);if(d10<d5)return c10;return c5;}
-    var newCons=roundNice(currentCons*(1+inc/100));
+    var newCons=d.consLocked? (Number(d.cons)||currentCons) : roundNice(currentCons*(1+inc/100));
     var m3=Number(d.marginDistPh);if(!isFinite(m3))m3=margin(cur.dist,cur.ph);
     var m5=Number(d.marginPhCons);
     if(!isFinite(m5))m5=margin(cur.ph,currentCons);
@@ -17086,7 +17088,9 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         (editingPid===String(p.id||p.name)
           ? "<td><input class='form-input v77-inp qty-no-spin' data-k='vatPercent' data-box='new' data-pid='"+pid+"' inputmode='decimal' value='"+faP(d.vat)+"'></td>"
           : "<td style='direction:ltr'>"+faP(d.vat)+"٪</td>")+
-        "<td style='direction:ltr'>"+faN(newVat)+"</td>"+
+        (editingPid===String(p.id||p.name)
+          ? "<td><input class='form-input v77-inp qty-no-spin' data-k='consVat' data-pid='"+pid+"' inputmode='decimal' value='"+faN(newVat)+"'></td>"
+          : "<td style='direction:ltr'>"+faN(newVat)+"</td>")+
         "<td><input class='form-input v77-inp v77-date' data-k='applyDate' data-pid='"+pid+"' "+ro+" inputmode='numeric' placeholder='1405/06/05' value='"+esc(d.applyDate||"")+"'></td>"+
         "<td><button type='button' class='btn btn-outline btn-sm v78-edit-price' data-pid='"+pid+"'>"+(editingPid===String(p.id||p.name)?"✅ ثبت":"✏️ ویرایش")+"</button></td></tr>";
     });
@@ -17107,6 +17111,21 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       var n=num(raw);
       p.vatPercent=n;
       d.vat=n;
+    }else if(key==="consVat"){
+      var vat=Number(d.vat!=null?d.vat:pricesOf(p).vat)||0;
+      if(vat>=100)vat=99.99;
+      var cv=num(raw);
+      var net=vat>0?cv/(1+vat/100):cv;
+      d.cons=Math.round(net);
+      d.increasePct="";
+      d.consLocked=1;
+      var back=fromCons(d.cons, Number(d.marginDistPh)||0, Number(d.marginPhCons)||0);
+      d.dist=back.dist; d.ph=back.ph;
+      save(); paint(); return;
+    }else if(key==="increasePct"){
+      d.consLocked=0;
+      var n=num(raw);
+      d[key]=raw===""?"":n;
     }else{
       var n=num(raw);
       d[key]=raw===""?"":n;
@@ -19159,10 +19178,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.08.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.09.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.08.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.09.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19242,10 +19261,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.08.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.09.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.08.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.09.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -19301,7 +19320,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.08.0");
+  var BUILD = String(window.CRM_APP_VERSION || "12.09.0");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
@@ -19362,10 +19381,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.08.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.09.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.08.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.09.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19392,10 +19411,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.08.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.09.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.08.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.09.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -19480,7 +19499,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.08.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.09.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -19673,6 +19692,11 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if (typeof serializeStateForLocalStorage === "function")
         localStorage.setItem("CRM_APP_STATE_V2", serializeStateForLocalStorage(st));
     } catch (e) {}
+    try {
+      ["tab-pharmacies","tab-doctors","tab-orders"].forEach(function(tid){
+        if (typeof applyFullFormLayout === "function") applyFullFormLayout(tid);
+      });
+    } catch (eL) {}
     return true;
   }
   function pullOrigin(){
@@ -19749,26 +19773,30 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     var extra = $("doctorSpecialtySearch");
     if (extra && extra.parentNode) extra.parentNode.removeChild(extra);
     var sel = $("doctorSpecialty");
-    if (!sel || sel.tagName !== "SELECT" || sel.dataset.v12combo === "1") return;
-    sel.dataset.v12combo = "1";
-    var list = document.createElement("datalist");
-    list.id = "doctorSpecialtyList";
-    [].forEach.call(sel.options, function(o){
-      if (!o.value) return;
-      var opt = document.createElement("option");
-      opt.value = o.value;
-      list.appendChild(opt);
-    });
+    if (!sel || sel.tagName !== "SELECT") return;
+    if (sel.parentNode && sel.parentNode.classList.contains("v12-spec-combo")) return;
+    var wrap = document.createElement("div");
+    wrap.className = "v12-spec-combo";
+    sel.parentNode.insertBefore(wrap, sel);
     var inp = document.createElement("input");
-    inp.type = "text";
-    inp.id = "doctorSpecialty";
-    inp.className = sel.className || "form-select";
-    inp.setAttribute("list", "doctorSpecialtyList");
-    inp.setAttribute("autocomplete", "off");
-    inp.value = sel.value || "";
-    inp.placeholder = "تخصص را بنویسید یا از لیست انتخاب کنید";
-    sel.parentNode.insertBefore(list, sel);
-    sel.parentNode.replaceChild(inp, sel);
+    inp.type = "search";
+    inp.className = "form-input";
+    inp.placeholder = "جستجو در لیست تخصص...";
+    inp.setAttribute("autocomplete","off");
+    wrap.appendChild(inp);
+    wrap.appendChild(sel);
+    var all = [].map.call(sel.options, function(o){ return {v:o.value, t:o.textContent}; });
+    inp.addEventListener("input", function(){
+      var q = String(inp.value||"").trim();
+      var cur = sel.value;
+      sel.innerHTML = "";
+      all.forEach(function(o){
+        if (q && String(o.t).indexOf(q)<0 && String(o.v).indexOf(q)<0) return;
+        var opt = document.createElement("option");
+        opt.value = o.v; opt.textContent = o.t; sel.appendChild(opt);
+      });
+      if (cur) sel.value = cur;
+    });
   }
 
   function bindGeoOnce(){
@@ -19808,14 +19836,20 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
           n.disabled = false; n.style.opacity = "";
           alert(msg || "موقعیت گرفته نشد.");
         }
-        if (!navigator.geolocation) { fail("مرورگر موقعیت را پشتیبانی نمی‌کند."); return; }
-        navigator.geolocation.getCurrentPosition(function(p){
-          var lat=p.coords.latitude, lng=p.coords.longitude;
-          var addr = "";
-          if (typeof reverseGeocodeCoordinates === "function") {
-            Promise.resolve(reverseGeocodeCoordinates(lat,lng)).then(function(a){ done(lat,lng,a); }).catch(function(){ done(lat,lng,""); });
-          } else done(lat,lng,"");
-        }, function(){ fail("اجازه GPS داده نشد یا صفحه Not Secure است."); }, {enableHighAccuracy:true, timeout:15000, maximumAge:0});
+        var run = (typeof window.getCurrentPositionSafe === "function")
+          ? window.getCurrentPositionSafe()
+          : new Promise(function(resolve){
+              if (!navigator.geolocation) { resolve({error:true,message:"GPS نیست"}); return; }
+              navigator.geolocation.getCurrentPosition(function(p){
+                resolve({lat:p.coords.latitude,lng:p.coords.longitude,addressPromise:null});
+              }, function(){ resolve({error:true,message:"اجازه GPS یا Not Secure"}); }, {enableHighAccuracy:true, timeout:15000, maximumAge:0});
+            });
+        run.then(function(pos){
+          if (!pos || pos.error) { fail(pos && pos.message); return; }
+          Promise.resolve(pos.addressPromise || (typeof reverseGeocodeCoordinates==="function" ? reverseGeocodeCoordinates(pos.lat,pos.lng) : "")).then(function(addr){
+            done(pos.lat, pos.lng, addr);
+          }).catch(function(){ done(pos.lat, pos.lng, ""); });
+        }).catch(function(){ fail("موقعیت گرفته نشد"); });
       });
     }
     var host = $("btnRepHomeCurrentLocation") && $("btnRepHomeCurrentLocation").parentNode;

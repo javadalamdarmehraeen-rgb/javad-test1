@@ -2634,3 +2634,6 @@ html.crm-booting body {
   body { padding-top: 62px !important; }
   #tab-orders.tab-pane { scroll-margin-top: 70px; }
 }
+
+.v12-spec-combo { display: flex; flex-direction: column; gap: 4px; }
+.v12-spec-combo input[type="search"] { font-size: 13px; min-height: 34px; }
