@@ -343,11 +343,11 @@
         try{cur.addressPromise=geoReverse(cur.lat,cur.lng);}catch(e){cur.addressPromise=null;}
         if(!best||cur.accuracy<best.accuracy)best=cur;
         if(cur.accuracy<=10)finish(cur);
-        else if(cur.accuracy<=80)finish(cur);
+        else if(cur.accuracy<=25)finish(cur);
       }
       function onErr(err){ if(err&&err.code===1)finish({error:true,message:"اجازه GPS داده نشده است."}); }
       var timer=setTimeout(function(){if(best)finish(best);else finish({error:true,message:"موقعیت گرفته نشد. GPS را روشن کنید. روی HTTP (Not Secure) مرورگر موقعیت را مسدود می‌کند."});},15000);
-      var early=setTimeout(function(){if(best)finish(best);},4000);
+      var early=setTimeout(function(){if(best)finish(best);},8000);
       try{navigator.geolocation.getCurrentPosition(accept,onErr,{enableHighAccuracy:true,timeout:10000,maximumAge:8000});}catch(eG){}
       try{watch=navigator.geolocation.watchPosition(accept,onErr,{enableHighAccuracy:true,timeout:15000,maximumAge:0});}catch(eW){}
     });
@@ -1131,8 +1131,10 @@
       });
       if (!isAdminLike()) sel.value = currentRepName();
     }
-    const btn = replaceNode($("btnRepHomeCurrentLocation"));
-    if (btn) {
+    const btn = $("btnRepHomeCurrentLocation");
+    if (btn && !btn.dataset.v1211gps) {
+      btn.dataset.v1211gps = "1";
+      btn.dataset.v12home8 = "1";
       btn.addEventListener("click", async function () {
         const pos = await getCurrentPositionSafe();
         if (pos.error) { safeAlert(pos.message || "موقعیت دقیق دریافت نشد."); return; }
@@ -11346,14 +11348,14 @@ button.v19-gps svg{display:block}
   function applyGlobalOptionKey(key){
     var rec=seedGlobalOptions(key),hidden=(rec.hidden||[]).map(norm),vals=(rec.values||[]).filter(function(x){return hidden.indexOf(norm(x.value))<0;});globalOptionBusy=true;
     globalCustomFields(key).forEach(function(f){f.options=vals.map(function(x){return x.value;});});
-    globalOptionElements().forEach(function(el){if(globalFieldKey(el)!==key)return;var current=String(el.value||"");if(el.tagName==="SELECT"){var placeholder=null;Array.prototype.forEach.call(el.options,function(o){if(!String(o.value||"")&&!placeholder)placeholder={value:"",text:o.textContent||"انتخاب کنید..."};});el.innerHTML="";if(placeholder){var p=document.createElement("option");p.value="";p.textContent=placeholder.text;el.appendChild(p);}vals.forEach(function(x){var o=document.createElement("option");o.value=x.value;o.textContent=x.text||x.value;el.appendChild(o);});el.value=current;}else{var dl=$(el.getAttribute("list"));if(dl){dl.innerHTML="";vals.forEach(function(x){var o=document.createElement("option");o.value=x.value;dl.appendChild(o);});}}
+    globalOptionElements().forEach(function(el){if(globalFieldKey(el)!==key)return;if(/Province|City|District|Region/i.test(el.id||""))return;/* v1211SkipGeo */var current=String(el.value||"");if(el.tagName==="SELECT"){var placeholder=null;Array.prototype.forEach.call(el.options,function(o){if(!String(o.value||"")&&!placeholder)placeholder={value:"",text:o.textContent||"انتخاب کنید..."};});el.innerHTML="";if(placeholder){var p=document.createElement("option");p.value="";p.textContent=placeholder.text;el.appendChild(p);}vals.forEach(function(x){var o=document.createElement("option");o.value=x.value;o.textContent=x.text||x.value;el.appendChild(o);});el.value=current;}else{var dl=$(el.getAttribute("list"));if(dl){dl.innerHTML="";vals.forEach(function(x){var o=document.createElement("option");o.value=x.value;dl.appendChild(o);});}}
     });globalOptionBusy=false;
   }
   function applyGlobalFieldOptions(root){var keys={};(root&&root.querySelectorAll?Array.prototype.slice.call(root.querySelectorAll("select[id],input[list][id]")):globalOptionElements()).forEach(function(el){var k=globalFieldKey(el);if(k)keys[k]=1;});Object.keys(keys).forEach(applyGlobalOptionKey);}
-  function globalOptionChange(storeId,action,oldV,newV){var el=$(storeId),key=globalFieldKey(el);if(!key)return;var rec=seedGlobalOptions(key);rec.hidden=rec.hidden||[];var before=JSON.stringify(rec);if(action==="delete"){rec.values=(rec.values||[]).filter(function(x){return norm(x.value)!==norm(oldV);});if(rec.hidden.map(norm).indexOf(norm(oldV))<0)rec.hidden.push(oldV);}else if(action==="rename"){rec.values=(rec.values||[]).filter(function(x){return norm(x.value)!==norm(oldV);});if(rec.hidden.map(norm).indexOf(norm(oldV))<0)rec.hidden.push(oldV);rec.hidden=rec.hidden.filter(function(x){return norm(x)!==norm(newV);});mergeGlobalOption(rec.values,{value:newV,text:newV});}else{rec.hidden=rec.hidden.filter(function(x){return norm(x)!==norm(newV);});mergeGlobalOption(rec.values,{value:newV,text:newV});}if(JSON.stringify(rec)===before)return;applyGlobalOptionKey(key);save();}
+  function globalOptionChange(storeId,action,oldV,newV){var el=$(storeId);if(el&&/Province|City|District|Region/i.test(el.id||""))return;/* v1211SkipGeo */var key=globalFieldKey(el);if(!key)return;var rec=seedGlobalOptions(key);rec.hidden=rec.hidden||[];var before=JSON.stringify(rec);if(action==="delete"){rec.values=(rec.values||[]).filter(function(x){return norm(x.value)!==norm(oldV);});if(rec.hidden.map(norm).indexOf(norm(oldV))<0)rec.hidden.push(oldV);}else if(action==="rename"){rec.values=(rec.values||[]).filter(function(x){return norm(x.value)!==norm(oldV);});if(rec.hidden.map(norm).indexOf(norm(oldV))<0)rec.hidden.push(oldV);rec.hidden=rec.hidden.filter(function(x){return norm(x)!==norm(newV);});mergeGlobalOption(rec.values,{value:newV,text:newV});}else{rec.hidden=rec.hidden.filter(function(x){return norm(x)!==norm(newV);});mergeGlobalOption(rec.values,{value:newV,text:newV});}if(JSON.stringify(rec)===before)return;applyGlobalOptionKey(key);save();}
   function setupGlobalFieldOptions(){
     applyGlobalFieldOptions(document);if(globalOptionObserverBound||!window.MutationObserver)return;globalOptionObserverBound=true;var timer;new MutationObserver(function(records){if(globalOptionBusy)return;var needs=false;records.forEach(function(r){Array.prototype.forEach.call(r.addedNodes||[],function(n){if(n.nodeType===1&&(n.matches&&n.matches("select,input[list]")||n.querySelector&&n.querySelector("select,input[list]")))needs=true;});});if(needs){clearTimeout(timer);timer=setTimeout(function(){applyGlobalFieldOptions(document);},80);}}).observe(document.body,{childList:true,subtree:true});
-    document.addEventListener("change",function(e){var el=e.target;if(!el||!(el.matches&&el.matches("select[id],input[list][id]"))||!String(el.value||"").trim())return;globalOptionChange(el.id,"add","",el.value);},true);
+    document.addEventListener("change",function(e){var el=e.target;if(!el||!(el.matches&&el.matches("select[id],input[list][id]"))||!String(el.value||"").trim())return;if(/Province|City|District|Region/i.test(el.id||""))return;/* v1211SkipGeo */globalOptionChange(el.id,"add","",el.value);},true);
   }
 
   function persistAdd(storeId, val) {
@@ -12399,10 +12401,14 @@ button.v19-gps svg{display:block}
   function bindOrderPharmacyCardV37(){if(document.documentElement.dataset.v37phcards)return;document.documentElement.dataset.v37phcards="1";document.addEventListener("click",function(e){var card=e.target&&e.target.closest&&e.target.closest("#orderPharmacyPickBox .ph-pick-card");if(!card)return;e.preventDefault();e.stopImmediatePropagation();if(Date.now()-(window.__v40LastPick||0)>400)selectOrderPharmacyCardV37(card);},true);document.addEventListener("mousedown",function(e){var card=e.target&&e.target.closest&&e.target.closest("#orderPharmacyPickBox .ph-pick-card");if(!card)return;if(Date.now()-(window.__v40LastPick||0)>400)selectOrderPharmacyCardV37(card);},true);document.addEventListener("pointerdown",function(e){var card=e.target&&e.target.closest&&e.target.closest("#orderPharmacyPickBox .ph-pick-card");if(!card)return;if(Date.now()-(window.__v40LastPick||0)>400)selectOrderPharmacyCardV37(card);},true);}
   function visibleRepHomesV37(){var S=st(),u=v20CurrentUser(),manager=v20IsManager(),activeNames={},activeIds={};((S&&S.users)||[]).forEach(function(x){if(x&&x.id)activeIds[String(x.id)]=1;if(x&&x.fullName)activeNames[norm(x.fullName)]=1;});var rows=((S&&S.repHomes)||[]).filter(function(h){var id=String(h&&h.repId||h&&h.userId||""),name=norm(h&&h.repName||"");return(id&&activeIds[id])||(!id&&activeNames[name]);});if(manager)return rows;return rows.filter(function(h){return u&&((h.repId&&String(h.repId)===String(u.id))||(h.userId&&String(h.userId)===String(u.id))||norm(h.repName||"")===norm(u.fullName||""));});}
   function paintRepHomesMapV37(rows){var map=window._mapRepHomes;if(!map||typeof L==="undefined")return;try{map.eachLayer(function(layer){if(!(layer instanceof L.TileLayer))map.removeLayer(layer);});var pts=[];(rows||[]).forEach(function(h){if(!h.lat||!h.lng)return;var marker=typeof window.createCustomMarker==="function"?window.createCustomMarker(h.lat,h.lng,"rep","منزل "+(h.repName||"نماینده"),map):L.marker([h.lat,h.lng]).bindTooltip("منزل "+(h.repName||"نماینده")).addTo(map);pts.push([h.lat,h.lng]);});if(pts.length===1)map.setView(pts[0],16);else if(pts.length>1)map.fitBounds(pts,{padding:[40,40]});}catch(e){}}
-  function renderRepHomesV37(){var body=$("tableRepHomesBody");if(!body)return;var rows=visibleRepHomesV37(),manager=v20IsManager();body.innerHTML=rows.map(function(h){var ops="<button class='btn btn-outline btn-sm v37-home-show' data-id='"+esc(h.id)+"'>📍 نمایش</button> <button class='btn btn-outline btn-sm v37-home-edit' data-id='"+esc(h.id)+"'>✏️ ویرایش</button> <button class='btn btn-danger btn-sm v37-home-delete' data-id='"+esc(h.id)+"'>🗑️ حذف</button>";return"<tr><td><strong>"+esc(h.repName||"—")+"</strong></td><td>"+esc(h.address||"—")+"</td><td style='direction:ltr'>"+esc((h.lat||"—")+", "+(h.lng||"—"))+"</td><td>"+ops+"</td></tr>";}).join("")||"<tr><td colspan='4'>لوکیشن منزلی برای این حساب ثبت نشده است.</td></tr>";Array.prototype.forEach.call(body.querySelectorAll(".v37-home-show"),function(b){b.onclick=function(){var h=rows.filter(function(x){return String(x.id)===String(b.dataset.id);})[0];if(h&&window._mapRepHomes&&h.lat&&h.lng)window._mapRepHomes.setView([h.lat,h.lng],16);};});Array.prototype.forEach.call(body.querySelectorAll(".v37-home-edit"),function(b){b.onclick=function(){if(typeof window.editRepHome==="function")window.editRepHome(b.dataset.id);};});Array.prototype.forEach.call(body.querySelectorAll(".v37-home-delete"),function(b){b.onclick=function(){if(typeof window.deleteRepHome==="function")window.deleteRepHome(b.dataset.id);};});setTimeout(function(){paintRepHomesMapV37(rows);},50);}
+  function renderRepHomesV37(){var body=$("tableRepHomesBody");if(!body)return;var rows=visibleRepHomesV37(),manager=v20IsManager();body.innerHTML=rows.map(function(h){var ops="<button class='btn btn-outline btn-sm v37-home-show' data-id='"+esc(h.id)+"'>📍 نمایش</button> <button class='btn btn-outline btn-sm v37-home-edit' data-id='"+esc(h.id)+"'>✏️ ویرایش</button> <button class='btn btn-danger btn-sm v37-home-delete' data-id='"+esc(h.id)+"'>🗑️ حذف</button>";return"<tr><td><strong>"+esc(h.repName||"—")+"</strong></td><td>"+esc(h.address||"—")+"</td><td>"+esc(h.plate||"—")+"</td><td>"+esc(h.floor||"—")+"</td><td style='direction:ltr'>"+esc((h.lat||"—")+", "+(h.lng||"—"))+"</td><td>"+ops+"</td></tr>";}).join("")||"<tr><td colspan='6'>لوکیشن منزلی برای این حساب ثبت نشده است.</td></tr>";Array.prototype.forEach.call(body.querySelectorAll(".v37-home-show"),function(b){b.onclick=function(){var h=rows.filter(function(x){return String(x.id)===String(b.dataset.id);})[0];if(h&&window._mapRepHomes&&h.lat&&h.lng)window._mapRepHomes.setView([h.lat,h.lng],16);};});Array.prototype.forEach.call(body.querySelectorAll(".v37-home-edit"),function(b){b.onclick=function(){if(typeof window.editRepHome==="function")window.editRepHome(b.dataset.id);};});Array.prototype.forEach.call(body.querySelectorAll(".v37-home-delete"),function(b){b.onclick=function(){if(typeof window.deleteRepHome==="function")window.deleteRepHome(b.dataset.id);};});setTimeout(function(){paintRepHomesMapV37(rows);},50);}
   
   /* ---------- v11.41 / turn 73: تب «تغییرات در نسخه جدید» + گزارش اعمال‌نشده‌ها ---------- */
   var V41_CHANGES=[
+    ["۱۲.۱۱: موقعیت منزل پایدار با تلاش دوباره + پلاک و طبقه در لیست","applied"],
+    ["۱۲.۱۱: استان/شهر/منطقه دیگر با لیست سراسری قاطی نمی‌شود","applied"],
+    ["۱۲.۱۱: درصد افزایش و ویرایش مصرف‌کننده با ارزش افزوده همان لحظه در کادر قیمت جدید","applied"],
+    ["۱۲.۱۱: همگام لحظه‌ای ویندوز و گوشی بدون رفرش دستی","applied"],
     ["۱۲.۱۰: موقعیت منزل پایدار + پلاک و طبقه در لیست","applied"],
     ["۱۲.۱۰: استان/شهر/منطقه دیگر با هر کلیک عوض نمی‌شود","applied"],
     ["۱۲.۱۰: درصد افزایش همان لحظه در کادر قیمت جدید؛ ویرایش مصرف‌کننده با ارزش افزوده با باقیمانده درصد","applied"],
@@ -17104,7 +17110,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
           ? "<td><input class='form-input v77-inp qty-no-spin' data-k='vatPercent' data-box='new' data-pid='"+pid+"' inputmode='decimal' value='"+faP(d.vat)+"'></td>"
           : "<td style='direction:ltr'>"+faP(d.vat)+"٪</td>")+
         (editingPid===String(p.id||p.name)
-          ? "<td><input class='form-input v77-inp qty-no-spin' data-k='consVat' data-pid='"+pid+"' inputmode='decimal' value='"+faN(newVat)+"'></td>"
+          ? "<td><input class='form-input v77-inp qty-no-spin' data-k='consVat' data-pid='"+pid+"' inputmode='decimal' value='"+String(Math.round(newVat)||0)+"'></td>"
           : "<td style='direction:ltr'>"+faN(newVat)+"</td>")+
         "<td><input class='form-input v77-inp v77-date' data-k='applyDate' data-pid='"+pid+"' "+ro+" inputmode='numeric' placeholder='1405/06/05' value='"+esc(d.applyDate||"")+"'></td>"+
         "<td><button type='button' class='btn btn-outline btn-sm v78-edit-price' data-pid='"+pid+"'>"+(editingPid===String(p.id||p.name)?"✅ ثبت":"✏️ ویرایش")+"</button></td></tr>";
@@ -17161,13 +17167,31 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         });
       }
       inp.addEventListener("input",function(){
-        if(inp.getAttribute("data-k")!=="increasePct")return;
+        var k=inp.getAttribute("data-k");
+        if(k!=="increasePct"&&k!=="consVat"&&k!=="marginDistPh"&&k!=="marginPhCons")return;
         var pid=inp.getAttribute("data-pid");
         var p=findProd(pid);if(!p)return;
         var d=ensureDraft(p);
-        d.consLocked=0;
-        d.increasePct=inp.value===""?"":num(inp.value);
-        computeNew(p);
+        if(k==="increasePct"){
+          d.consLocked=0;
+          d.increasePct=inp.value===""?"":num(inp.value);
+          computeNew(p);
+        }else if(k==="consVat"){
+          var vat=Number(d.vat!=null?d.vat:pricesOf(p).vat)||0;
+          if(vat>=100)vat=99.99;
+          var cv=num(inp.value);
+          d.cons=Math.round(cv*(1-vat/100));
+          d.increasePct="";
+          d.consLocked=1;
+          var back=fromCons(d.cons, Number(d.marginDistPh)||0, Number(d.marginPhCons)||0);
+          d.dist=back.dist; d.ph=back.ph;
+        }else{
+          d[k]=inp.value===""?"":num(inp.value);
+          if(d.consLocked){
+            var back2=fromCons(Number(d.cons)||0, Number(d.marginDistPh)||0, Number(d.marginPhCons)||0);
+            d.dist=back2.dist; d.ph=back2.ph;
+          }else computeNew(p);
+        }
         var q="[data-pid='"+pid+"']";
         var dist=document.querySelector("#v77NewPricesBody td.v81-new-dist"+q);
         var ph=document.querySelector("#v77NewPricesBody td.v81-new-ph"+q);
@@ -17176,7 +17200,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         if(dist)dist.textContent=faN(d.dist);
         if(ph)ph.textContent=faN(d.ph);
         if(cons)cons.textContent=faN(d.cons);
-        if(vatEl && !vatEl.querySelector("input")) vatEl.textContent=faN(Math.round((Number(d.cons)||0)*(1+(Number(d.vat)||0)/100)));
+        if(vatEl && !vatEl.querySelector("input")) vatEl.textContent=faN(Math.round((Number(d.cons)||0)*(1+(Number(d.vat)||vatPct())/100)));
       });
       inp.addEventListener("change",function(){
         onField(inp.getAttribute("data-pid"),inp.getAttribute("data-k"),inp.value);
@@ -19732,7 +19756,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         var d = j && j.data ? j.data : j;
         if (hollow(d)) { next(); return; }
         if (recN(st)>0 && recN(d)<recN(st)) return;
-        applyServer(d);
+        if (applyServer(d)) { try { if (typeof window.v1211Refresh === "function") window.v1211Refresh(); } catch (eR) {} }
       }).catch(function(){ next(); });
     }
     next();
@@ -19990,20 +20014,23 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       e.preventDefault();
       e.stopImmediatePropagation();
       b.disabled = true; b.style.opacity = "0.55";
-      function done(){ b.disabled = false; b.style.opacity = ""; }
-      var run = (typeof window.getCurrentPositionSafe === "function")
-        ? window.getCurrentPositionSafe()
-        : new Promise(function(resolve){
-            if (!navigator.geolocation) { resolve({error:true,message:"GPS نیست"}); return; }
-            navigator.geolocation.getCurrentPosition(function(p){
-              resolve({lat:p.coords.latitude,lng:p.coords.longitude,addressPromise:null});
-            }, function(err){
-              resolve({error:true,message:(err&&err.code===1)?"اجازه GPS داده نشده":"موقعیت گرفته نشد (Not Secure؟)"});
-            }, {enableHighAccuracy:true, timeout:12000, maximumAge:8000});
-          });
-      run.then(function(pos){
-        if (!pos || pos.error) { done(); alert((pos && pos.message) || "موقعیت گرفته نشد."); return; }
+      var lab = b.querySelector("span") || b;
+      var oldT = lab.textContent;
+      lab.textContent = "در حال دریافت موقعیت…";
+      function done(){ b.disabled = false; b.style.opacity = ""; lab.textContent = oldT; }
+      try {
+        if (!window._mapRepHomes && typeof L !== "undefined") {
+          var box = document.getElementById("map-rep-homes");
+          if (box && !box._leaflet_id) {
+            window._mapRepHomes = L.map(box).setView([35.73, 51.42], 13);
+            if (typeof window.crmAddMapTiles === "function") window.crmAddMapTiles(window._mapRepHomes);
+            else L.tileLayer("https://tile.openstreetmap.de/{z}/{x}/{y}.png", {maxZoom:19}).addTo(window._mapRepHomes);
+          }
+        }
+      } catch (eMap) {}
+      function applyPos(pos){
         window.__v12HomePos = { lat: pos.lat, lng: pos.lng };
+        window.__v12LastGps = { lat: pos.lat, lng: pos.lng };
         var name = (($("repHomeSelect")||{}).value) || "";
         placeHomeMarker(pos.lat, pos.lng, name);
         var addrP = pos.addressPromise;
@@ -20013,6 +20040,31 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
           if (a) a.value = addr || a.value || (pos.lat + ", " + pos.lng);
           done();
         }).catch(function(){ done(); });
+      }
+      function nativeFix(high, age, ms){
+        return new Promise(function(resolve){
+          if (!navigator.geolocation) { resolve({error:true,message:"GPS نیست"}); return; }
+          navigator.geolocation.getCurrentPosition(function(p){
+            resolve({lat:p.coords.latitude,lng:p.coords.longitude,addressPromise:null});
+          }, function(err){
+            resolve({error:true,message:(err&&err.code===1)?"اجازه GPS داده نشده":"موقعیت گرفته نشد"});
+          }, {enableHighAccuracy:!!high, timeout:ms||10000, maximumAge:age||0});
+        });
+      }
+      var run = (typeof window.getCurrentPositionSafe === "function")
+        ? window.getCurrentPositionSafe()
+        : nativeFix(true, 8000, 12000);
+      run.then(function(pos){
+        if (pos && !pos.error) { applyPos(pos); return; }
+        nativeFix(false, 120000, 8000).then(function(pos2){
+          if (pos2 && !pos2.error) { applyPos(pos2); return; }
+          if (window.__v12LastGps) { applyPos(window.__v12LastGps); return; }
+          done();
+          var http = (location.protocol === "http:" && location.hostname !== "localhost" && location.hostname !== "127.0.0.1");
+          alert(http
+            ? "مرورگر روی HTTP (Not Secure) موقعیت را مسدود می‌کند. در پنل نت‌افراز گواهی SSL را فعال کنید."
+            : ((pos && pos.message) || "موقعیت گرفته نشد. GPS و اجازه موقعیت را روشن کنید."));
+        });
       }).catch(function(){ done(); alert("موقعیت گرفته نشد."); });
     }, true);
     document.addEventListener("click", function(e){
@@ -20071,6 +20123,8 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     try { paintHomeTable(); } catch (e4) {}
     try { if (typeof renderColumnsProductsTable === "function") renderColumnsProductsTable(); } catch (e5) {}
     try { if (typeof renderRepRoutesTable === "function") renderRepRoutesTable(); } catch (e6) {}
+    try { if (typeof window.paintV77ProductPricing === "function") window.paintV77ProductPricing(); } catch (e7) {}
+    try { if (typeof updateNavBadges === "function") updateNavBadges(); } catch (e8) {}
   }
   function applyLive(d){
     if (!d || typeof d !== "object" || hollow(d)) return false;
@@ -20141,6 +20195,24 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   else setTimeout(boot, 200);
   setTimeout(boot, 1400);
   setTimeout(pullLive, 800);
-  setInterval(pullLive, 4000);
+  setInterval(pullLive, 2000);
   document.addEventListener("visibilitychange", function(){ if (!document.hidden) pullLive(); });
 })();
+
+/* v12.11.0: GPS منزل پایدار، پلاک/طبقه در لیست، جغرافیا ثابت، قیمت باقیمانده لحظه‌ای، همگام بدون رفرش */
+(function(){
+  "use strict";
+  window.v1211Fix = true;
+  window.v1211Refresh = function(){
+    if (document.activeElement && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName||"")) return;
+    try { if (typeof renderPharmaciesList === "function") renderPharmaciesList(); } catch (e1) {}
+    try { if (typeof renderDoctorsList === "function") renderDoctorsList(); } catch (e2) {}
+    try { if (typeof renderOrdersList === "function") renderOrdersList(); } catch (e3) {}
+    try { if (typeof window.renderRepHomesTable === "function") window.renderRepHomesTable(); } catch (e4) {}
+    try { if (typeof renderColumnsProductsTable === "function") renderColumnsProductsTable(); } catch (e5) {}
+    try { if (typeof window.paintV77ProductPricing === "function") window.paintV77ProductPricing(); } catch (e6) {}
+    try { if (typeof renderRepRoutesTable === "function") renderRepRoutesTable(); } catch (e7) {}
+    try { if (typeof updateNavBadges === "function") updateNavBadges(); } catch (e8) {}
+  };
+})();
+

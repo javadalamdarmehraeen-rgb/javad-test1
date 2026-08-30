@@ -46,7 +46,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "12.10.0";
+const CRM_APP_VERSION = "12.11.0";
 window.CRM_APP_VERSION = CRM_APP_VERSION;
 function v12CanonicalCompany(name) {
   var s = String(name || "").trim();
@@ -495,12 +495,16 @@ function setupCascadingGeoSelectors(provinceId, cityId, districtId) {
   const provEl = document.getElementById(provinceId);
   const cityEl = document.getElementById(cityId);
   const distEl = document.getElementById(districtId);
+  if (!provEl || !cityEl || !distEl) return;
+  if (provEl.dataset.geoCascade === "1") return;
+  provEl.dataset.geoCascade = "1";
 
   populateProvinces(provEl);
 
   provEl.addEventListener("change", () => {
-    populateCities(provEl.value, cityEl);
-    distEl.innerHTML = `<option value="">ابتدا شهر را انتخاب کنید</option>`;
+    populateCities(provEl.value, cityEl, "");
+    cityEl.value = "";
+    populateDistricts(provEl.value, "", distEl, "");
   });
 
   cityEl.addEventListener("change", () => {
@@ -3206,7 +3210,7 @@ function setupPWAServiceWorker() {
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
   if (!/(^|\\.)ndcohub\\.ir$|(^|\\.)mehraeinpharma\\.ir$/.test(location.hostname || "")) {
-  navigator.serviceWorker.register('/sw.js?v=12.10.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=12.11.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
