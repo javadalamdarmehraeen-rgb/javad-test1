@@ -1109,7 +1109,7 @@ function extractCustomFieldValuesFromForm(entityType, containerId) {
   const fields = state.customFields[entityType] || [];
   fields.forEach(field => {
     const el = root.querySelector(`[data-custom-field-id="${field.id}"]`);
-    if (el) values[field.label] = el.value.trim();
+    if (el) values[field.label] = String(el.value == null ? "" : el.value).trim();
   });
   return values;
 }
@@ -1342,7 +1342,7 @@ function renderPharmaciesList(searchQuery = "") {
 
   const filtered = state.pharmacies.filter(ph => {
     if (!searchQuery) return true;
-    return ph.name.includes(searchQuery) || ph.address.includes(searchQuery) || (ph.phone && ph.phone.includes(searchQuery));
+    return String(ph.name || "").includes(searchQuery) || String(ph.address || "").includes(searchQuery) || String(ph.phone || "").includes(searchQuery);
   });
 
   const badgeEl = document.getElementById("phListCountBadge");
@@ -1593,7 +1593,7 @@ function renderDoctorsList(searchQuery = "") {
 
   const filtered = state.doctors.filter(doc => {
     if (!searchQuery) return true;
-    return doc.name.includes(searchQuery) || doc.specialty.includes(searchQuery) || doc.address.includes(searchQuery);
+    return String(doc.name || "").includes(searchQuery) || String(doc.specialty || "").includes(searchQuery) || String(doc.address || "").includes(searchQuery);
   });
 
   filtered.forEach((doc, index) => {
@@ -2718,7 +2718,7 @@ function renderOrdersList(searchQuery = "") {
 
   const filtered = state.orders.filter(ord => {
     if (!searchQuery) return true;
-    return ord.pharmacyName.includes(searchQuery) || (ord.repName && ord.repName.includes(searchQuery));
+    return String(ord.pharmacyName || "").includes(searchQuery) || String(ord.repName || "").includes(searchQuery);
   });
 
   filtered.forEach((ord, index) => {
