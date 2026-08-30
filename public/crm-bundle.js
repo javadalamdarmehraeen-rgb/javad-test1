@@ -1355,7 +1355,7 @@
     function tryInstall(e) {
       if (e) e.preventDefault();
       if (deferred) { deferred.prompt(); return; }
-      safeAlert("از منوی مرورگر گزینه Install app / افزودن به صفحه اصلی را بزنید. آیکون برنامه لوگوی طنین طب طاها است.");
+      safeAlert("از منوی مرورگر گزینه Install app / افزودن به صفحه اصلی را بزنید. آیکون برنامه لوگوی برنامه ویزیت و گزارشات(مهر آیین نیک دارو) است.");
     }
     if (win) win.addEventListener("click", tryInstall);
     if (andr) andr.addEventListener("click", tryInstall);
@@ -10889,7 +10889,7 @@ button.v19-gps svg{display:block}
     else push(diagRow("سرویس‌ورکر (PWA)", "ok", "ثبت شده و فعال‌سازی کنترل‌کننده به‌صورت خودکار در حال انجام است", "نیازی به تازه‌سازی دستی نیست."));
     if (window.caches) {
       caches.keys().then(function (keys) {
-        push(diagRow("کش آفلاین", keys.length ? "ok" : "warn",
+        push(diagRow("کش آفلاین", keys.length ? "ok" : "info",
           keys.length ? "کش‌ها: " + keys.map(esc).join("، ") : "کشی نیست",
           keys.length ? "" : "یک‌بار آنلاین باز کنید تا کش ساخته شود."));
       }).catch(function () {});
@@ -12856,13 +12856,13 @@ button.v19-gps svg{display:block}
       if(!window.state.settings) window.state.settings={};
       var cn=String(window.state.settings.companyName||"");
       if(!cn||/پخش\s*دارو|شبکه\s*درمان\s*نماینده|سیستم مدیریت ویزیت علمی/.test(cn)){
-        window.state.settings.companyName="طنین طب طاها";
+        window.state.settings.companyName="برنامه ویزیت و گزارشات(مهر آیین نیک دارو)";
       }
       var ch=document.getElementById("headerCompanyNameDisplay");
-      if(ch) ch.textContent=window.state.settings.companyName||"طنین طب طاها";
+      if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات(مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.09.0");
+        var ver=String(window.CRM_APP_VERSION||"12.09.3");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -14393,13 +14393,13 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(!window.state.settings) window.state.settings={};
       var cn=String(window.state.settings.companyName||"");
       if(!cn||/پخش\s*دارو|شبکه\s*درمان\s*نماینده|سیستم مدیریت ویزیت علمی/.test(cn)){
-        window.state.settings.companyName="طنین طب طاها";
+        window.state.settings.companyName="برنامه ویزیت و گزارشات(مهر آیین نیک دارو)";
       }
       var ch=document.getElementById("headerCompanyNameDisplay");
-      if(ch) ch.textContent=window.state.settings.companyName||"طنین طب طاها";
+      if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات(مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.09.0");
+        var ver=String(window.CRM_APP_VERSION||"12.09.3");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -19173,15 +19173,15 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 })();
 /* v11.94.0: نت‌افراز مستقل با api.php + leaflet ریشه + بدون ۴۰۴ API */
 (function(){window.v94NetafrazIndependent=true;var b=document.getElementById("crmBuildBadge");/* v11.98 no stale badge */})();
-/* v11.95.0: نشان نسخه واحد + نت‌افراز بدون کشیدن داده رندر + نام شرکت طنین طب طاها */
+/* v11.95.0: نشان نسخه واحد + نت‌افراز بدون کشیدن داده رندر + نام شرکت برنامه ویزیت و گزارشات(مهر آیین نیک دارو) */
 (function(){
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.09.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.09.3"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.09.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.09.3").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19212,10 +19212,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if (!S.settings) S.settings = {};
       var old = String(S.settings.companyName || "");
       if (!old || old === "شرکت پخش دارو و شبکه درمان نماینده علمی" || old === "سیستم مدیریت ویزیت علمی و شبکه درمان") {
-        S.settings.companyName = "طنین طب طاها";
+        S.settings.companyName = "برنامه ویزیت و گزارشات(مهر آیین نیک دارو)";
       }
       var el = document.getElementById("headerCompanyNameDisplay");
-      if (el) el.textContent = S.settings.companyName || "طنین طب طاها";
+      if (el) el.textContent = S.settings.companyName || "برنامه ویزیت و گزارشات(مهر آیین نیک دارو)";
     } catch (e) {}
   }
   function wrapOldBoots(){
@@ -19261,10 +19261,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.09.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.09.3"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.09.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.09.3").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -19320,7 +19320,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.09.0");
+  var BUILD = String(window.CRM_APP_VERSION || "12.09.3");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
@@ -19381,10 +19381,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.09.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.09.3"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.09.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.09.3").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19397,9 +19397,9 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if (S && S.settings) {
         var old = String(S.settings.companyName || "");
         if (!old || old === "شرکت پخش دارو و شبکه درمان نماینده علمی" || old === "سیستم مدیریت ویزیت علمی و شبکه درمان") {
-          S.settings.companyName = "طنین طب طاها";
+          S.settings.companyName = "برنامه ویزیت و گزارشات(مهر آیین نیک دارو)";
           var c = document.getElementById("headerCompanyNameDisplay");
-          if (c) c.textContent = "طنین طب طاها";
+          if (c) c.textContent = "برنامه ویزیت و گزارشات(مهر آیین نیک دارو)";
         }
       }
     } catch (e) {}
@@ -19411,10 +19411,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.09.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.09.3"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.09.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.09.3").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -19494,12 +19494,12 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   setTimeout(bgSync, 2500);
   setTimeout(bgSync, 12000);
 })();
-/* v12.00.0: نشان نسخه واحد + نام طنین طب طاها + نت‌افراز بدون Forbidden */
+/* v12.00.0: نشان نسخه واحد + نام برنامه ویزیت و گزارشات(مهر آیین نیک دارو) + نت‌افراز بدون Forbidden */
 (function(){
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.09.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.09.3"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -19517,10 +19517,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       var S = window.state;
       if (S) {
         if (!S.settings) S.settings = {};
-        if (isOldCompany(S.settings.companyName)) S.settings.companyName = "طنین طب طاها";
+        if (isOldCompany(S.settings.companyName)) S.settings.companyName = "برنامه ویزیت و گزارشات(مهر آیین نیک دارو)";
       }
       var c = document.getElementById("headerCompanyNameDisplay");
-      if (c && isOldCompany(c.textContent)) c.textContent = "طنین طب طاها";
+      if (c && isOldCompany(c.textContent)) c.textContent = "برنامه ویزیت و گزارشات(مهر آیین نیک دارو)";
       else if (c && S && S.settings && S.settings.companyName) c.textContent = S.settings.companyName;
     } catch (e) {}
   }
@@ -19626,7 +19626,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if (Array.isArray(remote[k]) && remote[k].length) window.state[k] = remote[k];
     });
     if (!window.state.settings) window.state.settings = {};
-    window.state.settings.companyName = "طنین طب طاها";
+    window.state.settings.companyName = "برنامه ویزیت و گزارشات(مهر آیین نیک دارو)";
     return true;
   }
   function pullRender(){
