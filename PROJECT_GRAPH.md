@@ -49,14 +49,14 @@
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (190848 بایت)
+### `public/crm-app.js` (190960 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 185
 - نام‌های window که تعریف/بازنویسی می‌کند: `CRM_APP_VERSION`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_STATE_BOUND`, `__CRM_SW_READY`, `__v12HomePos`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `applyV77ProductPricing`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `crmAddMapTiles`, `crmPushStateToServer`, `getAllMenuSections`, `paintV77ProductPricing`, `rememberPharmacyName`, `renderDoctorsList`, `renderExtraTabCustomFields`, `renderPharmaciesList`, `syncProductsEverywhere`, `v12OpsOnlyRestore`, `v12TahaName`, `v12TakeRegisteredOnly`, `validateRequiredFields`
 
-### `public/crm-bundle.js` (1222568 بایت)
+### `public/crm-bundle.js` (1227278 بایت)
 - نقش: * crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
-- تعداد توابع داخلی: 1241
+- تعداد توابع داخلی: 1244
 - نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `CRM_HUBS`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `IRAN_GEO_DATA`, `WIDGET_PALETTE`, `__CRM_APPLYING_SERVER`, `__CRM_BULK_PURGE`, `__CRM_BULK_READY`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_LAYOUT_APPLYING`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SERVER_READY`, `__CRM_SKIP_V64_STRIP`, `__CRM_SNAP`, `__CRM_UNVEIL`, `__CRM_V78_EDIT_PID`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__V68_WATCH`, `__V69_SYNC`, `__V70_SOLO`, `__V71_CLAIMED`, `__V72_BOOT`, `__V73_BOOT`, `__V73_WATCH`, `__V79_BOOT`, `__V80_BOOT`, `__V80_LOCK`, `__V81_BOOT`
 
 ### `public/crm-data.js` (57777 بایت)
@@ -154,7 +154,7 @@
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (5417 بایت)
-- نقش: const BUILD = "12.10.0";
+- نقش: const BUILD = "12.11.0";
 - تعداد توابع داخلی: 6
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -255,6 +255,7 @@
 - `copyPageToTab`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v13.js` ← `public/crm-features-v18.js`
 - `createCustomMarker`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
 - `createUserTab`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v12.js`
+- `crmAddMapTiles`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
 - `crmPushStateToServer`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
 - `dedupeTabWidgets`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v13.js`
 - `deleteCustomField`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v11.js` ← `public/crm-features-v20.js`
@@ -555,7 +556,7 @@
 
 ### tab-rep-homes «🏠 منزل نمایندگان»
 - `public/crm-app.js` → 5 شناسه (مثل: `repHomeAddressInput`, `repHomeFloor`, `repHomePlate`, `repHomeSelect`, `tableRepHomesBody`)
-- `public/crm-bundle.js` → 6 شناسه (مثل: `btnRepHomeCurrentLocation`, `repHomeAddressInput`, `repHomeFloor`, `repHomePlate`, `repHomeSelect`, `tableRepHomesBody`)
+- `public/crm-bundle.js` → 8 شناسه (مثل: `btnRepHomeCurrentLocation`, `btnSaveRepHome`, `map-rep-homes`, `repHomeAddressInput`, `repHomeFloor`, `repHomePlate`, `repHomeSelect`, `tableRepHomesBody`)
 - `public/crm-features-v20.js` → 1 شناسه (مثل: `tableRepHomesBody`)
 - `public/crm-features-v9.js` → 2 شناسه (مثل: `btnRepHomeCurrentLocation`, `repHomeSelect`)
 
@@ -1464,7 +1465,7 @@
 
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
-- نسخه سورس package: `12.10.0`
+- نسخه سورس package: `12.11.0`
 - مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a03a45-javad-test1`؛ push/PR فقط از همین شاخه.
 - Production فعال: `https://javad-test1.onrender.com` — نسخه سورس فعلی `11.66.0` است و تا push کاربر روی production همان آخرین دیپلوی قبلی می‌ماند.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.
