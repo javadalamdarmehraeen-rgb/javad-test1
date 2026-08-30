@@ -46,11 +46,11 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "12.09.0";
+const CRM_APP_VERSION = "12.09.3";
 window.CRM_APP_VERSION = CRM_APP_VERSION;
 function v12CanonicalCompany(name) {
   var s = String(name || "").trim();
-  if (!s || /پخش\s*دارو|شبکه\s*درمان\s*نماینده|سیستم مدیریت ویزیت علمی/.test(s)) return "طنین طب طاها";
+  if (!s || /پخش\s*دارو|شبکه\s*درمان\s*نماینده|سیستم مدیریت ویزیت علمی/.test(s)) return "برنامه ویزیت و گزارشات";
   return s;
 }
 window.v12TahaName = true;
@@ -86,12 +86,12 @@ function v12TakeRegisteredOnly(from, into) {
   });
   if (from && Array.isArray(from.userTabs) && from.userTabs.length) base.userTabs = from.userTabs;
   if (!base.settings) base.settings = {};
-  base.settings.companyName = "طنین طب طاها";
+  base.settings.companyName = "برنامه ویزیت و گزارشات";
   if (typeof CRM_APP_VERSION !== "undefined") base._uiBuild = CRM_APP_VERSION;
   return base;
 }
 window.v12TakeRegisteredOnly = v12TakeRegisteredOnly;
-try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
+try { console.log("%c✅ برنامه برنامه ویزیت و گزارشات نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
   { id: "tab-dashboard", label: "داشبورد", icon: "📊" },
@@ -255,7 +255,7 @@ function applyGeneralSettingsToUI() {
   state.settings.companyName = v12CanonicalCompany(state.settings.companyName);
   const compHeader = document.getElementById("headerCompanyNameDisplay");
   if (compHeader) {
-    compHeader.textContent = state.settings.companyName || "طنین طب طاها";
+    compHeader.textContent = state.settings.companyName || "برنامه ویزیت و گزارشات";
   }
 }
 
@@ -3180,7 +3180,7 @@ function setupPWAServiceWorker() {
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
   if (!/(^|\\.)ndcohub\\.ir$|(^|\\.)mehraeinpharma\\.ir$/.test(location.hostname || "")) {
-  navigator.serviceWorker.register('/sw.js?v=12.09.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=12.09.3', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
