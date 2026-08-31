@@ -34,11 +34,11 @@ services:
       - key: SYNC_SECRET
         sync: false
       - key: SYNC_PEERS
-        value: ndcohub|https://ndcohub.ir
+        value: ndcohub|https://ndcohub.com,netafraz|https://mehraeinpharma.ir
       - key: SYNC_INTERVAL_MINUTES
         value: "5"
       - key: NEXT_PUBLIC_ENDPOINTS
-        value: https://ndcohub.ir,https://javad-test1.onrender.com
+        value: https://ndcohub.com,https://mehraeinpharma.ir,https://javad-test1.onrender.com
       - key: PUBLIC_BASE_URL
         value: https://javad-test1.onrender.com
       - key: MOBILE_APP_SECRET

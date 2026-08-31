@@ -70,5 +70,6 @@ jobs:
         run: |
           if [ -z "$KEY" ]; then echo "SYNC_SECRET تنظیم نشده"; exit 0; fi
           sleep 90
-          curl -fsSL -X POST "https://ndcohub.ir/api/sync/run" -H "x-sync-key: $KEY" || true
+          curl -fsSL -X POST "https://ndcohub.com/api/sync/run" -H "x-sync-key: $KEY" || true
+          curl -fsSL -X POST "https://mehraeinpharma.ir/api/sync/run" -H "x-sync-key: $KEY" || true
           curl -fsSL -X POST "https://javad-test1.onrender.com/api/sync/run" -H "x-sync-key: $KEY" || true

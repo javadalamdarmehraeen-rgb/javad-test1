@@ -336,20 +336,10 @@
     return new Promise(function (resolve) {
       if (!navigator.geolocation) { resolve({ error: true, message: "GPS این دستگاه در دسترس نیست." }); return; }
       var best=null,done=false,watch=null;
-      function finish(result){if(done)return;done=true;if(watch!=null)try{navigator.geolocation.clearWatch(watch);}catch(e){}clearTimeout(timer);clearTimeout(early);resolve(result);}
-      function accept(pos){
-        if(!pos||!pos.coords)return;
-        var cur={lat:pos.coords.latitude,lng:pos.coords.longitude,accuracy:Number(pos.coords.accuracy)||9999,fallback:false};
-        try{cur.addressPromise=geoReverse(cur.lat,cur.lng);}catch(e){cur.addressPromise=null;}
-        if(!best||cur.accuracy<best.accuracy)best=cur;
-        if(cur.accuracy<=10)finish(cur);
-        else if(cur.accuracy<=25)finish(cur);
-      }
-      function onErr(err){ if(err&&err.code===1)finish({error:true,message:"اجازه GPS داده نشده است."}); }
-      var timer=setTimeout(function(){if(best)finish(best);else finish({error:true,message:"موقعیت گرفته نشد. GPS را روشن کنید. روی HTTP (Not Secure) مرورگر موقعیت را مسدود می‌کند."});},15000);
-      var early=setTimeout(function(){if(best)finish(best);},8000);
-      try{navigator.geolocation.getCurrentPosition(accept,onErr,{enableHighAccuracy:true,timeout:10000,maximumAge:8000});}catch(eG){}
-      try{watch=navigator.geolocation.watchPosition(accept,onErr,{enableHighAccuracy:true,timeout:15000,maximumAge:0});}catch(eW){}
+      function finish(result){if(done)return;done=true;if(watch!=null)try{navigator.geolocation.clearWatch(watch);}catch(e){}clearTimeout(timer);resolve(result);}
+      // هدف دقت ۱۰ متر ثابت است؛ reverse geocode هم‌زمان با دریافت نقطه اجرا می‌شود تا زمان انتظار جمع نشود.
+      var timer=setTimeout(function(){if(best)finish(best);else finish({error:true,message:"موقعیت دقیق دریافت نشد؛ GPS را روشن و دوباره تلاش کنید."});},15000);
+      watch=navigator.geolocation.watchPosition(function(pos){var cur={lat:pos.coords.latitude,lng:pos.coords.longitude,accuracy:Number(pos.coords.accuracy)||9999,fallback:false};cur.addressPromise=geoReverse(cur.lat,cur.lng);if(!best||cur.accuracy<best.accuracy)best=cur;if(cur.accuracy<=10)finish(cur);},function(err){if(err&&err.code===1)finish({error:true,message:"اجازه GPS داده نشده است."});},{enableHighAccuracy:true,timeout:15000,maximumAge:0});
     });
   }
   window.getCurrentPositionSafe = getCurrentPositionSafe;
@@ -1131,10 +1121,8 @@
       });
       if (!isAdminLike()) sel.value = currentRepName();
     }
-    const btn = $("btnRepHomeCurrentLocation");
-    if (btn && !btn.dataset.v1211gps) {
-      btn.dataset.v1211gps = "1";
-      btn.dataset.v12home8 = "1";
+    const btn = replaceNode($("btnRepHomeCurrentLocation"));
+    if (btn) {
       btn.addEventListener("click", async function () {
         const pos = await getCurrentPositionSafe();
         if (pos.error) { safeAlert(pos.message || "موقعیت دقیق دریافت نشد."); return; }
@@ -1144,12 +1132,13 @@
         if (!state.repHomes) state.repHomes = [];
         const idx = state.repHomes.findIndex(function (h) { return h.repName === name; });
         const owner = ((state && state.users) || []).find(function (u) { return u && u.fullName === name; });
-        window.__v12HomePos = { lat: pos.lat, lng: pos.lng };
-        if (mapRepHomes) {
-          mapRepHomes.setView([pos.lat, pos.lng], 16);
-          try { if (typeof createCustomMarker === "function") createCustomMarker(pos.lat, pos.lng, "rep", "منزل " + name, mapRepHomes); } catch (eM) {}
-        }
-        safeAlert("موقعیت منزل گرفته شد. پلاک و طبقه را بنویسید و ذخیره را بزنید.");
+        const rec = { id: "home-" + Date.now(), repId: owner ? owner.id : (sessionStorage.getItem("crmUserId") || ""), repName: name, address: addr, lat: pos.lat, lng: pos.lng };
+        if (idx === -1) state.repHomes.push(rec);
+        else state.repHomes[idx] = Object.assign({}, state.repHomes[idx], rec);
+        saveState();
+        initRepHomesMap();
+        if (mapRepHomes) mapRepHomes.setView([pos.lat, pos.lng], 16);
+        safeAlert("لوکیشن منزل «" + name + "» ثبت شد و آدرس در فیلد نشست.");
       });
     }
   }
@@ -1366,7 +1355,7 @@
     function tryInstall(e) {
       if (e) e.preventDefault();
       if (deferred) { deferred.prompt(); return; }
-      safeAlert("از منوی مرورگر گزینه Install app / افزودن به صفحه اصلی را بزنید. آیکون برنامه لوگوی طنین طب طاها است.");
+      safeAlert("از منوی مرورگر گزینه Install app / افزودن به صفحه اصلی را بزنید. آیکون برنامه لوگوی برنامه ویزیت و گزارشات (مهر آیین نیک دارو) است.");
     }
     if (win) win.addEventListener("click", tryInstall);
     if (andr) andr.addEventListener("click", tryInstall);
@@ -2083,7 +2072,7 @@ window.IRAN_FACILITIES = [
       if (!visitSession || !visitSession.active) return;
       var lk = lastKnownFix();
       if (lk) pushPoint(lk.lat, lk.lng, lk.acc, "hold");
-    }, 20000);
+    }, 6000);
     updateVisitUi();
     alert("ویزیت شروع شد. مسیر حتی در نقطه کور با آخرین موقعیت معتبر ادامه می‌یابد تا پایان ویزیت.");
   }
@@ -10900,7 +10889,7 @@ button.v19-gps svg{display:block}
     else push(diagRow("سرویس‌ورکر (PWA)", "ok", "ثبت شده و فعال‌سازی کنترل‌کننده به‌صورت خودکار در حال انجام است", "نیازی به تازه‌سازی دستی نیست."));
     if (window.caches) {
       caches.keys().then(function (keys) {
-        push(diagRow("کش آفلاین", keys.length ? "ok" : "warn",
+        push(diagRow("کش آفلاین", keys.length ? "ok" : "info",
           keys.length ? "کش‌ها: " + keys.map(esc).join("، ") : "کشی نیست",
           keys.length ? "" : "یک‌بار آنلاین باز کنید تا کش ساخته شود."));
       }).catch(function () {});
@@ -11348,14 +11337,14 @@ button.v19-gps svg{display:block}
   function applyGlobalOptionKey(key){
     var rec=seedGlobalOptions(key),hidden=(rec.hidden||[]).map(norm),vals=(rec.values||[]).filter(function(x){return hidden.indexOf(norm(x.value))<0;});globalOptionBusy=true;
     globalCustomFields(key).forEach(function(f){f.options=vals.map(function(x){return x.value;});});
-    globalOptionElements().forEach(function(el){if(globalFieldKey(el)!==key)return;if(/Province|City|District|Region/i.test(el.id||""))return;/* v1211SkipGeo */var current=String(el.value||"");if(el.tagName==="SELECT"){var placeholder=null;Array.prototype.forEach.call(el.options,function(o){if(!String(o.value||"")&&!placeholder)placeholder={value:"",text:o.textContent||"انتخاب کنید..."};});el.innerHTML="";if(placeholder){var p=document.createElement("option");p.value="";p.textContent=placeholder.text;el.appendChild(p);}vals.forEach(function(x){var o=document.createElement("option");o.value=x.value;o.textContent=x.text||x.value;el.appendChild(o);});el.value=current;}else{var dl=$(el.getAttribute("list"));if(dl){dl.innerHTML="";vals.forEach(function(x){var o=document.createElement("option");o.value=x.value;dl.appendChild(o);});}}
+    globalOptionElements().forEach(function(el){if(globalFieldKey(el)!==key)return;var current=String(el.value||"");if(el.tagName==="SELECT"){var placeholder=null;Array.prototype.forEach.call(el.options,function(o){if(!String(o.value||"")&&!placeholder)placeholder={value:"",text:o.textContent||"انتخاب کنید..."};});el.innerHTML="";if(placeholder){var p=document.createElement("option");p.value="";p.textContent=placeholder.text;el.appendChild(p);}vals.forEach(function(x){var o=document.createElement("option");o.value=x.value;o.textContent=x.text||x.value;el.appendChild(o);});el.value=current;}else{var dl=$(el.getAttribute("list"));if(dl){dl.innerHTML="";vals.forEach(function(x){var o=document.createElement("option");o.value=x.value;dl.appendChild(o);});}}
     });globalOptionBusy=false;
   }
   function applyGlobalFieldOptions(root){var keys={};(root&&root.querySelectorAll?Array.prototype.slice.call(root.querySelectorAll("select[id],input[list][id]")):globalOptionElements()).forEach(function(el){var k=globalFieldKey(el);if(k)keys[k]=1;});Object.keys(keys).forEach(applyGlobalOptionKey);}
-  function globalOptionChange(storeId,action,oldV,newV){var el=$(storeId);if(el&&/Province|City|District|Region/i.test(el.id||""))return;/* v1211SkipGeo */var key=globalFieldKey(el);if(!key)return;var rec=seedGlobalOptions(key);rec.hidden=rec.hidden||[];var before=JSON.stringify(rec);if(action==="delete"){rec.values=(rec.values||[]).filter(function(x){return norm(x.value)!==norm(oldV);});if(rec.hidden.map(norm).indexOf(norm(oldV))<0)rec.hidden.push(oldV);}else if(action==="rename"){rec.values=(rec.values||[]).filter(function(x){return norm(x.value)!==norm(oldV);});if(rec.hidden.map(norm).indexOf(norm(oldV))<0)rec.hidden.push(oldV);rec.hidden=rec.hidden.filter(function(x){return norm(x)!==norm(newV);});mergeGlobalOption(rec.values,{value:newV,text:newV});}else{rec.hidden=rec.hidden.filter(function(x){return norm(x)!==norm(newV);});mergeGlobalOption(rec.values,{value:newV,text:newV});}if(JSON.stringify(rec)===before)return;applyGlobalOptionKey(key);save();}
+  function globalOptionChange(storeId,action,oldV,newV){var el=$(storeId),key=globalFieldKey(el);if(!key)return;var rec=seedGlobalOptions(key);rec.hidden=rec.hidden||[];var before=JSON.stringify(rec);if(action==="delete"){rec.values=(rec.values||[]).filter(function(x){return norm(x.value)!==norm(oldV);});if(rec.hidden.map(norm).indexOf(norm(oldV))<0)rec.hidden.push(oldV);}else if(action==="rename"){rec.values=(rec.values||[]).filter(function(x){return norm(x.value)!==norm(oldV);});if(rec.hidden.map(norm).indexOf(norm(oldV))<0)rec.hidden.push(oldV);rec.hidden=rec.hidden.filter(function(x){return norm(x)!==norm(newV);});mergeGlobalOption(rec.values,{value:newV,text:newV});}else{rec.hidden=rec.hidden.filter(function(x){return norm(x)!==norm(newV);});mergeGlobalOption(rec.values,{value:newV,text:newV});}if(JSON.stringify(rec)===before)return;applyGlobalOptionKey(key);save();}
   function setupGlobalFieldOptions(){
     applyGlobalFieldOptions(document);if(globalOptionObserverBound||!window.MutationObserver)return;globalOptionObserverBound=true;var timer;new MutationObserver(function(records){if(globalOptionBusy)return;var needs=false;records.forEach(function(r){Array.prototype.forEach.call(r.addedNodes||[],function(n){if(n.nodeType===1&&(n.matches&&n.matches("select,input[list]")||n.querySelector&&n.querySelector("select,input[list]")))needs=true;});});if(needs){clearTimeout(timer);timer=setTimeout(function(){applyGlobalFieldOptions(document);},80);}}).observe(document.body,{childList:true,subtree:true});
-    document.addEventListener("change",function(e){var el=e.target;if(!el||!(el.matches&&el.matches("select[id],input[list][id]"))||!String(el.value||"").trim())return;if(/Province|City|District|Region/i.test(el.id||""))return;/* v1211SkipGeo */globalOptionChange(el.id,"add","",el.value);},true);
+    document.addEventListener("change",function(e){var el=e.target;if(!el||!(el.matches&&el.matches("select[id],input[list][id]"))||!String(el.value||"").trim())return;globalOptionChange(el.id,"add","",el.value);},true);
   }
 
   function persistAdd(storeId, val) {
@@ -12401,18 +12390,10 @@ button.v19-gps svg{display:block}
   function bindOrderPharmacyCardV37(){if(document.documentElement.dataset.v37phcards)return;document.documentElement.dataset.v37phcards="1";document.addEventListener("click",function(e){var card=e.target&&e.target.closest&&e.target.closest("#orderPharmacyPickBox .ph-pick-card");if(!card)return;e.preventDefault();e.stopImmediatePropagation();if(Date.now()-(window.__v40LastPick||0)>400)selectOrderPharmacyCardV37(card);},true);document.addEventListener("mousedown",function(e){var card=e.target&&e.target.closest&&e.target.closest("#orderPharmacyPickBox .ph-pick-card");if(!card)return;if(Date.now()-(window.__v40LastPick||0)>400)selectOrderPharmacyCardV37(card);},true);document.addEventListener("pointerdown",function(e){var card=e.target&&e.target.closest&&e.target.closest("#orderPharmacyPickBox .ph-pick-card");if(!card)return;if(Date.now()-(window.__v40LastPick||0)>400)selectOrderPharmacyCardV37(card);},true);}
   function visibleRepHomesV37(){var S=st(),u=v20CurrentUser(),manager=v20IsManager(),activeNames={},activeIds={};((S&&S.users)||[]).forEach(function(x){if(x&&x.id)activeIds[String(x.id)]=1;if(x&&x.fullName)activeNames[norm(x.fullName)]=1;});var rows=((S&&S.repHomes)||[]).filter(function(h){var id=String(h&&h.repId||h&&h.userId||""),name=norm(h&&h.repName||"");return(id&&activeIds[id])||(!id&&activeNames[name]);});if(manager)return rows;return rows.filter(function(h){return u&&((h.repId&&String(h.repId)===String(u.id))||(h.userId&&String(h.userId)===String(u.id))||norm(h.repName||"")===norm(u.fullName||""));});}
   function paintRepHomesMapV37(rows){var map=window._mapRepHomes;if(!map||typeof L==="undefined")return;try{map.eachLayer(function(layer){if(!(layer instanceof L.TileLayer))map.removeLayer(layer);});var pts=[];(rows||[]).forEach(function(h){if(!h.lat||!h.lng)return;var marker=typeof window.createCustomMarker==="function"?window.createCustomMarker(h.lat,h.lng,"rep","منزل "+(h.repName||"نماینده"),map):L.marker([h.lat,h.lng]).bindTooltip("منزل "+(h.repName||"نماینده")).addTo(map);pts.push([h.lat,h.lng]);});if(pts.length===1)map.setView(pts[0],16);else if(pts.length>1)map.fitBounds(pts,{padding:[40,40]});}catch(e){}}
-  function renderRepHomesV37(){var body=$("tableRepHomesBody");if(!body)return;var rows=visibleRepHomesV37(),manager=v20IsManager();body.innerHTML=rows.map(function(h){var ops="<button class='btn btn-outline btn-sm v37-home-show' data-id='"+esc(h.id)+"'>📍 نمایش</button> <button class='btn btn-outline btn-sm v37-home-edit' data-id='"+esc(h.id)+"'>✏️ ویرایش</button> <button class='btn btn-danger btn-sm v37-home-delete' data-id='"+esc(h.id)+"'>🗑️ حذف</button>";return"<tr><td><strong>"+esc(h.repName||"—")+"</strong></td><td>"+esc(h.address||"—")+"</td><td>"+esc(h.plate||"—")+"</td><td>"+esc(h.floor||"—")+"</td><td style='direction:ltr'>"+esc((h.lat||"—")+", "+(h.lng||"—"))+"</td><td>"+ops+"</td></tr>";}).join("")||"<tr><td colspan='6'>لوکیشن منزلی برای این حساب ثبت نشده است.</td></tr>";Array.prototype.forEach.call(body.querySelectorAll(".v37-home-show"),function(b){b.onclick=function(){var h=rows.filter(function(x){return String(x.id)===String(b.dataset.id);})[0];if(h&&window._mapRepHomes&&h.lat&&h.lng)window._mapRepHomes.setView([h.lat,h.lng],16);};});Array.prototype.forEach.call(body.querySelectorAll(".v37-home-edit"),function(b){b.onclick=function(){if(typeof window.editRepHome==="function")window.editRepHome(b.dataset.id);};});Array.prototype.forEach.call(body.querySelectorAll(".v37-home-delete"),function(b){b.onclick=function(){if(typeof window.deleteRepHome==="function")window.deleteRepHome(b.dataset.id);};});setTimeout(function(){paintRepHomesMapV37(rows);},50);}
+  function renderRepHomesV37(){var body=$("tableRepHomesBody");if(!body)return;var rows=visibleRepHomesV37(),manager=v20IsManager();body.innerHTML=rows.map(function(h){var ops="<button class='btn btn-outline btn-sm v37-home-show' data-id='"+esc(h.id)+"'>📍 نمایش</button> <button class='btn btn-outline btn-sm v37-home-edit' data-id='"+esc(h.id)+"'>✏️ ویرایش</button> <button class='btn btn-danger btn-sm v37-home-delete' data-id='"+esc(h.id)+"'>🗑️ حذف</button>";return"<tr><td><strong>"+esc(h.repName||"—")+"</strong></td><td>"+esc(h.address||"—")+"</td><td style='direction:ltr'>"+esc((h.lat||"—")+", "+(h.lng||"—"))+"</td><td>"+ops+"</td></tr>";}).join("")||"<tr><td colspan='4'>لوکیشن منزلی برای این حساب ثبت نشده است.</td></tr>";Array.prototype.forEach.call(body.querySelectorAll(".v37-home-show"),function(b){b.onclick=function(){var h=rows.filter(function(x){return String(x.id)===String(b.dataset.id);})[0];if(h&&window._mapRepHomes&&h.lat&&h.lng)window._mapRepHomes.setView([h.lat,h.lng],16);};});Array.prototype.forEach.call(body.querySelectorAll(".v37-home-edit"),function(b){b.onclick=function(){if(typeof window.editRepHome==="function")window.editRepHome(b.dataset.id);};});Array.prototype.forEach.call(body.querySelectorAll(".v37-home-delete"),function(b){b.onclick=function(){if(typeof window.deleteRepHome==="function")window.deleteRepHome(b.dataset.id);};});setTimeout(function(){paintRepHomesMapV37(rows);},50);}
   
   /* ---------- v11.41 / turn 73: تب «تغییرات در نسخه جدید» + گزارش اعمال‌نشده‌ها ---------- */
   var V41_CHANGES=[
-    ["۱۲.۱۱: موقعیت منزل پایدار با تلاش دوباره + پلاک و طبقه در لیست","applied"],
-    ["۱۲.۱۱: استان/شهر/منطقه دیگر با لیست سراسری قاطی نمی‌شود","applied"],
-    ["۱۲.۱۱: درصد افزایش و ویرایش مصرف‌کننده با ارزش افزوده همان لحظه در کادر قیمت جدید","applied"],
-    ["۱۲.۱۱: همگام لحظه‌ای ویندوز و گوشی بدون رفرش دستی","applied"],
-    ["۱۲.۱۰: موقعیت منزل پایدار + پلاک و طبقه در لیست","applied"],
-    ["۱۲.۱۰: استان/شهر/منطقه دیگر با هر کلیک عوض نمی‌شود","applied"],
-    ["۱۲.۱۰: درصد افزایش همان لحظه در کادر قیمت جدید؛ ویرایش مصرف‌کننده با ارزش افزوده با باقیمانده درصد","applied"],
-    ["۱۲.۱۰: همگام لحظه‌ای ویندوز و گوشی بدون رفرش دستی","applied"],
     ["۱۲.۰۹: نام و جای فیلدها بین ویندوز و گوشی؛ مصرف‌کننده با ارزش افزوده قابل ویرایش؛ تخصص لیست+جستجو","applied"],
     ["۱۲.۰۸: ذخیره بعد از رفرش نماند؛ ستاره فقط فیلد ستاره‌دار؛ تخصص یک فیلد جستجوپذیر؛ جغرافیا ثابت؛ منزل GPS کم‌رنگ؛ قیمت بدون دوبرابر VAT","applied"],
     ["۱۲.۰۷: ذخیره گوشی روی سرور نت‌افراز؛ هدر و همبرگر موبایل چسبان","applied"],
@@ -12875,13 +12856,13 @@ button.v19-gps svg{display:block}
       if(!window.state.settings) window.state.settings={};
       var cn=String(window.state.settings.companyName||"");
       if(!cn||/پخش\s*دارو|شبکه\s*درمان\s*نماینده|سیستم مدیریت ویزیت علمی/.test(cn)){
-        window.state.settings.companyName="طنین طب طاها";
+        window.state.settings.companyName="برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       }
       var ch=document.getElementById("headerCompanyNameDisplay");
-      if(ch) ch.textContent=window.state.settings.companyName||"طنین طب طاها";
+      if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.10.0");
+        var ver=String(window.CRM_APP_VERSION||"12.12.0");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -13380,7 +13361,6 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   function v56applyToSelect(sel,allowed){
     if(!sel||!allowed)return;
-    if(/^(pharmacy|doctor|order)(Province|City|District)$/.test(sel.id||""))return;
     var isProv=/Province|استان/.test(sel.id||"");
     Array.prototype.forEach.call(sel.options,function(o){
       if(!o.value||o.value==="ایران")return;
@@ -13390,7 +13370,6 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   function v56routeGeoFilter(){
     var allowed=v56allowed();if(!allowed)return;
     document.querySelectorAll("select[id]").forEach(function(sel){
-      if(/^(pharmacy|doctor|order)(Province|City|District)$/.test(sel.id||""))return;
       if(/Province/.test(sel.id))v56applyToSelect(sel,allowed);
     });
   }
@@ -14414,13 +14393,13 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(!window.state.settings) window.state.settings={};
       var cn=String(window.state.settings.companyName||"");
       if(!cn||/پخش\s*دارو|شبکه\s*درمان\s*نماینده|سیستم مدیریت ویزیت علمی/.test(cn)){
-        window.state.settings.companyName="طنین طب طاها";
+        window.state.settings.companyName="برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       }
       var ch=document.getElementById("headerCompanyNameDisplay");
-      if(ch) ch.textContent=window.state.settings.companyName||"طنین طب طاها";
+      if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.10.0");
+        var ver=String(window.CRM_APP_VERSION||"12.12.0");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -17101,16 +17080,16 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         "<td><button type='button' class='btn btn-outline btn-sm v78-edit-price' data-pid='"+pid+"'>"+(editingPid===String(p.id||p.name)?"✅ ثبت":"✏️ ویرایش")+"</button></td></tr>";
       newRows+="<tr data-pid='"+pid+"'>"+
         "<td><strong>"+esc(p.name)+"</strong></td>"+
-        "<td class='v81-new-dist' data-pid='"+pid+"' style='direction:ltr'>"+faN(d.dist)+"</td>"+
+        "<td style='direction:ltr'>"+faN(d.dist)+"</td>"+
         "<td><input class='form-input v77-inp qty-no-spin' data-k='marginDistPh' data-pid='"+pid+"' inputmode='decimal' "+ro+" value='"+faP(d.marginDistPh)+"'></td>"+
-        "<td class='v81-new-ph' data-pid='"+pid+"' style='direction:ltr'>"+faN(d.ph)+"</td>"+
+        "<td style='direction:ltr'>"+faN(d.ph)+"</td>"+
         "<td><input class='form-input v77-inp qty-no-spin' data-k='marginPhCons' data-pid='"+pid+"' inputmode='decimal' "+ro+" value='"+faP(d.marginPhCons)+"'></td>"+
-        "<td class='v81-new-cons' data-pid='"+pid+"' style='direction:ltr'>"+faN(d.cons)+"</td>"+
+        "<td class='v81-new-cons' data-pid='"+pid+"' style='direction:ltr'>"+faN(Math.round((Number(cur.cons)||0)*(1+(Number(d.increasePct)||0)/100)))+"</td>"+
         (editingPid===String(p.id||p.name)
           ? "<td><input class='form-input v77-inp qty-no-spin' data-k='vatPercent' data-box='new' data-pid='"+pid+"' inputmode='decimal' value='"+faP(d.vat)+"'></td>"
           : "<td style='direction:ltr'>"+faP(d.vat)+"٪</td>")+
         (editingPid===String(p.id||p.name)
-          ? "<td><input class='form-input v77-inp qty-no-spin' data-k='consVat' data-pid='"+pid+"' inputmode='decimal' value='"+String(Math.round(newVat)||0)+"'></td>"
+          ? "<td><input class='form-input v77-inp qty-no-spin' data-k='consVat' data-pid='"+pid+"' inputmode='decimal' value='"+faN(newVat)+"'></td>"
           : "<td style='direction:ltr'>"+faN(newVat)+"</td>")+
         "<td><input class='form-input v77-inp v77-date' data-k='applyDate' data-pid='"+pid+"' "+ro+" inputmode='numeric' placeholder='1405/06/05' value='"+esc(d.applyDate||"")+"'></td>"+
         "<td><button type='button' class='btn btn-outline btn-sm v78-edit-price' data-pid='"+pid+"'>"+(editingPid===String(p.id||p.name)?"✅ ثبت":"✏️ ویرایش")+"</button></td></tr>";
@@ -17136,8 +17115,8 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       var vat=Number(d.vat!=null?d.vat:pricesOf(p).vat)||0;
       if(vat>=100)vat=99.99;
       var cv=num(raw);
-      var net=Math.round(cv*(1-vat/100));
-      d.cons=net;
+      var net=vat>0?cv/(1+vat/100):cv;
+      d.cons=Math.round(net);
       d.increasePct="";
       d.consLocked=1;
       var back=fromCons(d.cons, Number(d.marginDistPh)||0, Number(d.marginPhCons)||0);
@@ -17167,40 +17146,13 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         });
       }
       inp.addEventListener("input",function(){
-        var k=inp.getAttribute("data-k");
-        if(k!=="increasePct"&&k!=="consVat"&&k!=="marginDistPh"&&k!=="marginPhCons")return;
+        if(inp.getAttribute("data-k")!=="increasePct")return;
         var pid=inp.getAttribute("data-pid");
+        var inc=Number(String(inp.value||"").replace(/[^\d.-]/g,""))||0;
         var p=findProd(pid);if(!p)return;
-        var d=ensureDraft(p);
-        if(k==="increasePct"){
-          d.consLocked=0;
-          d.increasePct=inp.value===""?"":num(inp.value);
-          computeNew(p);
-        }else if(k==="consVat"){
-          var vat=Number(d.vat!=null?d.vat:pricesOf(p).vat)||0;
-          if(vat>=100)vat=99.99;
-          var cv=num(inp.value);
-          d.cons=Math.round(cv*(1-vat/100));
-          d.increasePct="";
-          d.consLocked=1;
-          var back=fromCons(d.cons, Number(d.marginDistPh)||0, Number(d.marginPhCons)||0);
-          d.dist=back.dist; d.ph=back.ph;
-        }else{
-          d[k]=inp.value===""?"":num(inp.value);
-          if(d.consLocked){
-            var back2=fromCons(Number(d.cons)||0, Number(d.marginDistPh)||0, Number(d.marginPhCons)||0);
-            d.dist=back2.dist; d.ph=back2.ph;
-          }else computeNew(p);
-        }
-        var q="[data-pid='"+pid+"']";
-        var dist=document.querySelector("#v77NewPricesBody td.v81-new-dist"+q);
-        var ph=document.querySelector("#v77NewPricesBody td.v81-new-ph"+q);
-        var cons=document.querySelector("#v77NewPricesBody td.v81-new-cons"+q);
-        var vatEl=document.querySelector("#v77NewPricesBody tr"+q+" td:nth-child(8)");
-        if(dist)dist.textContent=faN(d.dist);
-        if(ph)ph.textContent=faN(d.ph);
-        if(cons)cons.textContent=faN(d.cons);
-        if(vatEl && !vatEl.querySelector("input")) vatEl.textContent=faN(Math.round((Number(d.cons)||0)*(1+(Number(d.vat)||vatPct())/100)));
+        var cur=pricesOf(p);
+        var cell=document.querySelector("#v77NewPricesBody td.v81-new-cons[data-pid='"+pid+"']");
+        if(cell)cell.textContent=faN(Math.round((Number(cur.cons)||0)*(1+inc/100)));
       });
       inp.addEventListener("change",function(){
         onField(inp.getAttribute("data-pid"),inp.getAttribute("data-k"),inp.value);
@@ -19221,15 +19173,15 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 })();
 /* v11.94.0: نت‌افراز مستقل با api.php + leaflet ریشه + بدون ۴۰۴ API */
 (function(){window.v94NetafrazIndependent=true;var b=document.getElementById("crmBuildBadge");/* v11.98 no stale badge */})();
-/* v11.95.0: نشان نسخه واحد + نت‌افراز بدون کشیدن داده رندر + نام شرکت طنین طب طاها */
+/* v11.95.0: نشان نسخه واحد + نت‌افراز بدون کشیدن داده رندر + نام شرکت برنامه ویزیت و گزارشات (مهر آیین نیک دارو) */
 (function(){
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.10.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.12.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.10.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.12.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19260,10 +19212,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if (!S.settings) S.settings = {};
       var old = String(S.settings.companyName || "");
       if (!old || old === "شرکت پخش دارو و شبکه درمان نماینده علمی" || old === "سیستم مدیریت ویزیت علمی و شبکه درمان") {
-        S.settings.companyName = "طنین طب طاها";
+        S.settings.companyName = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       }
       var el = document.getElementById("headerCompanyNameDisplay");
-      if (el) el.textContent = S.settings.companyName || "طنین طب طاها";
+      if (el) el.textContent = S.settings.companyName || "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
     } catch (e) {}
   }
   function wrapOldBoots(){
@@ -19309,10 +19261,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.10.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.12.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.10.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.12.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -19368,7 +19320,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.10.0");
+  var BUILD = String(window.CRM_APP_VERSION || "12.12.0");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
@@ -19429,10 +19381,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.10.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.12.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.10.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.12.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19445,9 +19397,9 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if (S && S.settings) {
         var old = String(S.settings.companyName || "");
         if (!old || old === "شرکت پخش دارو و شبکه درمان نماینده علمی" || old === "سیستم مدیریت ویزیت علمی و شبکه درمان") {
-          S.settings.companyName = "طنین طب طاها";
+          S.settings.companyName = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
           var c = document.getElementById("headerCompanyNameDisplay");
-          if (c) c.textContent = "طنین طب طاها";
+          if (c) c.textContent = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
         }
       }
     } catch (e) {}
@@ -19459,10 +19411,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.10.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.12.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.10.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.12.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -19522,7 +19474,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         if (seen[u.origin]) return;
         seen[u.origin] = 1;
         var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
-        var t = setTimeout(function(){ try { if (ctrl) ctrl.abort(); } catch (eA) {} }, 20000);
+        var t = setTimeout(function(){ try { if (ctrl) ctrl.abort(); } catch (eA) {} }, 6000);
         orig(u.origin + "/api/state", { cache: "no-store", mode: "cors", headers: { "X-CRM-Request": "1" }, signal: ctrl ? ctrl.signal : undefined })
           .then(function(r){ clearTimeout(t); return r && r.ok ? r.json() : null; })
           .then(function(j){
@@ -19542,12 +19494,12 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   setTimeout(bgSync, 2500);
   setTimeout(bgSync, 12000);
 })();
-/* v12.00.0: نشان نسخه واحد + نام طنین طب طاها + نت‌افراز بدون Forbidden */
+/* v12.00.0: نشان نسخه واحد + نام برنامه ویزیت و گزارشات (مهر آیین نیک دارو) + نت‌افراز بدون Forbidden */
 (function(){
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.10.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.12.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -19565,10 +19517,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       var S = window.state;
       if (S) {
         if (!S.settings) S.settings = {};
-        if (isOldCompany(S.settings.companyName)) S.settings.companyName = "طنین طب طاها";
+        if (isOldCompany(S.settings.companyName)) S.settings.companyName = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       }
       var c = document.getElementById("headerCompanyNameDisplay");
-      if (c && isOldCompany(c.textContent)) c.textContent = "طنین طب طاها";
+      if (c && isOldCompany(c.textContent)) c.textContent = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       else if (c && S && S.settings && S.settings.companyName) c.textContent = S.settings.companyName;
     } catch (e) {}
   }
@@ -19640,7 +19592,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     var left = list.length;
     list.forEach(function(base){
       var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
-      var t = setTimeout(function(){ try { if (ctrl) ctrl.abort(); } catch (eA) {} }, 20000);
+      var t = setTimeout(function(){ try { if (ctrl) ctrl.abort(); } catch (eA) {} }, 6000);
       orig(base + "/api/state", { cache: "no-store", mode: "cors", headers: { "X-CRM-Request": "1" }, signal: ctrl ? ctrl.signal : undefined })
         .then(function(r){ clearTimeout(t); return r && r.ok ? r.json() : null; })
         .then(function(j){
@@ -19659,7 +19611,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v1202AutoSync = true;
-  function iranian(){ return /(^|\.)ndcohub\.ir$|(^|\.)mehraeinpharma\.ir$/.test(location.hostname||""); }
+  function iranian(){ return /(^|\.)ndcohub\.(ir|com)$|(^|\.)mehraeinpharma\.ir$/.test(location.hostname||""); }
   function hollow(d){
     if (!d || typeof d !== "object") return true;
     return !(d.pharmacies||[]).length && !(d.doctors||[]).length && ((d.users||[]).length <= 1);
@@ -19674,7 +19626,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if (Array.isArray(remote[k]) && remote[k].length) window.state[k] = remote[k];
     });
     if (!window.state.settings) window.state.settings = {};
-    window.state.settings.companyName = "طنین طب طاها";
+    window.state.settings.companyName = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
     return true;
   }
   function pullRender(){
@@ -19682,7 +19634,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     if (typeof navigator !== "undefined" && navigator.onLine === false) return;
     var orig = window.__CRM_ORIG_FETCH || window.fetch;
     var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
-    var t = setTimeout(function(){ try { if (ctrl) ctrl.abort(); } catch (e) {} }, 20000);
+    var t = setTimeout(function(){ try { if (ctrl) ctrl.abort(); } catch (e) {} }, 6000);
     orig("https://javad-test1.onrender.com/api/state", { cache: "no-store", mode: "cors", signal: ctrl ? ctrl.signal : undefined })
       .then(function(r){ clearTimeout(t); return r && r.ok ? r.json() : null; })
       .then(function(j){
@@ -19740,13 +19692,17 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if (typeof serializeStateForLocalStorage === "function")
         localStorage.setItem("CRM_APP_STATE_V2", serializeStateForLocalStorage(st));
     } catch (e) {}
-    /* v12.10: applyFullFormLayout روی pull استان/شهر را عوض می‌کرد و صفحه را می‌پراند */
+    try {
+      ["tab-pharmacies","tab-doctors","tab-orders"].forEach(function(tid){
+        if (typeof applyFullFormLayout === "function") applyFullFormLayout(tid);
+      });
+    } catch (eL) {}
     return true;
   }
   function pullOrigin(){
     if (typeof navigator !== "undefined" && navigator.onLine === false) return;
     var st = window.state;
-    /* v12.10: هنگام pull پوش نکن — داده قدیمی گوشی ذخیره تازه‌تر ویندوز را خراب می‌کرد */
+    if (recN(st)>0) { try { pushOrigin(); } catch (e) {} }
     var list = urls();
     var i = 0;
     function next(){
@@ -19756,7 +19712,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         var d = j && j.data ? j.data : j;
         if (hollow(d)) { next(); return; }
         if (recN(st)>0 && recN(d)<recN(st)) return;
-        if (applyServer(d)) { try { if (typeof window.v1211Refresh === "function") window.v1211Refresh(); } catch (eR) {} }
+        applyServer(d);
       }).catch(function(){ next(); });
     }
     next();
@@ -19930,289 +19886,246 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   setTimeout(boot, 1200);
 })();
 
-/* v12.10.0: GPS منزل پایدار، جغرافیا ثابت، قیمت لحظه‌ای، همگام بدون رفرش */
+/* v12.12.0: منزل نمایندگان، قیمت‌گذاری و همگام‌سازی بی‌درنگ */
 (function(){
+  function homeFields(){
+    var body=document.getElementById('tableRepHomesBody');
+    if(!body)return;
+    Array.prototype.forEach.call(body.querySelectorAll('tr'),function(tr){
+      if(tr.dataset.v92home)return;
+      var id=tr.querySelector('.v37-home-edit'); if(!id)return;
+      var rec=((window.state||{}).repHomes||[]).filter(function(x){return String(x.id)===String(id.dataset.id);})[0];
+      if(!rec)return;
+      var td=document.createElement('td');td.textContent='پلاک '+(rec.plate||'—')+' / طبقه '+(rec.floor||'—');
+      tr.insertBefore(td,tr.lastElementChild);tr.dataset.v92home='1';
+    });
+  }
+  function patchHomeSave(){
+    var b=document.getElementById('btnRepHomeCurrentLocation');
+    if(b&&!b.dataset.v92){b.dataset.v92='1';b.addEventListener('click',function(){setTimeout(function(){var S=window.state||{},a=document.getElementById('repHomePlate'),f=document.getElementById('repHomeFloor'),r=(S.repHomes||[]).slice(-1)[0];if(r){r.plate=a&&a.value||r.plate||'';r.floor=f&&f.value||r.floor||'';if(window.saveState)window.saveState(false);homeFields();}},500);},true);}
+  }
+  function live(){try{homeFields();patchHomeSave();if(window.renderRepHomesTable)window.renderRepHomesTable();}catch(e){}}
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(live,1000);});
+  setInterval(live,3000);
+  setInterval(function(){try{if(!document.hidden&&navigator.onLine&&window.crmPushStateToServer)window.crmPushStateToServer();}catch(e){}},5000);
+})();
+
+/* v12.12.0: سربرگ سه‌خطی + کار کامل بدون VPN + همگام سه دامنه (رندر + دو دامنه نت‌افراز) */
+(function () {
   "use strict";
-  window.v1210LiveSync = true;
-  window.v1210HomeGps = true;
-  function $(id){ return document.getElementById(id); }
-  function typing(){
-    var a = document.activeElement;
-    if (!a) return false;
-    var tag = String(a.tagName || "").toLowerCase();
-    if (tag === "input" || tag === "textarea" || tag === "select") return true;
-    if (a.isContentEditable) return true;
-    return false;
-  }
-  function recN(d){
-    if (!d) return 0;
-    return ((d.pharmacies||[]).length)+((d.doctors||[]).length)+((d.orders||[]).length)+((d.products||[]).length)+((d.repHomes||[]).length);
-  }
-  function hollow(d){
-    if (!d || typeof d !== "object") return true;
-    return !(d.pharmacies||[]).length && !(d.doctors||[]).length && ((d.users||[]).length <= 1);
-  }
-  function origFetch(){ return window.__CRM_ORIG_FETCH || window.fetch; }
+  window.v1212Header = true;
+  window.v1212NoVpn = true;
+  window.v1212ThreeHubs = true;
 
-  function freezeGeo(){
-    var ids = ["pharmacyProvince","pharmacyCity","pharmacyDistrict","doctorProvince","doctorCity","doctorDistrict","orderProvince","orderCity","orderDistrict"];
-    ids.forEach(function(id){
-      var el = $(id); if (!el || el.dataset.v1210geo) return;
-      el.dataset.v1210geo = "1";
-      function remember(){ el.dataset.chosen = el.value || el.dataset.chosen || ""; }
-      el.addEventListener("change", remember);
-      el.addEventListener("blur", remember);
-      try {
-        var obs = new MutationObserver(function(){
-          var ch = el.dataset.chosen;
-          if (!ch) return;
-          if (document.activeElement === el) return;
-          var has = false;
-          for (var i = 0; i < el.options.length; i++) if (el.options[i].value === ch) has = true;
-          if (has && el.value !== ch) el.value = ch;
-        });
-        obs.observe(el, { childList: true });
-      } catch (e) {}
-    });
-  }
+  var TITLE = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
+  var BRAND = "طنین طب طاها  TANIN TEB TAHA";
+  var FALLBACK = "12.12.0";
 
-  function paintHomeTable(){
-    var tbody = $("tableRepHomesBody");
-    if (!tbody) return;
-    var st = window.state; if (!st) return;
-    tbody.innerHTML = "";
-    (st.repHomes || []).forEach(function(hm){
-      var tr = document.createElement("tr");
-      tr.innerHTML = "<td><strong>"+(hm.repName||"")+"</strong></td>"+
-        "<td>"+(hm.address||"")+"</td>"+
-        "<td>"+(hm.plate||"—")+"</td>"+
-        "<td>"+(hm.floor||"—")+"</td>"+
-        "<td style='direction:ltr'>"+(hm.lat||"")+", "+(hm.lng||"")+"</td>"+
-        "<td><button type='button' class='btn btn-outline btn-sm' data-home-edit='"+(hm.id||"")+"'>✏️ ویرایش</button> "+
-        "<button type='button' class='btn btn-danger btn-sm' data-home-del='"+(hm.id||"")+"'>🗑️ حذف</button></td>";
-      tbody.appendChild(tr);
-    });
-  }
-  window.renderRepHomesTable = paintHomeTable;
-
-  function placeHomeMarker(lat, lng, name){
-    var map = window.mapRepHomes || window._mapRepHomes;
-    if (!map || !isFinite(lat) || !isFinite(lng)) return;
-    try { map.setView([lat, lng], 16); } catch (e) {}
+  /* ── ۱) سربرگ دقیقاً سه خط؛ شماره نسخه با ارقام لاتین ───────────────── */
+  function ver() { try { return String(window.CRM_APP_VERSION || FALLBACK); } catch (e) { return FALLBACK; } }
+  function shownName() {
     try {
-      if (typeof createCustomMarker === "function") createCustomMarker(lat, lng, "rep", "منزل " + (name||""), map);
-      else if (typeof L !== "undefined") L.marker([lat, lng]).addTo(map);
-    } catch (e2) {}
-  }
-
-  function bindHomeGps(){
-    if (document.body.dataset.v1210home) return;
-    document.body.dataset.v1210home = "1";
-    document.addEventListener("click", function(e){
-      var b = e.target && e.target.closest && e.target.closest("#btnRepHomeCurrentLocation");
-      if (!b) return;
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      b.disabled = true; b.style.opacity = "0.55";
-      var lab = b.querySelector("span") || b;
-      var oldT = lab.textContent;
-      lab.textContent = "در حال دریافت موقعیت…";
-      function done(){ b.disabled = false; b.style.opacity = ""; lab.textContent = oldT; }
-      try {
-        if (!window._mapRepHomes && typeof L !== "undefined") {
-          var box = document.getElementById("map-rep-homes");
-          if (box && !box._leaflet_id) {
-            window._mapRepHomes = L.map(box).setView([35.73, 51.42], 13);
-            if (typeof window.crmAddMapTiles === "function") window.crmAddMapTiles(window._mapRepHomes);
-            else L.tileLayer("https://tile.openstreetmap.de/{z}/{x}/{y}.png", {maxZoom:19}).addTo(window._mapRepHomes);
-          }
-        }
-      } catch (eMap) {}
-      function applyPos(pos){
-        window.__v12HomePos = { lat: pos.lat, lng: pos.lng };
-        window.__v12LastGps = { lat: pos.lat, lng: pos.lng };
-        var name = (($("repHomeSelect")||{}).value) || "";
-        placeHomeMarker(pos.lat, pos.lng, name);
-        var addrP = pos.addressPromise;
-        if (!addrP && typeof reverseGeocodeCoordinates === "function") addrP = reverseGeocodeCoordinates(pos.lat, pos.lng);
-        Promise.resolve(addrP || "").then(function(addr){
-          var a = $("repHomeAddressInput");
-          if (a) a.value = addr || a.value || (pos.lat + ", " + pos.lng);
-          done();
-        }).catch(function(){ done(); });
+      var S = window.state;
+      if (S && S.settings) {
+        var n = String(S.settings.companyName || "").trim();
+        if (n && !/پخش\s*دارو|شبکه\s*درمان\s*نماینده|سیستم مدیریت ویزیت علمی|^برنامه ویزیت و گزارشات$/.test(n)) return n;
       }
-      function nativeFix(high, age, ms){
-        return new Promise(function(resolve){
-          if (!navigator.geolocation) { resolve({error:true,message:"GPS نیست"}); return; }
-          navigator.geolocation.getCurrentPosition(function(p){
-            resolve({lat:p.coords.latitude,lng:p.coords.longitude,addressPromise:null});
-          }, function(err){
-            resolve({error:true,message:(err&&err.code===1)?"اجازه GPS داده نشده":"موقعیت گرفته نشد"});
-          }, {enableHighAccuracy:!!high, timeout:ms||10000, maximumAge:age||0});
-        });
-      }
-      var run = (typeof window.getCurrentPositionSafe === "function")
-        ? window.getCurrentPositionSafe()
-        : nativeFix(true, 8000, 12000);
-      run.then(function(pos){
-        if (pos && !pos.error) { applyPos(pos); return; }
-        nativeFix(false, 120000, 8000).then(function(pos2){
-          if (pos2 && !pos2.error) { applyPos(pos2); return; }
-          if (window.__v12LastGps) { applyPos(window.__v12LastGps); return; }
-          done();
-          var http = (location.protocol === "http:" && location.hostname !== "localhost" && location.hostname !== "127.0.0.1");
-          alert(http
-            ? "مرورگر روی HTTP (Not Secure) موقعیت را مسدود می‌کند. در پنل نت‌افراز گواهی SSL را فعال کنید."
-            : ((pos && pos.message) || "موقعیت گرفته نشد. GPS و اجازه موقعیت را روشن کنید."));
-        });
-      }).catch(function(){ done(); alert("موقعیت گرفته نشد."); });
-    }, true);
-    document.addEventListener("click", function(e){
-      var s = e.target && e.target.closest && e.target.closest("#btnSaveRepHome");
-      if (!s) return;
-      var st = window.state; if (!st) return;
-      if (!st.repHomes) st.repHomes = [];
-      var name = (($("repHomeSelect")||{}).value) || "";
-      var addr = (($("repHomeAddressInput")||{}).value||"").trim();
-      var plate = (($("repHomePlate")||{}).value||"").trim();
-      var floor = (($("repHomeFloor")||{}).value||"").trim();
-      var pos = window.__v12HomePos || {};
-      var idx = st.repHomes.findIndex(function(h){ return h.repName === name; });
-      var rec = {
-        id: idx >= 0 ? st.repHomes[idx].id : ("home-" + Date.now()),
-        repName: name, address: addr, plate: plate, floor: floor,
-        lat: pos.lat || (idx>=0 ? st.repHomes[idx].lat : null),
-        lng: pos.lng || (idx>=0 ? st.repHomes[idx].lng : null)
-      };
-      if (idx === -1) st.repHomes.push(rec); else st.repHomes[idx] = Object.assign({}, st.repHomes[idx], rec);
-      if (typeof saveState === "function") saveState();
-      paintHomeTable();
-      placeHomeMarker(rec.lat, rec.lng, name);
-      alert("اطلاعات منزل ذخیره شد.");
-    }, true);
-    document.addEventListener("click", function(e){
-      var ed = e.target && e.target.closest && e.target.closest("[data-home-edit]");
-      var del = e.target && e.target.closest && e.target.closest("[data-home-del]");
-      var st = window.state; if (!st) return;
-      if (ed) {
-        var id = ed.getAttribute("data-home-edit");
-        var hm = (st.repHomes||[]).filter(function(x){ return String(x.id)===String(id); })[0];
-        if (!hm) return;
-        if ($("repHomeSelect")) $("repHomeSelect").value = hm.repName || "";
-        if ($("repHomeAddressInput")) $("repHomeAddressInput").value = hm.address || "";
-        if ($("repHomePlate")) $("repHomePlate").value = hm.plate || "";
-        if ($("repHomeFloor")) $("repHomeFloor").value = hm.floor || "";
-        if (hm.lat && hm.lng) window.__v12HomePos = { lat: hm.lat, lng: hm.lng };
-      }
-      if (del) {
-        var id2 = del.getAttribute("data-home-del");
-        if (!confirm("این آدرس منزل حذف شود؟")) return;
-        st.repHomes = (st.repHomes||[]).filter(function(x){ return String(x.id)!==String(id2); });
-        if (typeof saveState === "function") saveState();
-        paintHomeTable();
-      }
-    }, true);
-  }
-
-  var lastApply = 0;
-  var lastPushAt = 0;
-  function refreshViews(){
-    try { if (typeof renderPharmaciesList === "function") renderPharmaciesList(); } catch (e1) {}
-    try { if (typeof renderDoctorsList === "function") renderDoctorsList(); } catch (e2) {}
-    try { if (typeof renderOrdersList === "function") renderOrdersList(); } catch (e3) {}
-    try { paintHomeTable(); } catch (e4) {}
-    try { if (typeof renderColumnsProductsTable === "function") renderColumnsProductsTable(); } catch (e5) {}
-    try { if (typeof renderRepRoutesTable === "function") renderRepRoutesTable(); } catch (e6) {}
-    try { if (typeof window.paintV77ProductPricing === "function") window.paintV77ProductPricing(); } catch (e7) {}
-    try { if (typeof updateNavBadges === "function") updateNavBadges(); } catch (e8) {}
-  }
-  function applyLive(d){
-    if (!d || typeof d !== "object" || hollow(d)) return false;
-    if (typing()) return false;
-    var st = window.state; if (!st) return false;
-    var sAt = Number(d._lastSavedAt) || 0;
-    var lAt = Number(st._lastSavedAt) || 0;
-    if (Date.now() - lastPushAt < 1500) return false;
-    if (lAt && sAt && sAt <= lAt) return false;
-    if (!sAt && recN(d) < recN(st)) return false;
-    if (sAt && lAt && sAt === lAt && recN(d) === recN(st)) return false;
-    ["pharmacies","doctors","orders","reps","products","visits","hospitals","leaves","users","activityLog","repHomes","repRoutes","notifications","salesTargets"].forEach(function(k){
-      if (Array.isArray(d[k])) st[k] = d[k];
-    });
-    ["formFieldMeta","formBoxes","manualLayouts","tabOrder","customFields","selectExtraOptions","customRecords"].forEach(function(k){
-      if (d[k] && typeof d[k] === "object") st[k] = d[k];
-    });
-    if (sAt) st._lastSavedAt = sAt;
-    try {
-      if (typeof serializeStateForLocalStorage === "function")
-        localStorage.setItem("CRM_APP_STATE_V2", serializeStateForLocalStorage(st));
     } catch (e) {}
-    lastApply = Date.now();
-    refreshViews();
+    return TITLE;
+  }
+  function setTxt(id, txt) {
+    var el = document.getElementById(id);
+    if (el && el.textContent !== txt) el.textContent = txt;
+  }
+  function paintHeader() {
+    setTxt("headerCompanyNameDisplay", shownName());
+    setTxt("crmBuildBadge", "نسخه " + ver());
+    setTxt("headerBrandLine", BRAND);
+    var hint = document.getElementById("crmBuildHint");
+    if (hint && hint.textContent.indexOf(ver()) === -1) {
+      hint.textContent = "نسخه " + ver() + " — گوشی و ویندوز باید همین شماره را ببینند";
+    }
+  }
+  paintHeader();
+  [0, 40, 120, 300, 700, 1500, 3000, 6000, 12000].forEach(function (ms) { setTimeout(paintHeader, ms); });
+  try {
+    var box = document.querySelector(".logo-text") || document.getElementById("crmBuildBadge");
+    if (box && typeof MutationObserver !== "undefined") {
+      var lock = 0;
+      new MutationObserver(function () {
+        var now = Date.now();
+        if (now - lock < 80) return;
+        lock = now;
+        paintHeader();
+      }).observe(box, { childList: true, subtree: true, characterData: true });
+    }
+  } catch (eObs) {}
+
+  /* ── ۲) بدون VPN: هیچ درخواست بیرونی برنامه را معطل نمی‌گذارد ───────── */
+  var CROSS_MS = 6000; /* boot never waits on Render: همه چیز پس‌زمینه با تایم‌اوت کوتاه */
+  /* fetch پیش از این لایه یک‌بار گرفته می‌شود: هرگز به window.fetchِ جایگزین‌شده برنمی‌گردیم (بدون بازگشت بی‌پایان) */
+  var baseFetch = (typeof window.fetch === "function") ? window.fetch.bind(window) : function () { return Promise.reject(new Error("no fetch")); };
+  function isCross(url) {
+    try { return new URL(String(url), location.href).origin !== location.origin; } catch (e) { return false; }
+  }
+  function softFetch(url, opts, ms) {
+    try { if (typeof navigator !== "undefined" && navigator.onLine === false) return Promise.reject(new Error("offline")); } catch (eN) {}
+    var ctrl = (typeof AbortController !== "undefined") ? new AbortController() : null;
+    var timer = setTimeout(function () { try { if (ctrl) ctrl.abort(); } catch (eA) {} }, ms || CROSS_MS);
+    var o = Object.assign({}, opts || {});
+    if (ctrl) o.signal = ctrl.signal;
+    return baseFetch(url, o).then(function (r) { clearTimeout(timer); return r; }, function (e) { clearTimeout(timer); throw e; });
+  }
+  window.v1212SoftFetch = softFetch;
+  window.fetch = function (url, opts) {
+    if (isCross(url)) {
+      try { return softFetch(url, opts, CROSS_MS); } catch (e) { return Promise.reject(e); }
+    }
+    return baseFetch.apply(window, arguments);
+  };
+
+  /* ── ۳) همگام سه دامنه: رندر + نت‌افراز (mehraeinpharma.ir, ndcohub.com) */
+  var HUBS = ["https://javad-test1.onrender.com", "https://mehraeinpharma.ir", "https://ndcohub.com"];
+  window.CRM_HUB_DOMAINS = HUBS.slice();
+  function peerList() {
+    var out = [], seen = {};
+    function add(x) {
+      try {
+        var u = new URL(String(x), location.origin);
+        if (location.protocol === "https:" && u.protocol !== "https:") return;
+        if (u.origin === location.origin) return;
+        if (/ndcohub\.ir$/i.test(u.hostname)) return; /* دامنه قدیمی با گواهی نامعتبر */
+        if (seen[u.origin]) return;
+        seen[u.origin] = 1;
+        out.push(u.origin);
+      } catch (e) {}
+    }
+    HUBS.forEach(add);
+    try {
+      var rt = window.__CRM_RUNTIME || {};
+      if (rt.baseUrl) add(rt.baseUrl);
+      (rt.hubs || []).forEach(add);
+    } catch (eRt) {}
+    return out;
+  }
+  window.v1212Peers = peerList;
+
+  function countOf(d) {
+    if (!d || typeof d !== "object") return 0;
+    return ((d.pharmacies || []).length) + ((d.doctors || []).length) + ((d.orders || []).length);
+  }
+  function hollow(d) {
+    if (!d || typeof d !== "object") return true;
+    return !(d.pharmacies || []).length && !(d.doctors || []).length && ((d.users || []).length <= 1);
+  }
+  function mergeRemote(remote) {
+    if (hollow(remote)) return false;
+    var st = window.state;
+    if (!st || typeof st !== "object") return false;
+    var before = countOf(st);
+    var next;
+    if (typeof window.v12TakeRegisteredOnly === "function") {
+      next = window.v12TakeRegisteredOnly(remote, st);
+    } else {
+      next = st;
+      ["pharmacies", "doctors", "orders", "reps", "users"].forEach(function (k) {
+        if (!Array.isArray(remote[k]) || !remote[k].length) return;
+        var map = {};
+        (next[k] || []).forEach(function (r) { if (r && r.id != null) map[String(r.id)] = r; });
+        var out = (next[k] || []).slice();
+        remote[k].forEach(function (r) {
+          if (!r || typeof r !== "object") return;
+          var id = r.id != null ? String(r.id) : "";
+          if (!id) { out.push(r); return; }
+          if (!map[id]) { map[id] = r; out.push(r); }
+        });
+        next[k] = out;
+      });
+    }
+    if (!next) return false;
+    if (countOf(next) < before) return false; /* هرگز دادهٔ ثبت‌شده را کم نمی‌کنیم */
+    if (countOf(next) === before) return false;
+    window.state = next;
+    try {
+      if (typeof serializeStateForLocalStorage === "function") {
+        localStorage.setItem("CRM_APP_STATE_V2", serializeStateForLocalStorage(next));
+      }
+    } catch (eSave) {}
+    try {
+      ["tab-pharmacies", "tab-doctors", "tab-orders"].forEach(function (tid) {
+        if (typeof applyFullFormLayout === "function") applyFullFormLayout(tid);
+      });
+      if (typeof renderPharmaciesList === "function") renderPharmaciesList();
+      if (typeof renderDoctorsList === "function") renderDoctorsList();
+    } catch (ePaint) {}
     return true;
   }
-  function pullLive(){
-    if (typeof navigator !== "undefined" && navigator.onLine === false) return;
-    if (typing()) return;
-    var f = origFetch();
-    var urls = ["/api.php?path=state", "/api/state"];
-    var i = 0;
-    function next(){
-      if (i >= urls.length) return;
-      var u = urls[i++];
-      f(u, { cache: "no-store" }).then(function(r){ return r && r.ok ? r.json() : null; }).then(function(j){
-        var d = j && j.data ? j.data : j;
-        if (!d || hollow(d)) { next(); return; }
-        applyLive(d);
-      }).catch(function(){ next(); });
-    }
-    next();
+  function pullOne(base) {
+    return softFetch(base + "/api/state", {
+      cache: "no-store", mode: "cors",
+      headers: { "X-CRM-Request": "1", "X-CRM-Hub-Sync": "1", "X-CRM-Build": ver() }
+    }, CROSS_MS).then(function (r) { return r && r.ok ? r.json() : null; }).then(function (j) {
+      var d = j && j.data ? j.data : j;
+      return mergeRemote(d);
+    }).catch(function () { return false; });
   }
-  function wrapSave(){
-    var old = window.saveState;
-    if (typeof old !== "function" || old._v1210) return;
-    var w = function(){
-      try { if (window.state) window.state._lastSavedAt = Date.now(); } catch (e) {}
-      lastPushAt = Date.now();
-      var r = old.apply(this, arguments);
-      setTimeout(function(){
-        try { if (typeof window.crmPushStateToServer === "function") window.crmPushStateToServer(); } catch (e2) {}
-        try { if (typeof window.v12PushNetafraz === "function") window.v12PushNetafraz(); } catch (e3) {}
-      }, 80);
-      return r;
-    };
-    w._v1210 = true;
-    window.saveState = w;
+  function pushOne(base) {
+    var st = window.state;
+    if (hollow(st)) return Promise.resolve(false);
+    var body;
+    try { body = JSON.stringify(st); } catch (e) { return Promise.resolve(false); }
+    return softFetch(base + "/api/state", {
+      method: "POST", mode: "cors", cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CRM-Request": "1", "X-CRM-Hub-Sync": "1", "X-CRM-Sync": "v81", "X-CRM-Build": ver()
+      },
+      body: body
+    }, CROSS_MS).then(function (r) { return !!(r && r.ok); }).catch(function () { return false; });
   }
-
-  function boot(){
-    freezeGeo();
-    bindHomeGps();
-    wrapSave();
-    paintHomeTable();
+  function status(mode) {
+    var el = document.getElementById("globalOnlineStatusBadge");
+    if (!el) return;
+    var txt;
+    if (mode === "synced") txt = "🟢 آنلاین — هر سه دامنه همگام‌اند";
+    else if (mode === "offline") txt = "🔴 آفلاین — برنامه کامل کار می‌کند";
+    else txt = "🟡 این دستگاه (همگام‌سازی ابری در صف)";
+    if (el.textContent !== txt) el.textContent = txt;
   }
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function(){ setTimeout(boot, 200); });
-  else setTimeout(boot, 200);
-  setTimeout(boot, 1400);
-  setTimeout(pullLive, 800);
-  setInterval(pullLive, 2000);
-  document.addEventListener("visibilitychange", function(){ if (!document.hidden) pullLive(); });
+  var inflight = false;
+  function syncAll() {
+    if (inflight) return;
+    try {
+      if (typeof navigator !== "undefined" && navigator.onLine === false) { status("offline"); return; }
+    } catch (eN) {}
+    var list = peerList();
+    if (!list.length) { status("local"); return; }
+    inflight = true;
+    var left = list.length, reached = 0;
+    list.forEach(function (base) {
+      pullOne(base).then(function (merged) {
+        if (merged) reached++;
+        return pushOne(base);
+      }).then(function (ok) {
+        if (ok) reached++;
+      }).catch(function () {}).then(function () {
+        left--;
+        if (left <= 0) { inflight = false; status(reached ? "synced" : "local"); }
+      });
+    });
+  }
+  window.v1212SyncNow = syncAll;
+  setTimeout(syncAll, 1500);
+  setTimeout(syncAll, 8000);
+  setTimeout(syncAll, 25000);
+  setInterval(syncAll, 90000);
+  try { document.addEventListener("visibilitychange", function () { if (!document.hidden) syncAll(); }); } catch (eV) {}
+  try { window.addEventListener("online", function () { status("local"); syncAll(); }); } catch (eO) {}
+  try { window.addEventListener("offline", function () { status("offline"); }); } catch (eF) {}
+  status("local");
+  setTimeout(function () {
+    try {
+      if (typeof navigator !== "undefined" && navigator.onLine === false) status("offline");
+    } catch (e) {}
+  }, 500);
 })();
-
-/* v12.11.0: GPS منزل پایدار، پلاک/طبقه در لیست، جغرافیا ثابت، قیمت باقیمانده لحظه‌ای، همگام بدون رفرش */
-(function(){
-  "use strict";
-  window.v1211Fix = true;
-  window.v1211Refresh = function(){
-    if (document.activeElement && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName||"")) return;
-    try { if (typeof renderPharmaciesList === "function") renderPharmaciesList(); } catch (e1) {}
-    try { if (typeof renderDoctorsList === "function") renderDoctorsList(); } catch (e2) {}
-    try { if (typeof renderOrdersList === "function") renderOrdersList(); } catch (e3) {}
-    try { if (typeof window.renderRepHomesTable === "function") window.renderRepHomesTable(); } catch (e4) {}
-    try { if (typeof renderColumnsProductsTable === "function") renderColumnsProductsTable(); } catch (e5) {}
-    try { if (typeof window.paintV77ProductPricing === "function") window.paintV77ProductPricing(); } catch (e6) {}
-    try { if (typeof renderRepRoutesTable === "function") renderRepRoutesTable(); } catch (e7) {}
-    try { if (typeof updateNavBadges === "function") updateNavBadges(); } catch (e8) {}
-  };
-})();
-

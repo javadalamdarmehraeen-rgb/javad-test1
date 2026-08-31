@@ -55,14 +55,17 @@ copyFlat(SRC, DEST);
 })();
 
 const DEFAULT_RENDER = "https://javad-test1.onrender.com";
+/* v12.12: سه دامنه فعال — یک دامنه رندر + دو دامنه نت‌افراز */
+const DEFAULT_HUBS = ["https://javad-test1.onrender.com", "https://mehraeinpharma.ir", "https://ndcohub.com"];
 const base = String(process.env.BASE_URL || process.env.PUBLIC_BASE_URL || DEFAULT_RENDER).replace(/\/$/, "");
 const extra = String(process.env.CRM_HUBS || "")
   .split(",")
   .map(function (s) { return s.trim(); })
   .filter(Boolean);
 const hubs = [];
-if (base) hubs.push(base);
-extra.forEach(function (h) { if (hubs.indexOf(h) < 0) hubs.push(h); });
+[base].concat(DEFAULT_HUBS, extra).forEach(function (h) {
+  if (h && hubs.indexOf(h) < 0) hubs.push(h);
+});
 
 /* platform: "static" */
 const runtime =
@@ -81,7 +84,8 @@ fs.writeFileSync(path.join(DEST, "api-config.json"), JSON.stringify({ baseUrl: b
 const htaccess = [
   "DirectoryIndex index.php login.html index.html",
   "<IfModule mod_headers.c>",
-  "Header always set Access-Control-Allow-Origin \"https://javad-test1.onrender.com\"",
+  "SetEnvIf Origin \"^https://(javad-test1\\.onrender\\.com|mehraeinpharma\\.ir|ndcohub\\.com)$\" ALLOW_ORIGIN=$0",
+  "Header always set Access-Control-Allow-Origin \"%{ALLOW_ORIGIN}e\" env=ALLOW_ORIGIN",
   "Header always set Access-Control-Allow-Methods \"GET, POST, HEAD, OPTIONS\"",
   "Header always set Access-Control-Allow-Headers \"Content-Type, X-CRM-Request, X-CRM-Replace, X-CRM-Sync, X-CRM-Hub-Sync, X-CRM-Build, Cache-Control\"",
   "Header always set Access-Control-Max-Age \"86400\"",
@@ -107,6 +111,7 @@ const readme = [
   "3. Node لازم نیست. api.php همان API است — برنامه بدون Render کار می‌کند.",
   "4. برای همگام‌سازی با Render هنگام ساخت:",
   "     set BASE_URL=https://javad-test1.onrender.com",
+  "     set CRM_HUBS=https://mehraeinpharma.ir,https://ndcohub.com",
   "     npm run build-static",
   "5. در پنل نت‌افراز SSL رایگان (Let's Encrypt) را فعال کنید تا خطای گواهی و Service Worker رفع شود.",
   "6. PHP 7.4 یا بالاتر لازم است.",

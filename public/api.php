@@ -7,7 +7,12 @@
  */
 header("X-Content-Type-Options: nosniff");
 $origin = isset($_SERVER["HTTP_ORIGIN"]) ? $_SERVER["HTTP_ORIGIN"] : "";
-$allow = array("https://javad-test1.onrender.com", "https://mehraeinpharma.ir", "https://ndcohub.ir");
+$allow = array(
+  "https://javad-test1.onrender.com",
+  "https://mehraeinpharma.ir", "https://www.mehraeinpharma.ir",
+  "https://ndcohub.com", "https://www.ndcohub.com",
+  "https://ndcohub.ir"
+);
 if ($origin && in_array($origin, $allow, true)) {
   header("Access-Control-Allow-Origin: " . $origin);
 } else {
@@ -23,7 +28,73 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
-define("CRM_APP_VERSION", "12.11.0");
+define("CRM_APP_VERSION", "12.12.0");
+
+/* v12.12: همگام سه دامنه — رندر + دو دامنه نت‌افراز */
+function peer_hosts() {
+  $def = array("https://javad-test1.onrender.com", "https://mehraeinpharma.ir", "https://ndcohub.com");
+  $cfg = cfg();
+  if (!empty($cfg["hubs"]) && is_array($cfg["hubs"])) {
+    foreach ($cfg["hubs"] as $h) { if (is_string($h) && $h !== "" && !in_array($h, $def, true)) $def[] = $h; }
+  }
+  $self = isset($_SERVER["HTTP_HOST"]) ? strtolower(preg_replace('/:\d+$/', "", $_SERVER["HTTP_HOST"])) : "";
+  $self = preg_replace('/^www\./', "", $self);
+  $out = array();
+  foreach ($def as $d) {
+    $h = strtolower((string) parse_url($d, PHP_URL_HOST));
+    if (!$h) continue;
+    if ($h === $self || preg_replace('/^www\./', "", $h) === $self) continue;
+    if (preg_match('/^ndcohub\.ir$/', preg_replace('/^www\./', "", $h))) continue; /* گواهی نامعتبر دامنه قدیمی */
+    if (!in_array($d, $out, true)) $out[] = $d;
+  }
+  return $out;
+}
+function merge_state($a, $b) {
+  if (!is_array($a)) $a = array();
+  if (!is_array($b)) $b = array();
+  $keys = array("pharmacies", "doctors", "orders", "reps", "products", "visits", "hospitals", "leaves", "salesTargets", "repHomes", "repRoutes", "activityLog", "notifications", "users");
+  foreach ($keys as $k) {
+    if (!isset($b[$k]) || !is_array($b[$k]) || !count($b[$k])) continue;
+    $a[$k] = merge_by_id(isset($a[$k]) ? $a[$k] : array(), $b[$k]);
+  }
+  if (!isset($a["settings"]) || !is_array($a["settings"])) $a["settings"] = isset($b["settings"]) && is_array($b["settings"]) ? $b["settings"] : array();
+  return $a;
+}
+function sync_all_peers() {
+  $peers = peer_hosts();
+  $local = read_json($GLOBALS["CRM_DATA_FILE"]);
+  $merged = is_array($local) ? $local : array();
+  $reached = 0;
+  $report = array();
+  foreach ($peers as $purl) {
+    $res = http_json("GET", $purl . "/api/state", null);
+    if (empty($res["ok"]) || empty($res["raw"])) { $report[] = array("target" => $purl, "ok" => false); continue; }
+    $j = json_decode($res["raw"], true);
+    if (!is_array($j)) { $report[] = array("target" => $purl, "ok" => false); continue; }
+    $remote = isset($j["data"]) && is_array($j["data"]) ? $j["data"] : $j;
+    $remote = strip_sample($remote);
+    if (hollow_state($remote)) { $report[] = array("target" => $purl, "ok" => true, "ignored" => "empty-rejected"); continue; }
+    $reached++;
+    $merged = merge_state($merged, $remote);
+    $report[] = array("target" => $purl, "ok" => true, "pulled" => true);
+  }
+  $pushed = array();
+  if ($reached > 0 || (is_array($local) && !hollow_state($local))) {
+    if (!hollow_state($merged)) {
+      $merged = stamp_gen($merged);
+      write_json($GLOBALS["CRM_DATA_FILE"], $merged);
+      foreach ($peers as $purl) {
+        $pr = http_json("POST", $purl . "/api/state", json_encode($merged, JSON_UNESCAPED_UNICODE));
+        $pushed[] = array("target" => $purl, "ok" => !empty($pr["ok"]), "http" => isset($pr["code"]) ? $pr["code"] : 0);
+      }
+    }
+  }
+  return array("peers" => $peers, "reached" => $reached, "pull" => $report, "push" => $pushed, "records" => array(
+    "pharmacies" => isset($merged["pharmacies"]) ? count($merged["pharmacies"]) : 0,
+    "doctors" => isset($merged["doctors"]) ? count($merged["doctors"]) : 0,
+    "orders" => isset($merged["orders"]) ? count($merged["orders"]) : 0,
+  ));
+}
 
 function cfg() {
   $jf = __DIR__ . "/api-config.json";
@@ -186,6 +257,7 @@ function pull_render() {
 
 $DATA_DIR = __DIR__; /* بدون پوشه — نت‌افراز فولدر آپلود نمی‌کند */
 $DATA = $DATA_DIR . "/crm-live-data.json";
+$GLOBALS["CRM_DATA_FILE"] = &$DATA;
 $BULK = $DATA_DIR . "/crm-live-bulk.json";
 if (!is_file($DATA) && is_file(__DIR__ . "/data/crm-live-data.json")) $DATA = __DIR__ . "/data/crm-live-data.json";
 if (!is_file($BULK) && is_file(__DIR__ . "/data/crm-live-bulk.json")) $BULK = __DIR__ . "/data/crm-live-bulk.json";
@@ -208,6 +280,7 @@ if ($p === "health" || $p === "ping" || $p === "healthz" || $p === "") {
     "platform" => "static-php",
     "sync" => true,
     "baseUrl" => isset($c["baseUrl"]) ? $c["baseUrl"] : "",
+    "hubs" => peer_hosts(),
     "host" => isset($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : ""
   ));
 }
@@ -255,6 +328,15 @@ if ($p === "sync" || strpos($p, "sync/") === 0) {
   if (strpos($p, "sync/") === 0) {
     $rest = trim(substr($p, 5), "/");
     if ($rest !== "") $target = $rest;
+  }
+  if ($target === "all" || $target === "peers" || $target === "domains") {
+    $r = sync_all_peers();
+    send_json(array(
+      "status" => "success",
+      "message" => "three-domain sync (render + netafraz)",
+      "version" => CRM_APP_VERSION,
+      "synced" => $r
+    ));
   }
   $local = read_json($DATA);
   if ($target === "render" || $target === "push") {
@@ -323,11 +405,6 @@ if (strpos($p, "state") === 0) {
     $existing = read_json($DATA);
     if (too_empty($incoming, $existing)) {
       send_json(array("status" => "success", "data" => $existing, "ignored" => true, "reason" => "empty-rejected"));
-    }
-    $inAt = isset($incoming["_lastSavedAt"]) ? intval($incoming["_lastSavedAt"]) : 0;
-    $exAt = ($existing && isset($existing["_lastSavedAt"])) ? intval($existing["_lastSavedAt"]) : 0;
-    if ($existing && $exAt && $inAt && $inAt < $exAt) {
-      send_json(array("status" => "success", "data" => $existing, "ignored" => true, "reason" => "stale"));
     }
     write_json($DATA, $incoming);
     header("Content-Type: application/json; charset=utf-8");

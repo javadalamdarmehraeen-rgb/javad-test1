@@ -9,7 +9,7 @@ default:
     key: "$CI_COMMIT_REF_SLUG"
     paths: [.npm/, node_modules/]
 variables:
-  NEXT_PUBLIC_ENDPOINTS: "https://ndcohub.ir,https://javad-test1.onrender.com"
+  NEXT_PUBLIC_ENDPOINTS: "https://ndcohub.com,https://mehraeinpharma.ir,https://javad-test1.onrender.com"
   GIT_DEPTH: "0"
 build:
   stage: build
@@ -50,5 +50,6 @@ sync-after-deploy:
     - |
       if [ -z "$SYNC_SECRET" ]; then echo "SYNC_SECRET  "; exit 0; fi
       sleep 90
-      curl -fsSL -X POST "https://ndcohub.ir/api/sync/run" -H "x-sync-key: $SYNC_SECRET" || true
+      curl -fsSL -X POST "https://ndcohub.com/api/sync/run" -H "x-sync-key: $SYNC_SECRET" || true
+      curl -fsSL -X POST "https://mehraeinpharma.ir/api/sync/run" -H "x-sync-key: $SYNC_SECRET" || true
       curl -fsSL -X POST "https://javad-test1.onrender.com/api/sync/run" -H "x-sync-key: $SYNC_SECRET" || true

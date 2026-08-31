@@ -16,7 +16,7 @@
 
 ## ب) کارت فایل‌ها (نقش + توابع + نام‌های window که می‌سازد)
 
-### `server.js` (43504 بایت)
+### `server.js` (43957 بایت)
 - نقش: سرور سبک Node.js برای Render — ورود جدا، gzip، health، ژئوکد، محدودیت نرخ
 - تعداد توابع داخلی: 46
 - endpointهای سرور: `/api/backup`, `/api/backup/email`, `/api/backup/status`, `/api/bulk`, `/api/bulk`, `/api/feedback`, `/api/feedback`, `/api/push/public-key`, `/api/push/send`, `/api/push/subscribe`, `/api/runtime-config`, `/api/state`, `/api/state`
@@ -49,17 +49,17 @@
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (190960 بایت)
+### `public/crm-app.js` (192143 بایت)
 - نقش: ============================================================================
-- تعداد توابع داخلی: 185
-- نام‌های window که تعریف/بازنویسی می‌کند: `CRM_APP_VERSION`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_STATE_BOUND`, `__CRM_SW_READY`, `__v12HomePos`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `applyV77ProductPricing`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `crmAddMapTiles`, `crmPushStateToServer`, `getAllMenuSections`, `paintV77ProductPricing`, `rememberPharmacyName`, `renderDoctorsList`, `renderExtraTabCustomFields`, `renderPharmaciesList`, `syncProductsEverywhere`, `v12OpsOnlyRestore`, `v12TahaName`, `v12TakeRegisteredOnly`, `validateRequiredFields`
+- تعداد توابع داخلی: 186
+- نام‌های window که تعریف/بازنویسی می‌کند: `CRM_APP_VERSION`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_STATE_BOUND`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `applyV77ProductPricing`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `crmAddMapTiles`, `crmPushStateToServer`, `getAllMenuSections`, `paintV77ProductPricing`, `rememberPharmacyName`, `renderDoctorsList`, `renderExtraTabCustomFields`, `renderPharmaciesList`, `syncProductsEverywhere`, `v12OpsOnlyRestore`, `v12TahaName`, `v12TakeRegisteredOnly`, `validateRequiredFields`
 
-### `public/crm-bundle.js` (1227278 بایت)
+### `public/crm-bundle.js` (1222153 بایت)
 - نقش: * crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
-- تعداد توابع داخلی: 1244
-- نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `CRM_HUBS`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `IRAN_GEO_DATA`, `WIDGET_PALETTE`, `__CRM_APPLYING_SERVER`, `__CRM_BULK_PURGE`, `__CRM_BULK_READY`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_LAYOUT_APPLYING`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SERVER_READY`, `__CRM_SKIP_V64_STRIP`, `__CRM_SNAP`, `__CRM_UNVEIL`, `__CRM_V78_EDIT_PID`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__V68_WATCH`, `__V69_SYNC`, `__V70_SOLO`, `__V71_CLAIMED`, `__V72_BOOT`, `__V73_BOOT`, `__V73_WATCH`, `__V79_BOOT`, `__V80_BOOT`, `__V80_LOCK`, `__V81_BOOT`
+- تعداد توابع داخلی: 1243
+- نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `CRM_HUBS`, `CRM_HUB_DOMAINS`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `IRAN_GEO_DATA`, `WIDGET_PALETTE`, `__CRM_APPLYING_SERVER`, `__CRM_BULK_PURGE`, `__CRM_BULK_READY`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_LAYOUT_APPLYING`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SERVER_READY`, `__CRM_SKIP_V64_STRIP`, `__CRM_SNAP`, `__CRM_UNVEIL`, `__CRM_V78_EDIT_PID`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__V68_WATCH`, `__V69_SYNC`, `__V70_SOLO`, `__V71_CLAIMED`, `__V72_BOOT`, `__V73_BOOT`, `__V73_WATCH`, `__V79_BOOT`, `__V80_BOOT`, `__V80_LOCK`
 
-### `public/crm-data.js` (57777 بایت)
+### `public/crm-data.js` (57830 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 1
 - نام‌های window که تعریف/بازنویسی می‌کند: `DOCTOR_SPECIALTIES`, `IRAN_GEO_DATA`
@@ -124,10 +124,10 @@
 - تعداد توابع داخلی: 104
 - نام‌های window که تعریف/بازنویسی می‌کند: `builtinFieldValue`, `downloadCSVFile`, `getOrderItemsFromUI`, `isColShownInList`, `renderDoctorsList`, `renderLiveLocationTab`, `renderOrdersList`, `renderPharmaciesList`, `setupLiveLocationTab`, `setupRepsTab`, `switchTab`, `validateRequiredFields`
 
-### `public/crm-hub.js` (6622 بایت)
+### `public/crm-hub.js` (6799 بایت)
 - نقش: * v11.99.0: نت‌افراز مستقل و سریع — GET فقط origin؛ همگام پس‌زمینه بدون توقف UI */
 - تعداد توابع داخلی: 19
-- نام‌های window که تعریف/بازنویسی می‌کند: `__CRM_ORIG_FETCH`, `__CRM_RUNTIME`, `crmHubList`, `fetch`, `v92HubFetch`, `v93HubFetch`, `v94StaticLocal`, `v95OriginOnly`, `v99FastLocal`, `v99Peers`
+- نام‌های window که تعریف/بازنویسی می‌کند: `CRM_HUB_DOMAINS`, `__CRM_ORIG_FETCH`, `__CRM_RUNTIME`, `crmHubList`, `fetch`, `v92HubFetch`, `v93HubFetch`, `v94StaticLocal`, `v95OriginOnly`, `v99FastLocal`, `v99Peers`
 
 ### `public/crm-jalali.js` (25683 بایت)
 - نقش: تقویم شمسی واقعی + نشانگر میلادی JAN..DEC + تقویم کنار فیلد تاریخ + افزودن لحظه‌ای
@@ -154,7 +154,7 @@
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (5417 بایت)
-- نقش: const BUILD = "12.11.0";
+- نقش: const BUILD = "12.12.0";
 - تعداد توابع داخلی: 6
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -165,6 +165,7 @@
 ## ج) گراف بازنویسی نام‌های window (چه فایلی روی چه فایلی سوار می‌شود)
 
 - `CRMJalali`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-jalali.js`
+- `CRM_HUB_DOMAINS`: تعریف/بازنویسی به ترتیب لود → `public/crm-hub.js` ← `public/crm-bundle.js`
 - `FA_FIELD_LABELS`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v11.js`
 - `IRAN_FACILITIES`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/iran-facilities.js`
 - `IRAN_GEO_DATA`: تعریف/بازنویسی به ترتیب لود → `public/crm-data.js` ← `public/crm-bundle.js`
@@ -185,7 +186,6 @@
 - `__V42CD`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
 - `__V42CSS`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
 - `__lastHealth`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v10.js`
-- `__v12HomePos`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
 - `__v40LastPick`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
 - `_actMap`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v11.js`
 - `_actMarks`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v11.js`
@@ -255,7 +255,6 @@
 - `copyPageToTab`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v13.js` ← `public/crm-features-v18.js`
 - `createCustomMarker`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
 - `createUserTab`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v12.js`
-- `crmAddMapTiles`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
 - `crmPushStateToServer`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
 - `dedupeTabWidgets`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v13.js`
 - `deleteCustomField`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v11.js` ← `public/crm-features-v20.js`
@@ -555,8 +554,8 @@
 - `public/crm-bundle.js` → 3 شناسه (مثل: `btnSaveProductPricing`, `v77CurrentPricesBody`, `v77NewPricesBody`)
 
 ### tab-rep-homes «🏠 منزل نمایندگان»
-- `public/crm-app.js` → 5 شناسه (مثل: `repHomeAddressInput`, `repHomeFloor`, `repHomePlate`, `repHomeSelect`, `tableRepHomesBody`)
-- `public/crm-bundle.js` → 8 شناسه (مثل: `btnRepHomeCurrentLocation`, `btnSaveRepHome`, `map-rep-homes`, `repHomeAddressInput`, `repHomeFloor`, `repHomePlate`, `repHomeSelect`, `tableRepHomesBody`)
+- `public/crm-app.js` → 3 شناسه (مثل: `repHomeAddressInput`, `repHomeSelect`, `tableRepHomesBody`)
+- `public/crm-bundle.js` → 6 شناسه (مثل: `btnRepHomeCurrentLocation`, `repHomeAddressInput`, `repHomeFloor`, `repHomePlate`, `repHomeSelect`, `tableRepHomesBody`)
 - `public/crm-features-v20.js` → 1 شناسه (مثل: `tableRepHomesBody`)
 - `public/crm-features-v9.js` → 2 شناسه (مثل: `btnRepHomeCurrentLocation`, `repHomeSelect`)
 
@@ -781,7 +780,6 @@
 - `distStore` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `distributorMetrics` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `districtNames` ← `public/crm-bundle.js`, `public/crm-features-v16.js`
-- `districts` ← `public/crm-app.js`, `public/crm-bundle.js`
 - `div` ← `public/crm-bundle.js`, `public/crm-jalali.js`
 - `doAddressSearch` ← `public/crm-bundle.js`, `public/crm-features-v9.js`
 - `doc` ← `public/crm-app.js`, `public/crm-bundle.js`, `public/crm-features-v10.js`
@@ -924,7 +922,6 @@
 - `hist` ← `public/crm-bundle.js`, `public/crm-features-v19.js`
 - `hit` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `hits` ← `public/crm-bundle.js`, `public/crm-features-v14.js`, `public/crm-features-v16.js`, `public/crm-features-v17.js`
-- `hm` ← `public/crm-app.js`, `public/crm-bundle.js`
 - `hook` ← `public/crm-bundle.js`, `public/crm-features-v17.js`
 - `hookComboInstantAdd` ← `public/crm-bundle.js`, `public/crm-features-v19.js`
 - `hookDesignerSizeDisplay` ← `public/crm-bundle.js`, `public/crm-features-v15.js`
@@ -1246,6 +1243,7 @@
 - `setListFieldOrder` ← `public/crm-bundle.js`, `public/crm-features-v11.js`
 - `setPermissionNodeVisible` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `setTabCoords` ← `public/crm-bundle.js`, `public/crm-features-v12.js`
+- `setTxt` ← `public/crm-app.js`, `public/crm-bundle.js`
 - `setVal` ← `public/crm-bundle.js`, `public/crm-features-v9.js`
 - `setupBackupExtras` ← `public/crm-bundle.js`, `public/crm-features-v9.js`
 - `setupChangeLogTabV41` ← `public/crm-bundle.js`, `public/crm-features-v20.js`
@@ -1465,14 +1463,17 @@
 
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
-- نسخه سورس package: `12.11.0`
-- مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a03a45-javad-test1`؛ push/PR فقط از همین شاخه.
-- Production فعال: `https://javad-test1.onrender.com` — نسخه سورس فعلی `11.66.0` است و تا push کاربر روی production همان آخرین دیپلوی قبلی می‌ماند.
+- نسخه سورس package: `12.12.0`
+- مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a058c2-javad-test1`؛ push/PR فقط از همین شاخه.
+- Production فعال: `https://javad-test1.onrender.com` — نسخه سورس فعلی `12.12.0` است و تا push کاربر روی production همان آخرین دیپلوی قبلی می‌ماند.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.
 - `GITHUB_REVIEW_HANDOFF.md` مرجع وضعیت commit/push/PR/GitLab/Render/production و دستورات بررسی است؛ قبل از ادعای deploy باید دوباره اندازه‌گیری شود.
 - زنجیره انتشار: source test → commit → push Arena branch → PR main → checks → merge → GitLab mirror → Render deploy → production health.
 - قانون نوبت ۶۱ (۹۱): در هر چت همه فایل‌های آرشیوی (graph/handoff/chat.arena/اسکریپت‌های مولد/checklist/rules/decision/tasks/context/architecture/handoff-prompt/changes/README/OFFICIAL_FILELIST) به‌روز شوند و ZIP کنار صفحه تحویل شود.
 - قانون نوبت ۶۲ (۹۲): هر پرامپت بند‌به‌بند اجرا و راستی‌آزمایی شود؛ قبل از ZIP ورود خودکار به برنامه (سرور واقعی + app-smoke) اجباری است؛ پایان هر چت بلوک دستور git با شماره نسخه تحویل می‌شود.
+- قانون نوبت ۱۲۸ (۹۴): برنامه با VPN روشن و خاموش بالا می‌آید؛ هر درخواست بین‌دامنه‌ای پس‌زمینه با تایم‌اوت ۶ ثانیه، بدون انتظار در بوت، با پیام غیرمسدودکننده برای نقشه/ژئوکد.
+- قانون نوبت ۱۲۸ (۹۵): سه دامنه فعال (javad-test1.onrender.com + mehraeinpharma.ir + ndcohub.com) با همگام شناسه‌محور در گوشی و ویندوز؛ ndcohub.ir به‌خاطر گواهی نامعتبر خارج است.
+- قانون نوبت ۱۲۸ (۹۶): سربرگ کنار لوگو دقیقاً سه خط با شماره نسخه لاتین و قفل MutationObserver.
 - قانون نوبت ۸۶ (۹۳): ZIP تحویلی باید PKZIP ویندوز (create_system=0) باشد و از صفحه HTML پورت 8000 با attachment دانلود شود؛ پیش‌نمایش خام ZIP در Arena فرمت معتبر نیست.
 
 ## ی) گراف موتور نجات کش 11.38

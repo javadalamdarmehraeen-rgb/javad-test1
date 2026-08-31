@@ -247,6 +247,7 @@ sync_all.sh
 tests/app-smoke.test.mjs
 tests/state-preservation.test.mjs
 tests/version-11.24-regressions.test.mjs
+tests/v12.12.0-runtime.test.mjs
 tsconfig.json
 update_chat_arena.py
 update_project_graph.py
@@ -265,3 +266,4 @@ public/images/marker-icon-2x.png
 public/images/marker-shadow.png
 public/api-config.php
 public/api-config.json
+public/index.php

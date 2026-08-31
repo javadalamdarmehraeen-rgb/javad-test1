@@ -46,11 +46,11 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "12.11.0";
+const CRM_APP_VERSION = "12.12.0";
 window.CRM_APP_VERSION = CRM_APP_VERSION;
 function v12CanonicalCompany(name) {
   var s = String(name || "").trim();
-  if (!s || /پخش\s*دارو|شبکه\s*درمان\s*نماینده|سیستم مدیریت ویزیت علمی/.test(s)) return "طنین طب طاها";
+  if (!s || /پخش\s*دارو|شبکه\s*درمان\s*نماینده|سیستم مدیریت ویزیت علمی/.test(s)) return "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
   return s;
 }
 window.v12TahaName = true;
@@ -86,12 +86,12 @@ function v12TakeRegisteredOnly(from, into) {
   });
   if (from && Array.isArray(from.userTabs) && from.userTabs.length) base.userTabs = from.userTabs;
   if (!base.settings) base.settings = {};
-  base.settings.companyName = "طنین طب طاها";
+  base.settings.companyName = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
   if (typeof CRM_APP_VERSION !== "undefined") base._uiBuild = CRM_APP_VERSION;
   return base;
 }
 window.v12TakeRegisteredOnly = v12TakeRegisteredOnly;
-try { console.log("%c✅ برنامه طنین طب طاها نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
+try { console.log("%c✅ برنامه برنامه ویزیت و گزارشات نسخه " + CRM_APP_VERSION + " بارگذاری شد.", "color:#0d9488;font-weight:bold"); } catch (e) {}
 
 const MENU_SECTIONS_LIST = [
   { id: "tab-dashboard", label: "داشبورد", icon: "📊" },
@@ -153,7 +153,7 @@ function loadState() {
       (function v99DropOldProgramFiles(){
         try {
           var host = (typeof location !== "undefined" && location.hostname) ? String(location.hostname) : "";
-          if (!/(^|\.)mehraeinpharma\.ir$|(^|\.)ndcohub\.ir$/.test(host)) return;
+          if (!/(^|\.)mehraeinpharma\.ir$|(^|\.)ndcohub\.(ir|com)$/.test(host)) return;
           /* v12.03: هرگز داروخانه/پزشک/سفارش را با آپلود نسخه خالی نکن */
           if (state && state.settings && typeof v12CanonicalCompany === "function") {
             state.settings.companyName = v12CanonicalCompany(state.settings.companyName);
@@ -255,7 +255,7 @@ function applyGeneralSettingsToUI() {
   state.settings.companyName = v12CanonicalCompany(state.settings.companyName);
   const compHeader = document.getElementById("headerCompanyNameDisplay");
   if (compHeader) {
-    compHeader.textContent = state.settings.companyName || "طنین طب طاها";
+    compHeader.textContent = state.settings.companyName || "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
   }
 }
 
@@ -432,79 +432,55 @@ function setupDropdownAutoClear() {
 // 3. پیاده‌سازی ویژگی ۴: استان‌ها، شهرها و مناطق مرتب بدون تکرار (Requirement 4)
 // ----------------------------------------------------------------------------
 function populateProvinces(selectElement, selectedValue = "") {
-  if (!selectElement) return;
-  const keep = selectedValue || selectElement.value || "";
-  const keys = Object.keys(IRAN_GEO_DATA || {});
-  const sig = "p|" + keys.join("\n");
-  if (selectElement.dataset.geoSig === sig) {
-    if (keep) selectElement.value = keep;
-    return;
-  }
-  selectElement.dataset.geoSig = sig;
   selectElement.innerHTML = `<option value="">انتخاب استان...</option>`;
-  keys.forEach(province => {
+  Object.keys(IRAN_GEO_DATA).forEach(province => {
     const opt = document.createElement("option");
     opt.value = province;
     opt.textContent = province;
+    if (province === selectedValue) opt.selected = true;
     selectElement.appendChild(opt);
   });
-  if (keep) selectElement.value = keep;
 }
 
 function populateCities(provinceName, selectElement, selectedValue = "") {
-  if (!selectElement) return;
-  const keep = selectedValue || selectElement.value || "";
-  const cities = (!provinceName || !IRAN_GEO_DATA || !IRAN_GEO_DATA[provinceName]) ? [] : Object.keys(IRAN_GEO_DATA[provinceName]);
-  const sig = "c|" + String(provinceName || "") + "|" + cities.join("\n");
-  if (selectElement.dataset.geoSig === sig) {
-    if (keep) selectElement.value = keep;
-    return;
-  }
-  selectElement.dataset.geoSig = sig;
   selectElement.innerHTML = `<option value="">انتخاب شهر...</option>`;
-  cities.forEach(city => {
+  if (!provinceName || !IRAN_GEO_DATA[provinceName]) return;
+
+  Object.keys(IRAN_GEO_DATA[provinceName]).forEach(city => {
     const opt = document.createElement("option");
     opt.value = city;
     opt.textContent = city;
+    if (city === selectedValue) opt.selected = true;
     selectElement.appendChild(opt);
   });
-  if (keep) selectElement.value = keep;
 }
 
 function populateDistricts(provinceName, cityName, selectElement, selectedValue = "") {
-  if (!selectElement) return;
-  const keep = selectedValue || selectElement.value || "";
-  const districts = (!provinceName || !cityName || !IRAN_GEO_DATA || !IRAN_GEO_DATA[provinceName] || !IRAN_GEO_DATA[provinceName][cityName]) ? [] : IRAN_GEO_DATA[provinceName][cityName];
-  const sig = "d|" + String(provinceName || "") + "|" + String(cityName || "") + "|" + (districts || []).join("\n");
-  if (selectElement.dataset.geoSig === sig) {
-    if (keep) selectElement.value = keep;
+  selectElement.innerHTML = `<option value="">انتخاب منطقه...</option>`;
+  if (!provinceName || !cityName || !IRAN_GEO_DATA[provinceName] || !IRAN_GEO_DATA[provinceName][cityName]) {
     return;
   }
-  selectElement.dataset.geoSig = sig;
-  selectElement.innerHTML = `<option value="">انتخاب منطقه...</option>`;
-  (districts || []).forEach(district => {
+
+  const districts = IRAN_GEO_DATA[provinceName][cityName];
+  districts.forEach(district => {
     const opt = document.createElement("option");
     opt.value = district;
     opt.textContent = district;
+    if (district === selectedValue) opt.selected = true;
     selectElement.appendChild(opt);
   });
-  if (keep) selectElement.value = keep;
 }
 
 function setupCascadingGeoSelectors(provinceId, cityId, districtId) {
   const provEl = document.getElementById(provinceId);
   const cityEl = document.getElementById(cityId);
   const distEl = document.getElementById(districtId);
-  if (!provEl || !cityEl || !distEl) return;
-  if (provEl.dataset.geoCascade === "1") return;
-  provEl.dataset.geoCascade = "1";
 
   populateProvinces(provEl);
 
   provEl.addEventListener("change", () => {
-    populateCities(provEl.value, cityEl, "");
-    cityEl.value = "";
-    populateDistricts(provEl.value, "", distEl, "");
+    populateCities(provEl.value, cityEl);
+    distEl.innerHTML = `<option value="">ابتدا شهر را انتخاب کنید</option>`;
   });
 
   cityEl.addEventListener("change", () => {
@@ -570,14 +546,41 @@ function addFallbackTiles(map) {
   if (!staticPlat) urls.push("/api/tiles/{z}/{x}/{y}.png");
   urls.push("https://tile.openstreetmap.de/{z}/{x}/{y}.png");
   urls.push("https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png");
+  function tileNotice(map, text) {
+    try {
+      var box = map && map.getContainer ? map.getContainer() : null;
+      if (!box) return;
+      var el = box.querySelector(".crm-tile-notice");
+      if (!el) {
+        el = document.createElement("div");
+        el.className = "crm-tile-notice";
+        el.style.cssText = "position:absolute;z-index:600;left:50%;top:8px;transform:translateX(-50%);background:#fff7ed;border:1px solid #fdba74;color:#9a3412;font-size:12px;font-weight:700;padding:6px 10px;border-radius:10px;pointer-events:none;max-width:92%;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,.12)";
+        box.appendChild(el);
+      }
+      el.textContent = text;
+    } catch (eN) {}
+  }
+  function clearTileNotice(map) {
+    try {
+      var box = map && map.getContainer ? map.getContainer() : null;
+      if (!box) return;
+      var el = box.querySelector(".crm-tile-notice");
+      if (el && el.parentNode) el.parentNode.removeChild(el);
+    } catch (eC) {}
+  }
+  var NO_TILES = "تصویر نقشه در دسترس نیست (اینترنت یا فیلترشکن)؛ ثبت موقعیت، ذخیره و گزارش‌گیری بدون تصویر نقشه هم کامل کار می‌کند.";
   var i = 0;
   function use(idx) {
-    if (idx >= urls.length) return;
+    if (idx >= urls.length) { tileNotice(map, NO_TILES); return; }
     var layer = L.tileLayer(urls[idx], { maxZoom: 19, attribution: "© OSM" });
     var bad = 0;
+    layer.on("tileload", function () {
+      map.__crmTileOk = 1;
+      clearTileNotice(map);
+    });
     layer.on("tileerror", function () {
       bad++;
-      if (bad >= 4 && !map.__crmTileSwitched) {
+      if (bad >= 3 && !map.__crmTileSwitched) {
         map.__crmTileSwitched = 1;
         try { map.removeLayer(layer); } catch (eR) {}
         use(idx + 1);
@@ -586,6 +589,8 @@ function addFallbackTiles(map) {
     layer.addTo(map);
   }
   use(0);
+  /* بدون VPN برنامه معطل نمی‌ماند: بعد از ۹ ثانیه اگر کاشی‌ای نیامد فقط پیام می‌دهیم */
+  setTimeout(function () { if (!map.__crmTileOk) tileNotice(map, NO_TILES); }, 9000);
 }
 window.crmAddMapTiles = addFallbackTiles;
 
@@ -758,7 +763,12 @@ async function searchAddressOnMap(queryText, updateMarkerFunc) {
       alert("آدرسی با این مشخصات یافت نشد.");
     }
   } catch (e) {
-    alert("خطا در جستجوی آدرس.");
+    try {
+      var offline = (typeof navigator !== "undefined" && navigator.onLine === false);
+      alert(offline
+        ? "دستگاه آفلاین است. برای جستجوی آدرس اینترنت لازم است؛ می‌توانید با لمس نقشه موقعیت را ثبت کنید."
+        : "جستجوی آدرسmoment در دسترس نیست (اینترنت یا فیلترشکن). با لمس نقشه موقعیت را انتخاب کنید؛ بقیه برنامه کامل کار می‌کند.");
+    } catch (eA) {}
   }
 }
 
@@ -1133,7 +1143,7 @@ function extractCustomFieldValuesFromForm(entityType, containerId) {
   const fields = state.customFields[entityType] || [];
   fields.forEach(field => {
     const el = root.querySelector(`[data-custom-field-id="${field.id}"]`);
-    if (el) values[field.label] = el.value.trim();
+    if (el) values[field.label] = String(el.value == null ? "" : el.value).trim();
   });
   return values;
 }
@@ -1366,7 +1376,7 @@ function renderPharmaciesList(searchQuery = "") {
 
   const filtered = state.pharmacies.filter(ph => {
     if (!searchQuery) return true;
-    return ph.name.includes(searchQuery) || ph.address.includes(searchQuery) || (ph.phone && ph.phone.includes(searchQuery));
+    return String(ph.name || "").includes(searchQuery) || String(ph.address || "").includes(searchQuery) || String(ph.phone || "").includes(searchQuery);
   });
 
   const badgeEl = document.getElementById("phListCountBadge");
@@ -1617,7 +1627,7 @@ function renderDoctorsList(searchQuery = "") {
 
   const filtered = state.doctors.filter(doc => {
     if (!searchQuery) return true;
-    return doc.name.includes(searchQuery) || doc.specialty.includes(searchQuery) || doc.address.includes(searchQuery);
+    return String(doc.name || "").includes(searchQuery) || String(doc.specialty || "").includes(searchQuery) || String(doc.address || "").includes(searchQuery);
   });
 
   filtered.forEach((doc, index) => {
@@ -2013,11 +2023,9 @@ function renderRepHomesTable() {
   (state.repHomes || []).forEach(hm => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td><strong style="color:#0f172a;">${hm.repName || ""}</strong></td>
-      <td>${hm.address || ""}</td>
-      <td>${hm.plate || "—"}</td>
-      <td>${hm.floor || "—"}</td>
-      <td style="direction:ltr;">${hm.lat || ""}, ${hm.lng || ""}</td>
+      <td><strong style="color:#0f172a;">${hm.repName}</strong></td>
+      <td>${hm.address}</td>
+      <td style="direction:ltr;">${hm.lat}, ${hm.lng}</td>
       <td>
         <button class="btn btn-outline btn-sm" onclick="alert('نمایش آدرس منزل روی نقشه جامع فعال شد.')">📍 نمایش</button>
         <button class="btn btn-outline btn-sm" onclick="editRepHome('${hm.id}')">✏️ ویرایش</button>
@@ -2029,11 +2037,7 @@ function renderRepHomesTable() {
 }
 function editRepHome(id) {
   const hm=(state.repHomes||[]).find(x=>String(x.id)===String(id));if(!hm)return;
-  const rep=document.getElementById("repHomeSelect"),addr=document.getElementById("repHomeAddressInput");
-  const pl=document.getElementById("repHomePlate"),fl=document.getElementById("repHomeFloor");
-  if(rep)rep.value=hm.repName||"";if(addr){addr.value=hm.address||"";addr.focus();}
-  if(pl)pl.value=hm.plate||"";if(fl)fl.value=hm.floor||"";
-  if(hm.lat&&hm.lng) window.__v12HomePos={lat:hm.lat,lng:hm.lng};
+  const rep=document.getElementById("repHomeSelect"),addr=document.getElementById("repHomeAddressInput");if(rep)rep.value=hm.repName||"";if(addr){addr.value=hm.address||"";addr.focus();}
   window._editingRepHomeId=hm.id;
 }
 function deleteRepHome(id) {
@@ -2748,7 +2752,7 @@ function renderOrdersList(searchQuery = "") {
 
   const filtered = state.orders.filter(ord => {
     if (!searchQuery) return true;
-    return ord.pharmacyName.includes(searchQuery) || (ord.repName && ord.repName.includes(searchQuery));
+    return String(ord.pharmacyName || "").includes(searchQuery) || String(ord.repName || "").includes(searchQuery);
   });
 
   filtered.forEach((ord, index) => {
@@ -3125,7 +3129,7 @@ function testServerConnectivity() {
     if (box) {
       box.style.background = "#f0fdf4";
       box.style.color = "#166534";
-      box.textContent = "✅ ارتباط با سرور فعال (" + (location.host || "همین سرویس") + ") — ndcohub.ir و mehraeinpharma.ir و Render همگام‌اند.";
+      box.textContent = "✅ ارتباط با سرور فعال (" + (location.host || "همین سرویس") + ") — ndcohub.com و mehraeinpharma.ir و Render همگام‌اند.";
     }
     alert("✅ اتصال به سرور ابری و حافظه محلی با موفقیت تایید شد.");
   }, 700);
@@ -3209,8 +3213,9 @@ function setupPWAServiceWorker() {
     }
   });
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
-  if (!/(^|\\.)ndcohub\\.ir$|(^|\\.)mehraeinpharma\\.ir$/.test(location.hostname || "")) {
-  navigator.serviceWorker.register('/sw.js?v=12.11.0', { scope: '/', updateViaCache: 'none' })
+  /* v12.12: فقط دامنه‌های دارای گواهی خراب از ثبت سرویس‌ورکر مستثنا می‌شوند؛ ndcohub.com سرویس‌ورکر می‌گیرد */
+  if (!/(^|\.)ndcohub\.ir$|(^|\.)mehraeinpharma\.ir$/.test(location.hostname || "")) {
+  navigator.serviceWorker.register('/sw.js?v=12.12.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;

@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "12.11.0";
+const APP_VERSION = "12.12.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -67,7 +67,7 @@ function envHubHosts() {
 }
 function runtimeHubs() {
   const extra = envHubList();
-  const defaults = ["https://javad-test1.onrender.com"]; /* Iranian hosts PULL render; Render does not fetch them */
+  const defaults = ["https://javad-test1.onrender.com", "https://mehraeinpharma.ir", "https://ndcohub.com"]; /* v12.12: همگام سه دامنه در ویندوز و گوشی */
   const out = [];
   extra.concat(defaults).forEach(function (h) { if (h && out.indexOf(h) < 0) out.push(h); });
   return out;
@@ -77,7 +77,7 @@ function isCrmHubHost(host) {
   const h = stripPort(host);
   if (!h) return false;
   if (/^(localhost|127\.0\.0\.1)$/.test(h)) return true;
-  if (h === "ndcohub.ir" || h === "mehraeinpharma.ir") return true;
+  if (/^(www\.)?(ndcohub\.com|ndcohub\.ir|mehraeinpharma\.ir)$/.test(h)) return true;
   if (h === "javad-test1.onrender.com" || /\.onrender\.com$/.test(h)) return true;
   if (/arena\.site$|e2b\.app$|e2b\.dev$/.test(h)) return true;
   if (envHubHosts().indexOf(h) >= 0) return true;
@@ -313,8 +313,8 @@ function send(req, res, status, content, contentType, extra) {
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "X-Frame-Options": preview ? "ALLOWALL" : "SAMEORIGIN",
     "Content-Security-Policy": preview
-      ? "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https: http://ndcohub.ir http://mehraeinpharma.ir https://ndcohub.ir https://mehraeinpharma.ir https://javad-test1.onrender.com; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors *; worker-src 'self' blob:; manifest-src 'self'"
-      : "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https: http://ndcohub.ir http://mehraeinpharma.ir https://ndcohub.ir https://mehraeinpharma.ir https://javad-test1.onrender.com; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests",
+      ? "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https: http://ndcohub.ir http://mehraeinpharma.ir https://ndcohub.ir https://mehraeinpharma.ir https://ndcohub.com https://javad-test1.onrender.com; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors *; worker-src 'self' blob:; manifest-src 'self'"
+      : "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https: http://ndcohub.ir http://mehraeinpharma.ir https://ndcohub.ir https://mehraeinpharma.ir https://ndcohub.com https://javad-test1.onrender.com; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests",
     "Permissions-Policy": "geolocation=(self), camera=(), microphone=(), payment=(), usb=(), serial=(), hid=(), bluetooth=(), display-capture=(), accelerometer=(), gyroscope=(), magnetometer=(), autoplay=(), encrypted-media=(), picture-in-picture=()",
     "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
     "Cross-Origin-Resource-Policy": preview ? "cross-origin" : "same-origin",
@@ -450,13 +450,18 @@ const server = http.createServer((req, res) => {
     const target = pathname === "/api/reverse"
       ? "https://nominatim.openstreetmap.org/reverse?format=json&lat=" + encodeURIComponent(lat) + "&lon=" + encodeURIComponent(lng) + "&zoom=18&addressdetails=1"
       : "https://nominatim.openstreetmap.org/search?format=json&q=" + encodeURIComponent(q) + "&limit=" + encodeURIComponent(limit) + "&addressdetails=1&countrycodes=ir";
+    const geoAc = new AbortController(); /* v12.12: بدون VPN هرگز بیش از ۶ ثانیه معطل نمی‌مانیم */
+    const geoTimer = setTimeout(function () { try { geoAc.abort(); } catch (e) {} }, 6000);
     fetch(target, {
-      headers: { "Accept-Language": "fa,en", "User-Agent": "namayandeelmi-javad-crm/11.3" }
+      signal: geoAc.signal,
+      headers: { "Accept-Language": "fa,en", "User-Agent": "namayandeelmi-javad-crm/12.12" }
     }).then(async (up) => {
+      clearTimeout(geoTimer);
       const text = await up.text();
       send(req, res, up.ok ? 200 : up.status, text, "application/json; charset=utf-8", { "Cache-Control": "public, max-age=120" });
     }).catch((err) => {
-      send(req, res, 502, JSON.stringify({ status: "error", message: String(err.message || err) }), "application/json; charset=utf-8");
+      clearTimeout(geoTimer);
+      send(req, res, 502, JSON.stringify({ status: "error", message: String(err.message || err), offlineSafe: true }), "application/json; charset=utf-8");
     });
     return;
   }

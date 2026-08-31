@@ -21,20 +21,22 @@
     (rt.hubs || []).forEach(function (h) { if (h) list.push(String(h)); });
     return list;
   }
+  /* v12.12: سه دامنهٔ فعال — رندر + دو دامنهٔ نت‌افراز (همگام در ویندوز و گوشی) */
+  var DEFAULT_PEERS = ["https://javad-test1.onrender.com", "https://mehraeinpharma.ir", "https://ndcohub.com"];
+  window.CRM_HUB_DOMAINS = DEFAULT_PEERS.slice();
   function peers() {
     var s = {}, o = [];
-    if (/onrender\.com$/i.test(location.hostname)) return o; /* v12.02: Render never fetches Netafraz (CORS/SSL); ndcohub.ir not fetched */
     function add(x) {
       try {
         var u = new URL(x, ORIGIN);
-        if (location.protocol === "https:" && u.protocol === "http:") return;
+        if (location.protocol === "https:" && u.protocol !== "https:") return;
         if (u.origin === ORIGIN) return;
-        if (!/onrender\.com$/i.test(u.hostname)) return; /* only pull/push Render */
+        if (/ndcohub\.ir$/i.test(u.hostname)) return; /* دامنهٔ قدیمی با گواهی نامعتبر */
         if (!s[u.origin]) { s[u.origin] = 1; o.push(u.origin); }
       } catch (e) {}
     }
+    DEFAULT_PEERS.forEach(add);
     envHubs().forEach(add);
-    add("https://javad-test1.onrender.com");
     return o;
   }
   function hubs() {
@@ -54,10 +56,10 @@
   function fakeFor(path, method) {
     method = method || "GET";
     if (/health|ping|healthz/.test(path)) {
-      return jsonResp({ ok: true, status: "healthy", platform: "static-local", version: (window.CRM_APP_VERSION || "12.10.0"), offline: true });
+      return jsonResp({ ok: true, status: "healthy", platform: "static-local", version: (window.CRM_APP_VERSION || "12.12.0"), offline: true });
     }
     if (/runtime-config/.test(path)) {
-      return jsonResp({ platform: runtime().platform || "static", baseUrl: runtime().baseUrl || "", hubs: runtime().hubs || [], version: "12.10.0" });
+      return jsonResp({ platform: runtime().platform || "static", baseUrl: runtime().baseUrl || "", hubs: runtime().hubs || [], version: "12.12.0" });
     }
     if (/backup\/status/.test(path)) {
       return jsonResp({ status: "ok", cloud: false, local: true, platform: "static-local" });
