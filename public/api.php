@@ -6,6 +6,10 @@
  * POST فوری پاسخ می‌دهد (queued) و بعد در پس‌زمینه به رندر می‌فرستد.
  */
 header("X-Content-Type-Options: nosniff");
+/* v12.13: HSTS فقط روی درخواست HTTPS (بدون preload) */
+$isHttps = (!empty($_SERVER["HTTPS"]) && strtolower($_SERVER["HTTPS"]) !== "off")
+  || (isset($_SERVER["HTTP_X_FORWARDED_PROTO"]) && strtolower(strval($_SERVER["HTTP_X_FORWARDED_PROTO"])) === "https");
+if ($isHttps) header("Strict-Transport-Security: max-age=15552000; includeSubDomains");
 $origin = isset($_SERVER["HTTP_ORIGIN"]) ? $_SERVER["HTTP_ORIGIN"] : "";
 $allow = array(
   "https://javad-test1.onrender.com",
@@ -28,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
-define("CRM_APP_VERSION", "12.12.0");
+define("CRM_APP_VERSION", "12.13.0");
 
 /* v12.12: همگام سه دامنه — رندر + دو دامنه نت‌افراز */
 function peer_hosts() {
@@ -60,7 +64,16 @@ function merge_state($a, $b) {
   if (!isset($a["settings"]) || !is_array($a["settings"])) $a["settings"] = isset($b["settings"]) && is_array($b["settings"]) ? $b["settings"] : array();
   return $a;
 }
-function sync_all_peers() {
+function sync_all_peers($force) {
+  /* v12.13: مهارِ بار — هاست اشتراکی با انبوه درخواست ۵۰۳ می‌داد */
+  $lock = sys_get_temp_dir() . "/crm_sync_" . md5(__DIR__) . ".lock";
+  if (!$force) {
+    $age = is_file($lock) ? (time() - intval(@file_get_contents($lock))) : 9999;
+    if ($age < 20) {
+      return array("throttled" => true, "retryAfter" => 20 - $age, "peers" => peer_hosts(), "reached" => 0);
+    }
+  }
+  @file_put_contents($lock, strval(time()));
   $peers = peer_hosts();
   $local = read_json($GLOBALS["CRM_DATA_FILE"]);
   $merged = is_array($local) ? $local : array();
@@ -330,7 +343,8 @@ if ($p === "sync" || strpos($p, "sync/") === 0) {
     if ($rest !== "") $target = $rest;
   }
   if ($target === "all" || $target === "peers" || $target === "domains") {
-    $r = sync_all_peers();
+    $force = isset($_GET["force"]) && strval($_GET["force"]) === "1";
+    $r = sync_all_peers($force);
     send_json(array(
       "status" => "success",
       "message" => "three-domain sync (render + netafraz)",
@@ -391,6 +405,25 @@ if ($p === "sync" || strpos($p, "sync/") === 0) {
     send_json(array("status" => "success", "message" => $mode === "replace" ? "replaced from render" : "pulled from render", "data" => $local));
   }
   send_json(array("status" => "error", "message" => "invalid target", "target" => $target), 400);
+}
+
+/* v12.13: پاک‌سازی ریشه — فقط فایل‌های داده‌ای که برنامه دیگر نمی‌خواند */
+if ($p === "cleanup" || $p === "purge-legacy") {
+  $removed = array();
+  $legacy = array("crm-netafraz-data.json", "crm-netafraz-bulk.json", "server-db.json");
+  foreach ($legacy as $fname) {
+    $fp = __DIR__ . "/" . $fname;
+    if (is_file($fp)) { if (@unlink($fp)) $removed[] = $fname; }
+    $fp2 = __DIR__ . "/data/" . $fname;
+    if (is_file($fp2)) { if (@unlink($fp2)) $removed[] = "data/" . $fname; }
+  }
+  send_json(array(
+    "status" => "success",
+    "message" => "legacy data files removed",
+    "version" => CRM_APP_VERSION,
+    "removed" => $removed,
+    "kept" => array("crm-live-data.json", "crm-live-bulk.json")
+  ));
 }
 
 if (strpos($p, "state") === 0) {

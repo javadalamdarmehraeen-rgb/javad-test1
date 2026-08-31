@@ -1487,6 +1487,12 @@ static-build فقط فایل. داده خالی از رندر پر می‌شود
 رفع سه نقص واقعی + متن کنار لوگو (سه خط) + استقلال کامل از VPN + دامنه سوم نت‌افراز
 `ndcohub.com` با همگام بین هر سه دامنه در گوشی و ویندوز.
 
+## نوبت ۱۲۹ — نسخه ۱۲.۱۳.۰
+
+رفع خطاهای کنسول (`ERR_EMPTY_RESPONSE`، طوفان ۵۰۳، `ERR_HTTP2_PROTOCOL_ERROR`، نشانیِ
+`sync?target=render`) + فرمان درخواست‌ها + تغییر مسیر خودکار HTTPS + محافظ `isSecureContext`
+برای GPS + هدر HSTS + پاکسازی کش‌های کهنه + خروجی تازه.
+
 دستور برای هوش مصنوعی بعدی (اول این‌ها را بخوان):
 1. `PROJECT_GRAPH.md` ← سپس `GITHUB_REVIEW_HANDOFF.md` ← سپس `AI_ACCEPTANCE_CHECKLIST.md`.
 2. قوانین ۹۴ (بدون VPN)، ۹۵ (سه دامنه) و ۹۶ (سربرگ سه‌خطی) در `AI_RULES.md` را بخوان و نقض نکن.
@@ -1494,4 +1500,22 @@ static-build فقط فایل. داده خالی از رندر پر می‌شود
 4. هیچ درخواست بین‌دامنه‌ای را در مسیر بوت قرار نده؛ تایم‌اوت ۶ ثانیه اجباری است.
 5. پیش از ZIP: تست کامل + app-smoke + build-static + بررسی نسخه داخل ZIP.
 6. در انتظار تأیید کاربر: اجرای واقعی `public/index.php` روی هاست نت‌افراز،
-   و production health پس از push (`/api/health` باید 12.12.0 باشد).
+   و production health پس از push (`/api/health` باید 12.13.0 باشد).
+7. قانون ۹۷ (فرمان درخواست‌ها): هیچ درخواست پس‌زمینه‌ای را بدون گذر از `governed()`
+   صدا نزن؛ ذخیرهٔ کاربر هرگز در صف نمی‌ماند.
+8. قانون ۹۸ (HTTPS/GPS): پیش از هر `navigator.geolocation` باید `window.isSecureContext`
+   بررسی شود؛ هر منبع جدید باید HTTPS مطلق باشد.
+
+> **یادداشت مهم (محدودیت مجوز GitHub App):** تغییر فایل‌های `.github/workflows/*`
+> از سوی این جلسه قابل push نیست («refusing to allow a GitHub App … without
+> workflows permission»). برای همین همگام خودکار `ndcohub.com` در GitHub Actions
+> باید **یک‌بار دستی** اضافه شود؛ در `.github/workflows/deploy.yml` بخش
+> «همگام‌سازی اولیه پس از انتشار» این دو خط را جایگزین/افزوده کنید:
+>
+> ```yaml
+>           curl -fsSL -X POST "https://ndcohub.com/api/sync/run" -H "x-sync-key: $KEY" || true
+>           curl -fsSL -X POST "https://mehraeinpharma.ir/api/sync/run" -H "x-sync-key: $KEY" || true
+> ```
+>
+> (`ndcohub.ir` به‌خاطر گواهی نامعتبر از چرخه همگام خارج است.) در `.gitlab-ci.yml`
+> این تغییر اعمال شده چون محدودیت شامل آن نمی‌شود.

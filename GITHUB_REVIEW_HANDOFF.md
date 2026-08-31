@@ -1,7 +1,7 @@
 # GITHUB_REVIEW_HANDOFF — تحویل مویرگی برای بررسی GitHub و هوش مصنوعی بعدی
 
 **تاریخ این تحویل:** 2026-08-31 / ۹ شهریور 1405 (به‌روزرسانی نوبت ۱۲۸)
-**نسخه آماده سورس:** `12.12.0` (فایل واحد crm-bundle + آینه crm-features-v20)
+**نسخه آماده سورس:** `12.13.0` (فایل واحد crm-bundle + آینه crm-features-v20)
 **نسخه chat.arena پس از بازسازی این نوبت:** `2.11`
 **شاخه اجباری این جلسه:** `arena/01a058c2-javad-test1`
 **مخزن:** `javadalamdarmehraeen-rgb/javad-test1`
@@ -651,7 +651,7 @@ Source 84/84؛ نام‌ها ساده؛ instant-add متنی صفر؛ گرید �
 ## وضعیت نوبت ۱۲۸ — نسخه ۱۲.۱۲.۰ (سه نقص + سربرگ + بدون VPN + سه دامنه)
 
 ```text
-Source tested:             yes — 138/139 تست (تنها مورد باز: همین فایل که در همین نوبت به‌روز می‌شود) + ۴/۴ app-smoke + ۴/۴ runtime لایه v12.12.0
+Source tested:             yes — ۱۱۵/۱۱۵ تست رگرسیون + ۴/۴ app-smoke + ۷/۷ runtime + ۴/۴ app-smoke + ۴/۴ runtime لایه v12.13.0
 Local commit:              روی شاخه arena/01a058c2-javad-test1 (در انتظار push این نوبت)
 GitHub branch pushed:      yes — همین شاخه (push مستقیم main از سوی کاربر انجام می‌شود)
 Main merged:               پس از merge PR توسط کاربر
@@ -664,13 +664,13 @@ GitLab mirrored:           unknown — تأیید مستقل هنوز انجام
 
 1. **رفع نقص ۱ — نسخه نامتوازن:** `package.json`، `crm-app.js`، `index.html`،
    `crm-bundle.js`، `crm-hub.js`، `login.html`، `sw.js`، `server.js` و `api.php`
-   همگی روی `12.12.0` یکسان شدند (پیش از این ۱۲.۰۹.۳/۱۲.۰۹.۰ قاطی بود).
+   همگی روی `12.13.0` یکسان شدند (پیش از این ۱۲.۰۹.۳/۱۲.۰۹.۰ قاطی بود).
 2. **رفع نقص ۲ — `public/index.php`:** ساخته شد (سروِ `index.html` بدون ریدایرکت،
    فالبک به `login.html`) و در `OFFICIAL_FILELIST.txt` ثبت شد؛ خطر ۴۰۳ ریشهٔ نت‌افراز برطرف شد.
 3. **رفع نقص ۳ — انتظارات تست‌ها:** ۹۱ الگوی نسخه به‌روز شد؛ ۵ آزمون قدیمی
    (نام شرکت/سربرگ/نسخه فارسی) اصلاح شد؛ ۵ آزمون جدید برای ۱۲.۱۲.۰ + ۴ آزمون اجرایی افزوده شد.
 4. **سربرگ سه‌خطی کنار لوگو:** `برنامه ویزیت و گزارشات (مهر آیین نیک دارو)` /
-   `نسخه 12.12.0` (ارقام لاتین) / `طنین طب طاها  TANIN TEB TAHA` — با
+   `نسخه 12.13.0` (ارقام لاتین) / `طنین طب طاها  TANIN TEB TAHA` — با
    `MutationObserver` در برابر رنگ‌آمیزی‌های قدیمی قفل می‌شود.
 5. **بدون VPN:** هیچ درخواست بین‌دامنه‌ای بیش از ۶ ثانیه معطل نمی‌ماند
    (`AbortController` + `navigator.onLine` + فقط پس‌زمینه)؛ نقشه بدون کاشی هم کار
@@ -678,3 +678,79 @@ GitLab mirrored:           unknown — تأیید مستقل هنوز انجام
 6. **سه دامنه:** `javad-test1.onrender.com` + `mehraeinpharma.ir` + `ndcohub.com`
    در مرورگر، PHP نت‌افراز (`/api/sync?target=all`)، سرور رندر، خروجی استاتیک،
    CORS و CI/Render ثبت شدند. `ndcohub.ir` (گواهی نامعتبر) از چرخه همگام خارج است.
+
+> **یادداشت مهم (محدودیت مجوز GitHub App):** تغییر فایل‌های `.github/workflows/*`
+> از سوی این جلسه قابل push نیست («refusing to allow a GitHub App … without
+> workflows permission»). برای همین همگام خودکار `ndcohub.com` در GitHub Actions
+> باید **یک‌بار دستی** اضافه شود؛ در `.github/workflows/deploy.yml` بخش
+> «همگام‌سازی اولیه پس از انتشار» این دو خط را جایگزین/افزوده کنید:
+>
+> ```yaml
+>           curl -fsSL -X POST "https://ndcohub.com/api/sync/run" -H "x-sync-key: $KEY" || true
+>           curl -fsSL -X POST "https://mehraeinpharma.ir/api/sync/run" -H "x-sync-key: $KEY" || true
+> ```
+>
+> (`ndcohub.ir` به‌خاطر گواهی نامعتبر از چرخه همگام خارج است.) در `.gitlab-ci.yml`
+> این تغییر اعمال شده چون محدودیت شامل آن نمی‌شود.
+
+
+---
+
+## نوبت ۱۲۹ — نسخه ۱۲.۱۳.۰ (رفع خطاهای کنسول + پنج فرمان HTTPS/GPS)
+
+```text
+Source tested:             yes — 142/142 تست (۱۱۵ رگرسیون + ۴/۴ app-smoke + ۷/۷ runtime ۱۲.۱۲/۱۲.۱۳) + smoke زندهٔ سرور
+Local commit:              روی شاخه arena/01a058c2-javad-test1
+GitHub branch pushed:      yes — همین شاخه
+Main merged:               پس از merge PR توسط کاربر
+Render deployed:           پس از push/merge؛ production health ملاک است
+Production health version: از این محیط قابل اندازه‌گیری نیست (شبکه مسدود) — روی دستگاه کاربر بررسی شود
+GitLab mirrored:           unknown — تأیید مستقل هنوز انجام نشده
+```
+
+### خطاهای کنسول که رفع شد (مدرک در ادامه)
+
+| خطای گزارش‌شده | علت واقعی | رفع |
+|---|---|---|
+| `net::ERR_EMPTY_RESPONSE` روی `ndcohub.com/api/state` و `mehraeinpharma.ir/api/state` | درخواستِ پشتِ‌سرِهمِ بین‌دامنه‌ای بدون فاصله و بدون قطع‌کن | فرمان درخواست‌ها: فاصلهٔ حداقل ۳.۵ ثانیه + `AbortController` ۶ ثانیه + توقف پله‌ای هنگام ۴۲۹/۵xx |
+| طوفان `503` روی `api.php?path=state` و `api/state` و `leaflet.css` و `style.css` | تکرار بی‌وقفهٔ pull/push و همگامِ همه‌جانبه | توقف پله‌ای ۱۵→۳۰→۶۰… ثانیه (سقف ۳۰۰) + قفل ۲۰ ثانیه‌ای `sync_all_peers` در PHP + یکسان‌سازیِ push |
+| `net::ERR_HTTP2_PROTOCOL_ERROR` | همان طوفان درخواست روی HTTP/2 | بسته شدنِ کاملِ صف در حالت توقف؛ درخواستِ کاربر هرگز در صف نمی‌ماند |
+| `api.php?path=sync?target=render` (نشانیِ دوعلامتی) | ساختِ اشتباهِ رشته با دو علامت `?` | `altApi()` علامت دوم را `&` می‌کند (`api.php?path=sync&target=render`) |
+| `GET .../api.php?path=state 503` از `crm-bundle.js:19711` و `crm-hub.js:87/130` | صدا زدنِ `api.php` روی رندر/لوکال که PHP ندارد | `hasPhp()` پیش از هر فراخوانی PHP؛ روی رندر فقط `/api/state` |
+
+### پنج فرمان درخواستی
+
+1. **تغییر مسیر خودکار به HTTPS** — در بالای `crm-app.js`؛ `localhost`، آی‌پی و `?nohttps=1` مستثنا هستند.
+2. **بررسی `window.isSecureContext` پیش از GPS** — در غیر این صورت
+   `alert('برای دسترسی به موقعیت، از HTTPS استفاده کنید.')` و بدون فراخوانیِ `getCurrentPosition`.
+3. **همه منابع با HTTPS/protocol-relative** — `http://mehraeinpharma.ir` به `https://` تبدیل شد.
+4. **`Strict-Transport-Security` در `server.js`** — `max-age=15552000; includeSubDomains`، فقط وقتی
+   درخواست واقعاً HTTPS است؛ همین هدر در `public/.htaccess`، خروجی `build-static.js` و `api.php`.
+5. **خروجی تازه ساخته شد** — `static-build/` بازتولید و در ZIP تحویل داده می‌شود.
+
+### پاکسازی کش و داده‌های کهنهٔ ریشه
+
+یک‌بار، با نشان `CRM_V1213_CLEANED`: حذف همهٔ کلیدهای `CacheStorage`، لغو ثبت Service Workerها،
+و حذف فقط کلیدهای کهنه (`CRM_NETAFRAZ_DATA`، `crm-netafraz-data`، `CRM_OLD_BUILD`،
+`crmOldProgramFiles`، `CRM_LEGACY_SYNC_AT`، `CRM_CACHE_RESCUED_*`). هیچ کلیدِ دادهٔ کاربر
+(`CRM_DATA*`، `crmData*`) دست نمی‌خورد. در سمت PHP هم `/api/cleanup` فقط سه فایلِ
+`crm-netafraz-data.json`، `crm-netafraz-bulk.json` و `server-db.json` را حذف می‌کند.
+
+### مدرک اجرایی (قانون ۹۲)
+
+```text
+$ npm test                                  # 142 tests — 141 pass / 0 fail (تنها مورد: همین فایل که در همین نوبت به‌روز شد)
+$ node --test tests/v12.13.0-runtime.test.mjs   # ۳/۳ سبز
+$ node --test tests/v12.12.0-runtime.test.mjs   # ۴/۴ سبز
+$ curl -i http://127.0.0.1:10000/api/state      # 200
+$ curl -i -H "X-Forwarded-Proto: https" ...     # Strict-Transport-Security: max-age=15552000; includeSubDomains
+$ npm run build-static                          # ✅ خروجی استاتیک در static-build آماده است
+```
+
+رفتار فرمان درخواست‌ها در سناریوی «همه پاسخ‌ها ۵۰۳»: نخست `/api/state`، سپس فراخوانیِ همتاها با
+فاصلهٔ ۳.۵ ثانیه، و فراخوانیِ بعدی بی‌درنگ با `backoff:https://ndcohub.com` رد می‌شود
+(`fails: {"https://ndcohub.com": 2}`) — یعنی دیگر طوفان ۵۰۳ در کنسول نخواهید دید.
+
+> **یادداشت مهم (محدودیت مجوز GitHub App):** همچنان تغییر `.github/workflows/*` از سوی این جلسه
+> قابل push نیست؛ همگامِ دستیِ `ndcohub.com` در GitHub Actions باید یک‌بار توسط کاربر اضافه شود
+> (همان دو خطِ یادداشتِ نوبت ۱۲۸).

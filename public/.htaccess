@@ -2,6 +2,7 @@ DirectoryIndex index.php login.html index.html
 <IfModule mod_headers.c>
   SetEnvIf Origin "^https://(javad-test1\.onrender\.com|mehraeinpharma\.ir|ndcohub\.com)$" ALLOW_ORIGIN=$0
   Header always set Access-Control-Allow-Origin "%{ALLOW_ORIGIN}e" env=ALLOW_ORIGIN
+  Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains" env=HTTPS
   Header always set Access-Control-Allow-Methods "GET, POST, HEAD, OPTIONS"
   Header always set Access-Control-Allow-Headers "Content-Type, X-CRM-Request, X-CRM-Replace, X-CRM-Sync, X-CRM-Hub-Sync, X-CRM-Build, Cache-Control"
   Header always set Access-Control-Max-Age "86400"

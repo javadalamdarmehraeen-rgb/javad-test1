@@ -56,10 +56,10 @@
   function fakeFor(path, method) {
     method = method || "GET";
     if (/health|ping|healthz/.test(path)) {
-      return jsonResp({ ok: true, status: "healthy", platform: "static-local", version: (window.CRM_APP_VERSION || "12.12.0"), offline: true });
+      return jsonResp({ ok: true, status: "healthy", platform: "static-local", version: (window.CRM_APP_VERSION || "12.13.0"), offline: true });
     }
     if (/runtime-config/.test(path)) {
-      return jsonResp({ platform: runtime().platform || "static", baseUrl: runtime().baseUrl || "", hubs: runtime().hubs || [], version: "12.12.0" });
+      return jsonResp({ platform: runtime().platform || "static", baseUrl: runtime().baseUrl || "", hubs: runtime().hubs || [], version: "12.13.0" });
     }
     if (/backup\/status/.test(path)) {
       return jsonResp({ status: "ok", cloud: false, local: true, platform: "static-local" });
@@ -112,22 +112,36 @@
     } catch (e) { return false; }
   }
 
+  /* v12.13: روی میزبان Node (رندر/لوکال) اصلاً api.php وجود ندارد — تلاش بی‌جا ۵۰۳/۴۰۴ می‌ساخت */
+  function hasPhp() {
+    try {
+      var h = String(location.hostname || "");
+      if (/onrender\.com$/i.test(h)) return false;
+      if (/^(localhost|127\.0\.0\.1)$/i.test(h)) return false;
+    } catch (e) {}
+    return true;
+  }
   function altApi(path) {
     var p = String(path || "");
     if (p.indexOf("api.php") !== -1) return p;
+    var query = "";
+    var qi = p.indexOf("?");
+    if (qi >= 0) { query = p.slice(qi + 1); p = p.slice(0, qi); }
     var rest = p.replace(/^\/?api\/?/, "");
-    return "/api.php?path=" + rest;
+    /* v12.13: علامت سؤال دوم به & تبدیل می‌شود (قبلاً api.php?path=sync?target=render ساخته می‌شد) */
+    return "/api.php?path=" + rest + (query ? "&" + query.replace(/\?/g, "&") : "");
   }
+  window.v1213AltApi = altApi;
   function tryOrigin(path, opts, ms) {
     ms = ms || 8000;
     return fetchTimeout(ORIGIN + path, opts, ms).then(function (r) {
       if (r && r.ok) return r;
-      if (r && (r.status === 404 || r.status === 405) && path.indexOf("api.php") === -1) {
+      if (hasPhp() && r && (r.status === 404 || r.status === 405) && path.indexOf("api.php") === -1) {
         return fetchTimeout(ORIGIN + altApi(path), opts, ms);
       }
       return r;
     }, function () {
-      if (path.indexOf("api.php") === -1) return fetchTimeout(ORIGIN + altApi(path), opts, ms);
+      if (hasPhp() && path.indexOf("api.php") === -1) return fetchTimeout(ORIGIN + altApi(path), opts, ms);
       throw new Error("origin-fail");
     });
   }

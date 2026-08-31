@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "12.12.0";
+const APP_VERSION = "12.13.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -43,6 +43,16 @@ const MIME = {
   ".webmanifest": "application/manifest+json; charset=utf-8",
   ".woff2": "font/woff2"
 };
+
+/* v12.13: HSTS برای رندر — فقط روی HTTPS و بدون preload تا قفل ناخواسته نسازد */
+function isHttpsRequest(req) {
+  const proto = String(req.headers["x-forwarded-proto"] || "").toLowerCase().split(",")[0].trim();
+  if (proto) return proto === "https";
+  try { return req.socket && req.socket.encrypted === true; } catch (e) { return false; }
+}
+function hstsHeader(req) {
+  return isHttpsRequest(req) ? { "Strict-Transport-Security": "max-age=15552000; includeSubDomains" } : {};
+}
 
 const loginHits = new Map();
 function rateLimited(ip) {
@@ -313,16 +323,17 @@ function send(req, res, status, content, contentType, extra) {
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "X-Frame-Options": preview ? "ALLOWALL" : "SAMEORIGIN",
     "Content-Security-Policy": preview
-      ? "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https: http://ndcohub.ir http://mehraeinpharma.ir https://ndcohub.ir https://mehraeinpharma.ir https://ndcohub.com https://javad-test1.onrender.com; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors *; worker-src 'self' blob:; manifest-src 'self'"
-      : "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https: http://ndcohub.ir http://mehraeinpharma.ir https://ndcohub.ir https://mehraeinpharma.ir https://ndcohub.com https://javad-test1.onrender.com; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests",
+      ? "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https: https://ndcohub.ir https://mehraeinpharma.ir https://ndcohub.com https://javad-test1.onrender.com; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors *; worker-src 'self' blob:; manifest-src 'self'"
+      : "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https: https://ndcohub.ir https://mehraeinpharma.ir https://ndcohub.com https://javad-test1.onrender.com; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests",
     "Permissions-Policy": "geolocation=(self), camera=(), microphone=(), payment=(), usb=(), serial=(), hid=(), bluetooth=(), display-capture=(), accelerometer=(), gyroscope=(), magnetometer=(), autoplay=(), encrypted-media=(), picture-in-picture=()",
     "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
     "Cross-Origin-Resource-Policy": preview ? "cross-origin" : "same-origin",
     "X-Permitted-Cross-Domain-Policies": "none",
     "X-DNS-Prefetch-Control": "off",
     "Origin-Agent-Cluster": "?1"
-  }, extra || {}, corsHeaders(req));
-  if (!preview) headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains";
+  }, extra || {}, corsHeaders(req), hstsHeader(req));
+  /* v12.13: HSTS فقط روی HTTPS ست می‌شود (روی HTTP بی‌اثر و بی‌خطر) */
+  if (!preview && isHttpsRequest(req)) headers["Strict-Transport-Security"] = "max-age=15552000; includeSubDomains";
   if (preview) delete headers["X-Frame-Options"];
   const accept = String(req.headers["accept-encoding"] || "");
   const compressible = /text|javascript|json|svg|csv/.test(contentType || "");
@@ -415,6 +426,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  /* v12.13: HSTS — فقط وقتی پاسخ واقعاً روی HTTPS است (هدرِ پروکسی رندر) */
   if (pathname === "/favicon.ico") {
     return sendFile(req, res, path.join(PUBLIC_DIR, "favicon.png"), 86400);
   }

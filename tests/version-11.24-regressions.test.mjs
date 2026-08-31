@@ -317,7 +317,7 @@ test('multi-part prompts require a real acceptance checklist before ZIP delivery
 });
 
 test('next-chat GitHub handoff records exact publish truth and engine map', () => {
-  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*12\.12.0/);
+  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*12\.13.0/);
   assert.match(githubHandoff,/4984d17/);assert.match(githubHandoff,/Resource not accessible by integration/);
   assert.match(githubHandoff,/Production[\s\S]*11\.20\.0/);
   assert.match(githubHandoff,/موتور پاک‌سازی خودکار کش/);assert.match(githubHandoff,/موتورهای پایداری داده/);
@@ -369,7 +369,7 @@ test('new build clears only old asset caches before revealing app and prevents m
 test('v38 cache rescue automatically forces a fresh build without deleting CRM data', () => {
   const login = read('../public/login.html');
   assert.match(server,/pathname === "\/cache-reset"/);assert.match(server,/Clear-Site-Data/);
-  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "12\.12.0"/);
+  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "12\.13.0"/);
   assert.match(html,/\/api\/health\?__crm_nocache=/);assert.match(html,/\/cache-reset\?to=/);assert.match(html,/d\.version!==BUILD/);
   assert.match(login,/CRM_CACHE_RESCUED_/);assert.match(login,/\/cache-reset\?to=/);
   assert.match(sw,/function purgeEveryCache/);assert.match(sw,/CRM_BUILD_ACTIVE/);assert.match(sw,/cache: "reload"/);
@@ -379,7 +379,7 @@ test('v38 cache rescue automatically forces a fresh build without deleting CRM d
     assert.doesNotMatch(source,/indexedDB\.deleteDatabase\s*\(/);
     assert.doesNotMatch(source,/removeItem\(["']CRM_APP_STATE_V2/);
   }
-  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=12\.12.0'/);
+  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=12\.13.0'/);
 });
 
 test('security hardening blocks dangerous device APIs, cross-origin writes, executables and formula injection', () => {
@@ -394,7 +394,7 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=12\.12.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=12\.13.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
@@ -489,7 +489,7 @@ test('v11.43.1 engine button feedback + permanent version watchdog', () => {
 test('v11.61.0 safe cache-hardening', () => {
   const html = read('../public/index.html'); const app = read('../public/crm-app.js');
   assert.match(html,/http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/);
-  assert.match(app,/CRM_APP_VERSION = "12.12.0"/);
+  assert.match(app,/CRM_APP_VERSION = "12.13.0"/);
   assert.match(app,/بارگذاری شد/);
 });
 
@@ -731,8 +731,8 @@ test('v11.72.0 durable target ops + mm gap + row number', () => {
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(b, /v11\.68\.0/);
   assert.match(b, /v68-edit-tgt/);
   assert.match(b, /v68-del-tgt/);
@@ -752,8 +752,8 @@ test('v11.72.0 server-authoritative unify + durable delete + live mm/row', () =>
   const b = read('../public/crm-bundle.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(srv, /function naturalRecordKey/);
   assert.match(srv, /if \(id && deleted && deleted\[id\] && recStamp\(r\) <= Number\(deleted\[id\]\)\) return/);
   assert.match(b, /v11\.69\.0/);
@@ -775,8 +775,8 @@ test('v11.72.0 solo device + no cache-reset loop', () => {
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(srv, /x-crm-replace/);
   assert.match(srv, /_soloOnly/);
   assert.match(srv, /CRM_RESET_LOCK/);
@@ -797,8 +797,8 @@ test('v11.72.0 single script load + 404 not login + solo replace', () => {
   assert.equal((html.match(/crm-app\.js\?v=/g)||[]).length, 1);
   assert.equal((html.match(/crm-bundle\.js\?v=/g)||[]).length, 1);
   assert.equal((html.match(/<\/html>/g)||[]).length, 1);
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(srv, /v11.71: Clear-Site-Data/);
   assert.match(b, /v11\.71\.0/);
   assert.match(b, /CRM_SOLO_CLAIM/);
@@ -811,9 +811,9 @@ test('v11.72.0 server-first paint + no-spin qty + per-row ops + dist achieved/re
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
-  assert.match(app, /register\('\/sw\.js\?v=12\.12.0'/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
+  assert.match(app, /register\('\/sw\.js\?v=12\.13.0'/);
   assert.match(b, /v11\.72\.0/);
   assert.match(b, /__v72boot/);
   assert.match(b, /function adoptServerExact/);
@@ -844,17 +844,17 @@ test('v11.73.0 live state bind + delayed unveil + durable dist save + kill old o
   const html = read('../public/index.html');
   const sw = read('../public/sw.js');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
-  assert.match(sw, /const BUILD = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
+  assert.match(sw, /const BUILD = "12.13.0"/);
   assert.match(app, /function bindLiveWindowState/);
   assert.match(app, /window\.__CRM_GET_STATE/);
   assert.match(app, /window\.renderPharmaciesList/);
-  assert.match(html, /var BUILD="12.12.0"/);
+  assert.match(html, /var BUILD="12.13.0"/);
   assert.match(html, /window\.__CRM_UNVEIL/);
   assert.match(html, /if\(!window\.__CRM_UNVEILED\)window\.__CRM_UNVEIL\(\);},5000\)/);
   assert.doesNotMatch(html, /classList\.remove\("crm-booting"\);},800\)/);
-  assert.match(login, /var BUILD="12.12.0"/);
+  assert.match(login, /var BUILD="12.13.0"/);
   assert.match(b, /v11\.73\.0/);
   assert.match(b, /__v73boot/);
   assert.match(b, /function adoptExact/);
@@ -876,8 +876,8 @@ test('v11.74.0 mashateb sales mapping like daya/shafaarad', () => {
   const v20file = read('../public/crm-features-v20.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(b, /MASHATEB_CODE_MAP=\{1001:186101,1002:186102,1003:186103,1004:186104,1005:186105,1006:186106,1007:186107\}/);
   assert.match(v20file, /MASHATEB_CODE_MAP=\{1001:186101,1002:186102,1003:186103,1004:186104,1005:186105,1006:186106,1007:186107\}/);
   assert.match(b, /else if\(id==="mashateb"\)\{x\.date=2;x\.qty=10;x\.giftQty=11;x\.pharmacy=9;/);
@@ -902,8 +902,8 @@ test('v11.76.0 designer live apply + geo autofill off + mashateb col3 date + db 
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const v20file = read('../public/crm-features-v20.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(b, /v11\.75\.0/);
   assert.match(b, /function applyDesignerNow/);
   assert.match(b, /function applyPaintedMeta/);
@@ -926,8 +926,8 @@ test('v11.76.0 bulk archive lock + geo nocombo + pharmacy name no subsets + acti
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const v20file = read('../public/crm-features-v20.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(b, /v11\.76\.0/);
   assert.match(b, /function bulkUnion/);
   assert.match(b, /function bulkCount/);
@@ -956,8 +956,8 @@ test('v11.77.0 product pricing tab current/new boxes + reverse calc + jalali app
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const data = read('../public/crm-data.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(app, /tab-product-pricing/);
   assert.match(html, /id="tab-product-pricing"/);
   assert.match(html, /id="v77CurrentPricesBody"/);
@@ -992,8 +992,8 @@ test('v11.78.0 consumer price + legal margin + row edit VAT + live designer + in
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(html, /id="productConsumerPrice"/);
   assert.match(html, /قیمت مصرف‌کننده \(ریال\)/);
   assert.match(app, /consumerPrice: consPrice \|\| phPrice/);
@@ -1022,8 +1022,8 @@ test('v11.79.0 this-device-only restore + no duplicate product code column', () 
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(app, /v20-product-code/);
   assert.ok(b.includes("v11.79.0"));
   assert.ok(b.includes("v11.79.0"));
@@ -1040,15 +1040,15 @@ test('v11.80.0 server-only lock + new consumer from current times increase', () 
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const data = read('../public/crm-data.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.80.0"));
   assert.match(b, /function restoreThisDevice/);
   assert.match(b, /d\.cons=newCons/);
   assert.match(b, /legacy-locked/);
   assert.match(srv, /function stripLegacySample/);
   assert.match(srv, /reason: "legacy-locked"/);
-  assert.match(html, /var BUILD="12.12.0"/);
+  assert.match(html, /var BUILD="12.13.0"/);
   assert.match(data, /pharmacies: \[\]/);
   assert.ok(!data.includes("داروخانه دکتر عرفانی"));
   const ctx={result:null};
@@ -1064,8 +1064,8 @@ test('v11.81.0 purge previous-system data + new consumer formula cell', () => {
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.81.0"));
   assert.match(b, /v81-new-cons/);
   assert.match(srv, /function fenceOldSystem/);
@@ -1084,8 +1084,8 @@ test('v11.82.0 designer order applies to live form and list', () => {
   const b = read('../public/crm-bundle.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.82.0"));
   assert.match(b, /function applySavedLayout/);
   assert.match(b, /window.applySavedLayoutV82/);
@@ -1101,8 +1101,8 @@ test('v11.83.0 no jump typing + iran mobile tiles and login persist', () => {
   const login = read('../public/login.html');
   const html = read('../public/index.html');
   const official = read('../OFFICIAL_FILELIST.txt');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.83.0"));
   assert.match(b, /function typingInLiveForm/);
   assert.match(srv, /\/api\/tiles\//);
@@ -1120,8 +1120,8 @@ test('v11.84.0 live dashboard filters + no form jump + stable order lock', () =>
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.84.0"));
   assert.match(html, /id="v84DashYear"/);
   assert.match(html, /id="v84DashProvince"/);
@@ -1135,8 +1135,8 @@ test('v11.85.0 routes one ops column + geo search all + dashboard labels', () =>
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.85.0"));
   assert.match(html, /v85-geo-search/);
   assert.match(html, /data-for="routeManagerProvince"/);
@@ -1152,8 +1152,8 @@ test('v11.86.0 never wipe user pharmacies + route click + same mobile version', 
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.86.0"));
   assert.match(app, /recoverWipedUserData/);
   assert.doesNotMatch(srv, /LEGACY_WIPE_KEYS\.forEach/);
@@ -1168,8 +1168,8 @@ test('v11.87.0 route no shake + share dedupe + login session + dist grand + leav
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.87.0"));
   assert.match(b, /data-v87sig/);
   assert.match(b, /window.v87ShareDedupe/);
@@ -1191,8 +1191,8 @@ test('v11.88.0 one route ops + login page required', () => {
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.88.0"));
   assert.match(b, /window.v88OneColumnRouteOps/);
   assert.match(srv, /pathname === "\/" \|\| pathname === "\/login"/);
@@ -1207,8 +1207,8 @@ test('v11.89.0 sw same build + 15min backup + compact routes', () => {
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.89.0"));
   assert.match(app, /const build = CRM_APP_VERSION/);
   assert.match(srv, /15 \* 60 \* 1000/);
@@ -1226,8 +1226,8 @@ test('v11.90.0 mobile menu + specialty + own-data + routes + std buttons', () =>
   const html = read('../public/index.html');
   const data = read('../public/crm-data.js');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.90.0"));
   assert.match(b, /window.v90OwnOnly/);
   assert.match(b, /window.v90PaintRoutes/);
@@ -1249,8 +1249,8 @@ test('v11.91.0 mobile pane visible + full specialty options + route pointerdown 
   const html = read('../public/index.html');
   const data = read('../public/crm-data.js');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.91.0"));
   assert.match(b, /window.v91ShowPane/);
   assert.match(b, /window.v91FillDoctorSpecialty/);
@@ -1272,8 +1272,8 @@ test('v11.92.0 iranian hubs cors + favicon + file login/panel + hub fetch', () =
   const html = read('../public/index.html');
   const login = read('../public/login.html');
   const man = read('../public/manifest.json');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.92.0"));
   assert.match(srv, /function isCrmHubHost/);
   assert.match(srv, /ndcohub\.ir/);
@@ -1299,13 +1299,13 @@ test('v11.93.0 static netafraz + env hubs + sync-all + timeout hub', () => {
   const sync = read('../sync-all.js');
   const st = read('../build-static.js');
   const gitignore = read('../.gitignore');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(srv, /function runtimeHubs/);
   assert.match(srv, /\/api\/runtime-config/);
   assert.match(srv, /PLATFORM/);
-  assert.match(html, /crm-hub\.js\?v=12\.12.0/);
-  assert.match(html, /crm-runtime\.js\?v=12\.12.0/);
+  assert.match(html, /crm-hub\.js\?v=12\.13.0/);
+  assert.match(html, /crm-runtime\.js\?v=12\.13.0/);
   assert.match(hub, /12000/);
   assert.match(hub, /function retry/);
   assert.match(rt, /__CRM_RUNTIME/);
@@ -1330,10 +1330,10 @@ test('v11.94.0 netafraz php api independent + leaflet root + no api 404 fake', (
   const php = read('../public/api.php');
   const ht = read('../public/.htaccess');
   const st = read('../build-static.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
-  assert.match(html, /leaflet.css\?v=12\.12.0/);
-  assert.match(html, /leaflet.js\?v=12\.12.0/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
+  assert.match(html, /leaflet.css\?v=12\.13.0/);
+  assert.match(html, /leaflet.js\?v=12\.13.0/);
   assert.match(hub, /v94StaticLocal/);
   assert.match(hub, /fakeFor/);
   assert.match(php, /crm-netafraz-data.json/);
@@ -1350,8 +1350,8 @@ test('v11.95.0 same version badge + origin-only hubs + taha company name', () =>
   const b = read('../public/crm-bundle.js');
   const hub = read('../public/crm-hub.js');
   const data = read('../public/crm-data.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.95.0"));
   assert.match(b, /window.v95OriginOnly/);
   assert.match(b, /window.v95SameBadge/);
@@ -1359,9 +1359,9 @@ test('v11.95.0 same version badge + origin-only hubs + taha company name', () =>
   assert.match(hub, /v95OriginOnly/);
   assert.doesNotMatch(hub, /\(window\.CRM_HUBS \|\| \[\]\)\.forEach/);
   assert.match(data, /companyName: "برنامه ویزیت و گزارشات \(مهر آیین نیک دارو\)"/);
-  assert.match(html, /نسخه 12\.12\.0/);
+  assert.match(html, /نسخه 12\.13\.0/);
   assert.match(html, /id="headerCompanyNameDisplay">برنامه ویزیت و گزارشات \(مهر آیین نیک دارو\)/);
-  assert.match(login, /نسخه 12\.12\.0/);
+  assert.match(login, /نسخه 12\.13\.0/);
   assert.match(app, /v95CompanyName/);
 });
 test('v11.96.0 netafraz api/sync to render + gen stamp + no empty wipe', () => {
@@ -1371,8 +1371,8 @@ test('v11.96.0 netafraz api/sync to render + gen stamp + no empty wipe', () => {
   const hub = read('../public/crm-hub.js');
   const b = read('../public/crm-bundle.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(srv, /pathname === "\/api\/sync"/);
   assert.match(php, /\$p === "sync"/);
   assert.match(php, /target=render|target === "render"/);
@@ -1388,7 +1388,7 @@ test('v11.96.0 netafraz api/sync to render + gen stamp + no empty wipe', () => {
   assert.ok(b.includes("v11.96.0"));
   assert.match(b, /window.v96NetafrazSync/);
   assert.match(b, /\/api\/sync\?target=render/);
-  assert.match(html, /crm-app\.js\?v=12\.12.0/);
+  assert.match(html, /crm-app\.js\?v=12\.13.0/);
 });
 test('v11.97.0 netafraz adopts render data on new build without empty wipe', () => {
   const app = read('../public/crm-app.js');
@@ -1397,8 +1397,8 @@ test('v11.97.0 netafraz adopts render data on new build without empty wipe', () 
   const st = read('../build-static.js');
   const b = read('../public/crm-bundle.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.97.0"));
   assert.match(b, /window.v97CanonSync/);
   assert.match(b, /mode=replace/);
@@ -1411,7 +1411,7 @@ test('v11.97.0 netafraz adopts render data on new build without empty wipe', () 
   assert.match(st, /DEFAULT_RENDER/);
   assert.match(st, /javad-test1\.onrender\.com/);
   assert.match(st, /crm-netafraz-data\.json/);
-  assert.match(html, /نسخه 12\.12\.0/);
+  assert.match(html, /نسخه 12\.13\.0/);
 });
 test('v11.98.0 sw always returns Response + netafraz no Options 500 + valid api-config', () => {
   const app = read('../public/crm-app.js');
@@ -1424,9 +1424,9 @@ test('v11.98.0 sw always returns Response + netafraz no Options 500 + valid api-
   const html = read('../public/index.html');
   const login = read('../public/login.html');
   const cfg = read('../public/api-config.php');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
-  assert.match(sw, /const BUILD = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
+  assert.match(sw, /const BUILD = "12.13.0"/);
   assert.match(sw, /function fallbackResponse/);
   assert.match(sw, /asResponse/);
   assert.match(sw, /fetchWithTimeout/);
@@ -1443,7 +1443,7 @@ test('v11.98.0 sw always returns Response + netafraz no Options 500 + valid api-
   assert.match(b, /window.v98BootFix/);
   assert.match(html, /nosw/);
   assert.match(login, /nosw/);
-  assert.match(html, /نسخه 12\.12\.0/);
+  assert.match(html, /نسخه 12\.13\.0/);
 });
 test('v11.99.0 independent fast netafraz + background peer sync + ignore old files', () => {
   const app = read('../public/crm-app.js');
@@ -1452,8 +1452,8 @@ test('v11.99.0 independent fast netafraz + background peer sync + ignore old fil
   const hub = read('../public/crm-hub.js');
   const sw = read('../public/sw.js');
   const b = read('../public/crm-bundle.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(php, /crm-live-data.json/);
   assert.match(php, /crm-netafraz-data.json/);
   assert.match(php, /queued/);
@@ -1477,8 +1477,8 @@ test('v12.00.0 netafraz index.php no 403 + same badge + taha company', () => {
   const b = read('../public/crm-bundle.js');
   const html = read('../public/index.html');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(app, /window.CRM_APP_VERSION = CRM_APP_VERSION/);
   assert.match(app, /window.v12TahaName/);
   assert.match(app, /v12CanonicalCompany/);
@@ -1492,7 +1492,7 @@ test('v12.00.0 netafraz index.php no 403 + same badge + taha company', () => {
   assert.match(b, /window.v12SameBadge/);
   assert.match(html, /window.CRM_APP_VERSION=BUILD/);
   assert.match(login, /window.CRM_APP_VERSION=BUILD/);
-  assert.match(html, /نسخه 12\.12\.0/);
+  assert.match(html, /نسخه 12\.13\.0/);
 });
 test('v12.01.0 no ndcohub cert fetch + osm tiles on static + pull then push', () => {
   const app = read('../public/crm-app.js');
@@ -1500,8 +1500,8 @@ test('v12.01.0 no ndcohub cert fetch + osm tiles on static + pull then push', ()
   const php = read('../public/api.php');
   const hub = read('../public/crm-hub.js');
   const b = read('../public/crm-bundle.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(hub, /ndcohub/);
   assert.match(app, /tile\.openstreetmap\.de/);
   assert.match(app, /\/api\/tiles\/\{z\}\/\{x\}\/\{y\}\.png/);
@@ -1521,8 +1521,8 @@ test('v12.02.0 auto pull render only + ops restore + compact mobile', () => {
   const b = read('../public/crm-bundle.js');
   const css = read('../public/style.css');
   const ht = read('../public/.htaccess');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(app, /v12TakeRegisteredOnly/);
   assert.match(app, /window.v12OpsOnlyRestore/);
   /* v12.12: سه دامنه با هم همگام می‌شوند */
@@ -1539,8 +1539,8 @@ test('v12.03.0 upload does not wipe pharmacies + skip live json in static', () =
   const srv = read('../server.js');
   const st = read('../build-static.js');
   const b = read('../public/crm-bundle.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(app, /v99DropOldProgramFiles/);
   assert.match(app, /هرگز داروخانه\/پزشک\/سفارش را با آپلود نسخه خالی نکن/);
   assert.match(st, /crm-live-data\.json/);
@@ -1553,8 +1553,8 @@ test('v12.04.0 data folder live json auto-create not in js root', () => {
   const srv = read('../server.js');
   const php = read('../public/api.php');
   const st = read('../build-static.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(php, /crm-live-data.json/);
   assert.match(php, /\$DATA_DIR/);
   assert.match(php, /function ensure_dir/);
@@ -1566,8 +1566,8 @@ test('v12.05.0 flat static-build files only + fill empty from render', () => {
   const srv = read('../server.js');
   const php = read('../public/api.php');
   const st = read('../build-static.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(st, /function copyFlat/);
   assert.match(st, /crm-netafraz-data.json/);
   assert.match(php, /function fill_if_empty/);
@@ -1582,8 +1582,8 @@ test('v12.06.0 device sync netafraz origin api.php path state', () => {
   const hub = read('../public/crm-hub.js');
   const b = read('../public/crm-bundle.js');
   const php = read('../public/api.php');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(hub, /function altApi/);
   assert.match(hub, /api\.php\?path=/);
   assert.match(b, /window.v1206DeviceSync/);
@@ -1597,8 +1597,8 @@ test('v12.07.0 form header pricing routes homes persist', () => {
   const b = read('../public/crm-bundle.js');
   const css = read('../public/style.css');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(b, /window.v1207FormFix/);
   assert.match(b, /roundNice/);
   assert.match(css, /v12\.07\.0: هدر سبز/);
@@ -1608,19 +1608,19 @@ test('v12.08.0 persist no wipe + one specialty field + no geo loop', () => {
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const b = read('../public/crm-bundle.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(b, /window.v1208PersistFix/);
   assert.match(b, /window.v1207FormFix/);
   assert.match(b, /v12-spec-combo/);
   assert.match(b, /recN\(st\)>0 && recN\(d\)<recN\(st\)/);
 });
-test('v12.12.0 layout sync + consVat edit + specialty combo', () => {
+test('v12.13.0 layout sync + consVat edit + specialty combo', () => {
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const b = read('../public/crm-bundle.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(app, /formFieldMeta/);
   assert.match(b, /data-k='consVat'/);
   assert.match(b, /getCurrentPositionSafe/);
@@ -1628,9 +1628,9 @@ test('v12.12.0 layout sync + consVat edit + specialty combo', () => {
 });
 
 /* =========================================================================
-   v12.12.0 — تحویل نوبت ۱۲۸: رفع سه نقص + سربرگ سه‌خطی + بدون VPN + سه دامنه
+   v12.13.0 — تحویل نوبت ۱۲۸: رفع سه نقص + سربرگ سه‌خطی + بدون VPN + سه دامنه
    ========================================================================= */
-test('v12.12.0 one version everywhere (7 version files in sync)', () => {
+test('v12.13.0 one version everywhere (7 version files in sync)', () => {
   const pkg = read('../package.json');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
@@ -1639,12 +1639,12 @@ test('v12.12.0 one version everywhere (7 version files in sync)', () => {
   const login = read('../public/login.html');
   const hub = read('../public/crm-hub.js');
   const php = read('../public/api.php');
-  assert.match(pkg, /"version": "12\.12\.0"/);
-  assert.match(app, /const CRM_APP_VERSION = "12\.12\.0"/);
-  assert.match(srv, /const APP_VERSION = "12\.12\.0"/);
-  assert.match(sw, /const BUILD = "12\.12\.0"/);
-  assert.match(html, /var BUILD="12\.12\.0"/);
-  assert.match(login, /var BUILD="12\.12\.0"/);
+  assert.match(pkg, /"version": "12\.13\.0"/);
+  assert.match(app, /const CRM_APP_VERSION = "12\.13\.0"/);
+  assert.match(srv, /const APP_VERSION = "12\.13\.0"/);
+  assert.match(sw, /const BUILD = "12\.13\.0"/);
+  assert.match(html, /var BUILD="12\.13\.0"/);
+  assert.match(login, /var BUILD="12\.13\.0"/);
   assert.doesNotMatch(hub, /12\.09\.[0-9]/);
   assert.doesNotMatch(php, /12\.09\.[0-9]/);
   /* هیچ نشانی از نسخه قبلی در دارایی‌ها نمانده باشد */
@@ -1652,19 +1652,19 @@ test('v12.12.0 one version everywhere (7 version files in sync)', () => {
   assert.doesNotMatch(login, /\?v=12\.09\.[0-9]/);
 });
 
-test('v12.12.0 defect #2: public/index.php exists, serves index.html, is official', () => {
+test('v12.13.0 defect #2: public/index.php exists, serves index.html, is official', () => {
   const ip = read('../public/index.php');
   const list = read('../OFFICIAL_FILELIST.txt');
   const st = read('../build-static.js');
   assert.match(ip, /login\.html/);            /* fallback */
   assert.match(ip, /index\.html/);            /* صفحه اصلی */
   assert.match(ip, /readfile/);               /* بدون ریدایرکت حلقه‌ای */
-  assert.match(ip, /12\.12\.0/);
+  assert.match(ip, /12\.13\.0/);
   assert.match(list, /^public\/index\.php$/m);
   assert.match(st, /copyFlat/);               /* index.php همراه فایل‌ها کپی می‌شود */
 });
 
-test('v12.12.0 header is exactly three lines next to the logo', () => {
+test('v12.13.0 header is exactly three lines next to the logo', () => {
   const html = read('../public/index.html');
   const b = read('../public/crm-bundle.js');
   const data = read('../public/crm-data.js');
@@ -1673,7 +1673,7 @@ test('v12.12.0 header is exactly three lines next to the logo', () => {
   assert.match(html, /id="headerCompanyNameDisplay">برنامه ویزیت و گزارشات \(مهر آیین نیک دارو\)</);
   assert.match(data, /companyName: "برنامه ویزیت و گزارشات \(مهر آیین نیک دارو\)"/);
   /* خط ۲ — نسخه با ارقام لاتین */
-  assert.match(html, /id="crmBuildBadge"[^>]*>نسخه 12\.12\.0</);
+  assert.match(html, /id="crmBuildBadge"[^>]*>نسخه 12\.13\.0</);
   assert.match(b, /نسخه " \+ ver\(\)/);
   assert.match(b, /setTxt\("crmBuildBadge", "نسخه " \+ ver\(\)\)/);
   /* خط ۳ — برند */
@@ -1686,7 +1686,7 @@ test('v12.12.0 header is exactly three lines next to the logo', () => {
   assert.match(app, /مهر آیین نیک دارو/);
 });
 
-test('v12.12.0 app boots and works with VPN on or off', () => {
+test('v12.13.0 app boots and works with VPN on or off', () => {
   const b = read('../public/crm-bundle.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
@@ -1707,10 +1707,10 @@ test('v12.12.0 app boots and works with VPN on or off', () => {
   assert.match(srv, /const geoAc = new AbortController\(\)/);
   assert.match(srv, /\}, 6000\);/);
   /* ۵) سرویس‌ورکر مانع بالا آمدن نمی‌شود */
-  assert.match(sw, /const BUILD = "12\.12\.0"/);
+  assert.match(sw, /const BUILD = "12\.13\.0"/);
 });
 
-test('v12.12.0 three domains (Render + 2 Netafraz) sync on phone and Windows', () => {
+test('v12.13.0 three domains (Render + 2 Netafraz) sync on phone and Windows', () => {
   const hub = read('../public/crm-hub.js');
   const b = read('../public/crm-bundle.js');
   const php = read('../public/api.php');

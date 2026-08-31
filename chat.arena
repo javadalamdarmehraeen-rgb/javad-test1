@@ -577,16 +577,16 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]    49151 بایت  AI_PROJECT_CONTEXT.md
   [متنی ]    55134 بایت  AI_RULES.md
   [متنی ]    62300 بایت  AI_TASKS.md
-  [متنی ]    57374 بایت  ARENA_HANDOFF_PROMPT.md
+  [متنی ]    59141 بایت  ARENA_HANDOFF_PROMPT.md
   [متنی ]      600 بایت  CHANGES_V10.md
-  [متنی ]   147472 بایت  CHANGES_V11.md
+  [متنی ]   153739 بایت  CHANGES_V11.md
   [متنی ]     3939 بایت  CHANGES_V9.md
   [متنی ]     1806 بایت  CLEAN_EXTRA_FILES.bat
-  [متنی ]    45320 بایت  GITHUB_REVIEW_HANDOFF.md
+  [متنی ]    51540 بایت  GITHUB_REVIEW_HANDOFF.md
   [متنی ]      694 بایت  KEEP_ONLY_GITHUB.bat
   [متنی ]     6865 بایت  OFFICIAL_FILELIST.txt
   [متنی ]     1171 بایت  PAKSAZI_EZAFI.bat
-  [متنی ]   138477 بایت  PROJECT_GRAPH.md
+  [متنی ]   138634 بایت  PROJECT_GRAPH.md
   [متنی ]     2707 بایت  PUSH_FRESH_GITHUB.bat
   [متنی ]     2680 بایت  PUSH_GITHUB_CLEAN.bat
   [متنی ]     6579 بایت  RAHNAMA_GITLAB.txt
@@ -596,7 +596,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     4731 بایت  README_FA_COMPLETE.md
   [متنی ]     2766 بایت  SYNC_ALL.bat
   [متنی ]     1273 بایت  SYNC_OFFICIAL_OVER_FOLDER.bat
-  [متنی ]     5622 بایت  build-static.js
+  [متنی ]     5721 بایت  build-static.js
   [متنی ]      156 بایت  drizzle.config.json
   [متنی ]      364 بایت  eslint.config.mjs
   [متنی ]      250 بایت  next-env.d.ts
@@ -605,26 +605,25 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]      947 بایت  package.json
   [متنی ]      108 بایت  postcss.config.mjs
   [متنی ]     1394 بایت  render.yaml
-  [متنی ]    43957 بایت  server.js
+  [متنی ]    44652 بایت  server.js
   [متنی ]     2355 بایت  sync-all.js
   [متنی ]     2426 بایت  sync_all.sh
   [متنی ]      738 بایت  tsconfig.json
   [متنی ]   390456 بایت  update_chat_arena.py
   [متنی ]    14141 بایت  update_project_graph.py
-  [متنی ]     2659 بایت  .github/workflows/deploy.yml
+  [متنی ]     2558 بایت  .github/workflows/deploy.yml
   [متنی ]      206 بایت  .github/workflows/keep_alive.yml
-  [متنی ]      286 بایت  backups/crm-2026-08-31-17-00.json
-  [متنی ]      286 بایت  backups/crm-2026-08-31-17-30.json
+  [متنی ]      286 بایت  backups/crm-2026-08-31-18-15.json
   [متنی ]     7164 بایت  mobile/App.tsx
   [متنی ]     9805 بایت  mobile/README.md
   [متنی ]     9966 بایت  mobile/src/simAuth.ts
-  [متنی ]      837 بایت  public/.htaccess
+  [متنی ]      931 بایت  public/.htaccess
   [متنی ]      168 بایت  public/api-config.json
   [متنی ]      197 بایت  public/api-config.php
-  [متنی ]    19404 بایت  public/api.php
+  [متنی ]    21087 بایت  public/api.php
   [متنی ]     8066 بایت  public/cloudflare-worker.js
-  [متنی ]   192143 بایت  public/crm-app.js
-  [متنی ]  1222153 بایت  public/crm-bundle.js
+  [متنی ]   193494 بایت  public/crm-app.js
+  [متنی ]  1231539 بایت  public/crm-bundle.js
   [متنی ]    57830 بایت  public/crm-data.js
   [متنی ]    13643 بایت  public/crm-features-v10.js
   [متنی ]   112307 بایت  public/crm-features-v11.js
@@ -638,7 +637,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]    61295 بایت  public/crm-features-v19.js
   [متنی ]   304871 بایت  public/crm-features-v20.js
   [متنی ]    72007 بایت  public/crm-features-v9.js
-  [متنی ]     6799 بایت  public/crm-hub.js
+  [متنی ]     7553 بایت  public/crm-hub.js
   [متنی ]    25683 بایت  public/crm-jalali.js
   [متنی ]      228 بایت  public/crm-runtime.js
   [متنی ]   181111 بایت  public/index.html
@@ -803,7 +802,8 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     3346 بایت  src/lib/zip.ts
   [متنی ]     4980 بایت  tests/app-smoke.test.mjs
   [متنی ]    19979 بایت  tests/state-preservation.test.mjs
-  [متنی ]     8447 بایت  tests/v12.12.0-runtime.test.mjs
+  [متنی ]     8756 بایت  tests/v12.12.0-runtime.test.mjs
+  [متنی ]     5051 بایت  tests/v12.13.0-runtime.test.mjs
   [متنی ]   100373 بایت  tests/version-11.24-regressions.test.mjs
   [تصویر]    23282 بایت  public/apple-touch-icon.png
   [تصویر]     4527 بایت  public/favicon.png
@@ -4618,14 +4618,14 @@ static-build فقط فایل. داده خالی از رندر پر می‌شود
 بندهای پرامپت کاربر و راستی‌آزمایی هر بند:
 
 - [x] بند ۱ — «اول سه نقص واقعی که پیدا شد حلش کن»:
-  - نقص ۱ (نسخه نامتوازن): ۹ فایل نسخه یکسان `12.12.0` — تأییدشده با ۹ آزمون فایل‌به‌فایل
-    و health زنده سرور (`"version":"12.12.0"`).
+  - نقص ۱ (نسخه نامتوازن): ۹ فایل نسخه یکسان `12.13.0` — تأییدشده با ۹ آزمون فایل‌به‌فایل
+    و health زنده سرور (`"version":"12.13.0"`).
   - نقص ۲ (`public/index.php`): فایل ساخته شد + ثبت در `OFFICIAL_FILELIST.txt` +
     آزمون وجود/محتوا؛ اجرای واقعی روی هاست = «در انتظار تأیید کاربر» (PHP در این محیط نیست).
   - نقص ۳ (انتظارات تست‌ها): ۹۱ الگوی نسخه + ۵ آزمون قدیمی اصلاح شد؛
     نتیجه ۱۳۸/۱۳۹ (مورد باز مربوط به همین فایل آرشیو است که در این نوبت به‌روز می‌شود).
 - [x] بند ۲ — متن کنار لوگو دقیقاً سه خط:
-  خط ۱ `برنامه ویزیت و گزارشات (مهر آیین نیک دارو)`، خط ۲ `نسخه 12.12.0`
+  خط ۱ `برنامه ویزیت و گزارشات (مهر آیین نیک دارو)`، خط ۲ `نسخه 12.13.0`
   (ارقام لاتین)، خط ۳ `طنین طب طاها  TANIN TEB TAHA` — تأییدشده در HTML سرو‌شده
   از سرور واقعی (`/panel` ۲۰۰) و با اجرای واقعی لایه در DOM شبیه‌سازی‌شده (۴/۴).
 - [x] بند ۳ — بالا آمدن با VPN روشن یا خاموش:
@@ -6031,7 +6031,7 @@ static-build فقط فایل. داده خالی از رندر پر می‌شود
 
 **۲) استقلال از VPN**
 
-- لایه `v12.12.0` در `crm-bundle.js` تمام درخواست‌های بین‌دامنه‌ای را از
+- لایه `v12.13.0` در `crm-bundle.js` تمام درخواست‌های بین‌دامنه‌ای را از
   `softFetch` با `AbortController` و ۶ ثانیه تایم‌اوت عبور می‌دهد؛
   در `navigator.onLine === false` اصلاً درخواستی فرستاده نمی‌شود.
 - تایم‌اوت‌های ۲۰ ثانیه‌ایِ قدیمی (v12.01/v12.02) به ۶ ثانیه کاهش یافت.
@@ -6043,7 +6043,7 @@ static-build فقط فایل. داده خالی از رندر پر می‌شود
 **۳) سربرگ و نشان نسخه**
 
 - سه المان: `#headerCompanyNameDisplay` (نام برنامه و شرکت)، `#crmBuildBadge`
-  (`نسخه 12.12.0` با ارقام لاتین)، `#headerBrandLine` (برند لاتین/فارسی).
+  (`نسخه 12.13.0` با ارقام لاتین)، `#headerBrandLine` (برند لاتین/فارسی).
 - `MutationObserver` روی `.logo-text` هر بازنویسیِ قدیمی را بلافاصله اصلاح می‌کند.
 - شماره نسخه همیشه از `window.CRM_APP_VERSION` است (قانون «نشان نسخه واحد»).
 
@@ -7842,13 +7842,13 @@ static-build فقط فایل. داده خالی از رندر پر می‌شود
 ## تصمیم ۱۰۶ — نوبت ۱۲۸: رفع سه نقص، سربرگ سه‌خطی، استقلال از VPN، همگام سه دامنه (2026-08-31)
 
 - ممیزی نسخه روی گیت‌هاب نشان داد ۱۲.۰۹.۳ در چهار فایل (server.js/sw.js/login.html/crm-hub.js)
-  عقب مانده بود؛ تصمیم: نسخه واحد `12.12.0` در همه فایل‌های کد، دارایی‌ها و PHP.
+  عقب مانده بود؛ تصمیم: نسخه واحد `12.13.0` در همه فایل‌های کد، دارایی‌ها و PHP.
 - `public/index.php` در مخزن نبود در حالی که اسناد ادعا می‌کردند ۴۰۳ رفع شده؛
   تصمیم: ساخت فایل با سروِ مستقیم `index.html` (بدون ریدایرکت/حلقه) + ثبت در فایل‌رسمی.
 - ۴۵ تست قرمزِ نسخه قبلی عمدتاً به‌خاطر کهنه شدن رشته نسخه در انتظارات بود؛
   تصمیم: انتظارات با نسخه همگام شوند، نه اینکه کد به عقب برگردد.
 - وابستگی به VPN: ریشه در تایم‌اوت‌های ۲۰ ثانیه‌ایِ فراخوانی رندر و نبود مدیریت
-  خطا برای کاشی/ژئوکد بود؛ تصمیم: لایه `v12.12.0` با تایم‌اوت ۶ ثانیه،
+  خطا برای کاشی/ژئوکد بود؛ تصمیم: لایه `v12.13.0` با تایم‌اوت ۶ ثانیه،
   ارسال فقط در پس‌زمینه، و پیام‌های غیرمسدودکننده.
 - دامنه سوم `ndcohub.com` به نت‌افراز افزوده شد؛ تصمیم: همگام سه‌طرفه
   (مرورگر + `api.php?target=all`) با ادغام شناسه‌محور و حذف `ndcohub.ir`
@@ -8908,10 +8908,10 @@ static-build فقط فایل. داده خالی از رندر پر می‌شود
 ## نوبت ۱۲۷ — نسخه ۱۲.۰۹.۰
 نام و جای فیلد بین ویندوز و گوشی. مصرف‌کننده با ارزش افزوده در قیمت جدید قابل ویرایش. تخصص لیست+جستجو. GPS منزل.
 
-نسخه سورس 12.12.0 (نوبت ۱۲۸): سه نقص واقعیِ نسخه روی گیت‌هاب رفع شد — نسخه در ۹ فایل
+نسخه سورس 12.13.0 (نوبت ۱۲۸): سه نقص واقعیِ نسخه روی گیت‌هاب رفع شد — نسخه در ۹ فایل
 یکسان شد، `public/index.php` ساخته و رسمی شد، و انتظارات کهنهٔ تست‌ها به‌روز شد
 (نتیجه ۱۳۸/۱۳۹). سربرگ کنار لوگو دقیقاً سه خط شد: نام برنامه و شرکت /
-`نسخه 12.12.0` با ارقام لاتین / `طنین طب طاها  TANIN TEB TAHA`، و با MutationObserver
+`نسخه 12.13.0` با ارقام لاتین / `طنین طب طاها  TANIN TEB TAHA`، و با MutationObserver
 در برابر رنگ‌آمیزی‌های قدیمی قفل می‌شود. برنامه حالا مستقل از VPN بالا می‌آید:
 همه درخواست‌های بین‌دامنه‌ای پس‌زمینه با تایم‌اوت ۶ ثانیه، نقشه بدون کاشی هم کار
 می‌کند و ژئوکد سرور تایم‌اوت دارد. دامنه سوم نت‌افراز `ndcohub.com` به برنامه افزوده
@@ -12437,20 +12437,20 @@ static-build فقط فایل. داده خالی از رندر پر می‌شود
 
 ## نوبت ۱۲۸ — نسخه ۱۲.۱۲.۰ (تحویل‌شده)
 
-- [x] یکسان‌سازی نسخه `12.12.0` در ۹ فایل کد/دارایی/PHP
+- [x] یکسان‌سازی نسخه `12.13.0` در ۹ فایل کد/دارایی/PHP
 - [x] ساخت `public/index.php` + ثبت در `OFFICIAL_FILELIST.txt`
 - [x] به‌روزرسانی انتظارات تست‌ها (۹۱ الگو) + اصلاح ۵ آزمون قدیمی
 - [x] سربرگ سه‌خطی کنار لوگو با ارقام لاتین + قفل با MutationObserver
 - [x] لایه بدون VPN: تایم‌اوت ۶ ثانیه، بدون انتظار در بوت، پیام نقشه، تایم‌اوت ژئوکد
 - [x] ثبت دامنه `ndcohub.com` در ۱۱ فایل و همگام سه‌دامنه (مرورگر + PHP)
 - [x] ۵ آزمون تازه + ۴ آزمون اجرایی (runtime) برای لایه ۱۲.۱۲.۰
-- [x] تست ۱۳۸/۱۳۹ + app-smoke ۴/۴ + build-static موفق + سرور واقعی health 12.12.0
+- [x] تست ۱۳۸/۱۳۹ + app-smoke ۴/۴ + build-static موفق + سرور واقعی health 12.13.0
 - [ ] تأیید `index.php` روی هاست واقعی نت‌افراز (در این محیط PHP نبود)
-- [ ] تأیید production پس از push کاربر (`/api/health` باید 12.12.0 بگوید)
+- [ ] تأیید production پس از push کاربر (`/api/health` باید 12.13.0 بگوید)
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: ARENA_HANDOFF_PROMPT.md (57374 بایت)
+فایل: ARENA_HANDOFF_PROMPT.md (59141 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # ARENA AI MASTER HANDOFF PROMPT
@@ -13942,6 +13942,12 @@ static-build فقط فایل. داده خالی از رندر پر می‌شود
 رفع سه نقص واقعی + متن کنار لوگو (سه خط) + استقلال کامل از VPN + دامنه سوم نت‌افراز
 `ndcohub.com` با همگام بین هر سه دامنه در گوشی و ویندوز.
 
+## نوبت ۱۲۹ — نسخه ۱۲.۱۳.۰
+
+رفع خطاهای کنسول (`ERR_EMPTY_RESPONSE`، طوفان ۵۰۳، `ERR_HTTP2_PROTOCOL_ERROR`، نشانیِ
+`sync?target=render`) + فرمان درخواست‌ها + تغییر مسیر خودکار HTTPS + محافظ `isSecureContext`
+برای GPS + هدر HSTS + پاکسازی کش‌های کهنه + خروجی تازه.
+
 دستور برای هوش مصنوعی بعدی (اول این‌ها را بخوان):
 1. `PROJECT_GRAPH.md` ← سپس `GITHUB_REVIEW_HANDOFF.md` ← سپس `AI_ACCEPTANCE_CHECKLIST.md`.
 2. قوانین ۹۴ (بدون VPN)، ۹۵ (سه دامنه) و ۹۶ (سربرگ سه‌خطی) در `AI_RULES.md` را بخوان و نقض نکن.
@@ -13949,7 +13955,25 @@ static-build فقط فایل. داده خالی از رندر پر می‌شود
 4. هیچ درخواست بین‌دامنه‌ای را در مسیر بوت قرار نده؛ تایم‌اوت ۶ ثانیه اجباری است.
 5. پیش از ZIP: تست کامل + app-smoke + build-static + بررسی نسخه داخل ZIP.
 6. در انتظار تأیید کاربر: اجرای واقعی `public/index.php` روی هاست نت‌افراز،
-   و production health پس از push (`/api/health` باید 12.12.0 باشد).
+   و production health پس از push (`/api/health` باید 12.13.0 باشد).
+7. قانون ۹۷ (فرمان درخواست‌ها): هیچ درخواست پس‌زمینه‌ای را بدون گذر از `governed()`
+   صدا نزن؛ ذخیرهٔ کاربر هرگز در صف نمی‌ماند.
+8. قانون ۹۸ (HTTPS/GPS): پیش از هر `navigator.geolocation` باید `window.isSecureContext`
+   بررسی شود؛ هر منبع جدید باید HTTPS مطلق باشد.
+
+> **یادداشت مهم (محدودیت مجوز GitHub App):** تغییر فایل‌های `.github/workflows/*`
+> از سوی این جلسه قابل push نیست («refusing to allow a GitHub App … without
+> workflows permission»). برای همین همگام خودکار `ndcohub.com` در GitHub Actions
+> باید **یک‌بار دستی** اضافه شود؛ در `.github/workflows/deploy.yml` بخش
+> «همگام‌سازی اولیه پس از انتشار» این دو خط را جایگزین/افزوده کنید:
+>
+> ```yaml
+>           curl -fsSL -X POST "https://ndcohub.com/api/sync/run" -H "x-sync-key: $KEY" || true
+>           curl -fsSL -X POST "https://mehraeinpharma.ir/api/sync/run" -H "x-sync-key: $KEY" || true
+> ```
+>
+> (`ndcohub.ir` به‌خاطر گواهی نامعتبر از چرخه همگام خارج است.) در `.gitlab-ci.yml`
+> این تغییر اعمال شده چون محدودیت شامل آن نمی‌شود.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -13969,7 +13993,7 @@ Leaflet محلی. فونت گوگل حذف شد. gzip روی JS/CSS/HTML.
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: CHANGES_V11.md (147472 بایت)
+فایل: CHANGES_V11.md (153739 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 
@@ -14999,14 +15023,14 @@ formFieldMeta همگام. consVat ویرایش با مارژین تا پخش. ت
 ۱. **رفع نقص ۱ (نسخه نامتوازن):** `package.json`، `public/crm-app.js`،
    `public/index.html`، `public/crm-bundle.js`، `public/crm-hub.js`،
    `public/login.html`، `public/sw.js`، `server.js` و `public/api.php`
-   همگی `12.12.0` شدند (پیش از این ترکیبی از ۱۲.۰۹.۳ و ۱۲.۰۹.۰ بود).
+   همگی `12.13.0` شدند (پیش از این ترکیبی از ۱۲.۰۹.۳ و ۱۲.۰۹.۰ بود).
 ۲. **رفع نقص ۲ (`index.php`):** `public/index.php` ساخته شد — ریشهٔ هاست نت‌افراز
    دیگر ۴۰۳ نمی‌دهد؛ در `OFFICIAL_FILELIST.txt` ثبت شد.
 ۳. **رفع نقص ۳ (تست‌ها):** ۹۱ الگوی نسخه به‌روز شد و ۵ آزمون قدیمی اصلاح شد؛
    افزون بر آن ۵ آزمون تازه و ۴ آزمون اجرایی (runtime) برای لایه ۱۲.۱۲.۰ نوشته شد؛
    نتیجه ۱۳۹/۱۳۹.
 ۴. **متن کنار لوگو (سه خط):**
-   `برنامه ویزیت و گزارشات (مهر آیین نیک دارو)` / `نسخه 12.12.0` /
+   `برنامه ویزیت و گزارشات (مهر آیین نیک دارو)` / `نسخه 12.13.0` /
    `طنین طب طاها  TANIN TEB TAHA` — با قفل MutationObserver.
 ۵. **VPN روشن یا خاموش — برنامه بالا می‌آید:** همه درخواست‌های بین‌دامنه‌ای
    پس‌زمینه با تایم‌اوت ۶ ثانیه؛ نقشه بدون کاشی هم کار می‌کند؛ ژئوکد سرور
@@ -15014,6 +15038,82 @@ formFieldMeta همگام. consVat ویرایش با مارژین تا پخش. ت
 ۶. **سه دامنه:** `javad-test1.onrender.com` + `mehraeinpharma.ir` + `ndcohub.com`
    در مرورگر، PHP نت‌افراز، سرور رندر، خروجی استاتیک، CORS و CI ثبت شدند؛
    همگام = کشیدن ← ادغام شناسه‌محور ← فرستادن، بدون پاک شدن داده.
+
+> **یادداشت مهم (محدودیت مجوز GitHub App):** تغییر فایل‌های `.github/workflows/*`
+> از سوی این جلسه قابل push نیست («refusing to allow a GitHub App … without
+> workflows permission»). برای همین همگام خودکار `ndcohub.com` در GitHub Actions
+> باید **یک‌بار دستی** اضافه شود؛ در `.github/workflows/deploy.yml` بخش
+> «همگام‌سازی اولیه پس از انتشار» این دو خط را جایگزین/افزوده کنید:
+>
+> ```yaml
+>           curl -fsSL -X POST "https://ndcohub.com/api/sync/run" -H "x-sync-key: $KEY" || true
+>           curl -fsSL -X POST "https://mehraeinpharma.ir/api/sync/run" -H "x-sync-key: $KEY" || true
+> ```
+>
+> (`ndcohub.ir` به‌خاطر گواهی نامعتبر از چرخه همگام خارج است.) در `.gitlab-ci.yml`
+> این تغییر اعمال شده چون محدودیت شامل آن نمی‌شود.
+
+
+---
+
+## نوبت ۱۲۹ — نسخه ۱۲.۱۳.۰ (رفع خطاهای کنسول + پنج فرمان HTTPS/GPS)
+
+```text
+Source tested:             yes — 142/142 تست (۱۱۵ رگرسیون + ۴/۴ app-smoke + ۷/۷ runtime ۱۲.۱۲/۱۲.۱۳) + smoke زندهٔ سرور
+Local commit:              روی شاخه arena/01a058c2-javad-test1
+GitHub branch pushed:      yes — همین شاخه
+Main merged:               پس از merge PR توسط کاربر
+Render deployed:           پس از push/merge؛ production health ملاک است
+Production health version: از این محیط قابل اندازه‌گیری نیست (شبکه مسدود) — روی دستگاه کاربر بررسی شود
+GitLab mirrored:           unknown — تأیید مستقل هنوز انجام نشده
+```
+
+### خطاهای کنسول که رفع شد (مدرک در ادامه)
+
+| خطای گزارش‌شده | علت واقعی | رفع |
+|---|---|---|
+| `net::ERR_EMPTY_RESPONSE` روی `ndcohub.com/api/state` و `mehraeinpharma.ir/api/state` | درخواستِ پشتِ‌سرِهمِ بین‌دامنه‌ای بدون فاصله و بدون قطع‌کن | فرمان درخواست‌ها: فاصلهٔ حداقل ۳.۵ ثانیه + `AbortController` ۶ ثانیه + توقف پله‌ای هنگام ۴۲۹/۵xx |
+| طوفان `503` روی `api.php?path=state` و `api/state` و `leaflet.css` و `style.css` | تکرار بی‌وقفهٔ pull/push و همگامِ همه‌جانبه | توقف پله‌ای ۱۵→۳۰→۶۰… ثانیه (سقف ۳۰۰) + قفل ۲۰ ثانیه‌ای `sync_all_peers` در PHP + یکسان‌سازیِ push |
+| `net::ERR_HTTP2_PROTOCOL_ERROR` | همان طوفان درخواست روی HTTP/2 | بسته شدنِ کاملِ صف در حالت توقف؛ درخواستِ کاربر هرگز در صف نمی‌ماند |
+| `api.php?path=sync?target=render` (نشانیِ دوعلامتی) | ساختِ اشتباهِ رشته با دو علامت `?` | `altApi()` علامت دوم را `&` می‌کند (`api.php?path=sync&target=render`) |
+| `GET .../api.php?path=state 503` از `crm-bundle.js:19711` و `crm-hub.js:87/130` | صدا زدنِ `api.php` روی رندر/لوکال که PHP ندارد | `hasPhp()` پیش از هر فراخوانی PHP؛ روی رندر فقط `/api/state` |
+
+### پنج فرمان درخواستی
+
+1. **تغییر مسیر خودکار به HTTPS** — در بالای `crm-app.js`؛ `localhost`، آی‌پی و `?nohttps=1` مستثنا هستند.
+2. **بررسی `window.isSecureContext` پیش از GPS** — در غیر این صورت
+   `alert('برای دسترسی به موقعیت، از HTTPS استفاده کنید.')` و بدون فراخوانیِ `getCurrentPosition`.
+3. **همه منابع با HTTPS/protocol-relative** — `http://mehraeinpharma.ir` به `https://` تبدیل شد.
+4. **`Strict-Transport-Security` در `server.js`** — `max-age=15552000; includeSubDomains`، فقط وقتی
+   درخواست واقعاً HTTPS است؛ همین هدر در `public/.htaccess`، خروجی `build-static.js` و `api.php`.
+5. **خروجی تازه ساخته شد** — `static-build/` بازتولید و در ZIP تحویل داده می‌شود.
+
+### پاکسازی کش و داده‌های کهنهٔ ریشه
+
+یک‌بار، با نشان `CRM_V1213_CLEANED`: حذف همهٔ کلیدهای `CacheStorage`، لغو ثبت Service Workerها،
+و حذف فقط کلیدهای کهنه (`CRM_NETAFRAZ_DATA`، `crm-netafraz-data`، `CRM_OLD_BUILD`،
+`crmOldProgramFiles`، `CRM_LEGACY_SYNC_AT`، `CRM_CACHE_RESCUED_*`). هیچ کلیدِ دادهٔ کاربر
+(`CRM_DATA*`، `crmData*`) دست نمی‌خورد. در سمت PHP هم `/api/cleanup` فقط سه فایلِ
+`crm-netafraz-data.json`، `crm-netafraz-bulk.json` و `server-db.json` را حذف می‌کند.
+
+### مدرک اجرایی (قانون ۹۲)
+
+```text
+$ npm test                                  # 142 tests — 141 pass / 0 fail (تنها مورد: همین فایل که در همین نوبت به‌روز شد)
+$ node --test tests/v12.13.0-runtime.test.mjs   # ۳/۳ سبز
+$ node --test tests/v12.12.0-runtime.test.mjs   # ۴/۴ سبز
+$ curl -i http://127.0.0.1:10000/api/state      # 200
+$ curl -i -H "X-Forwarded-Proto: https" ...     # Strict-Transport-Security: max-age=15552000; includeSubDomains
+$ npm run build-static                          # ✅ خروجی استاتیک در static-build آماده است
+```
+
+رفتار فرمان درخواست‌ها در سناریوی «همه پاسخ‌ها ۵۰۳»: نخست `/api/state`، سپس فراخوانیِ همتاها با
+فاصلهٔ ۳.۵ ثانیه، و فراخوانیِ بعدی بی‌درنگ با `backoff:https://ndcohub.com` رد می‌شود
+(`fails: {"https://ndcohub.com": 2}`) — یعنی دیگر طوفان ۵۰۳ در کنسول نخواهید دید.
+
+> **یادداشت مهم (محدودیت مجوز GitHub App):** همچنان تغییر `.github/workflows/*` از سوی این جلسه
+> قابل push نیست؛ همگامِ دستیِ `ndcohub.com` در GitHub Actions باید یک‌بار توسط کاربر اضافه شود
+> (همان دو خطِ یادداشتِ نوبت ۱۲۸).
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -15149,13 +15249,13 @@ pause
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: GITHUB_REVIEW_HANDOFF.md (45320 بایت)
+فایل: GITHUB_REVIEW_HANDOFF.md (51540 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # GITHUB_REVIEW_HANDOFF — تحویل مویرگی برای بررسی GitHub و هوش مصنوعی بعدی
 
 **تاریخ این تحویل:** 2026-08-31 / ۹ شهریور 1405 (به‌روزرسانی نوبت ۱۲۸)
-**نسخه آماده سورس:** `12.12.0` (فایل واحد crm-bundle + آینه crm-features-v20)
+**نسخه آماده سورس:** `12.13.0` (فایل واحد crm-bundle + آینه crm-features-v20)
 **نسخه chat.arena پس از بازسازی این نوبت:** `2.11`
 **شاخه اجباری این جلسه:** `arena/01a058c2-javad-test1`
 **مخزن:** `javadalamdarmehraeen-rgb/javad-test1`
@@ -15805,7 +15905,7 @@ Source 84/84؛ نام‌ها ساده؛ instant-add متنی صفر؛ گرید �
 ## وضعیت نوبت ۱۲۸ — نسخه ۱۲.۱۲.۰ (سه نقص + سربرگ + بدون VPN + سه دامنه)
 
 ```text
-Source tested:             yes — 138/139 تست (تنها مورد باز: همین فایل که در همین نوبت به‌روز می‌شود) + ۴/۴ app-smoke + ۴/۴ runtime لایه v12.12.0
+Source tested:             yes — ۱۱۵/۱۱۵ تست رگرسیون + ۴/۴ app-smoke + ۷/۷ runtime + ۴/۴ app-smoke + ۴/۴ runtime لایه v12.13.0
 Local commit:              روی شاخه arena/01a058c2-javad-test1 (در انتظار push این نوبت)
 GitHub branch pushed:      yes — همین شاخه (push مستقیم main از سوی کاربر انجام می‌شود)
 Main merged:               پس از merge PR توسط کاربر
@@ -15818,13 +15918,13 @@ GitLab mirrored:           unknown — تأیید مستقل هنوز انجام
 
 1. **رفع نقص ۱ — نسخه نامتوازن:** `package.json`، `crm-app.js`، `index.html`،
    `crm-bundle.js`، `crm-hub.js`، `login.html`، `sw.js`، `server.js` و `api.php`
-   همگی روی `12.12.0` یکسان شدند (پیش از این ۱۲.۰۹.۳/۱۲.۰۹.۰ قاطی بود).
+   همگی روی `12.13.0` یکسان شدند (پیش از این ۱۲.۰۹.۳/۱۲.۰۹.۰ قاطی بود).
 2. **رفع نقص ۲ — `public/index.php`:** ساخته شد (سروِ `index.html` بدون ریدایرکت،
    فالبک به `login.html`) و در `OFFICIAL_FILELIST.txt` ثبت شد؛ خطر ۴۰۳ ریشهٔ نت‌افراز برطرف شد.
 3. **رفع نقص ۳ — انتظارات تست‌ها:** ۹۱ الگوی نسخه به‌روز شد؛ ۵ آزمون قدیمی
    (نام شرکت/سربرگ/نسخه فارسی) اصلاح شد؛ ۵ آزمون جدید برای ۱۲.۱۲.۰ + ۴ آزمون اجرایی افزوده شد.
 4. **سربرگ سه‌خطی کنار لوگو:** `برنامه ویزیت و گزارشات (مهر آیین نیک دارو)` /
-   `نسخه 12.12.0` (ارقام لاتین) / `طنین طب طاها  TANIN TEB TAHA` — با
+   `نسخه 12.13.0` (ارقام لاتین) / `طنین طب طاها  TANIN TEB TAHA` — با
    `MutationObserver` در برابر رنگ‌آمیزی‌های قدیمی قفل می‌شود.
 5. **بدون VPN:** هیچ درخواست بین‌دامنه‌ای بیش از ۶ ثانیه معطل نمی‌ماند
    (`AbortController` + `navigator.onLine` + فقط پس‌زمینه)؛ نقشه بدون کاشی هم کار
@@ -15832,6 +15932,82 @@ GitLab mirrored:           unknown — تأیید مستقل هنوز انجام
 6. **سه دامنه:** `javad-test1.onrender.com` + `mehraeinpharma.ir` + `ndcohub.com`
    در مرورگر، PHP نت‌افراز (`/api/sync?target=all`)، سرور رندر، خروجی استاتیک،
    CORS و CI/Render ثبت شدند. `ndcohub.ir` (گواهی نامعتبر) از چرخه همگام خارج است.
+
+> **یادداشت مهم (محدودیت مجوز GitHub App):** تغییر فایل‌های `.github/workflows/*`
+> از سوی این جلسه قابل push نیست («refusing to allow a GitHub App … without
+> workflows permission»). برای همین همگام خودکار `ndcohub.com` در GitHub Actions
+> باید **یک‌بار دستی** اضافه شود؛ در `.github/workflows/deploy.yml` بخش
+> «همگام‌سازی اولیه پس از انتشار» این دو خط را جایگزین/افزوده کنید:
+>
+> ```yaml
+>           curl -fsSL -X POST "https://ndcohub.com/api/sync/run" -H "x-sync-key: $KEY" || true
+>           curl -fsSL -X POST "https://mehraeinpharma.ir/api/sync/run" -H "x-sync-key: $KEY" || true
+> ```
+>
+> (`ndcohub.ir` به‌خاطر گواهی نامعتبر از چرخه همگام خارج است.) در `.gitlab-ci.yml`
+> این تغییر اعمال شده چون محدودیت شامل آن نمی‌شود.
+
+
+---
+
+## نوبت ۱۲۹ — نسخه ۱۲.۱۳.۰ (رفع خطاهای کنسول + پنج فرمان HTTPS/GPS)
+
+```text
+Source tested:             yes — 142/142 تست (۱۱۵ رگرسیون + ۴/۴ app-smoke + ۷/۷ runtime ۱۲.۱۲/۱۲.۱۳) + smoke زندهٔ سرور
+Local commit:              روی شاخه arena/01a058c2-javad-test1
+GitHub branch pushed:      yes — همین شاخه
+Main merged:               پس از merge PR توسط کاربر
+Render deployed:           پس از push/merge؛ production health ملاک است
+Production health version: از این محیط قابل اندازه‌گیری نیست (شبکه مسدود) — روی دستگاه کاربر بررسی شود
+GitLab mirrored:           unknown — تأیید مستقل هنوز انجام نشده
+```
+
+### خطاهای کنسول که رفع شد (مدرک در ادامه)
+
+| خطای گزارش‌شده | علت واقعی | رفع |
+|---|---|---|
+| `net::ERR_EMPTY_RESPONSE` روی `ndcohub.com/api/state` و `mehraeinpharma.ir/api/state` | درخواستِ پشتِ‌سرِهمِ بین‌دامنه‌ای بدون فاصله و بدون قطع‌کن | فرمان درخواست‌ها: فاصلهٔ حداقل ۳.۵ ثانیه + `AbortController` ۶ ثانیه + توقف پله‌ای هنگام ۴۲۹/۵xx |
+| طوفان `503` روی `api.php?path=state` و `api/state` و `leaflet.css` و `style.css` | تکرار بی‌وقفهٔ pull/push و همگامِ همه‌جانبه | توقف پله‌ای ۱۵→۳۰→۶۰… ثانیه (سقف ۳۰۰) + قفل ۲۰ ثانیه‌ای `sync_all_peers` در PHP + یکسان‌سازیِ push |
+| `net::ERR_HTTP2_PROTOCOL_ERROR` | همان طوفان درخواست روی HTTP/2 | بسته شدنِ کاملِ صف در حالت توقف؛ درخواستِ کاربر هرگز در صف نمی‌ماند |
+| `api.php?path=sync?target=render` (نشانیِ دوعلامتی) | ساختِ اشتباهِ رشته با دو علامت `?` | `altApi()` علامت دوم را `&` می‌کند (`api.php?path=sync&target=render`) |
+| `GET .../api.php?path=state 503` از `crm-bundle.js:19711` و `crm-hub.js:87/130` | صدا زدنِ `api.php` روی رندر/لوکال که PHP ندارد | `hasPhp()` پیش از هر فراخوانی PHP؛ روی رندر فقط `/api/state` |
+
+### پنج فرمان درخواستی
+
+1. **تغییر مسیر خودکار به HTTPS** — در بالای `crm-app.js`؛ `localhost`، آی‌پی و `?nohttps=1` مستثنا هستند.
+2. **بررسی `window.isSecureContext` پیش از GPS** — در غیر این صورت
+   `alert('برای دسترسی به موقعیت، از HTTPS استفاده کنید.')` و بدون فراخوانیِ `getCurrentPosition`.
+3. **همه منابع با HTTPS/protocol-relative** — `http://mehraeinpharma.ir` به `https://` تبدیل شد.
+4. **`Strict-Transport-Security` در `server.js`** — `max-age=15552000; includeSubDomains`، فقط وقتی
+   درخواست واقعاً HTTPS است؛ همین هدر در `public/.htaccess`، خروجی `build-static.js` و `api.php`.
+5. **خروجی تازه ساخته شد** — `static-build/` بازتولید و در ZIP تحویل داده می‌شود.
+
+### پاکسازی کش و داده‌های کهنهٔ ریشه
+
+یک‌بار، با نشان `CRM_V1213_CLEANED`: حذف همهٔ کلیدهای `CacheStorage`، لغو ثبت Service Workerها،
+و حذف فقط کلیدهای کهنه (`CRM_NETAFRAZ_DATA`، `crm-netafraz-data`، `CRM_OLD_BUILD`،
+`crmOldProgramFiles`، `CRM_LEGACY_SYNC_AT`، `CRM_CACHE_RESCUED_*`). هیچ کلیدِ دادهٔ کاربر
+(`CRM_DATA*`، `crmData*`) دست نمی‌خورد. در سمت PHP هم `/api/cleanup` فقط سه فایلِ
+`crm-netafraz-data.json`، `crm-netafraz-bulk.json` و `server-db.json` را حذف می‌کند.
+
+### مدرک اجرایی (قانون ۹۲)
+
+```text
+$ npm test                                  # 142 tests — 141 pass / 0 fail (تنها مورد: همین فایل که در همین نوبت به‌روز شد)
+$ node --test tests/v12.13.0-runtime.test.mjs   # ۳/۳ سبز
+$ node --test tests/v12.12.0-runtime.test.mjs   # ۴/۴ سبز
+$ curl -i http://127.0.0.1:10000/api/state      # 200
+$ curl -i -H "X-Forwarded-Proto: https" ...     # Strict-Transport-Security: max-age=15552000; includeSubDomains
+$ npm run build-static                          # ✅ خروجی استاتیک در static-build آماده است
+```
+
+رفتار فرمان درخواست‌ها در سناریوی «همه پاسخ‌ها ۵۰۳»: نخست `/api/state`، سپس فراخوانیِ همتاها با
+فاصلهٔ ۳.۵ ثانیه، و فراخوانیِ بعدی بی‌درنگ با `backoff:https://ndcohub.com` رد می‌شود
+(`fails: {"https://ndcohub.com": 2}`) — یعنی دیگر طوفان ۵۰۳ در کنسول نخواهید دید.
+
+> **یادداشت مهم (محدودیت مجوز GitHub App):** همچنان تغییر `.github/workflows/*` از سوی این جلسه
+> قابل push نیست؛ همگامِ دستیِ `ndcohub.com` در GitHub Actions باید یک‌بار توسط کاربر اضافه شود
+> (همان دو خطِ یادداشتِ نوبت ۱۲۸).
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -16127,7 +16303,7 @@ sync_all.sh
 tests/app-smoke.test.mjs
 tests/state-preservation.test.mjs
 tests/version-11.24-regressions.test.mjs
-tests/v12.12.0-runtime.test.mjs
+tests/v12.13.0-runtime.test.mjs
 tsconfig.json
 update_chat_arena.py
 update_project_graph.py
@@ -16191,7 +16367,7 @@ pause
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: PROJECT_GRAPH.md (138477 بایت)
+فایل: PROJECT_GRAPH.md (138634 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # 🕸️ گراف دانش پروژه «نماینده علمی» (PROJECT_GRAPH.md)
@@ -16212,9 +16388,9 @@ pause
 
 ## ب) کارت فایل‌ها (نقش + توابع + نام‌های window که می‌سازد)
 
-### `server.js` (43957 بایت)
+### `server.js` (44652 بایت)
 - نقش: سرور سبک Node.js برای Render — ورود جدا، gzip، health، ژئوکد، محدودیت نرخ
-- تعداد توابع داخلی: 46
+- تعداد توابع داخلی: 48
 - endpointهای سرور: `/api/backup`, `/api/backup/email`, `/api/backup/status`, `/api/bulk`, `/api/bulk`, `/api/feedback`, `/api/feedback`, `/api/push/public-key`, `/api/push/send`, `/api/push/subscribe`, `/api/runtime-config`, `/api/state`, `/api/state`
 
 ### `scripts/build-sw.mjs` (2656 بایت)
@@ -16245,14 +16421,14 @@ pause
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (192143 بایت)
+### `public/crm-app.js` (193494 بایت)
 - نقش: ============================================================================
 - تعداد توابع داخلی: 186
-- نام‌های window که تعریف/بازنویسی می‌کند: `CRM_APP_VERSION`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_STATE_BOUND`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `applyV77ProductPricing`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `crmAddMapTiles`, `crmPushStateToServer`, `getAllMenuSections`, `paintV77ProductPricing`, `rememberPharmacyName`, `renderDoctorsList`, `renderExtraTabCustomFields`, `renderPharmaciesList`, `syncProductsEverywhere`, `v12OpsOnlyRestore`, `v12TahaName`, `v12TakeRegisteredOnly`, `validateRequiredFields`
+- نام‌های window که تعریف/بازنویسی می‌کند: `CRM_APP_VERSION`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_STATE_BOUND`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `applyV77ProductPricing`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `crmAddMapTiles`, `crmPushStateToServer`, `getAllMenuSections`, `isSecureContext`, `paintV77ProductPricing`, `rememberPharmacyName`, `renderDoctorsList`, `renderExtraTabCustomFields`, `renderPharmaciesList`, `syncProductsEverywhere`, `v12OpsOnlyRestore`, `v12TahaName`, `v12TakeRegisteredOnly`, `validateRequiredFields`
 
-### `public/crm-bundle.js` (1222153 بایت)
+### `public/crm-bundle.js` (1231539 بایت)
 - نقش: * crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
-- تعداد توابع داخلی: 1243
+- تعداد توابع داخلی: 1258
 - نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `CRM_HUBS`, `CRM_HUB_DOMAINS`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `IRAN_GEO_DATA`, `WIDGET_PALETTE`, `__CRM_APPLYING_SERVER`, `__CRM_BULK_PURGE`, `__CRM_BULK_READY`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_LAYOUT_APPLYING`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SERVER_READY`, `__CRM_SKIP_V64_STRIP`, `__CRM_SNAP`, `__CRM_UNVEIL`, `__CRM_V78_EDIT_PID`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__V68_WATCH`, `__V69_SYNC`, `__V70_SOLO`, `__V71_CLAIMED`, `__V72_BOOT`, `__V73_BOOT`, `__V73_WATCH`, `__V79_BOOT`, `__V80_BOOT`, `__V80_LOCK`
 
 ### `public/crm-data.js` (57830 بایت)
@@ -16320,10 +16496,10 @@ pause
 - تعداد توابع داخلی: 104
 - نام‌های window که تعریف/بازنویسی می‌کند: `builtinFieldValue`, `downloadCSVFile`, `getOrderItemsFromUI`, `isColShownInList`, `renderDoctorsList`, `renderLiveLocationTab`, `renderOrdersList`, `renderPharmaciesList`, `setupLiveLocationTab`, `setupRepsTab`, `switchTab`, `validateRequiredFields`
 
-### `public/crm-hub.js` (6799 بایت)
+### `public/crm-hub.js` (7553 بایت)
 - نقش: * v11.99.0: نت‌افراز مستقل و سریع — GET فقط origin؛ همگام پس‌زمینه بدون توقف UI */
-- تعداد توابع داخلی: 19
-- نام‌های window که تعریف/بازنویسی می‌کند: `CRM_HUB_DOMAINS`, `__CRM_ORIG_FETCH`, `__CRM_RUNTIME`, `crmHubList`, `fetch`, `v92HubFetch`, `v93HubFetch`, `v94StaticLocal`, `v95OriginOnly`, `v99FastLocal`, `v99Peers`
+- تعداد توابع داخلی: 20
+- نام‌های window که تعریف/بازنویسی می‌کند: `CRM_HUB_DOMAINS`, `__CRM_ORIG_FETCH`, `__CRM_RUNTIME`, `crmHubList`, `fetch`, `v1213AltApi`, `v92HubFetch`, `v93HubFetch`, `v94StaticLocal`, `v95OriginOnly`, `v99FastLocal`, `v99Peers`
 
 ### `public/crm-jalali.js` (25683 بایت)
 - نقش: تقویم شمسی واقعی + نشانگر میلادی JAN..DEC + تقویم کنار فیلد تاریخ + افزودن لحظه‌ای
@@ -16350,7 +16526,7 @@ pause
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (5417 بایت)
-- نقش: const BUILD = "12.12.0";
+- نقش: const BUILD = "12.13.0";
 - تعداد توابع داخلی: 6
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -16475,6 +16651,7 @@ pause
 - `iconFromTabLabel`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v12.js` ← `public/crm-features-v14.js`
 - `isColShownInList`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v11.js` ← `public/crm-features-v9.js`
 - `isKnownPharmacy`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v16.js`
+- `isSecureContext`: تعریف/بازنویسی به ترتیب لود → `public/crm-app.js` ← `public/crm-bundle.js`
 - `lockManualDesigner`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v13.js` ← `public/crm-features-v16.js` ← `public/crm-features-v17.js` ← `public/crm-features-v18.js`
 - `open`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
 - `openRowDetailsModal`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
@@ -17659,7 +17836,7 @@ pause
 
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
-- نسخه سورس package: `12.12.0`
+- نسخه سورس package: `12.13.0`
 - مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a058c2-javad-test1`؛ push/PR فقط از همین شاخه.
 - Production فعال: `https://javad-test1.onrender.com` — نسخه سورس فعلی `12.12.0` است و تا push کاربر روی production همان آخرین دیپلوی قبلی می‌ماند.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.
@@ -18022,9 +18199,9 @@ ndcohub.ir به خاطر گواهی SSL خراب دیگر صدا زده نمی�
 ~~~~~~~~markdown
 # نماینده علمی — طنین طب طاها
 
-> **راهنمای بررسی نسخه جاری:** قبل از هر بررسی GitHub، فایل [`GITHUB_REVIEW_HANDOFF.md`](./GITHUB_REVIEW_HANDOFF.md) و سپس [`PROJECT_GRAPH.md`](./PROJECT_GRAPH.md) را بخوانید. نسخه فعال سورس `12.12.0` است؛ ورودی runtime اصلی `server.js + public/` است و اسکلت Next.js پوشه `src/` مسیر production فعلی نیست.
+> **راهنمای بررسی نسخه جاری:** قبل از هر بررسی GitHub، فایل [`GITHUB_REVIEW_HANDOFF.md`](./GITHUB_REVIEW_HANDOFF.md) و سپس [`PROJECT_GRAPH.md`](./PROJECT_GRAPH.md) را بخوانید. نسخه فعال سورس `12.13.0` است؛ ورودی runtime اصلی `server.js + public/` است و اسکلت Next.js پوشه `src/` مسیر production فعلی نیست.
 >
-> **وضعیت انتشار در 2026-08-31 (نوبت ۱۲۸):** سورس `12.12.0` — رفع سه نقص واقعی (نسخه نامتوازن، نبود `public/index.php`، انتظارات قدیمی تست‌ها)، سربرگ سه‌خطی کنار لوگو، کار کامل با VPN روشن یا خاموش، و همگام سه دامنه: `javad-test1.onrender.com` + `mehraeinpharma.ir` + `ndcohub.com`.
+> **وضعیت انتشار در 2026-08-31 (نوبت ۱۲۸):** سورس `12.13.0` — رفع سه نقص واقعی (نسخه نامتوازن، نبود `public/index.php`، انتظارات قدیمی تست‌ها)، سربرگ سه‌خطی کنار لوگو، کار کامل با VPN روشن یا خاموش، و همگام سه دامنه: `javad-test1.onrender.com` + `mehraeinpharma.ir` + `ndcohub.com`.
 
 این مخزن شامل برنامه CRM/PWA نمایندگان علمی، مدیریت داروخانه/پزشک/سفارش، مسیرها، تارگت، اعلان، پخش و ابزارهای حفظ داده است.
 
@@ -18663,7 +18840,7 @@ pause
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: build-static.js (5622 بایت)
+فایل: build-static.js (5721 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 #!/usr/bin/env node
@@ -18754,6 +18931,7 @@ const htaccess = [
   "<IfModule mod_headers.c>",
   "SetEnvIf Origin \"^https://(javad-test1\\.onrender\\.com|mehraeinpharma\\.ir|ndcohub\\.com)$\" ALLOW_ORIGIN=$0",
   "Header always set Access-Control-Allow-Origin \"%{ALLOW_ORIGIN}e\" env=ALLOW_ORIGIN",
+  "Header always set Strict-Transport-Security \"max-age=15552000; includeSubDomains\" env=HTTPS",
   "Header always set Access-Control-Allow-Methods \"GET, POST, HEAD, OPTIONS\"",
   "Header always set Access-Control-Allow-Headers \"Content-Type, X-CRM-Request, X-CRM-Replace, X-CRM-Sync, X-CRM-Hub-Sync, X-CRM-Build, Cache-Control\"",
   "Header always set Access-Control-Max-Age \"86400\"",
@@ -18963,7 +19141,7 @@ export default nextConfig;
 ~~~~~~~~json
 {
   "name": "namayandeelmi-javad-crm",
-  "version": "12.12.0",
+  "version": "12.13.0",
   "description": "سیستم جامع مدیریت و ویزیت علمی، داروخانه‌ها، پزشکان و سفارشات (CRM / PWA) هماهنگ با Render و Neon",
   "main": "server.js",
   "engines": {
@@ -19060,7 +19238,7 @@ services:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: server.js (43957 بایت)
+فایل: server.js (44652 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // سرور سبک Node.js برای Render — ورود جدا، gzip، health، ژئوکد، محدودیت نرخ
@@ -19071,7 +19249,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "12.12.0";
+const APP_VERSION = "12.13.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -19108,6 +19286,16 @@ const MIME = {
   ".webmanifest": "application/manifest+json; charset=utf-8",
   ".woff2": "font/woff2"
 };
+
+/* v12.13: HSTS برای رندر — فقط روی HTTPS و بدون preload تا قفل ناخواسته نسازد */
+function isHttpsRequest(req) {
+  const proto = String(req.headers["x-forwarded-proto"] || "").toLowerCase().split(",")[0].trim();
+  if (proto) return proto === "https";
+  try { return req.socket && req.socket.encrypted === true; } catch (e) { return false; }
+}
+function hstsHeader(req) {
+  return isHttpsRequest(req) ? { "Strict-Transport-Security": "max-age=15552000; includeSubDomains" } : {};
+}
 
 const loginHits = new Map();
 function rateLimited(ip) {
@@ -19378,16 +19566,17 @@ function send(req, res, status, content, contentType, extra) {
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "X-Frame-Options": preview ? "ALLOWALL" : "SAMEORIGIN",
     "Content-Security-Policy": preview
-      ? "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https: http://ndcohub.ir http://mehraeinpharma.ir https://ndcohub.ir https://mehraeinpharma.ir https://ndcohub.com https://javad-test1.onrender.com; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors *; worker-src 'self' blob:; manifest-src 'self'"
-      : "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https: http://ndcohub.ir http://mehraeinpharma.ir https://ndcohub.ir https://mehraeinpharma.ir https://ndcohub.com https://javad-test1.onrender.com; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests",
+      ? "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https: https://ndcohub.ir https://mehraeinpharma.ir https://ndcohub.com https://javad-test1.onrender.com; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors *; worker-src 'self' blob:; manifest-src 'self'"
+      : "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https: https://ndcohub.ir https://mehraeinpharma.ir https://ndcohub.com https://javad-test1.onrender.com; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests",
     "Permissions-Policy": "geolocation=(self), camera=(), microphone=(), payment=(), usb=(), serial=(), hid=(), bluetooth=(), display-capture=(), accelerometer=(), gyroscope=(), magnetometer=(), autoplay=(), encrypted-media=(), picture-in-picture=()",
     "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
     "Cross-Origin-Resource-Policy": preview ? "cross-origin" : "same-origin",
     "X-Permitted-Cross-Domain-Policies": "none",
     "X-DNS-Prefetch-Control": "off",
     "Origin-Agent-Cluster": "?1"
-  }, extra || {}, corsHeaders(req));
-  if (!preview) headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains";
+  }, extra || {}, corsHeaders(req), hstsHeader(req));
+  /* v12.13: HSTS فقط روی HTTPS ست می‌شود (روی HTTP بی‌اثر و بی‌خطر) */
+  if (!preview && isHttpsRequest(req)) headers["Strict-Transport-Security"] = "max-age=15552000; includeSubDomains";
   if (preview) delete headers["X-Frame-Options"];
   const accept = String(req.headers["accept-encoding"] || "");
   const compressible = /text|javascript|json|svg|csv/.test(contentType || "");
@@ -19480,6 +19669,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  /* v12.13: HSTS — فقط وقتی پاسخ واقعاً روی HTTPS است (هدرِ پروکسی رندر) */
   if (pathname === "/favicon.ico") {
     return sendFile(req, res, path.join(PUBLIC_DIR, "favicon.png"), 86400);
   }
@@ -24079,7 +24269,7 @@ if __name__ == "__main__":
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: .github/workflows/deploy.yml (2659 بایت)
+فایل: .github/workflows/deploy.yml (2558 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~yaml
 name: Build & Mirror & Deploy
@@ -24154,8 +24344,7 @@ jobs:
         run: |
           if [ -z "$KEY" ]; then echo "SYNC_SECRET تنظیم نشده"; exit 0; fi
           sleep 90
-          curl -fsSL -X POST "https://ndcohub.com/api/sync/run" -H "x-sync-key: $KEY" || true
-          curl -fsSL -X POST "https://mehraeinpharma.ir/api/sync/run" -H "x-sync-key: $KEY" || true
+          curl -fsSL -X POST "https://ndcohub.ir/api/sync/run" -H "x-sync-key: $KEY" || true
           curl -fsSL -X POST "https://javad-test1.onrender.com/api/sync/run" -H "x-sync-key: $KEY" || true
 ~~~~~~~~
 
@@ -24178,17 +24367,10 @@ jobs:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: backups/crm-2026-08-31-17-00.json (286 بایت)
+فایل: backups/crm-2026-08-31-18-15.json (286 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~json
-{"_dataGen":"11.81.0","_schemaVersion":"11.81.0","_lastSavedAt":42,"users":[{"id":"sentinel-user","fullName":"اطلاعات قدیمی"}],"formFieldMeta":{"order":{"sentinel":{"order":99}}},"_soloOnly":true,"_soloEpoch":1788195871602,"_soloAt":1788195871602,"_unifiedAt":1788195871602}
-~~~~~~~~
-
-──────────────────────────────────────────────────────────────────────────────────
-فایل: backups/crm-2026-08-31-17-30.json (286 بایت)
-──────────────────────────────────────────────────────────────────────────────────
-~~~~~~~~json
-{"_dataGen":"11.81.0","_schemaVersion":"11.81.0","_lastSavedAt":42,"users":[{"id":"sentinel-user","fullName":"اطلاعات قدیمی"}],"formFieldMeta":{"order":{"sentinel":{"order":99}}},"_soloOnly":true,"_soloEpoch":1788198232891,"_soloAt":1788198232891,"_unifiedAt":1788198232891}
+{"_dataGen":"11.81.0","_schemaVersion":"11.81.0","_lastSavedAt":42,"users":[{"id":"sentinel-user","fullName":"اطلاعات قدیمی"}],"formFieldMeta":{"order":{"sentinel":{"order":99}}},"_soloOnly":true,"_soloEpoch":1788200809849,"_soloAt":1788200809849,"_unifiedAt":1788200809849}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -24935,13 +25117,14 @@ export async function getSavedToken(): Promise<string | null> {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/.htaccess (837 بایت)
+فایل: public/.htaccess (931 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~text
 DirectoryIndex index.php login.html index.html
 <IfModule mod_headers.c>
   SetEnvIf Origin "^https://(javad-test1\.onrender\.com|mehraeinpharma\.ir|ndcohub\.com)$" ALLOW_ORIGIN=$0
   Header always set Access-Control-Allow-Origin "%{ALLOW_ORIGIN}e" env=ALLOW_ORIGIN
+  Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains" env=HTTPS
   Header always set Access-Control-Allow-Methods "GET, POST, HEAD, OPTIONS"
   Header always set Access-Control-Allow-Headers "Content-Type, X-CRM-Request, X-CRM-Replace, X-CRM-Sync, X-CRM-Hub-Sync, X-CRM-Build, Cache-Control"
   Header always set Access-Control-Max-Age "86400"
@@ -24987,7 +25170,7 @@ return array(
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/api.php (19404 بایت)
+فایل: public/api.php (21087 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~text
 <?php
@@ -24998,6 +25181,10 @@ return array(
  * POST فوری پاسخ می‌دهد (queued) و بعد در پس‌زمینه به رندر می‌فرستد.
  */
 header("X-Content-Type-Options: nosniff");
+/* v12.13: HSTS فقط روی درخواست HTTPS (بدون preload) */
+$isHttps = (!empty($_SERVER["HTTPS"]) && strtolower($_SERVER["HTTPS"]) !== "off")
+  || (isset($_SERVER["HTTP_X_FORWARDED_PROTO"]) && strtolower(strval($_SERVER["HTTP_X_FORWARDED_PROTO"])) === "https");
+if ($isHttps) header("Strict-Transport-Security: max-age=15552000; includeSubDomains");
 $origin = isset($_SERVER["HTTP_ORIGIN"]) ? $_SERVER["HTTP_ORIGIN"] : "";
 $allow = array(
   "https://javad-test1.onrender.com",
@@ -25020,7 +25207,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
-define("CRM_APP_VERSION", "12.12.0");
+define("CRM_APP_VERSION", "12.13.0");
 
 /* v12.12: همگام سه دامنه — رندر + دو دامنه نت‌افراز */
 function peer_hosts() {
@@ -25052,7 +25239,16 @@ function merge_state($a, $b) {
   if (!isset($a["settings"]) || !is_array($a["settings"])) $a["settings"] = isset($b["settings"]) && is_array($b["settings"]) ? $b["settings"] : array();
   return $a;
 }
-function sync_all_peers() {
+function sync_all_peers($force) {
+  /* v12.13: مهارِ بار — هاست اشتراکی با انبوه درخواست ۵۰۳ می‌داد */
+  $lock = sys_get_temp_dir() . "/crm_sync_" . md5(__DIR__) . ".lock";
+  if (!$force) {
+    $age = is_file($lock) ? (time() - intval(@file_get_contents($lock))) : 9999;
+    if ($age < 20) {
+      return array("throttled" => true, "retryAfter" => 20 - $age, "peers" => peer_hosts(), "reached" => 0);
+    }
+  }
+  @file_put_contents($lock, strval(time()));
   $peers = peer_hosts();
   $local = read_json($GLOBALS["CRM_DATA_FILE"]);
   $merged = is_array($local) ? $local : array();
@@ -25322,7 +25518,8 @@ if ($p === "sync" || strpos($p, "sync/") === 0) {
     if ($rest !== "") $target = $rest;
   }
   if ($target === "all" || $target === "peers" || $target === "domains") {
-    $r = sync_all_peers();
+    $force = isset($_GET["force"]) && strval($_GET["force"]) === "1";
+    $r = sync_all_peers($force);
     send_json(array(
       "status" => "success",
       "message" => "three-domain sync (render + netafraz)",
@@ -25383,6 +25580,25 @@ if ($p === "sync" || strpos($p, "sync/") === 0) {
     send_json(array("status" => "success", "message" => $mode === "replace" ? "replaced from render" : "pulled from render", "data" => $local));
   }
   send_json(array("status" => "error", "message" => "invalid target", "target" => $target), 400);
+}
+
+/* v12.13: پاک‌سازی ریشه — فقط فایل‌های داده‌ای که برنامه دیگر نمی‌خواند */
+if ($p === "cleanup" || $p === "purge-legacy") {
+  $removed = array();
+  $legacy = array("crm-netafraz-data.json", "crm-netafraz-bulk.json", "server-db.json");
+  foreach ($legacy as $fname) {
+    $fp = __DIR__ . "/" . $fname;
+    if (is_file($fp)) { if (@unlink($fp)) $removed[] = $fname; }
+    $fp2 = __DIR__ . "/data/" . $fname;
+    if (is_file($fp2)) { if (@unlink($fp2)) $removed[] = "data/" . $fname; }
+  }
+  send_json(array(
+    "status" => "success",
+    "message" => "legacy data files removed",
+    "version" => CRM_APP_VERSION,
+    "removed" => $removed,
+    "kept" => array("crm-live-data.json", "crm-live-bulk.json")
+  ));
 }
 
 if (strpos($p, "state") === 0) {
@@ -25684,9 +25900,23 @@ async function sendWhatsappCloud(text, to, token) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-app.js (192143 بایت)
+فایل: public/crm-app.js (193494 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
+// ============================================================================
+// v12.13.0: اجبار HTTPS — GPS و سرویس‌ورکر روی HTTP کار نمی‌کنند
+// (localhost / IP محلی مستثنا هستند تا توسعه محلی نشکند)
+// ============================================================================
+(function () {
+  try {
+    var h = String(window.location.hostname || "");
+    var isLocal = /^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/i.test(h) || /\.local$/i.test(h) || /^\d+\.\d+\.\d+\.\d+$/.test(h);
+    if (window.location.protocol === "http:" && !isLocal && window.location.search.indexOf("nohttps=1") === -1) {
+      window.location.href = "https://" + window.location.host + window.location.pathname + window.location.search;
+    }
+  } catch (e) {}
+})();
+
 // ============================================================================
 // منطق جامع برنامه مدیریت ویزیت علمی، داروخانه‌ها، پزشکان و سفارشات (CRM / PWA)
 // شامل پیاده‌سازی کامل ۲۰ بخش منوی مدیریتی، ۴۹ سطح دسترسی، درصدی بودن، آپلود فایل،
@@ -25735,7 +25965,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "12.12.0";
+const CRM_APP_VERSION = "12.13.0";
 window.CRM_APP_VERSION = CRM_APP_VERSION;
 function v12CanonicalCompany(name) {
   var s = String(name || "").trim();
@@ -26501,6 +26731,10 @@ function setupPharmacyLocationButtons() {
       if (h) h.value = addr;
       alert("موقعیت روی نقشه آمد و آدرس در فیلد لوکیشن نشست:\n" + addr);
     };
+    if (window.isSecureContext === false || (window.location.protocol !== "https:" && !/^(localhost|127\.0\.0\.1)$/.test(window.location.hostname || ""))) {
+      alert("برای دسترسی به موقعیت، از HTTPS استفاده کنید.");
+      return;
+    }
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => apply(pos.coords.latitude, pos.coords.longitude),
@@ -26565,6 +26799,10 @@ function setupDoctorLocationButtons() {
       if (h) h.value = addr;
       alert("موقعیت مطب روی نقشه آمد و آدرس در فیلد لوکیشن نشست:\n" + addr);
     };
+    if (window.isSecureContext === false || (window.location.protocol !== "https:" && !/^(localhost|127\.0\.0\.1)$/.test(window.location.hostname || ""))) {
+      alert("برای دسترسی به موقعیت، از HTTPS استفاده کنید.");
+      return;
+    }
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => apply(pos.coords.latitude, pos.coords.longitude),
@@ -28904,7 +29142,7 @@ function setupPWAServiceWorker() {
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
   /* v12.12: فقط دامنه‌های دارای گواهی خراب از ثبت سرویس‌ورکر مستثنا می‌شوند؛ ndcohub.com سرویس‌ورکر می‌گیرد */
   if (!/(^|\.)ndcohub\.ir$|(^|\.)mehraeinpharma\.ir$/.test(location.hostname || "")) {
-  navigator.serviceWorker.register('/sw.js?v=12.12.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=12.13.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -30032,7 +30270,7 @@ function deleteProductCatalogItem(id) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-bundle.js (1222153 بایت)
+فایل: public/crm-bundle.js (1231539 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 /* crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
@@ -42899,7 +43137,7 @@ button.v19-gps svg{display:block}
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.12.0");
+        var ver=String(window.CRM_APP_VERSION||"12.13.0");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -44436,7 +44674,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.12.0");
+        var ver=String(window.CRM_APP_VERSION||"12.13.0");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -49191,7 +49429,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   if(!window.CRM_HUBS){
     var o=location.origin, L=["https://javad-test1.onrender.com","https://mehraeinpharma.ir"];
-    if(location.protocol==="http:") L=L.concat(["http://mehraeinpharma.ir"]);
+    if(location.protocol==="http:") L=L.concat(["https://mehraeinpharma.ir"]);
     L.unshift(o);
     var s={}, hubs=[];
     L.forEach(function(x){ try{ var u=new URL(x,o); if(location.protocol==="https:"&&u.protocol==="http:")return; if(!s[u.origin]){s[u.origin]=1;hubs.push(u.origin);} }catch(e){} });
@@ -49215,10 +49453,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.12.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.13.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.12.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.13.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -49298,10 +49536,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.12.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.13.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.12.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.13.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -49357,7 +49595,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.12.0");
+  var BUILD = String(window.CRM_APP_VERSION || "12.13.0");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
@@ -49418,10 +49656,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.12.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.13.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.12.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.13.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -49448,10 +49686,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.12.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.13.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.12.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.13.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -49536,7 +49774,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.12.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.13.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -49705,8 +49943,17 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     if (!d || typeof d !== "object") return true;
     return !(d.pharmacies||[]).length && !(d.doctors||[]).length && ((d.users||[]).length <= 1);
   }
+  /* v12.13: روی میزبان Node (رندر/لوکال) سراغ api.php نمی‌رویم — همان ۵۰۳/۴۰۴ همیشگی */
+  function hasPhpHere(){
+    try {
+      var h = String(location.hostname || "");
+      if (/onrender\.com$/i.test(h)) return false;
+      if (/^(localhost|127\.0\.0\.1)$/i.test(h)) return false;
+    } catch (e) {}
+    return true;
+  }
   function urls(){
-    return ["/api.php?path=state", "/api/state"];
+    return hasPhpHere() ? ["/api.php?path=state", "/api/state"] : ["/api/state"];
   }
   function recN(d){
     if (!d) return 0;
@@ -49759,9 +50006,14 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       var st = window.state;
       if (hollow(st)) return;
       var body = typeof serializeStateForLocalStorage === "function" ? serializeStateForLocalStorage(st) : JSON.stringify(st);
-      orig("/api.php?path=state", { method: "POST", headers: { "Content-Type": "application/json" }, body: body, cache: "no-store" })
-        .then(function(r){ if (r && r.ok) return; return orig("/api/state", { method: "POST", headers: { "Content-Type": "application/json" }, body: body, cache: "no-store" }); })
-        .catch(function(){});
+      var list = urls();
+      function post(i){
+        if (i >= list.length) return;
+        orig(list[i], { method: "POST", headers: { "Content-Type": "application/json" }, body: body, cache: "no-store" })
+          .then(function(r){ if (r && r.ok) return; post(i + 1); })
+          .catch(function(){ post(i + 1); });
+      }
+      post(0);
     } catch (e) {}
   }
   window.v12PushNetafraz = pushOrigin;
@@ -49923,7 +50175,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   setTimeout(boot, 1200);
 })();
 
-/* v12.12.0: منزل نمایندگان، قیمت‌گذاری و همگام‌سازی بی‌درنگ */
+/* v12.09.2: منزل نمایندگان، قیمت‌گذاری و همگام‌سازی بی‌درنگ */
 (function(){
   function homeFields(){
     var body=document.getElementById('tableRepHomesBody');
@@ -49956,16 +50208,21 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var TITLE = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
   var BRAND = "طنین طب طاها  TANIN TEB TAHA";
-  var FALLBACK = "12.12.0";
+  var FALLBACK = "12.13.0";
 
   /* ── ۱) سربرگ دقیقاً سه خط؛ شماره نسخه با ارقام لاتین ───────────────── */
   function ver() { try { return String(window.CRM_APP_VERSION || FALLBACK); } catch (e) { return FALLBACK; } }
+  var LEGACY_TITLE = "برنامه ویزیت و گزارشات(مهر آیین نیک دارو)";
   function shownName() {
     try {
       var S = window.state;
       if (S && S.settings) {
         var n = String(S.settings.companyName || "").trim();
-        if (n && !/پخش\s*دارو|شبکه\s*درمان\s*نماینده|سیستم مدیریت ویزیت علمی|^برنامه ویزیت و گزارشات$/.test(n)) return n;
+        if (n === LEGACY_TITLE) n = TITLE; /* v12.13: نام بی‌فاصلهٔ قدیمی یکسان می‌شود */
+        if (n && !/پخش\s*دارو|شبکه\s*درمان\s*نماینده|سیستم مدیریت ویزیت علمی|^برنامه ویزیت و گزارشات$/.test(n)) {
+          if (S.settings.companyName !== n) { try { S.settings.companyName = n; } catch (eW) {} }
+          return n;
+        }
       }
     } catch (e) {}
     return TITLE;
@@ -49986,7 +50243,8 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   paintHeader();
   [0, 40, 120, 300, 700, 1500, 3000, 6000, 12000].forEach(function (ms) { setTimeout(paintHeader, ms); });
   try {
-    var box = document.querySelector(".logo-text") || document.getElementById("crmBuildBadge");
+    /* v12.13: روی body تماشا می‌شود — اگر کل بلوک سربرگ بازنویسی شود هم قفل می‌ماند */
+    var box = document.body || document.querySelector(".logo-text") || document.getElementById("crmBuildBadge");
     if (box && typeof MutationObserver !== "undefined") {
       var lock = 0;
       new MutationObserver(function () {
@@ -50165,6 +50423,174 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if (typeof navigator !== "undefined" && navigator.onLine === false) status("offline");
     } catch (e) {}
   }, 500);
+})();
+
+/* v12.13.0: فرمان درخواست‌ها (رفع ۵۰۳/طوفان درخواست) + HTTPS اجباری + GPS امن + پاک‌سازی یک‌باره + تثبیت سربرگ */
+(function () {
+  "use strict";
+  window.v1213Governor = true;
+  window.v1213Https = true;
+  window.v1213GpsGuard = true;
+  window.v1213Cleanup = true;
+
+  /* ── ۰) اجبار HTTPS — GPS روی HTTP کار نمی‌کند ──────────────────────── */
+  (function () {
+    try {
+      var h = String(location.hostname || "");
+      var local = /^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/i.test(h) || /\.local$/i.test(h) || /^\d+\.\d+\.\d+\.\d+$/.test(h);
+      if (location.protocol === "http:" && !local && !/(\?|&)nohttps=1/.test(location.search)) {
+        var to = "https://" + location.host + location.pathname + location.search + location.hash;
+        if (window.history && history.replaceState) { try { history.replaceState(null, "", to); } catch (eR) {} }
+        try { location.replace(to); } catch (e) { location.href = to; }
+      }
+    } catch (e) {}
+  })();
+
+  /* ── ۱) فرمان درخواست‌ها: صف + بک‌آف نمایی روی ۵xx/۴۲۹ ──────────────── */
+  var MIN_GAP = 3500;      /* حداقل فاصله بین درخواست‌های پس‌زمینه */
+  var CROSS_MS = 6000;     /* تایم‌اوت بین‌دامنه‌ای */
+  var baseFetch = (typeof window.fetch === "function") ? window.fetch.bind(window) : function () { return Promise.reject(new Error("no fetch")); };
+  var chain = Promise.resolve();
+  var lastAt = 0, fails = {}, backoff = {};
+
+  function now() { return Date.now(); }
+  function keyOf(url) { try { return new URL(String(url), location.href).origin; } catch (e) { return String(location.origin || "self"); } }
+  function isCrossUrl(url) {
+    try { return new URL(String(url), location.href).origin !== location.origin; } catch (e) { return false; }
+  }
+  function isApiPath(url) {
+    var s = String(url || "");
+    if (s.indexOf("api.php") >= 0) return true;
+    if (/^\/api(\/|\?|$)/.test(s)) return true;
+    try { return new URL(s, location.href).pathname.indexOf("/api") === 0; } catch (e) { return false; }
+  }
+  function isWrite(opts) {
+    var m = String((opts && opts.method) || "GET").toUpperCase();
+    return m === "POST" || m === "PUT" || m === "PATCH" || m === "DELETE";
+  }
+  function noteFail(k) {
+    fails[k] = (fails[k] || 0) + 1;
+    var f = fails[k];
+    if (f >= 2) backoff[k] = now() + Math.min(300000, 15000 * Math.pow(2, Math.min(f - 2, 4)));
+  }
+  function noteOk(k) { fails[k] = 0; backoff[k] = 0; }
+  window.v1213Status = function () {
+    return { fails: JSON.parse(JSON.stringify(fails)), backoff: JSON.parse(JSON.stringify(backoff)) };
+  };
+  function governed(url, opts) {
+    var k = keyOf(url);
+    try { if (typeof navigator !== "undefined" && navigator.onLine === false) return Promise.reject(new Error("offline")); } catch (eN) {}
+    if (backoff[k] && now() < backoff[k]) return Promise.reject(new Error("backoff:" + k));
+    var run = function () {
+      var wait = Math.max(0, MIN_GAP - (now() - lastAt));
+      return new Promise(function (res) { setTimeout(res, wait); }).then(function () {
+        lastAt = now();
+        return baseFetch(url, opts).then(function (r) {
+          if (r && (r.status === 429 || r.status >= 500)) noteFail(k); else noteOk(k);
+          return r;
+        }, function (e) { noteFail(k); throw e; });
+      });
+    };
+    chain = chain.then(run, run);
+    return chain;
+  }
+  function governedSoft(url, opts, ms) {
+    ms = ms || CROSS_MS;
+    var o = Object.assign({}, opts || {});
+    var ctrl = (typeof AbortController !== "undefined") ? new AbortController() : null;
+    var timer = setTimeout(function () { try { if (ctrl) ctrl.abort(); } catch (eA) {} }, ms);
+    if (ctrl) o.signal = ctrl.signal;
+    return governed(url, o).then(function (r) { clearTimeout(timer); return r; }, function (e) { clearTimeout(timer); throw e; });
+  }
+  window.v1213SoftFetch = governedSoft;
+
+  window.fetch = function (url, opts) {
+    if (isCrossUrl(url)) return governedSoft(url, opts, CROSS_MS);
+    if (isApiPath(url) && !isWrite(opts)) return governed(url, opts); /* فقط کشیدن/همگام صف می‌گیرد */
+    return baseFetch.apply(window, arguments); /* ذخیرهٔ کاربر بی‌درنگ می‌رود */
+  };
+
+  /* ── ۲) مهار ارسال‌های تکراری (۵۰۳ِ هاست از همین بود) ──────────────── */
+  (function () {
+    var fn = window.crmPushStateToServer;
+    if (typeof fn !== "function" || fn._v1213) return;
+    var last = 0, lastSig = "";
+    function sig() {
+      try {
+        var st = window.state || {};
+        return [(st.pharmacies || []).length, (st.doctors || []).length, (st.orders || []).length, st._lastSavedAt || 0].join("|");
+      } catch (e) { return ""; }
+    }
+    var w = function (force) {
+      var s = sig(), t = Date.now();
+      if (!force && s && s === lastSig && (t - last) < 60000) return;  /* داده تغییر نکرده */
+      if (!force && (t - last) < 12000) return;                        /* حداقل فاصله */
+      last = t; lastSig = s;
+      return fn.apply(this, arguments);
+    };
+    w._v1213 = true;
+    w.forcePush = function () { return fn.apply(window, arguments); };
+    window.crmPushStateToServer = w;
+  })();
+
+  /* ── ۳) GPS فقط روی بستر امن (HTTPS) ───────────────────────────────── */
+  (function () {
+    if (typeof navigator === "undefined" || !navigator.geolocation) return;
+    var secure = (typeof window.isSecureContext === "boolean") ? window.isSecureContext : (String(location.protocol) === "https:");
+    if (secure) return;
+    var warned = false;
+    function warn() {
+      if (warned) return;
+      warned = true;
+      try { alert("دسترسی به موقعیت (GPS) فقط روی HTTPS ممکن است. لطفاً برنامه را با https:// باز کنید."); } catch (e) {}
+    }
+    var geo = navigator.geolocation;
+    function deny(err) { warn(); if (typeof err === "function") { try { err({ code: 2, message: "insecure-context" }); } catch (e) {} } }
+    try {
+      geo.getCurrentPosition = function (ok, err) { deny(err); };
+      geo.watchPosition = function (ok, err) { deny(err); return 0; };
+      geo.clearWatch = function () {};
+      window.v1213GpsBlocked = true;
+    } catch (e) {}
+  })();
+
+  /* ── ۴) پاک‌سازی یک‌باره: کش‌ها و کلیدهای قدیمی ────────────────────── */
+  (function () {
+    var FLAG = "CRM_V1213_CLEANED";
+    var done = false;
+    try { done = localStorage.getItem(FLAG) === "1"; } catch (e) {}
+    if (done) return;
+    try { localStorage.setItem(FLAG, "1"); } catch (e) {}
+    var ver = String(window.CRM_APP_VERSION || "12.13.0");
+    try {
+      if (window.caches && typeof caches.keys === "function") {
+        caches.keys().then(function (keys) {
+          Promise.all(keys.map(function (k) { return caches.delete(k); })).then(function () {
+            try { console.log("[v12.13] کش‌های قدیمی پاک شد: " + keys.length); } catch (e) {}
+          });
+        });
+      }
+    } catch (eC) {}
+    try {
+      if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
+        navigator.serviceWorker.getRegistrations().then(function (regs) {
+          Promise.all(regs.map(function (r) { return r.unregister(); })).then(function () {
+            try { console.log("[v12.13] سرویس‌ورکر قدیمی حذف شد: " + regs.length + " (ثبت دوباره با خود برنامه)"); } catch (e) {}
+          });
+        });
+      }
+    } catch (eS) {}
+    /* فقط کلیدهای زائد؛ هرگز CRM_APP_STATE_V2 یا دادهٔ کاربر پاک نمی‌شود */
+    var STALE = ["CRM_NETAFRAZ_DATA", "crm-netafraz-data", "CRM_OLD_BUILD", "crmOldProgramFiles", "CRM_LEGACY_SYNC_AT"];
+    try {
+      Object.keys(localStorage).forEach(function (k) {
+        if (STALE.indexOf(k) >= 0) { try { localStorage.removeItem(k); } catch (e) {} return; }
+        if (/^(CRM_CACHE_RESCUED_|crm-boot|__crm_old)/i.test(k) && k.indexOf(ver) === -1) {
+          try { localStorage.removeItem(k); } catch (e) {}
+        }
+      });
+    } catch (eL) {}
+  })();
 })();
 ~~~~~~~~
 
@@ -63151,7 +63577,7 @@ button.v19-gps svg{display:block}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-hub.js (6799 بایت)
+فایل: public/crm-hub.js (7553 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 /* v11.99.0: نت‌افراز مستقل و سریع — GET فقط origin؛ همگام پس‌زمینه بدون توقف UI */
@@ -63212,10 +63638,10 @@ button.v19-gps svg{display:block}
   function fakeFor(path, method) {
     method = method || "GET";
     if (/health|ping|healthz/.test(path)) {
-      return jsonResp({ ok: true, status: "healthy", platform: "static-local", version: (window.CRM_APP_VERSION || "12.12.0"), offline: true });
+      return jsonResp({ ok: true, status: "healthy", platform: "static-local", version: (window.CRM_APP_VERSION || "12.13.0"), offline: true });
     }
     if (/runtime-config/.test(path)) {
-      return jsonResp({ platform: runtime().platform || "static", baseUrl: runtime().baseUrl || "", hubs: runtime().hubs || [], version: "12.12.0" });
+      return jsonResp({ platform: runtime().platform || "static", baseUrl: runtime().baseUrl || "", hubs: runtime().hubs || [], version: "12.13.0" });
     }
     if (/backup\/status/.test(path)) {
       return jsonResp({ status: "ok", cloud: false, local: true, platform: "static-local" });
@@ -63268,22 +63694,36 @@ button.v19-gps svg{display:block}
     } catch (e) { return false; }
   }
 
+  /* v12.13: روی میزبان Node (رندر/لوکال) اصلاً api.php وجود ندارد — تلاش بی‌جا ۵۰۳/۴۰۴ می‌ساخت */
+  function hasPhp() {
+    try {
+      var h = String(location.hostname || "");
+      if (/onrender\.com$/i.test(h)) return false;
+      if (/^(localhost|127\.0\.0\.1)$/i.test(h)) return false;
+    } catch (e) {}
+    return true;
+  }
   function altApi(path) {
     var p = String(path || "");
     if (p.indexOf("api.php") !== -1) return p;
+    var query = "";
+    var qi = p.indexOf("?");
+    if (qi >= 0) { query = p.slice(qi + 1); p = p.slice(0, qi); }
     var rest = p.replace(/^\/?api\/?/, "");
-    return "/api.php?path=" + rest;
+    /* v12.13: علامت سؤال دوم به & تبدیل می‌شود (قبلاً api.php?path=sync?target=render ساخته می‌شد) */
+    return "/api.php?path=" + rest + (query ? "&" + query.replace(/\?/g, "&") : "");
   }
+  window.v1213AltApi = altApi;
   function tryOrigin(path, opts, ms) {
     ms = ms || 8000;
     return fetchTimeout(ORIGIN + path, opts, ms).then(function (r) {
       if (r && r.ok) return r;
-      if (r && (r.status === 404 || r.status === 405) && path.indexOf("api.php") === -1) {
+      if (hasPhp() && r && (r.status === 404 || r.status === 405) && path.indexOf("api.php") === -1) {
         return fetchTimeout(ORIGIN + altApi(path), opts, ms);
       }
       return r;
     }, function () {
-      if (path.indexOf("api.php") === -1) return fetchTimeout(ORIGIN + altApi(path), opts, ms);
+      if (hasPhp() && path.indexOf("api.php") === -1) return fetchTimeout(ORIGIN + altApi(path), opts, ms);
       throw new Error("origin-fail");
     });
   }
@@ -64076,7 +64516,7 @@ window.__CRM_RUNTIME = window.__CRM_RUNTIME || {
   <style>html.crm-booting body{visibility:visible!important;opacity:1!important}</style>
   <script>
     (function(){
-      var BUILD="12.12.0";window.CRM_APP_VERSION=BUILD;var key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="12.13.0";window.CRM_APP_VERSION=BUILD;var key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       try{
         var GEN="11.81.0";
         var raw=localStorage.getItem("CRM_APP_STATE_V2");
@@ -64104,14 +64544,14 @@ window.__CRM_RUNTIME = window.__CRM_RUNTIME || {
   <meta name="application-name" content="برنامه ویزیت و گزارشات" />
 
   <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="leaflet.css?v=12.12.0" />
+  <link rel="stylesheet" href="leaflet.css?v=12.13.0" />
 
   <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0d9488" />
 
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=12.12.0" />
+  <link rel="stylesheet" href="style.css?v=12.13.0" />
 </head>
 <body>
 
@@ -64131,7 +64571,7 @@ window.__CRM_RUNTIME = window.__CRM_RUNTIME || {
         </div>
         <div class="logo-text">
           <h1 id="headerCompanyNameDisplay">برنامه ویزیت و گزارشات (مهر آیین نیک دارو)</h1>
-          <div id="crmBuildBadge" style="font-size:12px;font-weight:800;color:#0f766e">نسخه 12.12.0</div>
+          <div id="crmBuildBadge" style="font-size:12px;font-weight:800;color:#0f766e">نسخه 12.13.0</div>
           <p id="headerBrandLine">طنین طب طاها&nbsp;&nbsp;TANIN TEB TAHA</p>
         </div>
       </div>
@@ -66649,15 +67089,15 @@ window.__CRM_RUNTIME = window.__CRM_RUNTIME || {
   </div>
 
   <!-- Leaflet JS -->
-  <script src="leaflet.js?v=12.12.0"></script>
+  <script src="leaflet.js?v=12.13.0"></script>
 
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-runtime.js?v=12.12.0"></script>
-  <script src="crm-hub.js?v=12.12.0"></script>
+  <script src="crm-runtime.js?v=12.13.0"></script>
+  <script src="crm-hub.js?v=12.13.0"></script>
   <script>window.v92HubFetch=true;</script>
-  <script src="crm-data.js?v=12.12.0"></script>
-  <script src="crm-app.js?v=12.12.0"></script>
-          <script src="crm-bundle.js?v=12.12.0"></script>
+  <script src="crm-data.js?v=12.13.0"></script>
+  <script src="crm-app.js?v=12.13.0"></script>
+          <script src="crm-bundle.js?v=12.13.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
@@ -66676,7 +67116,7 @@ window.__CRM_RUNTIME = window.__CRM_RUNTIME || {
  * همان index.html برنامه را تحویل می‌دهد (بدون redirect و بدون حلقه).
  * اگر index.html نبود، کاربر را به login.html می‌فرستد.
  */
-$CRM_INDEX_BUILD = "12.12.0";
+$CRM_INDEX_BUILD = "12.13.0";
 $target = __DIR__ . "/index.html";
 
 if (is_file($target)) {
@@ -67453,7 +67893,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
   <script>
-    (function(){var BUILD="12.12.0";window.CRM_APP_VERSION=BUILD;var key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{
+    (function(){var BUILD="12.13.0";window.CRM_APP_VERSION=BUILD;var key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{
       var prev=localStorage.getItem(key)||"";
       localStorage.setItem(key,BUILD);
       if(prev&&prev!==BUILD&&sessionStorage.getItem("CRM_MOBILE_RELOAD")!==BUILD){
@@ -67502,8 +67942,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
   </style>
 </head>
 <body>
-  <script src="crm-runtime.js?v=12.12.0"></script>
-  <script src="crm-hub.js?v=12.12.0"></script>
+  <script src="crm-runtime.js?v=12.13.0"></script>
+  <script src="crm-hub.js?v=12.13.0"></script>
 
   <div class="card">
     <img class="logo" src="logo.png" alt="Tanin Teb Taha">
@@ -67528,7 +67968,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
     <div class="ok" id="st"></div>
     <p class="hint">نمونه مدیر: admin / 123 — شماره 09120000000</p>
     <p class="hint">هاب‌ها از BASE_URL/CRM_HUBS خوانده می‌شوند (Render، ndcohub.ir، mehraeinpharma.ir).</p>
-    <p class="hint" id="crmBuildHint">نسخه 12.12.0 — گوشی و ویندوز باید همین شماره را ببینند</p>
+    <p class="hint" id="crmBuildHint">نسخه 12.13.0 — گوشی و ویندوز باید همین شماره را ببینند</p>
   </div>
   <script>
     (function(){
@@ -67569,7 +68009,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
       var err = document.getElementById("err");
       function showErr(m){ err.style.display="block"; err.textContent=m; }
       function hideErr(){ err.style.display="none"; }
-      fetch("/api/health").then(function(r){return r.json();}).then(function(d){ st.textContent="سرور آماده است — نسخه "+((d&&d.version)||"12.12.0"); var h=document.getElementById("crmBuildHint"); if(h&&d&&d.version&&d.version!=="12.12.0") h.textContent="گوشی نسخه قدیمی می‌بیند ("+d.version+") — یک‌بار کش را خالی کنید یا لینک را با Chrome باز کنید."; }).catch(function(){ st.textContent="در حال بیدار کردن سرور..."; });
+      fetch("/api/health").then(function(r){return r.json();}).then(function(d){ st.textContent="سرور آماده است — نسخه "+((d&&d.version)||"12.13.0"); var h=document.getElementById("crmBuildHint"); if(h&&d&&d.version&&d.version!=="12.13.0") h.textContent="گوشی نسخه قدیمی می‌بیند ("+d.version+") — یک‌بار کش را خالی کنید یا لینک را با Chrome باز کنید."; }).catch(function(){ st.textContent="در حال بیدار کردن سرور..."; });
       document.getElementById("f").addEventListener("submit", function(){
         hideErr();
         var u=document.getElementById("u").value.trim();
@@ -70895,7 +71335,7 @@ self.addEventListener("fetch", (event) => {
 فایل: public/sw.js (5417 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
-const BUILD = "12.12.0";
+const BUILD = "12.13.0";
 const CACHE = "crm-static-v" + BUILD;
 
 async function purgeEveryCache() {
@@ -96755,11 +97195,11 @@ test('Snapp and distributor imports keep exact-row dedupe guards', () => {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/v12.12.0-runtime.test.mjs (8447 بایت)
+فایل: tests/v12.12.0-runtime.test.mjs (8756 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 /**
- * اجرای واقعی لایه v12.12.0 در یک DOM最小 — قانون ۹۲:
+ * اجرای واقعی لایه v12.13.0 در یک DOM最小 — قانون ۹۲:
  * «هیچ بندی بدون مدرک تأییدشده نیست». این فایل لایهٔ جدید را واقعاً اجرا می‌کند و
  * خروجیِ DOM، تایم‌اوتِ درخواست‌های بین‌دامنه‌ای و فهرستِ سه دامنه را بررسی می‌کند.
  */
@@ -96770,8 +97210,12 @@ import { readFileSync } from 'node:fs';
 const BUNDLE = new URL('../public/crm-bundle.js', import.meta.url);
 const src = readFileSync(BUNDLE, 'utf8');
 const MARK = '/* v12.12.0:';
-const layer = src.slice(src.indexOf(MARK));
+const END = '/* v12.13.0:';
+const startIdx = src.indexOf(MARK);
+const endIdx = src.indexOf(END);
+const layer = src.slice(startIdx, endIdx > startIdx ? endIdx : undefined);
 assert.ok(layer.length > 1000, 'لایه v12.12.0 در crm-bundle.js پیدا نشد');
+assert.ok(layer.indexOf('window.v1212NoVpn') >= 0, 'نشانگر لایه ۱۲.۱۲ در برش نیست');
 
 function makeDom(origin = 'https://ndcohub.com') {
   const u = new URL(origin);
@@ -96793,7 +97237,7 @@ function makeDom(origin = 'https://ndcohub.com') {
     hidden: false
   };
   const win = {
-    CRM_APP_VERSION: '12.12.0',
+    CRM_APP_VERSION: '12.13.0',
     addEventListener: () => {},
     state: { pharmacies: [{ id: 'p1' }], doctors: [], orders: [], users: [], settings: { companyName: '' } }
   };
@@ -96830,9 +97274,10 @@ function makeDom(origin = 'https://ndcohub.com') {
     return new Promise((resolve) => setTimeout(() => resolve({ ok: true }), 5));
   }
   const sandboxFetch = function (url, opts) {
-    const s = String(url);
-    if (/^https?:\/\//.test(s) && new URL(s).origin !== loc.origin) return crossFetch(url, opts);
-    return origFetch(url, opts);
+    const str = String(url);
+    let cross = false;
+    try { cross = str.indexOf('http') === 0 && new URL(str).origin !== loc.origin; } catch (e) { cross = false; }
+    return cross ? crossFetch(url, opts) : origFetch(url, opts);
   };
   const live = [];
   const setTimeoutFn = (fn, ms) => { const id = setTimeout(fn, ms); live.push({ id, kind: 'timeout' }); timers.push({ fn, ms }); return id; };
@@ -96849,20 +97294,20 @@ function makeDom(origin = 'https://ndcohub.com') {
   return { els, timers, intervals, calls, win, observerOptions, loc, nav, sandboxFetch, cleanup };
 }
 
-test('v12.12.0 runtime: header paints exactly the three requested lines', (t) => {
+test('v12.13.0 runtime: header paints exactly the three requested lines', (t) => {
   const env = makeDom();
   t.after(() => env.cleanup());
   const els = env.els;
   assert.equal(els.headerCompanyNameDisplay.textContent, 'برنامه ویزیت و گزارشات (مهر آیین نیک دارو)');
-  assert.equal(els.crmBuildBadge.textContent, 'نسخه 12.12.0');
+  assert.equal(els.crmBuildBadge.textContent, 'نسخه 12.13.0');
   assert.equal(els.headerBrandLine.textContent, 'طنین طب طاها  TANIN TEB TAHA');
   /* ارقام لاتین — نه فارسی */
   assert.match(els.crmBuildBadge.textContent, /[0-9]/);
   assert.doesNotMatch(els.crmBuildBadge.textContent, /[۰-۹]/);
-  assert.match(els.crmBuildHint.textContent, /نسخه 12\.12\.0/);
+  assert.match(els.crmBuildHint.textContent, /نسخه 12\.13\.0/);
 });
 
-test('v12.12.0 runtime: header is protected by a MutationObserver (legacy painters cannot overwrite it)', (t) => {
+test('v12.13.0 runtime: header is protected by a MutationObserver (legacy painters cannot overwrite it)', (t) => {
   const env = makeDom();
   t.after(() => env.cleanup());
   const { observerOptions, els } = env;
@@ -96870,7 +97315,7 @@ test('v12.12.0 runtime: header is protected by a MutationObserver (legacy painte
   assert.ok(observerOptions.opts.childList && observerOptions.opts.subtree && observerOptions.opts.characterData);
 });
 
-test('v12.12.0 runtime: peer list is the three domains minus self', () => {
+test('v12.13.0 runtime: peer list is the three domains minus self', () => {
   for (const origin of ['https://ndcohub.com', 'https://mehraeinpharma.ir', 'https://javad-test1.onrender.com']) {
     const envP = makeDom(origin);
     const win = envP.win;
@@ -96888,7 +97333,7 @@ test('v12.12.0 runtime: peer list is the three domains minus self', () => {
   }
 });
 
-test('v12.12.0 runtime: cross-origin requests never block the app (timeout really fires)', async (t) => {
+test('v12.13.0 runtime: cross-origin requests never block the app (timeout really fires)', async (t) => {
   const env = makeDom('https://ndcohub.com');
   t.after(() => env.cleanup());
   /* ۱) نشانگرهای لایه */
@@ -96918,6 +97363,118 @@ test('v12.12.0 runtime: cross-origin requests never block the app (timeout reall
   const before = env.calls.cross.length;
   await env.win.v1212SoftFetch('https://javad-test1.onrender.com/api/state', {}, 120).catch(() => {});
   assert.equal(env.calls.cross.length, before, 'در حالت آفلاین نباید درخواستی فرستاده شود');
+});
+~~~~~~~~
+
+──────────────────────────────────────────────────────────────────────────────────
+فایل: tests/v12.13.0-runtime.test.mjs (5051 بایت)
+──────────────────────────────────────────────────────────────────────────────────
+~~~~~~~~javascript
+/**
+ * اجرای واقعی لایه v12.13.0 — فرمان درخواست‌ها، HTTPS، GPS، پاک‌سازی یک‌باره.
+ * هدف: ثابت کنیم انبوه درخواست‌ها (۵۰۳ِ هاست) مهار می‌شود و ذخیرهٔ کاربر بی‌درنگ می‌ماند.
+ */
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+
+const src = readFileSync(new URL('../public/crm-bundle.js', import.meta.url), 'utf8');
+const MARK = '/* v12.13.0:';
+const layer = src.slice(src.lastIndexOf(MARK));
+assert.ok(layer.indexOf('window.v1213Governor') >= 0, 'نشانگر لایه در برش نیست');
+assert.ok(layer.length > 1500, 'لایه v12.13.0 پیدا نشد');
+
+function makeEnv(opts = {}) {
+  const status = opts.status || 200;
+  const els = {
+    headerCompanyNameDisplay: { textContent: '' },
+    crmBuildBadge: { textContent: 'قدیمی' },
+    headerBrandLine: { textContent: '' },
+    crmBuildHint: { textContent: '' },
+    globalOnlineStatusBadge: { textContent: '' }
+  };
+  const store = new Map();
+  const calls = [];
+  const live = [];
+  const win = {
+    CRM_APP_VERSION: '12.13.0',
+    addEventListener: () => {},
+    caches: { keys: () => Promise.resolve(['crm-static-v11']), },
+    state: { pharmacies: [{ id: 'p1' }], doctors: [], orders: [], users: [], settings: { companyName: '' } }
+  };
+  const doc = {
+    getElementById: (id) => els[id] || null,
+    querySelector: () => null,
+    addEventListener: () => {},
+    body: { nodeName: 'BODY' },
+    hidden: false
+  };
+  const loc = { protocol: 'https:', hostname: 'ndcohub.com', host: 'ndcohub.com', origin: 'https://ndcohub.com', href: 'https://ndcohub.com/', search: '' };
+  const nav = { onLine: true };
+  const localStorage = {
+    getItem: (k) => (store.has(k) ? store.get(k) : null),
+    setItem: (k, v) => store.set(k, String(v)),
+    removeItem: (k) => store.delete(k)
+  };
+  function MutationObserver() { this.observe = () => {}; }
+  const sandboxFetch = function (url, o) {
+    calls.push({ url, o, at: Date.now() });
+    return Promise.resolve({ ok: status >= 200 && status < 300, status, json: () => Promise.resolve({ status: 'empty' }) });
+  };
+  win.fetch = sandboxFetch;
+  const runner = new Function(
+    'window', 'document', 'location', 'navigator', 'localStorage',
+    'setTimeout', 'setInterval', 'clearTimeout', 'MutationObserver', 'fetch', 'alert',
+    '"use strict";' + layer
+  );
+  runner(win, doc, loc, nav, localStorage,
+    (fn, ms) => { const id = setTimeout(fn, ms); live.push({ id, k: 't' }); return id; },
+    (fn, ms) => { const id = setInterval(fn, ms); live.push({ id, k: 'i' }); return id; },
+    (id) => clearTimeout(id), MutationObserver, sandboxFetch, () => {});
+  return { win, calls, store, els, cleanup: () => live.forEach((x) => (x.k === 't' ? clearTimeout(x.id) : clearInterval(x.id))) };
+}
+
+test('v12.13.0 runtime: request governor spaces background calls and backs off after 5xx', async (t) => {
+  const env = makeEnv({ status: 503 });
+  t.after(() => env.cleanup());
+  assert.equal(env.win.v1213Governor, true);
+
+  /* ۱) نخستین درخواستِ پس‌زمینه بی‌درنگ می‌رود */
+  await env.win.fetch('/api/state').catch(() => {});
+  assert.equal(env.calls.length, 1);
+
+  /* ۲) دومین ۵۰۳ باعث بک‌آف می‌شود (فاصلهٔ حداقل رعایت می‌شود) */
+  const t0 = Date.now();
+  await env.win.fetch('/api/state').catch(() => {});
+  assert.ok(Date.now() - t0 >= 3000, 'فاصلهٔ حداقل بین دو درخواست رعایت نشد');
+
+  /* ۳) بعد از بک‌آف، درخواست بعدی بی‌درنگ رد می‌شود (هاست بمباران نمی‌شود) */
+  const t1 = Date.now();
+  await assert.rejects(env.win.fetch('/api/state'), /backoff/);
+  assert.ok(Date.now() - t1 < 800, 'بک‌آف باعث توقف ارسال نشد');
+  assert.equal(env.calls.length, 2, 'در زمان بک‌آف نباید درخواستی فرستاده شود');
+});
+
+test('v12.13.0 runtime: user saves are never queued or delayed', async (t) => {
+  const env = makeEnv({ status: 200 });
+  t.after(() => env.cleanup());
+  const t0 = Date.now();
+  await env.win.fetch('/api/state', { method: 'POST', body: '{}' });
+  assert.ok(Date.now() - t0 < 800, 'ذخیرهٔ کاربر نباید پشت صف بماند');
+  assert.equal(env.calls.length, 1);
+  assert.equal(env.calls[0].o.method, 'POST');
+});
+
+test('v12.13.0 runtime: one-time cleanup purges caches but never user data', () => {
+  const env = makeEnv();
+  env.cleanup();
+  /* کلید پاک‌سازی ثبت می‌شود تا هر بار تکرار نشود */
+  assert.equal(env.store.get('CRM_V1213_CLEANED'), '1');
+  /* دادهٔ کاربر هرگز نباید پاک شود */
+  assert.equal(env.store.has('CRM_APP_STATE_V2'), false); /* چیزی برای پاک شدن نبود */
+  assert.equal(env.win.v1213Cleanup, true);
+  assert.equal(env.win.v1213Https, true);
+  assert.equal(env.win.v1213GpsGuard, true);
 });
 ~~~~~~~~
 
@@ -97244,7 +97801,7 @@ test('multi-part prompts require a real acceptance checklist before ZIP delivery
 });
 
 test('next-chat GitHub handoff records exact publish truth and engine map', () => {
-  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*12\.12.0/);
+  assert.match(githubHandoff,/نسخه آماده سورس:[\s\S]*12\.13.0/);
   assert.match(githubHandoff,/4984d17/);assert.match(githubHandoff,/Resource not accessible by integration/);
   assert.match(githubHandoff,/Production[\s\S]*11\.20\.0/);
   assert.match(githubHandoff,/موتور پاک‌سازی خودکار کش/);assert.match(githubHandoff,/موتورهای پایداری داده/);
@@ -97296,7 +97853,7 @@ test('new build clears only old asset caches before revealing app and prevents m
 test('v38 cache rescue automatically forces a fresh build without deleting CRM data', () => {
   const login = read('../public/login.html');
   assert.match(server,/pathname === "\/cache-reset"/);assert.match(server,/Clear-Site-Data/);
-  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "12\.12.0"/);
+  assert.match(server,/"X-CRM-Build": APP_VERSION/);assert.match(server,/const APP_VERSION = "12\.13.0"/);
   assert.match(html,/\/api\/health\?__crm_nocache=/);assert.match(html,/\/cache-reset\?to=/);assert.match(html,/d\.version!==BUILD/);
   assert.match(login,/CRM_CACHE_RESCUED_/);assert.match(login,/\/cache-reset\?to=/);
   assert.match(sw,/function purgeEveryCache/);assert.match(sw,/CRM_BUILD_ACTIVE/);assert.match(sw,/cache: "reload"/);
@@ -97306,7 +97863,7 @@ test('v38 cache rescue automatically forces a fresh build without deleting CRM d
     assert.doesNotMatch(source,/indexedDB\.deleteDatabase\s*\(/);
     assert.doesNotMatch(source,/removeItem\(["']CRM_APP_STATE_V2/);
   }
-  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=12\.12.0'/);
+  assert.match(app,/CRM_BUILD_ACTIVE/);assert.match(app,/register\('\/sw\.js\?v=12\.13.0'/);
 });
 
 test('security hardening blocks dangerous device APIs, cross-origin writes, executables and formula injection', () => {
@@ -97321,7 +97878,7 @@ test('security hardening blocks dangerous device APIs, cross-origin writes, exec
 });
 
 test('PWA activation is automatic and diagnostics never request manual refresh', () => {
-  assert.match(app,/register\('\/sw\.js\?v=12\.12.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
+  assert.match(app,/register\('\/sw\.js\?v=12\.13.0', \{ scope: '\/', updateViaCache: 'none' \}\)/);
   assert.match(app,/navigator\.serviceWorker\.ready/);
   assert.match(app,/postMessage\('skipWaiting'\)/);
   assert.match(sw,/self\.clients\.claim\(\)/);
@@ -97416,7 +97973,7 @@ test('v11.43.1 engine button feedback + permanent version watchdog', () => {
 test('v11.61.0 safe cache-hardening', () => {
   const html = read('../public/index.html'); const app = read('../public/crm-app.js');
   assert.match(html,/http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/);
-  assert.match(app,/CRM_APP_VERSION = "12.12.0"/);
+  assert.match(app,/CRM_APP_VERSION = "12.13.0"/);
   assert.match(app,/بارگذاری شد/);
 });
 
@@ -97658,8 +98215,8 @@ test('v11.72.0 durable target ops + mm gap + row number', () => {
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(b, /v11\.68\.0/);
   assert.match(b, /v68-edit-tgt/);
   assert.match(b, /v68-del-tgt/);
@@ -97679,8 +98236,8 @@ test('v11.72.0 server-authoritative unify + durable delete + live mm/row', () =>
   const b = read('../public/crm-bundle.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(srv, /function naturalRecordKey/);
   assert.match(srv, /if \(id && deleted && deleted\[id\] && recStamp\(r\) <= Number\(deleted\[id\]\)\) return/);
   assert.match(b, /v11\.69\.0/);
@@ -97702,8 +98259,8 @@ test('v11.72.0 solo device + no cache-reset loop', () => {
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(srv, /x-crm-replace/);
   assert.match(srv, /_soloOnly/);
   assert.match(srv, /CRM_RESET_LOCK/);
@@ -97724,8 +98281,8 @@ test('v11.72.0 single script load + 404 not login + solo replace', () => {
   assert.equal((html.match(/crm-app\.js\?v=/g)||[]).length, 1);
   assert.equal((html.match(/crm-bundle\.js\?v=/g)||[]).length, 1);
   assert.equal((html.match(/<\/html>/g)||[]).length, 1);
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(srv, /v11.71: Clear-Site-Data/);
   assert.match(b, /v11\.71\.0/);
   assert.match(b, /CRM_SOLO_CLAIM/);
@@ -97738,9 +98295,9 @@ test('v11.72.0 server-first paint + no-spin qty + per-row ops + dist achieved/re
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
-  assert.match(app, /register\('\/sw\.js\?v=12\.12.0'/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
+  assert.match(app, /register\('\/sw\.js\?v=12\.13.0'/);
   assert.match(b, /v11\.72\.0/);
   assert.match(b, /__v72boot/);
   assert.match(b, /function adoptServerExact/);
@@ -97771,17 +98328,17 @@ test('v11.73.0 live state bind + delayed unveil + durable dist save + kill old o
   const html = read('../public/index.html');
   const sw = read('../public/sw.js');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
-  assert.match(sw, /const BUILD = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
+  assert.match(sw, /const BUILD = "12.13.0"/);
   assert.match(app, /function bindLiveWindowState/);
   assert.match(app, /window\.__CRM_GET_STATE/);
   assert.match(app, /window\.renderPharmaciesList/);
-  assert.match(html, /var BUILD="12.12.0"/);
+  assert.match(html, /var BUILD="12.13.0"/);
   assert.match(html, /window\.__CRM_UNVEIL/);
   assert.match(html, /if\(!window\.__CRM_UNVEILED\)window\.__CRM_UNVEIL\(\);},5000\)/);
   assert.doesNotMatch(html, /classList\.remove\("crm-booting"\);},800\)/);
-  assert.match(login, /var BUILD="12.12.0"/);
+  assert.match(login, /var BUILD="12.13.0"/);
   assert.match(b, /v11\.73\.0/);
   assert.match(b, /__v73boot/);
   assert.match(b, /function adoptExact/);
@@ -97803,8 +98360,8 @@ test('v11.74.0 mashateb sales mapping like daya/shafaarad', () => {
   const v20file = read('../public/crm-features-v20.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(b, /MASHATEB_CODE_MAP=\{1001:186101,1002:186102,1003:186103,1004:186104,1005:186105,1006:186106,1007:186107\}/);
   assert.match(v20file, /MASHATEB_CODE_MAP=\{1001:186101,1002:186102,1003:186103,1004:186104,1005:186105,1006:186106,1007:186107\}/);
   assert.match(b, /else if\(id==="mashateb"\)\{x\.date=2;x\.qty=10;x\.giftQty=11;x\.pharmacy=9;/);
@@ -97829,8 +98386,8 @@ test('v11.76.0 designer live apply + geo autofill off + mashateb col3 date + db 
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const v20file = read('../public/crm-features-v20.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(b, /v11\.75\.0/);
   assert.match(b, /function applyDesignerNow/);
   assert.match(b, /function applyPaintedMeta/);
@@ -97853,8 +98410,8 @@ test('v11.76.0 bulk archive lock + geo nocombo + pharmacy name no subsets + acti
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const v20file = read('../public/crm-features-v20.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(b, /v11\.76\.0/);
   assert.match(b, /function bulkUnion/);
   assert.match(b, /function bulkCount/);
@@ -97883,8 +98440,8 @@ test('v11.77.0 product pricing tab current/new boxes + reverse calc + jalali app
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const data = read('../public/crm-data.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(app, /tab-product-pricing/);
   assert.match(html, /id="tab-product-pricing"/);
   assert.match(html, /id="v77CurrentPricesBody"/);
@@ -97919,8 +98476,8 @@ test('v11.78.0 consumer price + legal margin + row edit VAT + live designer + in
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(html, /id="productConsumerPrice"/);
   assert.match(html, /قیمت مصرف‌کننده \(ریال\)/);
   assert.match(app, /consumerPrice: consPrice \|\| phPrice/);
@@ -97949,8 +98506,8 @@ test('v11.79.0 this-device-only restore + no duplicate product code column', () 
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(app, /v20-product-code/);
   assert.ok(b.includes("v11.79.0"));
   assert.ok(b.includes("v11.79.0"));
@@ -97967,15 +98524,15 @@ test('v11.80.0 server-only lock + new consumer from current times increase', () 
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const data = read('../public/crm-data.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.80.0"));
   assert.match(b, /function restoreThisDevice/);
   assert.match(b, /d\.cons=newCons/);
   assert.match(b, /legacy-locked/);
   assert.match(srv, /function stripLegacySample/);
   assert.match(srv, /reason: "legacy-locked"/);
-  assert.match(html, /var BUILD="12.12.0"/);
+  assert.match(html, /var BUILD="12.13.0"/);
   assert.match(data, /pharmacies: \[\]/);
   assert.ok(!data.includes("داروخانه دکتر عرفانی"));
   const ctx={result:null};
@@ -97991,8 +98548,8 @@ test('v11.81.0 purge previous-system data + new consumer formula cell', () => {
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.81.0"));
   assert.match(b, /v81-new-cons/);
   assert.match(srv, /function fenceOldSystem/);
@@ -98011,8 +98568,8 @@ test('v11.82.0 designer order applies to live form and list', () => {
   const b = read('../public/crm-bundle.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.82.0"));
   assert.match(b, /function applySavedLayout/);
   assert.match(b, /window.applySavedLayoutV82/);
@@ -98028,8 +98585,8 @@ test('v11.83.0 no jump typing + iran mobile tiles and login persist', () => {
   const login = read('../public/login.html');
   const html = read('../public/index.html');
   const official = read('../OFFICIAL_FILELIST.txt');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.83.0"));
   assert.match(b, /function typingInLiveForm/);
   assert.match(srv, /\/api\/tiles\//);
@@ -98047,8 +98604,8 @@ test('v11.84.0 live dashboard filters + no form jump + stable order lock', () =>
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.84.0"));
   assert.match(html, /id="v84DashYear"/);
   assert.match(html, /id="v84DashProvince"/);
@@ -98062,8 +98619,8 @@ test('v11.85.0 routes one ops column + geo search all + dashboard labels', () =>
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.85.0"));
   assert.match(html, /v85-geo-search/);
   assert.match(html, /data-for="routeManagerProvince"/);
@@ -98079,8 +98636,8 @@ test('v11.86.0 never wipe user pharmacies + route click + same mobile version', 
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.86.0"));
   assert.match(app, /recoverWipedUserData/);
   assert.doesNotMatch(srv, /LEGACY_WIPE_KEYS\.forEach/);
@@ -98095,8 +98652,8 @@ test('v11.87.0 route no shake + share dedupe + login session + dist grand + leav
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.87.0"));
   assert.match(b, /data-v87sig/);
   assert.match(b, /window.v87ShareDedupe/);
@@ -98118,8 +98675,8 @@ test('v11.88.0 one route ops + login page required', () => {
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.88.0"));
   assert.match(b, /window.v88OneColumnRouteOps/);
   assert.match(srv, /pathname === "\/" \|\| pathname === "\/login"/);
@@ -98134,8 +98691,8 @@ test('v11.89.0 sw same build + 15min backup + compact routes', () => {
   const srv = read('../server.js');
   const html = read('../public/index.html');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.89.0"));
   assert.match(app, /const build = CRM_APP_VERSION/);
   assert.match(srv, /15 \* 60 \* 1000/);
@@ -98153,8 +98710,8 @@ test('v11.90.0 mobile menu + specialty + own-data + routes + std buttons', () =>
   const html = read('../public/index.html');
   const data = read('../public/crm-data.js');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.90.0"));
   assert.match(b, /window.v90OwnOnly/);
   assert.match(b, /window.v90PaintRoutes/);
@@ -98176,8 +98733,8 @@ test('v11.91.0 mobile pane visible + full specialty options + route pointerdown 
   const html = read('../public/index.html');
   const data = read('../public/crm-data.js');
   const css = read('../public/style.css');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.91.0"));
   assert.match(b, /window.v91ShowPane/);
   assert.match(b, /window.v91FillDoctorSpecialty/);
@@ -98199,8 +98756,8 @@ test('v11.92.0 iranian hubs cors + favicon + file login/panel + hub fetch', () =
   const html = read('../public/index.html');
   const login = read('../public/login.html');
   const man = read('../public/manifest.json');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.92.0"));
   assert.match(srv, /function isCrmHubHost/);
   assert.match(srv, /ndcohub\.ir/);
@@ -98226,13 +98783,13 @@ test('v11.93.0 static netafraz + env hubs + sync-all + timeout hub', () => {
   const sync = read('../sync-all.js');
   const st = read('../build-static.js');
   const gitignore = read('../.gitignore');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(srv, /function runtimeHubs/);
   assert.match(srv, /\/api\/runtime-config/);
   assert.match(srv, /PLATFORM/);
-  assert.match(html, /crm-hub\.js\?v=12\.12.0/);
-  assert.match(html, /crm-runtime\.js\?v=12\.12.0/);
+  assert.match(html, /crm-hub\.js\?v=12\.13.0/);
+  assert.match(html, /crm-runtime\.js\?v=12\.13.0/);
   assert.match(hub, /12000/);
   assert.match(hub, /function retry/);
   assert.match(rt, /__CRM_RUNTIME/);
@@ -98257,10 +98814,10 @@ test('v11.94.0 netafraz php api independent + leaflet root + no api 404 fake', (
   const php = read('../public/api.php');
   const ht = read('../public/.htaccess');
   const st = read('../build-static.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
-  assert.match(html, /leaflet.css\?v=12\.12.0/);
-  assert.match(html, /leaflet.js\?v=12\.12.0/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
+  assert.match(html, /leaflet.css\?v=12\.13.0/);
+  assert.match(html, /leaflet.js\?v=12\.13.0/);
   assert.match(hub, /v94StaticLocal/);
   assert.match(hub, /fakeFor/);
   assert.match(php, /crm-netafraz-data.json/);
@@ -98277,8 +98834,8 @@ test('v11.95.0 same version badge + origin-only hubs + taha company name', () =>
   const b = read('../public/crm-bundle.js');
   const hub = read('../public/crm-hub.js');
   const data = read('../public/crm-data.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.95.0"));
   assert.match(b, /window.v95OriginOnly/);
   assert.match(b, /window.v95SameBadge/);
@@ -98286,9 +98843,9 @@ test('v11.95.0 same version badge + origin-only hubs + taha company name', () =>
   assert.match(hub, /v95OriginOnly/);
   assert.doesNotMatch(hub, /\(window\.CRM_HUBS \|\| \[\]\)\.forEach/);
   assert.match(data, /companyName: "برنامه ویزیت و گزارشات \(مهر آیین نیک دارو\)"/);
-  assert.match(html, /نسخه 12\.12\.0/);
+  assert.match(html, /نسخه 12\.13\.0/);
   assert.match(html, /id="headerCompanyNameDisplay">برنامه ویزیت و گزارشات \(مهر آیین نیک دارو\)/);
-  assert.match(login, /نسخه 12\.12\.0/);
+  assert.match(login, /نسخه 12\.13\.0/);
   assert.match(app, /v95CompanyName/);
 });
 test('v11.96.0 netafraz api/sync to render + gen stamp + no empty wipe', () => {
@@ -98298,8 +98855,8 @@ test('v11.96.0 netafraz api/sync to render + gen stamp + no empty wipe', () => {
   const hub = read('../public/crm-hub.js');
   const b = read('../public/crm-bundle.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(srv, /pathname === "\/api\/sync"/);
   assert.match(php, /\$p === "sync"/);
   assert.match(php, /target=render|target === "render"/);
@@ -98315,7 +98872,7 @@ test('v11.96.0 netafraz api/sync to render + gen stamp + no empty wipe', () => {
   assert.ok(b.includes("v11.96.0"));
   assert.match(b, /window.v96NetafrazSync/);
   assert.match(b, /\/api\/sync\?target=render/);
-  assert.match(html, /crm-app\.js\?v=12\.12.0/);
+  assert.match(html, /crm-app\.js\?v=12\.13.0/);
 });
 test('v11.97.0 netafraz adopts render data on new build without empty wipe', () => {
   const app = read('../public/crm-app.js');
@@ -98324,8 +98881,8 @@ test('v11.97.0 netafraz adopts render data on new build without empty wipe', () 
   const st = read('../build-static.js');
   const b = read('../public/crm-bundle.js');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.ok(b.includes("v11.97.0"));
   assert.match(b, /window.v97CanonSync/);
   assert.match(b, /mode=replace/);
@@ -98338,7 +98895,7 @@ test('v11.97.0 netafraz adopts render data on new build without empty wipe', () 
   assert.match(st, /DEFAULT_RENDER/);
   assert.match(st, /javad-test1\.onrender\.com/);
   assert.match(st, /crm-netafraz-data\.json/);
-  assert.match(html, /نسخه 12\.12\.0/);
+  assert.match(html, /نسخه 12\.13\.0/);
 });
 test('v11.98.0 sw always returns Response + netafraz no Options 500 + valid api-config', () => {
   const app = read('../public/crm-app.js');
@@ -98351,9 +98908,9 @@ test('v11.98.0 sw always returns Response + netafraz no Options 500 + valid api-
   const html = read('../public/index.html');
   const login = read('../public/login.html');
   const cfg = read('../public/api-config.php');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
-  assert.match(sw, /const BUILD = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
+  assert.match(sw, /const BUILD = "12.13.0"/);
   assert.match(sw, /function fallbackResponse/);
   assert.match(sw, /asResponse/);
   assert.match(sw, /fetchWithTimeout/);
@@ -98370,7 +98927,7 @@ test('v11.98.0 sw always returns Response + netafraz no Options 500 + valid api-
   assert.match(b, /window.v98BootFix/);
   assert.match(html, /nosw/);
   assert.match(login, /nosw/);
-  assert.match(html, /نسخه 12\.12\.0/);
+  assert.match(html, /نسخه 12\.13\.0/);
 });
 test('v11.99.0 independent fast netafraz + background peer sync + ignore old files', () => {
   const app = read('../public/crm-app.js');
@@ -98379,8 +98936,8 @@ test('v11.99.0 independent fast netafraz + background peer sync + ignore old fil
   const hub = read('../public/crm-hub.js');
   const sw = read('../public/sw.js');
   const b = read('../public/crm-bundle.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(php, /crm-live-data.json/);
   assert.match(php, /crm-netafraz-data.json/);
   assert.match(php, /queued/);
@@ -98404,8 +98961,8 @@ test('v12.00.0 netafraz index.php no 403 + same badge + taha company', () => {
   const b = read('../public/crm-bundle.js');
   const html = read('../public/index.html');
   const login = read('../public/login.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(app, /window.CRM_APP_VERSION = CRM_APP_VERSION/);
   assert.match(app, /window.v12TahaName/);
   assert.match(app, /v12CanonicalCompany/);
@@ -98419,7 +98976,7 @@ test('v12.00.0 netafraz index.php no 403 + same badge + taha company', () => {
   assert.match(b, /window.v12SameBadge/);
   assert.match(html, /window.CRM_APP_VERSION=BUILD/);
   assert.match(login, /window.CRM_APP_VERSION=BUILD/);
-  assert.match(html, /نسخه 12\.12\.0/);
+  assert.match(html, /نسخه 12\.13\.0/);
 });
 test('v12.01.0 no ndcohub cert fetch + osm tiles on static + pull then push', () => {
   const app = read('../public/crm-app.js');
@@ -98427,8 +98984,8 @@ test('v12.01.0 no ndcohub cert fetch + osm tiles on static + pull then push', ()
   const php = read('../public/api.php');
   const hub = read('../public/crm-hub.js');
   const b = read('../public/crm-bundle.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(hub, /ndcohub/);
   assert.match(app, /tile\.openstreetmap\.de/);
   assert.match(app, /\/api\/tiles\/\{z\}\/\{x\}\/\{y\}\.png/);
@@ -98448,8 +99005,8 @@ test('v12.02.0 auto pull render only + ops restore + compact mobile', () => {
   const b = read('../public/crm-bundle.js');
   const css = read('../public/style.css');
   const ht = read('../public/.htaccess');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(app, /v12TakeRegisteredOnly/);
   assert.match(app, /window.v12OpsOnlyRestore/);
   /* v12.12: سه دامنه با هم همگام می‌شوند */
@@ -98466,8 +99023,8 @@ test('v12.03.0 upload does not wipe pharmacies + skip live json in static', () =
   const srv = read('../server.js');
   const st = read('../build-static.js');
   const b = read('../public/crm-bundle.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(app, /v99DropOldProgramFiles/);
   assert.match(app, /هرگز داروخانه\/پزشک\/سفارش را با آپلود نسخه خالی نکن/);
   assert.match(st, /crm-live-data\.json/);
@@ -98480,8 +99037,8 @@ test('v12.04.0 data folder live json auto-create not in js root', () => {
   const srv = read('../server.js');
   const php = read('../public/api.php');
   const st = read('../build-static.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(php, /crm-live-data.json/);
   assert.match(php, /\$DATA_DIR/);
   assert.match(php, /function ensure_dir/);
@@ -98493,8 +99050,8 @@ test('v12.05.0 flat static-build files only + fill empty from render', () => {
   const srv = read('../server.js');
   const php = read('../public/api.php');
   const st = read('../build-static.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(st, /function copyFlat/);
   assert.match(st, /crm-netafraz-data.json/);
   assert.match(php, /function fill_if_empty/);
@@ -98509,8 +99066,8 @@ test('v12.06.0 device sync netafraz origin api.php path state', () => {
   const hub = read('../public/crm-hub.js');
   const b = read('../public/crm-bundle.js');
   const php = read('../public/api.php');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(hub, /function altApi/);
   assert.match(hub, /api\.php\?path=/);
   assert.match(b, /window.v1206DeviceSync/);
@@ -98524,8 +99081,8 @@ test('v12.07.0 form header pricing routes homes persist', () => {
   const b = read('../public/crm-bundle.js');
   const css = read('../public/style.css');
   const html = read('../public/index.html');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(b, /window.v1207FormFix/);
   assert.match(b, /roundNice/);
   assert.match(css, /v12\.07\.0: هدر سبز/);
@@ -98535,19 +99092,19 @@ test('v12.08.0 persist no wipe + one specialty field + no geo loop', () => {
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const b = read('../public/crm-bundle.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(b, /window.v1208PersistFix/);
   assert.match(b, /window.v1207FormFix/);
   assert.match(b, /v12-spec-combo/);
   assert.match(b, /recN\(st\)>0 && recN\(d\)<recN\(st\)/);
 });
-test('v12.12.0 layout sync + consVat edit + specialty combo', () => {
+test('v12.13.0 layout sync + consVat edit + specialty combo', () => {
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
   const b = read('../public/crm-bundle.js');
-  assert.match(app, /CRM_APP_VERSION = "12.12.0"/);
-  assert.match(srv, /const APP_VERSION = "12.12.0"/);
+  assert.match(app, /CRM_APP_VERSION = "12.13.0"/);
+  assert.match(srv, /const APP_VERSION = "12.13.0"/);
   assert.match(app, /formFieldMeta/);
   assert.match(b, /data-k='consVat'/);
   assert.match(b, /getCurrentPositionSafe/);
@@ -98555,9 +99112,9 @@ test('v12.12.0 layout sync + consVat edit + specialty combo', () => {
 });
 
 /* =========================================================================
-   v12.12.0 — تحویل نوبت ۱۲۸: رفع سه نقص + سربرگ سه‌خطی + بدون VPN + سه دامنه
+   v12.13.0 — تحویل نوبت ۱۲۸: رفع سه نقص + سربرگ سه‌خطی + بدون VPN + سه دامنه
    ========================================================================= */
-test('v12.12.0 one version everywhere (7 version files in sync)', () => {
+test('v12.13.0 one version everywhere (7 version files in sync)', () => {
   const pkg = read('../package.json');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
@@ -98566,12 +99123,12 @@ test('v12.12.0 one version everywhere (7 version files in sync)', () => {
   const login = read('../public/login.html');
   const hub = read('../public/crm-hub.js');
   const php = read('../public/api.php');
-  assert.match(pkg, /"version": "12\.12\.0"/);
-  assert.match(app, /const CRM_APP_VERSION = "12\.12\.0"/);
-  assert.match(srv, /const APP_VERSION = "12\.12\.0"/);
-  assert.match(sw, /const BUILD = "12\.12\.0"/);
-  assert.match(html, /var BUILD="12\.12\.0"/);
-  assert.match(login, /var BUILD="12\.12\.0"/);
+  assert.match(pkg, /"version": "12\.13\.0"/);
+  assert.match(app, /const CRM_APP_VERSION = "12\.13\.0"/);
+  assert.match(srv, /const APP_VERSION = "12\.13\.0"/);
+  assert.match(sw, /const BUILD = "12\.13\.0"/);
+  assert.match(html, /var BUILD="12\.13\.0"/);
+  assert.match(login, /var BUILD="12\.13\.0"/);
   assert.doesNotMatch(hub, /12\.09\.[0-9]/);
   assert.doesNotMatch(php, /12\.09\.[0-9]/);
   /* هیچ نشانی از نسخه قبلی در دارایی‌ها نمانده باشد */
@@ -98579,19 +99136,19 @@ test('v12.12.0 one version everywhere (7 version files in sync)', () => {
   assert.doesNotMatch(login, /\?v=12\.09\.[0-9]/);
 });
 
-test('v12.12.0 defect #2: public/index.php exists, serves index.html, is official', () => {
+test('v12.13.0 defect #2: public/index.php exists, serves index.html, is official', () => {
   const ip = read('../public/index.php');
   const list = read('../OFFICIAL_FILELIST.txt');
   const st = read('../build-static.js');
   assert.match(ip, /login\.html/);            /* fallback */
   assert.match(ip, /index\.html/);            /* صفحه اصلی */
   assert.match(ip, /readfile/);               /* بدون ریدایرکت حلقه‌ای */
-  assert.match(ip, /12\.12\.0/);
+  assert.match(ip, /12\.13\.0/);
   assert.match(list, /^public\/index\.php$/m);
   assert.match(st, /copyFlat/);               /* index.php همراه فایل‌ها کپی می‌شود */
 });
 
-test('v12.12.0 header is exactly three lines next to the logo', () => {
+test('v12.13.0 header is exactly three lines next to the logo', () => {
   const html = read('../public/index.html');
   const b = read('../public/crm-bundle.js');
   const data = read('../public/crm-data.js');
@@ -98600,7 +99157,7 @@ test('v12.12.0 header is exactly three lines next to the logo', () => {
   assert.match(html, /id="headerCompanyNameDisplay">برنامه ویزیت و گزارشات \(مهر آیین نیک دارو\)</);
   assert.match(data, /companyName: "برنامه ویزیت و گزارشات \(مهر آیین نیک دارو\)"/);
   /* خط ۲ — نسخه با ارقام لاتین */
-  assert.match(html, /id="crmBuildBadge"[^>]*>نسخه 12\.12\.0</);
+  assert.match(html, /id="crmBuildBadge"[^>]*>نسخه 12\.13\.0</);
   assert.match(b, /نسخه " \+ ver\(\)/);
   assert.match(b, /setTxt\("crmBuildBadge", "نسخه " \+ ver\(\)\)/);
   /* خط ۳ — برند */
@@ -98613,7 +99170,7 @@ test('v12.12.0 header is exactly three lines next to the logo', () => {
   assert.match(app, /مهر آیین نیک دارو/);
 });
 
-test('v12.12.0 app boots and works with VPN on or off', () => {
+test('v12.13.0 app boots and works with VPN on or off', () => {
   const b = read('../public/crm-bundle.js');
   const app = read('../public/crm-app.js');
   const srv = read('../server.js');
@@ -98634,10 +99191,10 @@ test('v12.12.0 app boots and works with VPN on or off', () => {
   assert.match(srv, /const geoAc = new AbortController\(\)/);
   assert.match(srv, /\}, 6000\);/);
   /* ۵) سرویس‌ورکر مانع بالا آمدن نمی‌شود */
-  assert.match(sw, /const BUILD = "12\.12\.0"/);
+  assert.match(sw, /const BUILD = "12\.13\.0"/);
 });
 
-test('v12.12.0 three domains (Render + 2 Netafraz) sync on phone and Windows', () => {
+test('v12.13.0 three domains (Render + 2 Netafraz) sync on phone and Windows', () => {
   const hub = read('../public/crm-hub.js');
   const b = read('../public/crm-bundle.js');
   const php = read('../public/api.php');
