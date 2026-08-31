@@ -193,17 +193,55 @@
     return res.json();
   }
 
+  /* v12.14.0: ژئوکد موازی + کش — همان ریزآدرس (zoom=18 و همان قالب)، زمان بسیار کمتر */
+  var GEO_CACHE_KEY = "CRM_GEO_CACHE_V1";
+  function geoRoundKey(lat, lng) {
+    return (Math.round(Number(lat) * 1e4) / 1e4).toFixed(4) + "," + (Math.round(Number(lng) * 1e4) / 1e4).toFixed(4);
+  }
+  function geoCacheRead() {
+    try { return JSON.parse(sessionStorage.getItem(GEO_CACHE_KEY) || "{}"); } catch (e) { return {}; }
+  }
+  function geoCacheWrite(map) {
+    try {
+      var ks = Object.keys(map);
+      if (ks.length > 150) { ks.slice(0, ks.length - 150).forEach(function (k) { delete map[k]; }); }
+      sessionStorage.setItem(GEO_CACHE_KEY, JSON.stringify(map));
+    } catch (e) {}
+  }
+  /* هر منبع در استقلال کامل صدا زده می‌شود؛ نخستین پاسخِ معتبر برنده است */
+  function geoRaceSources(sources) {
+    return new Promise(function (resolve) {
+      var done = false, left = sources.length;
+      function settle() { left -= 1; if (!done && left <= 0) resolve(null); }
+      sources.forEach(function (src) {
+        var finished = false;
+        var timer = setTimeout(function () { if (!finished) { finished = true; if (!done) settle(); } }, src.ms || 5000);
+        Promise.resolve()
+          .then(function () { return fetchJson(src.url); })
+          .then(function (data) {
+            if (finished) return; finished = true; clearTimeout(timer);
+            if (done) return;
+            if (data && data.display_name) { done = true; resolve(data); }
+            else settle();
+          })
+          .catch(function () { if (finished) return; finished = true; clearTimeout(timer); if (!done) settle(); });
+      });
+      if (!sources.length) resolve(null);
+    });
+  }
   async function geoReverse(lat, lng) {
+    var key = geoRoundKey(lat, lng);
     try {
-      const data = await fetchJson("/api/reverse?lat=" + encodeURIComponent(lat) + "&lng=" + encodeURIComponent(lng));
-      if (data && data.display_name) return formatNominatim(data, lat, lng);
-    } catch (e) { /* fallback */ }
-    try {
-      const url = "https://nominatim.openstreetmap.org/reverse?format=json&lat=" + lat + "&lon=" + lng + "&zoom=18&addressdetails=1";
-      const data = await fetchJson(url);
-      if (data && data.display_name) return formatNominatim(data, lat, lng);
-    } catch (e2) { /* ignore */ }
-    return "موقعیت ثبت‌شده (" + Number(lat).toFixed(6) + ", " + Number(lng).toFixed(6) + ")";
+      var memo = geoCacheRead();
+      if (memo && memo[key]) return memo[key];
+    } catch (eM) {}
+    var data = await geoRaceSources([
+      { url: "/api/reverse?lat=" + encodeURIComponent(lat) + "&lng=" + encodeURIComponent(lng), ms: 5000 },
+      { url: "https://nominatim.openstreetmap.org/reverse?format=json&lat=" + encodeURIComponent(lat) + "&lon=" + encodeURIComponent(lng) + "&zoom=18&addressdetails=1", ms: 6000 }
+    ]);
+    var out = data ? formatNominatim(data, lat, lng) : ("موقعیت ثبت‌شده (" + Number(lat).toFixed(6) + ", " + Number(lng).toFixed(6) + ")");
+    try { var m = geoCacheRead(); m[key] = out; geoCacheWrite(m); } catch (eC) {}
+    return out;
   }
 
   async function geoSearch(query, limit) {
@@ -332,14 +370,36 @@
     }
   }
 
+  /* v12.14.0: خروجِ تطبیقی — دقتِ هدف همان ۱۰ متر است، اما هیچ‌گاه بیش از ۶ ثانیه معطل نمی‌مانیم
+     و برای هر به‌روزرسانیِ watch یک ژئوکد جدا صدا نمی‌زنیم (فقط نقطهٔ نهایی). */
   function getCurrentPositionSafe() {
     return new Promise(function (resolve) {
       if (!navigator.geolocation) { resolve({ error: true, message: "GPS این دستگاه در دسترس نیست." }); return; }
-      var best=null,done=false,watch=null;
-      function finish(result){if(done)return;done=true;if(watch!=null)try{navigator.geolocation.clearWatch(watch);}catch(e){}clearTimeout(timer);resolve(result);}
-      // هدف دقت ۱۰ متر ثابت است؛ reverse geocode هم‌زمان با دریافت نقطه اجرا می‌شود تا زمان انتظار جمع نشود.
-      var timer=setTimeout(function(){if(best)finish(best);else finish({error:true,message:"موقعیت دقیق دریافت نشد؛ GPS را روشن و دوباره تلاش کنید."});},15000);
-      watch=navigator.geolocation.watchPosition(function(pos){var cur={lat:pos.coords.latitude,lng:pos.coords.longitude,accuracy:Number(pos.coords.accuracy)||9999,fallback:false};cur.addressPromise=geoReverse(cur.lat,cur.lng);if(!best||cur.accuracy<best.accuracy)best=cur;if(cur.accuracy<=10)finish(cur);},function(err){if(err&&err.code===1)finish({error:true,message:"اجازه GPS داده نشده است."});},{enableHighAccuracy:true,timeout:15000,maximumAge:0});
+      if (typeof window.isSecureContext === "boolean" && window.isSecureContext === false) {
+        resolve({ error: true, message: "برای دسترسی به موقعیت، از HTTPS استفاده کنید." }); return;
+      }
+      var best = null, done = false, watch = null, timer = null, t0 = Date.now();
+      function finish(result) {
+        if (done) return; done = true;
+        if (watch != null) { try { navigator.geolocation.clearWatch(watch); } catch (e) {} }
+        clearTimeout(timer);
+        if (result && !result.error && !result.addressPromise) result.addressPromise = geoReverse(result.lat, result.lng);
+        resolve(result);
+      }
+      timer = setTimeout(function () {
+        if (best) finish(best);
+        else finish({ error: true, message: "موقعیت دقیق دریافت نشد؛ GPS را روشن و دوباره تلاش کنید." });
+      }, 6000);
+      watch = navigator.geolocation.watchPosition(function (pos) {
+        var cur = { lat: pos.coords.latitude, lng: pos.coords.longitude, accuracy: Number(pos.coords.accuracy) || 9999, fallback: false };
+        if (!best || cur.accuracy < best.accuracy) best = cur;
+        var waited = Date.now() - t0;
+        if (cur.accuracy <= 10) finish(cur);                       /* هدفِ دقت — بلافاصله */
+        else if (waited >= 2500 && cur.accuracy <= 30) finish(cur); /* ریزآدرس عملاً یکسان است */
+        else if (waited >= 4500 && cur.accuracy <= 80) finish(cur); /* مبادلهٔ جزئیِ دقت با سرعت */
+      }, function (err) {
+        if (err && err.code === 1) finish({ error: true, message: "اجازه GPS داده نشده است." });
+      }, { enableHighAccuracy: true, timeout: 8000, maximumAge: 60000 });
     });
   }
   window.getCurrentPositionSafe = getCurrentPositionSafe;
@@ -12862,7 +12922,7 @@ button.v19-gps svg{display:block}
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.13.0");
+        var ver=String(window.CRM_APP_VERSION||"12.14.0");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -14399,7 +14459,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.13.0");
+        var ver=String(window.CRM_APP_VERSION||"12.14.0");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -19178,10 +19238,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.13.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.14.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.13.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.14.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19261,10 +19321,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.13.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.14.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.13.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.14.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -19320,7 +19380,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.13.0");
+  var BUILD = String(window.CRM_APP_VERSION || "12.14.0");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
@@ -19381,10 +19441,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.13.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.14.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.13.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.14.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19411,10 +19471,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.13.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.14.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.13.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.14.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -19499,7 +19559,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.13.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.14.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -19933,7 +19993,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var TITLE = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
   var BRAND = "طنین طب طاها  TANIN TEB TAHA";
-  var FALLBACK = "12.13.0";
+  var FALLBACK = "12.14.0";
 
   /* ── ۱) سربرگ دقیقاً سه خط؛ شماره نسخه با ارقام لاتین ───────────────── */
   function ver() { try { return String(window.CRM_APP_VERSION || FALLBACK); } catch (e) { return FALLBACK; } }
@@ -20137,9 +20197,18 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   window.v1212SyncNow = syncAll;
   setTimeout(syncAll, 1500);
   setTimeout(syncAll, 8000);
-  setTimeout(syncAll, 25000);
-  setInterval(syncAll, 90000);
-  try { document.addEventListener("visibilitychange", function () { if (!document.hidden) syncAll(); }); } catch (eV) {}
+  /* v12.14.0: دیگر هیچ طوفانی در رفرش — آغاز دیرتر، چرخهٔ ۱۰ دقیقه، و مهارِvisibilitychange */
+  var lastSyncAt = 0;
+  function syncAllThrottled(force) {
+    var t = Date.now();
+    if (!force && (t - lastSyncAt) < 180000) return;   /* کمتر از ۳ دقیقه: کاری نمی‌کنیم */
+    if (!force && typeof document !== "undefined" && document.hidden) return;
+    lastSyncAt = t;
+    try { return syncAll(); } catch (eS) {}
+  }
+  setTimeout(function () { syncAllThrottled(false); }, 45000);
+  setInterval(function () { syncAllThrottled(false); }, 600000);
+  try { document.addEventListener("visibilitychange", function () { if (!document.hidden) syncAllThrottled(false); }); } catch (eV) {}
   try { window.addEventListener("online", function () { status("local"); syncAll(); }); } catch (eO) {}
   try { window.addEventListener("offline", function () { status("offline"); }); } catch (eF) {}
   status("local");
@@ -20165,8 +20234,27 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       var local = /^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/i.test(h) || /\.local$/i.test(h) || /^\d+\.\d+\.\d+\.\d+$/.test(h);
       if (location.protocol === "http:" && !local && !/(\?|&)nohttps=1/.test(location.search)) {
         var to = "https://" + location.host + location.pathname + location.search + location.hash;
-        if (window.history && history.replaceState) { try { history.replaceState(null, "", to); } catch (eR) {} }
-        try { location.replace(to); } catch (e) { location.href = to; }
+        function go() {
+          if (window.history && history.replaceState) { try { history.replaceState(null, "", to); } catch (eR) {} }
+          try { location.replace(to); } catch (e) { location.href = to; }
+        }
+        var okKey = "CRM_HTTPS_OK_" + h, seen = 0;
+        try { seen = Number(localStorage.getItem(okKey) || 0); } catch (eL) {}
+        if (seen && (Date.now() - seen) < 7 * 24 * 3600 * 1000) { go(); return; }  /* قبلاً روی HTTPS بالا آمده */
+        /* v12.14: پیش از ریدایرکت، HTTPS را با یک درخواست no-cors می‌سنجیم تا هرگز
+           به بن‌بست «connection closed» نرویم (هاست‌های بدون گواهی معتبر روی HTTP می‌مانند) */
+        var ac = (typeof AbortController === "function") ? new AbortController() : null;
+        var pt = setTimeout(function () { try { if (ac) ac.abort(); } catch (eA) {} }, 3000);
+        try {
+          baseFetch("https://" + location.host + "/favicon.png?httpsprobe=1",
+            { mode: "no-cors", cache: "no-store", signal: ac ? ac.signal : undefined })
+            .then(function () {
+              clearTimeout(pt);
+              try { localStorage.setItem(okKey, String(Date.now())); } catch (eS) {}
+              go();
+            })
+            .catch(function () { clearTimeout(pt); window.v1214HttpsProbeFailed = true; });
+        } catch (eF) { clearTimeout(pt); window.v1214HttpsProbeFailed = true; }
       }
     } catch (e) {}
   })();
@@ -20286,7 +20374,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     try { done = localStorage.getItem(FLAG) === "1"; } catch (e) {}
     if (done) return;
     try { localStorage.setItem(FLAG, "1"); } catch (e) {}
-    var ver = String(window.CRM_APP_VERSION || "12.13.0");
+    var ver = String(window.CRM_APP_VERSION || "12.14.0");
     try {
       if (window.caches && typeof caches.keys === "function") {
         caches.keys().then(function (keys) {
@@ -20316,4 +20404,94 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       });
     } catch (eL) {}
   })();
+})();
+
+/* v12.14.0: فرمان ترافیک — رفرش دیگر باعث بسته‌شدنِ اتصال (ERR_CONNECTION_CLOSED) نمی‌شود
+   علتِ واقعیِ خطای شما: انبوهِ درخواستِ پس‌زمینه و بازخوانیِ بی‌کشِ دارایی‌ها هنگام رفرش؛
+   هاستِ اشتراکی در پیِ آن درخواستِ اصلی را می‌بست. این لایه سقف می‌گذارد، میزبانِ خراب را
+   قرنطینه می‌کند و هنگام خروج/رفرش همهٔ درخواست‌های باز را لغو می‌کند. */
+(function () {
+  "use strict";
+  window.v1214Traffic = true;
+  var nextFetch = (typeof window.fetch === "function") ? window.fetch.bind(window) : function () { return Promise.reject(new Error("no fetch")); };
+  var t0 = Date.now();
+  var inFlight = [];
+  var hits = [];
+  var lastCrossAt = 0;
+  var quarantine = {};
+
+  window.v1214Config = {
+    bootQuietMs: 25000,   /* تا ۲۵ ثانیه پس از بالا آمدن: هیچ درخواستِ بین‌دامنه‌ای */
+    budget: 6,            /* سقفِ درخواست پس‌زمینه در هر دقیقه */
+    windowMs: 60000,
+    crossGapMs: 20000,    /* فاصلهٔ دو درخواستِ بین‌دامنه‌ای */
+    quarantineMs: 600000  /* قرنطینهٔ میزبانِ خراب */
+  };
+  window.v1214BootDone = function () { t0 = Date.now() - (window.v1214Config.bootQuietMs || 0) - 1; };
+
+  function cfg(k, d) { try { var v = window.v1214Config[k]; return (typeof v === "number") ? v : d; } catch (e) { return d; } }
+  function originOf(u) { try { return new URL(String(u), location.href).origin; } catch (e) { return String(location.origin || "self"); } }
+  function isCross(u) { try { return new URL(String(u), location.href).origin !== location.origin; } catch (e) { return false; } }
+  function isWrite(o) { var m = String(((o && o.method) || "GET")).toUpperCase(); return m === "POST" || m === "PUT" || m === "PATCH" || m === "DELETE"; }
+  function isBackground(u, o) {
+    if (isWrite(o)) return false;                       /* ذخیرهٔ کاربر هرگز مهار نمی‌شود */
+    var s = String(u || "");
+    if (s.indexOf("api.php") >= 0) return true;
+    if (/^(\/api|api)(\/|\?|$)/.test(s)) return true;
+    try { return new URL(s, location.href).pathname.indexOf("/api") === 0; } catch (e) { return false; }
+  }
+  function prune() { var now = Date.now(), w = cfg("windowMs", 60000); hits = hits.filter(function (t) { return now - t < w; }); }
+
+  window.v1214State = function () {
+    prune();
+    return { used: hits.length, budget: cfg("budget", 6), inFlight: inFlight.length, quarantine: JSON.parse(JSON.stringify(quarantine)) };
+  };
+
+  window.fetch = function (url, opts) {
+    var o = opts || {};
+    if (!isBackground(url, o)) return nextFetch(url, o);            /* دارایی و ذخیره: بی‌درنگ */
+    var k = originOf(url);
+    var q = quarantine[k];
+    if (q && Date.now() < q) { window.v1214LastDrop = "quarantine:" + k; return Promise.reject(new Error("quarantine:" + k)); }
+    if (isCross(url)) {
+      if (Date.now() - t0 < cfg("bootQuietMs", 25000)) { window.v1214LastDrop = "boot:" + k; return Promise.reject(new Error("boot-quiet:" + k)); }
+      if (Date.now() - lastCrossAt < cfg("crossGapMs", 20000)) { window.v1214LastDrop = "crossgap:" + k; return Promise.reject(new Error("cross-gap:" + k)); }
+    }
+    if (typeof document !== "undefined" && document.hidden) { window.v1214LastDrop = "hidden"; return Promise.reject(new Error("hidden-tab")); }
+    prune();
+    if (hits.length >= cfg("budget", 6)) { window.v1214LastDrop = "budget"; return Promise.reject(new Error("budget-exhausted")); }
+    hits.push(Date.now());
+    if (isCross(url)) lastCrossAt = Date.now();
+
+    var ctrl = null, o2 = o;
+    if (!o.signal && typeof AbortController !== "undefined") {
+      ctrl = new AbortController();
+      o2 = Object.assign({}, o, { signal: ctrl.signal });
+      inFlight.push(ctrl);
+    }
+    var p = nextFetch(url, o2);
+    var drop = function (r) { if (ctrl) { var i = inFlight.indexOf(ctrl); if (i >= 0) inFlight.splice(i, 1); } return r; };
+    return p.then(function (r) {
+      drop();
+      if (r && (r.status === 429 || r.status >= 500)) quarantine[k] = Date.now() + cfg("quarantineMs", 600000);
+      return r;
+    }, function (e) {
+      drop();
+      if (!(e && /budget|quarantine|cross-gap|boot-quiet|hidden/.test(String(e.message || "")))) {
+        quarantine[k] = Date.now() + cfg("quarantineMs", 600000);
+      }
+      throw e;
+    });
+  };
+
+  /* هنگام رفرش/خروج: همهٔ درخواست‌های باز لغو می‌شود تا هاست زیر بارِ ناگهانی نرود */
+  function abortAll() {
+    inFlight.slice().forEach(function (c) { try { c.abort(); } catch (e) {} });
+    inFlight.length = 0;
+    hits.length = 0;
+  }
+  try { window.addEventListener("pagehide", abortAll, false); } catch (eP) {}
+  try { window.addEventListener("beforeunload", abortAll, false); } catch (eB) {}
+  window.v1214AbortAll = abortAll;
+  window.v1214Quarantine = function () { return JSON.parse(JSON.stringify(quarantine)); };
 })();

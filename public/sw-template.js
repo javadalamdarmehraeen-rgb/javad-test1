@@ -263,6 +263,47 @@ self.addEventListener("fetch", (event) => {
     return;
 
   }
+  /* v12.14.0: دارایی‌های نسخه‌دارِ هم‌منشأ (crm-app.js?v=12.14.0) → Cache First + SWR
+   * هنگام رفرش هیچ درخواستی به هاست فرستاده نمی‌شود؛ این یعنی دیگر «connection closed»
+   * در رفرش دیده نمی‌شود و صفحه در کسری از ثانیه بالا می‌آید. */
+  const isVersionedAsset =
+    url.origin === self.location.origin &&
+    req.method === "GET" &&
+    (/\.(?:js|css|png|jpe?g|webp|svg|woff2?|ico)$/i.test(url.pathname) || url.searchParams.has("v"));
+  if (isVersionedAsset) {
+    event.respondWith(
+      (async () => {
+        const cached = await caches.match(req, { ignoreSearch: false });
+        if (cached) {
+          /* بازخوانیِ آرام در پس‌زمینه (stale-while-revalidate) */
+          event.waitUntil(
+            (async () => {
+              try {
+                const fresh = await timeoutFetch(req, ASSET_TIMEOUT);
+                if (fresh && fresh.ok) {
+                  const c = await caches.open(SHELL);
+                  c.put(req, fresh.clone());
+                }
+              } catch {}
+            })()
+          );
+          return cached;
+        }
+        try {
+          const res = await timeoutFetch(req, ASSET_TIMEOUT);
+          if (res && res.ok) {
+            const c = await caches.open(SHELL);
+            c.put(req, res.clone());
+          }
+          return res || Response.error();
+        } catch {
+          const loose = await caches.match(req, { ignoreSearch: true });
+          return loose || Response.error();
+        }
+      })()
+    );
+    return;
+  }
   /*  RSC (  Next) →     
    *           . */
   const isRsc = url.searchParams.has("_rsc") || req.headers.get("RSC") === "1";

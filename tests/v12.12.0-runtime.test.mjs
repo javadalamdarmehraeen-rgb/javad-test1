@@ -1,5 +1,5 @@
 /**
- * اجرای واقعی لایه v12.13.0 در یک DOM最小 — قانون ۹۲:
+ * اجرای واقعی لایه v12.14.0 در یک DOM最小 — قانون ۹۲:
  * «هیچ بندی بدون مدرک تأییدشده نیست». این فایل لایهٔ جدید را واقعاً اجرا می‌کند و
  * خروجیِ DOM، تایم‌اوتِ درخواست‌های بین‌دامنه‌ای و فهرستِ سه دامنه را بررسی می‌کند.
  */
@@ -37,7 +37,7 @@ function makeDom(origin = 'https://ndcohub.com') {
     hidden: false
   };
   const win = {
-    CRM_APP_VERSION: '12.13.0',
+    CRM_APP_VERSION: '12.14.0',
     addEventListener: () => {},
     state: { pharmacies: [{ id: 'p1' }], doctors: [], orders: [], users: [], settings: { companyName: '' } }
   };
@@ -94,20 +94,20 @@ function makeDom(origin = 'https://ndcohub.com') {
   return { els, timers, intervals, calls, win, observerOptions, loc, nav, sandboxFetch, cleanup };
 }
 
-test('v12.13.0 runtime: header paints exactly the three requested lines', (t) => {
+test('v12.14.0 runtime: header paints exactly the three requested lines', (t) => {
   const env = makeDom();
   t.after(() => env.cleanup());
   const els = env.els;
   assert.equal(els.headerCompanyNameDisplay.textContent, 'برنامه ویزیت و گزارشات (مهر آیین نیک دارو)');
-  assert.equal(els.crmBuildBadge.textContent, 'نسخه 12.13.0');
+  assert.equal(els.crmBuildBadge.textContent, 'نسخه 12.14.0');
   assert.equal(els.headerBrandLine.textContent, 'طنین طب طاها  TANIN TEB TAHA');
   /* ارقام لاتین — نه فارسی */
   assert.match(els.crmBuildBadge.textContent, /[0-9]/);
   assert.doesNotMatch(els.crmBuildBadge.textContent, /[۰-۹]/);
-  assert.match(els.crmBuildHint.textContent, /نسخه 12\.13\.0/);
+  assert.match(els.crmBuildHint.textContent, /نسخه 12\.14\.0/);
 });
 
-test('v12.13.0 runtime: header is protected by a MutationObserver (legacy painters cannot overwrite it)', (t) => {
+test('v12.14.0 runtime: header is protected by a MutationObserver (legacy painters cannot overwrite it)', (t) => {
   const env = makeDom();
   t.after(() => env.cleanup());
   const { observerOptions, els } = env;
@@ -115,7 +115,7 @@ test('v12.13.0 runtime: header is protected by a MutationObserver (legacy painte
   assert.ok(observerOptions.opts.childList && observerOptions.opts.subtree && observerOptions.opts.characterData);
 });
 
-test('v12.13.0 runtime: peer list is the three domains minus self', () => {
+test('v12.14.0 runtime: peer list is the three domains minus self', () => {
   for (const origin of ['https://ndcohub.com', 'https://mehraeinpharma.ir', 'https://javad-test1.onrender.com']) {
     const envP = makeDom(origin);
     const win = envP.win;
@@ -133,7 +133,7 @@ test('v12.13.0 runtime: peer list is the three domains minus self', () => {
   }
 });
 
-test('v12.13.0 runtime: cross-origin requests never block the app (timeout really fires)', async (t) => {
+test('v12.14.0 runtime: cross-origin requests never block the app (timeout really fires)', async (t) => {
   const env = makeDom('https://ndcohub.com');
   t.after(() => env.cleanup());
   /* ۱) نشانگرهای لایه */

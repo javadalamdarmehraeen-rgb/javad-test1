@@ -86,3 +86,6 @@ crm-live-data.json
 crm-live-bulk.json
 public/crm-live-data.json
 public/crm-live-bulk.json
+
+# ابزارهای تحویل (زیپ و سرور دانلود) — در مخزن ثبت نمی‌شوند
+/.delivery/

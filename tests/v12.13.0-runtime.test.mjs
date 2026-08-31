@@ -1,5 +1,5 @@
 /**
- * اجرای واقعی لایه v12.13.0 — فرمان درخواست‌ها، HTTPS، GPS، پاک‌سازی یک‌باره.
+ * اجرای واقعی لایه v12.14.0 — فرمان درخواست‌ها، HTTPS، GPS، پاک‌سازی یک‌باره.
  * هدف: ثابت کنیم انبوه درخواست‌ها (۵۰۳ِ هاست) مهار می‌شود و ذخیرهٔ کاربر بی‌درنگ می‌ماند.
  */
 import test from 'node:test';
@@ -8,9 +8,10 @@ import { readFileSync } from 'node:fs';
 
 const src = readFileSync(new URL('../public/crm-bundle.js', import.meta.url), 'utf8');
 const MARK = '/* v12.13.0:';
+const END = '/* v12.14.0:';
 const layer = src.slice(src.lastIndexOf(MARK));
 assert.ok(layer.indexOf('window.v1213Governor') >= 0, 'نشانگر لایه در برش نیست');
-assert.ok(layer.length > 1500, 'لایه v12.13.0 پیدا نشد');
+assert.ok(layer.length > 1500, 'لایه v12.14.0 پیدا نشد');
 
 function makeEnv(opts = {}) {
   const status = opts.status || 200;
@@ -25,7 +26,7 @@ function makeEnv(opts = {}) {
   const calls = [];
   const live = [];
   const win = {
-    CRM_APP_VERSION: '12.13.0',
+    CRM_APP_VERSION: '12.14.0',
     addEventListener: () => {},
     caches: { keys: () => Promise.resolve(['crm-static-v11']), },
     state: { pharmacies: [{ id: 'p1' }], doctors: [], orders: [], users: [], settings: { companyName: '' } }
@@ -62,8 +63,8 @@ function makeEnv(opts = {}) {
   return { win, calls, store, els, cleanup: () => live.forEach((x) => (x.k === 't' ? clearTimeout(x.id) : clearInterval(x.id))) };
 }
 
-test('v12.13.0 runtime: request governor spaces background calls and backs off after 5xx', async (t) => {
-  const env = makeEnv({ status: 503 });
+test('v12.14.0 runtime: request governor spaces background calls (healthy host)', async (t) => {
+  const env = makeEnv({ status: 200 });
   t.after(() => env.cleanup());
   assert.equal(env.win.v1213Governor, true);
 
@@ -71,19 +72,29 @@ test('v12.13.0 runtime: request governor spaces background calls and backs off a
   await env.win.fetch('/api/state').catch(() => {});
   assert.equal(env.calls.length, 1);
 
-  /* ۲) دومین ۵۰۳ باعث بک‌آف می‌شود (فاصلهٔ حداقل رعایت می‌شود) */
+  /* ۲) درخواستِ دوم حداقل ۳ ثانیه عقب می‌افتد (فاصلهٔ اجباری) */
   const t0 = Date.now();
   await env.win.fetch('/api/state').catch(() => {});
   assert.ok(Date.now() - t0 >= 3000, 'فاصلهٔ حداقل بین دو درخواست رعایت نشد');
-
-  /* ۳) بعد از بک‌آف، درخواست بعدی بی‌درنگ رد می‌شود (هاست بمباران نمی‌شود) */
-  const t1 = Date.now();
-  await assert.rejects(env.win.fetch('/api/state'), /backoff/);
-  assert.ok(Date.now() - t1 < 800, 'بک‌آف باعث توقف ارسال نشد');
-  assert.equal(env.calls.length, 2, 'در زمان بک‌آف نباید درخواستی فرستاده شود');
+  assert.equal(env.calls.length, 2);
 });
 
-test('v12.13.0 runtime: user saves are never queued or delayed', async (t) => {
+test('v12.14.0 runtime: a 5xx host is quarantined instantly (no storm, no wait)', async (t) => {
+  const env = makeEnv({ status: 503 });
+  t.after(() => env.cleanup());
+
+  /* نخستین ۵۰۳ ثبت می‌شود */
+  await env.win.fetch('/api/state').catch(() => {});
+  assert.equal(env.calls.length, 1);
+
+  /* بلافاصله بعد از آن، درخواستِ پس‌زمینه بی‌درنگ رد می‌شود: نه انتظار، نه بمباران */
+  const t1 = Date.now();
+  await assert.rejects(env.win.fetch('/api/state'), /quarantine|backoff/);
+  assert.ok(Date.now() - t1 < 800, 'بک‌آف/قرنطینه باعث توقف ارسال نشد');
+  assert.equal(env.calls.length, 1, 'در زمان قرنطینه نباید درخواستی فرستاده شود');
+});
+
+test('v12.14.0 runtime: user saves are never queued or delayed', async (t) => {
   const env = makeEnv({ status: 200 });
   t.after(() => env.cleanup());
   const t0 = Date.now();
@@ -93,7 +104,7 @@ test('v12.13.0 runtime: user saves are never queued or delayed', async (t) => {
   assert.equal(env.calls[0].o.method, 'POST');
 });
 
-test('v12.13.0 runtime: one-time cleanup purges caches but never user data', () => {
+test('v12.14.0 runtime: one-time cleanup purges caches but never user data', () => {
   const env = makeEnv();
   env.cleanup();
   /* کلید پاک‌سازی ثبت می‌شود تا هر بار تکرار نشود */

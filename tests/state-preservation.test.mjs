@@ -57,7 +57,7 @@ test('active order collector never converts blank quantity to one', () => {
   assert.match(v9Source, /if \(qty <= 0\) continue/);
   assert.match(v9Source, /maximumAge:0|maximumAge: 0/);
   assert.match(v9Source, /watchPosition/);
-  assert.match(v9Source, /accuracy<=10/);
+  assert.match(v9Source, /accuracy <= 10/);
   assert.match(v9Source, /toFixed\(6\)/);
 });
 
