@@ -1,4 +1,18 @@
 // ============================================================================
+// v12.15.0: اجبار HTTPS — GPS و سرویس‌ورکر روی HTTP کار نمی‌کنند
+// (localhost / IP محلی مستثنا هستند تا توسعه محلی نشکند)
+// ============================================================================
+(function () {
+  try {
+    var h = String(window.location.hostname || "");
+    var isLocal = /^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/i.test(h) || /\.local$/i.test(h) || /^\d+\.\d+\.\d+\.\d+$/.test(h);
+    if (window.location.protocol === "http:" && !isLocal && window.location.search.indexOf("nohttps=1") === -1) {
+      window.location.href = "https://" + window.location.host + window.location.pathname + window.location.search;
+    }
+  } catch (e) {}
+})();
+
+// ============================================================================
 // منطق جامع برنامه مدیریت ویزیت علمی، داروخانه‌ها، پزشکان و سفارشات (CRM / PWA)
 // شامل پیاده‌سازی کامل ۲۰ بخش منوی مدیریتی، ۴۹ سطح دسترسی، درصدی بودن، آپلود فایل،
 // نقشه جامع و حفظ ۱۰۰٪ هر ۸ ویژگی و تمامی تنظیمات قبلی سیستم
@@ -46,7 +60,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "12.12.0";
+const CRM_APP_VERSION = "12.15.0";
 window.CRM_APP_VERSION = CRM_APP_VERSION;
 function v12CanonicalCompany(name) {
   var s = String(name || "").trim();
@@ -812,11 +826,15 @@ function setupPharmacyLocationButtons() {
       if (h) h.value = addr;
       alert("موقعیت روی نقشه آمد و آدرس در فیلد لوکیشن نشست:\n" + addr);
     };
+    if (window.isSecureContext === false || (window.location.protocol !== "https:" && !/^(localhost|127\.0\.0\.1)$/.test(window.location.hostname || ""))) {
+      alert("برای دسترسی به موقعیت، از HTTPS استفاده کنید.");
+      return;
+    }
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => apply(pos.coords.latitude, pos.coords.longitude),
         () => apply(35.7595, 51.4250),
-        { enableHighAccuracy: true, timeout: 8000 }
+        { enableHighAccuracy: true, timeout: 8000, maximumAge: 60000 }
       );
     } else apply(35.7595, 51.4250);
   });
@@ -876,11 +894,15 @@ function setupDoctorLocationButtons() {
       if (h) h.value = addr;
       alert("موقعیت مطب روی نقشه آمد و آدرس در فیلد لوکیشن نشست:\n" + addr);
     };
+    if (window.isSecureContext === false || (window.location.protocol !== "https:" && !/^(localhost|127\.0\.0\.1)$/.test(window.location.hostname || ""))) {
+      alert("برای دسترسی به موقعیت، از HTTPS استفاده کنید.");
+      return;
+    }
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => apply(pos.coords.latitude, pos.coords.longitude),
         () => apply(35.7350, 51.4150),
-        { enableHighAccuracy: true, timeout: 8000 }
+        { enableHighAccuracy: true, timeout: 8000, maximumAge: 60000 }
       );
     } else apply(35.7350, 51.4150);
   });
@@ -3215,7 +3237,7 @@ function setupPWAServiceWorker() {
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
   /* v12.12: فقط دامنه‌های دارای گواهی خراب از ثبت سرویس‌ورکر مستثنا می‌شوند؛ ndcohub.com سرویس‌ورکر می‌گیرد */
   if (!/(^|\.)ndcohub\.ir$|(^|\.)mehraeinpharma\.ir$/.test(location.hostname || "")) {
-  navigator.serviceWorker.register('/sw.js?v=12.12.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=12.15.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;

@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "12.12.0";
+const APP_VERSION = "12.15.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -43,6 +43,16 @@ const MIME = {
   ".webmanifest": "application/manifest+json; charset=utf-8",
   ".woff2": "font/woff2"
 };
+
+/* v12.13: HSTS برای رندر — فقط روی HTTPS و بدون preload تا قفل ناخواسته نسازد */
+function isHttpsRequest(req) {
+  const proto = String(req.headers["x-forwarded-proto"] || "").toLowerCase().split(",")[0].trim();
+  if (proto) return proto === "https";
+  try { return req.socket && req.socket.encrypted === true; } catch (e) { return false; }
+}
+function hstsHeader(req) {
+  return isHttpsRequest(req) ? { "Strict-Transport-Security": "max-age=15552000; includeSubDomains" } : {};
+}
 
 const loginHits = new Map();
 function rateLimited(ip) {
@@ -313,16 +323,17 @@ function send(req, res, status, content, contentType, extra) {
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "X-Frame-Options": preview ? "ALLOWALL" : "SAMEORIGIN",
     "Content-Security-Policy": preview
-      ? "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https: http://ndcohub.ir http://mehraeinpharma.ir https://ndcohub.ir https://mehraeinpharma.ir https://ndcohub.com https://javad-test1.onrender.com; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors *; worker-src 'self' blob:; manifest-src 'self'"
-      : "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https: http://ndcohub.ir http://mehraeinpharma.ir https://ndcohub.ir https://mehraeinpharma.ir https://ndcohub.com https://javad-test1.onrender.com; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests",
+      ? "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https: https://ndcohub.ir https://mehraeinpharma.ir https://ndcohub.com https://javad-test1.onrender.com; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors *; worker-src 'self' blob:; manifest-src 'self'"
+      : "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https: https://ndcohub.ir https://mehraeinpharma.ir https://ndcohub.com https://javad-test1.onrender.com; font-src 'self' data:; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests",
     "Permissions-Policy": "geolocation=(self), camera=(), microphone=(), payment=(), usb=(), serial=(), hid=(), bluetooth=(), display-capture=(), accelerometer=(), gyroscope=(), magnetometer=(), autoplay=(), encrypted-media=(), picture-in-picture=()",
     "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
     "Cross-Origin-Resource-Policy": preview ? "cross-origin" : "same-origin",
     "X-Permitted-Cross-Domain-Policies": "none",
     "X-DNS-Prefetch-Control": "off",
     "Origin-Agent-Cluster": "?1"
-  }, extra || {}, corsHeaders(req));
-  if (!preview) headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains";
+  }, extra || {}, corsHeaders(req), hstsHeader(req));
+  /* v12.13: HSTS فقط روی HTTPS ست می‌شود (روی HTTP بی‌اثر و بی‌خطر) */
+  if (!preview && isHttpsRequest(req)) headers["Strict-Transport-Security"] = "max-age=15552000; includeSubDomains";
   if (preview) delete headers["X-Frame-Options"];
   const accept = String(req.headers["accept-encoding"] || "");
   const compressible = /text|javascript|json|svg|csv/.test(contentType || "");
@@ -346,7 +357,7 @@ function sendFile(req, res, filePath, maxAge) {
     const ext = path.extname(filePath).toLowerCase();
     const type = MIME[ext] || "application/octet-stream";
     const extra = {
-      "Cache-Control": maxAge ? ("public, max-age=" + maxAge) : "no-store, no-cache, must-revalidate, max-age=0",
+      "Cache-Control": maxAge >= 31536000 ? ("public, max-age=" + maxAge + ", immutable") : (maxAge ? ("public, max-age=" + maxAge) : "no-store, no-cache, must-revalidate, max-age=0"),
       "Pragma": maxAge ? "" : "no-cache",
       "Expires": maxAge ? undefined : "0",
       "CDN-Cache-Control": maxAge ? ("public, max-age=" + maxAge) : "no-store",
@@ -415,6 +426,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  /* v12.13: HSTS — فقط وقتی پاسخ واقعاً روی HTTPS است (هدرِ پروکسی رندر) */
   if (pathname === "/favicon.ico") {
     return sendFile(req, res, path.join(PUBLIC_DIR, "favicon.png"), 86400);
   }
@@ -439,28 +451,119 @@ const server = http.createServer((req, res) => {
     }), "application/json; charset=utf-8", { "Cache-Control": "no-store", "X-CRM-Build": APP_VERSION });
   }
 
+  /* v12.14.0: ژئوکد موازی + کش — همان ریزآدرس (zoom=18)، زمانِ بسیار کمتر */
+  const GEO_CACHE_PATH = path.join(RUNTIME_DATA_DIR, "geo-cache.json");
+  const GEO_TTL = 30 * 24 * 3600 * 1000;
+  let geoMem = null;
+  function geoCacheLoad() {
+    if (geoMem) return geoMem;
+    geoMem = {};
+    try { if (fs.existsSync(GEO_CACHE_PATH)) geoMem = JSON.parse(fs.readFileSync(GEO_CACHE_PATH, "utf8")) || {}; } catch (e) { geoMem = {}; }
+    return geoMem;
+  }
+  function geoCacheGet(key) {
+    try {
+      const m = geoCacheLoad(), hit = m[key];
+      if (hit && (Date.now() - Number(hit.at || 0)) < GEO_TTL) return hit.body;
+      if (hit) delete m[key];
+    } catch (e) {}
+    return null;
+  }
+  function geoCacheSet(key, body) {
+    try {
+      const m = geoCacheLoad();
+      m[key] = { at: Date.now(), body: String(body) };
+      const keys = Object.keys(m);
+      if (keys.length > 3000) { keys.slice(0, keys.length - 3000).forEach((k) => { delete m[k]; }); }
+      fs.writeFile(GEO_CACHE_PATH, JSON.stringify(m), () => {});
+    } catch (e) {}
+  }
+  function geoRound(v) { const n = Number(v); return isFinite(n) ? n.toFixed(4) : "0"; }
+  /* پاسخِ Photon را به همان قالبِ Nominatim برمی‌گردانیم تا ریزآدرسِ برنامه تغییر نکند */
+  function normalizeGeoText(text, isRev) {
+    if (!text) return null;
+    try {
+      if (isRev) {
+        if (text.indexOf("display_name") >= 0) return text;         /* خودِ Nominatim */
+        const j = JSON.parse(text);
+        const f = (j.features || [])[0];
+        if (!f) return null;
+        const p = f.properties || {}, c = ((f.geometry || {}).coordinates) || [];
+        const parts = [p.country, p.state, p.county, p.city || p.district, p.district, p.street,
+          p.housenumber ? ("پلاک: " + p.housenumber) : "", p.name].filter(Boolean);
+        return JSON.stringify({
+          display_name: parts.join("، ") || "آدرس یافت نشد",
+          lat: c[1], lon: c[0],
+          address: { country: p.country, state: p.state, county: p.county, city: p.city || p.district,
+            city_district: p.district, road: p.street || p.name, house_number: p.housenumber }
+        });
+      }
+      if (text.charAt(0) === "[") return text;                       /* خودِ Nominatim */
+      const j2 = JSON.parse(text);
+      const feats = j2.features || [];
+      if (!feats.length) return null;
+      return JSON.stringify(feats.slice(0, 5).map((f) => {
+        const p = f.properties || {}, c = ((f.geometry || {}).coordinates) || [];
+        return {
+          display_name: [p.name, p.street, p.housenumber, p.district, p.city, p.county, p.state, p.country].filter(Boolean).join("، "),
+          lat: String(c[1]), lon: String(c[0])
+        };
+      }));
+    } catch (e) { return null; }
+  }
+  /* نخستین پاسخِ معتبر برنده است؛ بقیه لغو می‌شوند */
+  function geoRace(urls, ms, isRevFlag) {
+    return new Promise((resolve, reject) => {
+      let done = false, left = urls.length;
+      if (!left) return reject(new Error("no provider"));
+      const settle = () => { left -= 1; if (!done && left <= 0) reject(new Error("all providers failed")); };
+      urls.forEach((u) => {
+        let settled = false;
+        const ac = new AbortController();
+        const timer = setTimeout(() => { try { ac.abort(); } catch (e) {} }, ms);
+        fetch(u, { signal: ac.signal, headers: { "Accept-Language": "fa,en", "User-Agent": "namayandeelmi-javad-crm/12.14" } })
+          .then(async (up) => {
+            clearTimeout(timer);
+            const text = up.ok ? await up.text() : "";
+            const norm = text ? normalizeGeoText(text, isRevFlag) : null;
+            if (!done && up.ok && norm) {
+              done = true;
+              try { ac.abort(); } catch (e) {}
+              resolve(norm);
+            } else if (!settled) { settled = true; settle(); }
+          })
+          .catch(() => { clearTimeout(timer); if (!settled) { settled = true; if (!done) settle(); } });
+      });
+    });
+  }
   if ((pathname === "/api/geocode" || pathname === "/api/reverse") && req.method === "GET") {
     if (rateLimited(ip + ":geo")) {
       return send(req, res, 429, JSON.stringify({ status: "error", message: "too many requests" }), "application/json; charset=utf-8");
     }
+    const isRev = pathname === "/api/reverse";
     const q = parsed.searchParams.get("q") || "";
     const lat = parsed.searchParams.get("lat") || "";
     const lng = parsed.searchParams.get("lng") || parsed.searchParams.get("lon") || "";
     const limit = parsed.searchParams.get("limit") || "5";
-    const target = pathname === "/api/reverse"
-      ? "https://nominatim.openstreetmap.org/reverse?format=json&lat=" + encodeURIComponent(lat) + "&lon=" + encodeURIComponent(lng) + "&zoom=18&addressdetails=1"
-      : "https://nominatim.openstreetmap.org/search?format=json&q=" + encodeURIComponent(q) + "&limit=" + encodeURIComponent(limit) + "&addressdetails=1&countrycodes=ir";
-    const geoAc = new AbortController(); /* v12.12: بدون VPN هرگز بیش از ۶ ثانیه معطل نمی‌مانیم */
-    const geoTimer = setTimeout(function () { try { geoAc.abort(); } catch (e) {} }, 6000);
-    fetch(target, {
-      signal: geoAc.signal,
-      headers: { "Accept-Language": "fa,en", "User-Agent": "namayandeelmi-javad-crm/12.12" }
-    }).then(async (up) => {
-      clearTimeout(geoTimer);
-      const text = await up.text();
-      send(req, res, up.ok ? 200 : up.status, text, "application/json; charset=utf-8", { "Cache-Control": "public, max-age=120" });
+    const cKey = isRev ? ("rev:" + geoRound(lat) + ":" + geoRound(lng)) : ("geo:" + q.trim() + ":" + limit);
+    const cached = geoCacheGet(cKey);
+    if (cached) {
+      return send(req, res, 200, cached, "application/json; charset=utf-8", { "Cache-Control": "public, max-age=120", "X-CRM-Geo-Cache": "hit" });
+    }
+    const urls = isRev
+      ? [
+          "https://nominatim.openstreetmap.org/reverse?format=json&lat=" + encodeURIComponent(lat) + "&lon=" + encodeURIComponent(lng) + "&zoom=18&addressdetails=1",
+          "https://photon.komoot.io/reverse?lat=" + encodeURIComponent(lat) + "&lon=" + encodeURIComponent(lng) + "&lang=fa"
+        ]
+      : [
+          "https://nominatim.openstreetmap.org/search?format=json&q=" + encodeURIComponent(q) + "&limit=" + encodeURIComponent(limit) + "&addressdetails=1&countrycodes=ir",
+          "https://photon.komoot.io/api/?q=" + encodeURIComponent(q) + "&limit=" + encodeURIComponent(limit) + "&lang=fa"
+        ];
+    geoRace(urls, 4000, isRev).then((text) => {
+      const body = normalizeGeoText(text, isRev) || text;
+      geoCacheSet(cKey, body);
+      send(req, res, 200, body, "application/json; charset=utf-8", { "Cache-Control": "public, max-age=120", "X-CRM-Geo-Cache": "miss" });
     }).catch((err) => {
-      clearTimeout(geoTimer);
       send(req, res, 502, JSON.stringify({ status: "error", message: String(err.message || err), offlineSafe: true }), "application/json; charset=utf-8");
     });
     return;
@@ -685,8 +788,12 @@ const server = http.createServer((req, res) => {
     return res.end("Forbidden");
   }
   const ext = path.extname(filePath).toLowerCase();
-  const longCache = [".png", ".jpg", ".jpeg", ".css", ".js", ".woff2"].indexOf(ext) !== -1 && rel.indexOf("vendor/") === 0;
-  const assetCache = [".png", ".jpg", ".jpeg", ".ico"].indexOf(ext) !== -1 ? 86400 : (rel.indexOf("vendor/") === 0 ? 604800 : 0);
+  const isAsset = [".png", ".jpg", ".jpeg", ".css", ".js", ".woff2", ".svg", ".webp"].indexOf(ext) !== -1;
+  /* v12.14: داراییِ نسخه‌دار (crm-app.js?v=12.15.0) یک سال کش immutable می‌شود
+     → رفرشِ ساده/سخت دیگر ۶ فایل JS را دوباره از هاست نمی‌کشد (رفع بسته‌شدنِ اتصال) */
+  const versioned = /[?&]v=\d/.test(String(req.url || ""));
+  const assetCache = (isAsset && versioned) ? 31536000
+    : ([".png", ".jpg", ".jpeg", ".ico"].indexOf(ext) !== -1 ? 86400 : (rel.indexOf("vendor/") === 0 ? 604800 : 0));
   fs.stat(filePath, (err, stat) => {
     if (err || !stat.isFile()) {
       return sendFile(req, res, path.join(PUBLIC_DIR, "login.html"), 0);

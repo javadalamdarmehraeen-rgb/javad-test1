@@ -2,6 +2,7 @@ DirectoryIndex index.php login.html index.html
 <IfModule mod_headers.c>
   SetEnvIf Origin "^https://(javad-test1\.onrender\.com|mehraeinpharma\.ir|ndcohub\.com)$" ALLOW_ORIGIN=$0
   Header always set Access-Control-Allow-Origin "%{ALLOW_ORIGIN}e" env=ALLOW_ORIGIN
+  Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains" env=HTTPS
   Header always set Access-Control-Allow-Methods "GET, POST, HEAD, OPTIONS"
   Header always set Access-Control-Allow-Headers "Content-Type, X-CRM-Request, X-CRM-Replace, X-CRM-Sync, X-CRM-Hub-Sync, X-CRM-Build, Cache-Control"
   Header always set Access-Control-Max-Age "86400"
@@ -14,4 +15,17 @@ RewriteRule ^api/ api.php?path=preflight [QSA,L]
 RewriteRule ^panel/?$ index.html [L,QSA]
 RewriteRule ^login/?$ login.html [L,QSA]
 RewriteRule ^api/?(.*)$ api.php?path=$1 [QSA,L]
+</IfModule>
+
+# v12.14.0: دارایی‌های نسخه‌دار (crm-app.js?v=12.14.0) یک سال immutable کش می‌شوند
+# → رفرشِ ساده یا سخت دیگر ده‌ها فایل را دوباره از هاست نمی‌کشد (رفع ERR_CONNECTION_CLOSED)
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{QUERY_STRING} (^|&)v=[0-9]
+RewriteRule ^ - [E=CRM_VERSIONED:1]
+</IfModule>
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|css|png|jpe?g|webp|svg|woff2?|ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable" env=CRM_VERSIONED
+  </FilesMatch>
 </IfModule>

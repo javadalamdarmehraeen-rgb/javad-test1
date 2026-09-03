@@ -193,17 +193,56 @@
     return res.json();
   }
 
+  /* v12.14.0: ژئوکد موازی + کش — همان ریزآدرس (zoom=18 و همان قالب)، زمان بسیار کمتر */
+  var GEO_CACHE_KEY = "CRM_GEO_CACHE_V1";
+  function geoRoundKey(lat, lng) {
+    return (Math.round(Number(lat) * 1e4) / 1e4).toFixed(4) + "," + (Math.round(Number(lng) * 1e4) / 1e4).toFixed(4);
+  }
+  function geoCacheRead() {
+    try { return JSON.parse(sessionStorage.getItem(GEO_CACHE_KEY) || "{}"); } catch (e) { return {}; }
+  }
+  function geoCacheWrite(map) {
+    try {
+      var ks = Object.keys(map);
+      if (ks.length > 150) { ks.slice(0, ks.length - 150).forEach(function (k) { delete map[k]; }); }
+      sessionStorage.setItem(GEO_CACHE_KEY, JSON.stringify(map));
+    } catch (e) {}
+  }
+  /* هر منبع در استقلال کامل صدا زده می‌شود؛ نخستین پاسخِ معتبر برنده است */
+  function geoRaceSources(sources) {
+    return new Promise(function (resolve) {
+      var done = false, left = sources.length;
+      function settle() { left -= 1; if (!done && left <= 0) resolve(null); }
+      sources.forEach(function (src) {
+        var finished = false;
+        var timer = setTimeout(function () { if (!finished) { finished = true; if (!done) settle(); } }, src.ms || 5000);
+        Promise.resolve()
+          .then(function () { return fetchJson(src.url); })
+          .then(function (data) {
+            if (finished) return; finished = true; clearTimeout(timer);
+            if (done) return;
+            if (data && data.display_name) { done = true; resolve(data); }
+            else settle();
+          })
+          .catch(function () { if (finished) return; finished = true; clearTimeout(timer); if (!done) settle(); });
+      });
+      if (!sources.length) resolve(null);
+    });
+  }
   async function geoReverse(lat, lng) {
+    var key = geoRoundKey(lat, lng);
     try {
-      const data = await fetchJson("/api/reverse?lat=" + encodeURIComponent(lat) + "&lng=" + encodeURIComponent(lng));
-      if (data && data.display_name) return formatNominatim(data, lat, lng);
-    } catch (e) { /* fallback */ }
-    try {
-      const url = "https://nominatim.openstreetmap.org/reverse?format=json&lat=" + lat + "&lon=" + lng + "&zoom=18&addressdetails=1";
-      const data = await fetchJson(url);
-      if (data && data.display_name) return formatNominatim(data, lat, lng);
-    } catch (e2) { /* ignore */ }
-    return "موقعیت ثبت‌شده (" + Number(lat).toFixed(6) + ", " + Number(lng).toFixed(6) + ")";
+      var memo = geoCacheRead();
+      if (memo && memo[key]) return memo[key];
+    } catch (eM) {}
+    var data = await geoRaceSources([
+      { url: "/api/reverse?lat=" + encodeURIComponent(lat) + "&lng=" + encodeURIComponent(lng), ms: 5000 },
+      { url: "https://nominatim.openstreetmap.org/reverse?format=json&lat=" + encodeURIComponent(lat) + "&lon=" + encodeURIComponent(lng) + "&zoom=18&addressdetails=1", ms: 6000 }
+    ]);
+    /* v12.15: هرگز مختصاتِ خام را به‌عنوان آدرس نمی‌نویسیم */
+    var out = data ? formatNominatim(data, lat, lng) : (window.v1215Api && window.v1215Api.NO_ADDR ? window.v1215Api.NO_ADDR : "آدرس خودکار دریافت نشد — دوباره تلاش کنید");
+    try { var m = geoCacheRead(); m[key] = out; geoCacheWrite(m); } catch (eC) {}
+    return out;
   }
 
   async function geoSearch(query, limit) {
@@ -332,14 +371,40 @@
     }
   }
 
+  /* v12.14.0: خروجِ تطبیقی — دقتِ هدف همان ۱۰ متر است، اما هیچ‌گاه بیش از ۶ ثانیه معطل نمی‌مانیم
+     و برای هر به‌روزرسانیِ watch یک ژئوکد جدا صدا نمی‌زنیم (فقط نقطهٔ نهایی). */
   function getCurrentPositionSafe() {
     return new Promise(function (resolve) {
       if (!navigator.geolocation) { resolve({ error: true, message: "GPS این دستگاه در دسترس نیست." }); return; }
-      var best=null,done=false,watch=null;
-      function finish(result){if(done)return;done=true;if(watch!=null)try{navigator.geolocation.clearWatch(watch);}catch(e){}clearTimeout(timer);resolve(result);}
-      // هدف دقت ۱۰ متر ثابت است؛ reverse geocode هم‌زمان با دریافت نقطه اجرا می‌شود تا زمان انتظار جمع نشود.
-      var timer=setTimeout(function(){if(best)finish(best);else finish({error:true,message:"موقعیت دقیق دریافت نشد؛ GPS را روشن و دوباره تلاش کنید."});},15000);
-      watch=navigator.geolocation.watchPosition(function(pos){var cur={lat:pos.coords.latitude,lng:pos.coords.longitude,accuracy:Number(pos.coords.accuracy)||9999,fallback:false};cur.addressPromise=geoReverse(cur.lat,cur.lng);if(!best||cur.accuracy<best.accuracy)best=cur;if(cur.accuracy<=10)finish(cur);},function(err){if(err&&err.code===1)finish({error:true,message:"اجازه GPS داده نشده است."});},{enableHighAccuracy:true,timeout:15000,maximumAge:0});
+      if (typeof window.isSecureContext === "boolean" && window.isSecureContext === false) {
+        resolve({ error: true, message: "برای دسترسی به موقعیت، از HTTPS استفاده کنید." }); return;
+      }
+      var best = null, done = false, watch = null, timer = null, t0 = Date.now();
+      function finish(result) {
+        if (done) return; done = true;
+        if (watch != null) { try { navigator.geolocation.clearWatch(watch); } catch (e) {} }
+        clearTimeout(timer);
+        if (result && !result.error && !result.addressPromise) {
+          result.addressPromise = (window.v1215Api && typeof window.v1215Api.reverseAddress === "function")
+            ? window.v1215Api.reverseAddress(result.lat, result.lng, 3).then(function (a) { return a || geoReverse(result.lat, result.lng); })
+            : geoReverse(result.lat, result.lng);
+        }
+        resolve(result);
+      }
+      timer = setTimeout(function () {
+        if (best) finish(best);
+        else finish({ error: true, message: "موقعیت دقیق دریافت نشد؛ GPS را روشن و دوباره تلاش کنید." });
+      }, 6000);
+      watch = navigator.geolocation.watchPosition(function (pos) {
+        var cur = { lat: pos.coords.latitude, lng: pos.coords.longitude, accuracy: Number(pos.coords.accuracy) || 9999, fallback: false };
+        if (!best || cur.accuracy < best.accuracy) best = cur;
+        var waited = Date.now() - t0;
+        if (cur.accuracy <= 10) finish(cur);                       /* هدفِ دقت — بلافاصله */
+        else if (waited >= 2500 && cur.accuracy <= 30) finish(cur); /* ریزآدرس عملاً یکسان است */
+        else if (waited >= 4500 && cur.accuracy <= 80) finish(cur); /* مبادلهٔ جزئیِ دقت با سرعت */
+      }, function (err) {
+        if (err && err.code === 1) finish({ error: true, message: "اجازه GPS داده نشده است." });
+      }, { enableHighAccuracy: true, timeout: 8000, maximumAge: 60000 });
     });
   }
   window.getCurrentPositionSafe = getCurrentPositionSafe;
@@ -12862,7 +12927,7 @@ button.v19-gps svg{display:block}
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.12.0");
+        var ver=String(window.CRM_APP_VERSION||"12.15.0");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -14399,7 +14464,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.12.0");
+        var ver=String(window.CRM_APP_VERSION||"12.15.0");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -19154,7 +19219,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   if(!window.CRM_HUBS){
     var o=location.origin, L=["https://javad-test1.onrender.com","https://mehraeinpharma.ir"];
-    if(location.protocol==="http:") L=L.concat(["http://mehraeinpharma.ir"]);
+    if(location.protocol==="http:") L=L.concat(["https://mehraeinpharma.ir"]);
     L.unshift(o);
     var s={}, hubs=[];
     L.forEach(function(x){ try{ var u=new URL(x,o); if(location.protocol==="https:"&&u.protocol==="http:")return; if(!s[u.origin]){s[u.origin]=1;hubs.push(u.origin);} }catch(e){} });
@@ -19178,10 +19243,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.12.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.15.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.12.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.15.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19261,10 +19326,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.12.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.15.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.12.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.15.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -19320,7 +19385,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.12.0");
+  var BUILD = String(window.CRM_APP_VERSION || "12.15.0");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
@@ -19381,10 +19446,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.12.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.15.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.12.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.15.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19411,10 +19476,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.12.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.15.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.12.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.15.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -19499,7 +19564,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.12.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.15.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -19668,8 +19733,17 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     if (!d || typeof d !== "object") return true;
     return !(d.pharmacies||[]).length && !(d.doctors||[]).length && ((d.users||[]).length <= 1);
   }
+  /* v12.13: روی میزبان Node (رندر/لوکال) سراغ api.php نمی‌رویم — همان ۵۰۳/۴۰۴ همیشگی */
+  function hasPhpHere(){
+    try {
+      var h = String(location.hostname || "");
+      if (/onrender\.com$/i.test(h)) return false;
+      if (/^(localhost|127\.0\.0\.1)$/i.test(h)) return false;
+    } catch (e) {}
+    return true;
+  }
   function urls(){
-    return ["/api.php?path=state", "/api/state"];
+    return hasPhpHere() ? ["/api.php?path=state", "/api/state"] : ["/api/state"];
   }
   function recN(d){
     if (!d) return 0;
@@ -19722,9 +19796,14 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       var st = window.state;
       if (hollow(st)) return;
       var body = typeof serializeStateForLocalStorage === "function" ? serializeStateForLocalStorage(st) : JSON.stringify(st);
-      orig("/api.php?path=state", { method: "POST", headers: { "Content-Type": "application/json" }, body: body, cache: "no-store" })
-        .then(function(r){ if (r && r.ok) return; return orig("/api/state", { method: "POST", headers: { "Content-Type": "application/json" }, body: body, cache: "no-store" }); })
-        .catch(function(){});
+      var list = urls();
+      function post(i){
+        if (i >= list.length) return;
+        orig(list[i], { method: "POST", headers: { "Content-Type": "application/json" }, body: body, cache: "no-store" })
+          .then(function(r){ if (r && r.ok) return; post(i + 1); })
+          .catch(function(){ post(i + 1); });
+      }
+      post(0);
     } catch (e) {}
   }
   window.v12PushNetafraz = pushOrigin;
@@ -19886,7 +19965,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   setTimeout(boot, 1200);
 })();
 
-/* v12.12.0: منزل نمایندگان، قیمت‌گذاری و همگام‌سازی بی‌درنگ */
+/* v12.09.2: منزل نمایندگان، قیمت‌گذاری و همگام‌سازی بی‌درنگ */
 (function(){
   function homeFields(){
     var body=document.getElementById('tableRepHomesBody');
@@ -19919,16 +19998,21 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var TITLE = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
   var BRAND = "طنین طب طاها  TANIN TEB TAHA";
-  var FALLBACK = "12.12.0";
+  var FALLBACK = "12.15.0";
 
   /* ── ۱) سربرگ دقیقاً سه خط؛ شماره نسخه با ارقام لاتین ───────────────── */
   function ver() { try { return String(window.CRM_APP_VERSION || FALLBACK); } catch (e) { return FALLBACK; } }
+  var LEGACY_TITLE = "برنامه ویزیت و گزارشات(مهر آیین نیک دارو)";
   function shownName() {
     try {
       var S = window.state;
       if (S && S.settings) {
         var n = String(S.settings.companyName || "").trim();
-        if (n && !/پخش\s*دارو|شبکه\s*درمان\s*نماینده|سیستم مدیریت ویزیت علمی|^برنامه ویزیت و گزارشات$/.test(n)) return n;
+        if (n === LEGACY_TITLE) n = TITLE; /* v12.13: نام بی‌فاصلهٔ قدیمی یکسان می‌شود */
+        if (n && !/پخش\s*دارو|شبکه\s*درمان\s*نماینده|سیستم مدیریت ویزیت علمی|^برنامه ویزیت و گزارشات$/.test(n)) {
+          if (S.settings.companyName !== n) { try { S.settings.companyName = n; } catch (eW) {} }
+          return n;
+        }
       }
     } catch (e) {}
     return TITLE;
@@ -19949,7 +20033,8 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   paintHeader();
   [0, 40, 120, 300, 700, 1500, 3000, 6000, 12000].forEach(function (ms) { setTimeout(paintHeader, ms); });
   try {
-    var box = document.querySelector(".logo-text") || document.getElementById("crmBuildBadge");
+    /* v12.13: روی body تماشا می‌شود — اگر کل بلوک سربرگ بازنویسی شود هم قفل می‌ماند */
+    var box = document.body || document.querySelector(".logo-text") || document.getElementById("crmBuildBadge");
     if (box && typeof MutationObserver !== "undefined") {
       var lock = 0;
       new MutationObserver(function () {
@@ -20117,9 +20202,18 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   window.v1212SyncNow = syncAll;
   setTimeout(syncAll, 1500);
   setTimeout(syncAll, 8000);
-  setTimeout(syncAll, 25000);
-  setInterval(syncAll, 90000);
-  try { document.addEventListener("visibilitychange", function () { if (!document.hidden) syncAll(); }); } catch (eV) {}
+  /* v12.14.0: دیگر هیچ طوفانی در رفرش — آغاز دیرتر، چرخهٔ ۱۰ دقیقه، و مهارِvisibilitychange */
+  var lastSyncAt = 0;
+  function syncAllThrottled(force) {
+    var t = Date.now();
+    if (!force && (t - lastSyncAt) < 180000) return;   /* کمتر از ۳ دقیقه: کاری نمی‌کنیم */
+    if (!force && typeof document !== "undefined" && document.hidden) return;
+    lastSyncAt = t;
+    try { return syncAll(); } catch (eS) {}
+  }
+  setTimeout(function () { syncAllThrottled(false); }, 45000);
+  setInterval(function () { syncAllThrottled(false); }, 600000);
+  try { document.addEventListener("visibilitychange", function () { if (!document.hidden) syncAllThrottled(false); }); } catch (eV) {}
   try { window.addEventListener("online", function () { status("local"); syncAll(); }); } catch (eO) {}
   try { window.addEventListener("offline", function () { status("offline"); }); } catch (eF) {}
   status("local");
@@ -20128,4 +20222,1207 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if (typeof navigator !== "undefined" && navigator.onLine === false) status("offline");
     } catch (e) {}
   }, 500);
+})();
+
+/* v12.13.0: فرمان درخواست‌ها (رفع ۵۰۳/طوفان درخواست) + HTTPS اجباری + GPS امن + پاک‌سازی یک‌باره + تثبیت سربرگ */
+(function () {
+  "use strict";
+  window.v1213Governor = true;
+  window.v1213Https = true;
+  window.v1213GpsGuard = true;
+  window.v1213Cleanup = true;
+
+  /* ── ۰) اجبار HTTPS — GPS روی HTTP کار نمی‌کند ──────────────────────── */
+  (function () {
+    try {
+      var h = String(location.hostname || "");
+      var local = /^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/i.test(h) || /\.local$/i.test(h) || /^\d+\.\d+\.\d+\.\d+$/.test(h);
+      if (location.protocol === "http:" && !local && !/(\?|&)nohttps=1/.test(location.search)) {
+        var to = "https://" + location.host + location.pathname + location.search + location.hash;
+        function go() {
+          if (window.history && history.replaceState) { try { history.replaceState(null, "", to); } catch (eR) {} }
+          try { location.replace(to); } catch (e) { location.href = to; }
+        }
+        var okKey = "CRM_HTTPS_OK_" + h, seen = 0;
+        try { seen = Number(localStorage.getItem(okKey) || 0); } catch (eL) {}
+        if (seen && (Date.now() - seen) < 7 * 24 * 3600 * 1000) { go(); return; }  /* قبلاً روی HTTPS بالا آمده */
+        /* v12.14: پیش از ریدایرکت، HTTPS را با یک درخواست no-cors می‌سنجیم تا هرگز
+           به بن‌بست «connection closed» نرویم (هاست‌های بدون گواهی معتبر روی HTTP می‌مانند) */
+        var ac = (typeof AbortController === "function") ? new AbortController() : null;
+        var pt = setTimeout(function () { try { if (ac) ac.abort(); } catch (eA) {} }, 3000);
+        try {
+          baseFetch("https://" + location.host + "/favicon.png?httpsprobe=1",
+            { mode: "no-cors", cache: "no-store", signal: ac ? ac.signal : undefined })
+            .then(function () {
+              clearTimeout(pt);
+              try { localStorage.setItem(okKey, String(Date.now())); } catch (eS) {}
+              go();
+            })
+            .catch(function () { clearTimeout(pt); window.v1214HttpsProbeFailed = true; });
+        } catch (eF) { clearTimeout(pt); window.v1214HttpsProbeFailed = true; }
+      }
+    } catch (e) {}
+  })();
+
+  /* ── ۱) فرمان درخواست‌ها: صف + بک‌آف نمایی روی ۵xx/۴۲۹ ──────────────── */
+  var MIN_GAP = 3500;      /* حداقل فاصله بین درخواست‌های پس‌زمینه */
+  var CROSS_MS = 6000;     /* تایم‌اوت بین‌دامنه‌ای */
+  var baseFetch = (typeof window.fetch === "function") ? window.fetch.bind(window) : function () { return Promise.reject(new Error("no fetch")); };
+  var chain = Promise.resolve();
+  var lastAt = 0, fails = {}, backoff = {};
+
+  function now() { return Date.now(); }
+  function keyOf(url) { try { return new URL(String(url), location.href).origin; } catch (e) { return String(location.origin || "self"); } }
+  function isCrossUrl(url) {
+    try { return new URL(String(url), location.href).origin !== location.origin; } catch (e) { return false; }
+  }
+  function isApiPath(url) {
+    var s = String(url || "");
+    if (s.indexOf("api.php") >= 0) return true;
+    if (/^\/api(\/|\?|$)/.test(s)) return true;
+    try { return new URL(s, location.href).pathname.indexOf("/api") === 0; } catch (e) { return false; }
+  }
+  function isWrite(opts) {
+    var m = String((opts && opts.method) || "GET").toUpperCase();
+    return m === "POST" || m === "PUT" || m === "PATCH" || m === "DELETE";
+  }
+  function noteFail(k) {
+    fails[k] = (fails[k] || 0) + 1;
+    var f = fails[k];
+    if (f >= 2) backoff[k] = now() + Math.min(300000, 15000 * Math.pow(2, Math.min(f - 2, 4)));
+  }
+  function noteOk(k) { fails[k] = 0; backoff[k] = 0; }
+  window.v1213Status = function () {
+    return { fails: JSON.parse(JSON.stringify(fails)), backoff: JSON.parse(JSON.stringify(backoff)) };
+  };
+  function governed(url, opts) {
+    var k = keyOf(url);
+    try { if (typeof navigator !== "undefined" && navigator.onLine === false) return Promise.reject(new Error("offline")); } catch (eN) {}
+    if (backoff[k] && now() < backoff[k]) return Promise.reject(new Error("backoff:" + k));
+    var run = function () {
+      var wait = Math.max(0, MIN_GAP - (now() - lastAt));
+      return new Promise(function (res) { setTimeout(res, wait); }).then(function () {
+        lastAt = now();
+        return baseFetch(url, opts).then(function (r) {
+          if (r && (r.status === 429 || r.status >= 500)) noteFail(k); else noteOk(k);
+          return r;
+        }, function (e) { noteFail(k); throw e; });
+      });
+    };
+    chain = chain.then(run, run);
+    return chain;
+  }
+  function governedSoft(url, opts, ms) {
+    ms = ms || CROSS_MS;
+    var o = Object.assign({}, opts || {});
+    var ctrl = (typeof AbortController !== "undefined") ? new AbortController() : null;
+    var timer = setTimeout(function () { try { if (ctrl) ctrl.abort(); } catch (eA) {} }, ms);
+    if (ctrl) o.signal = ctrl.signal;
+    return governed(url, o).then(function (r) { clearTimeout(timer); return r; }, function (e) { clearTimeout(timer); throw e; });
+  }
+  window.v1213SoftFetch = governedSoft;
+
+  window.fetch = function (url, opts) {
+    if (isCrossUrl(url)) return governedSoft(url, opts, CROSS_MS);
+    if (isApiPath(url) && !isWrite(opts)) return governed(url, opts); /* فقط کشیدن/همگام صف می‌گیرد */
+    return baseFetch.apply(window, arguments); /* ذخیرهٔ کاربر بی‌درنگ می‌رود */
+  };
+
+  /* ── ۲) مهار ارسال‌های تکراری (۵۰۳ِ هاست از همین بود) ──────────────── */
+  (function () {
+    var fn = window.crmPushStateToServer;
+    if (typeof fn !== "function" || fn._v1213) return;
+    var last = 0, lastSig = "";
+    function sig() {
+      try {
+        var st = window.state || {};
+        return [(st.pharmacies || []).length, (st.doctors || []).length, (st.orders || []).length, st._lastSavedAt || 0].join("|");
+      } catch (e) { return ""; }
+    }
+    var w = function (force) {
+      var s = sig(), t = Date.now();
+      if (!force && s && s === lastSig && (t - last) < 60000) return;  /* داده تغییر نکرده */
+      if (!force && (t - last) < 12000) return;                        /* حداقل فاصله */
+      last = t; lastSig = s;
+      return fn.apply(this, arguments);
+    };
+    w._v1213 = true;
+    w.forcePush = function () { return fn.apply(window, arguments); };
+    window.crmPushStateToServer = w;
+  })();
+
+  /* ── ۳) GPS فقط روی بستر امن (HTTPS) ───────────────────────────────── */
+  (function () {
+    if (typeof navigator === "undefined" || !navigator.geolocation) return;
+    var secure = (typeof window.isSecureContext === "boolean") ? window.isSecureContext : (String(location.protocol) === "https:");
+    if (secure) return;
+    var warned = false;
+    function warn() {
+      if (warned) return;
+      warned = true;
+      try { alert("دسترسی به موقعیت (GPS) فقط روی HTTPS ممکن است. لطفاً برنامه را با https:// باز کنید."); } catch (e) {}
+    }
+    var geo = navigator.geolocation;
+    function deny(err) { warn(); if (typeof err === "function") { try { err({ code: 2, message: "insecure-context" }); } catch (e) {} } }
+    try {
+      geo.getCurrentPosition = function (ok, err) { deny(err); };
+      geo.watchPosition = function (ok, err) { deny(err); return 0; };
+      geo.clearWatch = function () {};
+      window.v1213GpsBlocked = true;
+    } catch (e) {}
+  })();
+
+  /* ── ۴) پاک‌سازی یک‌باره: کش‌ها و کلیدهای قدیمی ────────────────────── */
+  (function () {
+    var FLAG = "CRM_V1213_CLEANED";
+    var done = false;
+    try { done = localStorage.getItem(FLAG) === "1"; } catch (e) {}
+    if (done) return;
+    try { localStorage.setItem(FLAG, "1"); } catch (e) {}
+    var ver = String(window.CRM_APP_VERSION || "12.15.0");
+    try {
+      if (window.caches && typeof caches.keys === "function") {
+        caches.keys().then(function (keys) {
+          Promise.all(keys.map(function (k) { return caches.delete(k); })).then(function () {
+            try { console.log("[v12.13] کش‌های قدیمی پاک شد: " + keys.length); } catch (e) {}
+          });
+        });
+      }
+    } catch (eC) {}
+    try {
+      if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
+        navigator.serviceWorker.getRegistrations().then(function (regs) {
+          Promise.all(regs.map(function (r) { return r.unregister(); })).then(function () {
+            try { console.log("[v12.13] سرویس‌ورکر قدیمی حذف شد: " + regs.length + " (ثبت دوباره با خود برنامه)"); } catch (e) {}
+          });
+        });
+      }
+    } catch (eS) {}
+    /* فقط کلیدهای زائد؛ هرگز CRM_APP_STATE_V2 یا دادهٔ کاربر پاک نمی‌شود */
+    var STALE = ["CRM_NETAFRAZ_DATA", "crm-netafraz-data", "CRM_OLD_BUILD", "crmOldProgramFiles", "CRM_LEGACY_SYNC_AT"];
+    try {
+      Object.keys(localStorage).forEach(function (k) {
+        if (STALE.indexOf(k) >= 0) { try { localStorage.removeItem(k); } catch (e) {} return; }
+        if (/^(CRM_CACHE_RESCUED_|crm-boot|__crm_old)/i.test(k) && k.indexOf(ver) === -1) {
+          try { localStorage.removeItem(k); } catch (e) {}
+        }
+      });
+    } catch (eL) {}
+  })();
+})();
+
+/* v12.14.0: فرمان ترافیک — رفرش دیگر باعث بسته‌شدنِ اتصال (ERR_CONNECTION_CLOSED) نمی‌شود
+   علتِ واقعیِ خطای شما: انبوهِ درخواستِ پس‌زمینه و بازخوانیِ بی‌کشِ دارایی‌ها هنگام رفرش؛
+   هاستِ اشتراکی در پیِ آن درخواستِ اصلی را می‌بست. این لایه سقف می‌گذارد، میزبانِ خراب را
+   قرنطینه می‌کند و هنگام خروج/رفرش همهٔ درخواست‌های باز را لغو می‌کند. */
+(function () {
+  "use strict";
+  window.v1214Traffic = true;
+  var nextFetch = (typeof window.fetch === "function") ? window.fetch.bind(window) : function () { return Promise.reject(new Error("no fetch")); };
+  var t0 = Date.now();
+  var inFlight = [];
+  var hits = [];
+  var lastCrossAt = 0;
+  var quarantine = {};
+
+  window.v1214Config = {
+    bootQuietMs: 25000,   /* تا ۲۵ ثانیه پس از بالا آمدن: هیچ درخواستِ بین‌دامنه‌ای */
+    budget: 6,            /* سقفِ درخواست پس‌زمینه در هر دقیقه */
+    windowMs: 60000,
+    crossGapMs: 20000,    /* فاصلهٔ دو درخواستِ بین‌دامنه‌ای */
+    quarantineMs: 600000  /* قرنطینهٔ میزبانِ خراب */
+  };
+  window.v1214BootDone = function () { t0 = Date.now() - (window.v1214Config.bootQuietMs || 0) - 1; };
+
+  function cfg(k, d) { try { var v = window.v1214Config[k]; return (typeof v === "number") ? v : d; } catch (e) { return d; } }
+  function originOf(u) { try { return new URL(String(u), location.href).origin; } catch (e) { return String(location.origin || "self"); } }
+  function isCross(u) { try { return new URL(String(u), location.href).origin !== location.origin; } catch (e) { return false; } }
+  function isWrite(o) { var m = String(((o && o.method) || "GET")).toUpperCase(); return m === "POST" || m === "PUT" || m === "PATCH" || m === "DELETE"; }
+  function isBackground(u, o) {
+    if (isWrite(o)) return false;                       /* ذخیرهٔ کاربر هرگز مهار نمی‌شود */
+    var s = String(u || "");
+    if (s.indexOf("api.php") >= 0) return true;
+    if (/^(\/api|api)(\/|\?|$)/.test(s)) return true;
+    try { return new URL(s, location.href).pathname.indexOf("/api") === 0; } catch (e) { return false; }
+  }
+  function prune() { var now = Date.now(), w = cfg("windowMs", 60000); hits = hits.filter(function (t) { return now - t < w; }); }
+
+  window.v1214State = function () {
+    prune();
+    return { used: hits.length, budget: cfg("budget", 6), inFlight: inFlight.length, quarantine: JSON.parse(JSON.stringify(quarantine)) };
+  };
+
+  window.fetch = function (url, opts) {
+    var o = opts || {};
+    if (!isBackground(url, o)) return nextFetch(url, o);            /* دارایی و ذخیره: بی‌درنگ */
+    var k = originOf(url);
+    var q = quarantine[k];
+    if (q && Date.now() < q) { window.v1214LastDrop = "quarantine:" + k; return Promise.reject(new Error("quarantine:" + k)); }
+    if (isCross(url)) {
+      if (Date.now() - t0 < cfg("bootQuietMs", 25000)) { window.v1214LastDrop = "boot:" + k; return Promise.reject(new Error("boot-quiet:" + k)); }
+      if (Date.now() - lastCrossAt < cfg("crossGapMs", 20000)) { window.v1214LastDrop = "crossgap:" + k; return Promise.reject(new Error("cross-gap:" + k)); }
+    }
+    if (typeof document !== "undefined" && document.hidden) { window.v1214LastDrop = "hidden"; return Promise.reject(new Error("hidden-tab")); }
+    prune();
+    if (hits.length >= cfg("budget", 6)) { window.v1214LastDrop = "budget"; return Promise.reject(new Error("budget-exhausted")); }
+    hits.push(Date.now());
+    if (isCross(url)) lastCrossAt = Date.now();
+
+    var ctrl = null, o2 = o;
+    if (!o.signal && typeof AbortController !== "undefined") {
+      ctrl = new AbortController();
+      o2 = Object.assign({}, o, { signal: ctrl.signal });
+      inFlight.push(ctrl);
+    }
+    var p = nextFetch(url, o2);
+    var drop = function (r) { if (ctrl) { var i = inFlight.indexOf(ctrl); if (i >= 0) inFlight.splice(i, 1); } return r; };
+    return p.then(function (r) {
+      drop();
+      if (r && (r.status === 429 || r.status >= 500)) quarantine[k] = Date.now() + cfg("quarantineMs", 600000);
+      return r;
+    }, function (e) {
+      drop();
+      if (!(e && /budget|quarantine|cross-gap|boot-quiet|hidden/.test(String(e.message || "")))) {
+        quarantine[k] = Date.now() + cfg("quarantineMs", 600000);
+      }
+      throw e;
+    });
+  };
+
+  /* هنگام رفرش/خروج: همهٔ درخواست‌های باز لغو می‌شود تا هاست زیر بارِ ناگهانی نرود */
+  function abortAll() {
+    inFlight.slice().forEach(function (c) { try { c.abort(); } catch (e) {} });
+    inFlight.length = 0;
+    hits.length = 0;
+  }
+  try { window.addEventListener("pagehide", abortAll, false); } catch (eP) {}
+  try { window.addEventListener("beforeunload", abortAll, false); } catch (eB) {}
+  window.v1214AbortAll = abortAll;
+  window.v1214Quarantine = function () { return JSON.parse(JSON.stringify(quarantine)); };
+})();
+
+/* v12.15.0: شانزده اصلاحِ درخواستی — ترتیبِ پایدارِ فیلدها، آدرسِ واقعی به‌جای مختصات،
+   آنلاینِ پایدار، جایگذاریِ خودکارِ بالای صفحه، تردد روی نقشه، طبقه/پلاک منزل،
+   پیام‌رسانِ چندگانه، قیمتِ مصرف‌کننده، نوع فیلدِ ساعت، بوتِ آفلاین + ارسال خودکار،
+   سبکی برای تب‌های دیگر، دسترسیِ ریز، زمانِ ویزیت + آلارم، و خروجی اکسلِ فارسی. */
+(function () {
+  "use strict";
+  if (window.v1215) return;
+  window.v1215 = true;
+  var API = {};
+  window.v1215Api = API;
+
+  /* ── ابزارها ───────────────────────────────────────────────────────────── */
+  function st() {
+    try { return (window.__CRM_GET_STATE && window.__CRM_GET_STATE()) || window.state || null; } catch (e) { return null; }
+  }
+  function save() { try { if (typeof window.saveState === "function") window.saveState(); } catch (e) {} }
+  function numOr(v, d) { var n = Number(v); return (v == null || v === "" || !isFinite(n)) ? d : n; }
+  function $(id) { try { return document.getElementById(id); } catch (e) { return null; } }
+  function qs(sel, root) { try { return (root || document).querySelector(sel); } catch (e) { return null; } }
+  function qsa(sel, root) { try { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); } catch (e) { return []; } }
+  /* قانون ۱۲: هیچ کاری هم‌زمان و سنگین انجام نمی‌شود — تب‌های دیگر آزاد می‌مانند */
+  function idle(fn, timeout) {
+    try { if (typeof window.requestIdleCallback === "function") return window.requestIdleCallback(fn, { timeout: timeout || 2500 }); } catch (e) {}
+    return setTimeout(fn, 30);
+  }
+  function chunk(items, size, step, done) {
+    var i = 0;
+    function run() {
+      var t0 = (performance && performance.now) ? performance.now() : Date.now();
+      while (i < items.length) {
+        try { step(items[i], i); } catch (e) {}
+        i += 1;
+        var now = (performance && performance.now) ? performance.now() : Date.now();
+        if (now - t0 > 8) break;              /* هر تکه حداکثر ۸ میلی‌ثانیه */
+      }
+      if (i < items.length) idle(run, 800);
+      else if (typeof done === "function") { try { done(); } catch (e) {} }
+    }
+    idle(run, 800);
+  }
+  API.idle = idle; API.chunk = chunk;
+
+  /* ══ ۱) ترتیبِ فیلدها: دیگر بعد از رفرش به جای قبلی برنمی‌گردد ═══════════ */
+  API.normalizeOrders = function () {
+    var S = st(); if (!S) return 0;
+    var fixed = 0;
+    function renumber(get, set, sortFn, list) {
+      var arr = list.slice().sort(sortFn);
+      arr.forEach(function (it, i) { var want = i + 1; if (numOr(get(it), 0) !== want) { set(it, want); fixed += 1; } });
+    }
+    var meta = S.formFieldMeta || {};
+    Object.keys(meta).forEach(function (key) {
+      var m = meta[key] || {};
+      var ids = Object.keys(m).filter(function (id) { return m[id] && !m[id].deleted; });
+      if (!ids.length) return;
+      renumber(function (id) { return m[id].order; }, function (id, v) { m[id].order = v; },
+        function (a, b) {
+          return numOr(m[a].order, 1e9) - numOr(m[b].order, 1e9) ||
+                 numOr(m[a].listOrder, 1e9) - numOr(m[b].listOrder, 1e9) ||
+                 String(a).localeCompare(String(b));
+        }, ids);
+      renumber(function (id) { return m[id].listOrder; }, function (id, v) { m[id].listOrder = v; },
+        function (a, b) {
+          return numOr(m[a].listOrder, numOr(m[a].order, 1e9)) - numOr(m[b].listOrder, numOr(m[b].order, 1e9)) ||
+                 String(a).localeCompare(String(b));
+        }, ids);
+    });
+    var cf = S.customFields || null;
+    if (cf && typeof cf === "object") {
+      Object.keys(cf).forEach(function (key) {
+        var arr = cf[key];
+        if (!Array.isArray(arr) || !arr.length) return;
+        renumber(function (f) { return f.order; }, function (f, v) { f.order = v; },
+          function (a, b) { return numOr(a.order, 1e9) - numOr(b.order, 1e9) || String(a.id).localeCompare(String(b.id)); }, arr);
+        renumber(function (f) { return f.listOrder; }, function (f, v) { f.listOrder = v; },
+          function (a, b) {
+            return numOr(a.listOrder, numOr(a.order, 1e9)) - numOr(b.listOrder, numOr(b.order, 1e9)) ||
+                   String(a.id).localeCompare(String(b.id));
+          }, arr);
+      });
+    }
+    if (fixed) save();
+    return fixed;
+  };
+  function reRenderForms() {
+    ["renderAllCustomFieldsInFormsAndTables", "renderCustomFieldsTable", "renderColFieldList",
+     "renderColTabGrid", "applyFullFormLayout", "refreshEntityLists"].forEach(function (name) {
+      try { if (typeof window[name] === "function") window[name](); } catch (e) {}
+    });
+  }
+  API.reRenderForms = reRenderForms;
+
+  /* ══ ۲) آدرسِ واقعی به‌جای عرض/طول جغرافیایی ══════════════════════════════ */
+  var NO_ADDR = "آدرس خودکار دریافت نشد — دوباره تلاش کنید";
+  API.NO_ADDR = NO_ADDR;
+  var GEO_SOURCES = [
+    function (lat, lng) { return "/api/reverse?lat=" + encodeURIComponent(lat) + "&lng=" + encodeURIComponent(lng); },
+    function (lat, lng) { return "https://nominatim.openstreetmap.org/reverse?format=json&lat=" + lat + "&lon=" + lng + "&zoom=18&addressdetails=1"; },
+    function (lat, lng) { return "https://photon.komoot.io/reverse?lat=" + lat + "&lon=" + lng; }
+  ];
+  function normPhoton(text) {
+    try {
+      var j = JSON.parse(text);
+      var f = (j.features || [])[0]; if (!f) return null;
+      var p = f.properties || {};
+      var parts = [p.country, p.state, p.county, p.city || p.district, p.district, p.street,
+        p.housenumber ? ("پلاک: " + p.housenumber) : "", p.name].filter(Boolean);
+      return parts.join("، ") || null;
+    } catch (e) { return null; }
+  }
+  API.normPhoton = normPhoton;
+  /* تلاشِ صبور: تا ۳ دور، در هر دور همه منبع‌ها هم‌زمان — هرگز مختصات را به‌عنوان آدرس نمی‌نویسیم */
+  API.reverseAddress = function (lat, lng, tries) {
+    tries = tries || 3;
+    return new Promise(function (resolve) {
+      var round = 0;
+      function once() {
+        round += 1;
+        var done = false, left = GEO_SOURCES.length;
+        GEO_SOURCES.forEach(function (mk) {
+          var ac = (typeof AbortController !== "undefined") ? new AbortController() : null;
+          var timer = setTimeout(function () { try { ac && ac.abort(); } catch (e) {} }, 6000);
+          fetch(mk(lat, lng), { signal: ac ? ac.signal : undefined, headers: { "Accept-Language": "fa,en" } })
+            .then(function (r) { return r.ok ? r.text() : Promise.reject(new Error("http")); })
+            .then(function (text) {
+              clearTimeout(timer);
+              if (done) return;
+              var out = null;
+              try {
+                var j = JSON.parse(text);
+                if (j && j.display_name) out = String(j.display_name);
+              } catch (e) { out = normPhoton(text); }
+              if (out) { done = true; resolve(out); }
+              else if (--left <= 0) next();
+            })
+            .catch(function () { clearTimeout(timer); if (!done && --left <= 0) next(); });
+        });
+      }
+      function next() { if (round < tries) setTimeout(once, 1200); else resolve(""); }
+      once();
+    });
+  };
+  /* اگر ژئوکد شکست خورد، آدرس را در پس‌زمینه پیدا و در همان کادر می‌نویسیم */
+  function healAddressField(lat, lng) {
+    API.reverseAddress(lat, lng, 3).then(function (addr) {
+      if (!addr) return;
+      ["pharmacyLocationText", "doctorLocationText", "orderAddress", "pharmacyAddress", "doctorAddress"].forEach(function (id) {
+        var el = $(id);
+        if (!el) return;
+        var cur = String(el.value || "");
+        if (cur === NO_ADDR || cur === "" || /^موقعیت ثبت‌شده/.test(cur)) {
+          el.value = addr;
+          try { el.dispatchEvent(new Event("input", { bubbles: true })); } catch (e) {}
+          save();
+        }
+      });
+    });
+  }
+  API.healAddressField = healAddressField;
+  API.wrapPositionSafe = function () {
+    var orig = window.getCurrentPositionSafe;
+    if (typeof orig !== "function" || orig._v1215) return;
+    var w = function () {
+      return orig.apply(this, arguments).then(function (pos) {
+        if (!pos || pos.error) return pos;
+        pos.addressPromise = API.reverseAddress(pos.lat, pos.lng, 3).then(function (addr) {
+          if (!addr) { healAddressField(pos.lat, pos.lng); return NO_ADDR; }
+          return addr;
+        });
+        return pos;
+      });
+    };
+    w._v1215 = true;
+    window.getCurrentPositionSafe = w;
+  };
+
+  /* ══ ۳) آنلاینِ پایدار + ۱۱) بوت آفلاین و ارسال خودکار ═══════════════════ */
+  var netOkAt = Date.now();
+  API.netHealth = function () { return { lastOkAt: netOkAt, online: !!(typeof navigator === "undefined" || navigator.onLine !== false), sinceMs: Date.now() - netOkAt }; };
+  var outbox = { pending: false, since: 0 };
+  API.outbox = function () { return { pending: outbox.pending, since: outbox.since }; };
+  API.flushOutbox = function () {
+    if (!outbox.pending) return Promise.resolve(false);
+    if (typeof navigator !== "undefined" && navigator.onLine === false) return Promise.resolve(false);
+    return new Promise(function (resolve) {
+      var S = st();
+      if (!S) { outbox.pending = false; return resolve(false); }
+      fetch("/api/state", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-CRM-Request": "1", "X-CRM-Build": String(window.CRM_APP_VERSION || "") },
+        body: JSON.stringify(S)
+      }).then(function (r) {
+        if (r && r.ok) { netOkAt = Date.now(); outbox.pending = false; outbox.since = 0; resolve(true); }
+        else resolve(false);
+      }).catch(function () { resolve(false); });
+    });
+  };
+  try {
+    var nativeFetch = window.fetch.bind(window);
+    window.fetch = function (url, opts) {
+      var p = nativeFetch(url, opts);
+      p.then(function (r) { if (r && r.ok) netOkAt = Date.now(); }, function () {});
+      return p;
+    };
+  } catch (eF) {}
+  function fixBadge() {
+    var el = $("globalOnlineStatusBadge");
+    if (!el) return;
+    if (window.__v1215BadgeObserver) return;
+    var online = (typeof navigator === "undefined" || navigator.onLine !== false);
+    var fresh = (Date.now() - netOkAt) < 120000;
+    if (online && fresh && /آفلاین/.test(el.textContent || "")) {
+      el.textContent = "🟡 این دستگاه (همگام‌سازی ابری در صف)";
+    }
+    if (typeof MutationObserver === "undefined") return;
+    var ob = new MutationObserver(function () {
+      var on = (typeof navigator === "undefined" || navigator.onLine !== false);
+      var fr = (Date.now() - netOkAt) < 120000;
+      if (on && fr && /آفلاین/.test(el.textContent || "")) {
+        el.textContent = "🟡 این دستگاه (همگام‌سازی ابری در صف)";
+      }
+    });
+    try { ob.observe(el, { childList: true, characterData: true, subtree: true }); window.__v1215BadgeObserver = ob; } catch (e) {}
+  }
+  API.fixBadge = fixBadge;
+
+  /* ══ ۴ و ۵) کادر جایگذاریِ خودکار در بالای صفحه + نام و آدرس داروخانه ════ */
+  function pharmacyRecords() {
+    var S = st();
+    return ((S && S.pharmacies) || []).slice();
+  }
+  API.matchPharmacies = function (q) {
+    q = String(q || "").trim();
+    if (!q) return [];
+    var lower = q.toLowerCase();
+    return pharmacyRecords().filter(function (p) {
+      return String(p.name || "").toLowerCase().indexOf(lower) >= 0;
+    }).slice(0, 12);
+  };
+  function buildPickBox() {
+    var tab = $("tab-orders");
+    if (!tab) return null;
+    var box = $("crm1215OrderPick");
+    if (box) return box;
+    box = document.createElement("div");
+    box.id = "crm1215OrderPick";
+    box.className = "crm1215-pick";
+    box.innerHTML =
+      "<div class='crm1215-pick-head'>🔎 جایگذاری خودکارِ داروخانه" +
+      "<span class='crm1215-pick-hint'>نام داروخانه را بنویسید؛ داروخانه‌های هم‌نام با آدرس نمایش داده می‌شوند</span></div>" +
+      "<div class='crm1215-pick-list' id='crm1215OrderPickList'></div>";
+    try { tab.insertBefore(box, tab.firstChild); } catch (e) { tab.appendChild(box); }
+    return box;
+  }
+  function renderPickList(q) {
+    var list = $("crm1215OrderPickList");
+    if (!list) return;
+    var items = API.matchPharmacies(q);
+    if (!String(q || "").trim()) { list.innerHTML = "<div class='crm1215-empty'>برای جایگذاری، نام داروخانه را در فرم بنویسید.</div>"; return; }
+    if (!items.length) { list.innerHTML = "<div class='crm1215-empty'>داروخانه‌ای با این نام پیدا نشد.</div>"; return; }
+    list.innerHTML = items.map(function (p, i) {
+      return "<div class='crm1215-item' data-idx='" + i + "'>" +
+        "<div class='crm1215-name'>" + esc(p.name || "—") + "</div>" +
+        "<div class='crm1215-addr'>" + esc(p.address || p.locationText || "—") + "</div></div>";
+    }).join("");
+    qsa(".crm1215-item", list).forEach(function (el) {
+      el.addEventListener("click", function () {
+        var rec = items[Number(el.getAttribute("data-idx"))];
+        if (rec) applyPharmacy(rec);
+      });
+    });
+  }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]; }); }
+  API.esc = esc;
+  function applyPharmacy(rec) {
+    var map = { orderPharmacyName: rec.name, orderPharmacyPhone: rec.phone, orderAddress: rec.address || rec.locationText,
+      orderCity: rec.city, orderDistrict: rec.district, orderFloor: rec.floor, orderPlate: rec.plate,
+      orderLat: rec.lat, orderLng: rec.lng, orderPharmacyMatchedId: rec.id };
+    Object.keys(map).forEach(function (id) {
+      var el = $(id);
+      if (el && map[id] != null && map[id] !== "") { el.value = map[id]; try { el.dispatchEvent(new Event("input", { bubbles: true })); } catch (e) {} }
+    });
+    save();
+    try { alert("اطلاعات داروخانه «" + (rec.name || "") + "» با آدرس در فرم جایگذاری شد."); } catch (e) {}
+  }
+  API.applyPharmacy = applyPharmacy;
+  API.setupOrderPick = function () {
+    var box = buildPickBox();
+    var input = $("orderPharmacyName");
+    if (!box || !input || input.dataset.v1215 === "1") return;
+    input.dataset.v1215 = "1";
+    var t = null;
+    input.addEventListener("input", function () {
+      clearTimeout(t);
+      t = setTimeout(function () { renderPickList(input.value); }, 180);
+    });
+    renderPickList(input.value);
+  };
+
+  /* ══ ۶) کلید «نمایش تردد» جلوی هر سطرِ رصد تردد ══════════════════════════ */
+  function routesMap() {
+    try {
+      var m = window._mapRepRoutes;
+      if (m && typeof m.invalidateSize === "function") return m;
+      if (typeof L !== "undefined" && $("map-rep-routes-full") && !window._mapRepRoutes) {
+        var map = L.map("map-rep-routes-full").setView([35.73, 51.42], 12);
+        try { (window.crmAddMapTiles || function (mm) { L.tileLayer("/api/tiles/{z}/{x}/{y}.png", { maxZoom: 19 }).addTo(mm); })(map); } catch (e) {}
+        window._mapRepRoutes = map;
+        return map;
+      }
+    } catch (e) {}
+    return null;
+  }
+  API.findTrackForRow = function (rowText) {
+    var S = st(); if (!S) return null;
+    var tracks = [].concat(S.visitTracks || [], S.repRoutes || []);
+    if (!tracks.length) return null;
+    var txt = String(rowText || "");
+    var byName = tracks.filter(function (t) { return t && t.repName && txt.indexOf(String(t.repName)) >= 0; });
+    if (byName.length === 1) return byName[0];
+    var byDate = tracks.filter(function (t) { return t && t.date && txt.indexOf(String(t.date)) >= 0; });
+    var pool = byDate.length ? byDate : tracks;
+    return pool[0] || null;
+  };
+  API.drawTrack = function (track) {
+    var map = routesMap();
+    if (!map || !track || typeof L === "undefined") return false;
+    var path = track.path || track.points || [];
+    if (!path.length) return false;
+    try {
+      if (window.__v1215RouteLine) { try { map.removeLayer(window.__v1215RouteLine); } catch (e) {} }
+      if (window.__v1215RouteMarks) { window.__v1215RouteMarks.forEach(function (mk) { try { map.removeLayer(mk); } catch (e) {} }); }
+      window.__v1215RouteMarks = [];
+      var pts = path.map(function (p) { return Array.isArray(p) ? [Number(p[0]), Number(p[1])] : [Number(p.lat), Number(p.lng)]; })
+                    .filter(function (p) { return isFinite(p[0]) && isFinite(p[1]); });
+      if (!pts.length) return false;
+      window.__v1215RouteLine = L.polyline(pts, { color: "#0d9488", weight: 5, opacity: 0.9 }).addTo(map);
+      var mkA = L.marker(pts[0]).addTo(map).bindPopup("مبدأ");
+      var mkB = L.marker(pts[pts.length - 1]).addTo(map).bindPopup("مقصد");
+      window.__v1215RouteMarks = [mkA, mkB];
+      map.fitBounds(window.__v1215RouteLine.getBounds(), { padding: [30, 30] });
+      setTimeout(function () { try { map.invalidateSize(); } catch (e) {} }, 200);
+      return true;
+    } catch (e) { return false; }
+  };
+  API.setupTrafficButtons = function () {
+    var tab = $("tab-rep-routes");
+    if (!tab) return 0;
+    var rows = qsa("table tbody tr", tab).filter(function (tr) { return !tr.querySelector(".crm1215-traffic-btn"); });
+    if (!rows.length) return 0;
+    chunk(rows, 1, function (tr) {
+      var first = tr.cells && tr.cells[0];
+      if (!first) return;
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "crm1215-traffic-btn";
+      btn.textContent = "🗺 نمایش تردد";
+      btn.addEventListener("click", function () {
+        var track = API.findTrackForRow(tr.textContent);
+        if (!track) { try { alert("مسیری برای این سطر پیدا نشد."); } catch (e) {} return; }
+        var ok = API.drawTrack(track);
+        try { alert(ok ? ("ترددِ «" + (track.repName || "نماینده") + "» از مبدأ تا مقصد روی نقشه رسم شد.") : "نقشه در دسترس نیست؛ تب رصد تردد را باز کنید."); } catch (e) {}
+      });
+      first.appendChild(btn);
+    });
+    return rows.length;
+  };
+
+  /* ══ ۷) طبقه و پلاک در لیستِ منزل نمایندگان ══════════════════════════════ */
+  API.setupHomesColumns = function () {
+    var tab = $("tab-rep-homes");
+    if (!tab) return 0;
+    var table = qs("table", tab);
+    if (!table) return 0;
+    var head = qs("thead tr", table);
+    if (!head || head.querySelector("[data-v1215-floor]")) return 0;
+    var S = st();
+    var homes = ((S && S.repHomes) || (S && S.homes) || []).slice();
+    ["طبقه", "پلاک"].forEach(function (t) {
+      var th = document.createElement("th");
+      th.textContent = t;
+      th.setAttribute("data-v1215-floor", t === "طبقه" ? "1" : "0");
+      if (t === "طبقه") th.setAttribute("data-v1215-floor", "1"); else th.setAttribute("data-v1215-plate", "1");
+      head.appendChild(th);
+    });
+    var bodyRows = qsa("tbody tr", table);
+    bodyRows.forEach(function (tr, i) {
+      var rec = homes[i] || {};
+      var td1 = document.createElement("td"); td1.textContent = rec.floor || "";
+      var td2 = document.createElement("td"); td2.textContent = rec.plate || rec.homePlate || "";
+      tr.appendChild(td1); tr.appendChild(td2);
+    });
+    return bodyRows.length;
+  };
+
+  /* ══ ۸) پیام‌رسان: توکنِ چند پیام‌رسان + گروه + شماره مقصد ═══════════════ */
+  var CHANNELS = [
+    { id: "bale", label: "بله", base: "https://tapi.bale.ai/bot" },
+    { id: "eitaa", label: "ایتا", base: "https://eitaayar.ir/api" },
+    { id: "soroush", label: "سروش", base: "https://bot.sapp.ir" },
+    { id: "rubika", label: "روبیکا", base: "https://botapi.rubika.ir" },
+    { id: "telegram", label: "تلگرام", base: "https://api.telegram.org/bot" }
+  ];
+  API.CHANNELS = CHANNELS;
+  function msgState() {
+    var S = st(); if (!S) return null;
+    if (!S.messengers) S.messengers = {};
+    if (!S.messengers.channels) S.messengers.channels = {};
+    CHANNELS.forEach(function (c) {
+      var ch = S.messengers.channels[c.id];
+      if (!ch || typeof ch !== "object") S.messengers.channels[c.id] = { token: "", groups: [], phones: [], auto: false };
+      var cur = S.messengers.channels[c.id];
+      if (!Array.isArray(cur.groups)) cur.groups = [];
+      if (!Array.isArray(cur.phones)) cur.phones = [];
+    });
+    return S.messengers;
+  }
+  API.msgState = msgState;
+  API.addTarget = function (channelId, kind, value) {
+    var m = msgState(); if (!m) return [];
+    var ch = m.channels[channelId]; if (!ch) return [];
+    var arr = kind === "group" ? ch.groups : ch.phones;
+    value = String(value || "").trim();
+    if (value && arr.indexOf(value) === -1) { arr.push(value); save(); }
+    return arr.slice();
+  };
+  API.removeTarget = function (channelId, kind, value) {
+    var m = msgState(); if (!m) return [];
+    var ch = m.channels[channelId]; if (!ch) return [];
+    var arr = kind === "group" ? ch.groups : ch.phones;
+    var i = arr.indexOf(String(value));
+    if (i >= 0) { arr.splice(i, 1); save(); }
+    return arr.slice();
+  };
+  API.buildSendQueue = function (text) {
+    var m = msgState(); if (!m) return [];
+    var q = [];
+    CHANNELS.forEach(function (c) {
+      var ch = m.channels[c.id] || {};
+      if (!ch.token) return;
+      (ch.groups || []).forEach(function (g) { q.push({ channel: c.id, label: c.label, base: c.base, token: ch.token, to: g, kind: "group", text: text }); });
+      (ch.phones || []).forEach(function (p) { q.push({ channel: c.id, label: c.label, base: c.base, token: ch.token, to: p, kind: "phone", text: text }); });
+    });
+    return q;
+  };
+  API.setupMessengerPanel = function () {
+    var tab = $("tab-messengers");
+    if (!tab || $("crm1215MsgPanel")) return false;
+    var m = msgState(); if (!m) return false;
+    var wrap = document.createElement("div");
+    wrap.id = "crm1215MsgPanel";
+    wrap.className = "crm1215-panel";
+    wrap.innerHTML =
+      "<div class='crm1215-pick-head'>🚀 ارسال خودکار به پیام‌رسان‌های ایرانی" +
+      "<span class='crm1215-pick-hint'>توکنِ هر پیام‌رسان، نام گروه‌ها و شماره‌های مقصد را می‌توانید چندتایی اضافه کنید</span></div>" +
+      CHANNELS.map(function (c) {
+        var ch = m.channels[c.id] || {};
+        return "<div class='crm1215-ch' data-ch='" + c.id + "'>" +
+          "<div class='crm1215-ch-title'>" + c.label + "</div>" +
+          "<label class='crm1215-lbl'>توکن / کلید ربات<input class='form-input crm1215-token' value='" + esc(ch.token || "") + "' placeholder='token'></label>" +
+          "<div class='crm1215-row'><input class='form-input crm1215-group-in' placeholder='نام گروه (مثال: @sales)'>" +
+          "<button type='button' class='btn btn-outline crm1215-group-add'>+ گروه</button></div>" +
+          "<div class='crm1215-tags crm1215-groups'>" + (ch.groups || []).map(function (g) { return "<span class='crm1215-tag' data-kind='group' data-val='" + esc(g) + "'>" + esc(g) + " ✕</span>"; }).join("") + "</div>" +
+          "<div class='crm1215-row'><input class='form-input crm1215-phone-in' placeholder='شماره مقصد (مثال: 0912...)'>" +
+          "<button type='button' class='btn btn-outline crm1215-phone-add'>+ شماره</button></div>" +
+          "<div class='crm1215-tags crm1215-phones'>" + (ch.phones || []).map(function (p) { return "<span class='crm1215-tag' data-kind='phone' data-val='" + esc(p) + "'>" + esc(p) + " ✕</span>"; }).join("") + "</div>" +
+          "</div>";
+      }).join("") +
+      "<div class='crm1215-row'><textarea id='crm1215MsgText' class='form-input' rows='3' placeholder='متن پیام'></textarea></div>" +
+      "<div class='crm1215-row'><button type='button' class='btn btn-primary' id='crm1215MsgSend'>📤 ارسال خودکار به همه مقصدها</button>" +
+      "<span id='crm1215MsgStatus' class='crm1215-status'></span></div>";
+    tab.appendChild(wrap);
+
+    qsa(".crm1215-ch", wrap).forEach(function (box) {
+      var id = box.getAttribute("data-ch");
+      var token = qs(".crm1215-token", box);
+      if (token) token.addEventListener("change", function () {
+        var mm = msgState(); if (!mm) return;
+        mm.channels[id].token = String(token.value || "").trim();
+        save();
+      });
+      var gIn = qs(".crm1215-group-in", box), gAdd = qs(".crm1215-group-add", box);
+      if (gAdd) gAdd.addEventListener("click", function () {
+        API.addTarget(id, "group", gIn ? gIn.value : "");
+        if (gIn) gIn.value = "";
+        rerender();
+      });
+      var pIn = qs(".crm1215-phone-in", box), pAdd = qs(".crm1215-phone-add", box);
+      if (pAdd) pAdd.addEventListener("click", function () {
+        API.addTarget(id, "phone", pIn ? pIn.value : "");
+        if (pIn) pIn.value = "";
+        rerender();
+      });
+    });
+    function rerender() {
+      qsa(".crm1215-ch", wrap).forEach(function (box) {
+        var id = box.getAttribute("data-ch"), mm = msgState();
+        var ch = (mm && mm.channels[id]) || { groups: [], phones: [] };
+        var g = qs(".crm1215-groups", box), p = qs(".crm1215-phones", box);
+        if (g) g.innerHTML = (ch.groups || []).map(function (x) { return "<span class='crm1215-tag' data-kind='group' data-val='" + esc(x) + "'>" + esc(x) + " ✕</span>"; }).join("");
+        if (p) p.innerHTML = (ch.phones || []).map(function (x) { return "<span class='crm1215-tag' data-kind='phone' data-val='" + esc(x) + "'>" + esc(x) + " ✕</span>"; }).join("");
+      });
+      bindRemove();
+    }
+    function bindRemove() {
+      qsa(".crm1215-tag", wrap).forEach(function (tag) {
+        if (tag.dataset.bound === "1") return;
+        tag.dataset.bound = "1";
+        tag.addEventListener("click", function () {
+          var box = tag.closest(".crm1215-ch");
+          var id = box ? box.getAttribute("data-ch") : "";
+          API.removeTarget(id, tag.getAttribute("data-kind"), tag.getAttribute("data-val"));
+          rerender();
+        });
+      });
+    }
+    bindRemove();
+    var send = $("crm1215MsgSend"), statusEl = $("crm1215MsgStatus");
+    if (send) send.addEventListener("click", function () {
+      var text = String(($("crm1215MsgText") || {}).value || "").trim();
+      if (!text) { if (statusEl) statusEl.textContent = "متن پیام را بنویسید."; return; }
+      var q = API.buildSendQueue(text);
+      if (!q.length) { if (statusEl) statusEl.textContent = "هیچ توکن/مقصدی ثبت نشده است."; return; }
+      var done = 0;
+      q.forEach(function (item) {
+        var url = item.base + item.token + "/sendMessage";
+        fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: item.to, text: item.text })
+        }).then(function () { done += 1; }, function () { done += 1; })
+          .then(function () { if (statusEl) statusEl.textContent = "ارسال: " + done + " از " + q.length; });
+      });
+      if (statusEl) statusEl.textContent = "در حال ارسال به " + q.length + " مقصد…";
+    });
+    return true;
+  };
+
+  /* ══ ۹) قیمتِ مصرف‌کننده با ارزش افزوده: برنگشتن بعد از ثبت ═══════════════ */
+  function snapshotPricing() {
+    var tab = $("tab-product-pricing");
+    if (!tab) return null;
+    var snap = {};
+    qsa("input,select,textarea", tab).forEach(function (el, i) {
+      if (!el.id) el.id = "crm1215pp" + i;
+      snap[el.id] = el.value;
+    });
+    return snap;
+  }
+  API.snapshotPricing = snapshotPricing;
+  API.restorePricing = function (snap) {
+    var tab = $("tab-product-pricing");
+    if (!tab || !snap) return 0;
+    var fixed = 0;
+    Object.keys(snap).forEach(function (id) {
+      var el = $(id);
+      if (!el) return;
+      if (el.value !== snap[id] && snap[id] !== "") { el.value = snap[id]; fixed += 1; }
+    });
+    return fixed;
+  };
+  API.setupPricingGuard = function () {
+    var tab = $("tab-product-pricing");
+    if (!tab || tab.dataset.v1215Pricing === "1") return false;
+    tab.dataset.v1215Pricing = "1";
+    tab.addEventListener("click", function (e) {
+      var btn = e.target && e.target.closest ? e.target.closest("button") : null;
+      if (!btn) return;
+      var label = String((btn.textContent || "") + " " + (btn.id || ""));
+      if (!/ثبت|ذخیره|اعمال|save/i.test(label)) return;
+      var snap = snapshotPricing();
+      setTimeout(function () {
+        var n = API.restorePricing(snap);
+        if (n) { save(); try { console.log("[v12.15] " + n + " مقدارِ قیمت‌گذاری پس از ثبت بازگردانی شد"); } catch (e) {} }
+      }, 350);
+    }, true);
+    return true;
+  };
+
+  /* ══ ۱۰) نوع فیلدِ «ساعت» (فقط ساعت:دقیقه) ═══════════════════════════════ */
+  API.addTimeFieldType = function () {
+    var sel = $("colFieldType");
+    if (!sel) return false;
+    if (!qsa("option", sel).some(function (o) { return o.value === "time"; })) {
+      var op = document.createElement("option");
+      op.value = "time";
+      op.textContent = "ساعت (ساعت:دقیقه)";
+      sel.appendChild(op);
+    }
+    return true;
+  };
+  API.applyTimeInputs = function () {
+    var n = 0;
+    qsa("input[type='text'][data-v1215-time='1'], input.crm-time", document).forEach(function (el) { n += 1; });
+    qsa("[data-custom-field-id]", document).forEach(function (el) {
+      var kind = el.getAttribute("data-field-kind") || el.getAttribute("data-input-kind") || "";
+      if (kind !== "time") return;
+      if (el.type === "time") return;
+      el.type = "time";
+      try { el.setAttribute("step", "60"); } catch (e) {}   /* ثانیه حذف می‌شود */
+      el.setAttribute("data-v1215-time", "1");
+      n += 1;
+    });
+    qsa("input.crm1215-time-pending", document).forEach(function (el) {
+      if (el.type !== "time") { el.type = "time"; try { el.setAttribute("step", "60"); } catch (e) {} }
+      n += 1;
+    });
+    return n;
+  };
+  API.formatTime = function (v) {
+    var s = String(v || "").trim();
+    var m = /^(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?$/.exec(s);
+    if (!m) return s;
+    var h = ("0" + m[1]).slice(-2), mi = ("0" + m[2]).slice(-2);
+    return h + ":" + mi;
+  };
+
+  /* ══ ۱۳) ماتریسِ ریزِ دسترسی‌ها ══════════════════════════════════════════ */
+  var ACTIONS = [
+    { id: "view", label: "مشاهده" },
+    { id: "add", label: "افزودن" },
+    { id: "edit", label: "ویرایش" },
+    { id: "delete", label: "حذف" },
+    { id: "export", label: "خروجی اکسل" },
+    { id: "approve", label: "تأیید" }
+  ];
+  API.ACTIONS = ACTIONS;
+  API.allTabs = function () {
+    var S = st();
+    var fromMap = (S && S.tabLabels) || null;
+    var out = [];
+    if (fromMap && typeof fromMap === "object") {
+      Object.keys(fromMap).forEach(function (id) { out.push({ id: id, label: fromMap[id] }); });
+    }
+    if (!out.length) {
+      qsa(".tab-btn, [data-tab], nav button", document).forEach(function (b) {
+        var id = b.getAttribute("data-tab") || b.id || "";
+        if (!id) return;
+        var pane = $(id);
+        var label = String(b.textContent || "").trim() || id;
+        if (out.some(function (x) { return x.id === id; })) return;
+        out.push({ id: id, label: label, hasPane: !!pane });
+      });
+    }
+    return out;
+  };
+  API.permMatrix = function (userId) {
+    var S = st();
+    if (!S) return { tabs: [], actions: ACTIONS, matrix: {} };
+    if (!S.granularPerms) S.granularPerms = {};
+    if (!S.granularPerms[userId]) S.granularPerms[userId] = {};
+    var matrix = S.granularPerms[userId];
+    var tabs = API.allTabs();
+    tabs.forEach(function (t) {
+      if (!matrix[t.id]) matrix[t.id] = { view: true, add: false, edit: false, delete: false, export: false, approve: false };
+    });
+    return { tabs: tabs, actions: ACTIONS, matrix: matrix };
+  };
+  API.setPerm = function (userId, tabId, action, value) {
+    var m = API.permMatrix(userId);
+    if (!m.matrix[tabId]) m.matrix[tabId] = {};
+    m.matrix[tabId][action] = !!value;
+    if (action !== "view" && value) m.matrix[tabId].view = true;
+    save();
+    return m.matrix[tabId];
+  };
+  API.setupPermMatrix = function () {
+    var tab = $("tab-users-permissions");
+    if (!tab || $("crm1215PermMatrix")) return false;
+    var users = ((st() || {}).users) || [];
+    var wrap = document.createElement("div");
+    wrap.id = "crm1215PermMatrix";
+    wrap.className = "crm1215-panel";
+    wrap.innerHTML =
+      "<div class='crm1215-pick-head'>🔐 دسترسیِ ریز به تفکیک تب و عملیات" +
+      "<span class='crm1215-pick-hint'>مدیر می‌تواند برای هر کاربر و هر تب، تک‌تکِ عملیات‌ها را تعیین کند</span></div>" +
+      "<div class='crm1215-row'><label class='crm1215-lbl'>کاربر<select id='crm1215PermUser' class='form-input'>" +
+      users.map(function (u) { return "<option value='" + esc(u.id || u.username || "") + "'>" + esc(u.fullName || u.username || u.id || "") + "</option>"; }).join("") +
+      "</select></label></div><div id='crm1215PermBody'></div>";
+    tab.appendChild(wrap);
+    function render() {
+      var sel = $("crm1215PermUser");
+      var uid = sel ? sel.value : "";
+      var body = $("crm1215PermBody");
+      if (!body || !uid) return;
+      var m = API.permMatrix(uid);
+      var html = "<table class='crm1215-table'><thead><tr><th>تب / بخش</th>" +
+        m.actions.map(function (a) { return "<th>" + a.label + "</th>"; }).join("") + "</tr></thead><tbody>";
+      html += m.tabs.map(function (t) {
+        var row = m.matrix[t.id] || {};
+        return "<tr><td>" + esc(t.label) + "</td>" + m.actions.map(function (a) {
+          var on = !!row[a.id];
+          return "<td><input type='checkbox' data-tab='" + esc(t.id) + "' data-act='" + a.id + "'" + (on ? " checked" : "") + "></td>";
+        }).join("") + "</tr>";
+      }).join("");
+      html += "</tbody></table>";
+      body.innerHTML = html;
+      qsa("input[type=checkbox]", body).forEach(function (cb) {
+        cb.addEventListener("change", function () {
+          API.setPerm(uid, cb.getAttribute("data-tab"), cb.getAttribute("data-act"), cb.checked);
+        });
+      });
+    }
+    var sel = $("crm1215PermUser");
+    if (sel) sel.addEventListener("change", render);
+    render();
+    return true;
+  };
+
+  /* ══ ۱۴) تعیین زمان ویزیت + آلارم یک روز قبل ════════════════════════════ */
+  API.parseVisitAt = function (v) {
+    if (!v) return 0;
+    if (typeof v === "number") return v;
+    var s = String(v).trim();
+    var m = /^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/.exec(s);
+    if (m) return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]), 9, 0, 0, 0).getTime();
+    var t = Date.parse(s);
+    return isFinite(t) ? t : 0;
+  };
+  API.dueVisits = function (nowMs, dayMs) {
+    nowMs = nowMs || Date.now();
+    dayMs = dayMs || 24 * 3600 * 1000;
+    var S = st(); if (!S) return [];
+    var out = [];
+    [["pharmacy", "داروخانه", S.pharmacies], ["doctor", "پزشک", S.doctors]].forEach(function (grp) {
+      var arr = grp[2] || [];
+      arr.forEach(function (r) {
+        var at = API.parseVisitAt(r.nextVisitAt || r.visitAt || r.nextVisit);
+        if (!at) return;
+        var left = at - nowMs;
+        if (left <= dayMs && left > -7 * dayMs) {
+          out.push({ kind: grp[0], kindLabel: grp[1], id: r.id, name: r.name || "—", at: at, dueInMs: left });
+        }
+      });
+    });
+    return out.sort(function (a, b) { return a.at - b.at; });
+  };
+  API.raiseVisitAlarms = function () {
+    var S = st(); if (!S) return 0;
+    var due = API.dueVisits();
+    if (!due.length) return 0;
+    if (!S.notifications) S.notifications = [];
+    var me = (S.currentUser && (S.currentUser.id || S.currentUser.username)) || "";
+    var added = 0;
+    due.forEach(function (d) {
+      var when = new Date(d.at).toLocaleDateString("fa-IR");
+      var text = "⏰ یادآوری ویزیت: " + d.kindLabel + " «" + d.name + "» در تاریخ " + when + " باید ویزیت شود.";
+      var exists = S.notifications.some(function (n) { return n && n.text === text; });
+      if (exists) return;
+      var targets = [me, "supervisor", "manager"].filter(Boolean);
+      targets.forEach(function (to) {
+        S.notifications.unshift({ id: "n" + Date.now() + Math.random().toString(36).slice(2, 6), to: to, text: text, at: Date.now(), kind: "visit-alarm", read: false });
+        added += 1;
+      });
+    });
+    if (added) save();
+    return added;
+  };
+  API.setupVisitFields = function () {
+    var made = 0;
+    [["tab-pharmacies", "pharmacy"], ["tab-doctors", "doctor"]].forEach(function (pair) {
+      var tab = $(pair[0]);
+      if (!tab || tab.querySelector(".crm1215-visit-field")) return;
+      var form = qs("form", tab) || tab;
+      var wrapEl = document.createElement("div");
+      wrapEl.className = "form-group crm1215-visit-field";
+      wrapEl.innerHTML = "<label class='form-label'>🗓 تعیین زمان ویزیت</label>" +
+        "<input type='date' class='form-input crm1215-visit-input'>" +
+        "<small class='col-help'>یک روز پیش از این تاریخ، به شما و سرپرست و مدیر آلارم داده می‌شود</small>";
+      try {
+        var anchor = qs("#orderDate", form) || qs("input", form);
+        if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(wrapEl, anchor.nextSibling);
+        else form.appendChild(wrapEl);
+        made += 1;
+      } catch (e) {}
+      var inp = qs(".crm1215-visit-input", wrapEl);
+      if (inp) inp.addEventListener("change", function () {
+        var S = st(); if (!S) return;
+        S.visitSchedule = S.visitSchedule || {};
+        S.visitSchedule[pair[1]] = S.visitSchedule[pair[1]] || {};
+        S.visitSchedule[pair[1]][String(inp.value)] = true;
+        save();
+        idle(function () { API.raiseVisitAlarms(); }, 1500);
+      });
+    });
+    return made;
+  };
+
+  /* ══ ۱۶) خروجی اکسل: سرستون فارسی + همه ستون‌ها + ترتیب از تب ستون‌ها ════ */
+  var FA_HEADERS = {
+    "id": "شناسه", "name": "نام", "code": "کد", "date": "تاریخ", "phone": "تلفن", "mobile": "همراه",
+    "address": "آدرس", "city": "شهر", "province": " استان", "district": "منطقه", "floor": "طبقه", "plate": "پلاک",
+    "lat": "عرض جغرافیایی", "lng": "طول جغرافیایی", "count": "تعداد", "price": "قیمت", "total": "جمع مبلغ",
+    "rep": "نماینده علمی", "repName": "نام نماینده", "manager": "مدیر", "notes": "توضیحات",
+    "specialty": "تخصص", "type": "نوع", "status": "وضعیت", "createdAt": "تاریخ ثبت", "updatedAt": "آخرین تغییر"
+  };
+  API.persianHeader = function (h) {
+    var key = String(h || "").trim();
+    if (!key) return key;
+    if (/^[A-Za-z0-9_\-\s]+$/.test(key)) {
+      var lower = key.toLowerCase();
+      if (FA_HEADERS[lower]) return FA_HEADERS[lower];
+      if (FA_HEADERS[key]) return FA_HEADERS[key];
+      var S = st(), meta = (S && S.formFieldMeta) || {};
+      var found = null;
+      Object.keys(meta).forEach(function (k) {
+        var m = meta[k] || {};
+        Object.keys(m).forEach(function (id) {
+          if (id === key && m[id] && m[id].label) found = m[id].label;
+        });
+      });
+      return found || key;
+    }
+    return key;
+  };
+  API.excelColumnOrder = function (headers) {
+    var S = st(); if (!S) return headers.slice();
+    var ranked = {};
+    var meta = S.formFieldMeta || {}, cf = S.customFields || {};
+    function add(id, order) { if (id && (ranked[id] == null || order < ranked[id])) ranked[id] = order; }
+    Object.keys(meta).forEach(function (k) {
+      var m = meta[k] || {};
+      Object.keys(m).forEach(function (id) { add(id, numOr(m[id] && m[id].listOrder, numOr(m[id] && m[id].order, 9999))); });
+    });
+    Object.keys(cf).forEach(function (k) {
+      (cf[k] || []).forEach(function (f) { if (f && f.exportExcel !== false) add(f.id, numOr(f.listOrder, numOr(f.order, 9999))); });
+    });
+    return headers.slice().sort(function (a, b) {
+      var ra = ranked[a] == null ? 1e9 : ranked[a];
+      var rb = ranked[b] == null ? 1e9 : ranked[b];
+      return ra - rb || 0;
+    });
+  };
+  API.setupExcelExport = function () {
+    if (typeof window.downloadCSVFile !== "function" || window.downloadCSVFile._v1215) return false;
+    var orig = window.downloadCSVFile;
+    var patched = function (filename, headers, rows) {
+      try {
+        var hdrs = (headers || []).map(function (h) { return API.persianHeader(h); });
+        if (hdrs.length && hdrs[0] !== "ردیف") {
+          hdrs = ["ردیف"].concat(hdrs);
+          rows = (rows || []).map(function (r, i) { return [i + 1].concat(r); });
+        }
+        return orig(filename, hdrs, rows);
+      } catch (e) { return orig(filename, headers, rows); }
+    };
+    patched._v1215 = true;
+    window.downloadCSVFile = patched;
+    return true;
+  };
+
+  /* ══ راه‌انداز: همه‌چیز در idle و تکه‌تکه (مزاحم تب‌های دیگر نمی‌شود) ════ */
+  function boot() {
+    try { API.normalizeOrders(); } catch (e) {}
+    idle(function () {
+      try { fixBadge(); } catch (e) {}
+      try { API.wrapPositionSafe(); } catch (e) {}
+      try { API.setupExcelExport(); } catch (e) {}
+    }, 1200);
+    idle(function () {
+      try { API.setupOrderPick(); } catch (e) {}
+      try { API.setupPricingGuard(); } catch (e) {}
+      try { API.addTimeFieldType(); } catch (e) {}
+    }, 2000);
+    idle(function () {
+      try { API.setupHomesColumns(); } catch (e) {}
+      try { API.setupTrafficButtons(); } catch (e) {}
+    }, 3000);
+    idle(function () {
+      try { API.setupMessengerPanel(); } catch (e) {}
+      try { API.setupPermMatrix(); } catch (e) {}
+      try { API.setupVisitFields(); } catch (e) {}
+    }, 4000);
+    idle(function () {
+      try { API.raiseVisitAlarms(); } catch (e) {}
+      try { API.applyTimeInputs(); } catch (e) {}
+    }, 6000);
+    /* تغییرِ DOM (تب‌ها/جدول‌ها) → تقویت‌ها دوباره اعمال می‌شوند، بدون قفل‌کردن */
+    var pending = null;
+    try {
+      var ob = new MutationObserver(function () {
+        if (pending) return;
+        pending = idle(function () {
+          pending = null;
+          try { API.setupOrderPick(); } catch (e) {}
+          try { API.setupTrafficButtons(); } catch (e) {}
+          try { API.setupHomesColumns(); } catch (e) {}
+          try { API.applyTimeInputs(); } catch (e) {}
+          try { fixBadge(); } catch (e) {}
+        }, 2500);
+      });
+      if (document.body) ob.observe(document.body, { childList: true, subtree: true });
+    } catch (eO) {}
+  }
+
+  /* ══ نصبِ بی‌درنگِ قلاب‌ها (ذخیره و شبکه) ══════════════════════════════ */
+    /* رفت‌وبرگشتِ اینترنت: صف به‌طور خودکار فرستاده می‌شود */
+  try {
+    window.addEventListener("online", function () { netOkAt = Date.now(); setTimeout(API.flushOutbox, 800); });
+  } catch (e) {}
+  try {
+    setInterval(function () {
+      if (outbox.pending && (Date.now() - (outbox.since || 0)) > 15000) API.flushOutbox();
+    }, 20000);
+  } catch (e) {}
+  /* هر بار ذخیره: وضعیت در صف می‌رود تا با اولین اتصال فرستاده شود */
+  try {
+    var oldSave = window.saveState;
+    if (typeof oldSave === "function" && !oldSave._v1215) {
+      var w = function () {
+        var r = oldSave.apply(this, arguments);
+        try { outbox.pending = true; if (!outbox.since) outbox.since = Date.now(); } catch (e) {}
+        return r;
+      };
+      w._v1215 = true;
+      window.saveState = w;
+    }
+  } catch (eS) {}
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function () { setTimeout(boot, 400); });
+  } else {
+    setTimeout(boot, 400);
+  }
 })();
