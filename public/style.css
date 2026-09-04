@@ -2639,7 +2639,7 @@ html.crm-booting body {
 .v12-spec-combo input[type="search"] { font-size: 13px; min-height: 34px; }
 
 /* ============================================================
-   v12.15.0 — جایگذاری خودکار، پنل پیام‌رسان، ماتریس دسترسی،
+   v12.16.0 — جایگذاری خودکار، پنل پیام‌رسان، ماتریس دسترسی،
    کلید نمایش تردد (سبک و واکنش‌گرا برای ویندوز و موبایل)
    ============================================================ */
 .crm1215-pick, .crm1215-panel {
@@ -2698,4 +2698,43 @@ html.crm-booting body {
   .crm1215-pick-list { max-height: 160px; }
   .crm1215-traffic-btn { display: block; width: 100%; margin: 4px 0 0; }
   .crm1215-table { font-size: 11px; }
+}
+
+/* ============================================================================
+   v12.16.0 — کادرِ هم‌نامِ سفارش در بالای تب (ویندوز و گوشی) + تب سامانه پیامکی
+   ========================================================================= */
+.crm1216-pick {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: #fff;
+  border: 2px solid #0d9488;
+  border-radius: 12px;
+  padding: 8px 10px;
+  margin: 0 0 12px;
+  box-shadow: 0 6px 18px rgba(13, 148, 136, 0.12);
+}
+.crm1216-pick .crm1215-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  border-bottom: 1px dashed #e2e8f0;
+  padding: 6px 2px;
+}
+.crm1216-pick .crm1215-item .btn { margin-inline-start: auto; }
+.crm1216-sms-grid { display: grid; gap: 12px; }
+.crm1216-sms-num {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 5px 2px;
+  border-bottom: 1px dashed #e2e8f0;
+}
+.crm1216-sms-num span:last-child { margin-inline-start: auto; color: #0f766e; direction: ltr; }
+@media (max-width: 720px) {
+  .crm1216-pick { padding: 8px; margin: 0 0 10px; }
+  .crm1216-pick .crm1215-pick-list { max-height: 170px; }
+  .crm1216-pick .crm1215-item .btn { margin-inline-start: 0; width: 100%; }
+  .crm1216-sms-num { flex-wrap: wrap; }
 }

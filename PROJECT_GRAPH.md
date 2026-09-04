@@ -49,15 +49,15 @@
 - نقش: **
 - تعداد توابع داخلی: 8
 
-### `public/crm-app.js` (193532 بایت)
+### `public/crm-app.js` (194166 بایت)
 - نقش: ============================================================================
-- تعداد توابع داخلی: 186
+- تعداد توابع داخلی: 187
 - نام‌های window که تعریف/بازنویسی می‌کند: `CRM_APP_VERSION`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_STATE_BOUND`, `__CRM_SW_READY`, `_editingProductId`, `_editingRepHomeId`, `_lastSavedProductId`, `_lastSavedProductName`, `_navHamburgerBound`, `activeDateInputForPicker`, `applyAllFormLayouts`, `applyCustomFieldOrderInForm`, `applyV77ProductPricing`, `attachInstantAdd`, `attachJalaliPicker`, `buildDesignerWidget`, `cleanupOrphanCustomFields`, `crmAddMapTiles`, `crmPushStateToServer`, `getAllMenuSections`, `isSecureContext`, `paintV77ProductPricing`, `rememberPharmacyName`, `renderDoctorsList`, `renderExtraTabCustomFields`, `renderPharmaciesList`, `syncProductsEverywhere`, `v12OpsOnlyRestore`, `v12TahaName`, `v12TakeRegisteredOnly`, `validateRequiredFields`
 
-### `public/crm-bundle.js` (1287402 بایت)
+### `public/crm-bundle.js` (1334708 بایت)
 - نقش: * crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
-- تعداد توابع داخلی: 1302
-- نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `CRM_HUBS`, `CRM_HUB_DOMAINS`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `IRAN_GEO_DATA`, `WIDGET_PALETTE`, `__CRM_APPLYING_SERVER`, `__CRM_BULK_PURGE`, `__CRM_BULK_READY`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_LAYOUT_APPLYING`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SERVER_READY`, `__CRM_SKIP_V64_STRIP`, `__CRM_SNAP`, `__CRM_UNVEIL`, `__CRM_V78_EDIT_PID`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__V68_WATCH`, `__V69_SYNC`, `__V70_SOLO`, `__V71_CLAIMED`, `__V72_BOOT`, `__V73_BOOT`, `__V73_WATCH`, `__V79_BOOT`, `__V80_BOOT`, `__V80_LOCK`
+- تعداد توابع داخلی: 1348
+- نام‌های window که تعریف/بازنویسی می‌کند: `CRMJalali`, `CRM_HUBS`, `CRM_HUB_DOMAINS`, `FA_FIELD_LABELS`, `IRAN_FACILITIES`, `IRAN_GEO_DATA`, `L`, `LIST_TARGETS_V1216`, `WIDGET_PALETTE`, `__CRM_APPLYING_SERVER`, `__CRM_BULK_PURGE`, `__CRM_BULK_READY`, `__CRM_GET_STATE`, `__CRM_HAD_SAVED_STATE`, `__CRM_LATIN_NUMBER_LAW`, `__CRM_LAYOUT_APPLYING`, `__CRM_MANAGER_LAYOUT_INTENT`, `__CRM_MANAGER_LAYOUT_TIMER`, `__CRM_ORIGIN_BOOTSTRAP_CHECKED`, `__CRM_SAFE_BROWSER_GUARDS`, `__CRM_SERVER_READY`, `__CRM_SKIP_V64_STRIP`, `__CRM_SNAP`, `__CRM_UNVEIL`, `__CRM_V78_EDIT_PID`, `__CRM_WD`, `__V40_REFADD`, `__V42CD`, `__V42CSS`, `__V62_ATTACH`, `__V64_OBS`, `__V67_SYNC`, `__V68_WATCH`, `__V69_SYNC`, `__V70_SOLO`, `__V71_CLAIMED`, `__V72_BOOT`, `__V73_BOOT`, `__V73_WATCH`, `__V79_BOOT`
 
 ### `public/crm-data.js` (57830 بایت)
 - نقش: ============================================================================
@@ -154,7 +154,7 @@
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (5417 بایت)
-- نقش: const BUILD = "12.15.0";
+- نقش: const BUILD = "12.16.0";
 - تعداد توابع داخلی: 6
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -169,7 +169,7 @@
 - `FA_FIELD_LABELS`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v11.js`
 - `IRAN_FACILITIES`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/iran-facilities.js`
 - `IRAN_GEO_DATA`: تعریف/بازنویسی به ترتیب لود → `public/crm-data.js` ← `public/crm-bundle.js`
-- `L`: تعریف/بازنویسی به ترتیب لود → `public/leaflet.js` ← `public/vendor/leaflet.js`
+- `L`: تعریف/بازنویسی به ترتیب لود → `public/leaflet.js` ← `public/crm-bundle.js` ← `public/vendor/leaflet.js`
 - `WIDGET_PALETTE`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v12.js`
 - `__CRM_BULK_PURGE`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
 - `__CRM_BULK_READY`: تعریف/بازنویسی به ترتیب لود → `public/crm-bundle.js` ← `public/crm-features-v20.js`
@@ -354,6 +354,7 @@
 - `/api/feedback` [GET] — مصرف‌کننده: `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `/api/geocode?q=` [؟] — مصرف‌کننده: `public/crm-app.js`
 - `/api/health` [؟] — مصرف‌کننده: `public/crm-bundle.js`, `public/crm-features-v10.js`, `public/crm-features-v19.js`
+- `/api/health?_=` [؟] — مصرف‌کننده: `public/crm-bundle.js`
 - `/api/health?__diag=` [؟] — مصرف‌کننده: `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `/api/health?__wd=` [؟] — مصرف‌کننده: `public/crm-bundle.js`, `public/crm-features-v20.js`
 - `/api/push/public-key` [GET] — مصرف‌کننده: `public/crm-bundle.js`, `public/crm-features-v20.js`
@@ -573,8 +574,11 @@
 - `public/crm-features-v20.js` → 3 شناسه (مثل: `formSalesTarget`, `tableSalesTargetsBody`, `tgtSummaryBox`)
 
 ### tab-search-info «🔍 جستجوی اطلاعات»
-- `public/crm-app.js` → 38 شناسه (مثل: `btnExportSearchInfoCSV`, `btnNavBalad`, `btnNavGoogle`, `btnNavNeshan`, `btnNavWaze`, `btnRowCopyText`, `btnRowDelete`, `btnRowEdit`)
-- `public/crm-bundle.js` → 10 شناسه (مثل: `btnRowCopyText`, `formLoginModal`, `jalaliCalendarPopup`, `jalaliDaysGrid`, `jalaliMonthSelect`, `jalaliNextMonth`, `jalaliPrevMonth`, `jalaliTodayBtn`)
+- `public/crm-app.js` → 7 شناسه (مثل: `btnExportSearchInfoCSV`, `btnRunSearchInfo`, `map-search-info`, `searchInfoDocInput`, `searchInfoHospInput`, `searchInfoPhInput`, `tableSearchInfoBody`)
+
+### tab-sms-center «📨 سامانه پیامکی»
+- `public/crm-app.js` → 31 شناسه (مثل: `btnNavBalad`, `btnNavGoogle`, `btnNavNeshan`, `btnNavWaze`, `btnRowCopyText`, `btnRowDelete`, `btnRowEdit`, `diagnosticOfflineBanner`)
+- `public/crm-bundle.js` → 11 شناسه (مثل: `btnRowCopyText`, `formLoginModal`, `jalaliCalendarPopup`, `jalaliDaysGrid`, `jalaliMonthSelect`, `jalaliNextMonth`, `jalaliPrevMonth`, `jalaliTodayBtn`)
 - `public/crm-features-v20.js` → 2 شناسه (مثل: `btnRowCopyText`, `rowDetailsContentBox`)
 - `public/crm-features-v9.js` → 3 شناسه (مثل: `formLoginModal`, `jalaliCalendarPopup`, `jalaliTodayBtn`)
 - `public/crm-jalali.js` → 7 شناسه (مثل: `jalaliCalendarPopup`, `jalaliDaysGrid`, `jalaliMonthSelect`, `jalaliNextMonth`, `jalaliPrevMonth`, `jalaliTodayBtn`, `jalaliYearSelect`)
@@ -1053,6 +1057,7 @@
 - `ownedByCurrent` ← `public/crm-bundle.js`, `public/crm-features-v9.js`
 - `owner` ← `public/crm-bundle.js`, `public/crm-features-v9.js`
 - `p` ← `public/cloudflare-worker.js`, `public/crm-bundle.js`, `public/crm-features-v10.js`, `public/crm-features-v11.js`, `public/crm-features-v16.js`
+- `pad` ← `server.js`, `public/crm-bundle.js`
 - `pad2` ← `public/crm-bundle.js`, `public/crm-jalali.js`
 - `pageSlice` ← `public/crm-bundle.js`, `public/crm-features-v9.js`
 - `paint` ← `public/crm-bundle.js`, `public/crm-features-v16.js`
@@ -1467,7 +1472,7 @@
 
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
-- نسخه سورس package: `12.15.0`
+- نسخه سورس package: `12.16.0`
 - مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a058c2-javad-test1`؛ push/PR فقط از همین شاخه.
 - Production فعال: `https://javad-test1.onrender.com` — نسخه سورس فعلی `12.12.0` است و تا push کاربر روی production همان آخرین دیپلوی قبلی می‌ماند.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.

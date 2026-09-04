@@ -11833,6 +11833,9 @@ button.v19-gps svg{display:block}
     ["renderDoctorsList", "tab-doctors", "doctor", "tableDoctorsHeader", "tableDoctorsBody"],
     ["renderOrdersList", "tab-orders", "order", "tableOrdersHeader", "tableOrdersBody"]
   ];
+  /* دسترسیِ لایه‌ها برای بازچینیِ ترتیبِ ستون‌های لیست (v12.16.0) */
+  window.v20ReorderListColumns = v20ReorderListColumns;
+  window.LIST_TARGETS_V1216 = LIST_TARGETS;
   function thText(th) { return String(th.textContent || "").replace(/\s+/g, " ").replace(/[*]/g, "").trim(); }
   function listLabelKey(v){return norm(String(v||"").replace(/نام\s*/g,"").replace(/\(.*?\)/g,"").replace(/استان\s*\/\s*شهر\s*\/\s*منطقه/g,"استانشهرمنطقه"));}
   function v20ReorderListColumns(paneId, key, headId, bodyId) {
@@ -12927,7 +12930,7 @@ button.v19-gps svg{display:block}
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.15.0");
+        var ver=String(window.CRM_APP_VERSION||"12.16.0");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -14464,7 +14467,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.15.0");
+        var ver=String(window.CRM_APP_VERSION||"12.16.0");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -19243,10 +19246,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.15.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.16.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.15.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.16.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19326,10 +19329,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.15.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.16.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.15.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.16.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -19385,7 +19388,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.15.0");
+  var BUILD = String(window.CRM_APP_VERSION || "12.16.0");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
@@ -19446,10 +19449,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.15.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.16.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.15.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.16.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19476,10 +19479,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.15.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.16.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.15.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.16.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -19564,7 +19567,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.15.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.16.0"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -19998,7 +20001,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var TITLE = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
   var BRAND = "طنین طب طاها  TANIN TEB TAHA";
-  var FALLBACK = "12.15.0";
+  var FALLBACK = "12.16.0";
 
   /* ── ۱) سربرگ دقیقاً سه خط؛ شماره نسخه با ارقام لاتین ───────────────── */
   function ver() { try { return String(window.CRM_APP_VERSION || FALLBACK); } catch (e) { return FALLBACK; } }
@@ -20379,7 +20382,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     try { done = localStorage.getItem(FLAG) === "1"; } catch (e) {}
     if (done) return;
     try { localStorage.setItem(FLAG, "1"); } catch (e) {}
-    var ver = String(window.CRM_APP_VERSION || "12.15.0");
+    var ver = String(window.CRM_APP_VERSION || "12.16.0");
     try {
       if (window.caches && typeof caches.keys === "function") {
         caches.keys().then(function (keys) {
@@ -21425,4 +21428,812 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   } else {
     setTimeout(boot, 400);
   }
+})();
+
+/* v12.16.0: ترتیبِ واقعیِ ستون‌ها، آدرسِ درستِ موقعیت من، جعبه‌ی هم‌نامِ سفارش و نقشه‌ی تردد */
+(function () {
+  "use strict";
+  window.v1216Api = window.v1216Api || {};
+  var API = window.v1216Api;
+
+  function $(id) { try { return document.getElementById(id); } catch (e) { return null; } }
+  function qsa(sel, root) { try { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); } catch (e) { return []; } }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]; }); }
+  function norm(s) {
+    return String(s == null ? "" : s)
+      .replace(/[\u064B-\u0652\u0670\u0640]/g, "")
+      .replace(/ي/g, "ی").replace(/ك/g, "ک").replace(/ة/g, "ه")
+      .replace(/[\u06F0-\u06F9]/g, function (d) { return String.fromCharCode(d.charCodeAt(0) - 1728); })
+      .replace(/\s+/g, " ").trim().toLowerCase();
+  }
+  function save() { try { if (typeof window.saveState === "function") window.saveState(); } catch (e) {} }
+  API.norm = norm; API.esc = esc;
+
+  /* ══ ۱) موتورِ واحدِ ترتیب: تغییرِ ترتیب در تب ستون‌ها = جابه‌جاییِ واقعی در تب اصلی ══ */
+  var ORDER_TABS = ["tab-pharmacies", "tab-doctors", "tab-orders", "tab-columns-products"];
+
+  function gridOf(tabId) {
+    var pane = $(tabId); if (!pane) return null;
+    var form = pane.querySelector("form");
+    if (form) {
+      for (var i = 0; i < form.children.length; i++) {
+        var ch = form.children[i];
+        if (ch && ch.classList && ch.classList.contains("form-grid")) return ch;
+      }
+    }
+    return pane.querySelector(".form-grid");
+  }
+
+  function applyOrder(tabId, opt) {
+    opt = opt || {};
+    var pane = $(tabId); if (!pane) return false;
+    var grid = gridOf(tabId); if (!grid) return false;
+    var ae = document.activeElement, tg = ae ? String(ae.tagName || "").toLowerCase() : "";
+    if (!opt.force && ae && (tg === "input" || tg === "textarea" || tg === "select") && pane.contains(ae)) return false;
+    var prevA = window.__CRM_LAYOUT_APPLYING, prevI = window.__CRM_MANAGER_LAYOUT_INTENT;
+    window.__CRM_LAYOUT_APPLYING = true;
+    window.__CRM_MANAGER_LAYOUT_INTENT = true;
+    try {
+      /* الف) پاک‌کردنِ order قدیمی که جلوی جابه‌جاییِ DOM را می‌گرفت */
+      qsa(".form-group", grid).forEach(function (g) { try { g.style.removeProperty("order"); } catch (e) {} });
+      /* ب) بازچینیِ DOM مطابق ترتیبِ ذخیره‌شده */
+      if (typeof window.applyFullFormLayout === "function") window.applyFullFormLayout(tabId);
+      /* ج) هم‌سوسازیِ CSS order و عکسِ ترتیب با همان ترتیب */
+      if (typeof window.applySavedLayoutV82 === "function") window.applySavedLayoutV82(tabId);
+    } catch (e) {}
+    setTimeout(function () {
+      window.__CRM_LAYOUT_APPLYING = prevA; window.__CRM_MANAGER_LAYOUT_INTENT = prevI;
+    }, 220);
+    var t = (window.LIST_TARGETS_V1216 || []).filter(function (x) { return x[1] === tabId; })[0];
+    if (t && typeof window.v20ReorderListColumns === "function") {
+      setTimeout(function () { try { window.v20ReorderListColumns(t[1], t[2], t[3], t[4]); } catch (e) {} }, 90);
+    }
+    return true;
+  }
+  API.applyOrder = applyOrder;
+
+  var ORDER_SEL = ".col-order-input,.col-listorder-input,#btnSaveColField,#btnManSave,.fld-up,.fld-down,[data-act='up'],[data-act='down'],[data-move]";
+  function armOrderTriggers() {
+    if (document.documentElement.dataset.v1216order === "1") return;
+    document.documentElement.dataset.v1216order = "1";
+    ["change", "click"].forEach(function (ev) {
+      document.addEventListener(ev, function (e) {
+        var t = e.target; if (!t || !t.closest) return;
+        if (!t.closest(ORDER_SEL)) return;
+        setTimeout(function () {
+          ORDER_TABS.forEach(function (id) { try { applyOrder(id); } catch (err) {} });
+        }, 140);
+      }, true);
+    });
+    document.addEventListener("click", function (e) {
+      var b = e.target && e.target.closest && e.target.closest("[data-target]");
+      var id = b && b.getAttribute("data-target");
+      if (!id || ORDER_TABS.indexOf(id) < 0) return;
+      setTimeout(function () { try { applyOrder(id); } catch (err) {} }, 420);
+    }, true);
+  }
+
+  /* ══ ۲) «موقعیت فعلی من»: هرگز آدرسِ پیش‌فرض جایگزین نمی‌شود ═══════════════════ */
+  var NO_FIX = "موقعیت شما دریافت نشد (دسترسی GPS داده نشده یا خاموش است).\nهیچ آدرس پیش‌فرضی جایگزین نمی‌شود؛ GPS را روشن کنید و دوباره بزنید، یا نقطه را روی نقشه انتخاب کنید.";
+
+  function addrOf(lat, lng) {
+    if (window.v1215Api && typeof window.v1215Api.reverseAddress === "function") {
+      return window.v1215Api.reverseAddress(lat, lng, 3).then(function (a) { return a || ""; });
+    }
+    return Promise.resolve("");
+  }
+
+  function takeFix(kind, btn) {
+    var m = kind === "pharmacy"
+      ? { name: "pharmacyName", addr: "pharmacyAddress", loc: "pharmacyLocationText", search: "phMapSearchInput" }
+      : { name: "doctorName", addr: "doctorAddress", loc: "doctorLocationText", search: "docMapSearchInput" };
+    btn.disabled = true; btn.style.opacity = "0.55";
+    function done() { btn.disabled = false; btn.style.opacity = ""; }
+    var p = (typeof window.getCurrentPositionSafe === "function")
+      ? window.getCurrentPositionSafe()
+      : new Promise(function (res) {
+          if (!navigator.geolocation) { res({ error: true, message: NO_FIX }); return; }
+          navigator.geolocation.getCurrentPosition(function (pos) {
+            res({ lat: pos.coords.latitude, lng: pos.coords.longitude, accuracy: pos.coords.accuracy || 999 });
+          }, function () { res({ error: true, message: NO_FIX }); }, { enableHighAccuracy: true, timeout: 9000, maximumAge: 0 });
+        });
+    Promise.resolve(p).then(function (pos) {
+      if (!pos || pos.error || !isFinite(Number(pos.lat)) || !isFinite(Number(pos.lng))) {
+        done(); try { alert((pos && pos.message) || NO_FIX); } catch (e) {} return;
+      }
+      var lat = Number(pos.lat), lng = Number(pos.lng);
+      try {
+        var nm = (($(m.name) || {}).value) || (kind === "pharmacy" ? "موقعیت فعلی داروخانه" : "موقعیت فعلی مطب");
+        if (kind === "pharmacy" && typeof window.updatePharmacyFormMarker === "function") window.updatePharmacyFormMarker(lat, lng, nm, true);
+        if (kind === "doctor" && typeof window.updateDoctorFormMarker === "function") window.updateDoctorFormMarker(lat, lng, nm, true);
+      } catch (e) {}
+      var set = function (id, v) { var el = $(id); if (el) el.value = v; };
+      var finish = function (addr) {
+        if (addr) { set(m.addr, addr); if (m.loc) set(m.loc, addr); if (m.search) set(m.search, addr); }
+        save(); done();
+        try { alert("موقعیت شما روی نقشه نشست" + (addr ? (" و آدرسِ همین نقطه نوشته شد:\n" + addr) : " اما آدرسِ متنی نیامد؛ دوباره بزنید.")); } catch (e) {}
+      };
+      var ap = pos.addressPromise || addrOf(lat, lng);
+      Promise.resolve(ap).then(function (a) { finish(a || ""); }).catch(function () { finish(""); });
+    }).catch(function () { done(); try { alert(NO_FIX); } catch (e) {} });
+  }
+
+  function rebindCurrentLocation() {
+    [["btnPharmacyCurrentLocation", "pharmacy"], ["btnDoctorCurrentLocation", "doctor"]].forEach(function (pair) {
+      var old = $(pair[0]);
+      if (!old || old.dataset.v1216 === "1") return;
+      var fresh = old.cloneNode(true);
+      fresh.dataset.v1216 = "1";
+      try { old.parentNode.replaceChild(fresh, old); } catch (e) { return; }
+      fresh.addEventListener("click", function (e) {
+        if (e) { try { e.stopImmediatePropagation(); } catch (x) {} }
+        takeFix(pair[1], fresh);
+      }, true);
+    });
+  }
+  API.rebindCurrentLocation = rebindCurrentLocation;
+  API.takeFix = takeFix;
+
+  /* ══ ۳) کادرِ بالای سفارش: فقط داروخانه‌های هم‌نام + آدرس ═══════════════════════ */
+  function pharmacyRecords() { var S = window.state || {}; return [].concat(S.pharmacies || []); }
+  function strictMatch(q) {
+    var k = norm(q); if (!k) return [];
+    return pharmacyRecords().filter(function (p) { return norm(p.name).indexOf(k) >= 0; }).slice(0, 20);
+  }
+  API.strictMatch = strictMatch;
+
+  function renderTopPick() {
+    var list = $("crm1216TopPickList"); if (!list) return;
+    var q = (($( "orderPharmacyName" ) || {}).value) || "";
+    var items = strictMatch(q);
+    if (!norm(q)) { list.innerHTML = "<div class='crm1215-empty'>برای جایگذاری، نام داروخانه را در فرم بنویسید.</div>"; return; }
+    if (!items.length) { list.innerHTML = "<div class='crm1215-empty'>داروخانه‌ای با این نام پیدا نشد.</div>"; return; }
+    list.innerHTML = items.map(function (p, i) {
+      return "<div class='crm1215-item'><div class='crm1215-name'>🏥 " + esc(p.name || "—") + "</div>" +
+        "<div class='crm1215-addr'>" + esc(p.address || p.locationText || "آدرس ثبت نشده") + "</div>" +
+        "<button type='button' class='btn btn-success btn-sm' data-pick='" + i + "'>جایگذاری</button></div>";
+    }).join("");
+    qsa("[data-pick]", list).forEach(function (b) {
+      b.addEventListener("click", function () {
+        var rec = items[Number(b.getAttribute("data-pick"))];
+        if (!rec) return;
+        if (window.v1215Api && typeof window.v1215Api.applyPharmacy === "function") { window.v1215Api.applyPharmacy(rec); return; }
+        var set = function (id, v) { var el = $(id); if (el && v != null && v !== "") el.value = v; };
+        set("orderPharmacyName", rec.name); set("orderPharmacyPhone", rec.phone);
+        set("orderAddress", rec.address || rec.locationText); set("orderCity", rec.city);
+        set("orderLat", rec.lat); set("orderLng", rec.lng); set("orderPharmacyMatchedId", rec.id);
+        save(); try { alert("اطلاعات داروخانه «" + (rec.name || "") + "» جایگذاری شد."); } catch (e) {}
+      });
+    });
+  }
+  API.renderTopPick = renderTopPick;
+
+  function ensureTopPick() {
+    var tab = $("tab-orders"); if (!tab) return;
+    var legacy = $("v48TopPickBox"); if (legacy && legacy.parentNode) { try { legacy.parentNode.removeChild(legacy); } catch (e) {} }
+    var dup = $("crm1215OrderPick"); if (dup && dup.parentNode) { try { dup.parentNode.removeChild(dup); } catch (e) {} }
+    /* کادرِ قدیمیِ «داروخانه‌های مشابه» هم فقط هم‌نام‌ها را نشان می‌دهد */
+    var src = $("orderPharmacyPickBox");
+    if (src) {
+      var k = norm((($("orderPharmacyName") || {}).value) || "");
+      qsa(".ph-pick-card", src).forEach(function (c) {
+        var nm = norm((c.querySelector("strong") || {}).textContent || "");
+        c.style.display = (!k || nm.indexOf(k) >= 0) ? "" : "none";
+      });
+    }
+    var box = $("crm1216TopPick");
+    if (!box) {
+      box = document.createElement("div");
+      box.id = "crm1216TopPick";
+      box.className = "crm1215-pick crm1216-pick";
+      box.innerHTML = "<div class='crm1215-pick-head'>🔎 جایگذاری خودکارِ داروخانه" +
+        "<span class='crm1215-pick-hint'>فقط داروخانه‌های هم‌نام با نامِ نوشته‌شده، همراه با آدرس</span></div>" +
+        "<div class='crm1215-pick-list' id='crm1216TopPickList'></div>";
+      try { tab.insertBefore(box, tab.firstChild); } catch (e) { tab.appendChild(box); }
+    }
+    renderTopPick();
+  }
+  API.ensureTopPick = ensureTopPick;
+
+  /* ══ ۴) نقشه‌ی تردد: بارگیریِ لیفلت در صورت نبود + نقشه‌ی رویی + پیامِ درست ═════ */
+  function ensureLeaflet(cb) {
+    if (typeof window.L !== "undefined") { cb(true); return; }
+    if (!document.getElementById("leaflet-css-v1216")) {
+      var l = document.createElement("link"); l.id = "leaflet-css-v1216"; l.rel = "stylesheet"; l.href = "/leaflet.css";
+      try { document.head.appendChild(l); } catch (e) {}
+    }
+    var s = document.createElement("script");
+    s.src = "/leaflet.js"; s.async = false;
+    s.onload = function () { setTimeout(function () { cb(typeof window.L !== "undefined"); }, 40); };
+    s.onerror = function () { cb(false); };
+    try { document.head.appendChild(s); } catch (e) { cb(false); }
+  }
+  function tiles(map) {
+    try { window.L.tileLayer("/api/tiles/{z}/{x}/{y}.png", { maxZoom: 19 }).addTo(map); } catch (e) {}
+  }
+  function trafficMap() {
+    try {
+      var m = window._mapRepRoutes;
+      if (m && typeof m.invalidateSize === "function") return m;
+      if (typeof window.L === "undefined") return null;
+      var el = $("map-rep-routes-full");
+      if (el) {
+        try {
+          var map = window.L.map(el).setView([35.73, 51.42], 12);
+          tiles(map); window._mapRepRoutes = map; return map;
+        } catch (e) {}
+      }
+    } catch (e) {}
+    return null;
+  }
+  function modalMap() {
+    try {
+      var host = $("v1216MapModal");
+      if (!host) {
+        host = document.createElement("div");
+        host.id = "v1216MapModal";
+        host.style.cssText = "position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,.55);display:flex;align-items:center;justify-content:center";
+        host.innerHTML = "<div style='background:#fff;border-radius:14px;padding:10px;width:min(94vw,920px);box-shadow:0 12px 40px rgba(0,0,0,.35)'>" +
+          "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:6px'><b>🗺 مسیر ترددِ نماینده</b>" +
+          "<button type='button' id='v1216MapClose' class='btn btn-outline btn-sm'>بستن</button></div>" +
+          "<div id='v1216MapCanvas' style='height:68vh;min-height:320px'></div></div>";
+        document.body.appendChild(host);
+        host.addEventListener("click", function (e) {
+          if (e.target && (e.target.id === "v1216MapClose" || e.target === host)) host.style.display = "none";
+        });
+      }
+      host.style.display = "flex";
+      if (window.__v1216Modal && typeof window.__v1216Modal.invalidateSize === "function") return window.__v1216Modal;
+      var el = $("v1216MapCanvas"); if (!el) return null;
+      var map = window.L.map(el).setView([35.73, 51.42], 12);
+      tiles(map); window.__v1216Modal = map;
+      if (!window._mapRepRoutes) window._mapRepRoutes = map;
+      setTimeout(function () { try { map.invalidateSize(); } catch (e) {} }, 220);
+      return map;
+    } catch (e) { return null; }
+  }
+  function trackPoints(track) {
+    var path = [].concat((track && (track.path || track.points)) || []);
+    var pts = path.map(function (p) {
+      return Array.isArray(p) ? [Number(p[0]), Number(p[1])] : [Number(p && p.lat), Number(p && p.lng)];
+    }).filter(function (p) { return isFinite(p[0]) && isFinite(p[1]); });
+    if (pts.length) return pts;
+    var S = window.state || {};
+    if (!track || !track.repName) return [];
+    var logs = [].concat(S.activityLog || []).filter(function (a) {
+      return a && a.lat && a.lng && String(a.repName) === String(track.repName) &&
+        (!track.date || String(a.date) === String(track.date));
+    });
+    return logs.map(function (a) { return [Number(a.lat), Number(a.lng)]; })
+      .filter(function (p) { return isFinite(p[0]) && isFinite(p[1]); });
+  }
+  API.trackPoints = trackPoints;
+
+  function drawTrackRobust(track) {
+    if (!track) return "no-track";
+    var pts = trackPoints(track);
+    if (!pts.length) return "no-path";
+    ensureLeaflet(function (ok) {
+      if (!ok) { try { alert("کتابخانهٔ نقشه بارگیری نشد؛ اتصال اینترنت را بررسی و دوباره تلاش کنید."); } catch (e) {} return; }
+      var map = trafficMap() || modalMap();
+      if (!map) { try { alert("نقشه در دسترس نیست؛ صفحه را تازه‌سازی و دوباره تلاش کنید."); } catch (e) {} return; }
+      try {
+        if (window.__v1216Line) { try { map.removeLayer(window.__v1216Line); } catch (e) {} }
+        if (window.__v1216Marks) { window.__v1216Marks.forEach(function (m) { try { map.removeLayer(m); } catch (e) {} }); }
+        window.__v1216Line = window.L.polyline(pts, { color: "#0d9488", weight: 6, opacity: 0.92 }).addTo(map);
+        window.__v1216Marks = [
+          window.L.marker(pts[0]).addTo(map).bindPopup("مبدأ"),
+          window.L.marker(pts[pts.length - 1]).addTo(map).bindPopup("مقصد")
+        ];
+        map.fitBounds(window.__v1216Line.getBounds(), { padding: [32, 32] });
+        setTimeout(function () { try { map.invalidateSize(); } catch (e) {} }, 260);
+        var pane = $("tab-rep-routes");
+        if (pane && pane.classList && !pane.classList.contains("active") && typeof window.switchTab === "function") {
+          try { window.switchTab("tab-rep-routes"); } catch (e) {}
+          setTimeout(function () { try { map.invalidateSize(); } catch (e) {} }, 450);
+        }
+        try { alert("ترددِ «" + (track.repName || "نماینده") + "» از مبدأ تا مقصد با " + pts.length + " نقطه روی نقشه رسم شد."); } catch (e) {}
+      } catch (e) { try { alert("رسم مسیر انجام نشد: " + (e && e.message)); } catch (x) {} }
+    });
+    return "drawing";
+  }
+  API.drawTrackRobust = drawTrackRobust;
+
+  function armTrafficButtons() {
+    if (document.documentElement.dataset.v1216traffic === "1") return;
+    document.documentElement.dataset.v1216traffic = "1";
+    document.addEventListener("click", function (e) {
+      var b = e.target && e.target.closest && e.target.closest(".crm1215-traffic-btn");
+      if (!b) return;
+      try { e.stopImmediatePropagation(); e.preventDefault(); } catch (x) {}
+      var tr = b.closest("tr");
+      var track = (window.v1215Api && typeof window.v1215Api.findTrackForRow === "function")
+        ? window.v1215Api.findTrackForRow(tr ? tr.textContent : "") : null;
+      if (!track) { try { alert("مسیری برای این سطر پیدا نشد."); } catch (x) {} return; }
+      var r = drawTrackRobust(track);
+      if (r === "no-path") { try { alert("این مسیر نقطهٔ موقعیت ندارد که روی نقشه رسم شود."); } catch (x) {} }
+    }, true);
+  }
+
+  /* ══ راه‌انداز ═══════════════════════════════════════════════════════════════ */
+  function tick() {
+    try { armOrderTriggers(); } catch (e) {}
+    try { rebindCurrentLocation(); } catch (e) {}
+    try { ensureTopPick(); } catch (e) {}
+    try { armTrafficButtons(); } catch (e) {}
+  }
+  API.tickPart1 = tick;
+  document.addEventListener("input", function (e) {
+    var t = e.target; if (!t) return;
+    if (t.id === "orderPharmacyName") { setTimeout(renderTopPick, 160); }
+  }, true);
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { setTimeout(tick, 700); });
+  else setTimeout(tick, 700);
+  [1200, 2400, 3600, 6000].forEach(function (ms) { setTimeout(tick, ms); });
+  setInterval(tick, 9000);
+})();
+
+/* v12.16.0 (بخش ۲): طبقه/پلاکِ منزل، ریاضیِ قیمت‌گذاری، پایداریِ آنلاین و تب سامانه پیامکی */
+(function () {
+  "use strict";
+  var API = window.v1216Api = window.v1216Api || {};
+  function $(id) { try { return document.getElementById(id); } catch (e) { return null; } }
+  function qsa(sel, root) { try { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); } catch (e) { return []; } }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]; }); }
+  function faDigits(s) { return String(s == null ? "" : s).replace(/[\u06F0-\u06F9]/g, function (d) { return String.fromCharCode(d.charCodeAt(0) - 1728); }).replace(/[\u0660-\u0669]/g, function (d) { return String.fromCharCode(d.charCodeAt(0) - 1584); }); }
+  function norm(s) { return faDigits(String(s == null ? "" : s)).replace(/\s+/g, " ").trim(); }
+  function cleanPhone(v) {
+    var s = faDigits(String(v == null ? "" : v)).replace(/[^\d+]/g, "");
+    if (!s) return "";
+    if (s.indexOf("+") === 0) return s;
+    if (/^0\d{10}$/.test(s)) return "+98" + s.slice(1);
+    if (/^9\d{9}$/.test(s)) return "+98" + s;
+    return s;
+  }
+  function save() { try { if (typeof window.saveState === "function") window.saveState(); } catch (e) {} }
+  function S() { return window.state || {}; }
+  API.cleanPhone = cleanPhone;
+
+  /* ══ ۵) منزل نمایندگان: طبقه و پلاک واقعاً ذخیره می‌شوند ═══════════════════════ */
+  function homeTarget() {
+    var st = S(), sel = $("repHomeSelect");
+    var name = sel ? norm(sel.value) : "";
+    if (!name) { try { name = norm((window.currentUser && window.currentUser.name) || st.currentRepName || ""); } catch (e) {} }
+    st.repHomes = st.repHomes || [];
+    var rec = st.repHomes.filter(function (h) { return norm(h.repName) === name; })[0];
+    if (!rec && name) { rec = { id: "home-" + Date.now(), repName: name, address: "", plate: "", floor: "" }; st.repHomes.push(rec); }
+    return rec;
+  }
+  function saveHomeExtras() {
+    var rec = homeTarget(); if (!rec) return false;
+    var p = $("repHomePlate"), f = $("repHomeFloor"), a = $("repHomeAddressInput");
+    if (p) rec.plate = norm(p.value);
+    if (f) rec.floor = norm(f.value);
+    if (a && norm(a.value)) rec.address = norm(a.value);
+    if (window.__v1216HomePos && isFinite(window.__v1216HomePos.lat)) { rec.lat = window.__v1216HomePos.lat; rec.lng = window.__v1216HomePos.lng; }
+    rec.updatedAt = Date.now();
+    save(); return true;
+  }
+  API.saveHomeExtras = saveHomeExtras;
+
+  function paintHomeColumns() {
+    var body = $("tableRepHomesBody"); if (!body) return;
+    var arr = S().repHomes || [];
+    qsa("tr", body).forEach(function (tr) {
+      if (tr.querySelector(".v1216-home-extra")) return;
+      var b = tr.querySelector(".v37-home-edit");
+      var id = b && b.getAttribute("data-id");
+      var rec = arr.filter(function (h) { return String(h.id) === String(id); })[0];
+      if (!rec) return;
+      var td = document.createElement("td");
+      td.className = "v1216-home-extra";
+      td.innerHTML = "<span style='display:block'>پلاک: <b>" + esc(rec.plate || "—") + "</b></span>" +
+                     "<span style='display:block;color:#64748b'>طبقه: <b>" + esc(rec.floor || "—") + "</b></span>";
+      try { tr.insertBefore(td, tr.lastElementChild); } catch (e) { tr.appendChild(td); }
+    });
+  }
+  function armHomes() {
+    if (document.documentElement.dataset.v1216homes === "1") return;
+    document.documentElement.dataset.v1216homes = "1";
+    document.addEventListener("input", function (e) {
+      var t = e.target; if (!t || !t.id) return;
+      if (t.id === "repHomePlate" || t.id === "repHomeFloor" || t.id === "repHomeAddressInput") {
+        clearTimeout(window.__v1216HomeT);
+        window.__v1216HomeT = setTimeout(function () { saveHomeExtras(); paintHomeColumns(); }, 500);
+      }
+    }, true);
+    document.addEventListener("click", function (e) {
+      if (!(e.target && e.target.closest && e.target.closest("#tab-rep-homes"))) return;
+      setTimeout(function () { saveHomeExtras(); paintHomeColumns(); }, 380);
+    }, true);
+  }
+  API.armHomes = armHomes;
+  API.paintHomeColumns = paintHomeColumns;
+
+  /* ══ ۶) قیمت‌گذاری: عددِ دستی معتبر است و ارزش افزوده درست حساب می‌شود ════════ */
+  function findProduct(pid) {
+    var arr = S().products || [];
+    return arr.filter(function (x) { return String(x.id) === String(pid); })[0] || null;
+  }
+  function vatOf(p) {
+    var v = p.vatPercent != null && p.vatPercent !== "" ? Number(p.vatPercent) : null;
+    if (v == null || !isFinite(v)) { try { v = Number((S().settings || {}).orderFormula ? (S().settings.orderFormula.vat) : 10); } catch (e) { v = 10; } }
+    if (!isFinite(v)) v = 10;
+    return v;
+  }
+  function onPriceEdit(pid, key, raw) {
+    var p = findProduct(pid); if (!p) return false;
+    var val = Number(faDigits(String(raw == null ? "" : raw)).replace(/[^0-9.\-]/g, ""));
+    if (!isFinite(val) || val < 0) return false;
+    var dist = Number(p.distributorPrice || p.distPrice || p.price || 0) || 0;
+    var ph = Number(p.pharmacyPrice || p.price || 0) || 0;
+    var cons = Number(String(p.consumerPrice == null ? "" : p.consumerPrice).replace(/[^0-9.\-]/g, ""));
+    if (!isFinite(cons) || cons <= 0) cons = ph || dist;
+    var d = p.pricingDraft || (p.pricingDraft = {});
+    var mDP = isFinite(Number(d.marginDistPh)) ? Number(d.marginDistPh) : (ph ? (ph - dist) / ph * 100 : 0);
+    var mPC = isFinite(Number(d.marginPhCons)) ? Number(d.marginPhCons) : (cons ? (cons - ph) / cons * 100 : 0);
+    var vat = vatOf(p);
+    if (key === "vat") {
+      d.vat = val; p.vatPercent = val; vat = val;
+    } else if (key === "cons") {
+      d.cons = Math.round(val); d.consLocked = true;
+      d.ph = Math.round(d.cons * (1 - mPC / 100));
+      d.dist = Math.round(d.ph * (1 - mDP / 100));
+    } else if (key === "ph") {
+      d.ph = Math.round(val);
+      if (d.consLocked && isFinite(Number(d.cons)) && Number(d.cons) > 0) mPC = (Number(d.cons) - d.ph) / Number(d.cons) * 100;
+      else if (cons > 0) mPC = (cons - d.ph) / cons * 100;
+      d.marginPhCons = Math.round(mPC * 100) / 100;
+      d.dist = Math.round(d.ph * (1 - mDP / 100));
+      if (!d.consLocked) d.cons = cons;
+    } else if (key === "dist") {
+      d.dist = Math.round(val);
+      var basePh = isFinite(Number(d.ph)) && Number(d.ph) > 0 ? Number(d.ph) : ph;
+      d.marginDistPh = basePh ? Math.round((basePh - d.dist) / basePh * 10000) / 100 : 0;
+    } else { return false; }
+    d.vat = vat;
+    d.consNoVat = Math.round((isFinite(Number(d.cons)) ? Number(d.cons) : cons) / (1 + vat / 100));
+    d.vatAmount = (isFinite(Number(d.cons)) ? Number(d.cons) : cons) - d.consNoVat;
+    p.pricingDraft = d;
+    save();
+    try { if (typeof window.applyV77ProductPricing === "function") window.applyV77ProductPricing(); } catch (e) {}
+    return true;
+  }
+  API.onPriceEdit = onPriceEdit;
+
+  function armPricing() {
+    if (document.documentElement.dataset.v1216pricing === "1") return;
+    document.documentElement.dataset.v1216pricing = "1";
+    ["change", "blur", "keydown"].forEach(function (ev) {
+      document.addEventListener(ev, function (e) {
+        var t = e.target;
+        if (!t || !t.closest || !t.closest("#tab-product-pricing")) return;
+        if (!t.classList || !t.classList.contains("v77-inp")) return;
+        if (ev === "keydown" && e.key !== "Enter") return;
+        var pid = t.getAttribute("data-pid"), key = t.getAttribute("data-k");
+        if (!pid || !key) return;
+        var raw = t.value;
+        setTimeout(function () { try { onPriceEdit(pid, key, raw); } catch (err) {} }, 0);
+      }, true);
+    });
+  }
+  API.armPricing = armPricing;
+
+  /* ══ ۷) پایداریِ آنلاین: فقط بعد از سه شکستِ پیاپی آفلاین می‌شویم ═════════════ */
+  var NET = { online: true, fails: 0, lastOk: Date.now(), probing: false };
+  function netProbe() {
+    if (NET.probing) return;
+    NET.probing = true;
+    var ctl = (typeof AbortController === "function") ? new AbortController() : null;
+    var to = setTimeout(function () { if (ctl) { try { ctl.abort(); } catch (e) {} } }, 4500);
+    var opt = { cache: "no-store", method: "GET" };
+    if (ctl) opt.signal = ctl.signal;
+    fetch("/api/health?_=" + Date.now(), opt).then(function (r) {
+      clearTimeout(to); NET.probing = false;
+      if (r && r.ok) netOk(); else netFail();
+    }).catch(function () { clearTimeout(to); NET.probing = false; netFail(); });
+  }
+  function netOk() {
+    var was = NET.online;
+    NET.fails = 0; NET.lastOk = Date.now(); NET.online = true;
+    paintNet();
+    if (!was) { try { if (window.v1215Api && typeof window.v1215Api.flushOutbox === "function") window.v1215Api.flushOutbox(); } catch (e) {} save(); }
+  }
+  function netFail() {
+    NET.fails += 1;
+    if (NET.fails >= 3) { NET.online = false; paintNet(); }
+  }
+  function paintNet() {
+    var S1 = window.state;
+    try { if (S1) { S1.__netOnline = NET.online; S1.__netFails = NET.fails; } } catch (e) {}
+    qsa(".v1215-net-badge,[data-net-badge]").forEach(function (el) {
+      el.textContent = NET.online ? "🟢 آنلاین" : "🟠 آفلاین — ذخیره محلی و ارسال خودکار بعد از اتصال";
+      el.style.color = NET.online ? "#15803d" : "#b45309";
+    });
+  }
+  API.net = NET;
+  API.netProbe = netProbe;
+  API.isOnline = function () { return NET.online === true; };
+  function armNet() {
+    if (document.documentElement.dataset.v1216net === "1") return;
+    document.documentElement.dataset.v1216net = "1";
+    window.addEventListener("online", function () { netOk(); netProbe(); });
+    window.addEventListener("offline", function () { netFail(); netFail(); netFail(); paintNet(); });
+    /* هر پاسخِ موفق از سرور یعنی آنلاین هستیم */
+    var of = window.fetch;
+    if (typeof of === "function" && !of.__v1216) {
+      var w = function () {
+        var pr = of.apply(this, arguments);
+        try {
+          pr.then(function (r) { if (r && r.ok) netOk(); }).catch(function () {});
+        } catch (e) {}
+        return pr;
+      };
+      w.__v1216 = true;
+      try { window.fetch = w; } catch (e) {}
+    }
+    setInterval(function () { if (document.visibilityState !== "hidden") netProbe(); }, 15000);
+    setTimeout(netProbe, 1500);
+  }
+  API.armNet = armNet;
+
+  /* ══ ۸) تب سامانه پیامکی ════════════════════════════════════════════════════ */
+  var DEF_TPL = "🎉 تولدت مبارک {name} عزیز\nسلامتی، شادی و موفقیت در سال پیش‌رو برای شما آرزو می‌کنیم.\n— مهر آیین نیک دارو";
+
+  function todayMD() {
+    try {
+      var f = new Intl.DateTimeFormat("fa-IR-u-ca-persian", { year: "numeric", month: "2-digit", day: "2-digit" });
+      var parts = f.formatToParts(new Date());
+      var m = "01", d = "01";
+      parts.forEach(function (p) { if (p.type === "month") m = faDigits(p.value); if (p.type === "day") d = faDigits(p.value); });
+      return pad(m) + "/" + pad(d);
+    } catch (e) {
+      var n = new Date();
+      return pad(String(n.getMonth() + 1)) + "/" + pad(String(n.getDate()));
+    }
+  }
+  function pad(v) { v = faDigits(String(v || "")); return v.length === 1 ? "0" + v : v; }
+
+  function birthOf(rec) {
+    if (!rec) return null;
+    var keys = Object.keys(rec).filter(function (k) { return /تولد|تاریخ تولد|birth|bday/i.test(String(k)); });
+    for (var i = 0; i < keys.length; i++) {
+      var v = rec[keys[i]];
+      if (v == null || v === "") continue;
+      var s = faDigits(String(v));
+      var m = s.match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/);
+      if (m) return { md: pad(m[2]) + "/" + pad(m[3]), year: m[1], raw: String(v) };
+      if (/\d{4}-\d{1,2}-\d{1,2}/.test(s)) {
+        var dt = new Date(String(v));
+        if (!isNaN(dt.getTime())) {
+          try {
+            var f = new Intl.DateTimeFormat("fa-IR-u-ca-persian", { month: "2-digit", day: "2-digit" });
+            var pp = f.formatToParts(dt), mm = "01", dd = "01";
+            pp.forEach(function (p) { if (p.type === "month") mm = faDigits(p.value); if (p.type === "day") dd = faDigits(p.value); });
+            return { md: pad(mm) + "/" + pad(dd), year: "", raw: String(v) };
+          } catch (e) {}
+        }
+      }
+    }
+    return null;
+  }
+  API.birthOf = birthOf;
+
+  function birthdayPeople() {
+    var st = S(), out = [];
+    [["داروخانه", st.pharmacies || []], ["پزشک", st.doctors || []], ["پرسنل", st.staffBirthdays || []]].forEach(function (grp) {
+      (grp[1] || []).forEach(function (rec) {
+        var b = birthOf(rec);
+        if (!b) return;
+        var phone = cleanPhone(rec.phone || rec.mobile || rec.mobileNumber || rec.phoneNumber || "");
+        out.push({ name: rec.name || rec.fullName || "—", kind: grp[0], phone: phone, md: b.md, raw: b.raw, id: rec.id });
+      });
+    });
+    return out;
+  }
+  API.birthdayPeople = birthdayPeople;
+
+  function smsSettings() {
+    var st = S();
+    st.smsSettings = st.smsSettings || {};
+    var s = st.smsSettings;
+    if (!s.birthdayTemplate) s.birthdayTemplate = DEF_TPL;
+    if (s.birthdayAuto == null) s.birthdayAuto = true;
+    return s;
+  }
+  function queueSms(items, text, tag) {
+    var st = S();
+    st.smsOutbox = st.smsOutbox || [];
+    var n = 0;
+    (items || []).forEach(function (it) {
+      var body = String(text || "").replace(/\{name\}/g, it.name || "").replace(/\{kind\}/g, it.kind || "");
+      if (!it.phone || !String(body).trim()) return;
+      st.smsOutbox.push({ id: "sms-" + Date.now() + "-" + n, to: it.phone, name: it.name, text: body, at: Date.now(), tag: tag || "manual", status: "queued" });
+      n++;
+    });
+    if (n) save();
+    return n;
+  }
+  API.queueSms = queueSms;
+
+  function renderSmsTab() {
+    var host = $("v1216SmsHost");
+    if (!host) return;
+    var st = S(), set = smsSettings();
+    var people = birthdayPeople();
+    var tmd = todayMD();
+    var today = people.filter(function (p) { return p.md === tmd; });
+    var upcoming = people.slice().sort(function (a, b) { return a.md.localeCompare(b.md); }).slice(0, 12);
+    var lastRun = set.lastBirthdayRun || "";
+    var html = "";
+    html += "<div class='card-header'><h2>📨 سامانه پیامکی</h2><span class='col-help'>سه بخش مستقل: تبریک تولد، تاریخ تولد پرسنل، ارسال پیام دلخواه</span></div>";
+    /* ۱ — تبریک تولد */
+    html += "<div style='border:2px solid #a7f3d0;background:#ecfdf5;border-radius:12px;padding:12px;margin-bottom:12px'>" +
+      "<b style='color:#047857'>🎂 پیام تبریک تولدِ خودکار</b>" +
+      "<div class='col-help'>نام از پرونده‌ی همان داروخانه/پزشک خوانده می‌شود و در پیام جایگذاری می‌گردد ({name}).</div>" +
+      "<label class='form-label' style='margin-top:8px'>متن تبریک</label>" +
+      "<textarea id='v1216BirthTpl' class='form-input' rows='3' style='width:100%'>" + esc(set.birthdayTemplate) + "</textarea>" +
+      "<div style='margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center'>" +
+      "<label style='display:inline-flex;gap:6px;align-items:center'><input type='checkbox' id='v1216BirthAuto'" + (set.birthdayAuto ? " checked" : "") + "> ارسال خودکارِ امروز</label>" +
+      "<button type='button' class='btn btn-primary btn-sm' id='v1216BirthSave'>💾 ذخیره متن</button>" +
+      "<button type='button' class='btn btn-success btn-sm' id='v1216BirthSendToday'>📤 ارسال به متولدینِ امروز (" + today.length + ")</button>" +
+      "<span class='col-help'>آخرین اجرا: " + esc(lastRun || "هرگز") + " — امروز: " + esc(tmd) + "</span></div>" +
+      "<div style='margin-top:10px'><b>متولدینِ امروز:</b> " +
+      (today.length ? today.map(function (p) { return "🎂 " + esc(p.name) + " (" + esc(p.kind) + "، " + esc(p.phone || "بدون شماره") + ")"; }).join("، ") : "کسی امروز تولد ندارد.") +
+      "</div><div style='margin-top:6px;color:#64748b'>۱۲ تولدِ پیش‌رو: " +
+      (upcoming.length ? upcoming.map(function (p) { return esc(p.md) + " " + esc(p.name); }).join("، ") : "—") + "</div></div>";
+    /* ۲ — تاریخ تولد پرسنل */
+    var staff = [].concat(st.staffBirthdays || []);
+    html += "<div style='border:2px solid #bfdbfe;background:#eff6ff;border-radius:12px;padding:12px;margin-bottom:12px'>" +
+      "<b style='color:#1d4ed8'>👥 ثبت تاریخ تولدِ پرسنل</b>" +
+      "<div style='display:flex;gap:8px;flex-wrap:wrap;margin-top:8px'>" +
+      "<input id='v1216StaffName' class='form-input' placeholder='نام و نام خانوادگی' style='max-width:220px'>" +
+      "<input id='v1216StaffPhone' class='form-input' placeholder='موبایل (مثل 0912...)' style='max-width:200px'>" +
+      "<input id='v1216StaffBirth' class='form-input' placeholder='تاریخ تولد (مانند 1368/05/12)' style='max-width:220px'>" +
+      "<button type='button' class='btn btn-primary btn-sm' id='v1216StaffAdd'>➕ ثبت</button></div>" +
+      "<div style='margin-top:10px;overflow:auto'><table class='table'><thead><tr><th>ردیف</th><th>نام</th><th>موبایل</th><th>تاریخ تولد</th><th>عملیات</th></tr></thead><tbody>" +
+      (staff.length ? staff.map(function (p, i) {
+        return "<tr><td>" + (i + 1) + "</td><td>" + esc(p.name || "—") + "</td><td dir='ltr'>" + esc(p.phone || "—") + "</td><td>" + esc(p.birthDate || p.raw || "—") + "</td>" +
+          "<td><button type='button' class='btn btn-danger btn-sm' data-staff-del='" + i + "'>🗑 حذف</button></td></tr>";
+      }).join("") : "<tr><td colspan='5'>هنوز پرسنلی ثبت نشده است.</td></tr>") +
+      "</tbody></table></div></div>";
+    /* ۳ — ارسال دلخواه */
+    var nums = [];
+    (st.pharmacies || []).forEach(function (p) { var ph = cleanPhone(p.phone || p.mobile || ""); if (ph) nums.push({ name: p.name || "داروخانه", phone: ph, kind: "داروخانه" }); });
+    (st.doctors || []).forEach(function (p) { var ph = cleanPhone(p.phone || p.mobile || ""); if (ph) nums.push({ name: p.name || "پزشک", phone: ph, kind: "پزشک" }); });
+    staff.forEach(function (p) { var ph = cleanPhone(p.phone || p.mobile || ""); if (ph) nums.push({ name: p.name || "پرسنل", phone: ph, kind: "پرسنل" }); });
+    (st.reps || []).forEach(function (p) { var ph = cleanPhone(p.phone || p.mobile || ""); if (ph) nums.push({ name: p.name || "نماینده", phone: ph, kind: "نماینده" }); });
+    var seen = {}; nums = nums.filter(function (n) { if (seen[n.phone]) return false; seen[n.phone] = 1; return true; });
+    html += "<div style='border:2px solid #fde68a;background:#fffbeb;border-radius:12px;padding:12px'>" +
+      "<b style='color:#b45309'>✉️ ارسال پیام دلخواه</b>" +
+      "<label class='form-label' style='margin-top:8px'>متن پیام</label>" +
+      "<textarea id='v1216FreeText' class='form-input' rows='3' style='width:100%' placeholder='متن پیام را بنویسید…'></textarea>" +
+      "<label class='form-label' style='margin-top:8px'>شماره‌های اضافی (هر شماره در یک خط)</label>" +
+      "<textarea id='v1216FreeExtra' class='form-input' rows='2' style='width:100%'></textarea>" +
+      "<div style='margin-top:8px;display:flex;gap:8px;flex-wrap:wrap'>" +
+      "<button type='button' class='btn btn-outline btn-sm' id='v1216SelAll'>انتخاب همه</button>" +
+      "<button type='button' class='btn btn-outline btn-sm' id='v1216SelNone'>لغو انتخاب</button>" +
+      "<button type='button' class='btn btn-success btn-sm' id='v1216FreeSend'>📤 قرار دادن در صف ارسال</button></div>" +
+      "<div style='margin-top:10px;max-height:280px;overflow:auto;border:1px solid #e2e8f0;border-radius:10px;padding:8px' id='v1216NumList'>" +
+      (nums.length ? nums.map(function (n, i) {
+        return "<label style='display:flex;gap:8px;align-items:center;padding:4px 2px;border-bottom:1px dashed #e2e8f0'>" +
+          "<input type='checkbox' class='v1216-num' data-phone='" + esc(n.phone) + "' data-name='" + esc(n.name) + "'>" +
+          "<span>" + esc(n.name) + " <small style='color:#64748b'>" + esc(n.kind) + "</small></span>" +
+          "<span dir='ltr' style='margin-right:auto;color:#0f766e'>" + esc(n.phone) + "</span></label>";
+      }).join("") : "<span class='col-help'>شماره‌ای در پرونده‌ها نیست؛ شماره‌ها را در کادر بالا بنویسید.</span>") +
+      "</div></div>";
+    /* صف ارسال */
+    var box = [].concat(st.smsOutbox || []).slice(-25).reverse();
+    html += "<div style='margin-top:12px'><b>📬 صف ارسال (آخرین ۲۵)</b><div style='max-height:220px;overflow:auto;border:1px solid #e2e8f0;border-radius:10px;padding:8px;margin-top:6px'>" +
+      (box.length ? box.map(function (m) {
+        return "<div style='border-bottom:1px dashed #e2e8f0;padding:4px 2px'><b>" + esc(m.name || "—") + "</b> <span dir='ltr'>" + esc(m.to) + "</span> " +
+          "<small style='color:#64748b'>" + esc(String(m.tag || "")) + "</small><br><span>" + esc(String(m.text || "").replace(/\n/g, " / ")) + "</span><br>" +
+          "<a class='btn btn-outline btn-sm' target='_blank' rel='noopener' href='sms:" + esc(m.to) + "?&body=" + encodeURIComponent(m.text || "") + "'>📲 ارسال با پیامکِ گوشی</a></div>";
+      }).join("") : "<span class='col-help'>صف خالی است.</span>") + "</div></div>";
+    host.innerHTML = html;
+    bindSmsTab();
+  }
+  API.renderSmsTab = renderSmsTab;
+
+  function bindSmsTab() {
+    var st = S();
+    var bSave = $("v1216BirthSave");
+    if (bSave && !bSave.dataset.v1216) {
+      bSave.dataset.v1216 = "1";
+      bSave.onclick = function () {
+        var set = smsSettings();
+        set.birthdayTemplate = ($("v1216BirthTpl") || {}).value || DEF_TPL;
+        set.birthdayAuto = !!($("v1216BirthAuto") || {}).checked;
+        save(); try { alert("متن تبریک ذخیره شد."); } catch (e) {}
+      };
+    }
+    var bSend = $("v1216BirthSendToday");
+    if (bSend && !bSend.dataset.v1216) {
+      bSend.dataset.v1216 = "1";
+      bSend.onclick = function () {
+        var set = smsSettings();
+        var tmd = todayMD();
+        var list = birthdayPeople().filter(function (p) { return p.md === tmd; });
+        if (!list.length) { try { alert("امروز تولدی ثبت نشده است."); } catch (e) {} return; }
+        var n = queueSms(list, set.birthdayTemplate, "birthday");
+        set.lastBirthdayRun = tmd; save(); renderSmsTab();
+        try { alert(n + " پیام تبریک برای متولدینِ امروز در صف قرار گرفت."); } catch (e) {}
+      };
+    }
+    var bAdd = $("v1216StaffAdd");
+    if (bAdd && !bAdd.dataset.v1216) {
+      bAdd.dataset.v1216 = "1";
+      bAdd.onclick = function () {
+        var name = norm(($("v1216StaffName") || {}).value);
+        var phone = cleanPhone(($("v1216StaffPhone") || {}).value);
+        var birth = norm(($("v1216StaffBirth") || {}).value);
+        if (!name) { try { alert("نام پرسنل را بنویسید."); } catch (e) {} return; }
+        st.staffBirthdays = st.staffBirthdays || [];
+        st.staffBirthdays.push({ id: "staff-" + Date.now(), name: name, phone: phone, mobile: phone, birthDate: birth, "تاریخ تولد": birth });
+        save(); renderSmsTab();
+        try { alert("تاریخ تولدِ «" + name + "» ثبت شد."); } catch (e) {}
+      };
+    }
+    qsa("[data-staff-del]").forEach(function (b) {
+      if (b.dataset.v1216) return; b.dataset.v1216 = "1";
+      b.onclick = function () {
+        var i = Number(b.getAttribute("data-staff-del"));
+        st.staffBirthdays = (st.staffBirthdays || []).filter(function (_, ix) { return ix !== i; });
+        save(); renderSmsTab();
+      };
+    });
+    var selAll = $("v1216SelAll"), selNone = $("v1216SelNone");
+    if (selAll && !selAll.dataset.v1216) { selAll.dataset.v1216 = "1"; selAll.onclick = function () { qsa(".v1216-num").forEach(function (c) { c.checked = true; }); }; }
+    if (selNone && !selNone.dataset.v1216) { selNone.dataset.v1216 = "1"; selNone.onclick = function () { qsa(".v1216-num").forEach(function (c) { c.checked = false; }); }; }
+    var bFree = $("v1216FreeSend");
+    if (bFree && !bFree.dataset.v1216) {
+      bFree.dataset.v1216 = "1";
+      bFree.onclick = function () {
+        var text = (($("v1216FreeText") || {}).value || "").trim();
+        if (!text) { try { alert("متن پیام را بنویسید."); } catch (e) {} return; }
+        var picked = qsa(".v1216-num").filter(function (c) { return c.checked; }).map(function (c) {
+          return { name: c.getAttribute("data-name") || "", phone: c.getAttribute("data-phone") || "" };
+        });
+        var extra = String((($("v1216FreeExtra") || {}).value) || "").split(/[\n,،;]+/).map(cleanPhone).filter(Boolean);
+        extra.forEach(function (p) { picked.push({ name: "دستی", phone: p }); });
+        var n = queueSms(picked, text, "manual");
+        renderSmsTab();
+        try { alert(n + " پیام در صف ارسال قرار گرفت."); } catch (e) {}
+      };
+    }
+  }
+
+  function autoBirthdayOnce() {
+    try {
+      var set = smsSettings();
+      if (!set.birthdayAuto) return 0;
+      var tmd = todayMD();
+      if (set.lastBirthdayRun === tmd) return 0;
+      var list = birthdayPeople().filter(function (p) { return p.md === tmd && p.phone; });
+      if (!list.length) return 0;
+      var n = queueSms(list, set.birthdayTemplate, "birthday-auto");
+      if (n) { set.lastBirthdayRun = tmd; save(); }
+      return n;
+    } catch (e) { return 0; }
+  }
+  API.autoBirthdayOnce = autoBirthdayOnce;
+
+  /* ══ راه‌اندازِ بخش ۲ ════════════════════════════════════════════════════════ */
+  function tick2() {
+    try { armHomes(); paintHomeColumns(); } catch (e) {}
+    try { armPricing(); } catch (e) {}
+    try { armNet(); } catch (e) {}
+    try { autoBirthdayOnce(); } catch (e) {}
+  }
+  API.tickPart2 = tick2;
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { setTimeout(tick2, 900); });
+  else setTimeout(tick2, 900);
+  [1500, 3000, 5000, 9000].forEach(function (ms) { setTimeout(tick2, ms); });
+  setInterval(tick2, 12000);
+  document.addEventListener("click", function (e) {
+    var b = e.target && e.target.closest && e.target.closest("[data-target='tab-sms-center']");
+    if (!b) return;
+    setTimeout(function () { try { renderSmsTab(); } catch (err) {} }, 200);
+  }, true);
+  setTimeout(function () { try { if ($("tab-sms-center") && $("tab-sms-center").classList.contains("active")) renderSmsTab(); } catch (e) {} }, 2500);
 })();
