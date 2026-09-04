@@ -1,8 +1,8 @@
 # نماینده علمی — طنین طب طاها
 
-> **راهنمای بررسی نسخه جاری:** قبل از هر بررسی GitHub، فایل [`GITHUB_REVIEW_HANDOFF.md`](./GITHUB_REVIEW_HANDOFF.md) و سپس [`PROJECT_GRAPH.md`](./PROJECT_GRAPH.md) را بخوانید. نسخه فعال سورس `12.15.0` است؛ ورودی runtime اصلی `server.js + public/` است و اسکلت Next.js پوشه `src/` مسیر production فعلی نیست.
+> **راهنمای بررسی نسخه جاری:** قبل از هر بررسی GitHub، فایل [`GITHUB_REVIEW_HANDOFF.md`](./GITHUB_REVIEW_HANDOFF.md) و سپس [`PROJECT_GRAPH.md`](./PROJECT_GRAPH.md) را بخوانید. نسخه فعال سورس `12.16.0` است؛ ورودی runtime اصلی `server.js + public/` است و اسکلت Next.js پوشه `src/` مسیر production فعلی نیست.
 >
-> **وضعیت انتشار در 2026-08-31 (نوبت ۱۲۸):** سورس `12.15.0` — رفع سه نقص واقعی (نسخه نامتوازن، نبود `public/index.php`، انتظارات قدیمی تست‌ها)، سربرگ سه‌خطی کنار لوگو، کار کامل با VPN روشن یا خاموش، و همگام سه دامنه: `javad-test1.onrender.com` + `mehraeinpharma.ir` + `ndcohub.com`.
+> **وضعیت انتشار در 2026-08-31 (نوبت ۱۲۸):** سورس `12.16.0` — رفع سه نقص واقعی (نسخه نامتوازن، نبود `public/index.php`، انتظارات قدیمی تست‌ها)، سربرگ سه‌خطی کنار لوگو، کار کامل با VPN روشن یا خاموش، و همگام سه دامنه: `javad-test1.onrender.com` + `mehraeinpharma.ir` + `ndcohub.com`.
 
 این مخزن شامل برنامه CRM/PWA نمایندگان علمی، مدیریت داروخانه/پزشک/سفارش، مسیرها، تارگت، اعلان، پخش و ابزارهای حفظ داده است.
 

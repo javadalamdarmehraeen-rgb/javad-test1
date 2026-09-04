@@ -263,7 +263,7 @@ self.addEventListener("fetch", (event) => {
     return;
 
   }
-  /* v12.14.0: دارایی‌های نسخه‌دارِ هم‌منشأ (crm-app.js?v=12.15.0) → Cache First + SWR
+  /* v12.14.0: دارایی‌های نسخه‌دارِ هم‌منشأ (crm-app.js?v=12.16.0) → Cache First + SWR
    * هنگام رفرش هیچ درخواستی به هاست فرستاده نمی‌شود؛ این یعنی دیگر «connection closed»
    * در رفرش دیده نمی‌شود و صفحه در کسری از ثانیه بالا می‌آید. */
   const isVersionedAsset =

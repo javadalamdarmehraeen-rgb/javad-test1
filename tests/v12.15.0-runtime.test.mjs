@@ -1,5 +1,5 @@
 /**
- * اجرای واقعیِ لایهٔ v12.15.0 — قانون ۹۲: «هیچ بندی بدون مدرک تأییدشده نیست».
+ * اجرای واقعیِ لایهٔ v12.16.0 — قانون ۹۲: «هیچ بندی بدون مدرک تأییدشده نیست».
  * برای اجرا یک DOMِ کم‌حجم (بدون وابستگی خارجی) ساخته شده است و منطقِ هر بند
  * واقعاً فراخوانی می‌شود: ترتیبِ پایدار، آدرسِ واقعی، آنلاینِ پایدار، جایگذاری،
  * تردد، منزل، پیام‌رسان، قیمت‌گذاری، نوع ساعت، دسترسیِ ریز، آلارمِ ویزیت، اکسل.
@@ -10,7 +10,10 @@ import { readFileSync } from 'node:fs';
 
 const src = readFileSync(new URL('../public/crm-bundle.js', import.meta.url), 'utf8');
 const MARK = '/* v12.15.0:';
-const layer = src.slice(src.indexOf(MARK));
+const END = '/* v12.16.0:';
+const from = src.indexOf(MARK);
+const to = src.indexOf(END);
+const layer = src.slice(from, to > from ? to : undefined);
 assert.ok(layer.indexOf('window.v1215') >= 0, 'لایهٔ ۱۲.۱۵ پیدا نشد');
 
 /* ───────── DOM بسیار کم‌حجم ───────── */
@@ -157,7 +160,7 @@ function run(opts = {}) {
   const win = {};
   const state = opts.state || {};
   win.__CRM_GET_STATE = () => state;
-  win.CRM_APP_VERSION = '12.15.0';
+  win.CRM_APP_VERSION = '12.16.0';
   win.state = state;
   win.addEventListener = () => {};
   win.saveState = () => { store.set('SAVED', (store.get('SAVED') || 0) + 1); };
@@ -275,7 +278,7 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 function withEnv(t, opts) { const env = run(opts); t.after(() => env.cleanup()); return env; }
 
 /* ───────── ۱) ترتیبِ پایدار ───────── */
-test('v12.15.0: field order is normalised to unique rows (no ties → survives refresh)', (t) => {
+test('v12.16.0: field order is normalised to unique rows (no ties → survives refresh)', (t) => {
   const env = withEnv(t, {
     state: {
       formFieldMeta: {
@@ -302,7 +305,7 @@ test('v12.15.0: field order is normalised to unique rows (no ties → survives r
 });
 
 /* ───────── ۲) آدرس واقعی به‌جای مختصات ───────── */
-test('v12.15.0: reverse geocode returns a real address and never raw coordinates', async (t) => {
+test('v12.16.0: reverse geocode returns a real address and never raw coordinates', async (t) => {
   const good = JSON.stringify({ display_name: 'ایران، تهران، خیابان آزادی، پلاک ۱۲' });
   const env = withEnv(t, { geo: [good] });
   const addr = await env.api.reverseAddress(35.7012, 51.4021, 1);
@@ -315,7 +318,7 @@ test('v12.15.0: reverse geocode returns a real address and never raw coordinates
   assert.ok(/آدرس/.test(env2.api.NO_ADDR), 'پیامِ جایگزین باید فارسی و راهنما باشد');
 });
 
-test('v12.15.0: photon answers are turned into the same Persian address line', (t) => {
+test('v12.16.0: photon answers are turned into the same Persian address line', (t) => {
   const env = withEnv(t, {});
   const out = env.api.normPhoton(JSON.stringify({
     features: [{ properties: { country: 'ایران', state: 'تهران', city: 'تهران', street: 'خیابان آزادی', housenumber: '۱۲' } }]
@@ -326,14 +329,14 @@ test('v12.15.0: photon answers are turned into the same Persian address line', (
 });
 
 /* ───────── ۳ و ۱۱) آنلاین پایدار و صفِ ارسال ───────── */
-test('v12.15.0: the offline badge is corrected while the connection is healthy', async (t) => {
+test('v12.16.0: the offline badge is corrected while the connection is healthy', async (t) => {
   const env = withEnv(t, {});
   await env.win.fetch('/api/state').catch(() => {});
   env.api.fixBadge();
   assert.ok(!/آفلاین/.test(env.badge.textContent), 'با شبکهٔ سالم نباید آفلاین نشان داده شود: ' + env.badge.textContent);
 });
 
-test('v12.15.0: saves go to an outbox and are flushed when the connection returns', async (t) => {
+test('v12.16.0: saves go to an outbox and are flushed when the connection returns', async (t) => {
   const env = withEnv(t, { network: 'down' });
   env.win.saveState();
   assert.equal(env.api.outbox().pending, true, 'ذخیره باید در صف برود');
@@ -353,7 +356,7 @@ test('v12.15.0: saves go to an outbox and are flushed when the connection return
 });
 
 /* ───────── ۴ و ۵) جایگذاری خودکار با نام و آدرس ───────── */
-test('v12.15.0: order pick box shows same-named pharmacies with their address and fills the form', (t) => {
+test('v12.16.0: order pick box shows same-named pharmacies with their address and fills the form', (t) => {
   const env = withEnv(t, {
     state: {
       pharmacies: [
@@ -372,7 +375,7 @@ test('v12.15.0: order pick box shows same-named pharmacies with their address an
   assert.equal(env.phAddr.value, 'تهران، آزادی، پلاک ۱۲');
 });
 
-test('v12.15.0: the pick box is inserted at the very top of the orders tab', (t) => {
+test('v12.16.0: the pick box is inserted at the very top of the orders tab', (t) => {
   const env = withEnv(t, { state: { pharmacies: [{ id: 'p1', name: 'داروخانه نیک', address: 'تهران' }] } });
   env.api.setupOrderPick();
   const tab = env.tabs['tab-orders'];
@@ -382,7 +385,7 @@ test('v12.15.0: the pick box is inserted at the very top of the orders tab', (t)
 });
 
 /* ───────── ۶) نمایش تردد ───────── */
-test('v12.15.0: every traffic row gets a "نمایش تردد" button that draws origin → destination', async (t) => {
+test('v12.16.0: every traffic row gets a "نمایش تردد" button that draws origin → destination', async (t) => {
   const env = withEnv(t, {
     state: {
       visitTracks: [{ id: 't1', repName: 'علی رضایی', path: [[35.70, 51.40], [35.71, 51.42], [35.72, 51.45]] }]
@@ -402,7 +405,7 @@ test('v12.15.0: every traffic row gets a "نمایش تردد" button that draws
 });
 
 /* ───────── ۷) طبقه و پلاک ───────── */
-test('v12.15.0: homes list gains floor and plate columns', (t) => {
+test('v12.16.0: homes list gains floor and plate columns', (t) => {
   const env = withEnv(t, { state: { repHomes: [{ name: 'خانه الف', floor: '۳', plate: '۱۲' }] } });
   const table = env.doc.createElement('table');
   const thead = env.doc.createElement('thead');
@@ -425,7 +428,7 @@ test('v12.15.0: homes list gains floor and plate columns', (t) => {
 });
 
 /* ───────── ۸) پیام‌رسان ───────── */
-test('v12.15.0: messenger tokens, group names and destination numbers (multiple each)', (t) => {
+test('v12.16.0: messenger tokens, group names and destination numbers (multiple each)', (t) => {
   const env = withEnv(t, { state: {} });
   assert.equal(env.api.CHANNELS.length >= 4, true, 'چند پیام‌رسان ایرانی باید پشتیبانی شود');
   env.api.addTarget('bale', 'group', '@sales');
@@ -447,7 +450,7 @@ test('v12.15.0: messenger tokens, group names and destination numbers (multiple 
 });
 
 /* ───────── ۹) قیمت‌گذاری ───────── */
-test('v12.15.0: consumer price with VAT is restored after save (never reverts)', (t) => {
+test('v12.16.0: consumer price with VAT is restored after save (never reverts)', (t) => {
   const env = withEnv(t, {});
   const snap = env.api.snapshotPricing();
   assert.equal(snap.priceConsumerVat, '125000');
@@ -458,7 +461,7 @@ test('v12.15.0: consumer price with VAT is restored after save (never reverts)',
 });
 
 /* ───────── ۱۰) نوع فیلد ساعت ───────── */
-test('v12.15.0: "ساعت" is an available field type and shows hour:minute only', (t) => {
+test('v12.16.0: "ساعت" is an available field type and shows hour:minute only', (t) => {
   const env = withEnv(t, {});
   env.api.addTimeFieldType();
   const vals = env.typeSel.children.map((o) => o.value);
@@ -472,7 +475,7 @@ test('v12.15.0: "ساعت" is an available field type and shows hour:minute only
 });
 
 /* ───────── ۱۳) دسترسیِ ریز ───────── */
-test('v12.15.0: granular permissions are stored per tab and per action', (t) => {
+test('v12.16.0: granular permissions are stored per tab and per action', (t) => {
   const env = withEnv(t, { state: { users: [{ id: 'u1', fullName: 'رضا' }], tabLabels: { 'tab-orders': 'سفارشات' } } });
   const m = env.api.permMatrix('u1');
   assert.ok(m.tabs.length >= 1);
@@ -486,7 +489,7 @@ test('v12.15.0: granular permissions are stored per tab and per action', (t) => 
 });
 
 /* ───────── ۱۴) زمان ویزیت و آلارم ───────── */
-test('v12.15.0: visit alarms are raised one day before for user, supervisor and manager', (t) => {
+test('v12.16.0: visit alarms are raised one day before for user, supervisor and manager', (t) => {
   const now = Date.now();
   const soon = new Date(now + 20 * 3600 * 1000);           /* ۲۰ ساعت دیگر */
   const late = new Date(now + 10 * 24 * 3600 * 1000);      /* دورتر از یک روز */
@@ -510,7 +513,7 @@ test('v12.15.0: visit alarms are raised one day before for user, supervisor and 
 });
 
 /* ───────── ۱۶) خروجی اکسل ───────── */
-test('v12.15.0: exports get Persian headers and a row number', (t) => {
+test('v12.16.0: exports get Persian headers and a row number', (t) => {
   const env = withEnv(t, {});
   let captured = null;
   env.win.downloadCSVFile = function (name, headers, rows) { captured = { name, headers, rows }; return true; };
@@ -522,7 +525,7 @@ test('v12.15.0: exports get Persian headers and a row number', (t) => {
   assert.equal(env.api.persianHeader('داروخانه'), 'داروخانه');
 });
 
-test('v12.15.0: excel column order follows the sequence defined in the columns tab', (t) => {
+test('v12.16.0: excel column order follows the sequence defined in the columns tab', (t) => {
   const env = withEnv(t, {
     state: {
       formFieldMeta: { pharmacies: { name: { listOrder: 2 }, address: { listOrder: 1 } } }
@@ -533,7 +536,7 @@ test('v12.15.0: excel column order follows the sequence defined in the columns t
 });
 
 /* ───────── استاتیک ───────── */
-test('v12.15.0: styling exists and the layer never blocks other tabs (idle scheduling)', (t) => {
+test('v12.16.0: styling exists and the layer never blocks other tabs (idle scheduling)', (t) => {
   const css = readFileSync(new URL('../public/style.css', import.meta.url), 'utf8');
   assert.match(css, /\.crm1215-pick/);
   assert.match(css, /\.crm1215-traffic-btn/);

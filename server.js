@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "12.15.0";
+const APP_VERSION = "12.16.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -789,7 +789,7 @@ const server = http.createServer((req, res) => {
   }
   const ext = path.extname(filePath).toLowerCase();
   const isAsset = [".png", ".jpg", ".jpeg", ".css", ".js", ".woff2", ".svg", ".webp"].indexOf(ext) !== -1;
-  /* v12.14: داراییِ نسخه‌دار (crm-app.js?v=12.15.0) یک سال کش immutable می‌شود
+  /* v12.14: داراییِ نسخه‌دار (crm-app.js?v=12.16.0) یک سال کش immutable می‌شود
      → رفرشِ ساده/سخت دیگر ۶ فایل JS را دوباره از هاست نمی‌کشد (رفع بسته‌شدنِ اتصال) */
   const versioned = /[?&]v=\d/.test(String(req.url || ""));
   const assetCache = (isAsset && versioned) ? 31536000
