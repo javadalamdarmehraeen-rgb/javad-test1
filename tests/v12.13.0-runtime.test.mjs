@@ -1,5 +1,5 @@
 /**
- * اجرای واقعی لایه v12.16.0 — فرمان درخواست‌ها، HTTPS، GPS، پاک‌سازی یک‌باره.
+ * اجرای واقعی لایه v12.17.1 — فرمان درخواست‌ها، HTTPS، GPS، پاک‌سازی یک‌باره.
  * هدف: ثابت کنیم انبوه درخواست‌ها (۵۰۳ِ هاست) مهار می‌شود و ذخیرهٔ کاربر بی‌درنگ می‌ماند.
  */
 import test from 'node:test';
@@ -11,7 +11,7 @@ const MARK = '/* v12.13.0:';
 const END = '/* v12.15.0:';
 const layer = src.slice(src.lastIndexOf(MARK));
 assert.ok(layer.indexOf('window.v1213Governor') >= 0, 'نشانگر لایه در برش نیست');
-assert.ok(layer.length > 1500, 'لایه v12.16.0 پیدا نشد');
+assert.ok(layer.length > 1500, 'لایه v12.17.1 پیدا نشد');
 
 function makeEnv(opts = {}) {
   const status = opts.status || 200;
@@ -26,7 +26,7 @@ function makeEnv(opts = {}) {
   const calls = [];
   const live = [];
   const win = {
-    CRM_APP_VERSION: '12.16.0',
+    CRM_APP_VERSION: '12.17.1',
     addEventListener: () => {},
     caches: { keys: () => Promise.resolve(['crm-static-v11']), },
     state: { pharmacies: [{ id: 'p1' }], doctors: [], orders: [], users: [], settings: { companyName: '' } }
@@ -63,7 +63,7 @@ function makeEnv(opts = {}) {
   return { win, calls, store, els, cleanup: () => live.forEach((x) => (x.k === 't' ? clearTimeout(x.id) : clearInterval(x.id))) };
 }
 
-test('v12.16.0 runtime: request governor spaces background calls (healthy host)', async (t) => {
+test('v12.17.1 runtime: request governor spaces background calls (healthy host)', async (t) => {
   const env = makeEnv({ status: 200 });
   t.after(() => env.cleanup());
   assert.equal(env.win.v1213Governor, true);
@@ -79,7 +79,7 @@ test('v12.16.0 runtime: request governor spaces background calls (healthy host)'
   assert.equal(env.calls.length, 2);
 });
 
-test('v12.16.0 runtime: a 5xx host is quarantined instantly (no storm, no wait)', async (t) => {
+test('v12.17.1 runtime: a 5xx host is quarantined instantly (no storm, no wait)', async (t) => {
   const env = makeEnv({ status: 503 });
   t.after(() => env.cleanup());
 
@@ -94,7 +94,7 @@ test('v12.16.0 runtime: a 5xx host is quarantined instantly (no storm, no wait)'
   assert.equal(env.calls.length, 1, 'در زمان قرنطینه نباید درخواستی فرستاده شود');
 });
 
-test('v12.16.0 runtime: user saves are never queued or delayed', async (t) => {
+test('v12.17.1 runtime: user saves are never queued or delayed', async (t) => {
   const env = makeEnv({ status: 200 });
   t.after(() => env.cleanup());
   const t0 = Date.now();
@@ -104,7 +104,7 @@ test('v12.16.0 runtime: user saves are never queued or delayed', async (t) => {
   assert.equal(env.calls[0].o.method, 'POST');
 });
 
-test('v12.16.0 runtime: one-time cleanup purges caches but never user data', () => {
+test('v12.17.1 runtime: one-time cleanup purges caches but never user data', () => {
   const env = makeEnv();
   env.cleanup();
   /* کلید پاک‌سازی ثبت می‌شود تا هر بار تکرار نشود */
