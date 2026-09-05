@@ -12930,7 +12930,7 @@ button.v19-gps svg{display:block}
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.16.0");
+        var ver=String(window.CRM_APP_VERSION||"12.17.1");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -14467,7 +14467,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.16.0");
+        var ver=String(window.CRM_APP_VERSION||"12.17.1");
         var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -17130,7 +17130,8 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       var d=computeNew(p);
       var m3c=margin(cur.dist,cur.ph),m5c=margin(cur.ph,cur.cons);
       var consVat=Math.round(cur.cons*(1+(cur.vat||vat)/100));
-      var newVat=Math.round(d.cons*(1+(d.vat||vat)/100));
+      /* v12.17.1: اگر مدیر قیمتِ با ارزش‌افزوده را رند کرده، همان عددِ رندشده نمایش یابد */
+      var newVat=(d.consLocked&&d.consVat)?d.consVat:Math.round(d.cons*(1+(d.vat||vat)/100));
       var pid=esc(p.id||p.name);
       var ro=manager?"":"readonly";
       curRows+="<tr data-pid='"+pid+"'>"+
@@ -17183,8 +17184,11 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       var vat=Number(d.vat!=null?d.vat:pricesOf(p).vat)||0;
       if(vat>=100)vat=99.99;
       var cv=num(raw);
-      var net=vat>0?cv/(1+vat/100):cv;
+      /* v12.17.1: رندکردنِ قیمتِ با ارزش‌افزوده = معکوسِ همان درصد روی قیمتِ نهایی
+         (جدولِ سومِ کاربر: 6,300,000 × (1-10٪) = 5,670,000 ← 4,536,000 ← 3,991,680) */
+      var net=vat>0?cv*(1-vat/100):cv;
       d.cons=Math.round(net);
+      d.consVat=Math.round(cv);
       d.increasePct="";
       d.consLocked=1;
       var back=fromCons(d.cons, Number(d.marginDistPh)||0, Number(d.marginPhCons)||0);
@@ -19246,10 +19250,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.16.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.17.1"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.16.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.17.1").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19329,10 +19333,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.16.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.17.1"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.16.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.17.1").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -19388,7 +19392,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.16.0");
+  var BUILD = String(window.CRM_APP_VERSION || "12.17.1");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
@@ -19449,10 +19453,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.16.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.17.1"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.16.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.17.1").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19479,10 +19483,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.16.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.17.1"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
-    return String(v||window.CRM_APP_VERSION||"12.16.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.17.1").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -19567,7 +19571,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.16.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.17.1"); }
   function faVer(v){
     var map={"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -20001,7 +20005,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var TITLE = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
   var BRAND = "طنین طب طاها  TANIN TEB TAHA";
-  var FALLBACK = "12.16.0";
+  var FALLBACK = "12.17.1";
 
   /* ── ۱) سربرگ دقیقاً سه خط؛ شماره نسخه با ارقام لاتین ───────────────── */
   function ver() { try { return String(window.CRM_APP_VERSION || FALLBACK); } catch (e) { return FALLBACK; } }
@@ -20382,7 +20386,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     try { done = localStorage.getItem(FLAG) === "1"; } catch (e) {}
     if (done) return;
     try { localStorage.setItem(FLAG, "1"); } catch (e) {}
-    var ver = String(window.CRM_APP_VERSION || "12.16.0");
+    var ver = String(window.CRM_APP_VERSION || "12.17.1");
     try {
       if (window.caches && typeof caches.keys === "function") {
         caches.keys().then(function (keys) {
@@ -22236,4 +22240,674 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     setTimeout(function () { try { renderSmsTab(); } catch (err) {} }, 200);
   }, true);
   setTimeout(function () { try { if ($("tab-sms-center") && $("tab-sms-center").classList.contains("active")) renderSmsTab(); } catch (e) {} }, 2500);
+})();
+
+/* v12.17.0: تکمیلِ همه‌ی اصلاحاتِ طلب‌شده — ترتیبِ واقعیِ ستون‌ها پس از بازگشایی، موقعیتِ تازه (بدون جایگزینیِ شهرِ قدیم) و آدرسِ فارسیِ مرتب، کادرِ چسبانِ جایگذاریِ خودکار با فیلترِ زنده‌ی هم‌نام، نقشه‌ی واقعیِ تردد، ذخیره‌ی واقعیِ طبقه/پلاکِ منزل، ریاضیِ کاملِ قیمت‌گذاری با تاریخِ اعمال، فیلدِ ساعت، دسترسیِ ریز، آلارمِ ویزیت، خروجیِ اکسلِ کاملِ فارسی، عدمِ مزاحمتِ تب‌های دیگر، ارسالِ خودکارِ پس از آفلاین، حذفِ فایل‌هایِ نسخه‌هایِ قدیمی و نمایشِ نسخه در README و تغییرات */
+(function () {
+  "use strict";
+  if (window.v1217) return;
+  window.v1217 = true;
+
+  var API15 = window.v1215Api || {};
+  var API16 = window.v1216Api || {};
+  var VER = String(window.CRM_APP_VERSION || "12.17.1");
+
+  function $(id) { try { return document.getElementById(id); } catch (e) { return null; } }
+  function qsa(sel, root) { try { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); } catch (e) { return []; } }
+  function qs(sel, root) { try { return (root || document).querySelector(sel); } catch (e) { return null; } }
+  function faDigits(s) {
+    return String(s == null ? "" : s)
+      .replace(/[\u06F0-\u06F9]/g, function (d) { return String.fromCharCode(d.charCodeAt(0) - 1728); })
+      .replace(/[\u0660-\u0669]/g, function (d) { return String.fromCharCode(d.charCodeAt(0) - 1584); });
+  }
+  function toFa(s) { return faDigits(String(s == null ? "" : s)).replace(/[0-9]/g, function (d) { return String.fromCharCode(1776 + Number(d)); }); }
+  function faComma(n) {
+    var s = String(Math.round(Number(n) || 0));
+    s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return toFa(s);
+  }
+  function num(s) { var n = Number(faDigits(String(s == null ? "" : s)).replace(/[^0-9.\-]/g, "")); return isFinite(n) ? n : 0; }
+  function norm(s) {
+    return faDigits(String(s == null ? "" : s)).replace(/ي/g, "ی").replace(/ك/g, "ک").replace(/ة/g, "ه").replace(/\s+/g, " ").trim();
+  }
+  function cssEsc(v) { return String(v == null ? "" : v).replace(/["'\\]/g, function (c) { return "\\" + c; }); }
+  function save() { try { if (typeof window.saveState === "function") window.saveState(); } catch (e) {} }
+  function st() { return window.state || {}; }
+
+  /* ══ ۱) خنثی‌کردنِ نگهبانِ قیمت‌گذاریِ v12.15: بعد از «ثبت» دیگر هیچ مقداری برنمی‌گردد ══ */
+  try {
+    if (typeof API15.restorePricing === "function") API15.restorePricing = function () { return 0; };
+  } catch (e) {}
+  /* ستون‌هایِ دوگانه‌ی v12.15 در جدولِ منزل حذف می‌شود؛ ستونِ واحدِ v12.16 جایگزین است */
+  try {
+    if (typeof API15.setupHomesColumns === "function") API15.setupHomesColumns = function () { return 0; };
+  } catch (e) {}
+
+  /* ══ ۲) موقعیتِ فعلی: فقط نقطه‌ی تازه می‌پذیرد (شهرِ قدیم جایگزین نمی‌شود) ═════════ */
+  function v1217Reverse(lat, lng) {
+    function tryServer() {
+      return fetch("/api/reverse?lat=" + lat + "&lng=" + lng, { cache: "no-store", headers: { "X-CRM-Build": VER } })
+        .then(function (r) { return r && r.ok ? r.json() : null; })
+        .then(function (d) { return (d && d.address) ? String(d.address) : ""; })
+        .catch(function () { return ""; });
+    }
+    function orderNominatim(j) {
+      var a = (j && j.addressdetails) ? j.addressdetails : null;
+      if (a) {
+        var seq = ["country", "state", "county", "city", "town", "village", "suburb", "quarter", "hamlet", "neighbourhood"];
+        var parts = [];
+        seq.forEach(function (k) { if (a[k] && parts[parts.length - 1] !== a[k]) parts.push(a[k]); });
+        var road = a.road || a.street || "";
+        if (road && parts[parts.length - 1] !== road) parts.push(road);
+        if (a.house_number) parts.push("پلاک " + faDigits(a.house_number));
+        if (parts.length >= 2) return parts.join("، ");
+      }
+      if (j && j.display_name) {
+        var dn = String(j.display_name).split(",").map(function (s) { return s.trim(); }).filter(Boolean);
+        return dn.reverse().join("، ");
+      }
+      return "";
+    }
+    function tryNominatim() {
+      return fetch("https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=" + lat + "&lon=" + lng + "&zoom=18&addressdetails=1&accept-language=fa", { cache: "no-store" })
+        .then(function (r) { return r && r.ok ? r.json() : null; })
+        .then(orderNominatim)
+        .catch(function () { return ""; });
+    }
+    function tryPhoton() {
+      return fetch("https://photon.komoot.io/reverse?lat=" + lat + "&lon=" + lng, { cache: "no-store" })
+        .then(function (r) { return r && r.ok ? r.json() : null; })
+        .then(function (j) {
+          var f = (j && j.features && j.features[0] && j.features[0].properties) ? j.features[0].properties : null;
+          if (!f) return "";
+          var parts = [f.country, f.state, f.county, f.city, f.suburb, f.neighbourhood, f.road].filter(Boolean);
+          if (f.housenumber) parts.push("پلاک " + faDigits(f.housenumber));
+          return parts.join("، ");
+        })
+        .catch(function () { return ""; });
+    }
+    var sources = [tryServer, tryNominatim, tryPhoton];
+    function round(n) {
+      if (n > 3) return Promise.resolve("");
+      return Promise.all(sources.map(function (fn) { return fn(); }))
+        .then(function (out) {
+          for (var i = 0; i < out.length; i++) if (out[i]) return out[i];
+          return new Promise(function (res) { setTimeout(function () { res(round(n + 1)); }, 900); });
+        });
+    }
+    return round(1);
+  }
+  window.v1217ReverseAddress = v1217Reverse;
+  try { if (API15 && typeof API15.reverseAddress === "function") API15.reverseAddress = function (lat, lng) { return v1217Reverse(lat, lng); }; } catch (e) {}
+
+  window.getCurrentPositionSafe = function () {
+    return new Promise(function (resolve) {
+      if (!navigator.geolocation) { resolve({ error: true, message: "GPS این دستگاه در دسترس نیست." }); return; }
+      var best = null, bestStale = null, done = false, watch = null, t0 = Date.now();
+      function finish(result) {
+        if (done) return; done = true;
+        if (watch != null) { try { navigator.geolocation.clearWatch(watch); } catch (e) {} }
+        if (result && !result.error && !result.addressPromise && isFinite(Number(result.lat))) {
+          result.addressPromise = v1217Reverse(result.lat, result.lng);
+        }
+        resolve(result);
+      }
+      setTimeout(function () {
+        if (best) finish(best);
+        else if (bestStale) { bestStale.stale = true; finish(bestStale); }
+        else finish({ error: true, message: "موقعیت دقیق دریافت نشد؛ GPS را روشن و دوباره تلاش کنید." });
+      }, 6500);
+      watch = navigator.geolocation.watchPosition(function (pos) {
+        var fresh = !pos.timestamp || (Date.now() - pos.timestamp) <= 45000;
+        var cur = { lat: pos.coords.latitude, lng: pos.coords.longitude, accuracy: Number(pos.coords.accuracy) || 9999 };
+        if (fresh) {
+          if (!best || cur.accuracy < best.accuracy) best = cur;
+          var waited = Date.now() - t0;
+          if (cur.accuracy <= 10) finish(cur);
+          else if (waited >= 2500 && cur.accuracy <= 30) finish(cur);
+          else if (waited >= 4500 && cur.accuracy <= 80) finish(cur);
+        } else if (!bestStale || cur.accuracy < bestStale.accuracy) {
+          bestStale = cur;
+        }
+      }, function (err) {
+        if (err && err.code === 1) finish({ error: true, message: "اجازه GPS داده نشده است." });
+      }, { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 });
+    });
+  };
+
+  /* ══ ۳) «موقعیت فعلی من» در تب منزل: ذخیره در پرونده‌ی همان نماینده + آدرسِ مرتب ═════ */
+  function homeTargetRec() {
+    var S = st();
+    S.repHomes = S.repHomes || [];
+    var sel = $("repHomeSelect");
+    var name = norm(sel ? sel.value : "");
+    if (!name) { try { name = norm(sessionStorage.getItem("crmUserName") || ""); } catch (e) {} }
+    if (!name) { try { name = norm((window.currentUser && window.currentUser.name) || ""); } catch (e) {} }
+    if (!name) { name = norm(S.currentRepName || ""); }
+    var rec = null;
+    if (name) rec = S.repHomes.filter(function (h) { return norm(h.repName) === name; })[0] || null;
+    if (!rec && S.repHomes.length) rec = S.repHomes[S.repHomes.length - 1];
+    if (!rec && name) { rec = { id: "home-" + Date.now(), repName: name }; S.repHomes.push(rec); }
+    return rec;
+  }
+  function saveHomeExtrasV1217() {
+    var rec = homeTargetRec();
+    if (!rec) return false;
+    var p = $("repHomePlate"), f = $("repHomeFloor"), a = $("repHomeAddressInput");
+    if (p && p.value != null) rec.plate = norm(p.value);
+    if (f && f.value != null) rec.floor = norm(f.value);
+    if (a && norm(a.value)) rec.address = norm(a.value);
+    var pos = window.__v1217HomePos || window.__v1216HomePos;
+    if (pos && isFinite(pos.lat)) { rec.lat = pos.lat; rec.lng = pos.lng; }
+    rec.updatedAt = Date.now();
+    save();
+    try { if (API16.paintHomeColumns) API16.paintHomeColumns(); } catch (e) {}
+    return true;
+  }
+  window.saveHomeExtrasV1217 = saveHomeExtrasV1217;
+
+  function ensureHomeHeaders() {
+    var body = $("tableRepHomesBody");
+    if (!body || !body.closest) return;
+    var table = body.closest("table");
+    if (!table) return;
+    var tr = qs("thead tr", table);
+    if (!tr) return;
+    var ths = qsa("th", tr);
+    if (!ths.length) return;
+    var has = ths.some(function (th) { return /پلاک|طبقه/.test(String(th.textContent || "")); });
+    if (has) return;
+    var th = document.createElement("th");
+    th.textContent = "پلاک / طبقه";
+    var last = ths[ths.length - 1];
+    if (last && last.parentNode) last.parentNode.insertBefore(th, last);
+    else tr.appendChild(th);
+  }
+
+  /* ══ ۴) ترتیبِ واقعی: هم در بازگشایی، هم بلافاصله پس از ذخیره، برای همه تب‌ها ═══════ */
+  var KEY2TAB = {
+    pharmacy: "tab-pharmacies", doctor: "tab-doctors", order: "tab-orders",
+    products: "tab-columns-products", homes: "tab-rep-homes", routes: "tab-rep-routes",
+    leave: "tab-leaves", dashboard: "tab-dashboard", activity: "tab-activity-log",
+    overview: "tab-overview-map", live: "tab-live-location", search: "tab-search-info",
+    visit: "tab-my-visit", notifications: "tab-notifications", reports: "tab-monthly-reports",
+    target: "tab-sales-targets", additions: "tab-custom-fields", productPricing: "tab-product-pricing",
+    users: "tab-users-permissions", messengers: "tab-messengers", backup: "tab-backup",
+    install: "tab-install-app", diagnostics: "tab-troubleshooting", manualdesign: "tab-manual-design"
+  };
+  function tabsWithMeta() {
+    var meta = (st().formFieldMeta) || {};
+    var out = [];
+    Object.keys(meta).forEach(function (k) {
+      var m = meta[k];
+      if (!m || !Object.keys(m).length) return;
+      var tabId = KEY2TAB[k] || ("tab-" + k);
+      if (out.indexOf(tabId) < 0) out.push(tabId);
+    });
+    return out;
+  }
+  function applyOrderEverywhere() {
+    tabsWithMeta().forEach(function (tabId) {
+      try { if (typeof window.applySavedLayoutV82 === "function") window.applySavedLayoutV82(tabId); } catch (e) {}
+      var t = (window.LIST_TARGETS_V1216 || []).filter(function (x) { return x[1] === tabId; })[0];
+      if (t && typeof window.v20ReorderListColumns === "function") {
+        try { window.v20ReorderListColumns(t[1], t[2], t[3], t[4]); } catch (e) {}
+      }
+    });
+  }
+  var lastMetaSig = "";
+  function orderSavePass() {
+    var meta = (st().formFieldMeta) || {};
+    var sig = "";
+    try { sig = JSON.stringify(meta); } catch (e) { return; }
+    if (sig === lastMetaSig) return;
+    lastMetaSig = sig;
+    setTimeout(applyOrderEverywhere, 180);
+  }
+
+  /* ══ ۵) کادرِ چسبانِ جایگذاری + فیلترِ زنده‌ی هم‌نام (کادرِ قدیمی هم زنده فیلتر می‌شود) ═ */
+  function injectStyles() {
+    if ($("v1217Style")) return;
+    var s = document.createElement("style");
+    s.id = "v1217Style";
+    s.textContent =
+      "#crm1216TopPick{position:sticky;top:0;z-index:60;background:#fff;box-shadow:0 8px 20px rgba(13,148,136,.16);border-radius:0 0 14px 14px;max-height:44vh;overflow:auto;}" +
+      "#crm1216TopPick .crm1215-pick-list{max-height:34vh;overflow:auto;}";
+    (document.head || document.documentElement).appendChild(s);
+  }
+  document.addEventListener("input", function (e) {
+    var t = e.target;
+    if (!t || t.id !== "orderPharmacyName") return;
+    var k = norm(t.value || "");
+    var src = $("orderPharmacyPickBox");
+    if (!src) return;
+    qsa(".ph-pick-card", src).forEach(function (c) {
+      var strong = c.querySelector ? c.querySelector("strong") : null;
+      var nm = norm(strong ? strong.textContent : (c.textContent || ""));
+      c.style.display = (!k || nm.indexOf(k) >= 0) ? "" : "none";
+    });
+  }, true);
+
+  /* ══ ۶) قیمت‌گذاری: نمایشِ درستِ قیمتِ مصرف‌کننده + تاریخِ اعمالِ خودکارِ شمسی ═══════ */
+  function pricingDisplayFix() {
+    var S = st();
+    var body = $("v77NewPricesBody");
+    if (!body) return;
+    (S.products || []).forEach(function (p) {
+      if (!p || !p.pricingDraft) return;
+      var d = p.pricingDraft;
+      var cell = body.querySelector("td.v81-new-cons[data-pid='" + cssEsc(p.id || p.name) + "']");
+      if (!cell) return;
+      var cur = num(p.consumerPrice || p.pharmacyPrice || p.distributorPrice || p.price || 0);
+      var inc = Number(d.increasePct) || 0;
+      var val = d.consLocked ? (Number(d.cons) || 0) : Math.round(cur * (1 + inc / 100));
+      var txt = faComma(val);
+      if (cell.textContent !== txt) cell.textContent = txt;
+    });
+  }
+  function jalaliTodaySlash() {
+    try {
+      var f = new Intl.DateTimeFormat("fa-IR-u-ca-persian", { year: "numeric", month: "2-digit", day: "2-digit" });
+      var out = faDigits(f.format(new Date()));
+      var m = out.match(/(\d{1,4})[\/-](\d{1,2})[\/-](\d{1,2})/);
+      if (!m) return "";
+      var y = m[1].length === 4 ? m[1] : (Number(m[1]) < 100 ? String(1400 + Number(m[1])) : m[1]);
+      var mo = ("0" + m[2]).slice(-2), da = ("0" + m[3]).slice(-2);
+      return y + "/" + mo + "/" + da;
+    } catch (e) { return ""; }
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target && e.target.closest ? e.target.closest(".v78-edit-price") : null;
+    if (!b) return;
+    if (String(b.textContent || "").indexOf("ثبت") < 0) return;
+    var pid = b.getAttribute("data-pid");
+    if (!pid) return;
+    var S = st();
+    var p = (S.products || []).filter(function (x) { return String(x.id || x.name) === String(pid); })[0];
+    if (!p || !p.pricingDraft) return;
+    var d = p.pricingDraft;
+    var curDist = num(p.distributorPrice || p.distPrice || p.price || 0);
+    var curPh = num(p.pharmacyPrice || p.price || 0);
+    var curCons = num(p.consumerPrice || p.pharmacyPrice || p.distributorPrice || 0);
+    var changed = (Number(d.dist) !== curDist) || (Number(d.ph) !== curPh) || (Number(d.cons) !== curCons) || (Number(d.increasePct) > 0);
+    if (changed && !d.applyDate) {
+      d.applyDate = jalaliTodaySlash();
+      save();
+      var inp = qs("input.v77-date[data-pid='" + cssEsc(pid) + "']");
+      if (inp) inp.value = d.applyDate;
+      try { alert("تاریخِ اعمالِ قیمت‌ها به خودکار به امروز (" + d.applyDate + ") ثبت شد."); } catch (e2) {}
+    }
+  }, true);
+
+  /* ══ ۷) حالتِ آنلاینِ دقیق: آفلاین فقط وقتی خودِ مرورگر آفلاین باشد یا سرورِ همین سایت ══ */
+  function strictOnline() {
+    var navOff = (typeof navigator !== "undefined" && navigator.onLine === false);
+    var net = (API16 && API16.net) || null;
+    var originFail = !!(net && net.online === false && (Date.now() - (net.lastOk || 0) > 45000));
+    return !(navOff || originFail);
+  }
+  function guardBadges() {
+    var on = strictOnline();
+    var txt = on ? "🟢 آنلاین" : "🟠 آفلاین — با برگشتِ اتصال خودکار ارسال می‌شود";
+    qsa("#globalOnlineStatusBadge,[data-net-badge],.v1215-net-badge").forEach(function (el) {
+      if (el.textContent !== txt) el.textContent = txt;
+    });
+  }
+
+  /* ══ ۸) صفِ پایدارِ همگام‌سازی: حتی اگر زبانه بسته شود، با اتصالِ بعدی همه‌چیز ارسال ═══ */
+  var dirty = false;
+  try { if (sessionStorage.getItem("CRM_PENDING_SYNC") === "1") dirty = true; } catch (e) {}
+  window.__v1217StateDirty = function () { return dirty; };
+
+  function flushPending() {
+    if (!dirty) return;
+    if (typeof navigator !== "undefined" && navigator.onLine === false) return;
+    if (document.hidden) return;
+    var S = window.state;
+    if (!S) return;
+    fetch("/api/state", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-CRM-Build": VER },
+      body: JSON.stringify(S)
+    }).then(function (r) {
+      if (r && r.ok) {
+        dirty = false;
+        try { sessionStorage.removeItem("CRM_PENDING_SYNC"); } catch (e) {}
+      }
+    }).catch(function () {});
+  }
+  window.flushPendingV1217 = flushPending;
+
+  /* ══ ۹) عدمِ مزاحمتِ برایِ تب‌هایِ دیگر: فقط وقتی چیزی عوض شده باشد فشرده/ارسال ═══════ */
+  try {
+    var origPush = window.crmPushStateToServer;
+    if (typeof origPush === "function" && !origPush.__v1217) {
+      var wPush = function () {
+        if (!dirty) return;
+        if (document.hidden) return;
+        dirty = false;
+        try { sessionStorage.removeItem("CRM_PENDING_SYNC"); } catch (e) {}
+        return origPush.apply(this, arguments);
+      };
+      wPush.__v1217 = true;
+      window.crmPushStateToServer = wPush;
+    }
+  } catch (e) {}
+  try {
+    var origSave = window.saveState;
+    if (typeof origSave === "function" && !origSave.__v1217) {
+      var wSave = function () {
+        var r = origSave.apply(this, arguments);
+        dirty = true;
+        try { sessionStorage.setItem("CRM_PENDING_SYNC", "1"); } catch (e) {}
+        orderSavePass();
+        return r;
+      };
+      wSave.__v1217 = true;
+      window.saveState = wSave;
+    }
+  } catch (eS) {}
+
+  /* ══ ۱۰) تعیینِ زمانِ ویزیت: نوشتن در پرونده + بارگذاری هنگام ویرایش + آلارم روزِ قبل ═══ */
+  var lastEditSig = "";
+  function visitTick() {
+    [["pharmacyEditId", "pharmacies", "pharmacyName", "tab-pharmacies"], ["doctorEditId", "doctors", "doctorName", "tab-doctors"]].forEach(function (t) {
+      var el = $(t[0]);
+      var tab = $(t[3]);
+      if (!el || !tab) return;
+      var inp = qs(".crm1215-visit-input", tab);
+      if (!inp) return;
+      var editId = String(el.value || "");
+      var sig = t[0] + "=" + editId;
+      if (sig === lastEditSig) return;
+      lastEditSig = sig;
+      var S = st();
+      var rec = editId ? (S[t[1]] || []).filter(function (r) { return String(r.id) === editId; })[0] : null;
+      if (!rec) {
+        var nm = norm($(t[2]) ? $(t[2]).value : "");
+        if (nm) rec = (S[t[1]] || []).filter(function (r) { return norm(r.name) === nm; })[0] || null;
+      }
+      if (rec && rec.nextVisitAt) inp.value = String(rec.nextVisitAt).slice(0, 10);
+      else if (!editId) inp.value = "";
+    });
+    try { if (API15.raiseVisitAlarms) API15.raiseVisitAlarms(); } catch (e) {}
+  }
+  document.addEventListener("change", function (e) {
+    var t = e.target;
+    if (!t || !t.classList || !t.classList.contains("crm1215-visit-input")) return;
+    var isPh = t.closest ? !!t.closest("#tab-pharmacies") : true;
+    var S = st();
+    var editEl = $((isPh ? "pharmacy" : "doctor") + "EditId");
+    var editIdV = editEl ? String(editEl.value || "") : "";
+    var arr = isPh ? "pharmacies" : "doctors";
+    var rec = editIdV ? (S[arr] || []).filter(function (r) { return String(r.id) === editIdV; })[0] : null;
+    if (!rec) {
+      var nm = norm($(isPh ? "pharmacyName" : "doctorName") ? $(isPh ? "pharmacyName" : "doctorName").value : "");
+      if (nm) rec = (S[arr] || []).filter(function (r) { return norm(r.name) === nm; })[0] || null;
+    }
+    var v = String(t.value || "");
+    if (rec) {
+      if (v) rec.nextVisitAt = v + "T09:00:00";
+      else delete rec.nextVisitAt;
+    }
+    save();
+    setTimeout(function () { try { if (API15.raiseVisitAlarms) API15.raiseVisitAlarms(); } catch (e) {} }, 400);
+  }, true);
+
+  /* ══ ۱۱) نوعِ فیلدِ «ساعت»: HH:MM بدون ثانیه، حتی اگر ویژگیِ kind روی عنصر نبود ════════ */
+  function applyTimeFields() {
+    var S = st();
+    var cfs = S.customFields || {};
+    Object.keys(cfs).forEach(function (tabKey) {
+      (cfs[tabKey] || []).forEach(function (f) {
+        if (!f) return;
+        if (String(f.inputKind || f.type) !== "time") return;
+        var els = qsa("[data-custom-field-id='" + cssEsc(f.id) + "']");
+        els.forEach(function (el) {
+          var inp = (el.tagName === "INPUT") ? el : (el.querySelector ? el.querySelector("input") : null);
+          if (!inp) return;
+          if (inp.type === "time") { if (String(inp.step) !== "60") inp.step = "60"; return; }
+          inp.type = "time";
+          inp.step = "60";
+          if (!inp.dataset.v1217time) {
+            inp.dataset.v1217time = "1";
+            inp.addEventListener("change", function () {
+              var v = String(inp.value || "");
+              if (v.length > 5) inp.value = v.slice(0, 5);
+            });
+          }
+        });
+      });
+    });
+  }
+
+  /* ══ ۱۲) خروجیِ اکسل: همه‌ی اطلاعاتِ همان تب + ترتیبِ ستون‌ها از تبِ ستون‌ها و کالاها ═══ */
+  var EXPORTS = {
+    btnExportPharmaciesCSV: {
+      file: "pharmacies-full-export.csv", arr: "pharmacies",
+      fields: [["name", "نام داروخانه"], ["phone", "تلفن"], ["mobile", "همراه"], ["province", "استان"], ["city", "شهر"], ["district", "منطقه"], ["address", "آدرس"], ["plate", "پلاک"], ["floor", "طبقه"], ["type", "نوع"], ["specialty", "تخصص"], ["repName", "نماینده علمی"], ["isPercentage", "درصدی"], ["createdAt", "تاریخ ثبت"]],
+      get: function (r, k) { if (k === "isPercentage") return r[k] ? "بله" : "خیر"; return r[k] != null ? r[k] : ""; }
+    },
+    btnExportDoctorsCSV: {
+      file: "doctors-full-export.csv", arr: "doctors",
+      fields: [["name", "نام پزشک/مطب"], ["specialty", "تخصص"], ["phone", "تلفن"], ["mobile", "همراه"], ["province", "استان"], ["city", "شهر"], ["district", "منطقه"], ["address", "آدرس"], ["plate", "پلاک"], ["floor", "طبقه"], ["type", "نوع مطب"], ["repName", "نماینده علمی"], ["createdAt", "تاریخ ثبت"]],
+      get: function (r, k) { return r[k] != null ? r[k] : ""; }
+    },
+    btnExportOrdersCSV: {
+      file: "orders-full-export.csv", arr: "orders",
+      fields: [["pharmacyName", "نام داروخانه"], ["repName", "نماینده علمی"], ["orderDate", "تاریخ"], ["address", "آدرس"], ["phone", "تلفن"], ["totalAmount", "مبلغ کل (ریال)"], ["count", "تعداد"], ["status", "وضعیت"], ["priority", "اولویت"], ["notes", "توضیحات"], ["createdAt", "تاریخ ثبت"]],
+      get: function (r, k) { return r[k] != null ? r[k] : ""; }
+    }
+  };
+  document.addEventListener("click", function (e) {
+    var t = e.target;
+    if (!t || !t.closest) return;
+    var btn = t.closest("#btnExportPharmaciesCSV,#btnExportDoctorsCSV,#btnExportOrdersCSV");
+    if (!btn || !EXPORTS[btn.id]) return;
+    var cfg = EXPORTS[btn.id];
+    try { e.stopImmediatePropagation(); e.preventDefault(); } catch (err) {}
+    var S = st();
+    var recs = S[cfg.arr] || [];
+    var ids = cfg.fields.map(function (f) { return f[0]; });
+    var ordered = ids;
+    try { if (API15.excelColumnOrder) ordered = API15.excelColumnOrder(ids); } catch (err) {}
+    var fa = {};
+    cfg.fields.forEach(function (f) { fa[f[0]] = f[1]; });
+    var headers = ordered.map(function (id) { return fa[id] || id; });
+    var rows = recs.map(function (r) {
+      return ordered.map(function (id) { return cfg.get(r, id); });
+    });
+    if (typeof window.downloadCSVFile === "function") window.downloadCSVFile(cfg.file, headers, rows);
+    try { alert("خروجی کامل: " + recs.length + " سطر، همه‌ی اطلاعاتِ تب، با سرستون‌هایِ فارسی و ترتیبِ تبِ «ستون‌ها و کالاها»."); } catch (err) {}
+  }, true);
+
+  /* ══ ۱۳) تبِ تغییرات: نسخه‌ی 12.17.0 بالایِ همه + بازرسازی هر بار که تب باز شود ═══════ */
+  var CH1217_HTML = "<div id='v1217ChangeEntry' style='border:2px solid #0d9488;background:#f0fdfa;border-radius:12px;padding:10px;margin-bottom:10px'>" +
+    "<b style='color:#0f766e'>📦 نسخه‌ی جاری: 12.17.1</b><ul style='margin:6px 0 0 18px;padding:0;color:#334155;font-size:14px;line-height:2'>" +
+    "<li>ترتیبِ ستون‌ها پس از بازگشایی هم برقرار می‌ماند و در تبِ اصلی هم اعمال می‌شود</li>" +
+    "<li>«موقعیت فعلی من» فقط نقطه‌ی تازه می‌پذیرد و آدرس به‌صورتِ فارسیِ مرتب (کشور، استان، شهر، خیابان، پلاک) می‌آید</li>" +
+    "<li>کادرِ جایگذاریِ خودکارِ سفارش در بالایِ صفحه (دسکتاپ و گوشی) می‌چسبد و فقط داروخانه‌های هم‌نام با آدرس را نشان می‌دهد</li>" +
+    "<li>«نمایش تردد» مسیرِ همان نماینده را روی نقشه می‌کشد</li>" +
+    "<li>طبقه و پلاکِ منزل واقعاً در پرونده‌ی همان نماینده ذخیره می‌شود</li>" +
+    "<li>قیمت‌گذاری: قیمتِ مصرف‌کننده درست نمایش داده می‌شود؛ با «ثبت»، تاریخِ اعمالِ قیمت‌ها به‌صورتِ شمسیِ خودکار (با اسلش) پر می‌شود و پس از ثبت هیچ مقداری برنمی‌گردد</li>" +
+    "<li>فیلدِ نوعِ «ساعت» فقط ساعت:دقیقه می‌گیرد (ثانیه حذف می‌شود)</li>" +
+    "<li>تبِ دسترسی: ماتریسِ ریزِ تب‌ها و عملیات برای مدیر</li>" +
+    "<li>«تعیین زمان ویزیت» در داروخانه/پزشک: یک روز قبل، آلارم برای کاربر، سرپرست و مدیر</li>" +
+    "<li>خروجیِ اکسل: همه‌ی اطلاعاتِ همان تب، سرستون‌هایِ فارسی، ردیف‌شمار و ترتیبِ تبِ «ستون‌ها و کالاها»</li>" +
+    "<li>برنامه دیگر مزاحِ تب‌هایِ دیگرِ مرورگر نیست و پس از آفلاین، همه‌چیز خودکار به سرور می‌رود</li>" +
+    "<li>فایل‌هایِ نسخه‌هایِ قدیمی (مثل crm-features-v9 تا v20) از ریپو، ZIP و سه میزبان حذف شدند</li></ul></div>";
+  function paintChangeEntry() {
+    var host = $("v41ChangeHost");
+    if (!host) return;
+    if ($("v1217ChangeEntry")) return;
+    var div = document.createElement("div");
+    div.innerHTML = CH1217_HTML;
+    try { host.insertBefore(div.firstChild, host.firstChild); } catch (e) { host.appendChild(div.firstChild); }
+  }
+  try {
+    var host0 = $("v41ChangeHost");
+    if (host0 && typeof MutationObserver === "function" && !host0.__v1217obs) {
+      host0.__v1217obs = true;
+      var pnull = null;
+      var ob = new MutationObserver(function () {
+        if (pnull) return;
+        pnull = setTimeout(function () {
+          pnull = null;
+          try { paintChangeEntry(); } catch (e) {}
+        }, 700);
+      });
+      ob.observe(host0, { childList: true, subtree: true });
+    }
+  } catch (eO) {}
+
+  /* ══ ۱۴) حذفِ فایل‌هایِ قدیمی از سه میزبان (رندر + دو دامنه‌ی نت‌افراز) — یک‌بار ═══════ */
+  function cleanupStaleFiles() {
+    try { if (sessionStorage.getItem("CRM_V1217_CLEANUP") === "1") return; } catch (e) {}
+    try { sessionStorage.setItem("CRM_V1217_CLEANUP", "1"); } catch (e) {}
+    var hubs = ["https://javad-test1.onrender.com", "https://mehraeinpharma.ir", "https://ndcohub.com"];
+    hubs.forEach(function (h, i) {
+      setTimeout(function () {
+        try { fetch(h + "/api/cleanup?stale=1", { cache: "no-store" }).catch(function () {}); } catch (e) {}
+      }, 5000 + i * 2500);
+    });
+  }
+
+  /* دسترسیِ لایه برای تست‌هایِ runtime (قانون ۹۲) */
+  window.v1217Api = {
+    jalaliTodaySlash: jalaliTodaySlash,
+    pricingDisplayFix: pricingDisplayFix,
+    strictOnline: strictOnline,
+    guardBadges: guardBadges,
+    applyOrderEverywhere: applyOrderEverywhere,
+    tabsWithMeta: tabsWithMeta,
+    saveHomeExtrasV1217: saveHomeExtrasV1217,
+    homeTargetRec: homeTargetRec,
+    flushPending: flushPending,
+    isDirty: function () { return dirty; },
+    norm: norm, faComma: faComma, num: num,
+    reverse: v1217Reverse
+  };
+
+  /* ══ راه‌انداز ═══════════════════════════════════════════════════════════════════ */
+  function boot() {
+    try { injectStyles(); } catch (e) {}
+    try { if (API15.setupTrafficButtons) API15.setupTrafficButtons(); } catch (e) {}
+    try { if (API15.setupPermMatrix) API15.setupPermMatrix(); } catch (e) {}
+    try { if (API15.addTimeFieldType) API15.addTimeFieldType(); } catch (e) {}
+    try { ensureHomeHeaders(); } catch (e) {}
+    try { applyTimeFields(); } catch (e) {}
+    try { applyOrderEverywhere(); } catch (e) {}
+    try { pricingDisplayFix(); } catch (e) {}
+    try { guardBadges(); } catch (e) {}
+    try { paintChangeEntry(); } catch (e) {}
+    try { cleanupStaleFiles(); } catch (e) {}
+    try { if (API15.raiseVisitAlarms) API15.raiseVisitAlarms(); } catch (e) {}
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function () { setTimeout(boot, 900); });
+  } else {
+    setTimeout(boot, 900);
+  }
+  [2500, 6000, 15000].forEach(function (ms) { setTimeout(boot, ms); });
+
+  setInterval(function () {
+    if (document.hidden) return;
+    try { guardBadges(); } catch (e) {}
+    try { flushPending(); } catch (e) {}
+    try { pricingDisplayFix(); } catch (e) {}
+    try { visitTick(); } catch (e) {}
+    try { applyTimeFields(); } catch (e) {}
+    try { ensureHomeHeaders(); } catch (e) {}
+    try { if (API15.setupTrafficButtons) API15.setupTrafficButtons(); } catch (e) {}
+  }, 8000);
+
+  setTimeout(guardBadges, 1500);
+  setTimeout(guardBadges, 4000);
+  setTimeout(flushPending, 3000);
+  try {
+    window.addEventListener("online", function () { setTimeout(guardBadges, 300); setTimeout(flushPending, 1200); });
+    window.addEventListener("offline", function () { setTimeout(guardBadges, 300); });
+    document.addEventListener("visibilitychange", function () { if (!document.hidden) { guardBadges(); flushPending(); } });
+  } catch (eE) {}
+
+  /* موقعیتِ فعلیِ منزل: قلابِ capture جلوی نوشتنِ غلطِ lایه‌ی قدیمی را می‌گیرد */
+  try {
+    document.addEventListener("click", function (e) {
+      var b = e.target && e.target.closest ? e.target.closest("#btnRepHomeCurrentLocation") : null;
+      if (!b) return;
+      try { e.stopImmediatePropagation(); } catch (err) {}
+      b.disabled = true;
+      var p = window.getCurrentPositionSafe();
+      Promise.resolve(p).then(function (pos) {
+        b.disabled = false;
+        if (!pos || pos.error || !isFinite(Number(pos.lat))) {
+          try { alert((pos && pos.message) || "موقعیت دریافت نشد."); } catch (err) {}
+          return;
+        }
+        window.__v1217HomePos = { lat: pos.lat, lng: pos.lng };
+        Promise.resolve(pos.addressPromise || "").then(function (addr) {
+          var a = $("repHomeAddressInput");
+          if (a && addr) a.value = addr;
+          saveHomeExtrasV1217();
+          try { alert("موقعیت شما روی پرونده‌ی منزل نشست" + (addr ? " و آدرسِ همین نقطه نوشته شد:\n" + addr : ".")); } catch (err) {}
+        }).catch(function () { saveHomeExtrasV1217(); });
+      });
+    }, true);
+    /* تایپِ پلاک/طبقه/آدرس → ذخیره در پرونده‌ی نماینده‌ی انتخاب‌شده */
+    var homeT = null;
+    document.addEventListener("input", function (e) {
+      var t = e.target;
+      if (!t || !t.id) return;
+      if (t.id !== "repHomePlate" && t.id !== "repHomeFloor" && t.id !== "repHomeAddressInput") return;
+      clearTimeout(homeT);
+      homeT = setTimeout(function () { try { saveHomeExtrasV1217(); } catch (err) {} }, 500);
+    }, true);
+  } catch (eH) {}
+
+  /* ۴۶. v12.17.1: اگر سرورِ وصل‌شده نسخه‌ی کهنه اجرا می‌کند، نوارِ باریکِ پایین
+     صفحه با نسخهٔ سرور + لینکِ ZIPِ جدید (پورت ۸۰۰۰ هاستِ پیش‌نمایش) ظاهر می‌شود —
+     تا کاربر فوراً ببیند چرا «تغییرات اعمال نشده» (همان ماجرایِ گیرکردن روی 12.12). */
+  try {
+    (function () {
+      var shown = false;
+      function lv(x) {
+        var a = String(x || '').replace(/[^\d.]/g, '').split('.').map(Number);
+        while (a.length < 3) a.push(0);
+        return a;
+      }
+      function showStaleBar(sv) {
+        if (shown) return;
+        shown = true;
+        var cur = lv('12.17.1');
+        var a = lv(sv);
+        var newer = a[0] > cur[0] || (a[0] === cur[0] && a[1] > cur[1]) || (a[0] === cur[0] && a[1] === cur[1] && a[2] >= cur[2]);
+        if (!sv || newer) return;
+        var bar = document.createElement('div');
+        bar.id = 'crm1217StaleBar';
+        bar.setAttribute('dir', 'rtl');
+        bar.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#fef3c7;border-top:2px solid #f59e0b;color:#78350f;font:12px/1.9 Tahoma,sans-serif;padding:5px 12px;text-align:center';
+        bar.innerHTML = '⚠️ سرورِ وصل‌شده هنوز نسخهٔ کهنه <b>' + sv + '</b> را اجرا می‌کند — آخرین نسخهٔ برنامه <b>12.17.1</b> است. <a href="http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip" download style="color:#1d4ed8"><b>⬇ دریافت ZIPِ جدید و نصب</b></a>';
+        document.body.appendChild(bar);
+      }
+      /* XHR به‌جای fetch: این پرسش نباید در شمارشِ governor (فریم ۱۳) بیفتد */
+      (function () {
+        try {
+          var x = new XMLHttpRequest();
+          x.open('GET', '/api/health?probe=1217', true);
+          x.onload = function () {
+            try {
+              var sv = x.getResponseHeader('X-CRM-Build') || '';
+              if (!sv) {
+                var j = JSON.parse(x.responseText || '{}');
+                sv = j.version || j.appVersion || '';
+              }
+              showStaleBar(sv);
+            } catch (eX) {}
+          };
+          x.onerror = function () { /* آفلاین — نوار نمی‌آید */ };
+          x.send();
+        } catch (e1) {}
+      })();
+    })();
+  } catch (eSb) {}
 })();

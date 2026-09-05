@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
-define("CRM_APP_VERSION", "12.16.0");
+define("CRM_APP_VERSION", "12.17.1");
 
 /* v12.12: همگام سه دامنه — رندر + دو دامنه نت‌افراز */
 function peer_hosts() {
@@ -416,6 +416,14 @@ if ($p === "cleanup" || $p === "purge-legacy") {
     if (is_file($fp)) { if (@unlink($fp)) $removed[] = $fname; }
     $fp2 = __DIR__ . "/data/" . $fname;
     if (is_file($fp2)) { if (@unlink($fp2)) $removed[] = "data/" . $fname; }
+  }
+  /* v12.17.0: حذفِ فایل‌هایِ نسخه‌هایِ قدیمی — فقط فهرستِ سفیدِ ثابت (هرگز فایلِ جاری) */
+  if (!empty($_GET["stale"])) {
+    foreach (scandir(__DIR__) as $sname) {
+      if (!is_file(__DIR__ . "/" . $sname)) continue;
+      if (!preg_match('/^crm-features-v(9|1[0-9]|2[0-9])\.js$/', $sname)) continue;
+      if (@unlink(__DIR__ . "/" . $sname)) $removed[] = $sname;
+    }
   }
   send_json(array(
     "status" => "success",

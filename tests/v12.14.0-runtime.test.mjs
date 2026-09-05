@@ -1,5 +1,5 @@
 /**
- * اجرای واقعی لایهٔ v12.16.0 — قانون ۹۲: «هیچ بندی بدون مدرک تأییدشده نیست».
+ * اجرای واقعی لایهٔ v12.17.1 — قانون ۹۲: «هیچ بندی بدون مدرک تأییدشده نیست».
  * این فایل لایهٔ «فرمان ترافیک» و «موقعیت‌یابی سریع» را واقعاً اجرا می‌کند:
  *   • سقفِ درخواست پس‌زمینه و قرنطینهٔ میزبانِ خراب (رفع بسته‌شدنِ اتصال در رفرش)
  *   • لغوِ درخواست‌های باز هنگام رفرش/خروج
@@ -49,7 +49,7 @@ function makeEnv(opts = {}) {
 
   const els = {};
   const win = {
-    CRM_APP_VERSION: '12.16.0',
+    CRM_APP_VERSION: '12.17.1',
     isSecureContext: protocol === 'https:',
     addEventListener: (type, fn) => { (listeners[type] = listeners[type] || []).push(fn); },
     caches: { keys: () => Promise.resolve([]) },
@@ -123,7 +123,7 @@ function makeEnv(opts = {}) {
 }
 
 /* ───────────────────────────────────────────────────────────────────────────── */
-test('v12.16.0 traffic: background requests are capped by a per-minute budget', async (t) => {
+test('v12.17.1 traffic: background requests are capped by a per-minute budget', async (t) => {
   const env = makeEnv();
   env.win.v1214Config.budget = 3;
   t.after(() => env.cleanup());
@@ -141,7 +141,7 @@ test('v12.16.0 traffic: background requests are capped by a per-minute budget', 
   assert.equal(env.win.v1214State().used, 3);
 });
 
-test('v12.16.0 traffic: no cross-origin request during the first 25 seconds (refresh storm)', async (t) => {
+test('v12.17.1 traffic: no cross-origin request during the first 25 seconds (refresh storm)', async (t) => {
   const env = makeEnv();
   t.after(() => env.cleanup());
 
@@ -154,7 +154,7 @@ test('v12.16.0 traffic: no cross-origin request during the first 25 seconds (ref
   assert.equal(env.calls.length, 1);
 });
 
-test('v12.16.0 traffic: a closed connection quarantines the host, user saves still go through', async (t) => {
+test('v12.17.1 traffic: a closed connection quarantines the host, user saves still go through', async (t) => {
   const env = makeEnv({ failNetwork: true });
   t.after(() => env.cleanup());
 
@@ -174,7 +174,7 @@ test('v12.16.0 traffic: a closed connection quarantines the host, user saves sti
   assert.equal(env.calls[env.calls.length - 1].o.method, 'POST');
 });
 
-test('v12.16.0 traffic: every open request is aborted on refresh/unload', async (t) => {
+test('v12.17.1 traffic: every open request is aborted on refresh/unload', async (t) => {
   const env = makeEnv({ hang: true });
   t.after(() => env.cleanup());
   env.win.v1214Config.bootQuietMs = 0;
@@ -187,7 +187,7 @@ test('v12.16.0 traffic: every open request is aborted on refresh/unload', async 
   assert.equal(env.aborted.length >= 1, true, 'سیگنالِ لغو باید صادر شود');
 });
 
-test('v12.16.0 traffic: hidden tabs never sync', async (t) => {
+test('v12.17.1 traffic: hidden tabs never sync', async (t) => {
   const env = makeEnv();
   t.after(() => env.cleanup());
   env.doc.hidden = true;
@@ -236,7 +236,7 @@ function geoEnv(firstAccuracy, secondAccuracy) {
   return { geoCalls, geolocation };
 }
 
-test('v12.16.0 location: adaptive GPS finishes fast and geocodes only once', async (t) => {
+test('v12.17.1 location: adaptive GPS finishes fast and geocodes only once', async (t) => {
   const g = geoEnv(48, 9);
   const reverseCalls = [];
   const env = makeEnv({ layer: '', geolocation: g.geolocation });
@@ -276,7 +276,7 @@ test('v12.16.0 location: adaptive GPS finishes fast and geocodes only once', asy
   assert.ok(urls.length >= 2, 'دو منبع باید هم‌زمان پرسیده شوند (مسابقه)');
 });
 
-test('v12.16.0 location: repeated lookups reuse the cached address (no second request)', async (t) => {
+test('v12.17.1 location: repeated lookups reuse the cached address (no second request)', async (t) => {
   const g = geoEnv(12, 12);
   const env = makeEnv({ layer: '', geolocation: g.geolocation });
   t.after(() => env.cleanup());
@@ -307,7 +307,7 @@ test('v12.16.0 location: repeated lookups reuse the cached address (no second re
 });
 
 /* ───────────────────────────────────────────────────────────────────────────── */
-test('v12.16.0 static: versioned assets get immutable cache headers (server + htaccess + sw)', () => {
+test('v12.17.1 static: versioned assets get immutable cache headers (server + htaccess + sw)', () => {
   const server = readFileSync(new URL('../server.js', import.meta.url), 'utf8');
   const htaccess = readFileSync(new URL('../public/.htaccess', import.meta.url), 'utf8');
   const sw = readFileSync(new URL('../public/sw-template.js', import.meta.url), 'utf8');
@@ -321,7 +321,7 @@ test('v12.16.0 static: versioned assets get immutable cache headers (server + ht
   assert.match(sw, /isVersionedAsset/, 'سرویس‌ورکر باید داراییِ نسخه‌دار را از کش بدهد');
 });
 
-test('v12.16.0 static: geocode races providers in parallel with a short timeout', () => {
+test('v12.17.1 static: geocode races providers in parallel with a short timeout', () => {
   const server = readFileSync(new URL('../server.js', import.meta.url), 'utf8');
   const bundle = readFileSync(new URL('../public/crm-bundle.js', import.meta.url), 'utf8');
   assert.match(server, /function geoRace/, 'سرور باید مسابقهٔ موازی داشته باشد');
@@ -332,7 +332,7 @@ test('v12.16.0 static: geocode races providers in parallel with a short timeout'
 });
 
 /* ───────────────────────────────────────────────────────────────────────────── */
-test('v12.16.0 server geocode: two providers race and the fast one wins', async (t) => {
+test('v12.17.1 server geocode: two providers race and the fast one wins', async (t) => {
   const srvSrc = readFileSync(new URL('../server.js', import.meta.url), 'utf8');
   const from = srvSrc.indexOf('  function geoRound(v)');
   const to = srvSrc.indexOf('  if ((pathname === "/api/geocode"', from);
@@ -363,7 +363,7 @@ test('v12.16.0 server geocode: two providers race and the fast one wins', async 
   assert.equal(JSON.parse(text).display_name, 'منبع سریع');
 });
 
-test('v12.16.0 server geocode: photon answers are normalised to the same detailed shape', () => {
+test('v12.17.1 server geocode: photon answers are normalised to the same detailed shape', () => {
   const srvSrc = readFileSync(new URL('../server.js', import.meta.url), 'utf8');
   const from = srvSrc.indexOf('  function geoRound(v)');
   const to = srvSrc.indexOf('  if ((pathname === "/api/geocode"', from);
