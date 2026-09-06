@@ -175,8 +175,8 @@ test('v12.18.2: قانونِ «فیلدها پیش از کادرها» — کا�
   // فیلدها رتبهٔ ۱/۲ گرفتند؛ کارتِ لوکیشن و کادرِ طراح بیرون از رده‌بندی، در انتهای گرید
   assert.equal(fB.style.getPropertyValue('order'), '1', 'فیلد b اول');
   assert.equal(fA.style.getPropertyValue('order'), '2', 'فیلد a دوم');
-  assert.ok(Number(locCard.style.getPropertyValue('order')) >= 9500, 'کارت لوکیشن = میخکوب، نه رقابتِ فیلدی: ' + locCard.style.getPropertyValue('order'));
-  assert.ok(Number(userBox.style.getPropertyValue('order')) >= 9500, 'کادرِ طراح میخکوب شد');
+  assert.equal(locCard.style.getPropertyValue('order'), '100000', 'کارت لوکیشن = میخکوبِ ثابت، نه رقابتِ فیلدی');
+  assert.equal(userBox.style.getPropertyValue('order'), '100000', 'کادرِ طراح میخکوب شد');
   assert.equal(grid.children[grid.children.length - 1], userBox, 'کادرِ طراح فیزیکی به آخرِ گرید رفت');
   assert.ok(grid.children.indexOf(locCard) > grid.children.indexOf(fA) && grid.children.indexOf(locCard) > grid.children.indexOf(fB), 'کارت لوکیشن پس ازِ همهٔ فیلدها');
   // ایدمپوتنت: اجرایِ دوباره نباید چیزی جابه‌جا کند (ضدِ پرش)

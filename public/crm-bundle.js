@@ -23293,7 +23293,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     all.forEach(function (c, ix) { if (c.classList && c.classList.contains("form-group") && !v1218Pinned(c)) lastField = ix; });
     all.forEach(function (c, ix) {
       if (!v1218Pinned(c)) return;
-      var want = String(9500 + (++bseq));
+      var want = "100000"; bseq++; /* یک عددِ ثابت: همهٔ کادرها پس ازِ همهٔ فیلدها (حتی فیلدهایِ بی‌رتبه با sentinelِ ۹۹۹۹) — ties با ترتیبِ DOM حل می‌شود، پس اجرایِ دوباره هیچ نوشتنی ندارد (ایدپوتنت) */
       var cur = "";
       try { cur = c.style ? String(c.style.getPropertyValue("order") || "") : ""; } catch (e2) {}
       if (cur !== want) { try { c.style.setProperty("order", want, "important"); n++; } catch (e3) {} }
@@ -23341,7 +23341,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         }
       }
       var want = orderById[fid];
-      if (v1218Pinned(g)) want = 9500 + (++boxSeq);
+      if (v1218Pinned(g)) want = 100000;
       else want = (want == null) ? 9999 : want;
       sig += fid + ":" + want + ",";
       var cur = "";
