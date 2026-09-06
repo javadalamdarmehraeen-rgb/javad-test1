@@ -10295,14 +10295,14 @@ button.v19-gps svg{display:block}
       var cells = rowEl.children;
       if (cells.length !== slots.length) return;
       var arr = Array.prototype.slice.call(cells).slice();
-      /* v12.18.1: مثلِ نگهبانِ v11.61 در موتورِ بالایی — اگر ترتیبِ DOM همانِ مطلوب است، هیچ نودی جابه‌جا نشود؛
+      /* v12.18.2: مثلِ نگهبانِ v11.61 در موتورِ بالایی — اگر ترتیبِ DOM همانِ مطلوب است، هیچ نودی جابه‌جا نشود؛
          وگرنه هر فراخوانِ دوره‌ای، ردیفِ هدر را با appendChild می‌کَند و پرشِ ستون‌ها ساخته می‌شود */
       var _need = false;
       for (var _k = 0; _k < desired.length; _k++) { if (cells[_k] !== arr[desired[_k]]) { _need = true; break; } }
       if (!_need) return;
       desired.forEach(function (cur) { rowEl.appendChild(arr[cur]); });
     }
-    /* v12.18.1: این موتورِ قدیمی، جابه‌جاییِ «مدل→مرتب» را روی DOMِ جابه‌جاشدهٔ قبلی اعمال می‌کرد
+    /* v12.18.2: این موتورِ قدیمی، جابه‌جاییِ «مدل→مرتب» را روی DOMِ جابه‌جاشدهٔ قبلی اعمال می‌کرد
        و هر دورِ رندر، ستون‌ها را یک پله دیگر می‌چرخاند (نوسانِ ستونِ پزشکان/سفارش‌ها).
        هر وضعیتِ ترتیب حالا فقط یک‌بار اعمال می‌شود؛ همانِ تکراری = بی‌اثر. */
     try {
@@ -10312,7 +10312,7 @@ button.v19-gps svg{display:block}
         if (_t0.getAttribute("data-v19reorder") === _sig) { paintRouteIcons(tbody); iconifyButtons(tbody); return; }
         _t0.setAttribute("data-v19reorder", _sig);
       }
-      /* v12.18.1: موتورِ جابه‌جاییِ v11 بازنشسته شد — «v20ReorderListColumns» (نگهبانِ v11.61، همگرا و تک‌مالک)
+      /* v12.18.2: موتورِ جابه‌جاییِ v11 بازنشسته شد — «v20ReorderListColumns» (نگهبانِ v11.61، همگرا و تک‌مالک)
          ترتیبِ ستون‌ها را مدیریت می‌کند. دو موتورِ موازی روی یکِ جدول، هر دورِ رندر یکی ستون را جابه‌جا و
          دیگری برمی‌گرداند: نوسانِ دائمِ سرستونِ پزشکان/سفارش‌ها — همان «جابجاییِ اطلاعات»ِ گزارش‌شده.
          آیکون‌ها (GPS/Glyph) مثلِ قبل ساخته می‌شوند؛ فقط «حرکتِ» ستون‌ها خاموش است. */
@@ -10933,7 +10933,7 @@ button.v19-gps svg{display:block}
     var rows = [];
     function push(r) {
       rows.push(r);
-      var icon = r.status === "ok" ? "<span class='ok'>✅ سالم</span>" : r.status === "warn" ? "<span class='warn'>⚠️ هشدار</span>" : "<span class='bad'>❌ مشکل</span>";
+      var icon = r.status === "ok" ? "<span class='ok'>✅ سالم</span>" : r.status === "warn" ? "<span class='warn'>⚠️ هشدار</span>" : r.status === "info" ? "<span style='color:#0369a1'>ℹ️ نکته</span>" : "<span class='bad'>❌ مشکل</span>";
       var tr = document.createElement("tr");
       tr.innerHTML = "<td><strong>" + esc(r.name) + "</strong></td><td>" + icon + "</td><td>" + r.detail + "</td><td class='hint'>" + r.hint + "</td>";
       tb.appendChild(tr);
@@ -10985,22 +10985,44 @@ button.v19-gps svg{display:block}
     else push(diagRow("سرویس‌ورکر (PWA)", "ok", "ثبت شده و فعال‌سازی کنترل‌کننده به‌صورت خودکار در حال انجام است", "نیازی به تازه‌سازی دستی نیست."));
     if (window.caches) {
       caches.keys().then(function (keys) {
+        var justPurged = false;
+        try { justPurged = !!(sessionStorage.getItem("CRM_ENTRY_1218_RUN") || localStorage.getItem("CRM_V1218_PURGED") === ""); } catch (eJc) {}
         push(diagRow("کش آفلاین", keys.length ? "ok" : "info",
-          keys.length ? "کش‌ها: " + keys.map(esc).join("، ") : "کشی نیست",
-          keys.length ? "" : "یک‌بار آنلاین باز کنید تا کش ساخته شود."));
+          keys.length ? "کش‌ها: " + keys.map(esc).join("، ") : (justPurged ? "عمداً تازه‌سازی شد — با یک‌بار گردشِ تب‌ها، سرویس‌ورکر کشِ نو را می‌سازد" : "کشی نیست"),
+          keys.length ? "" : "یک‌بار آنلاین در برنامه بچرخید تا کش ساخته شود؛ پس ازِ اجرایِ موتورِ ورود این وضعیت طبیعی است و ایراد محسوب نمی‌شود."));
       }).catch(function () {});
     }
     push(diagRow("IndexedDB / File System Access",
       (window.indexedDB ? 1 : 0) ? (window.showDirectoryPicker || window.showSaveFilePicker ? "ok" : "warn") : "bad",
       "IndexedDB: " + (window.indexedDB ? "دارد" : "ندارد") + " | انتخاب پوشه: " + (window.showDirectoryPicker ? "دارد" : window.showSaveFilePicker ? "فقط فایل" : "ندارد"),
       (window.showDirectoryPicker || window.showSaveFilePicker) ? "" : "برای پشتیبان در پوشه مشخص، از Chrome/Edge استفاده کنید."));
+    push(diagRow("موتورِ ورود (پاک‌سازیِ از ریشه)", "info",
+      "جارویِ کاملِ کشِ مرورگر، سرویس‌ورکر و کلیدهایِ کهنهٔ همین دستگاه — ویندوز و گوشی؛ اطلاعاتِ رویِ سرور هرگز پاک نمی‌شود",
+      "<button type='button' id='crmEngineRunBtn' class='btn btn-sm' style='background:#7c2d12;color:#fff'>🧹 اجرایِ موتور</button>"));
     push(diagRow("نقشه (Leaflet)", window.L ? "ok" : "bad",
       window.L ? "نسخه " + esc(L.version || "?") + " بارگذاری شده" : "کتابخانه نقشه لود نشده",
       window.L ? "" : "فایل‌های vendor/leaflet.js را بررسی کنید."));
 
-    // شبکه
+    // شبکه — v12.18.2: پروب‌ها با XHR خام تا governorِ سقفِ درخواست، خطایِ «budget-exhausted» نسازد
+    function diagXhr(url) {
+      return new Promise(function (res, rej) {
+        try {
+          var x = new XMLHttpRequest();
+          x.open("GET", url + (url.indexOf("?") < 0 ? "?" : "&") + "_diag=" + Date.now(), true);
+          try { x.timeout = 9000; } catch (eTo) {}
+          x.onload = function () {
+            var j = {};
+            try { j = JSON.parse(x.responseText || "{}"); } catch (eJs) {}
+            res({ ok: x.status >= 200 && x.status < 300, status: x.status, json: function () { return Promise.resolve(j); } });
+          };
+          x.onerror = function () { rej(new Error((window.navigator && window.navigator.onLine === false) ? "offline" : ("net" + (x.status || "")))); };
+          x.ontimeout = function () { rej(new Error("timeout")); };
+          x.send(null);
+        } catch (eX) { rej(eX); }
+      });
+    }
     var t0 = Date.now();
-    fetch("/api/health").then(function (r) {
+    diagXhr("/api/health").then(function (r) {
       return r.json().catch(function () { return {}; }).then(function (j) {
         push(diagRow("سرور برنامه (/api/health)", r.ok ? "ok" : "bad",
           "HTTP " + r.status + " | زمان پاسخ: " + (Date.now() - t0).toLocaleString("fa-IR") + "ms | نسخه سرور: " + esc(j.version || "—"),
@@ -11012,7 +11034,7 @@ button.v19-gps svg{display:block}
         "اتصال اینترنت/سرور را بررسی کنید؛ در حالت آفلاین طبیعی است."));
       finish();
     });
-    fetch("/api/state").then(function (r) {
+    diagXhr("/api/state").then(function (r) {
       return r.json().catch(function () { return {}; }).then(function (j) {
         var st2 = j && j.status ? j.status : "—";
         var isOff = st2 !== "success";
@@ -11176,7 +11198,7 @@ button.v19-gps svg{display:block}
           if (v === state) return;
           if (!state || typeof state !== "object") { state = v; return; }
           Object.keys(state).forEach(function (k) { try { if (!Object.prototype.hasOwnProperty.call(v, k)) return; } catch (e0) {} state[k] = state[k]; });
-          /* v12.18.1: حذفِ کلیدهایِ غایب ممنوع — پذیرشِ نسخهٔ سرور هیچ‌چیز را از حافظهٔ زنده بیرون نمی‌اندازد؛ ادغام از دروازهٔ v12TakeRegisteredOnly (تازه‌ترِ محلی برنده) */
+          /* v12.18.2: حذفِ کلیدهایِ غایب ممنوع — پذیرشِ نسخهٔ سرور هیچ‌چیز را از حافظهٔ زنده بیرون نمی‌اندازد؛ ادغام از دروازهٔ v12TakeRegisteredOnly (تازه‌ترِ محلی برنده) */
           try { if (typeof window.v12TakeRegisteredOnly === "function") { window.v12TakeRegisteredOnly(v, state); return; } } catch (eMerge) {}
           Object.keys(v).forEach(function (k) { state[k] = v[k]; });
         } catch (eSet) {}
@@ -11436,7 +11458,7 @@ button.v19-gps svg{display:block}
     var rec=seedGlobalOptions(key),hidden=(rec.hidden||[]).map(norm),vals=(rec.values||[]).filter(function(x){return hidden.indexOf(norm(x.value))<0;});globalOptionBusy=true;
     globalCustomFields(key).forEach(function(f){f.options=vals.map(function(x){return x.value;});});
     globalOptionElements().forEach(function(el){if(globalFieldKey(el)!==key)return;var current=String(el.value||"");if(el.tagName==="SELECT"){var placeholder=null;Array.prototype.forEach.call(el.options,function(o){if(!String(o.value||"")&&!placeholder)placeholder={value:"",text:o.textContent||"انتخاب کنید..."};});var _want=[];if(placeholder)_want.push(["",placeholder.text||""]);vals.forEach(function(x){_want.push([String(x.value),String(x.text||x.value)]);});
-    /* v12.18.1: بازسازیِ بی‌مقایسهٔ گزینه‌ها خودِ ناظرِ همین سیستم را بیدار نگه می‌داشت و همه‌ی dropdownها زیر نوسان بودند؛ حالا امضا برابر باشد هیچ نودی تکان نمی‌خورد */
+    /* v12.18.2: بازسازیِ بی‌مقایسهٔ گزینه‌ها خودِ ناظرِ همین سیستم را بیدار نگه می‌داشت و همه‌ی dropdownها زیر نوسان بودند؛ حالا امضا برابر باشد هیچ نودی تکان نمی‌خورد */
     var _same=_want.length===el.options.length;
     if(_same){for(var _i=0;_i<_want.length;_i++){var _o=el.options[_i];if(String(_o.value)!==_want[_i][0]||String(_o.textContent||"")!==_want[_i][1]){_same=false;break;}}}
     if(!_same){el.innerHTML="";_want.forEach(function(w){var o=document.createElement("option");o.value=w[0];o.textContent=w[1];el.appendChild(o);});}
@@ -12968,7 +12990,7 @@ button.v19-gps svg{display:block}
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.18.1");
+        var ver=String(window.CRM_APP_VERSION||"12.18.2");
         var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -14505,7 +14527,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.18.1");
+        var ver=String(window.CRM_APP_VERSION||"12.18.2");
         var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -14749,7 +14771,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     var thead=host.querySelector("thead"),tbody=host.querySelector("tbody");
     if(!thead||!tbody)return;
     var next="<tr>"+heads.map(function(h){return "<th>"+h+"</th>";}).join("")+"</tr>";
-    /* v12.18.1: مقایسهٔ innerHTML گمراه‌کننده است — مرورگر DOM را دوباره سریال‌سازی می‌کند
+    /* v12.18.2: مقایسهٔ innerHTML گمراه‌کننده است — مرورگر DOM را دوباره سریال‌سازی می‌کند
        (کوتیشن‌ها عوض می‌شوند) پس «برابر» هرگز برابر نمی‌ماند و هر نوبتِ رندر، tbody را از نو
        می‌نوشت؛ همان نوشتن، MutationObserverهایِ ناظر را بیدار و چرخهٔ پرش را می‌چرخاند.
        امضایِ منبع روی dataset می‌نشیند: رشتهٔ یکسان = بدونِ نوشتن. */
@@ -15341,7 +15363,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     var thead=host.querySelector("thead"),tbody=host.querySelector("tbody");
     if(!thead||!tbody)return;
     var next="<tr>"+heads.map(function(h){return "<th>"+h+"</th>";}).join("")+"</tr>";
-    /* v12.18.1: مقایسهٔ innerHTML گمراه‌کننده است — مرورگر DOM را دوباره سریال‌سازی می‌کند
+    /* v12.18.2: مقایسهٔ innerHTML گمراه‌کننده است — مرورگر DOM را دوباره سریال‌سازی می‌کند
        (کوتیشن‌ها عوض می‌شوند) پس «برابر» هرگز برابر نمی‌ماند و هر نوبتِ رندر، tbody را از نو
        می‌نوشت؛ همان نوشتن، MutationObserverهایِ ناظر را بیدار و چرخهٔ پرش را می‌چرخاند.
        امضایِ منبع روی dataset می‌نشیند: رشتهٔ یکسان = بدونِ نوشتن. */
@@ -16150,7 +16172,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
               try{if(typeof state!=="undefined")state=v;}catch(e1){}
               return;
             }
-            /* v12.18.1: اینجا هم حذفِ کلیدِ غایب ممنوع (بازگرداندنِ setterِ v73 به همان قانون) */
+            /* v12.18.2: اینجا هم حذفِ کلیدِ غایب ممنوع (بازگرداندنِ setterِ v73 به همان قانون) */
             try{if(typeof window.v12TakeRegisteredOnly==="function"){window.v12TakeRegisteredOnly(v,live);return;}}catch(eMerge){}
             Object.keys(v).forEach(function(k){live[k]=v[k];});
           }catch(eSet){}
@@ -19299,10 +19321,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.1"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.2"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.1").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.2").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19382,10 +19404,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.1"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.2"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.1").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.2").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -19441,7 +19463,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.18.1");
+  var BUILD = String(window.CRM_APP_VERSION || "12.18.2");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
@@ -19502,10 +19524,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.1"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.2"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.1").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.2").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19532,10 +19554,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.1"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.2"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.1").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.2").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -19620,7 +19642,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.1"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.2"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -20054,7 +20076,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var TITLE = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
   var BRAND = "طنین طب طاها  TANIN TEB TAHA";
-  var FALLBACK = "12.18.1";
+  var FALLBACK = "12.18.2";
 
   /* ── ۱) سربرگ دقیقاً سه خط؛ شماره نسخه با ارقام لاتین ───────────────── */
   function ver() { try { return String(window.CRM_APP_VERSION || FALLBACK); } catch (e) { return FALLBACK; } }
@@ -20435,7 +20457,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     try { done = localStorage.getItem(FLAG) === "1"; } catch (e) {}
     if (done) return;
     try { localStorage.setItem(FLAG, "1"); } catch (e) {}
-    var ver = String(window.CRM_APP_VERSION || "12.18.1");
+    var ver = String(window.CRM_APP_VERSION || "12.18.2");
     try {
       if (window.caches && typeof caches.keys === "function") {
         caches.keys().then(function (keys) {
@@ -22299,7 +22321,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var API15 = window.v1215Api || {};
   var API16 = window.v1216Api || {};
-  var VER = String(window.CRM_APP_VERSION || "12.18.1");
+  var VER = String(window.CRM_APP_VERSION || "12.18.2");
 
   function $(id) { try { return document.getElementById(id); } catch (e) { return null; } }
   function qsa(sel, root) { try { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); } catch (e) { return []; } }
@@ -22313,7 +22335,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   function faComma(n) {
     var s = String(Math.round(Number(n) || 0));
     s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    /* v12.18.1: قانونِ یکتایِ ارقام — همه‌ی جداکننده‌ها با عددِ لاتین تا هیچ عددی در صفحه دو بار عوض نشود */
+    /* v12.18.2: قانونِ یکتایِ ارقام — همه‌ی جداکننده‌ها با عددِ لاتین تا هیچ عددی در صفحه دو بار عوض نشود */
     return s;
   }
   function num(s) { var n = Number(faDigits(String(s == null ? "" : s)).replace(/[^0-9.\-]/g, "")); return isFinite(n) ? n : 0; }
@@ -22773,7 +22795,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   /* ══ ۱۳) تبِ تغییرات: نسخه‌ی 12.17.0 بالایِ همه + بازرسازی هر بار که تب باز شود ═══════ */
   var CH1217_HTML = "<div id='v1217ChangeEntry' style='border:2px solid #0d9488;background:#f0fdfa;border-radius:12px;padding:10px;margin-bottom:10px'>" +
-    "<b style='color:#0f766e'>📦 نسخه‌ی جاری: 12.18.1</b><ul style='margin:6px 0 0 18px;padding:0;color:#334155;font-size:14px;line-height:2'>" +
+    "<b style='color:#0f766e'>📦 نسخه‌ی جاری: 12.18.2</b><ul style='margin:6px 0 0 18px;padding:0;color:#334155;font-size:14px;line-height:2'>" +
     "<li>ترتیبِ ستون‌ها پس از بازگشایی هم برقرار می‌ماند و در تبِ اصلی هم اعمال می‌شود</li>" +
     "<li>«موقعیت فعلی من» فقط نقطه‌ی تازه می‌پذیرد و آدرس به‌صورتِ فارسیِ مرتب (کشور، استان، شهر، خیابان، پلاک) می‌آید</li>" +
     "<li>کادرِ جایگذاریِ خودکارِ سفارش در بالایِ صفحه (دسکتاپ و گوشی) می‌چسبد و فقط داروخانه‌های هم‌نام با آدرس را نشان می‌دهد</li>" +
@@ -22928,7 +22950,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       function showStaleBar(sv) {
         if (shown) return;
         shown = true;
-        var cur = lv('12.18.1');
+        var cur = lv('12.18.2');
         var a = lv(sv);
         var newer = a[0] > cur[0] || (a[0] === cur[0] && a[1] > cur[1]) || (a[0] === cur[0] && a[1] === cur[1] && a[2] >= cur[2]);
         if (!sv || newer) return;
@@ -22936,7 +22958,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         bar.id = 'crm1217StaleBar';
         bar.setAttribute('dir', 'rtl');
         bar.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#fef3c7;border-top:2px solid #f59e0b;color:#78350f;font:12px/1.9 Tahoma,sans-serif;padding:5px 12px;text-align:center';
-        bar.innerHTML = '⚠️ سرورِ وصل‌شده هنوز نسخهٔ کهنه <b>' + sv + '</b> را اجرا می‌کند — آخرین نسخهٔ برنامه <b>12.18.1</b> است. <a href="http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip" download style="color:#1d4ed8"><b>⬇ دریافت ZIPِ جدید و نصب</b></a>';
+        bar.innerHTML = '⚠️ سرورِ وصل‌شده هنوز نسخهٔ کهنه <b>' + sv + '</b> را اجرا می‌کند — آخرین نسخهٔ برنامه <b>12.18.2</b> است. <a href="http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip" download style="color:#1d4ed8"><b>⬇ دریافت ZIPِ جدید و نصب</b></a>';
         document.body.appendChild(bar);
       }
       /* XHR به‌جای fetch: این پرسش نباید در شمارشِ governor (فریم ۱۳) بیفتد */
@@ -22962,7 +22984,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   } catch (eSb) {}
 })();
 
-/* v12.18.1 — نوبت ۱۳۵: ریشه‌پاک‌کنِ یک‌باره (سرویس‌ورکر، کش‌ها، کلیدهای کهنه، پایگاه‌های موقت، رکوردهای نمونهٔ سرور)،
+/* v12.18.2 — نوبت ۱۳۵: ریشه‌پاک‌کنِ یک‌باره (سرویس‌ورکر، کش‌ها، کلیدهای کهنه، پایگاه‌های موقت، رکوردهای نمونهٔ سرور)،
    خاموش‌کردنِ پرش‌ها (چیدمان فقط با تغییرِ واقعی، آرام‌کردنِ جنگِ v68↔v73، بودجه‌بندیِ همگامِ ۱۵ثانیه‌ای)،
    بند ۴ (ترتیبِ ماندگار با شماره‌گذاریِ یکتایِ فراگیر + ارسالِ فوری)، بند ۹ (ترددِ واقعی روی نقشه)،
    بند ۱۲ (ساعتِ HH:MM)، بند ۱۵ (ماتریسِ ریزِ دسترسی با همهٔ تب‌ها)، بند ۱۶ (آلارمِ ویزیت در مرکزِ اعلان‌ها)
@@ -22972,9 +22994,9 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   if (window.v1218) return;
   window.v1218 = true;
-  window.__V1218_MARK = "v12.18.1";
+  window.__V1218_MARK = "v12.18.2";
 
-  var VER = String(window.CRM_APP_VERSION || "12.18.1");
+  var VER = String(window.CRM_APP_VERSION || "12.18.2");
   var A15 = window.v1215Api || null;
   var A16 = window.v1216Api || null;
   var A17 = window.v1217Api || null;
@@ -23242,6 +23264,43 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   /* نگارگرِ چیدمان: CSS order را از همانِ رشتهٔ یکتا می‌سازد — فیلدِ سفارشی هم جابه‌جا می‌شود
      (نگارگرِ v82 فقط data-col-fk را می‌شناخت و فیلدهایِ ساخته‌شده در تبِ ستون‌ها را بی‌اثر می‌گذاشت) */
   var orderApplied = {};
+  /* ══ قانونِ کاربر (نوبت ۱۳۹): «کلیهٔ فیلدها باید پیش از کادرها باشند» ═══════════
+     دو نوع کادر در گریدِ فرم می‌بینیم: کادرهایِ طراح (col-user-box — بچهٔ گرید ولی
+     form-group نیست و هیچ‌وقت order نمی‌گرفت → پیشِ فیلدها می‌پرید) و کارت‌هایِ ثابتِ
+     خودِ فرم مثلِ «📍 لوکیشن و نقشه» که idهایِ داخلشان (phFileInput/…) در فهرستِ فیلدها
+     راه پیدا می‌کرد و ترتیب را به‌هم می‌ریخت. هر دو حالا به انتهایِ گرید میخکوب می‌شوند:
+     هم CSS order بزرگ، هم جابه‌جاییِ DOM اگر جلوتر از آخرین فیلد نشسته باشند. */
+  function v1218Pinned(g) {
+    try {
+      if (g.classList && g.classList.contains("col-user-box")) return true;
+      if (g.querySelector && g.querySelector(".col-user-box-title,.geo-suggest-wrap,.map-container,#phFileInput,#phMapSearchInput,#btnPharmacyCurrentLocation")) return true;
+    } catch (e) {}
+    return false;
+  }
+  function v1218PinPass(tabId) {
+    var pane = $(tabId); if (!pane) return 0;
+    var grid = null;
+    try { if (typeof window.getMainGrid === "function") grid = window.getMainGrid(tabId); } catch (e0) {}
+    if (!grid && pane.querySelector) {
+      var form = pane.querySelector("form");
+      if (form) grid = form.querySelector(".form-grid");
+      if (!grid) grid = pane.querySelector(".form-grid");
+    }
+    if (!grid || !grid.children || !grid.children.length) return 0;
+    var all = [];
+    try { Array.prototype.forEach.call(grid.children, function (c) { if (c && c.nodeType === 1) all.push(c); }); } catch (e1) { return 0; }
+    var lastField = -1, bseq = 0, n = 0;
+    all.forEach(function (c, ix) { if (c.classList && c.classList.contains("form-group") && !v1218Pinned(c)) lastField = ix; });
+    all.forEach(function (c, ix) {
+      if (!v1218Pinned(c)) return;
+      var want = String(9500 + (++bseq));
+      var cur = "";
+      try { cur = c.style ? String(c.style.getPropertyValue("order") || "") : ""; } catch (e2) {}
+      if (cur !== want) { try { c.style.setProperty("order", want, "important"); n++; } catch (e3) {} }
+    });
+    try { Array.prototype.slice.call(grid.children).forEach(function (c) { if (c && v1218Pinned(c) && Array.prototype.indexOf.call(grid.children, c) < lastField) { grid.appendChild(c); n++; } }); } catch (e4) {}
+    return n;
+  }
   function v1218ApplyOrder(tabId, force) {
     var pane = $(tabId); if (!pane) return false;
     var grid = null;
@@ -23269,7 +23328,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     var kids = [];
     try { Array.prototype.forEach.call(grid.children, function (g) { if (g && g.classList && g.classList.contains("form-group")) kids.push(g); }); } catch (e) { return false; }
     if (!kids.length) return false;
-    var sig = "", wrote = 0;
+    var sig = "", wrote = 0, boxSeq = 0;
     kids.forEach(function (g) {
       var fid = "";
       try { fid = (g.getAttribute && g.getAttribute("data-col-fid")) || ""; } catch (e) {}
@@ -23282,7 +23341,8 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         }
       }
       var want = orderById[fid];
-      want = (want == null) ? 9999 : want;
+      if (v1218Pinned(g)) want = 9500 + (++boxSeq);
+      else want = (want == null) ? 9999 : want;
       sig += fid + ":" + want + ",";
       var cur = "";
       try { cur = g.style ? String(g.style.getPropertyValue("order") || "") : ""; } catch (e) {}
@@ -23292,6 +23352,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     });
     var changed = orderApplied[tabId] !== sig;
     orderApplied[tabId] = sig;
+    try { v1218PinPass(tabId); } catch (ePP) {}
     return force ? true : changed;
   }
   function forceLayoutAll() {
@@ -23302,6 +23363,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       try { v1218ApplyOrder(id, true); } catch (e) {}
       try { if (A16 && typeof A16.applyOrder === "function") A16.applyOrder(id, { force: true }); } catch (e) {}
       try { if (typeof window.applyFullFormLayout === "function") window.applyFullFormLayout(id); } catch (e) {}
+      try { v1218PinPass(id); } catch (ePin) {}
     });
     try { window.__CRM_FORCE_RENDER = 1; setTimeout(function () { window.__CRM_FORCE_RENDER = 0; }, 1000); } catch (e) {}
   }
@@ -23495,7 +23557,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     return arr.length + ":" + mx;
   }
   function listLenFor(name, S) {
-    /* v12.18.1: امضا از محتوایِ خودِ آرایه (تعداد + تازه‌ترین مُهرِ ویرایش) + مُهرِ طراحی؛
+    /* v12.18.2: امضا از محتوایِ خودِ آرایه (تعداد + تازه‌ترین مُهرِ ویرایش) + مُهرِ طراحی؛
        پینگِ زندهٔ داشبورد که saveState می‌زند دیگر بی‌دلیل جدولِ پزشکان/سفارش‌ها را rebuild نمی‌کند */
     try {
       var des = ":" + String(S._designAt || "");
@@ -24202,6 +24264,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     normalizeOrdersV1218: v1218NormalizeOrders,
     stampDesign: stampDesign,
     applyOrder: v1218ApplyOrder,
+    pinBoxes: v1218PinPass,
     forceLayoutAll: forceLayoutAll,
     layoutSigFor: layoutSig,
     opsPeace: opsPeace,

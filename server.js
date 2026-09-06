@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "12.18.1";
+const APP_VERSION = "12.18.2";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -444,7 +444,7 @@ const server = http.createServer((req, res) => {
   }
 
   /* v12.17.0: حذفِ فایل‌هایِ نسخه‌هایِ قدیمی — فقط فهرستِ سفیدِ ثابت (هرگز فایلِ جاری)
-     v12.18.1: + پارامترِ purge=1 (ریشه‌پاک‌کنی): فایل‌هایِ داده‌ایِ کهنهٔ زمانِ نت‌افراز +
+     v12.18.2: + پارامترِ purge=1 (ریشه‌پاک‌کنی): فایل‌هایِ داده‌ایِ کهنهٔ زمانِ نت‌افراز +
      نمونه‌هایِ قدیمیِ داخلِ user-data.json. هرگز به user-data.jsonِ زنده، user-bulk-data.json،
      push-* و پوشه‌ی backups دست نمی‌زنیم — فقط پالایشِ درجا و حذفِ فایل‌هایِ لیست‌شده. */
   if (pathname === "/api/cleanup" && req.method === "GET" && (parsed.searchParams.get("stale") || req.headers["x-crm-admin"] === "1")) {
@@ -763,7 +763,7 @@ const server = http.createServer((req, res) => {
         data._soloOnly = true;
         delete data._soloReplace;
         data._soloEpoch = Number(data._soloEpoch) || (existing && existing._soloEpoch) || Date.now();
-        /* v12.18.1: بدنهٔ یکسان با آخرین ذخیره → نوشتنِ دوباره روی دیسک و بکاپ نمی‌گیریم
+        /* v12.18.2: بدنهٔ یکسان با آخرین ذخیره → نوشتنِ دوباره روی دیسک و بکاپ نمی‌گیریم
            (چرخهٔ ۱۵ ثانیه‌ایِ همگامِ دستگاه‌ها دیگر فایلِ زنده را بی‌دلیل بازنویسی نمی‌کند) */
         let hash = "";
         try { hash = crypto.createHash("md5").update(JSON.stringify(data)).digest("hex"); } catch (e) {}
@@ -840,7 +840,7 @@ const server = http.createServer((req, res) => {
   }
   const ext = path.extname(filePath).toLowerCase();
   const isAsset = [".png", ".jpg", ".jpeg", ".css", ".js", ".woff2", ".svg", ".webp"].indexOf(ext) !== -1;
-  /* v12.14: داراییِ نسخه‌دار (crm-app.js?v=12.18.1) یک سال کش immutable می‌شود
+  /* v12.14: داراییِ نسخه‌دار (crm-app.js?v=12.18.2) یک سال کش immutable می‌شود
      → رفرشِ ساده/سخت دیگر ۶ فایل JS را دوباره از هاست نمی‌کشد (رفع بسته‌شدنِ اتصال) */
   const versioned = /[?&]v=\d/.test(String(req.url || ""));
   const assetCache = (isAsset && versioned) ? 31536000

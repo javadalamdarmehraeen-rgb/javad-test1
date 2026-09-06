@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
-define("CRM_APP_VERSION", "12.18.1");
+define("CRM_APP_VERSION", "12.18.2");
 
 /* v12.12: همگام سه دامنه — رندر + دو دامنه نت‌افراز */
 function peer_hosts() {
@@ -183,7 +183,7 @@ function stamp_gen($data) {
   $data["_netafrazVersion"] = CRM_APP_VERSION;
   return $data;
 }
-/* v12.18.1: ریشه‌پاک‌کنی — حذفِ رکوردهایِ نمونه‌ی قدیمی (همان فهرستِ سرورِ Node) */
+/* v12.18.2: ریشه‌پاک‌کنی — حذفِ رکوردهایِ نمونه‌ی قدیمی (همان فهرستِ سرورِ Node) */
 function strip_legacy_sample(&$st) {
   if (!is_array($st)) return 0;
   $ids = array("ph-1","ph-2","ph-3","doc-1","doc-2","rep-1","rep-2","rep-3","ord-1","u-2","u-3","u-4",
@@ -446,7 +446,7 @@ if ($p === "cleanup" || $p === "purge-legacy") {
     $fp2 = __DIR__ . "/data/" . $fname;
     if (is_file($fp2)) { if (@unlink($fp2)) $removed[] = "data/" . $fname; }
   }
-  /* v12.18.1: purge=1 — فایل‌هایِ پشتیبانِ کهنهٔ کنارِ دادهٔ زنده هم پاک می‌شوند (خودِ crm-live-*.json هرگز) */
+  /* v12.18.2: purge=1 — فایل‌هایِ پشتیبانِ کهنهٔ کنارِ دادهٔ زنده هم پاک می‌شوند (خودِ crm-live-*.json هرگز) */
   if (!empty($_GET["purge"])) {
     foreach (array(__DIR__, __DIR__ . "/data", $DATA_DIR) as $dirx) {
       if (!is_dir($dirx)) continue;
@@ -482,7 +482,7 @@ if ($p === "cleanup" || $p === "purge-legacy") {
 if (strpos($p, "state") === 0) {
   if ($method === "GET") {
     $local = fill_if_empty(read_json($DATA), $DATA);
-    /* v12.18.1: همان‌جا که سرورِ Node نمونه‌ها را می‌زداید، نت‌افراز هم می‌زداید */
+    /* v12.18.2: همان‌جا که سرورِ Node نمونه‌ها را می‌زداید، نت‌افراز هم می‌زداید */
     if ($local) {
       $srp = strip_legacy_sample($local);
       if ($srp > 0) write_json($DATA, $local);
@@ -497,7 +497,7 @@ if (strpos($p, "state") === 0) {
     if (too_empty($incoming, $existing)) {
       send_json(array("status" => "success", "data" => $existing, "ignored" => true, "reason" => "empty-rejected"));
     }
-    /* v12.18.1: بدنهٔ یکسان با آخرین ذخیره → دیسک دست نمی‌خورد (چرخهٔ ۱۵ ثانیه‌ایِ همگام، فایلِ زنده را بی‌دلیل بازنویسی نمی‌کند) */
+    /* v12.18.2: بدنهٔ یکسان با آخرین ذخیره → دیسک دست نمی‌خورد (چرخهٔ ۱۵ ثانیه‌ایِ همگام، فایلِ زنده را بی‌دلیل بازنویسی نمی‌کند) */
     $hh = md5(json_encode($incoming, JSON_UNESCAPED_UNICODE));
     $hf = dirname($DATA) . "/state.md5";
     if (!is_dir(dirname($hf))) { @mkdir(dirname($hf), 0775, true); }

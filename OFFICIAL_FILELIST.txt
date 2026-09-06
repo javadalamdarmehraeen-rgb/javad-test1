@@ -50,6 +50,7 @@ public/cloudflare-worker.js
 public/crm-app.js
 public/crm-bundle.js
 public/crm-data.js
+public/crm-entry-engine.js
 public/crm-hub.js
 public/crm-jalali.js
 public/crm-runtime.js

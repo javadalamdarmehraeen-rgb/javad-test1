@@ -49,7 +49,7 @@ function makeEnv(opts = {}) {
 
   const els = {};
   const win = {
-    CRM_APP_VERSION: '12.18.1',
+    CRM_APP_VERSION: '12.18.2',
     isSecureContext: protocol === 'https:',
     addEventListener: (type, fn) => { (listeners[type] = listeners[type] || []).push(fn); },
     caches: { keys: () => Promise.resolve([]) },

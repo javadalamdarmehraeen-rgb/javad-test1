@@ -265,7 +265,7 @@ test('v12.17.1: قیمتِ مصرف‌کننده‌ی جدید، مقدارِ ق
   const cell = env.doc.createElement('td'); cell.className = 'v81-new-cons'; cell.setAttribute('data-pid', 'p1'); cell.textContent = '۵,۰۰۰';
   tr.appendChild(cell); body.appendChild(tr); env.doc.body.appendChild(body);
   env.API.pricingDisplayFix();
-  /* v12.18.1: قانونِ یکتایِ ارقام — جدولِ قیمت با عددِ لاتین (نویسندهٔ فارسی‌سازِ v81 دیگر نمی‌جنگد) */
+  /* v12.18.2: قانونِ یکتایِ ارقام — جدولِ قیمت با عددِ لاتین (نویسندهٔ فارسی‌سازِ v81 دیگر نمی‌جنگد) */
   assert.ok(cell.textContent.indexOf('5') === 0 && cell.textContent.indexOf('670') >= 0, 'نمایش باید 5,670,000 (مقدارِ رندشده، ارقامِ لاتین) باشد: ' + cell.textContent);
 });
 
@@ -367,12 +367,12 @@ test('v12.17.1: فایل‌هایِ نسخه‌هایِ قدیمی حذف شده
 });
 
 test('v12.17.1: نسخه در همه‌ی سطوح 12.17.1 است و README بنرِ نسخه دارد', () => {
-  assert.match(readmeSrc, /نسخه‌ی جاریِ این ریپو \(GitHub main\): \*\*12\.18.1\*\*/, 'بنرِ صدرِ README');
-  assert.match(htmlSrc, /BUILD="12\.18.1"/, 'BUILD در index.html');
-  assert.match(serverSrc, /const APP_VERSION = "12\.18.1"/, 'APP_VERSION در server.js');
+  assert.match(readmeSrc, /نسخه‌ی جاریِ این ریپو \(GitHub main\): \*\*12\.18.2\*\*/, 'بنرِ صدرِ README');
+  assert.match(htmlSrc, /BUILD="12\.18.2"/, 'BUILD در index.html');
+  assert.match(serverSrc, /const APP_VERSION = "12\.18.2"/, 'APP_VERSION در server.js');
   const pkg = JSON.parse(readFileSync(new URL('package.json', root), 'utf8'));
-  assert.equal(pkg.version, '12.18.1');
-  assert.match(apiPhp, /define\("CRM_APP_VERSION", "12\.18.1"\)/, 'نسخه در api.php');
+  assert.equal(pkg.version, '12.18.2');
+  assert.match(apiPhp, /define\("CRM_APP_VERSION", "12\.18.2"\)/, 'نسخه در api.php');
   assert.match(serverSrc, /crm-features-v\(9\|1\[0-9\]\|2\[0-9\]\)\\.js/, 'پاک‌سازیِ قدیمی در server.js');
   assert.match(apiPhp, new RegExp('crm-features-v\\(9\\|1\\[0-9\\]\\|2\\[0-9\\]\\)\\\\\\.js\\$'), 'پاک‌سازیِ قدیمی در api.php');
 });
