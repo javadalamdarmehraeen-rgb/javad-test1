@@ -1,6 +1,6 @@
 CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 2.15 | تاریخ به‌روزرسانی: 2026-09-06 (۱۵ شهریور ۱۴۰۵) | نسخه برنامه: 12.18.0
+نسخه این فایل: 2.16 | تاریخ به‌روزرسانی: 2026-09-06 (۱۵ شهریور ۱۴۰۵) | نسخه برنامه: 12.18.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -564,7 +564,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
    index.html به‌روز نگه داشته می‌شود.
 ۸. OFFICIAL_FILELIST.txt همگام با فایل‌های جدید به‌روز می‌شود (قانون ۸).
 
-فهرست فایل‌ها (232 فایل متنی + 31 فایل دودویی):
+فهرست فایل‌ها (233 فایل متنی + 31 فایل دودویی):
 
   [متنی ]      654 بایت  .env.example
   [متنی ]      891 بایت  .env.ndcohub.example
@@ -578,11 +578,11 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]    55134 بایت  AI_RULES.md
   [متنی ]    62300 بایت  AI_TASKS.md
   [متنی ]    61003 بایت  ARENA_HANDOFF_PROMPT.md
-  [متنی ]   179871 بایت  CHANGES_V11.md
+  [متنی ]   180814 بایت  CHANGES_V11.md
   [متنی ]     1806 بایت  CLEAN_EXTRA_FILES.bat
-  [متنی ]    71991 بایت  GITHUB_REVIEW_HANDOFF.md
+  [متنی ]    73270 بایت  GITHUB_REVIEW_HANDOFF.md
   [متنی ]      694 بایت  KEEP_ONLY_GITHUB.bat
-  [متنی ]     6708 بایت  OFFICIAL_FILELIST.txt
+  [متنی ]     6772 بایت  OFFICIAL_FILELIST.txt
   [متنی ]     1171 بایت  PAKSAZI_EZAFI.bat
   [متنی ]    36040 بایت  PROJECT_GRAPH.md
   [متنی ]     2707 بایت  PUSH_FRESH_GITHUB.bat
@@ -590,11 +590,12 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     6579 بایت  RAHNAMA_GITLAB.txt
   [متنی ]     1059 بایت  RAHNAMA_NETAFRAZ.txt
   [متنی ]     2852 بایت  RAHNAMA_PAKSAZI.txt
-  [متنی ]    17643 بایت  README.md
+  [متنی ]    18064 بایت  README.md
   [متنی ]     4731 بایت  README_FA_COMPLETE.md
   [متنی ]     2766 بایت  SYNC_ALL.bat
   [متنی ]     1273 بایت  SYNC_OFFICIAL_OVER_FOLDER.bat
   [متنی ]     6242 بایت  build-static.js
+  [متنی ]     2464 بایت  build_zip_1218.py
   [متنی ]      156 بایت  drizzle.config.json
   [متنی ]      364 بایت  eslint.config.mjs
   [متنی ]      250 بایت  next-env.d.ts
@@ -607,12 +608,12 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]     2355 بایت  sync-all.js
   [متنی ]     2426 بایت  sync_all.sh
   [متنی ]      738 بایت  tsconfig.json
-  [متنی ]   404150 بایت  update_chat_arena.py
+  [متنی ]   406698 بایت  update_chat_arena.py
   [متنی ]    14141 بایت  update_project_graph.py
+  [متنی ]     3576 بایت  zip-server.py
   [متنی ]     2558 بایت  .github/workflows/deploy.yml
   [متنی ]      206 بایت  .github/workflows/keep_alive.yml
-  [متنی ]      286 بایت  backups/crm-2026-09-06-15-45.json
-  [متنی ]      286 بایت  backups/crm-2026-09-06-16-30.json
+  [متنی ]      286 بایت  backups/crm-2026-09-06-18-15.json
   [متنی ]     7164 بایت  mobile/App.tsx
   [متنی ]     9805 بایت  mobile/README.md
   [متنی ]     9966 بایت  mobile/src/simAuth.ts
@@ -795,7 +796,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]    27500 بایت  tests/v12.15.0-runtime.test.mjs
   [متنی ]    26634 بایت  tests/v12.16.0-runtime.test.mjs
   [متنی ]    25150 بایت  tests/v12.17.0-runtime.test.mjs
-  [متنی ]    24153 بایت  tests/v12.18.0-runtime.test.mjs
+  [متنی ]    26763 بایت  tests/v12.18.0-runtime.test.mjs
   [متنی ]   100782 بایت  tests/version-11.24-regressions.test.mjs
   [متنی ]   304871 بایت  tests/fixtures/crm-features-v20.js
   [تصویر]    23282 بایت  public/apple-touch-icon.png
@@ -4023,6 +4024,11 @@ ZIP اولین نسخه 38 از کامیت تاریخی دقیق همان نسخ
 🧑 کاربر: همه‌ی صفحات و تب‌ها مدام پرش دارند و اطلاعاتشان جابه‌جا می‌شود؛ حس می‌کنم اطلاعات جدید با قدیمی ادغام شده و برنامه را بهم می‌ریزد؛ خواهش می‌کنم همه‌ی کش‌ها و اطلاعات قدیمی را کاملاً از ریشه حذف کن — همه‌ی اعمال‌نشدن‌ها بخاطر اطلاعات قدیمی است. هنوز: مورد ۴ (ترتیبِ تب ستون‌ها با رفرش برمی‌گردد و روی تب اصلی اثر ندارد — «واقعاً خسته‌کننده»)، مورد ۹ («نمایش تردد» پیغام «نقشه در دسترس نیست؛ تب رصد تردد را باز کنید» می‌دهد و مسیر مبدأ→مقصد رسم نمی‌شود)، مورد ۱۲ (نوع فیلد ساعت فقط ساعت:دقیقه، ثانیه حذف)، مورد ۱۵ (تب دسترسی ریزِ همه‌ی تب‌ها را نشان نداد)، مورد ۱۶ (فیلد تعیین زمان ویزیت در داروخانه/پزشک + آلارم یک روز قبل به کاربر/سرپرست/مدیر)، عددها مدام فارسی و انگلیسی می‌شوند، و با VPN روشن نت‌افراز بالا نمی‌آید.
 
 🤖 دستیار: نسخه 12.18.0 (نوبت ۱۳۵، لایهٔ v1218 + ویرایش‌هایِ نقطه‌ای، ۲۱۸/۲۱۸ تست سبز): (۱) ریشه‌پاک‌کنِ یک‌باره: سرویس‌ورکرها + همه‌ی CacheStorage + جارویِ کلیدهایِ کهنهٔ مرورگر با فهرستِ امانت (state/ورود/solo/گاوصندوق/صفِ ارسال می‌مانند) + حذفِ crmV19 + /api/cleanup?stale=1&purge=1 روی رندر و دو دامنهٔ نت‌افراز (فایل‌هایِ کهنه و رکوردهایِ نمونه از دلِ دادهٔ زنده) + یک reload؛ (۲) ریشهٔ پرش‌ها اندازه‌گیری و خشک شد: ادغامِ کهنه‌خوارِ window.state (حذفِ کلیدهایِ غایب → ادغامِ newer-wins با _updatedAt/_designAt)، گیتِ «فقط با تغییرِ واقعی» روی چیدمان، مقایسهٔ امضایِ منبع در fillTable (مقایسهٔ innerHTML به‌سببِ سریال‌سازیِ مرورگر هرگز برابر نمی‌ماند — حلقهٔ نوشتنِ بی‌پایان)، شبح‌سازیِ میزبان‌هایِ جنگِ v68↔v73، بازنشستگیِ موتورِ موازیِ جابه‌جاییِ ستون (نوسانِ دو-موتورهٔ پزشکان/سفارش‌ها)، فیلترِ سراسریِ نوشتنِ همسان، memo-renderِ محتوامحور؛ نوسانِ داشبوردِ ساکت ۲۴۴۲→۹۸۲ در ۱۶ ثانیه و flipهایِ رقم صفر؛ (۳) بند ۴: شماره‌گذاریِ یکتایِ فراگیر + مُهرِ _designAt + ارسالِ فوری + اعمالِ CSS order روی فیلدهایِ سفارشی (نگارگرِ v82 فقط درون‌سازها را می‌دید — ریشهٔ «هیچ اتفاقی در تب اصلی نمی‌افتد») — راستی‌آزماییِ مرورگری: designer-persisted=true؛ (۴) بند ۹: موتورِ ترددِ واحدِ v1218 بدونِ alert، ساختِ نقشه + switchTab + invalidateSize + fitBounds + ژئوکدِ مبدأ/مقصد از آدرس؛ ریشه‌اش null‌برگرداندنِ L.svg()/L.canvas() با Feature-Detectِ ناجور بود (خطایِ «_leaflet_id in null»ِ leaflet همان پیغام را می‌ساخت) — حالا رندرگر بر پایهٔ در‌دسترس‌بودن انتخاب می‌شود؛ خط مبدأ→مقصد با دو marker رسم شد (line=true)؛ (۵) بند ۱۲: گزینهٔ ساعت در select (ثابت + باز‌درج)، type=time step=60 در رندررِ crm-app، برشِ ثانیه؛ (۶) بند ۱۵: ماتریسِ ۳۳ ردیفی با ستونِ جزئیات (فیلد/رکورد/کلیدِ دسترسی)، «مشاهده» کلیدِ *_access را روی رکورد و CRM_USERS_AUTH می‌نویسد و applyCentralPermissions فوراً اعمال می‌کند، ستون‌هایِ عملیات روی کلیدهایِ همان تب اعمال می‌شوند؛ (۷) بند ۱۶: آلارم با فرمتِ V35 برای نماینده+سرپرست+مدیر با ددیوپِ روزانه + فیلدِ ساعتِ ویزیت (HH:MM) — تستِ مرورگری: recipients=[نماینده،سرپرست،مدیر]، اجرایِ دوباره = ۰؛ (۸) قانونِ ارقام: Number/Date.toLocaleStringِ fa → لاتین (en-US / fa-IR-u-nu-latn؛ تقویمِ شمسی می‌ماند)، faComma/بنرها/دکمهٔ «امروز» لاتین، بدجِ مقایسه‌ای — flip صفر؛ (۹) dedupeٔ سمتِ سرور برای POST /api/state (بدنهٔ یکسان = بدونِ نوشتنِ دیسک) تا چرخهٔ ۱۵ ثانیه‌ایِ دستگاه‌ها فایلِ زنده را بی‌دلیل بازنویسی نکند؛ (۱۰) VPN/نت‌افراز: ریشه در DNS/TLSِ میزبان است نه برنامه — راهنما در پاسخ. توکنِ GitHubِ شنی‌باکس منقضی است؛ تحویل = ZIP + بلاکِ فرمانِ محلی (fetch/checkout/apply/commit/push) و Mergeِ PR #8 توسط کاربر؛ پس از Merge، رندر خودکار و نت‌افراز با ZIPِ 12.18.0 تازه‌سازی می‌شوند و ریشه‌پاک‌کن همان‌اول اجرا می‌شود.
+
+──────────────────────────────── نوبت ۱۳۶ ────────────────────────────────
+🧑 کاربر: (تکرارِ همانِ درخواستِ نوبتِ ۱۳۵ — پرش‌ها، ریشه‌پاک‌کنی، بند ۴/۹/۱۲/۱۵/۱۶، قاطی‌شدنِ ارقامِ فارسی/انگلیسی، بالا‌نیامدنِ نت‌افراز با VPN؛ هنوز هیچ‌چیز اعمال‌شده نمی‌بیند چون production روی ۱۲.۱۶.۰ کهنه است و PR #8 merge نشده بود)
+
+🤖 دستیار: خبرِ مهمِ این نوبت — احرازِ GitHubِ شنی‌باکس برگشت. بینِ دو نوبت، تاریخچهٔ gitِ شنی‌باکس reset شده بود (کامیتِ ۸۰۳ecc3 گم شد) ولی تمامِ فایل‌هایِ کاریِ ۱۲.۱۸.۰ روی دیسکِ ورک‌اسپیس سالم ماندند؛ کامیتِ جدید f81ac40 روی سرِ adf0bff بازسازی شد (diff‌اش دقیقاً همانِ تغییراتِ ۱۲.۱۸.۰ است، بدونِ هیچِ بازگشتی) و روی شاخهٔ arena/01a07288-javad-test1 push شد — یعنی PR #8 از اینِ لحظه ریشه‌ش ۱۲.۱۸.۰ است (mergeable=true). عنوان/توضیحِ PR به ۱۲.۱۸.۰ به‌روز شد. یک تستِ «مثبت» هم برای بند ۴ اضافه شد (تغییرِ ترتیب باید فوراً CSS order را روی گروه‌هایِ تب اصلی بنویسد و اجرایِ دوباره بدونِ تغییر نباید چیزی بنویسد) → ۲۱۹/۲۱۹ تست سبز. از اینِ بعد فقط یک کلیک «Merge pull request» در GitHub لازم است: Render خودکار ۱۲.۱۸.۰ را دیپلوی می‌کند، ریشه‌پاک‌کنِ یک‌باره در اولین باز‌کردن اجرا می‌شود، و برای mehraeinpharma.ir باید ZIPِ همین نسخه (namayandeelmi-v12.18.0.zip، درختِ git با create_system=0) در پنل آپلود شود. سرورِ دانلودِ ۸۰۰۰ و نمونهٔ آزمونِ ۳۱۰۰ دوباره بالا آورده شدند. VPN/نت‌افراز: ریشه در DNS/TLS یا split-routingِ خودِ VPN است نه برنامه — با VPNِ split-tunnel یا باز‌کردنِ ndcohub.com تست شود؛ برنامه با VPNِ قطع کامل هم آفلاین کار می‌کند و پس از اتصال خودکار می‌فرستد.
 
 
 
@@ -14018,9 +14024,14 @@ static-build فقط فایل. داده خالی از رندر پر می‌شود
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: CHANGES_V11.md (179871 بایت)
+فایل: CHANGES_V11.md (180814 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
+
+## 12.18.0 — انتشار (نوبت ۱۳۶): push شد، فقط Merge باقی است
+- احرازِ GitHubِ شنی‌باکس برقرار شد؛ کامیتِ `f81ac40` (درختِ کاملِ 12.18.0 رویِ adf0bff) به `arena/01a07288-javad-test1` push شد — PR #8 mergeable و آمادهٔ تک‌کلیکِ Merge است؛ عنوان/توضیحِ PR به 12.18.0 به‌روز شد.
+- تستِ مثبتِ بند ۴ اضافه شد: تغییرِ ترتیب باید فوراً CSS orderِ گروه‌هایِ تب اصلی را بازنویسی کند و اجرایِ مجددِ بدونِ تغییر نباید چیزی بنویسد → ۲۱۹/۲۱۹ سبز.
+- resetِ بین‌نوبتیِ شنی‌باکس کامیتِ ۸۰۳ecc3 را پاک کرده بود؛ از رویِ فایل‌هایِ سالمِ ورک‌اسپیس بازسازی شد (هیچِ تغییری در محتوا نبود — فقط تاریخچهٔ git).
 
 ## 12.18.0 — ۱۴۰۵/۰۶/۱۵ (2026-09-06, نوبت ۱۳۵)
 - ریشه‌پاک‌کنِ یک‌باره (مُهرِ CRM_V1218_PURGED به‌ازایِ هر نسخه، همان‌اولِ بالاآمدن): unregisterِ همه‌ی سرویس‌ورکرها، حذفِ همه‌ی CacheStorageها، جارویِ کلیدهایِ کهنهٔ localStorage/sessionStorage (state، ورودِ کاربر، مُهرِ solo و صفِ ارسال هرگز پاک نمی‌شوند)، حذفِ crmV19 (هندل‌هایِ پوشهٔ پشتیبان — گاوصندوقِ حجمیِ کاربر crmBulkData می‌ماند)، و GET /api/cleanup?stale=1&purge=1 روی هر سه میزبان: فایل‌هایِ کهنهٔ داده (+ .bak/.old) پاک می‌شوند و رکوردهایِ نمونهٔ قدیمی از دلِ user-data.json و crm-live-data.jsonِ زنده بیرون کشیده/ذخیره می‌شوند. اگر چیزی پاک شد، یک بارِ تازه‌سازیِ خودکار.
@@ -15375,15 +15386,27 @@ pause
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: GITHUB_REVIEW_HANDOFF.md (71991 بایت)
+فایل: GITHUB_REVIEW_HANDOFF.md (73270 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # GITHUB_REVIEW_HANDOFF — تحویل مویرگی برای بررسی GitHub و هوش مصنوعی بعدی
 
-**تاریخ این تحویل:** 2026-09-06 / ۱۵ شهریور 1405 (به‌روزرسانی نوبت ۱۳۵)
+**تاریخ این تحویل:** 2026-09-06 / ۱۵ شهریور 1405 (به‌روزرسانی نوبت ۱۳۶)
 **نسخه آماده سورس:** `12.18.0` (فایل واحد crm-bundle با لایه‌های تا v12.18 — فایل‌های crm-features-v9 تا v20 حذف شده‌اند)
-**نسخه chat.arena پس از بازسازی این نوبت:** `2.12`
+**نسخه chat.arena پس از بازسازی این نوبت:** `2.16`
 **شاخه اجباری این جلسه:** `arena/01a07288-javad-test1`
+
+## 0.35) وضعیت نوبت ۱۳۶ — push انجام شد، فقط Merge باقی است ✅
+```text
+احرازِ GitHubِ شنی‌باکس برگشت (نوبت‌هایِ قبل توکن منقضی بود).
+resetِ بین‌نوبتیِ شنی‌باکس کامیتِ ۸۰۳ecc3 را پاک کرده بود ولی فایل‌هایِ ورک‌اسپیس سالم بودند؛
+کامیتِ f81ac40 = adf0bff + درختِ ۱۲.۱۸.۰ بازسازی و روی arena/01a07288-javad-test1 push شد.
+PR #8: head=f81ac40، state=OPEN، mergeable=true، عنوان/توضیح به 12.18.0 به‌روز شد.
+تستِ جدیدِ مثبتِ بند ۴ (اعمالِ فوریِ CSS order + عدمِ بازنویسیِ بی‌تغیر) → ۲۱۹/۲۱۹ سبز.
+تنها گامِ باقی‌مانده: کاربر در GitHub روی «Merge pull request #8» کلیک کند → Render/ndcohub خودکار 12.18.0؛
+برای mehraeinpharma.ir آپلودِ دستیِ ZIP (namayandeelmi-v12.18.0.zip) لازم است.
+تا قبلِ Merge، همه‌ی میزبان‌ها همان 12.16.0 کهنه را سرو می‌کنند و هیچ‌یکِ ازِ تغییراتِ نوبتِ ۱۳۵ دیده نمی‌شود.
+```
 
 ## 0.3) وضعیت نوبت ۱۳۵ — نسخه 12.18.0 ✅
 ```text
@@ -15413,7 +15436,7 @@ pause
 ارقام:                    Number.toLocaleString و Date.toLocale* با لوکالِ fa → خروجیِ لاتین (en-US و fa-IR-u-nu-latn)؛
                            faComma و هشت نگارِ بنرِ نسخه به لاتین؛ بدج/هینت/نوارِ کهنه همه «نسخه 12.18.0»؛ مقادیرِ تاریخیِ شمسیِ موجود در state دست‌نخورده.
 تست:                      ۲۰۶ تست سبز + تستِ جدید v12.18.0 (مهاجرتِ ارقام، یکتا‌سازیِ ترتیب، گیتِ چیدمان، ماتریسِ ۳۱ردیفی، آلارمِ V35، شبحِ v68، بودجهٔ fetch، ریشه‌پاک‌کن)
-منتظر:                    pushِ شاخه توسط کاربر + Mergeِ PR #8 (توکنِ GitHubِ شنی‌باکس منقضی شده) → بعد از Merge، Render/نت‌افراز خودکار 12.18.0 می‌شوند.
+منتظر:                    (به‌روزِ نوبتِ ۱۳۶: توکنِ شنی‌باکس درست شد و f81ac40 روی شاخه push شد — فقط Mergeِ PR #8 توسط کاربر) → بعد از Merge، Render/ndcohub خودکار 12.18.0؛ نت‌افراز با ZIPِ دستی.
 ```
 
 ## 0.2) وضعیت نوبت ۱۳۳ — نسخه 12.17.1 ✅
@@ -16359,7 +16382,7 @@ pause
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: OFFICIAL_FILELIST.txt (6708 بایت)
+فایل: OFFICIAL_FILELIST.txt (6772 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~text
 .env.example
@@ -16393,6 +16416,7 @@ README_FA_COMPLETE.md
 SYNC_ALL.bat
 SYNC_OFFICIAL_OVER_FOLDER.bat
 build-static.js
+build_zip_1218.py
 chat.arena
 drizzle.config.json
 eslint.config.mjs
@@ -16619,10 +16643,12 @@ tests/v12.14.0-runtime.test.mjs
 tests/v12.15.0-runtime.test.mjs
 tests/v12.16.0-runtime.test.mjs
 tests/v12.17.0-runtime.test.mjs
+tests/v12.18.0-runtime.test.mjs
 tests/version-11.24-regressions.test.mjs
 tsconfig.json
 update_chat_arena.py
 update_project_graph.py
+zip-server.py
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -17443,7 +17469,7 @@ ndcohub.ir به خاطر گواهی SSL خراب دیگر صدا زده نمی�
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: README.md (17643 بایت)
+فایل: README.md (18064 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # نماینده علمی — طنین طب طاها
@@ -17451,6 +17477,8 @@ ndcohub.ir به خاطر گواهی SSL خراب دیگر صدا زده نمی�
 > # 🏷️ نسخه‌ی جاریِ این ریپو (GitHub main): **12.18.0**
 >
 > **به‌روزرسانی 2026-09-06 (نوبت ۱۳۵):** اگر در هر کجا (Render، نت‌افراز، ZIP روی دیسک) نسخه‌ای پایین‌تر از `12.18.0` می‌بینید، آن یک deployِ کهنه است؛ سورسِ درست همین ریپو است.
+>
+> **وضعیت انتشار (نوبت ۱۳۶):** کامیتِ `f81ac40` (=12.18.0) رویِ شاخهٔ PR #8 push شده است. با یک کلیک «Merge pull request» در GitHub، Render و ndcohub خودکار به `12.18.0` می‌رسند؛ برای `mehraeinpharma.ir` ZIPِ همین نسخه را در پنل آپلود کنید. تا قبلِ Merge، همه‌جا همان `12.16.0` اجرا می‌شود.
 >
 > - تولید (Render): `https://javad-test1.onrender.com`
 > - نت‌افراز: `https://mehraeinpharma.ir` + `https://ndcohub.com`
@@ -18250,6 +18278,72 @@ fs.writeFileSync(path.join(DEST, "KHANAN-APLOAD.txt"), [
 console.log("✅ خروجی استاتیک در static-build آماده است.");
 console.log("   platform=static  baseUrl=" + (base || DEFAULT_RENDER));
 console.log("   کل پوشه را در public_html آپلود کنید.");
+~~~~~~~~
+
+──────────────────────────────────────────────────────────────────────────────────
+فایل: build_zip_1218.py (2464 بایت)
+──────────────────────────────────────────────────────────────────────────────────
+~~~~~~~~python
+# -*- coding: utf-8 -*-
+"""ZIP تحویلی نسخه 12.18.0 — قانون GITHUB_REVIEW_HANDOFF:
+   - زیپ استاندارد PKZIP با create_system=0 (ویندوز اکسپلورر بدونِ هشدارِ مجوزهایِ لینوکس بازش کند)
+   - دقیقاً درختِ گیت + chat.arena — بدونِ node_modules و بدونِ فایل‌هایِ حساس (§5.4)
+   - نام: namayandeelmi-v{VER}.zip در ریشه‌ی ورک‌اسپیس
+"""
+import io
+import os
+import subprocess
+import zipfile
+
+ROOT = os.path.dirname(os.path.abspath(__file__))
+VER = "12.18.0"
+OUT = os.path.join(ROOT, "namayandeelmi-v%s.zip" % VER)
+
+FORBID = (
+    "node_modules/", ".git/", "dist/", "build/", ".next/", "coverage/",
+)
+FORBID_EXACT = {
+    "server-db.json", "public/server-db.json", "public/user-data.json",
+    "public/user-bulk-data.json", "public/push-subscriptions.json", "public/push-vapid.json",
+    "public/crm-live-data.json", "public/crm-live-bulk.json", "public/crm-netafraz-data.json",
+    "public/crm-netafraz-bulk.json", "public/.env", ".env", "data/user-data.json",
+}
+
+def rel_list():
+    r = subprocess.run(["git", "ls-files", "-z"], cwd=ROOT, capture_output=True)
+    files = [f for f in r.stdout.decode("utf-8").split("\0") if f]
+    if os.path.exists(os.path.join(ROOT, "chat.arena")) and "chat.arena" not in files:
+        files.append("chat.arena")
+    return sorted(set(files))
+
+def allowed(rel):
+    if any(rel.startswith(p) for p in FORBID):
+        return False
+    if rel in FORBID_EXACT:
+        return False
+    if rel.endswith(".zip") or rel.endswith(".env"):
+        return False
+    return True
+
+def main():
+    files = [f for f in rel_list() if allowed(f)]
+    if os.path.exists(OUT):
+        os.remove(OUT)
+    with zipfile.ZipFile(OUT, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as z:
+        for rel in files:
+            full = os.path.join(ROOT, rel)
+            if not os.path.isfile(full):
+                continue
+            data = io.open(full, "rb").read()
+            info = zipfile.ZipInfo(rel, date_time=(2026, 9, 6, 12, 0, 0))
+            info.create_system = 0            # ← قانونِ ویندوز: DOS/PKZIP
+            info.external_attr = 0o666 << 16  # بدونِ x-bitهایِ یونیکس
+            info.compress_type = zipfile.ZIP_DEFLATED
+            z.writestr(info, data)
+    print("ZIP:", OUT, os.path.getsize(OUT), "bytes,", len(files), "files")
+
+if __name__ == "__main__":
+    main()
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -19582,7 +19676,7 @@ git status -sb
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: update_chat_arena.py (404150 بایت)
+فایل: update_chat_arena.py (406698 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~python
 #!/usr/bin/env python3
@@ -19662,7 +19756,7 @@ def walk_files():
 
 HEADER = """CHAT.ARENA — حافظه دائمی و کامل پروژه «نماینده علمی» (طنین طب طاها / TENIN TEB TAHA)
 =====================================================================================
-نسخه این فایل: 2.15 | تاریخ به‌روزرسانی: 2026-09-06 (۱۵ شهریور ۱۴۰۵) | نسخه برنامه: 12.18.0
+نسخه این فایل: 2.16 | تاریخ به‌روزرسانی: 2026-09-06 (۱۵ شهریور ۱۴۰۵) | نسخه برنامه: 12.18.0
 این فایل به دستور کاربر ساخته شده و قانون دائمی دارد: بعد از هر گفتگو و هر نسخه جدید برنامه،
 این فایل به‌روزرسانی می‌شود و نسخه به‌روز آن همیشه داخل فایل زیپ تحویلی قرار می‌گیرد.
 (قانون شماره ۶۳ در AI_RULES.md) — بازسازی با: python update_chat_arena.py
@@ -23416,6 +23510,11 @@ ZIP اولین نسخه 38 از کامیت تاریخی دقیق همان نسخ
 
 🤖 دستیار: نسخه 12.18.0 (نوبت ۱۳۵، لایهٔ v1218 + ویرایش‌هایِ نقطه‌ای، ۲۱۸/۲۱۸ تست سبز): (۱) ریشه‌پاک‌کنِ یک‌باره: سرویس‌ورکرها + همه‌ی CacheStorage + جارویِ کلیدهایِ کهنهٔ مرورگر با فهرستِ امانت (state/ورود/solo/گاوصندوق/صفِ ارسال می‌مانند) + حذفِ crmV19 + /api/cleanup?stale=1&purge=1 روی رندر و دو دامنهٔ نت‌افراز (فایل‌هایِ کهنه و رکوردهایِ نمونه از دلِ دادهٔ زنده) + یک reload؛ (۲) ریشهٔ پرش‌ها اندازه‌گیری و خشک شد: ادغامِ کهنه‌خوارِ window.state (حذفِ کلیدهایِ غایب → ادغامِ newer-wins با _updatedAt/_designAt)، گیتِ «فقط با تغییرِ واقعی» روی چیدمان، مقایسهٔ امضایِ منبع در fillTable (مقایسهٔ innerHTML به‌سببِ سریال‌سازیِ مرورگر هرگز برابر نمی‌ماند — حلقهٔ نوشتنِ بی‌پایان)، شبح‌سازیِ میزبان‌هایِ جنگِ v68↔v73، بازنشستگیِ موتورِ موازیِ جابه‌جاییِ ستون (نوسانِ دو-موتورهٔ پزشکان/سفارش‌ها)، فیلترِ سراسریِ نوشتنِ همسان، memo-renderِ محتوامحور؛ نوسانِ داشبوردِ ساکت ۲۴۴۲→۹۸۲ در ۱۶ ثانیه و flipهایِ رقم صفر؛ (۳) بند ۴: شماره‌گذاریِ یکتایِ فراگیر + مُهرِ _designAt + ارسالِ فوری + اعمالِ CSS order روی فیلدهایِ سفارشی (نگارگرِ v82 فقط درون‌سازها را می‌دید — ریشهٔ «هیچ اتفاقی در تب اصلی نمی‌افتد») — راستی‌آزماییِ مرورگری: designer-persisted=true؛ (۴) بند ۹: موتورِ ترددِ واحدِ v1218 بدونِ alert، ساختِ نقشه + switchTab + invalidateSize + fitBounds + ژئوکدِ مبدأ/مقصد از آدرس؛ ریشه‌اش null‌برگرداندنِ L.svg()/L.canvas() با Feature-Detectِ ناجور بود (خطایِ «_leaflet_id in null»ِ leaflet همان پیغام را می‌ساخت) — حالا رندرگر بر پایهٔ در‌دسترس‌بودن انتخاب می‌شود؛ خط مبدأ→مقصد با دو marker رسم شد (line=true)؛ (۵) بند ۱۲: گزینهٔ ساعت در select (ثابت + باز‌درج)، type=time step=60 در رندررِ crm-app، برشِ ثانیه؛ (۶) بند ۱۵: ماتریسِ ۳۳ ردیفی با ستونِ جزئیات (فیلد/رکورد/کلیدِ دسترسی)، «مشاهده» کلیدِ *_access را روی رکورد و CRM_USERS_AUTH می‌نویسد و applyCentralPermissions فوراً اعمال می‌کند، ستون‌هایِ عملیات روی کلیدهایِ همان تب اعمال می‌شوند؛ (۷) بند ۱۶: آلارم با فرمتِ V35 برای نماینده+سرپرست+مدیر با ددیوپِ روزانه + فیلدِ ساعتِ ویزیت (HH:MM) — تستِ مرورگری: recipients=[نماینده،سرپرست،مدیر]، اجرایِ دوباره = ۰؛ (۸) قانونِ ارقام: Number/Date.toLocaleStringِ fa → لاتین (en-US / fa-IR-u-nu-latn؛ تقویمِ شمسی می‌ماند)، faComma/بنرها/دکمهٔ «امروز» لاتین، بدجِ مقایسه‌ای — flip صفر؛ (۹) dedupeٔ سمتِ سرور برای POST /api/state (بدنهٔ یکسان = بدونِ نوشتنِ دیسک) تا چرخهٔ ۱۵ ثانیه‌ایِ دستگاه‌ها فایلِ زنده را بی‌دلیل بازنویسی نکند؛ (۱۰) VPN/نت‌افراز: ریشه در DNS/TLSِ میزبان است نه برنامه — راهنما در پاسخ. توکنِ GitHubِ شنی‌باکس منقضی است؛ تحویل = ZIP + بلاکِ فرمانِ محلی (fetch/checkout/apply/commit/push) و Mergeِ PR #8 توسط کاربر؛ پس از Merge، رندر خودکار و نت‌افراز با ZIPِ 12.18.0 تازه‌سازی می‌شوند و ریشه‌پاک‌کن همان‌اول اجرا می‌شود.
 
+──────────────────────────────── نوبت ۱۳۶ ────────────────────────────────
+🧑 کاربر: (تکرارِ همانِ درخواستِ نوبتِ ۱۳۵ — پرش‌ها، ریشه‌پاک‌کنی، بند ۴/۹/۱۲/۱۵/۱۶، قاطی‌شدنِ ارقامِ فارسی/انگلیسی، بالا‌نیامدنِ نت‌افراز با VPN؛ هنوز هیچ‌چیز اعمال‌شده نمی‌بیند چون production روی ۱۲.۱۶.۰ کهنه است و PR #8 merge نشده بود)
+
+🤖 دستیار: خبرِ مهمِ این نوبت — احرازِ GitHubِ شنی‌باکس برگشت. بینِ دو نوبت، تاریخچهٔ gitِ شنی‌باکس reset شده بود (کامیتِ ۸۰۳ecc3 گم شد) ولی تمامِ فایل‌هایِ کاریِ ۱۲.۱۸.۰ روی دیسکِ ورک‌اسپیس سالم ماندند؛ کامیتِ جدید f81ac40 روی سرِ adf0bff بازسازی شد (diff‌اش دقیقاً همانِ تغییراتِ ۱۲.۱۸.۰ است، بدونِ هیچِ بازگشتی) و روی شاخهٔ arena/01a07288-javad-test1 push شد — یعنی PR #8 از اینِ لحظه ریشه‌ش ۱۲.۱۸.۰ است (mergeable=true). عنوان/توضیحِ PR به ۱۲.۱۸.۰ به‌روز شد. یک تستِ «مثبت» هم برای بند ۴ اضافه شد (تغییرِ ترتیب باید فوراً CSS order را روی گروه‌هایِ تب اصلی بنویسد و اجرایِ دوباره بدونِ تغییر نباید چیزی بنویسد) → ۲۱۹/۲۱۹ تست سبز. از اینِ بعد فقط یک کلیک «Merge pull request» در GitHub لازم است: Render خودکار ۱۲.۱۸.۰ را دیپلوی می‌کند، ریشه‌پاک‌کنِ یک‌باره در اولین باز‌کردن اجرا می‌شود، و برای mehraeinpharma.ir باید ZIPِ همین نسخه (namayandeelmi-v12.18.0.zip، درختِ git با create_system=0) در پنل آپلود شود. سرورِ دانلودِ ۸۰۰۰ و نمونهٔ آزمونِ ۳۱۰۰ دوباره بالا آورده شدند. VPN/نت‌افراز: ریشه در DNS/TLS یا split-routingِ خودِ VPN است نه برنامه — با VPNِ split-tunnel یا باز‌کردنِ ndcohub.com تست شود؛ برنامه با VPNِ قطع کامل هم آفلاین کار می‌کند و پس از اتصال خودکار می‌فرستد.
+
 """
 
 FILES_INTRO = """
@@ -23715,6 +23814,87 @@ if __name__ == "__main__":
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
+فایل: zip-server.py (3576 بایت)
+──────────────────────────────────────────────────────────────────────────────────
+~~~~~~~~python
+# -*- coding: utf-8 -*-
+"""صفحهٔ دانلودِ ZIP — پورت ۸۰۰۰ (قانون ۶۴+۹۳): لینکِ مستقیمِ /zip با Content-Disposition: attachment
+   هر بار که فایلِ زیپِ تازه ساخته شود، همین سرور همانِ فایلِ تازه را می‌دهد (خواندن در هر درخواست)."""
+import http.server
+import os
+import re
+import socketserver
+
+ROOT = os.path.dirname(os.path.abspath(__file__))
+PORT = 8000
+VER = "12.18.0"
+ZIP_NAME = "namayandeelmi-v%s.zip" % VER
+ZIP_PATH = os.path.join(ROOT, ZIP_NAME)
+
+
+class Handler(http.server.BaseHTTPRequestHandler):
+    def log_message(self, *a):
+        pass
+
+    def do_HEAD(self):
+        self.do_GET()
+
+    def do_GET(self):
+        if self.path in ("/zip", "/download", "/" + ZIP_NAME):
+            if not os.path.isfile(ZIP_PATH):
+                self.send_response(404)
+                self.end_headers()
+                self.wfile.write(b"zip missing")
+                return
+            data = open(ZIP_PATH, "rb").read()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/zip")
+            self.send_header("Content-Length", str(len(data)))
+            self.send_header("Content-Disposition", "attachment; filename=\"%s\"" % ZIP_NAME)
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            try:
+                self.wfile.write(data)
+            except BrokenPipeError:
+                pass
+            return
+        size = "-"
+        if os.path.isfile(ZIP_PATH):
+            size = "{:,} بایت".format(os.path.getsize(ZIP_PATH))
+        html = (
+            "<!doctype html><html dir='rtl' lang='fa'><meta charset='utf-8'>"
+            "<meta name='viewport' content='width=device-width,initial-scale=1'>"
+            "<title>دانلود ZIP — نسخه %s</title>"
+            "<style>body{font:15px/2 Tahoma,sans-serif;background:#0f172a;color:#e2e8f0;display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0}"
+            ".card{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:28px 34px;max-width:560px;text-align:center}"
+            "a.btn{display:inline-block;background:#0d9488;color:#fff;font-weight:800;padding:12px 34px;border-radius:10px;text-decoration:none;margin-top:12px}"
+            "a.btn:hover{background:#0f766e}.muted{color:#94a3b8;font-size:12px}</style>"
+            "<div class='card'><h1>📦 نماینده علمی — نسخه %s</h1>"
+            "<p>زیپِ کاملِ سورسِ همین نسخه (درختِ ریپو + chat.arena) — استانداردِ ویندوز، بدونِ node_modules.</p>"
+            "<p class='muted'>حجم: %s</p>"
+            "<a class='btn' href='/zip' download='%s'>⬇ دانلود ZIP</a>"
+            "<p class='muted'>ذخیره در پوشهٔ Downloads، سپس Extract All و جایگزینی روی هاست (نت‌افراز) یا آپلود به ریپو.</p>"
+            "</div></html>"
+        ) % (VER, VER, size, ZIP_NAME)
+        body = html.encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+
+class Server(socketserver.ThreadingTCPServer):
+    allow_reuse_address = True
+
+
+if __name__ == "__main__":
+    with Server(("0.0.0.0", PORT), Handler) as httpd:
+        print("zip server on :%d -> %s" % (PORT, ZIP_PATH))
+        httpd.serve_forever()
+~~~~~~~~
+
+──────────────────────────────────────────────────────────────────────────────────
 فایل: .github/workflows/deploy.yml (2558 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~yaml
@@ -23813,17 +23993,10 @@ jobs:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: backups/crm-2026-09-06-15-45.json (286 بایت)
+فایل: backups/crm-2026-09-06-18-15.json (286 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~json
-{"_dataGen":"11.81.0","_schemaVersion":"11.81.0","_lastSavedAt":42,"users":[{"id":"sentinel-user","fullName":"اطلاعات قدیمی"}],"formFieldMeta":{"order":{"sentinel":{"order":99}}},"_soloOnly":true,"_soloEpoch":1788710041601,"_soloAt":1788710041601,"_unifiedAt":1788710041601}
-~~~~~~~~
-
-──────────────────────────────────────────────────────────────────────────────────
-فایل: backups/crm-2026-09-06-16-30.json (286 بایت)
-──────────────────────────────────────────────────────────────────────────────────
-~~~~~~~~json
-{"_dataGen":"11.81.0","_schemaVersion":"11.81.0","_lastSavedAt":42,"users":[{"id":"sentinel-user","fullName":"اطلاعات قدیمی"}],"formFieldMeta":{"order":{"sentinel":{"order":99}}},"_soloOnly":true,"_soloEpoch":1788712965852,"_soloAt":1788712965852,"_unifiedAt":1788712965852}
+{"_dataGen":"11.81.0","_schemaVersion":"11.81.0","_lastSavedAt":42,"users":[{"id":"sentinel-user","fullName":"اطلاعات قدیمی"}],"formFieldMeta":{"order":{"sentinel":{"order":99}}},"_soloOnly":true,"_soloEpoch":1788719257487,"_soloAt":1788719257487,"_unifiedAt":1788719257487}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -90863,7 +91036,7 @@ test('v12.17.1: کادرِ چسبانِ سفارش و قلاب‌هایِ captur
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/v12.18.0-runtime.test.mjs (24153 بایت)
+فایل: tests/v12.18.0-runtime.test.mjs (26763 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 /**
@@ -91087,6 +91260,44 @@ test('v12.18.0: applySavedLayoutV82 و applyFullFormLayout با بی‌تغیر 
   env.win.applySavedLayoutV282 = null;
   env.win.applySavedLayoutV82('tab-pharmacies');
   assert.equal(calls, afterFirst + 1, 'پس از ذخیره، نقاشی مجاز است');
+});
+
+test('v12.18.0: مثبتِ بند ۴ — تغییرِ ترتیب، فوراً روی تب اصلی اعمال می‌شود و دوباره‌نویسیِ بی‌تغیر انجام نمی‌شود', () => {
+  // سه فیلدِ درون‌ساز؛ چیدمانِ DOM فعلی c,a,b است ولی ترتیبِ ذخیره‌شده 1=a 2=b 3=c
+  const mk = (fid) => { const g = makeEl('div', null); g.className = 'form-group'; g.setAttribute('data-col-fid', fid); return g; };
+  const ga = mk('a'), gb = mk('b'), gc = mk('c');
+  const grid = makeEl('div', null);
+  grid.appendChild(gc); grid.appendChild(ga); grid.appendChild(gb);
+  let seq = [{ id: 'a', order: 1 }, { id: 'b', order: 2 }, { id: 'c', order: 3 }];
+  const pane = makeEl('div', null);
+  const env = bootLayer({
+    state: { formFieldMeta: { pharmacy: { a: { order: 1 }, b: { order: 2 }, c: { order: 3 } } }, _lastSavedAt: 5 },
+    windowExtra: {
+      getUnifiedFieldList: () => seq.slice(),
+      getMainGrid: () => grid
+    }
+  });
+  env.doc._ix['tab-pharmacies'] = pane;
+  // اعمالِ اولیه: CSS order باید مطابق ترتیبِ ذخیره‌شده نوشته شود (اثرِ زنده روی تب اصلی)
+  env.API.applyOrder('tab-pharmacies', true);
+  assert.equal(gc.style.getPropertyValue('order'), '3', 'گروه c باید order=3 بگیرد');
+  assert.equal(ga.style.getPropertyValue('order'), '1', 'گروه a باید order=1 بگیرد');
+  // کاربر ترتیب را عوض می‌کند: c اول می‌آید (تغییرِ واقعی → باید اعمال شود)
+  seq = [{ id: 'c', order: 1 }, { id: 'a', order: 2 }, { id: 'b', order: 3 }];
+  env.win.state.formFieldMeta.pharmacy.c.order = 1;
+  env.win.state.formFieldMeta.pharmacy.a.order = 2;
+  env.win.state.formFieldMeta.pharmacy.b.order = 3;
+  env.win.state._lastSavedAt = 6;
+  const r1 = env.API.applyOrder('tab-pharmacies', false);
+  assert.equal(r1, true, 'تغییرِ ترتیب باید «اعمال شد» برگرداند');
+  assert.equal(gc.style.getPropertyValue('order'), '1', 'پس از تغییر، c اول است');
+  assert.equal(ga.style.getPropertyValue('order'), '2');
+  assert.equal(gb.style.getPropertyValue('order'), '3');
+  // اجرای دوباره بدونِ هیچ تغییری: نباید چیزی بنویسد (مهارِ پرش)
+  const before = gc.style.getPropertyValue('order');
+  const r2 = env.API.applyOrder('tab-pharmacies', false);
+  assert.equal(r2, false, 'بدونِ تغییر، اعمالِ مجدد نباید اثر داشته باشد');
+  assert.equal(gc.style.getPropertyValue('order'), before);
 });
 
 /* ───────── ۳) بند ۹: تردد ───────── */

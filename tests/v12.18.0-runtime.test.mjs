@@ -221,6 +221,44 @@ test('v12.18.0: applySavedLayoutV82 و applyFullFormLayout با بی‌تغیر 
   assert.equal(calls, afterFirst + 1, 'پس از ذخیره، نقاشی مجاز است');
 });
 
+test('v12.18.0: مثبتِ بند ۴ — تغییرِ ترتیب، فوراً روی تب اصلی اعمال می‌شود و دوباره‌نویسیِ بی‌تغیر انجام نمی‌شود', () => {
+  // سه فیلدِ درون‌ساز؛ چیدمانِ DOM فعلی c,a,b است ولی ترتیبِ ذخیره‌شده 1=a 2=b 3=c
+  const mk = (fid) => { const g = makeEl('div', null); g.className = 'form-group'; g.setAttribute('data-col-fid', fid); return g; };
+  const ga = mk('a'), gb = mk('b'), gc = mk('c');
+  const grid = makeEl('div', null);
+  grid.appendChild(gc); grid.appendChild(ga); grid.appendChild(gb);
+  let seq = [{ id: 'a', order: 1 }, { id: 'b', order: 2 }, { id: 'c', order: 3 }];
+  const pane = makeEl('div', null);
+  const env = bootLayer({
+    state: { formFieldMeta: { pharmacy: { a: { order: 1 }, b: { order: 2 }, c: { order: 3 } } }, _lastSavedAt: 5 },
+    windowExtra: {
+      getUnifiedFieldList: () => seq.slice(),
+      getMainGrid: () => grid
+    }
+  });
+  env.doc._ix['tab-pharmacies'] = pane;
+  // اعمالِ اولیه: CSS order باید مطابق ترتیبِ ذخیره‌شده نوشته شود (اثرِ زنده روی تب اصلی)
+  env.API.applyOrder('tab-pharmacies', true);
+  assert.equal(gc.style.getPropertyValue('order'), '3', 'گروه c باید order=3 بگیرد');
+  assert.equal(ga.style.getPropertyValue('order'), '1', 'گروه a باید order=1 بگیرد');
+  // کاربر ترتیب را عوض می‌کند: c اول می‌آید (تغییرِ واقعی → باید اعمال شود)
+  seq = [{ id: 'c', order: 1 }, { id: 'a', order: 2 }, { id: 'b', order: 3 }];
+  env.win.state.formFieldMeta.pharmacy.c.order = 1;
+  env.win.state.formFieldMeta.pharmacy.a.order = 2;
+  env.win.state.formFieldMeta.pharmacy.b.order = 3;
+  env.win.state._lastSavedAt = 6;
+  const r1 = env.API.applyOrder('tab-pharmacies', false);
+  assert.equal(r1, true, 'تغییرِ ترتیب باید «اعمال شد» برگرداند');
+  assert.equal(gc.style.getPropertyValue('order'), '1', 'پس از تغییر، c اول است');
+  assert.equal(ga.style.getPropertyValue('order'), '2');
+  assert.equal(gb.style.getPropertyValue('order'), '3');
+  // اجرای دوباره بدونِ هیچ تغییری: نباید چیزی بنویسد (مهارِ پرش)
+  const before = gc.style.getPropertyValue('order');
+  const r2 = env.API.applyOrder('tab-pharmacies', false);
+  assert.equal(r2, false, 'بدونِ تغییر، اعمالِ مجدد نباید اثر داشته باشد');
+  assert.equal(gc.style.getPropertyValue('order'), before);
+});
+
 /* ───────── ۳) بند ۹: تردد ───────── */
 test('v12.18.0: «نمایش تردد» بدون alert رسم می‌کند؛ نقشهٔsvg و fitBounds صدا زده می‌شوند', () => {
   let fitCalled = false; let invalidated = 0; let lineOpts = null;
