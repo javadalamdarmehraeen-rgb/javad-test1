@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
-define("CRM_APP_VERSION", "12.17.1");
+define("CRM_APP_VERSION", "12.18.0");
 
 /* v12.12: همگام سه دامنه — رندر + دو دامنه نت‌افراز */
 function peer_hosts() {
@@ -182,6 +182,35 @@ function stamp_gen($data) {
   $data["_netafrazSyncAt"] = round(microtime(true) * 1000);
   $data["_netafrazVersion"] = CRM_APP_VERSION;
   return $data;
+}
+/* v12.18.0: ریشه‌پاک‌کنی — حذفِ رکوردهایِ نمونه‌ی قدیمی (همان فهرستِ سرورِ Node) */
+function strip_legacy_sample(&$st) {
+  if (!is_array($st)) return 0;
+  $ids = array("ph-1","ph-2","ph-3","doc-1","doc-2","rep-1","rep-2","rep-3","ord-1","u-2","u-3","u-4",
+    "prod-1","prod-2","act-1","act-2","act-3","home-1","home-2","rt-1","rt-2","lv-1","lv-2","v-1","v-2","v-3",
+    "h-1","h-2","h-3","h-4","not-1","not-2","tgt-1","tgt-2");
+  $names = array("داروخانه دکتر عرفانی","داروخانه شبانه‌روزی رازی","داروخانه دکتر عقبایی","دکتر کاوه سعیدی","دکتر الناز تهرانی",
+    "کپسول امپرازول ۲۰ میلی‌گرم","آمپول نوروبیون ویتامین B کمپلکس","داروخانه ۱۳ آبان","داروخانه هلال احمر انقلاب",
+    "داروخانه شبانه‌روزی امام رضا","داروخانه شبانه‌روزی کاشانی","داروخانه شبانه‌روزی ولیعصر تبریز","داروخانه شبانه‌روزی گوهردشت");
+  $arrays = array("pharmacies","doctors","orders","products","users","reps","leaves","visits","repRoutes","repHomes","hospitals","notifications","salesTargets","distSalesTargets","activityLog");
+  $n = 0;
+  foreach ($arrays as $k) {
+    if (!isset($st[$k]) || !is_array($st[$k])) continue;
+    $next = array();
+    foreach ($st[$k] as $r) {
+      if (!is_array($r)) { $next[] = $r; continue; }
+      $id = isset($r["id"]) ? strval($r["id"]) : "";
+      if ($id !== "" && in_array($id, $ids, true)) { $n += 1; continue; }
+      $nm = "";
+      foreach (array("name","fullName","pharmacyName") as $nk) {
+        if (!empty($r[$nk])) { $nm = strval($r[$nk]); break; }
+      }
+      if ($nm !== "" && in_array($nm, $names, true)) { $n += 1; continue; }
+      $next[] = $r;
+    }
+    $st[$k] = array_values($next);
+  }
+  return $n;
 }
 function render_base($allowDefault) {
   $c = cfg();
@@ -417,6 +446,22 @@ if ($p === "cleanup" || $p === "purge-legacy") {
     $fp2 = __DIR__ . "/data/" . $fname;
     if (is_file($fp2)) { if (@unlink($fp2)) $removed[] = "data/" . $fname; }
   }
+  /* v12.18.0: purge=1 — فایل‌هایِ پشتیبانِ کهنهٔ کنارِ دادهٔ زنده هم پاک می‌شوند (خودِ crm-live-*.json هرگز) */
+  if (!empty($_GET["purge"])) {
+    foreach (array(__DIR__, __DIR__ . "/data", $DATA_DIR) as $dirx) {
+      if (!is_dir($dirx)) continue;
+      foreach (@scandir($dirx) ?: array() as $fn) {
+        if (!is_file($dirx . "/" . $fn)) continue;
+        $live = ($dirx . "/" . $fn) === $DATA || ($dirx . "/" . $fn) === $BULK;
+        if ($live) continue;
+        if (preg_match('/\.(json\.bak|bak|old)$/i', $fn) || preg_match('/^user-data\.bak|^crm-netafraz/i', $fn)) {
+          if (@unlink($dirx . "/" . $fn)) $removed[] = basename($dirx) . "/" . $fn;
+        }
+      }
+    }
+    $ld = read_json($DATA);
+    if ($ld) { if (strip_legacy_sample($ld) > 0) write_json($DATA, $ld); }
+  }
   /* v12.17.0: حذفِ فایل‌هایِ نسخه‌هایِ قدیمی — فقط فهرستِ سفیدِ ثابت (هرگز فایلِ جاری) */
   if (!empty($_GET["stale"])) {
     foreach (scandir(__DIR__) as $sname) {
@@ -437,6 +482,11 @@ if ($p === "cleanup" || $p === "purge-legacy") {
 if (strpos($p, "state") === 0) {
   if ($method === "GET") {
     $local = fill_if_empty(read_json($DATA), $DATA);
+    /* v12.18.0: همان‌جا که سرورِ Node نمونه‌ها را می‌زداید، نت‌افراز هم می‌زداید */
+    if ($local) {
+      $srp = strip_legacy_sample($local);
+      if ($srp > 0) write_json($DATA, $local);
+    }
     send_json($local ? array("status" => "success", "data" => $local) : array("status" => "empty"));
   }
   if ($method === "POST") {
@@ -447,7 +497,17 @@ if (strpos($p, "state") === 0) {
     if (too_empty($incoming, $existing)) {
       send_json(array("status" => "success", "data" => $existing, "ignored" => true, "reason" => "empty-rejected"));
     }
+    /* v12.18.0: بدنهٔ یکسان با آخرین ذخیره → دیسک دست نمی‌خورد (چرخهٔ ۱۵ ثانیه‌ایِ همگام، فایلِ زنده را بی‌دلیل بازنویسی نمی‌کند) */
+    $hh = md5(json_encode($incoming, JSON_UNESCAPED_UNICODE));
+    $hf = dirname($DATA) . "/state.md5";
+    if (!is_dir(dirname($hf))) { @mkdir(dirname($hf), 0775, true); }
+    $prev = @file_get_contents($hf);
+    if ($prev !== false && trim($prev) === $hh && is_file($DATA)) {
+      send_json(array("status" => "success", "data" => $incoming, "dedup" => true));
+    }
+    strip_legacy_sample($incoming);
     write_json($DATA, $incoming);
+    @file_put_contents($hf, $hh, LOCK_EX);
     header("Content-Type: application/json; charset=utf-8");
     header("Cache-Control: no-store");
     echo json_encode(array("status" => "success", "data" => $incoming, "sync" => array("queued" => true)), JSON_UNESCAPED_UNICODE);

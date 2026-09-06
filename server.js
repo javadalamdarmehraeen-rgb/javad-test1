@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "12.17.1";
+const APP_VERSION = "12.18.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -174,6 +174,7 @@ function startQuarterHourBackup() {
     } catch (e1) {}
   }, 15 * 60 * 1000);
 }
+let lastStateWriteHash = "";
 function readJsonSafe(filePath) {
   try { return sanitizeJsonValue(JSON.parse(fs.readFileSync(filePath, "utf8"))); } catch (e) { return null; }
 }
@@ -442,7 +443,10 @@ const server = http.createServer((req, res) => {
     }), "application/json; charset=utf-8", { "Cache-Control": "no-store", "X-CRM-Build": APP_VERSION });
   }
 
-  /* v12.17.0: حذفِ فایل‌هایِ نسخه‌هایِ قدیمی — فقط فهرستِ سفیدِ ثابت (هرگز فایلِ جاری) */
+  /* v12.17.0: حذفِ فایل‌هایِ نسخه‌هایِ قدیمی — فقط فهرستِ سفیدِ ثابت (هرگز فایلِ جاری)
+     v12.18.0: + پارامترِ purge=1 (ریشه‌پاک‌کنی): فایل‌هایِ داده‌ایِ کهنهٔ زمانِ نت‌افراز +
+     نمونه‌هایِ قدیمیِ داخلِ user-data.json. هرگز به user-data.jsonِ زنده، user-bulk-data.json،
+     push-* و پوشه‌ی backups دست نمی‌زنیم — فقط پالایشِ درجا و حذفِ فایل‌هایِ لیست‌شده. */
   if (pathname === "/api/cleanup" && req.method === "GET" && (parsed.searchParams.get("stale") || req.headers["x-crm-admin"] === "1")) {
     const removed = [];
     try {
@@ -451,7 +455,34 @@ const server = http.createServer((req, res) => {
         try { fs.unlinkSync(path.join(PUBLIC_DIR, sname)); removed.push(sname); } catch (e) {}
       }
     } catch (e) {}
-    return send(req, res, 200, JSON.stringify({ ok: true, status: "success", removed: removed, version: APP_VERSION }), "application/json; charset=utf-8", { "Cache-Control": "no-store", "X-CRM-Build": APP_VERSION });
+    let purged = 0, sampleStripped = 0;
+    if (parsed.searchParams.get("purge") === "1") {
+      const LEGACY_RUNTIME_FILES = ["server-db.json", "crm-netafraz-data.json", "crm-netafraz-bulk.json", "crm-live-data.json", "crm-live-bulk.json"];
+      [RUNTIME_DATA_DIR, __dirname].forEach((dir) => {
+        try {
+          for (const fname of fs.readdirSync(dir)) {
+            const fp = path.join(dir, fname);
+            if (!fs.statSync(fp).isFile()) continue;
+            const isLegacyName = LEGACY_RUNTIME_FILES.indexOf(fname) >= 0 ||
+              (/\.json\.(bak|old)$/.test(fname)) || (/^(user-data|user-bulk-data)\.bak/.test(fname));
+            if (!isLegacyName) continue;
+            if (fp === SERVER_DATA_PATH || fp === USER_BULK_PATH || fp === PUSH_SUBSCRIPTIONS_PATH || fp === VAPID_KEYS_PATH) continue;
+            try { fs.unlinkSync(fp); removed.push(fname); purged += 1; } catch (e) {}
+          }
+        } catch (e) {}
+      });
+      try {
+        if (fs.existsSync(SERVER_DATA_PATH)) {
+          const live = readJsonSafe(SERVER_DATA_PATH);
+          if (live) {
+            sampleStripped = stripLegacySample(live);
+            fenceOldSystem(live);
+            if (sampleStripped > 0) writeJsonAtomic(SERVER_DATA_PATH, live);
+          }
+        }
+      } catch (e) {}
+    }
+    return send(req, res, 200, JSON.stringify({ ok: true, status: "success", removed: removed, purged: purged, sampleStripped: sampleStripped, version: APP_VERSION }), "application/json; charset=utf-8", { "Cache-Control": "no-store", "X-CRM-Build": APP_VERSION });
   }
 
   if (pathname === "/api/runtime-config" && req.method === "GET") {
@@ -730,11 +761,19 @@ const server = http.createServer((req, res) => {
         data._dataGen = "11.81.0";
         data._schemaVersion = "11.81.0";
         data._soloOnly = true;
+        delete data._soloReplace;
         data._soloEpoch = Number(data._soloEpoch) || (existing && existing._soloEpoch) || Date.now();
+        /* v12.18.0: بدنهٔ یکسان با آخرین ذخیره → نوشتنِ دوباره روی دیسک و بکاپ نمی‌گیریم
+           (چرخهٔ ۱۵ ثانیه‌ایِ همگامِ دستگاه‌ها دیگر فایلِ زنده را بی‌دلیل بازنویسی نمی‌کند) */
+        let hash = "";
+        try { hash = crypto.createHash("md5").update(JSON.stringify(data)).digest("hex"); } catch (e) {}
+        if (hash && hash === lastStateWriteHash && fs.existsSync(SERVER_DATA_PATH)) {
+          return send(req, res, 200, JSON.stringify({ status: "success", data: data, dedup: true }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
+        }
         data._soloAt = Date.now();
         data._unifiedAt = Date.now();
-        delete data._soloReplace;
         writeJsonAtomic(SERVER_DATA_PATH, data);
+        lastStateWriteHash = hash || "";
         snapshotCloudBackup(data);
         return send(req, res, 200, JSON.stringify({ status: "success", data: data, replaced: true }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
       } catch (err) {
@@ -801,7 +840,7 @@ const server = http.createServer((req, res) => {
   }
   const ext = path.extname(filePath).toLowerCase();
   const isAsset = [".png", ".jpg", ".jpeg", ".css", ".js", ".woff2", ".svg", ".webp"].indexOf(ext) !== -1;
-  /* v12.14: داراییِ نسخه‌دار (crm-app.js?v=12.17.1) یک سال کش immutable می‌شود
+  /* v12.14: داراییِ نسخه‌دار (crm-app.js?v=12.18.0) یک سال کش immutable می‌شود
      → رفرشِ ساده/سخت دیگر ۶ فایل JS را دوباره از هاست نمی‌کشد (رفع بسته‌شدنِ اتصال) */
   const versioned = /[?&]v=\d/.test(String(req.url || ""));
   const assetCache = (isAsset && versioned) ? 31536000

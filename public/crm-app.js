@@ -30,9 +30,15 @@ function bindLiveWindowState() {
         if (!v || typeof v !== "object") return;
         if (v === state) return;
         if (!state || typeof state !== "object") { state = v; return; }
-        Object.keys(state).forEach(function (k) {
-          if (!Object.prototype.hasOwnProperty.call(v, k)) delete state[k];
-        });
+        /* v12.18.0 — پایانِ «ادغامِ اطلاعات قدیمی با جدید»: هر پذیرشِ بیرونی
+           (adoptServer/adoptExact/pullهایِ ۱۵ ثانیه‌ای) از این دروازه رد می‌شود.
+           پیش از این، هر کلیدی که در کپیِ سرور نبود از حافظهٔ زنده «حذف» می‌شد —
+           همین، تردد/فیلدهایِ تازه‌ساخته را بی‌صدا می‌بلandid و صفحه را می‌ریخت.
+           حالا ادغام از مسیرِ v12TakeRegisteredOnly است: رکورد به رکورد با مُهرِ _updatedAt
+           (تازه‌ترِ محلی می‌ماند) و طراحیِ فرم با _designAt؛ هیچ کلیدی حذف نمی‌شود. */
+        try {
+          if (typeof v12TakeRegisteredOnly === "function") { v12TakeRegisteredOnly(v, state); return; }
+        } catch (eM) {}
         Object.keys(v).forEach(function (k) { state[k] = v[k]; });
       }
     });
@@ -60,7 +66,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "12.17.1";
+const CRM_APP_VERSION = "12.18.0";
 window.CRM_APP_VERSION = CRM_APP_VERSION;
 function v12CanonicalCompany(name) {
   var s = String(name || "").trim();
@@ -72,6 +78,8 @@ window.v12OpsOnlyRestore = true;
 function v12TakeRegisteredOnly(from, into) {
   var keys = ["pharmacies","doctors","orders","reps","products","visits","hospitals","leaves","users","activityLog","repHomes","repRoutes","notifications","salesTargets"];
   var base = into && typeof into === "object" ? into : JSON.parse(JSON.stringify(DEFAULT_INITIAL_DATA));
+  /* v12.18.0: مُهرِ زمانِ رکورد — دادهٔ تازهٔ محلی هرگز با نسخهٔ کهنهٔ سرور جایگزین نمی‌شود */
+  function v1218Stamp(r) { return Number(r && (r._updatedAt || r.updatedAt || r._lastSavedAt) || 0); }
   keys.forEach(function (k) {
     if (!from || !Array.isArray(from[k]) || !from[k].length) return;
     var map = {};
@@ -87,6 +95,8 @@ function v12TakeRegisteredOnly(from, into) {
       var id = r.id != null ? String(r.id) : "";
       if (!id) { out.push(r); return; }
       if (!map[id]) { map[id] = r; out.push(r); return; }
+      /* v12.18.0: اگر نسخهٔ محلیِ همین رکورد تازه‌تر باشد، همان می‌ماند (رفعِ «ادغامِ اطلاعات قدیمی با جدید») */
+      if (v1218Stamp(map[id]) > v1218Stamp(r)) return;
       var i = out.indexOf(map[id]);
       if (i >= 0) out[i] = r;
       map[id] = r;
@@ -95,7 +105,14 @@ function v12TakeRegisteredOnly(from, into) {
   });
   ["formFieldMeta","formBoxes","manualLayouts","tabOrder","customFields","selectExtraOptions","customRecords"].forEach(function (k) {
     if (from && from[k] && typeof from[k] === "object" && !Array.isArray(from[k]) && Object.keys(from[k]).length) {
+      /* v12.18.0: طراحيِ فرم/ستون (ترتیب، اندازه، کادر) اگر روی همین دستگاه تازه‌تر ذخیره شده باشد، برنده است —
+         همین گارد بود که «شماره ترتیب بعد از رفرش برمی‌گشت» را می‌ساخت: کپیِ کهنهٔ سرور بر چیدمانِ نوِ محلی خط می‌انداخت */
+      var localAt = Math.max(Number((into && into._designAt) || 0), Number((into && into._lastSavedAt) || 0));
+      var remoteAt = Math.max(Number((from && from._designAt) || 0), Number((from && from._lastSavedAt) || 0));
+      var hasLocal = into && into[k] && typeof into[k] === "object" && !Array.isArray(into[k]) && Object.keys(into[k]).length;
+      if (hasLocal && localAt > remoteAt) return;
       base[k] = JSON.parse(JSON.stringify(from[k]));
+      if (from._designAt) base._designAt = Math.max(Number(base._designAt || 0), Number(from._designAt) || 0);
     }
   });
   if (from && Array.isArray(from.userTabs) && from.userTabs.length) base.userTabs = from.userTabs;
@@ -1136,9 +1153,26 @@ function renderCustomFieldsInForm(entityType, containerId, currentValues = {}) {
       input.className = kind === "date" ? "form-input jalali-date-input" : "form-input";
       input.dataset.customFieldId = field.id;
       if (kind === "date") input.setAttribute("data-kind", "date");
-      input.placeholder = kind === "date"
-        ? `تاریخ ${field.label} (مثال: 1405/05/22)`
-        : `وارد کنید: ${field.label}...`;
+      /* v12.18.0 بند ۱۲: نوع «ساعت» — فقط ساعت و دقیقه، ثانیه‌ای وجود ندارد */
+      input.dataset.fieldKind = String(kind || "simple");
+      if (kind === "time") {
+        input.type = "time";
+        try { input.setAttribute("step", "60"); } catch (eStep) {}
+        input.className = "form-input crm-time-input";
+        input.placeholder = "HH:MM";
+        input.addEventListener("change", function () {
+          const mv = /^(\d{1,2}):(\d{1,2})(?::\d{1,2})?$/.exec(String(input.value || "").trim());
+          if (mv) {
+            const nv = (mv[1].length === 1 ? "0" + mv[1] : mv[1]) + ":" + mv[2];
+            if (nv !== input.value) input.value = nv;
+          }
+        });
+      }
+      if (kind !== "time") {
+        input.placeholder = kind === "date"
+          ? `تاریخ ${field.label} (مثال: 1405-05-22)`
+          : `وارد کنید: ${field.label}...`;
+      }
       if (currentValues[field.label]) input.value = currentValues[field.label];
       else if (currentValues[field.id]) input.value = currentValues[field.id];
       div.appendChild(input);
@@ -3239,7 +3273,7 @@ function setupPWAServiceWorker() {
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
   /* v12.12: فقط دامنه‌های دارای گواهی خراب از ثبت سرویس‌ورکر مستثنا می‌شوند؛ ndcohub.com سرویس‌ورکر می‌گیرد */
   if (!/(^|\.)ndcohub\.ir$|(^|\.)mehraeinpharma\.ir$/.test(location.hostname || "")) {
-  navigator.serviceWorker.register('/sw.js?v=12.17.1', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=12.18.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;

@@ -29,6 +29,7 @@ README_FA_COMPLETE.md
 SYNC_ALL.bat
 SYNC_OFFICIAL_OVER_FOLDER.bat
 build-static.js
+build_zip_1218.py
 chat.arena
 drizzle.config.json
 eslint.config.mjs
@@ -255,7 +256,9 @@ tests/v12.14.0-runtime.test.mjs
 tests/v12.15.0-runtime.test.mjs
 tests/v12.16.0-runtime.test.mjs
 tests/v12.17.0-runtime.test.mjs
+tests/v12.18.0-runtime.test.mjs
 tests/version-11.24-regressions.test.mjs
 tsconfig.json
 update_chat_arena.py
 update_project_graph.py
+zip-server.py
