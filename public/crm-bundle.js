@@ -10295,14 +10295,14 @@ button.v19-gps svg{display:block}
       var cells = rowEl.children;
       if (cells.length !== slots.length) return;
       var arr = Array.prototype.slice.call(cells).slice();
-      /* v12.18.0: مثلِ نگهبانِ v11.61 در موتورِ بالایی — اگر ترتیبِ DOM همانِ مطلوب است، هیچ نودی جابه‌جا نشود؛
+      /* v12.18.1: مثلِ نگهبانِ v11.61 در موتورِ بالایی — اگر ترتیبِ DOM همانِ مطلوب است، هیچ نودی جابه‌جا نشود؛
          وگرنه هر فراخوانِ دوره‌ای، ردیفِ هدر را با appendChild می‌کَند و پرشِ ستون‌ها ساخته می‌شود */
       var _need = false;
       for (var _k = 0; _k < desired.length; _k++) { if (cells[_k] !== arr[desired[_k]]) { _need = true; break; } }
       if (!_need) return;
       desired.forEach(function (cur) { rowEl.appendChild(arr[cur]); });
     }
-    /* v12.18.0: این موتورِ قدیمی، جابه‌جاییِ «مدل→مرتب» را روی DOMِ جابه‌جاشدهٔ قبلی اعمال می‌کرد
+    /* v12.18.1: این موتورِ قدیمی، جابه‌جاییِ «مدل→مرتب» را روی DOMِ جابه‌جاشدهٔ قبلی اعمال می‌کرد
        و هر دورِ رندر، ستون‌ها را یک پله دیگر می‌چرخاند (نوسانِ ستونِ پزشکان/سفارش‌ها).
        هر وضعیتِ ترتیب حالا فقط یک‌بار اعمال می‌شود؛ همانِ تکراری = بی‌اثر. */
     try {
@@ -10312,7 +10312,7 @@ button.v19-gps svg{display:block}
         if (_t0.getAttribute("data-v19reorder") === _sig) { paintRouteIcons(tbody); iconifyButtons(tbody); return; }
         _t0.setAttribute("data-v19reorder", _sig);
       }
-      /* v12.18.0: موتورِ جابه‌جاییِ v11 بازنشسته شد — «v20ReorderListColumns» (نگهبانِ v11.61، همگرا و تک‌مالک)
+      /* v12.18.1: موتورِ جابه‌جاییِ v11 بازنشسته شد — «v20ReorderListColumns» (نگهبانِ v11.61، همگرا و تک‌مالک)
          ترتیبِ ستون‌ها را مدیریت می‌کند. دو موتورِ موازی روی یکِ جدول، هر دورِ رندر یکی ستون را جابه‌جا و
          دیگری برمی‌گرداند: نوسانِ دائمِ سرستونِ پزشکان/سفارش‌ها — همان «جابجاییِ اطلاعات»ِ گزارش‌شده.
          آیکون‌ها (GPS/Glyph) مثلِ قبل ساخته می‌شوند؛ فقط «حرکتِ» ستون‌ها خاموش است. */
@@ -11176,7 +11176,7 @@ button.v19-gps svg{display:block}
           if (v === state) return;
           if (!state || typeof state !== "object") { state = v; return; }
           Object.keys(state).forEach(function (k) { try { if (!Object.prototype.hasOwnProperty.call(v, k)) return; } catch (e0) {} state[k] = state[k]; });
-          /* v12.18.0: حذفِ کلیدهایِ غایب ممنوع — پذیرشِ نسخهٔ سرور هیچ‌چیز را از حافظهٔ زنده بیرون نمی‌اندازد؛ ادغام از دروازهٔ v12TakeRegisteredOnly (تازه‌ترِ محلی برنده) */
+          /* v12.18.1: حذفِ کلیدهایِ غایب ممنوع — پذیرشِ نسخهٔ سرور هیچ‌چیز را از حافظهٔ زنده بیرون نمی‌اندازد؛ ادغام از دروازهٔ v12TakeRegisteredOnly (تازه‌ترِ محلی برنده) */
           try { if (typeof window.v12TakeRegisteredOnly === "function") { window.v12TakeRegisteredOnly(v, state); return; } } catch (eMerge) {}
           Object.keys(v).forEach(function (k) { state[k] = v[k]; });
         } catch (eSet) {}
@@ -11436,7 +11436,7 @@ button.v19-gps svg{display:block}
     var rec=seedGlobalOptions(key),hidden=(rec.hidden||[]).map(norm),vals=(rec.values||[]).filter(function(x){return hidden.indexOf(norm(x.value))<0;});globalOptionBusy=true;
     globalCustomFields(key).forEach(function(f){f.options=vals.map(function(x){return x.value;});});
     globalOptionElements().forEach(function(el){if(globalFieldKey(el)!==key)return;var current=String(el.value||"");if(el.tagName==="SELECT"){var placeholder=null;Array.prototype.forEach.call(el.options,function(o){if(!String(o.value||"")&&!placeholder)placeholder={value:"",text:o.textContent||"انتخاب کنید..."};});var _want=[];if(placeholder)_want.push(["",placeholder.text||""]);vals.forEach(function(x){_want.push([String(x.value),String(x.text||x.value)]);});
-    /* v12.18.0: بازسازیِ بی‌مقایسهٔ گزینه‌ها خودِ ناظرِ همین سیستم را بیدار نگه می‌داشت و همه‌ی dropdownها زیر نوسان بودند؛ حالا امضا برابر باشد هیچ نودی تکان نمی‌خورد */
+    /* v12.18.1: بازسازیِ بی‌مقایسهٔ گزینه‌ها خودِ ناظرِ همین سیستم را بیدار نگه می‌داشت و همه‌ی dropdownها زیر نوسان بودند؛ حالا امضا برابر باشد هیچ نودی تکان نمی‌خورد */
     var _same=_want.length===el.options.length;
     if(_same){for(var _i=0;_i<_want.length;_i++){var _o=el.options[_i];if(String(_o.value)!==_want[_i][0]||String(_o.textContent||"")!==_want[_i][1]){_same=false;break;}}}
     if(!_same){el.innerHTML="";_want.forEach(function(w){var o=document.createElement("option");o.value=w[0];o.textContent=w[1];el.appendChild(o);});}
@@ -12968,7 +12968,7 @@ button.v19-gps svg{display:block}
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.18.0");
+        var ver=String(window.CRM_APP_VERSION||"12.18.1");
         var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -14505,7 +14505,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.18.0");
+        var ver=String(window.CRM_APP_VERSION||"12.18.1");
         var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -14749,7 +14749,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     var thead=host.querySelector("thead"),tbody=host.querySelector("tbody");
     if(!thead||!tbody)return;
     var next="<tr>"+heads.map(function(h){return "<th>"+h+"</th>";}).join("")+"</tr>";
-    /* v12.18.0: مقایسهٔ innerHTML گمراه‌کننده است — مرورگر DOM را دوباره سریال‌سازی می‌کند
+    /* v12.18.1: مقایسهٔ innerHTML گمراه‌کننده است — مرورگر DOM را دوباره سریال‌سازی می‌کند
        (کوتیشن‌ها عوض می‌شوند) پس «برابر» هرگز برابر نمی‌ماند و هر نوبتِ رندر، tbody را از نو
        می‌نوشت؛ همان نوشتن، MutationObserverهایِ ناظر را بیدار و چرخهٔ پرش را می‌چرخاند.
        امضایِ منبع روی dataset می‌نشیند: رشتهٔ یکسان = بدونِ نوشتن. */
@@ -15341,7 +15341,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     var thead=host.querySelector("thead"),tbody=host.querySelector("tbody");
     if(!thead||!tbody)return;
     var next="<tr>"+heads.map(function(h){return "<th>"+h+"</th>";}).join("")+"</tr>";
-    /* v12.18.0: مقایسهٔ innerHTML گمراه‌کننده است — مرورگر DOM را دوباره سریال‌سازی می‌کند
+    /* v12.18.1: مقایسهٔ innerHTML گمراه‌کننده است — مرورگر DOM را دوباره سریال‌سازی می‌کند
        (کوتیشن‌ها عوض می‌شوند) پس «برابر» هرگز برابر نمی‌ماند و هر نوبتِ رندر، tbody را از نو
        می‌نوشت؛ همان نوشتن، MutationObserverهایِ ناظر را بیدار و چرخهٔ پرش را می‌چرخاند.
        امضایِ منبع روی dataset می‌نشیند: رشتهٔ یکسان = بدونِ نوشتن. */
@@ -16150,7 +16150,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
               try{if(typeof state!=="undefined")state=v;}catch(e1){}
               return;
             }
-            /* v12.18.0: اینجا هم حذفِ کلیدِ غایب ممنوع (بازگرداندنِ setterِ v73 به همان قانون) */
+            /* v12.18.1: اینجا هم حذفِ کلیدِ غایب ممنوع (بازگرداندنِ setterِ v73 به همان قانون) */
             try{if(typeof window.v12TakeRegisteredOnly==="function"){window.v12TakeRegisteredOnly(v,live);return;}}catch(eMerge){}
             Object.keys(v).forEach(function(k){live[k]=v[k];});
           }catch(eSet){}
@@ -19299,10 +19299,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.1"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.1").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19382,10 +19382,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.1"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.1").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -19441,7 +19441,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.18.0");
+  var BUILD = String(window.CRM_APP_VERSION || "12.18.1");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
@@ -19502,10 +19502,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.1"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.1").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19532,10 +19532,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.1"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.1").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -19620,7 +19620,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.1"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -20054,7 +20054,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var TITLE = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
   var BRAND = "طنین طب طاها  TANIN TEB TAHA";
-  var FALLBACK = "12.18.0";
+  var FALLBACK = "12.18.1";
 
   /* ── ۱) سربرگ دقیقاً سه خط؛ شماره نسخه با ارقام لاتین ───────────────── */
   function ver() { try { return String(window.CRM_APP_VERSION || FALLBACK); } catch (e) { return FALLBACK; } }
@@ -20435,7 +20435,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     try { done = localStorage.getItem(FLAG) === "1"; } catch (e) {}
     if (done) return;
     try { localStorage.setItem(FLAG, "1"); } catch (e) {}
-    var ver = String(window.CRM_APP_VERSION || "12.18.0");
+    var ver = String(window.CRM_APP_VERSION || "12.18.1");
     try {
       if (window.caches && typeof caches.keys === "function") {
         caches.keys().then(function (keys) {
@@ -22299,7 +22299,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var API15 = window.v1215Api || {};
   var API16 = window.v1216Api || {};
-  var VER = String(window.CRM_APP_VERSION || "12.18.0");
+  var VER = String(window.CRM_APP_VERSION || "12.18.1");
 
   function $(id) { try { return document.getElementById(id); } catch (e) { return null; } }
   function qsa(sel, root) { try { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); } catch (e) { return []; } }
@@ -22313,7 +22313,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   function faComma(n) {
     var s = String(Math.round(Number(n) || 0));
     s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    /* v12.18.0: قانونِ یکتایِ ارقام — همه‌ی جداکننده‌ها با عددِ لاتین تا هیچ عددی در صفحه دو بار عوض نشود */
+    /* v12.18.1: قانونِ یکتایِ ارقام — همه‌ی جداکننده‌ها با عددِ لاتین تا هیچ عددی در صفحه دو بار عوض نشود */
     return s;
   }
   function num(s) { var n = Number(faDigits(String(s == null ? "" : s)).replace(/[^0-9.\-]/g, "")); return isFinite(n) ? n : 0; }
@@ -22773,7 +22773,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   /* ══ ۱۳) تبِ تغییرات: نسخه‌ی 12.17.0 بالایِ همه + بازرسازی هر بار که تب باز شود ═══════ */
   var CH1217_HTML = "<div id='v1217ChangeEntry' style='border:2px solid #0d9488;background:#f0fdfa;border-radius:12px;padding:10px;margin-bottom:10px'>" +
-    "<b style='color:#0f766e'>📦 نسخه‌ی جاری: 12.18.0</b><ul style='margin:6px 0 0 18px;padding:0;color:#334155;font-size:14px;line-height:2'>" +
+    "<b style='color:#0f766e'>📦 نسخه‌ی جاری: 12.18.1</b><ul style='margin:6px 0 0 18px;padding:0;color:#334155;font-size:14px;line-height:2'>" +
     "<li>ترتیبِ ستون‌ها پس از بازگشایی هم برقرار می‌ماند و در تبِ اصلی هم اعمال می‌شود</li>" +
     "<li>«موقعیت فعلی من» فقط نقطه‌ی تازه می‌پذیرد و آدرس به‌صورتِ فارسیِ مرتب (کشور، استان، شهر، خیابان، پلاک) می‌آید</li>" +
     "<li>کادرِ جایگذاریِ خودکارِ سفارش در بالایِ صفحه (دسکتاپ و گوشی) می‌چسبد و فقط داروخانه‌های هم‌نام با آدرس را نشان می‌دهد</li>" +
@@ -22928,7 +22928,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       function showStaleBar(sv) {
         if (shown) return;
         shown = true;
-        var cur = lv('12.18.0');
+        var cur = lv('12.18.1');
         var a = lv(sv);
         var newer = a[0] > cur[0] || (a[0] === cur[0] && a[1] > cur[1]) || (a[0] === cur[0] && a[1] === cur[1] && a[2] >= cur[2]);
         if (!sv || newer) return;
@@ -22936,7 +22936,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         bar.id = 'crm1217StaleBar';
         bar.setAttribute('dir', 'rtl');
         bar.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#fef3c7;border-top:2px solid #f59e0b;color:#78350f;font:12px/1.9 Tahoma,sans-serif;padding:5px 12px;text-align:center';
-        bar.innerHTML = '⚠️ سرورِ وصل‌شده هنوز نسخهٔ کهنه <b>' + sv + '</b> را اجرا می‌کند — آخرین نسخهٔ برنامه <b>12.18.0</b> است. <a href="http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip" download style="color:#1d4ed8"><b>⬇ دریافت ZIPِ جدید و نصب</b></a>';
+        bar.innerHTML = '⚠️ سرورِ وصل‌شده هنوز نسخهٔ کهنه <b>' + sv + '</b> را اجرا می‌کند — آخرین نسخهٔ برنامه <b>12.18.1</b> است. <a href="http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip" download style="color:#1d4ed8"><b>⬇ دریافت ZIPِ جدید و نصب</b></a>';
         document.body.appendChild(bar);
       }
       /* XHR به‌جای fetch: این پرسش نباید در شمارشِ governor (فریم ۱۳) بیفتد */
@@ -22962,18 +22962,19 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   } catch (eSb) {}
 })();
 
-/* v12.18.0 — نوبت ۱۳۵: ریشه‌پاک‌کنِ یک‌باره (سرویس‌ورکر، کش‌ها، کلیدهای کهنه، پایگاه‌های موقت، رکوردهای نمونهٔ سرور)،
+/* v12.18.1 — نوبت ۱۳۵: ریشه‌پاک‌کنِ یک‌باره (سرویس‌ورکر، کش‌ها، کلیدهای کهنه، پایگاه‌های موقت، رکوردهای نمونهٔ سرور)،
    خاموش‌کردنِ پرش‌ها (چیدمان فقط با تغییرِ واقعی، آرام‌کردنِ جنگِ v68↔v73، بودجه‌بندیِ همگامِ ۱۵ثانیه‌ای)،
    بند ۴ (ترتیبِ ماندگار با شماره‌گذاریِ یکتایِ فراگیر + ارسالِ فوری)، بند ۹ (ترددِ واقعی روی نقشه)،
    بند ۱۲ (ساعتِ HH:MM)، بند ۱۵ (ماتریسِ ریزِ دسترسی با همهٔ تب‌ها)، بند ۱۶ (آلارمِ ویزیت در مرکزِ اعلان‌ها)
-   و قانونِ یکتایِ ارقامِ لاتین. */
+   و قانونِ یکتایِ ارقامِ لاتین. نوبت ۱۳۷: ریشه‌پاک‌کن دستی — دکمهٔ «🧹 ریشه‌پاک‌کنیِ فوری» در تب دسترسی
+   و پارامترِ ?purge=1 برای جارویِ کاملِ دلخواه در هر لحظه. */
 (function () {
   "use strict";
   if (window.v1218) return;
   window.v1218 = true;
-  window.__V1218_MARK = "v12.18.0";
+  window.__V1218_MARK = "v12.18.1";
 
-  var VER = String(window.CRM_APP_VERSION || "12.18.0");
+  var VER = String(window.CRM_APP_VERSION || "12.18.1");
   var A15 = window.v1215Api || null;
   var A16 = window.v1216Api || null;
   var A17 = window.v1217Api || null;
@@ -23139,6 +23140,40 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     }
   }
   try { rootPurge(); } catch (eR) {}
+
+  /* ══ ۱.ب) ریشه‌پاک‌کنِ «دستی» (نوبت ۱۳۷): دکمه در تب دسترسی + پارامترِ ?purge=1 ═════
+     ریشه‌پاک‌کنِ خودکار فقط یک‌بار به‌ازایِ هر نسخه اجرا می‌شود؛ اینِ مسیر بهِ مدیر
+     اجازه می‌دهد هر وقت خواست، همان جارویِ کامل (سرویس‌ورکر + همه‌ی کش‌ها + کلیدهایِ کهنه +
+     IndexedDBِ موقت + فایل‌ها/رکوردهایِ کهنهٔ سرور) را دوباره و از ریشه اجرا کند. */
+  function purgeNow() {
+    try { if (window.localStorage) window.localStorage.removeItem(PURGE_KEY); } catch (eA) {}
+    try { if (window.sessionStorage) window.sessionStorage.removeItem("CRM_V1218_RELOADED"); } catch (eB) {}
+    purgeReport.ran = false;
+    purgeReport.storage = 0; purgeReport.sw = 0; purgeReport.caches = 0; purgeReport.idb = 0; purgeReport.server = "";
+    try { rootPurge(); } catch (eC) {}
+    var guarded = false;
+    try { guarded = !!(window.sessionStorage && window.sessionStorage.getItem("CRM_V1218_RELOADED") === "1"); } catch (eG) {}
+    try {
+      if (typeof window.v20Toast === "function") window.v20Toast("🧹 ریشه‌پاک‌کنیِ دستی انجام شد: کشِ مرورگر، سرویس‌ورکر، کلیدهایِ کهنه و فایل‌هایِ قدیمیِ سرور — صفحه تازه می‌شود…");
+    } catch (eD) {}
+    if (!guarded) {
+      setTimeout(function () {
+        try { if (window.location && typeof window.location.reload === "function") window.location.reload(); } catch (eE) {}
+      }, 900);
+    }
+    return purgeReport;
+  }
+  try {
+    document.addEventListener("click", function (eP2) {
+      var tP = eP2 && eP2.target;
+      if (tP && tP.closest && tP.closest("#crm1218PurgeBtn,[data-crm1218purge]")) purgeNow();
+    }, true);
+  } catch (eP3) {}
+  try {
+    if (window.location && /(?:\?|&)purge=1(?:&|$)/.test(String(window.location.search || ""))) {
+      setTimeout(function () { try { purgeNow(); } catch (eF) {} }, 300);
+    }
+  } catch (eF2) {}
 
   /* ══ ۲) بند ۴ — ترتیبِ ماندگار: یک شماره‌گذاریِ یکتا روی «همهٔ» فیلدها (درون‌ساز + سفارشی) ═
      v12.15 دو رشتهٔ جدا برای متادیتا و فیلدهایِ سفارشی می‌ساخت؛ به‌همین‌دلیل بعد از رفرش
@@ -23956,7 +23991,8 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
           "<div class='crm1215-row'><label class='crm1215-lbl'>کاربر<select id='crm1215PermUser' class='form-input'>" +
           users.map(function (u) { return "<option value='" + esc(u.id || u.username || "") + "'>" + esc(u.fullName || u.username || u.id || "") + (u.role ? " (" + esc(u.role) + ")" : "") + "</option>"; }).join("") +
           "</select></label><button type='button' id='crm1215PermAll' class='btn btn-outline btn-sm'>همه را فعال کن</button>" +
-          "<button type='button' id='crm1215PermNone' class='btn btn-outline btn-sm'>همه را غیرفعال کن</button></div>" +
+          "<button type='button' id='crm1215PermNone' class='btn btn-outline btn-sm'>همه را غیرفعال کن</button>" +
+          "<button type='button' id='crm1218PurgeBtn' class='btn btn-sm' style='background:#9f1239;color:#fff;border-color:#9f1239' title='حذفِ کاملِ کشِ مرورگر، سرویس‌ورکر، کلیدهایِ کهنه و فایل‌هایِ قدیمیِ سرور — اطلاعاتِ کاریِ شما می‌ماند'>🧹 ریشه‌پاک‌کنیِ فوری</button></div>" +
           "<div id='crm1215PermBody'></div>";
         tab.appendChild(wrap);
         var render = function () {
@@ -24185,6 +24221,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     latinComma: latinComma,
     fa2la: fa2la,
     rootPurge: rootPurge,
+    purgeNow: purgeNow,
     purgeReport: purgeReport,
     isLatinLaw: function () { return window.__v1218LatinDigitsLaw === true; }
   };

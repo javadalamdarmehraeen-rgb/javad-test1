@@ -94,7 +94,7 @@
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (5417 بایت)
-- نقش: const BUILD = "12.18.0";
+- نقش: const BUILD = "12.18.1";
 - تعداد توابع داخلی: 6
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -413,9 +413,9 @@
 
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
-- نسخه سورس package: `12.18.0`
-- مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a058c2-javad-test1`؛ push/PR فقط از همین شاخه.
-- Production فعال: `https://javad-test1.onrender.com` — نسخه سورس فعلی `12.12.0` است و تا push کاربر روی production همان آخرین دیپلوی قبلی می‌ماند.
+- نسخه سورس package: `12.18.1`
+- مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a07288-javad-test1`؛ push/PR فقط از همین شاخه (PR #8 = 12.18.1، منتظر Merge کاربر).
+- Production فعال: `https://javad-test1.onrender.com` — تا Merge نشدنِ PR #8 همان `12.16.0` کهنه را سرو می‌کند؛ پس از Merge خودکار `12.18.1`.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.
 - `GITHUB_REVIEW_HANDOFF.md` مرجع وضعیت commit/push/PR/GitLab/Render/production و دستورات بررسی است؛ قبل از ادعای deploy باید دوباره اندازه‌گیری شود.
 - زنجیره انتشار: source test → commit → push Arena branch → PR main → checks → merge → GitLab mirror → Render deploy → production health.
