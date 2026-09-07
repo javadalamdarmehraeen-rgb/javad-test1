@@ -13000,7 +13000,7 @@ button.v19-gps svg{display:block}
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.18.5");
+        var ver=String(window.CRM_APP_VERSION||"12.18.6");
         var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -14537,7 +14537,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.18.5");
+        var ver=String(window.CRM_APP_VERSION||"12.18.6");
         var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -19331,10 +19331,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.5"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.6"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.5").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.6").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19414,10 +19414,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.5"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.6"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.5").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.6").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -19473,7 +19473,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.18.5");
+  var BUILD = String(window.CRM_APP_VERSION || "12.18.6");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
@@ -19534,10 +19534,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.5"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.6"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.5").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.6").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19564,10 +19564,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.5"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.6"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.5").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.6").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -19652,7 +19652,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.5"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.6"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -20086,7 +20086,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var TITLE = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
   var BRAND = "طنین طب طاها  TANIN TEB TAHA";
-  var FALLBACK = "12.18.5";
+  var FALLBACK = "12.18.6";
 
   /* ── ۱) سربرگ دقیقاً سه خط؛ شماره نسخه با ارقام لاتین ───────────────── */
   function ver() { try { return String(window.CRM_APP_VERSION || FALLBACK); } catch (e) { return FALLBACK; } }
@@ -20467,7 +20467,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     try { done = localStorage.getItem(FLAG) === "1"; } catch (e) {}
     if (done) return;
     try { localStorage.setItem(FLAG, "1"); } catch (e) {}
-    var ver = String(window.CRM_APP_VERSION || "12.18.5");
+    var ver = String(window.CRM_APP_VERSION || "12.18.6");
     try {
       if (window.caches && typeof caches.keys === "function") {
         caches.keys().then(function (keys) {
@@ -22331,7 +22331,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var API15 = window.v1215Api || {};
   var API16 = window.v1216Api || {};
-  var VER = String(window.CRM_APP_VERSION || "12.18.5");
+  var VER = String(window.CRM_APP_VERSION || "12.18.6");
 
   function $(id) { try { return document.getElementById(id); } catch (e) { return null; } }
   function qsa(sel, root) { try { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); } catch (e) { return []; } }
@@ -22805,7 +22805,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   /* ══ ۱۳) تبِ تغییرات: نسخه‌ی 12.17.0 بالایِ همه + بازرسازی هر بار که تب باز شود ═══════ */
   var CH1217_HTML = "<div id='v1217ChangeEntry' style='border:2px solid #0d9488;background:#f0fdfa;border-radius:12px;padding:10px;margin-bottom:10px'>" +
-    "<b style='color:#0f766e'>📦 نسخه‌ی جاری: 12.18.5</b><ul style='margin:6px 0 0 18px;padding:0;color:#334155;font-size:14px;line-height:2'>" +
+    "<b style='color:#0f766e'>📦 نسخه‌ی جاری: 12.18.6</b><ul style='margin:6px 0 0 18px;padding:0;color:#334155;font-size:14px;line-height:2'>" +
     "<li>ترتیبِ ستون‌ها پس از بازگشایی هم برقرار می‌ماند و در تبِ اصلی هم اعمال می‌شود</li>" +
     "<li>«موقعیت فعلی من» فقط نقطه‌ی تازه می‌پذیرد و آدرس به‌صورتِ فارسیِ مرتب (کشور، استان، شهر، خیابان، پلاک) می‌آید</li>" +
     "<li>کادرِ جایگذاریِ خودکارِ سفارش در بالایِ صفحه (دسکتاپ و گوشی) می‌چسبد و فقط داروخانه‌های هم‌نام با آدرس را نشان می‌دهد</li>" +
@@ -22960,7 +22960,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       function showStaleBar(sv) {
         if (shown) return;
         shown = true;
-        var cur = lv('12.18.5');
+        var cur = lv('12.18.6');
         var a = lv(sv);
         var newer = a[0] > cur[0] || (a[0] === cur[0] && a[1] > cur[1]) || (a[0] === cur[0] && a[1] === cur[1] && a[2] >= cur[2]);
         if (!sv || newer) return;
@@ -22968,7 +22968,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         bar.id = 'crm1217StaleBar';
         bar.setAttribute('dir', 'rtl');
         bar.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#fef3c7;border-top:2px solid #f59e0b;color:#78350f;font:12px/1.9 Tahoma,sans-serif;padding:5px 12px;text-align:center';
-        bar.innerHTML = '⚠️ سرورِ وصل‌شده هنوز نسخهٔ کهنه <b>' + sv + '</b> را اجرا می‌کند — آخرین نسخهٔ برنامه <b>12.18.5</b> است. <a href="http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip" download style="color:#1d4ed8"><b>⬇ دریافت ZIPِ جدید و نصب</b></a>';
+        bar.innerHTML = '⚠️ سرورِ وصل‌شده هنوز نسخهٔ کهنه <b>' + sv + '</b> را اجرا می‌کند — آخرین نسخهٔ برنامه <b>12.18.6</b> است. <a href="http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip" download style="color:#1d4ed8"><b>⬇ دریافت ZIPِ جدید و نصب</b></a>';
         document.body.appendChild(bar);
       }
       /* XHR به‌جای fetch: این پرسش نباید در شمارشِ governor (فریم ۱۳) بیفتد */
@@ -23006,7 +23006,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   window.v1218 = true;
   window.__V1218_MARK = "v12.18.3";
 
-  var VER = String(window.CRM_APP_VERSION || "12.18.5");
+  var VER = String(window.CRM_APP_VERSION || "12.18.6");
   var A15 = window.v1215Api || null;
   var A16 = window.v1216Api || null;
   var A17 = window.v1217Api || null;
@@ -24393,7 +24393,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
      صادقانه می‌گوید این دستگاه جدا کار می‌کند.
    • همه‌چیز با XHR خام — نه governorِ سقفِ درخواست، نه wrapperهایِ skipِ قدیمی. */
 (function () {
-  var VER = "12.18.5";
+  var VER = "12.18.6";
   var SEEN = { rev: "", savedAt: 0 };
   var last = { mode: "", pullAt: 0, pushAt: 0, errs: 0, added: 0, removed: 0, touched: 0, localBackoffUntil: 0 };
   var pushTimer = 0, pushAuthed = false;
@@ -24674,7 +24674,13 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       برمی‌داشت) — برداشت درِ فازِ capture ازِ خودِ تب (پیشِ دستِ موتورِ v20) و نوشتن رویِ رکورد.
    ۴) موقعِ ویرایشِ کالا، مقادیرِ ذخیره‌شده درِ فیلدها می‌نشینند؛ خلاصهٔ مقادیر هم زیرِ نامِ کالا درِ جدول.
    ۵) پرشِ هدر: نشانِ «آنلاین/آفلاین» باِ عوض‌شدنِ متن، عرضش تغییر می‌کرد وِ کلِ رَویِ سربرگ
-      بهِ راست میلرزید — باِ min-width/nowrap/ellipsis میخکوب شد تاِ نوسانِ اتصال، صفحه را تکان ندهد. */
+      بهِ راست میلرزید — باِ min-width/nowrap/ellipsis میخکوب شد تاِ نوسانِ اتصال، صفحه را تکان ندهد. 
+   ۶) v12.18.6 «شماره ترتیبِ واقعی»: میزبانِ کالا display:contents شد تاِ بچه‌ها درِ همانِ گریدِ
+      فیلدهایِ اصلی قرار بگیرند وِ `order` بینِ همهٔ فیلدها معنا پیدا کند («شماره ۴ = ردیف ۴»).
+      خودِ لایه هم `order/size/height/place` را ازِ تعریفِ فیلد رویِ گروه‌ها می‌نشاند (چونِ
+      applyProductSettingsِ قدیمی فقط باِ فراخوانیِ طراح اجرا می‌شد) وِ میزبانِ تکراریِ v20
+      (v20ProductExtrasHost — همانِ فیلدها را یکِ بارِ دیگرِ بی‌ارزش ذخیره می‌کرد) را برمی‌دارد.
+      چیپ‌هایِ جدولِ کالا هم باِ «شماره ترتیبِ لیست» چیده می‌شوند. */
 (function () {
   "use strict";
   var PROD_HOST = "productCustomFieldsContainer";
@@ -24696,7 +24702,8 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       var grid = form && form.querySelector(".form-grid");
       if (!grid) return;
       cont = document.createElement("div");
-      cont.id = PROD_HOST; cont.className = "form-group full-width form-grid extra-cf-host";
+      cont.id = PROD_HOST; cont.className = "extra-cf-host";
+      cont.style.display = "contents";
       cont.setAttribute("data-cf-host", "products");
       grid.appendChild(cont);
     }
@@ -24708,12 +24715,43 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     try { rf("products", PROD_HOST, currentValues || {}); } catch (e2) {}
     try { if (par) { if (next && next.parentNode === par) par.insertBefore(cont, next); else par.appendChild(cont); } } catch (e3) {}
     try { if (typeof window.setupDropdownAutoClear === "function") window.setupDropdownAutoClear(); } catch (e4) {}
+    layout12185();
+  }
+  function layout12185() {
+    try {
+      var cont = document.getElementById(PROD_HOST); if (!cont) return;
+      cont.style.display = "contents";
+      var defs = prodFields12185(), byId = {};
+      defs.forEach(function (f, i) { if (f && f.id != null) byId[String(f.id)] = { f: f, i: i }; });
+      Array.prototype.slice.call(cont.children).forEach(function (g) {
+        if (!g || g.nodeType !== 1) return;
+        var inp = (g.querySelector && g.querySelector("[data-custom-field-id]")) || g;
+        var id = inp && inp.getAttribute ? inp.getAttribute("data-custom-field-id") : "";
+        var ent = byId[String(id)], f = (ent && ent.f) || {};
+        var ord = parseInt(f.order || f.formOrder, 10);
+        g.style.setProperty("order", String(isFinite(ord) && ord > 0 ? ord : 990 + (ent ? ent.i : 0)), "important");
+        var w = parseInt(f.size || f.widthPx, 10), h = parseInt(f.height || f.heightPx, 10);
+        if (inp && inp.style) {
+          if (isFinite(w) && w >= 60) { inp.style.setProperty("width", w + "px", "important"); inp.style.setProperty("max-width", "100%", "important"); }
+          if (isFinite(h) && h >= 24) { inp.style.setProperty("height", h + "px", "important"); inp.style.setProperty("min-height", h + "px", "important"); }
+        }
+        var ph = String(f.place || "");
+        if (ph === "under" || ph === "زیر هم") g.classList.add("full-width");
+      });
+      var dup = document.getElementById("v20ProductExtrasHost");
+      if (dup && dup.parentNode && cont.children.length) { try { dup.parentNode.removeChild(dup); } catch (e1) {} }
+    } catch (e2) {}
+  }
+  function killDupHost12185() {
+    try { var dup = document.getElementById("v20ProductExtrasHost"); if (dup && dup.parentNode) dup.parentNode.removeChild(dup); } catch (e) {}
   }
   function ensure12185() {
     var cont = document.getElementById(PROD_HOST); if (!cont) return;
+    killDupHost12185();
     var want = prodFields12185().filter(function (f) { return f && f.showInForm !== false && !/^widget-/.test(String(f.inputKind || "")); }).length;
     var have = cont.querySelectorAll("[data-custom-field-id]").length;
     if (want !== have) renderProductsHost12185();
+    layout12185();
   }
   try {
     var ra = window.renderAllCustomFieldsInFormsAndTables;
@@ -24730,6 +24768,13 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
          پس pollingِ سبک رویِ خودِ میزبان (بدونِ وابستگی بهِ گره‌هایِ متغیر) + ناظرِ اختیاری رویِ container */
       setInterval(ensure12185, 700);
       ensure12185();
+      if (window.MutationObserver) {
+        var pf0 = document.getElementById("formProduct");
+        if (pf0 && !pf0._v12185dupmo) {
+          pf0._v12185dupmo = 1;
+          try { new MutationObserver(function () { killDupHost12185(); }).observe(pf0, { childList: true, subtree: false }); } catch (e) {}
+        }
+      }
       if (window.MutationObserver) {
         var moTick = setInterval(function () {
           var cont = document.getElementById(PROD_HOST);
@@ -24819,7 +24864,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         if (!tr || tr.children.length < 2) return;
         var p = list[i++]; if (!p) return;
         var cf = p.customFields || {};
+        var defs = prodFields12185(); var rank = {};
+        defs.forEach(function (f, i) { if (!f) return; var r = parseInt(f.listOrder || f.order, 10) || (i + 1); if (f.id != null) rank[String(f.id)] = r; if (f.label != null) rank[String(f.label)] = r; });
         var ks = Object.keys(cf).filter(function (k) { return String(cf[k] || "") !== ""; });
+        ks.sort(function (x, y) { return (rank[x] || 999) - (rank[y] || 999); });
         if (!ks.length) return;
         var cell = tr.children[0];
         if (!cell || cell.querySelector(".v12185-chip")) return;

@@ -28,6 +28,12 @@ test('v12.18.5: لایهٔ «ستونِ پایدار» درِ انتهایِ ب�
   assert.ok(bundle.includes('v12185PinCss') && bundle.includes('min-width:104px') && bundle.includes('.v1215-net-badge'),
     'پینِ عرضِ نشانِ آنلاین/آفلاین (ضدِ لرزشِ هدر)');
   assert.match(bundle, /pane\.addEventListener\("submit"[\s\S]{0,120}formProduct[\s\S]{0,80}grab12185/, 'برداشتِ مقادیر درِ capture پیش ازِ موتورِ v20');
+
+  // v12.18.6 «شماره ترتیبِ واقعی» — لایه باید order/size را خودش بنشاند وِ دوباره‌کاریِ v20 را بخواباند
+  assert.match(bundle, /cont\.style\.display = "contents"/, 'میزبان display:contents');
+  assert.match(bundle, /g\.style\.setProperty\("order"/, 'اعمالِ شماره ترتیب رویِ گروه‌ها');
+  assert.match(bundle, /killDupHost12185/, 'میزبانِ تکراریِ v20 (v20ProductExtrasHost) بی‌اثر/حذف');
+  assert.match(bundle, /rank\[String\(f\.label\)\] = r/, 'چیپِ جدول باِ «شماره ترتیبِ لیست» (کلیدِ لیبل) مرتب می‌شود');
 });
 
 function evalMergeFns() {
@@ -108,6 +114,49 @@ test('v12.18.5: سرورِ واقعی — ادغامِ بازگشتیِ customFi
   } finally {
     proc.kill('SIGTERM');
   }
+});
+
+const PORT2 = 31286;
+test('v12.18.6 «گورِ رکورد»: حذفِ مجاز باِ pushِ کهنه احیا نمی‌شود + آینهٔ PHP', async () => {
+  const dir = fs.mkdtempSync(path.join(process.env.TMPDIR || '/tmp', 'crm12186-'));
+  const proc = spawn(process.execPath, [path.join(ROOT, 'server.js')], {
+    env: { ...process.env, PORT: String(PORT2), CRM_DATA_DIR: dir, NODE_ENV: 'test' },
+    stdio: ['ignore', 'pipe', 'pipe']
+  });
+  const t0 = Date.now();
+  let up = false;
+  while (Date.now() - t0 < 12000) {
+    try { const r = await fetch(`http://127.0.0.1:${PORT2}/api/health`); if (r.ok) { up = true; break; } } catch (e) { await new Promise((r2) => setTimeout(r2, 250)); }
+  }
+  assert.ok(up, 'سرورِ تستِ ۱۲.۱۸.۶ بالا آمد');
+  try {
+    const B = `http://127.0.0.1:${PORT2}`;
+    const post = async (payload, seen) => {
+      const rr = await fetch(B + '/api/state', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CRM-Request': '1', 'X-CRM-Sync': 'v12183', 'X-CRM-Seen': seen || '' }, body: JSON.stringify(payload) });
+      return { status: rr.status, json: await rr.json() };
+    };
+    const NOW = Date.now();
+    let out = await post({ _dataGen: '11.81.0', pharmacies: [{ id: 'p1', name: 'داروخانهٔ D', _updatedAt: NOW }] }, '');
+    const rev1 = out.json.rev;
+    // A باِ دیدِ روز، تنها رکورد را حذف می‌کند (آرایهٔ خالی + authority)
+    out = await post({ _dataGen: '11.81.0', _seenAuth: rev1, pharmacies: [] }, rev1);
+    assert.ok(out.json.rev, 'حذفِ کاملِ مجموعه اعمال شد');
+    const rev2 = out.json.rev;
+    assert.ok(!(out.json.data.pharmacies || []).some((p) => p.id === 'p1'), 'رکوردِ حذف‌شده دیگر در سرور نیست');
+    // B باِ دیدِ کهنه (بدونِ authority) همان رکورد را push می‌کند — احیا نباید بشود
+    out = await post({ _dataGen: '11.81.0', pharmacies: [{ id: 'p1', name: 'داروخانهٔ D', _updatedAt: NOW }] }, rev1);
+    assert.ok(!(out.json.data.pharmacies || []).some((p) => p.id === 'p1'), 'گور: unionِ دیدِ کهنه رکوردِ حذف‌شده را زنده نکرد');
+    const srv = await (await fetch(B + '/api/state?n=' + Date.now())).json();
+    assert.ok(!((srv.data || {}).pharmacies || []).some((p) => p.id === 'p1'), 'حالتِ عمومی هم پاک است');
+    // احیایِ عمدی: بازساختِ همان id باِ stampِ تازه‌تر ازِ گور — باید بپذیرد
+    out = await post({ _dataGen: '11.81.0', _seenAuth: rev2, pharmacies: [{ id: 'p1', name: 'داروخانهٔ D نو', _updatedAt: Date.now() + 10000 }] }, rev2);
+    assert.ok((out.json.data.pharmacies || []).some((p) => p.id === 'p1'), 'بازساختِ مجازِ تازه ازِ گور احیا شد');
+  } finally {
+    proc.kill('SIGTERM');
+  }
+  const php = fs.readFileSync(path.join(ROOT, 'public', 'api.php'), 'utf8');
+  assert.ok((php.match(/_tomb12183/g) || []).length >= 10, 'آینهٔ PHP هم گورِ رکورد دارد');
+  assert.match(php, /گورِ رکورد/);
 });
 
 test('v12.18.5: آینهٔ PHP هم قانونِ بازگشتی/محافظت را دارد + موتورِ ورود آینهٔ state را می‌بخشد', () => {

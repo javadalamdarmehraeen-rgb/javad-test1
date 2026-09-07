@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
-define("CRM_APP_VERSION", "12.18.5");
+define("CRM_APP_VERSION", "12.18.6");
 
 /* v12.12: همگام سه دامنه — رندر + دو دامنه نت‌افراز */
 function peer_hosts() {
@@ -380,7 +380,16 @@ function merge_shared_12183($existing, $incoming, $auth) {
         /* v12.18.5 (آینهٔ Node): آرایهٔ بی‌id/خالی، مجموعهٔ رکوردیِ موجود را بی‌اجازه پاک نمی‌کند */
         $aIsRecArr = is_array($a0) && count($a0) > 0;
         if ($aIsRecArr) { foreach ($a0 as $r0) { if (!is_array($r0) || key_id_12183($r0) === null) { $aIsRecArr = false; break; } } }
-        if (!($aIsRecArr && !$auth)) { $base[$k] = array_values($v); }
+        if (!($aIsRecArr && !$auth)) {
+          $base[$k] = array_values($v);
+          /* v12.18.6 (آینهٔ Node): حذفِ مجازِ «همه» هم گورِ کامل می‌گذارد */
+          if ($auth && $aIsRecArr && count($v) === 0) {
+            if (!isset($base['_tomb12183']) || !is_array($base['_tomb12183'])) $base['_tomb12183'] = array();
+            if (!isset($base['_tomb12183'][$k])) $base['_tomb12183'][$k] = array();
+            $nw = (int)(microtime(true) * 1000);
+            foreach ($a0 as $r0) { if (!is_array($r0)) continue; $id0 = key_id_12183($r0); if ($id0 !== null) $base['_tomb12183'][$k][$id0] = $nw; }
+          }
+        }
         continue;
       }
       $map = array();
@@ -396,7 +405,22 @@ function merge_shared_12183($existing, $incoming, $auth) {
       foreach ($v as $r) { $id = key_id_12183($r); $incIds[$id] = 1; $prev = isset($map[$id]) ? $map[$id] : null; if (!$prev || rec_stamp_12183($r) >= rec_stamp_12183($prev)) $map[$id] = $r; }
       $out = array();
       foreach ($map as $id => $r) { if (!$auth || isset($incIds[$id])) $out[] = $r; }
-      $base[$k] = $out;
+      /* v12.18.6 «گورِ رکورد» (آینهٔ Node): حذفِ مجاز در سرور مُهر می‌خورد؛ unionِ دیدِ کهنه زنده‌اش نمی‌کند */
+      if (!isset($base['_tomb12183']) || !is_array($base['_tomb12183'])) $base['_tomb12183'] = array();
+      if (!isset($base['_tomb12183'][$k]) || !is_array($base['_tomb12183'][$k])) $base['_tomb12183'][$k] = array();
+      $nowT = (int)(microtime(true) * 1000);
+      foreach ($base['_tomb12183'][$k] as $tid => $tts) { if ($nowT - (int)$tts > 14 * 86400000) unset($base['_tomb12183'][$k][$tid]); }
+      if ($auth) { foreach (is_array($a0) ? $a0 : array() as $r0) { if (!is_array($r0)) continue; $id0 = key_id_12183($r0); if ($id0 !== null && !isset($incIds[$id0])) $base['_tomb12183'][$k][$id0] = $nowT; } }
+      $out2 = array();
+      foreach ($out as $r) {
+        $idr = key_id_12183($r);
+        if ($idr !== null && isset($base['_tomb12183'][$k][$idr])) {
+          if (rec_stamp_12183($r) <= (int)$base['_tomb12183'][$k][$idr]) continue;
+          unset($base['_tomb12183'][$k][$idr]);
+        }
+        $out2[] = $r;
+      }
+      $base[$k] = $out2;
     } elseif (is_array($v) && count($v) > 0) {
       /* v12.18.5 (آینهٔ Node): آبجکتِ تنظیمی = ادغامِ بازگشتی نه array_mergeِ سطحی —
          آرایه‌هایِ idدارِ زیرین اجتماعِ رکوردی؛ هیچِ فیلد/تنظیمِ تازه باِ pushِ کهنه نمی‌میرد */

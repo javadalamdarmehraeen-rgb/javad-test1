@@ -27,7 +27,7 @@ const phpSrc = readFileSync(new URL('public/api.php', root), 'utf8');
 function bootSyncLayer() {
   const MARK = '/* v12.18.3 —';
   const from = bundle.indexOf(MARK);
-  assert.ok(from > 0, 'لایهٔ 12.18.5 در انتهای باندل است');
+  assert.ok(from > 0, 'لایهٔ 12.18.6 در انتهای باندل است');
   const layer = bundle.slice(from);
   const doc = {
     readyState: 'complete', visibilityState: 'visible',
@@ -153,7 +153,7 @@ test('v12.18.3: سرورِ واقعی — POSTِ مویرگی ادغام می‌
     ph = Object.fromEntries(j.data.pharmacies.map((x) => [x.id, x]));
     assert.ok(ph.p9, 'رکوردِ دستگاهِ دیگر با دیدِ کهنه نمی‌سوزد');
     assert.equal(ph.p1.name, 'الف ویرایش B', 'نسخهٔ تازه حفظ شد');
-    assert.ok(ph.p2, 'در دیدِ کهنه، نبودِ p2 به معنای حذف نیست — بازمی‌گردد (تا pullِ بعدیِ C همگرا شود)');
+    assert.ok(!ph.p2, 'v12.18.6 «گورِ رکورد»: p2 حذفِ مجاز شده بود — حالا حتی pushِ کهنه باِ حاملِ رکورد هم احیایش نمی‌کند (رفعِ «شبحِ بازگشتِ حذف»)');
     // سطلِ سهمیهٔ مستقل: ۴۰ نوشتنِ کهنه (بدونِ هدرِ v12183) نباید مویرگ را ۴۲۹ کند
     const flood = await fetch(B + '/api/state?replace=1', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CRM-Request': '1', 'X-CRM-Replace': '1' }, body: JSON.stringify({ _dataGen: '11.81.0', pharmacies: [] }) });
     assert.ok(flood.status === 200 || flood.status === 429, 'سطلِ کهنه جدا است');

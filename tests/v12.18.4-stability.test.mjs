@@ -28,8 +28,8 @@ test('v12.18.4: فایروال درِ انتهایِ باندل است و پس �
   assert.ok(!/window\.fetch\s*=/.test(after.replace(/window\.fetch\._v12184/g, '')), 'پس ازِ فایروال fetchِ دیگری نصب نمی‌شود');
   assert.match(bundle, /_v12184/);
   assert.match(bundle, /__CRM12184_FW_OFF/);
-  assert.match(html, /BUILD="12\.18\.5"/, 'BUILD در index.html');
-  assert.match(html, /crm-bundle\.js\?v=12\.18\.5/, 'کش‌بستِ تازه');
+  assert.match(html, /BUILD="12\.18\.6"/, 'BUILD در index.html');
+  assert.match(html, /crm-bundle\.js\?v=12\.18\.6/, 'کش‌بستِ تازه');
 });
 
 test('v12.18.4: رفتارِ فایروال — GETِ کهنه=skip، POSTِ کهنه=موفقِ جعلی، دامنهٔ دیگر هم، بقیهٔ مسیرها آزاد', async () => {

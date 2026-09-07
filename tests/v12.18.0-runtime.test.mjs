@@ -98,7 +98,7 @@ function bootLayer(opts) {
     fetch: opts.fetch || (() => Promise.resolve({ ok: true })),
     location: { origin: 'https://ndcohub.test', reload() { win.__reloads = (win.__reloads || 0) + 1; } },
     navigator: { onLine: true, serviceWorker: opts.sw ? { getRegistrations: () => Promise.resolve(opts.sw) } : undefined },
-    CRM_APP_VERSION: '12.18.5'
+    CRM_APP_VERSION: '12.18.6'
   };
   if (opts.__CRM_ORIG_FETCH) win.__CRM_ORIG_FETCH = opts.__CRM_ORIG_FETCH;
   if (opts.caches) win.caches = opts.caches;
@@ -165,13 +165,13 @@ test('v12.18.3: ریشه‌پاک‌کن کلیدهایِ کهنه را می‌�
   assert.ok(idbDeleted.includes('crmV19'), 'crmV19 باید حذف شود');
   assert.ok(!idbDeleted.includes('crmBulkData'), 'گاوصندوقِ حجمی هرگز حذف نشود');
   assert.match(xhrUrl, /\/api\/cleanup\?stale=1&purge=1/, 'سرور هم باید purge بگیرد');
-  assert.equal(ls.getItem('CRM_V1218_PURGED'), '12.18.5', 'مُهرِ یک‌بارمصرف');
+  assert.equal(ls.getItem('CRM_V1218_PURGED'), '12.18.6', 'مُهرِ یک‌بارمصرف');
   env.flush();
   assert.equal(env.win.__reloads, 1, 'یک بار تازه‌سازی پس از پاک‌سازی');
 });
 
 test('v12.18.3: پاک‌سازی در نسخهٔ همین‌بار اجراشده تکرار نمی‌شود', () => {
-  const ls = storageStub({ CRM_V1218_PURGED: '12.18.5', CRM_DIAG_LOG: 'keep?no' });
+  const ls = storageStub({ CRM_V1218_PURGED: '12.18.6', CRM_DIAG_LOG: 'keep?no' });
   const env = bootLayer({ localStorage: ls });
   assert.equal(env.win.__reloads || 0, 0, 'reloadِ دوم نباید بشود');
 });
@@ -262,7 +262,7 @@ test('v12.18.3: مثبتِ بند ۴ — تغییرِ ترتیب، فوراً ر
 /* ───────── ۲.ب) ریشه‌پاک‌کنِ دستی (نوبت ۱۳۷) ───────── */
 test('v12.18.3+: purgeNow مُهرِ «انجام‌شده» را برمی‌دارد، همه‌چیز را دوباره جارو می‌کند، state را نگه می‌دارد و یک‌بار reload می‌کند', () => {
   const ls = storageStub({
-    CRM_V1218_PURGED: '12.18.5',
+    CRM_V1218_PURGED: '12.18.6',
     CRM_V1218_RELOADED: '1',
     CRM_OLD_JUNK_KEY: 'junk',
     CRM_DIAG_LOG: 'x',
@@ -282,7 +282,7 @@ test('v12.18.3+: purgeNow مُهرِ «انجام‌شده» را برمی‌د�
   assert.ok(!ls._map.has('CRM_DIAG_LOG'), 'لاگِ کهنه پاک شد');
   assert.ok(ls._map.has('CRM_APP_STATE_V2'), 'state هرگز پاک نمی‌شود');
   assert.ok(ls._map.has('CRM_USERS_AUTH'), 'لاگین/کاربران می‌مانند');
-  assert.equal(ls._map.get('CRM_V1218_PURGED'), '12.18.5', 'مُهرِ نسخه در همانِ لحظه تازه شد');
+  assert.equal(ls._map.get('CRM_V1218_PURGED'), '12.18.6', 'مُهرِ نسخه در همانِ لحظه تازه شد');
   assert.ok(!ss._map.has('CRM_JUNK_SS'), 'sessionStorage هم جارو شد');
   assert.ok(env.toasts.some((t) => /ریشه‌پاک‌کنیِ دستی/.test(t)), 'تأییدِ ملموس به مدیر');
   env.flush();
@@ -438,20 +438,20 @@ test('v12.18.3: بنرِ لاتین، نسخه در همه‌ی سطح‌ها و
   const env = bootLayer({});
   const badge = env.doc.createElement('div'); badge.id = 'crmBuildBadge'; env.doc.body.appendChild(badge); env.doc._ix['crmBuildBadge'] = badge;
   env.API.paintBadgeLatin();
-  assert.equal(badge.textContent, 'نسخه 12.18.5', 'بنرِ ارقامِ لاتین');
+  assert.equal(badge.textContent, 'نسخه 12.18.6', 'بنرِ ارقامِ لاتین');
   const pairs = [
-    ['package.json', /"version":\s*"12\.18\.5"/],
-    ['server.js', /const APP_VERSION = "12\.18\.5"/],
-    ['public/crm-app.js', /CRM_APP_VERSION = "12\.18\.5"/],
-    ['public/index.html', /BUILD="12\.18\.5"/],
-    ['public/sw.js', /BUILD = "12\.18\.5"/],
-    ['public/api.php', /CRM_APP_VERSION", "12\.18\.5"/],
-    ['public/login.html', /نسخه 12\.18\.5/],
-    ['README.md', /نسخه‌ی جاریِ این ریپو \(GitHub main\): \*\*12\.18\.5\*\*/]
+    ['package.json', /"version":\s*"12\.18\.6"/],
+    ['server.js', /const APP_VERSION = "12\.18\.6"/],
+    ['public/crm-app.js', /CRM_APP_VERSION = "12\.18\.6"/],
+    ['public/index.html', /BUILD="12\.18\.6"/],
+    ['public/sw.js', /BUILD = "12\.18\.6"/],
+    ['public/api.php', /CRM_APP_VERSION", "12\.18\.6"/],
+    ['public/login.html', /نسخه 12\.18\.6/],
+    ['README.md', /نسخه‌ی جاریِ این ریپو \(GitHub main\): \*\*12\.18\.6\*\*/]
   ];
   for (const [f, re] of pairs) {
     const t = readFileSync(new URL(f, root), 'utf8');
-    assert.ok(re.test(t), 'نسخه در ' + f + ' باید 12.18.5 باشد');
+    assert.ok(re.test(t), 'نسخه در ' + f + ' باید 12.18.6 باشد');
   }
   const srv = readFileSync(new URL('server.js', root), 'utf8');
   assert.ok(/purge/.test(srv) && /sampleStripped/.test(srv), 'پارامترِ purge در سرور');

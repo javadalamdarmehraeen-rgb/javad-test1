@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "12.18.5";
+const APP_VERSION = "12.18.6";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -265,7 +265,16 @@ function mergeCollections12183(existing, incoming, authoritative) {
         /* v12.18.5: آرایهٔ بی‌id یاِ خالی، آرایهٔ idدارِ موجود را بی‌اجازه پاک نمی‌کند:
            «خالی» یا «بی‌ساختار» بودنِ دیدِ یکِ دستگاه بهِ معنایِ حذفِ جمعی نیست. */
         const aIsRecArr = Array.isArray(a0) && a0.length > 0 && a0.every((r) => r && typeof r === "object" && keyId12183(r) != null);
-        if (!(aIsRecArr && !authoritative)) base[k] = b;
+        if (!(aIsRecArr && !authoritative)) {
+          base[k] = b;
+          /* v12.18.6: حذفِ مجازِ «همه» (آرایهٔ خالی باِ authority) هم گورِ کامل می‌گذارد */
+          if (authoritative && aIsRecArr && Array.isArray(b) && b.length === 0) {
+            const tm2 = base._tomb12183 || (base._tomb12183 = {});
+            const tk2 = tm2[k] || (tm2[k] = {});
+            const nw = Date.now();
+            for (const r of a0) { const id0 = keyId12183(r); if (id0 != null) tk2[String(id0)] = nw; }
+          }
+        }
         continue;
       }
       const map = new Map();
@@ -279,6 +288,20 @@ function mergeCollections12183(existing, incoming, authoritative) {
         if (!prev || recStamp12183(r) >= recStamp12183(prev)) map.set(kk, r);
       }
       if (authoritative) for (const id of Array.from(map.keys())) if (!incIds.has(id)) map.delete(id);
+      /* v12.18.6 «گورِ رکورد» (tombstone): حذفِ مجازِ یکِ دستگاه درِ سرور مُهر می‌خورد؛
+         ازِ اینِ بهِ بعد هیچِ unionِ دیدِ کهنه‌ای ازِ دستگاهِ دیگر آنِ رکورد را زنده نمی‌کند
+         (گرهٔ «A حذف کرد، B باِ pushِ کهنه زنده‌اش کرد»). بازنویسیِ تازه‌تر ازِ گور = احیایِ عمدی. */
+      let tmbs = base._tomb12183; if (!tmbs || typeof tmbs !== "object") tmbs = base._tomb12183 = {};
+      let tk = tmbs[k]; if (!tk || typeof tk !== "object") tk = tmbs[k] = {};
+      const nowT = Date.now();
+      for (const tid of Object.keys(tk)) { if (nowT - Number(tk[tid] || 0) > 14 * 864e5) delete tk[tid]; }
+      if (authoritative) for (const r of (Array.isArray(a0) ? a0 : [])) {
+        const id0 = keyId12183(r); if (id0 != null && !incIds.has(id0)) tk[String(id0)] = nowT;
+      }
+      for (const [id, rec] of Array.from(map.entries())) {
+        const t = tk[String(id)];
+        if (t != null) { if (recStamp12183(rec) <= Number(t)) map.delete(id); else delete tk[String(id)]; }
+      }
       base[k] = Array.from(map.values());
     } else if (b && typeof b === "object") {
       /* v12.18.5: آبجکت‌هایِ تنظیمی (customFields/formFieldMeta/layout…) = ادغامِ بازگشتی:

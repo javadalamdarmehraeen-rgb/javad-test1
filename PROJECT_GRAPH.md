@@ -416,8 +416,8 @@
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
 - نسخه سورس package: `12.18.5`
-- مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a07288-javad-test1`؛ push/PR فقط از همین شاخه (PR #8 به‌روز شده با 12.18.5، منتظر Merge کاربر).
-- Production فعال: `https://javad-test1.onrender.com` — تا Merge نشدنِ PR #8 همان `12.16.0` کهنه را سرو می‌کند؛ پس از Merge خودکار `12.18.5`.
+- مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a07288-javad-test1`؛ push/PR فقط از همین شاخه (PR #8 با 12.18.6 merge شد، نوبت ۱۴۳).
+- Production فعال: `https://javad-test1.onrender.com` — پس ازِ mergeِ نوبتِ ۱۴۳، `12.18.6` سرو می‌شود.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.
 - `GITHUB_REVIEW_HANDOFF.md` مرجع وضعیت commit/push/PR/GitLab/Render/production و دستورات بررسی است؛ قبل از ادعای deploy باید دوباره اندازه‌گیری شود.
 - زنجیره انتشار: source test → commit → push Arena branch → PR main → checks → merge → GitLab mirror → Render deploy → production health.
