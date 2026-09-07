@@ -259,6 +259,7 @@ tests/v12.16.0-runtime.test.mjs
 tests/v12.17.0-runtime.test.mjs
 tests/v12.18.0-runtime.test.mjs
 tests/v12.18.3-runtime.test.mjs
+tests/v12.18.4-stability.test.mjs
 tests/version-11.24-regressions.test.mjs
 tsconfig.json
 update_chat_arena.py

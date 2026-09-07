@@ -13000,7 +13000,7 @@ button.v19-gps svg{display:block}
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.18.3");
+        var ver=String(window.CRM_APP_VERSION||"12.18.4");
         var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -14537,7 +14537,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.18.3");
+        var ver=String(window.CRM_APP_VERSION||"12.18.4");
         var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -19331,10 +19331,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.3"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.4"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.3").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.4").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19414,10 +19414,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.3"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.4"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.3").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.4").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -19473,7 +19473,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.18.3");
+  var BUILD = String(window.CRM_APP_VERSION || "12.18.4");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
@@ -19534,10 +19534,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.3"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.4"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.3").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.4").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19564,10 +19564,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.3"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.4"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.3").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.4").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -19652,7 +19652,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.3"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.4"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -20086,7 +20086,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var TITLE = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
   var BRAND = "طنین طب طاها  TANIN TEB TAHA";
-  var FALLBACK = "12.18.3";
+  var FALLBACK = "12.18.4";
 
   /* ── ۱) سربرگ دقیقاً سه خط؛ شماره نسخه با ارقام لاتین ───────────────── */
   function ver() { try { return String(window.CRM_APP_VERSION || FALLBACK); } catch (e) { return FALLBACK; } }
@@ -20467,7 +20467,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     try { done = localStorage.getItem(FLAG) === "1"; } catch (e) {}
     if (done) return;
     try { localStorage.setItem(FLAG, "1"); } catch (e) {}
-    var ver = String(window.CRM_APP_VERSION || "12.18.3");
+    var ver = String(window.CRM_APP_VERSION || "12.18.4");
     try {
       if (window.caches && typeof caches.keys === "function") {
         caches.keys().then(function (keys) {
@@ -22331,7 +22331,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var API15 = window.v1215Api || {};
   var API16 = window.v1216Api || {};
-  var VER = String(window.CRM_APP_VERSION || "12.18.3");
+  var VER = String(window.CRM_APP_VERSION || "12.18.4");
 
   function $(id) { try { return document.getElementById(id); } catch (e) { return null; } }
   function qsa(sel, root) { try { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); } catch (e) { return []; } }
@@ -22805,7 +22805,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   /* ══ ۱۳) تبِ تغییرات: نسخه‌ی 12.17.0 بالایِ همه + بازرسازی هر بار که تب باز شود ═══════ */
   var CH1217_HTML = "<div id='v1217ChangeEntry' style='border:2px solid #0d9488;background:#f0fdfa;border-radius:12px;padding:10px;margin-bottom:10px'>" +
-    "<b style='color:#0f766e'>📦 نسخه‌ی جاری: 12.18.3</b><ul style='margin:6px 0 0 18px;padding:0;color:#334155;font-size:14px;line-height:2'>" +
+    "<b style='color:#0f766e'>📦 نسخه‌ی جاری: 12.18.4</b><ul style='margin:6px 0 0 18px;padding:0;color:#334155;font-size:14px;line-height:2'>" +
     "<li>ترتیبِ ستون‌ها پس از بازگشایی هم برقرار می‌ماند و در تبِ اصلی هم اعمال می‌شود</li>" +
     "<li>«موقعیت فعلی من» فقط نقطه‌ی تازه می‌پذیرد و آدرس به‌صورتِ فارسیِ مرتب (کشور، استان، شهر، خیابان، پلاک) می‌آید</li>" +
     "<li>کادرِ جایگذاریِ خودکارِ سفارش در بالایِ صفحه (دسکتاپ و گوشی) می‌چسبد و فقط داروخانه‌های هم‌نام با آدرس را نشان می‌دهد</li>" +
@@ -22960,7 +22960,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       function showStaleBar(sv) {
         if (shown) return;
         shown = true;
-        var cur = lv('12.18.3');
+        var cur = lv('12.18.4');
         var a = lv(sv);
         var newer = a[0] > cur[0] || (a[0] === cur[0] && a[1] > cur[1]) || (a[0] === cur[0] && a[1] === cur[1] && a[2] >= cur[2]);
         if (!sv || newer) return;
@@ -22968,7 +22968,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         bar.id = 'crm1217StaleBar';
         bar.setAttribute('dir', 'rtl');
         bar.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#fef3c7;border-top:2px solid #f59e0b;color:#78350f;font:12px/1.9 Tahoma,sans-serif;padding:5px 12px;text-align:center';
-        bar.innerHTML = '⚠️ سرورِ وصل‌شده هنوز نسخهٔ کهنه <b>' + sv + '</b> را اجرا می‌کند — آخرین نسخهٔ برنامه <b>12.18.3</b> است. <a href="http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip" download style="color:#1d4ed8"><b>⬇ دریافت ZIPِ جدید و نصب</b></a>';
+        bar.innerHTML = '⚠️ سرورِ وصل‌شده هنوز نسخهٔ کهنه <b>' + sv + '</b> را اجرا می‌کند — آخرین نسخهٔ برنامه <b>12.18.4</b> است. <a href="http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip" download style="color:#1d4ed8"><b>⬇ دریافت ZIPِ جدید و نصب</b></a>';
         document.body.appendChild(bar);
       }
       /* XHR به‌جای fetch: این پرسش نباید در شمارشِ governor (فریم ۱۳) بیفتد */
@@ -23006,7 +23006,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   window.v1218 = true;
   window.__V1218_MARK = "v12.18.3";
 
-  var VER = String(window.CRM_APP_VERSION || "12.18.3");
+  var VER = String(window.CRM_APP_VERSION || "12.18.4");
   var A15 = window.v1215Api || null;
   var A16 = window.v1216Api || null;
   var A17 = window.v1217Api || null;
@@ -24393,7 +24393,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
      صادقانه می‌گوید این دستگاه جدا کار می‌کند.
    • همه‌چیز با XHR خام — نه governorِ سقفِ درخواست، نه wrapperهایِ skipِ قدیمی. */
 (function () {
-  var VER = "12.18.3";
+  var VER = "12.18.4";
   var SEEN = { rev: "", savedAt: 0 };
   var last = { mode: "", pullAt: 0, pushAt: 0, errs: 0, added: 0, removed: 0, touched: 0, localBackoffUntil: 0 };
   var pushTimer = 0, pushAuthed = false;
@@ -24595,3 +24595,39 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { setTimeout(boot, 900); });
   else setTimeout(boot, 900);
 })();
+
+/*V12184-FW-START*/
+/* v12.18.4 «دیوارِ آتشِ lایده‌ی» — ریشه‌ی «هر بار که آنلاین/آفلاین می‌شود جای فیلدها عوض می‌شود»:
+   شش نسلِ موتورِ قدیمی (v60/v65/v67/v69/v7x) رویِ رویدادهایِ online/offline و تایمرهایِ ۸ تا ۲۵ ثانیه‌ای،
+   کلِ state را ازِ سرور pull و «جایگزینِ کامل» می‌کنند (applyRemote → window.state = ... → بازچینیِ چیدمان).
+   از ۱۲.۱۸.۳ به بعد تنها مسیرِ مجازِ همگام‌سازی، مویرگِ v12183 است که رکورد‌به‌رکورد ادغام می‌کند و
+   هرگز به کلیدهایِ چیدمان دست نمی‌زند. پس همین‌جا درِ لایه‌ی fetch آتش می‌گذاریم: هر GETِ قدیمی به
+   /api/state پاسخِ «skip» می‌گیرد (موتورها مثلِ نسخه‌ی v69 بی‌کار می‌مانند) و هر POSTِ قدیمی موفقِ
+   جعلی برمی‌گردد تا قفسه‌ی پاسخِ j.data → applyRemote را دور بزند. داده‌ی واقعیِ شما درِ سرور در امان است:
+   نوشتنِ اصلی ازِ مسیرِ XHRِ مویرگ (rawXhr) می‌رود که اصلاً ازِ fetch عبور نمی‌کند. */
+(function () {
+  "use strict";
+  var of = window.fetch;
+  if (typeof of !== "function" || of._v12184 || window.__CRM12184_FW_OFF === 1) return;
+  function fake(payload) {
+    try {
+      if (typeof Response === "function") {
+        return Promise.resolve(new Response(JSON.stringify(payload), { status: 200, headers: { "Content-Type": "application/json" } }));
+      }
+    } catch (e) {}
+    return Promise.resolve({ ok: true, status: 200, json: function () { return Promise.resolve(payload); }, text: function () { return Promise.resolve(JSON.stringify(payload)); } });
+  }
+  window.fetch = function (input, init) {
+    try {
+      var url = String((input && input.url) || input || "");
+      if (/\/api\/state(\?|\/|$)/.test(url)) {
+        var m = String((init && init.method) || (input && input.method) || "GET").toUpperCase();
+        if (m === "POST" || m === "PUT" || m === "PATCH") return fake({ status: "success", merged: true, fw12184: 1 });
+        return fake({ status: "skip", fw12184: 1 });
+      }
+    } catch (eFw) {}
+    return of.apply(this, arguments);
+  };
+  window.fetch._v12184 = 1;
+})();
+/*V12184-FW-END*/

@@ -8,7 +8,7 @@ import socketserver
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 PORT = 8000
-VER = "12.18.3"
+VER = "12.18.4"
 ZIP_NAME = "namayandeelmi-v%s.zip" % VER
 ZIP_PATH = os.path.join(ROOT, ZIP_NAME)
 
