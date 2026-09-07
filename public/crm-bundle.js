@@ -10295,14 +10295,14 @@ button.v19-gps svg{display:block}
       var cells = rowEl.children;
       if (cells.length !== slots.length) return;
       var arr = Array.prototype.slice.call(cells).slice();
-      /* v12.18.2: مثلِ نگهبانِ v11.61 در موتورِ بالایی — اگر ترتیبِ DOM همانِ مطلوب است، هیچ نودی جابه‌جا نشود؛
+      /* v12.18.3: مثلِ نگهبانِ v11.61 در موتورِ بالایی — اگر ترتیبِ DOM همانِ مطلوب است، هیچ نودی جابه‌جا نشود؛
          وگرنه هر فراخوانِ دوره‌ای، ردیفِ هدر را با appendChild می‌کَند و پرشِ ستون‌ها ساخته می‌شود */
       var _need = false;
       for (var _k = 0; _k < desired.length; _k++) { if (cells[_k] !== arr[desired[_k]]) { _need = true; break; } }
       if (!_need) return;
       desired.forEach(function (cur) { rowEl.appendChild(arr[cur]); });
     }
-    /* v12.18.2: این موتورِ قدیمی، جابه‌جاییِ «مدل→مرتب» را روی DOMِ جابه‌جاشدهٔ قبلی اعمال می‌کرد
+    /* v12.18.3: این موتورِ قدیمی، جابه‌جاییِ «مدل→مرتب» را روی DOMِ جابه‌جاشدهٔ قبلی اعمال می‌کرد
        و هر دورِ رندر، ستون‌ها را یک پله دیگر می‌چرخاند (نوسانِ ستونِ پزشکان/سفارش‌ها).
        هر وضعیتِ ترتیب حالا فقط یک‌بار اعمال می‌شود؛ همانِ تکراری = بی‌اثر. */
     try {
@@ -10312,7 +10312,7 @@ button.v19-gps svg{display:block}
         if (_t0.getAttribute("data-v19reorder") === _sig) { paintRouteIcons(tbody); iconifyButtons(tbody); return; }
         _t0.setAttribute("data-v19reorder", _sig);
       }
-      /* v12.18.2: موتورِ جابه‌جاییِ v11 بازنشسته شد — «v20ReorderListColumns» (نگهبانِ v11.61، همگرا و تک‌مالک)
+      /* v12.18.3: موتورِ جابه‌جاییِ v11 بازنشسته شد — «v20ReorderListColumns» (نگهبانِ v11.61، همگرا و تک‌مالک)
          ترتیبِ ستون‌ها را مدیریت می‌کند. دو موتورِ موازی روی یکِ جدول، هر دورِ رندر یکی ستون را جابه‌جا و
          دیگری برمی‌گرداند: نوسانِ دائمِ سرستونِ پزشکان/سفارش‌ها — همان «جابجاییِ اطلاعات»ِ گزارش‌شده.
          آیکون‌ها (GPS/Glyph) مثلِ قبل ساخته می‌شوند؛ فقط «حرکتِ» ستون‌ها خاموش است. */
@@ -10996,6 +10996,16 @@ button.v19-gps svg{display:block}
       (window.indexedDB ? 1 : 0) ? (window.showDirectoryPicker || window.showSaveFilePicker ? "ok" : "warn") : "bad",
       "IndexedDB: " + (window.indexedDB ? "دارد" : "ندارد") + " | انتخاب پوشه: " + (window.showDirectoryPicker ? "دارد" : window.showSaveFilePicker ? "فقط فایل" : "ندارد"),
       (window.showDirectoryPicker || window.showSaveFilePicker) ? "" : "برای پشتیبان در پوشه مشخص، از Chrome/Edge استفاده کنید."));
+    var __syncS = null;
+    try { if (window.v12183Sync && window.v12183Sync.status) __syncS = window.v12183Sync.status(); } catch (eSy) {}
+    push(diagRow("همگام‌سازیِ چنددستگاهی (مویرگ)",
+      __syncS && __syncS.mode === "shared" ? "ok" : __syncS && __syncS.mode === "local" ? "warn" : "info",
+      __syncS && __syncS.mode === "shared"
+        ? "وصل بهِ سرورِ اشتراکی — آخرین کشیدن: " + (__syncS.lastPull ? new Date(__syncS.lastPull).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) : "—") + " · آخرین فرستادن: " + (__syncS.lastPush ? new Date(__syncS.lastPush).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) : "—") + " · خطاها: " + (__syncS.errs || 0)
+        : (__syncS && __syncS.mode === "local"
+          ? "این دستگاه به APIِ اشتراکی نمی‌رسد؛ تغییراتش فقط در همین مرورگر می‌ماند — همهٔ دستگاه‌ها را از یکِ آدرسِ اصلی (رندر/نت‌افرازِ دارایِ php) باز کنید"
+          : "در حالِ ارزیابیِ کانالِ اشتراکی…"),
+      "<button type='button' id='crm12183NowBtn' class='btn btn-sm' style='background:#134e4a;color:#fff'>🔄 گرفتنِ تغییراتِ بقیه</button>"));
     push(diagRow("موتورِ ورود (پاک‌سازیِ از ریشه)", "info",
       "جارویِ کاملِ کشِ مرورگر، سرویس‌ورکر و کلیدهایِ کهنهٔ همین دستگاه — ویندوز و گوشی؛ اطلاعاتِ رویِ سرور هرگز پاک نمی‌شود",
       "<button type='button' id='crmEngineRunBtn' class='btn btn-sm' style='background:#7c2d12;color:#fff'>🧹 اجرایِ موتور</button>"));
@@ -11003,7 +11013,7 @@ button.v19-gps svg{display:block}
       window.L ? "نسخه " + esc(L.version || "?") + " بارگذاری شده" : "کتابخانه نقشه لود نشده",
       window.L ? "" : "فایل‌های vendor/leaflet.js را بررسی کنید."));
 
-    // شبکه — v12.18.2: پروب‌ها با XHR خام تا governorِ سقفِ درخواست، خطایِ «budget-exhausted» نسازد
+    // شبکه — v12.18.3: پروب‌ها با XHR خام تا governorِ سقفِ درخواست، خطایِ «budget-exhausted» نسازد
     function diagXhr(url) {
       return new Promise(function (res, rej) {
         try {
@@ -11198,7 +11208,7 @@ button.v19-gps svg{display:block}
           if (v === state) return;
           if (!state || typeof state !== "object") { state = v; return; }
           Object.keys(state).forEach(function (k) { try { if (!Object.prototype.hasOwnProperty.call(v, k)) return; } catch (e0) {} state[k] = state[k]; });
-          /* v12.18.2: حذفِ کلیدهایِ غایب ممنوع — پذیرشِ نسخهٔ سرور هیچ‌چیز را از حافظهٔ زنده بیرون نمی‌اندازد؛ ادغام از دروازهٔ v12TakeRegisteredOnly (تازه‌ترِ محلی برنده) */
+          /* v12.18.3: حذفِ کلیدهایِ غایب ممنوع — پذیرشِ نسخهٔ سرور هیچ‌چیز را از حافظهٔ زنده بیرون نمی‌اندازد؛ ادغام از دروازهٔ v12TakeRegisteredOnly (تازه‌ترِ محلی برنده) */
           try { if (typeof window.v12TakeRegisteredOnly === "function") { window.v12TakeRegisteredOnly(v, state); return; } } catch (eMerge) {}
           Object.keys(v).forEach(function (k) { state[k] = v[k]; });
         } catch (eSet) {}
@@ -11458,7 +11468,7 @@ button.v19-gps svg{display:block}
     var rec=seedGlobalOptions(key),hidden=(rec.hidden||[]).map(norm),vals=(rec.values||[]).filter(function(x){return hidden.indexOf(norm(x.value))<0;});globalOptionBusy=true;
     globalCustomFields(key).forEach(function(f){f.options=vals.map(function(x){return x.value;});});
     globalOptionElements().forEach(function(el){if(globalFieldKey(el)!==key)return;var current=String(el.value||"");if(el.tagName==="SELECT"){var placeholder=null;Array.prototype.forEach.call(el.options,function(o){if(!String(o.value||"")&&!placeholder)placeholder={value:"",text:o.textContent||"انتخاب کنید..."};});var _want=[];if(placeholder)_want.push(["",placeholder.text||""]);vals.forEach(function(x){_want.push([String(x.value),String(x.text||x.value)]);});
-    /* v12.18.2: بازسازیِ بی‌مقایسهٔ گزینه‌ها خودِ ناظرِ همین سیستم را بیدار نگه می‌داشت و همه‌ی dropdownها زیر نوسان بودند؛ حالا امضا برابر باشد هیچ نودی تکان نمی‌خورد */
+    /* v12.18.3: بازسازیِ بی‌مقایسهٔ گزینه‌ها خودِ ناظرِ همین سیستم را بیدار نگه می‌داشت و همه‌ی dropdownها زیر نوسان بودند؛ حالا امضا برابر باشد هیچ نودی تکان نمی‌خورد */
     var _same=_want.length===el.options.length;
     if(_same){for(var _i=0;_i<_want.length;_i++){var _o=el.options[_i];if(String(_o.value)!==_want[_i][0]||String(_o.textContent||"")!==_want[_i][1]){_same=false;break;}}}
     if(!_same){el.innerHTML="";_want.forEach(function(w){var o=document.createElement("option");o.value=w[0];o.textContent=w[1];el.appendChild(o);});}
@@ -12990,7 +13000,7 @@ button.v19-gps svg{display:block}
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.18.2");
+        var ver=String(window.CRM_APP_VERSION||"12.18.3");
         var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -14527,7 +14537,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.18.2");
+        var ver=String(window.CRM_APP_VERSION||"12.18.3");
         var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -14771,7 +14781,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     var thead=host.querySelector("thead"),tbody=host.querySelector("tbody");
     if(!thead||!tbody)return;
     var next="<tr>"+heads.map(function(h){return "<th>"+h+"</th>";}).join("")+"</tr>";
-    /* v12.18.2: مقایسهٔ innerHTML گمراه‌کننده است — مرورگر DOM را دوباره سریال‌سازی می‌کند
+    /* v12.18.3: مقایسهٔ innerHTML گمراه‌کننده است — مرورگر DOM را دوباره سریال‌سازی می‌کند
        (کوتیشن‌ها عوض می‌شوند) پس «برابر» هرگز برابر نمی‌ماند و هر نوبتِ رندر، tbody را از نو
        می‌نوشت؛ همان نوشتن، MutationObserverهایِ ناظر را بیدار و چرخهٔ پرش را می‌چرخاند.
        امضایِ منبع روی dataset می‌نشیند: رشتهٔ یکسان = بدونِ نوشتن. */
@@ -15363,7 +15373,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     var thead=host.querySelector("thead"),tbody=host.querySelector("tbody");
     if(!thead||!tbody)return;
     var next="<tr>"+heads.map(function(h){return "<th>"+h+"</th>";}).join("")+"</tr>";
-    /* v12.18.2: مقایسهٔ innerHTML گمراه‌کننده است — مرورگر DOM را دوباره سریال‌سازی می‌کند
+    /* v12.18.3: مقایسهٔ innerHTML گمراه‌کننده است — مرورگر DOM را دوباره سریال‌سازی می‌کند
        (کوتیشن‌ها عوض می‌شوند) پس «برابر» هرگز برابر نمی‌ماند و هر نوبتِ رندر، tbody را از نو
        می‌نوشت؛ همان نوشتن، MutationObserverهایِ ناظر را بیدار و چرخهٔ پرش را می‌چرخاند.
        امضایِ منبع روی dataset می‌نشیند: رشتهٔ یکسان = بدونِ نوشتن. */
@@ -16172,7 +16182,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
               try{if(typeof state!=="undefined")state=v;}catch(e1){}
               return;
             }
-            /* v12.18.2: اینجا هم حذفِ کلیدِ غایب ممنوع (بازگرداندنِ setterِ v73 به همان قانون) */
+            /* v12.18.3: اینجا هم حذفِ کلیدِ غایب ممنوع (بازگرداندنِ setterِ v73 به همان قانون) */
             try{if(typeof window.v12TakeRegisteredOnly==="function"){window.v12TakeRegisteredOnly(v,live);return;}}catch(eMerge){}
             Object.keys(v).forEach(function(k){live[k]=v[k];});
           }catch(eSet){}
@@ -19321,10 +19331,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.2"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.3"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.2").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.3").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19404,10 +19414,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.2"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.3"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.2").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.3").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -19463,7 +19473,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.18.2");
+  var BUILD = String(window.CRM_APP_VERSION || "12.18.3");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
@@ -19524,10 +19534,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.2"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.3"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.2").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.3").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19554,10 +19564,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.2"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.3"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.2").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.3").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -19642,7 +19652,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.2"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.3"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -20076,7 +20086,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var TITLE = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
   var BRAND = "طنین طب طاها  TANIN TEB TAHA";
-  var FALLBACK = "12.18.2";
+  var FALLBACK = "12.18.3";
 
   /* ── ۱) سربرگ دقیقاً سه خط؛ شماره نسخه با ارقام لاتین ───────────────── */
   function ver() { try { return String(window.CRM_APP_VERSION || FALLBACK); } catch (e) { return FALLBACK; } }
@@ -20457,7 +20467,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     try { done = localStorage.getItem(FLAG) === "1"; } catch (e) {}
     if (done) return;
     try { localStorage.setItem(FLAG, "1"); } catch (e) {}
-    var ver = String(window.CRM_APP_VERSION || "12.18.2");
+    var ver = String(window.CRM_APP_VERSION || "12.18.3");
     try {
       if (window.caches && typeof caches.keys === "function") {
         caches.keys().then(function (keys) {
@@ -22321,7 +22331,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var API15 = window.v1215Api || {};
   var API16 = window.v1216Api || {};
-  var VER = String(window.CRM_APP_VERSION || "12.18.2");
+  var VER = String(window.CRM_APP_VERSION || "12.18.3");
 
   function $(id) { try { return document.getElementById(id); } catch (e) { return null; } }
   function qsa(sel, root) { try { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); } catch (e) { return []; } }
@@ -22335,7 +22345,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   function faComma(n) {
     var s = String(Math.round(Number(n) || 0));
     s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    /* v12.18.2: قانونِ یکتایِ ارقام — همه‌ی جداکننده‌ها با عددِ لاتین تا هیچ عددی در صفحه دو بار عوض نشود */
+    /* v12.18.3: قانونِ یکتایِ ارقام — همه‌ی جداکننده‌ها با عددِ لاتین تا هیچ عددی در صفحه دو بار عوض نشود */
     return s;
   }
   function num(s) { var n = Number(faDigits(String(s == null ? "" : s)).replace(/[^0-9.\-]/g, "")); return isFinite(n) ? n : 0; }
@@ -22795,7 +22805,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   /* ══ ۱۳) تبِ تغییرات: نسخه‌ی 12.17.0 بالایِ همه + بازرسازی هر بار که تب باز شود ═══════ */
   var CH1217_HTML = "<div id='v1217ChangeEntry' style='border:2px solid #0d9488;background:#f0fdfa;border-radius:12px;padding:10px;margin-bottom:10px'>" +
-    "<b style='color:#0f766e'>📦 نسخه‌ی جاری: 12.18.2</b><ul style='margin:6px 0 0 18px;padding:0;color:#334155;font-size:14px;line-height:2'>" +
+    "<b style='color:#0f766e'>📦 نسخه‌ی جاری: 12.18.3</b><ul style='margin:6px 0 0 18px;padding:0;color:#334155;font-size:14px;line-height:2'>" +
     "<li>ترتیبِ ستون‌ها پس از بازگشایی هم برقرار می‌ماند و در تبِ اصلی هم اعمال می‌شود</li>" +
     "<li>«موقعیت فعلی من» فقط نقطه‌ی تازه می‌پذیرد و آدرس به‌صورتِ فارسیِ مرتب (کشور، استان، شهر، خیابان، پلاک) می‌آید</li>" +
     "<li>کادرِ جایگذاریِ خودکارِ سفارش در بالایِ صفحه (دسکتاپ و گوشی) می‌چسبد و فقط داروخانه‌های هم‌نام با آدرس را نشان می‌دهد</li>" +
@@ -22950,7 +22960,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       function showStaleBar(sv) {
         if (shown) return;
         shown = true;
-        var cur = lv('12.18.2');
+        var cur = lv('12.18.3');
         var a = lv(sv);
         var newer = a[0] > cur[0] || (a[0] === cur[0] && a[1] > cur[1]) || (a[0] === cur[0] && a[1] === cur[1] && a[2] >= cur[2]);
         if (!sv || newer) return;
@@ -22958,7 +22968,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         bar.id = 'crm1217StaleBar';
         bar.setAttribute('dir', 'rtl');
         bar.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#fef3c7;border-top:2px solid #f59e0b;color:#78350f;font:12px/1.9 Tahoma,sans-serif;padding:5px 12px;text-align:center';
-        bar.innerHTML = '⚠️ سرورِ وصل‌شده هنوز نسخهٔ کهنه <b>' + sv + '</b> را اجرا می‌کند — آخرین نسخهٔ برنامه <b>12.18.2</b> است. <a href="http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip" download style="color:#1d4ed8"><b>⬇ دریافت ZIPِ جدید و نصب</b></a>';
+        bar.innerHTML = '⚠️ سرورِ وصل‌شده هنوز نسخهٔ کهنه <b>' + sv + '</b> را اجرا می‌کند — آخرین نسخهٔ برنامه <b>12.18.3</b> است. <a href="http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip" download style="color:#1d4ed8"><b>⬇ دریافت ZIPِ جدید و نصب</b></a>';
         document.body.appendChild(bar);
       }
       /* XHR به‌جای fetch: این پرسش نباید در شمارشِ governor (فریم ۱۳) بیفتد */
@@ -22984,7 +22994,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   } catch (eSb) {}
 })();
 
-/* v12.18.2 — نوبت ۱۳۵: ریشه‌پاک‌کنِ یک‌باره (سرویس‌ورکر، کش‌ها، کلیدهای کهنه، پایگاه‌های موقت، رکوردهای نمونهٔ سرور)،
+/* v12.18.3 — نوبت ۱۳۵: ریشه‌پاک‌کنِ یک‌باره (سرویس‌ورکر، کش‌ها، کلیدهای کهنه، پایگاه‌های موقت، رکوردهای نمونهٔ سرور)،
    خاموش‌کردنِ پرش‌ها (چیدمان فقط با تغییرِ واقعی، آرام‌کردنِ جنگِ v68↔v73، بودجه‌بندیِ همگامِ ۱۵ثانیه‌ای)،
    بند ۴ (ترتیبِ ماندگار با شماره‌گذاریِ یکتایِ فراگیر + ارسالِ فوری)، بند ۹ (ترددِ واقعی روی نقشه)،
    بند ۱۲ (ساعتِ HH:MM)، بند ۱۵ (ماتریسِ ریزِ دسترسی با همهٔ تب‌ها)، بند ۱۶ (آلارمِ ویزیت در مرکزِ اعلان‌ها)
@@ -22994,9 +23004,9 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   if (window.v1218) return;
   window.v1218 = true;
-  window.__V1218_MARK = "v12.18.2";
+  window.__V1218_MARK = "v12.18.3";
 
-  var VER = String(window.CRM_APP_VERSION || "12.18.2");
+  var VER = String(window.CRM_APP_VERSION || "12.18.3");
   var A15 = window.v1215Api || null;
   var A16 = window.v1216Api || null;
   var A17 = window.v1217Api || null;
@@ -23557,7 +23567,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     return arr.length + ":" + mx;
   }
   function listLenFor(name, S) {
-    /* v12.18.2: امضا از محتوایِ خودِ آرایه (تعداد + تازه‌ترین مُهرِ ویرایش) + مُهرِ طراحی؛
+    /* v12.18.3: امضا از محتوایِ خودِ آرایه (تعداد + تازه‌ترین مُهرِ ویرایش) + مُهرِ طراحی؛
        پینگِ زندهٔ داشبورد که saveState می‌زند دیگر بی‌دلیل جدولِ پزشکان/سفارش‌ها را rebuild نمی‌کند */
     try {
       var des = ":" + String(S._designAt || "");
@@ -24362,4 +24372,200 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       }
     }
   } catch (eNT) {}
+})();
+
+/* v12.18.3 — نوبت ۱۴۰: مویرگِ همگامِ چنددستگاهی ═══════════════════════════════
+   مشکلِ ریشه‌ایِ کاربر: «در هر سیستم که تغییر می‌دهم فقط همان‌جا اعمال می‌شود» —
+   لایه‌هایِ v70/v71/v73/v79 هر دستگاه را «مالکِ تنها» (solo/epoch) می‌کردند و
+   با replace=1 کل فایلِ سرور را با کپیِ خودِ دستگاه بازنویسی می‌کردند؛ pullهایِ
+   سایر موتورها هم با فیلترِ skip خنثی شده بود. این لایه بدونِ حذفِ هیچِ کدِ
+   قبلی، حلقه را دوسویه می‌کند:
+   • هر ۲۰ ثانیه (و با visible/focus) فقطِ متایِ ارزانِ /api/state/meta خوانده
+     می‌شود؛ اگر rev فرق کرد، state کامل گرفته و رکورد‌به‌رکورد ادغام می‌شود —
+     رکوردِ تازه‌ترِ محلی (dirty از pullِ آخر) حفظ می‌شود، افزودنی‌هایِ بقیه
+     می‌آید، حذف‌هایِ تأییدشده می‌روند.
+   • هر ذخیره با هدرِ X-CRM-Sync: v12183 و X-CRM-Seen می‌رود؛ سرور ادغام می‌کند
+     (دیگر هیچِ دستگاهی، تغییراتِ بقیه را پاک نمی‌کند) و پاسخِ merge را کلاینت
+     به‌عنوانِ حقیقتِ همگرا می‌پذیرد.
+   • قفلِ «انفرادی» رویِ boot باز می‌شود (_soloOnly و برچسب‌هایش پاک).
+   • هیچِ رندرِ کامل/چیدمانِ تازه‌ای انجام نمی‌شود (مویرگی): فقط state و
+     جدولِ همانِ تب بازنشانی می‌شود؛ اگر API نبود، pillِ کهرباییِ «حالتِ محلی»
+     صادقانه می‌گوید این دستگاه جدا کار می‌کند.
+   • همه‌چیز با XHR خام — نه governorِ سقفِ درخواست، نه wrapperهایِ skipِ قدیمی. */
+(function () {
+  var VER = "12.18.3";
+  var SEEN = { rev: "", savedAt: 0 };
+  var last = { mode: "", pullAt: 0, pushAt: 0, errs: 0, added: 0, removed: 0, touched: 0, localBackoffUntil: 0 };
+  var pushTimer = 0;
+  function st() { return window.state && typeof window.state === "object" ? window.state : null; }
+  function online() { try { return !(window.navigator && navigator.onLine === false); } catch (e) { return true; } }
+  function hasHttp() { try { return /^https?:$/.test(String(location.protocol)); } catch (e) { return false; } }
+  function rawXhr(method, url, body, hdrs, cb) {
+    var done = false;
+    try {
+      var x = new XMLHttpRequest();
+      x.open(method, url, true);
+      try { x.timeout = 12000; } catch (eT) {}
+      if (method === "POST") { try { x.setRequestHeader("Content-Type", "application/json"); } catch (eH) {} }
+      if (hdrs) for (var k in hdrs) { if (Object.prototype.hasOwnProperty.call(hdrs, k)) { try { x.setRequestHeader(k, String(hdrs[k])); } catch (eH2) {} } }
+      x.onload = function () {
+        if (done) return; done = true;
+        var j = null;
+        try { j = x.status === 304 ? { __304: true } : JSON.parse(x.responseText || "null"); } catch (eJ) { j = null; }
+        cb(null, { status: x.status, json: j });
+      };
+      x.onerror = function () { if (!done) { done = true; cb(new Error("net"), null); } };
+      x.ontimeout = function () { if (!done) { done = true; cb(new Error("timeout"), null); } };
+      x.send(body != null ? body : null);
+    } catch (eS) { if (!done) { done = true; cb(eS, null); } }
+  }
+  function persistLocal() { try { if (typeof window.serializeStateForLocalStorage === "function") localStorage.setItem("CRM_APP_STATE_V2", window.serializeStateForLocalStorage(st())); else localStorage.setItem("CRM_APP_STATE_V2", JSON.stringify(st())); } catch (e) {} }
+  function stampOf(r) { var c = [r && r._updatedAt, r && r.updatedAt, r && r.savedAt, r && r._savedAt, r && r.t]; for (var i = 0; i < c.length; i++) { var n = Number(c[i]); if (isFinite(n) && n > 0) return n; } return 0; }
+  function kidOf(r) { if (!r || typeof r !== "object") return null; if (r.id != null && r.id !== "") return "i" + String(r.id); if (r._id != null && r._id !== "") return "i" + String(r._id); return null; }
+  function idArray(v) {
+    if (!Array.isArray(v) || !v.length) return false;
+    for (var i = 0; i < v.length; i++) { if (!v[i] || typeof v[i] !== "object" || !kidOf(v[i])) return false; }
+    return true;
+  }
+  function meaningful(s) {
+    if (!s || typeof s !== "object") return false;
+    return ["pharmacies", "doctors", "orders", "products", "users", "salesTargets"].some(function (k) { return Array.isArray(s[k]) && s[k].length > 0; });
+  }
+  /* ادغامِ مویرگیِ pull: base = stateِ محلی (درجا patch می‌شود)؛ remote = سرور.
+     رکوردِ محلیِ کثیف (تازه‌تر از آخرین pull) حفظ می‌شود تا pushِ بعد برود. */
+  function mergePull(base, remote, seenSavedAt) {
+    var res = { added: 0, removed: 0, touched: 0 };
+    if (!base || !remote || typeof remote !== "object") return res;
+    Object.keys(remote).forEach(function (k) {
+      if (k.charAt(0) === "_") return;
+      var rv = remote[k], bv = base[k];
+      if (idArray(rv)) {
+        var bmap = {};
+        if (Array.isArray(bv)) bv.forEach(function (r) { var id = kidOf(r); if (id) bmap[id] = r; });
+        var rSeen = {}, out = [];
+        rv.forEach(function (r) { var id = kidOf(r); rSeen[id] = 1; var b = bmap[id]; if (b && stampOf(b) > (seenSavedAt || 0) && stampOf(b) >= stampOf(r)) { out.push(b); return; } if (!b) res.added++; out.push(r); });
+        if (Array.isArray(bv)) bv.forEach(function (b) {
+          var id = kidOf(b); if (!id || rSeen[id]) return;
+          if (stampOf(b) > (seenSavedAt || 0)) { out.push(b); res.added++; }
+          else res.removed++;
+        });
+        if (JSON.stringify(out) !== JSON.stringify(Array.isArray(bv) ? bv : [])) { base[k] = out; res.touched++; }
+        return;
+      }
+      try { if (JSON.stringify(rv) !== JSON.stringify(bv)) { base[k] = rv; res.touched++; } } catch (eK) { base[k] = rv; res.touched++; }
+    });
+    return res;
+  }
+  function repaintLists() {
+    var names = ["renderPharmaciesList", "renderDoctorsList", "renderOrdersList", "renderProductsTable", "renderUsersList", "renderActivityLogTable", "renderLeavesTable", "renderSalesTargetsTable"];
+    for (var i = 0; i < names.length; i++) { try { if (typeof window[names[i]] === "function") window[names[i]](); } catch (e) {} }
+  }
+  function fmtHM(t) { try { return new Date(t).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } }
+  function makePill() {
+    try {
+      if (document.getElementById("crm12183Pill")) return;
+      var d = document.createElement("div");
+      d.id = "crm12183Pill";
+      d.setAttribute("dir", "rtl");
+      d.style.cssText = "position:fixed;left:10px;bottom:58px;z-index:9998;font:11px Tahoma,Arial,sans-serif;background:rgba(11,18,32,.85);color:#cbd5e1;border:1px solid #1e293b;border-radius:8px;padding:4px 9px;cursor:pointer;user-select:none";
+      d.title = "همگام‌سازیِ مویرگیِ چنددستگاهی — کلیک = گرفتنِ فوری";
+      d.addEventListener("click", function () { pullNow(true); });
+      if (document.body) { document.body.appendChild(d); paintPill(); }
+    } catch (e) {}
+  }
+  function paintPill() {
+    try {
+      var d = document.getElementById("crm12183Pill"); if (!d) return;
+      if (last.mode === "local") { d.textContent = "🟡 حالتِ محلی — برای همگامی، همهٔ دستگاه‌ها را از یک آدرسِ اصلی باز کنید"; d.style.background = "rgba(120,53,15,.9)"; }
+      else if (last.pullAt || last.pushAt) { d.textContent = "🔗 همگام — " + fmtHM(Math.max(last.pullAt, last.pushAt)); d.style.background = "rgba(11,18,32,.85)"; }
+      else d.textContent = "🔗 همگام‌سازی…";
+    } catch (e) {}
+  }
+  function pullNow(force, cb) {
+    if (!hasHttp() || !st()) { if (cb) cb(); return; }
+    if (!force && (!online() || Date.now() < last.localBackoffUntil)) return;
+    if (!force && document && document.visibilityState === "hidden") return;
+    rawXhr("GET", "/api/state/meta?n=" + Date.now(), null, null, function (err, rr) {
+      if (err || !rr || rr.status >= 400 || !rr.json) {
+        last.errs++; if (!last.mode || last.mode === "") last.mode = "local";
+        last.localBackoffUntil = Date.now() + 60000; paintPill(); if (cb) cb(); return;
+      }
+      last.mode = "shared"; last.localBackoffUntil = 0;
+      var meta = rr.json || {};
+      if (!force && meta.rev && meta.rev === SEEN.rev) { last.pullAt = Date.now(); paintPill(); if (cb) cb(); return; }
+      rawXhr("GET", "/api/state?since=" + encodeURIComponent(SEEN.rev || "") + "&n=" + Date.now(), null, null, function (e2, rr2) {
+        if (e2 || !rr2 || rr2.status === 304 || !rr2.json || !rr2.json.data) { if (rr2 && rr2.status === 304 && meta.rev) { SEEN.rev = meta.rev; } last.pullAt = Date.now(); paintPill(); if (cb) cb(); return; }
+        var data = rr2.json.data;
+        var s = st();
+        var m = mergePull(s, data, SEEN.savedAt);
+        SEEN.rev = String(rr2.json.rev || meta.rev || SEEN.rev || "");
+        SEEN.savedAt = Date.now();
+        last.pullAt = Date.now(); last.added = m.added; last.removed = m.removed; last.touched = m.touched;
+        if (m.touched > 0) { persistLocal(); repaintLists(); if (last.adopted !== 0 && (m.added || m.removed)) { try { if (typeof window.v20Toast === "function") window.v20Toast("🔄 مویرگ: " + (m.added + m.removed) + " تغییر از دستگاه‌های دیگر اعمال شد"); } catch (eT) {} } last.adopted = 1; }
+        paintPill(); if (cb) cb();
+      });
+    });
+  }
+  function pushNow(silent) {
+    if (!hasHttp() || !st() || !online()) return;
+    var s = st();
+    var body;
+    try { body = typeof window.serializeStateForLocalStorage === "function" ? window.serializeStateForLocalStorage(s) : JSON.stringify(s); } catch (eS2) { body = JSON.stringify(s); }
+    rawXhr("POST", "/api/state?__v12183=1&n=" + Date.now(), body, { "X-CRM-Sync": "v12183", "X-CRM-Seen": SEEN.rev || "", "X-CRM-Request": "1" }, function (err, rr) {
+      if (err || !rr || rr.status >= 400 || !rr.json) { last.errs++; return; }
+      var j = rr.json;
+      if (j.rev) SEEN.rev = String(j.rev);
+      SEEN.savedAt = Date.now();
+      last.pushAt = Date.now(); last.mode = "shared";
+      if (j.data && typeof j.data === "object") { try { mergePull(st(), j.data, Date.now() + 1); persistLocal(); } catch (eM) {} }
+      paintPill(); if (!silent) { try { if (typeof window.v20Toast === "function") window.v20Toast("✅ ثبت و همگام با بقیهٔ دستگاه‌ها شد"); } catch (eT) {} }
+    });
+  }
+  function queuePush() { try { clearTimeout(pushTimer); } catch (e) {} pushTimer = setTimeout(function () { pushNow(true); }, 800); }
+  window.crmPushStateToServer = function () { queuePush(); };
+  try {
+    var os = window.saveState;
+    if (typeof os === "function" && !os._v12183) {
+      var ws = function () { var r = os.apply(this, arguments); try { queuePush(); } catch (e) {} return r; };
+      ws._v12183 = true; window.saveState = ws;
+    }
+  } catch (eW) {}
+  try {
+    document.addEventListener("click", function (eP) {
+      var b = eP && eP.target && eP.target.closest && eP.target.closest("#crm12183NowBtn,[data-crm-pull-now]");
+      if (!b) return;
+      try { b.disabled = true; b.textContent = "⏳ گرفتنِ تغییرات…"; } catch (eB) {}
+      pullNow(true, function () {
+        var n = last.touched || 0;
+        try { if (typeof window.v20Toast === "function") window.v20Toast(n > 0 ? "🔄 " + (last.added + last.removed || n) + " مورد تازه از بقیهٔ دستگاه‌ها گرفته شد — صفحه تازه می‌شود" : "✅ همه‌چیز به‌روز است (سرور تغییری نداشت)"); } catch (eT) {}
+        setTimeout(function () { if (n > 0) { try { location.reload(); } catch (eR) {} } try { b.disabled = false; b.textContent = "🔄 گرفتنِ تغییراتِ بقیه"; } catch (eU) {} }, 900);
+      });
+    }, true);
+  } catch (eC) {}
+  function tick() { pullNow(false); }
+  function boot() {
+    if (window.__V12183_BOOT) return; window.__V12183_BOOT = 1;
+    var s = st();
+    if (s) { try { delete s._soloOnly; delete s._soloVersion; delete s._soloAt; delete s._soloReplace; delete s._soloClaimed; } catch (e) {} }
+    try { localStorage.removeItem("CRM_SOLO_CLAIM"); } catch (e2) {}
+    last.adopted = 0;
+    makePill();
+    pullNow(true, function () {
+      var s2 = st();
+      if (s2 && meaningful(s2)) pushNow(true);
+      last.adopted = 0;
+    });
+    setInterval(tick, 20000);
+    try { document.addEventListener("visibilitychange", function () { if (document.visibilityState === "visible") pullNow(false); }); } catch (e3) {}
+    try { window.addEventListener("focus", function () { pullNow(false); }); } catch (e4) {}
+  }
+  window.v12183Sync = {
+    VERSION: VER,
+    pull: function () { pullNow(true); },
+    push: function () { pushNow(false); },
+    merge: mergePull,
+    status: function () { return { mode: last.mode, rev: SEEN.rev, seenSavedAt: SEEN.savedAt, lastPull: last.pullAt, lastPush: last.pushAt, errs: last.errs, added: last.added, removed: last.removed, touched: last.touched }; }
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { setTimeout(boot, 900); });
+  else setTimeout(boot, 900);
 })();

@@ -1,5 +1,5 @@
 /**
- * v12.18.2 — موتورِ ورود + عیب‌یابیِ بی‌بودجه + میخکوب‌کردنِ کادرها (نوبت ۱۳۹)
+ * v12.18.3 — موتورِ ورود + عیب‌یابیِ بی‌بودجه + میخکوب‌کردنِ کادرها (نوبت ۱۳۹)
  * قانون ۹۲: هر بند با اجرایِ همانِ کدِ مرورگری سنجیده می‌شود.
  *  ۱) crm-entry-engine.js در محیطِ استاب: تمام‌جرّا (حالتِ full)، حالتِ ایمنِ آفلاین (light)،
  *     و «هیچِ درخواستِ نوشتنِ شبکه‌ای» — یعنی دادهٔ سرور هرگز پاک نمی‌شود.
@@ -57,7 +57,7 @@ function evalEngine(env) {
 function baseEnv(opts) {
   opts = opts || {};
   const ls = elStub(); const ss = elStub();
-  (opts.lsInit || [['CRM_OLD_JUNK', '1'], ['CRM_DIAG_LOG', '[]'], ['CRM_APP_STATE_V2', '{"a":1}'], ['CRM_USERS_AUTH', '[]'], ['CRM_V1218_PURGED', '12.18.2']]).forEach(([k, v]) => ls.setItem(k, v));
+  (opts.lsInit || [['CRM_OLD_JUNK', '1'], ['CRM_DIAG_LOG', '[]'], ['CRM_APP_STATE_V2', '{"a":1}'], ['CRM_USERS_AUTH', '[]'], ['CRM_V1218_PURGED', '12.18.3']]).forEach(([k, v]) => ls.setItem(k, v));
   if (opts.extraLs) opts.extraLs.forEach(([k, v]) => ls.setItem(k, v));
   const deletedCaches = [];
   const idbDeleted = [];
@@ -71,7 +71,7 @@ function baseEnv(opts) {
   };
 }
 
-test('v12.18.2: موتورِ ورود در حالتِ عادی — کش/SW/stateِ محلی جارو می‌شود، امانت‌ها می‌مانند، مُهرِ v12.18 خالی می‌شود', async () => {
+test('v12.18.3: موتورِ ورود در حالتِ عادی — کش/SW/stateِ محلی جارو می‌شود، امانت‌ها می‌مانند، مُهرِ v12.18 خالی می‌شود', async () => {
   const env = baseEnv({});
   const { eng, netCalls } = evalEngine(env);
   assert.equal(typeof eng.run, 'function', 'API موتور');
@@ -88,7 +88,7 @@ test('v12.18.2: موتورِ ورود در حالتِ عادی — کش/SW/state
   assert.equal(rep.server, 'untouched');
 });
 
-test('v12.18.2: موتور در حالتِ آفلاین با تغییرِ ثبت‌نشده = light — حافظه‌ها دست‌نخورده، فقط کش/SW', async () => {
+test('v12.18.3: موتور در حالتِ آفلاین با تغییرِ ثبت‌نشده = light — حافظه‌ها دست‌نخورده، فقط کش/SW', async () => {
   const env = baseEnv({ online: false, extraLs: [['CRM_PENDING_SYNC', '[{"k":1}]'], ['CRM_SOLO_OWNER', '1']] });
   const { eng } = evalEngine(env);
   const rep = await eng.run({ from: 'login' });
@@ -98,7 +98,7 @@ test('v12.18.2: موتور در حالتِ آفلاین با تغییرِ ثبت
   assert.equal(env.deletedCaches.length, 1, 'با این حال کش پاک شد');
 });
 
-test('v12.18.2: صفحهٔ ورود — موتور بارگذاری و پیش ازِ ورود اجرا می‌شود (سقفِ ۲٫۵ ثانیه، بدونِ بلوکه‌شدنِ لاگین)', () => {
+test('v12.18.3: صفحهٔ ورود — موتور بارگذاری و پیش ازِ ورود اجرا می‌شود (سقفِ ۲٫۵ ثانیه، بدونِ بلوکه‌شدنِ لاگین)', () => {
   const iEng = loginSrc.indexOf('crm-entry-engine.js');
   const iHook = loginSrc.indexOf('crmEntryEngine.run({ from: "login" })');
   const iNav = loginSrc.indexOf('__enterDone = true');
@@ -110,7 +110,7 @@ test('v12.18.2: صفحهٔ ورود — موتور بارگذاری و پیش ا
 });
 
 /* ───────── ۳) عیب‌یابی ───────── */
-test('v12.18.2: عیب‌یابی از پروبِ خامِ XHR استفاده می‌کند (پایانِ «budget-exhausted»)، کشِ پس ازِ جارو = نکته، ردیفِ موتور با دکمه', () => {
+test('v12.18.3: عیب‌یابی از پروبِ خامِ XHR استفاده می‌کند (پایانِ «budget-exhausted»)، کشِ پس ازِ جارو = نکته، ردیفِ موتور با دکمه', () => {
   assert.ok(bundle.includes('diagXhr("/api/health")') && bundle.includes('diagXhr("/api/state")'), 'پروب‌ها روی XHR خام');
   const from = bundle.lastIndexOf('v19DiagBody');
   const to = bundle.indexOf('var finished = false;', from);
@@ -124,8 +124,8 @@ test('v12.18.2: عیب‌یابی از پروبِ خامِ XHR استفاده م
 });
 
 /* ───────── ۴) کادرها پس ازِ فیلدها ───────── */
-test('v12.18.2: قانونِ «فیلدها پیش از کادرها» — کادرِ طراح و کارتِ لوکیشن از رده‌بندیِ فیلد بیرون، به انتهای گرید میخکوب', () => {
-  const MARK = '/* v12.18.2 —';
+test('v12.18.3: قانونِ «فیلدها پیش از کادرها» — کادرِ طراح و کارتِ لوکیشن از رده‌بندیِ فیلد بیرون، به انتهای گرید میخکوب', () => {
+  const MARK = '/* v12.18.3 —';
   const from = bundle.indexOf(MARK);
   assert.ok(from > 0, 'لایه پیدا شد');
   const layer = bundle.slice(from);
@@ -163,7 +163,7 @@ test('v12.18.2: قانونِ «فیلدها پیش از کادرها» — کا�
     getUnifiedFieldList: () => [{ id: 'a', order: 2 }, { id: 'b', order: 1 }],
     setTimeout: () => 0, clearTimeout: () => {}, setInterval: () => 0, clearInterval: () => {},
     addEventListener: () => {}, removeEventListener: () => {},
-    CRM_APP_VERSION: '12.18.2'
+    CRM_APP_VERSION: '12.18.3'
   };
   win.window = win;
   const fn = new Function('window', 'document', 'navigator', 'fetch', 'setTimeout', 'setInterval', 'clearTimeout', 'clearInterval', 'alert', 'MutationObserver', 'Promise',
@@ -186,8 +186,8 @@ test('v12.18.2: قانونِ «فیلدها پیش از کادرها» — کا�
   assert.deepEqual(grid.children, snapshot);
 });
 
-test('v12.18.2: برابریِ نسخهٔ 12.18.2 در همهٔ سطوح + بنرِ README', () => {
-  const VER = '12.18.2';
+test('v12.18.3: برابریِ نسخهٔ 12.18.3 در همهٔ سطوح + بنرِ README', () => {
+  const VER = '12.18.3';
   const files = ['package.json', 'public/index.html', 'public/login.html', 'public/index.php', 'public/api.php', 'server.js', 'public/crm-app.js', 'public/crm-hub.js', 'public/sw.js', 'public/sw-template.js', 'public/crm-entry-engine.js'];
   files.forEach((f) => {
     const t = readFileSync(new URL(f, root), 'utf8');

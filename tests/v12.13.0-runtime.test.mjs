@@ -26,7 +26,7 @@ function makeEnv(opts = {}) {
   const calls = [];
   const live = [];
   const win = {
-    CRM_APP_VERSION: '12.18.2',
+    CRM_APP_VERSION: '12.18.3',
     addEventListener: () => {},
     caches: { keys: () => Promise.resolve(['crm-static-v11']), },
     state: { pharmacies: [{ id: 'p1' }], doctors: [], orders: [], users: [], settings: { companyName: '' } }

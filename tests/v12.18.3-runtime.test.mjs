@@ -1,0 +1,179 @@
+/**
+ * v12.18.3 — مویرگِ همگامِ چنددستگاهی (نوبت ۱۴۰)
+ * قانون ۹۲: هر بند با اجرایِ همانِ کدِ مرورگری/سروری سنجیده می‌شود.
+ *  ۱) mergePull (کلاینت): افزودنی‌هایِ سرور می‌آید، رکوردِ کثیفِ محلی حفظ می‌شود،
+ *     حذفِ تأییدشده اعمال، کلیدهایِ زیرخطیِ سرور (مُهرها) دست‌نخورده.
+ *  ۲) سیم‌کشیِ لایه: crmPushStateToServerِ جدید، دیگیشنِ دکمهٔ عیب‌یابی، پیلِ وضعیت.
+ *  ۳) سرورِ واقعی (spawnِ node server.js رویِ پورتِ آزمون): POSTِ v12183 ادغامِ رکوردی
+ *     می‌کند نه جایگزینی؛ seenِ برابر = حذف‌ها معتبر، seenِ کهنه = افزودنی‌هایِ بقیه
+ *     نمی‌سوزد؛ replaceِ کهنه رویِ فایلِ اشتراکی به ادغامِ بی‌حذف تنزل می‌یابد؛
+ *     GET meta + since→304.
+ *  ۴) آینهٔ PHP: merge_shared_12183 + state/meta + حالتِ 304.
+ */
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { spawn } from 'node:child_process';
+import { mkdtempSync, rmSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+
+const root = new URL('../', import.meta.url);
+const bundle = readFileSync(new URL('public/crm-bundle.js', root), 'utf8');
+const serverSrc = readFileSync(new URL('server.js', root), 'utf8');
+const phpSrc = readFileSync(new URL('public/api.php', root), 'utf8');
+
+function bootSyncLayer() {
+  const MARK = '/* v12.18.3 —';
+  const from = bundle.indexOf(MARK);
+  assert.ok(from > 0, 'لایهٔ 12.18.3 در انتهای باندل است');
+  const layer = bundle.slice(from);
+  const doc = {
+    readyState: 'complete', visibilityState: 'visible',
+    getElementById: () => null,
+    createElement: () => ({ style: { cssText: '' }, setAttribute() {}, addEventListener() {} }),
+    addEventListener() {}, body: { appendChild() {} }
+  };
+  const store = new Map();
+  const win = {
+    document: doc,
+    navigator: { onLine: true },
+    location: { protocol: 'http:', href: 'http://localhost:39999/index.html' },
+    localStorage: {
+      getItem: (k) => (store.has(k) ? store.get(k) : null),
+      setItem: (k, v) => store.set(k, String(v)),
+      removeItem: (k) => store.delete(k)
+    },
+    state: { pharmacies: [], doctors: [], settings: {} },
+    serializeStateForLocalStorage: (s) => JSON.stringify(s),
+    setTimeout: () => 0, clearTimeout: () => {}, setInterval: () => 0, clearInterval: () => {},
+    addEventListener() {}, removeEventListener() {},
+    XMLHttpRequest: function () { this.open = () => {}; this.send = () => {}; this.setRequestHeader = () => {}; }
+  };
+  win.window = win;
+  new Function('window', 'document', 'navigator', 'location', 'localStorage', 'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'XMLHttpRequest', 'JSON',
+    '"use strict";' + layer)(win, doc, win.navigator, win.location, win.localStorage, win.setTimeout, win.clearTimeout, win.setInterval, win.clearInterval, win.XMLHttpRequest, JSON);
+  return { win, api: win.window.v12183Sync };
+}
+
+test('v12.18.3: mergePull — افزودنیِ سرور می‌آید، کثیفِ محلی می‌ماند، حذفِ تأییدشده اعمال می‌شود', () => {
+  const { api } = bootSyncLayer();
+  assert.ok(api && typeof api.merge === 'function', 'APIِ مویرگ');
+  const NOW = Date.now();
+  const base = {
+    pharmacies: [
+      { id: 'p1', name: 'محلیِ تازه', _updatedAt: NOW - 1000 },        // dirty (بعد ازِ pullِ آخر)
+      { id: 'p2', name: 'محلیِ قدیمی', _updatedAt: NOW - 99999999 },   // سرور این را پاک کرده
+      { id: 'p3', name: 'همان', _updatedAt: 5 }
+    ],
+    doctors: [{ id: 'd9', name: 'بیمارِ محلیِ تازه', _updatedAt: NOW - 500 }],
+    settings: { theme: 'dark' },
+    _soloOnly: true
+  };
+  const remote = {
+    pharmacies: [
+      { id: 'p1', name: 'نسخهٔ سرورِ قدیمی', _updatedAt: NOW - 500000 },
+      { id: 'p3', name: 'همان', _updatedAt: 5 },
+      { id: 'p4', name: 'ازِ دستگاهِ دیگر', _updatedAt: NOW - 2000 }
+    ],
+    doctors: [{ id: 'd9', name: 'بیمارِ محلیِ تازه', _updatedAt: NOW - 500 }],
+    settings: { theme: 'light', lang: 'fa' },
+    _sharedRev: 'abc', _dataGen: '11.81.0'
+  };
+  const seen = NOW - 60000; // آخرین pull
+  const res = api.merge(base, remote, seen);
+  const ph = Object.fromEntries(base.pharmacies.map((r) => [r.id, r]));
+  assert.equal(ph.p1.name, 'محلیِ تازه', 'رکوردِ کثیفِ محلی نباید بازنویسی شود');
+  assert.ok(ph.p4, 'افزودنیِ دستگاهِ دیگر باید بیاید');
+  assert.ok(!ph.p2, 'حذفِ تأییدشده باید اعمال شود');
+  assert.equal(base.settings.theme, 'light', 'کلیدهایِ غیرآرایه‌ای: سرور (ازِ دستگاهِ تازه‌تر)');
+  assert.equal(base._soloOnly, true, 'کلیدهایِ زیرخطیِ محلی دستِ mergePullِ pull را نمی‌بینند (مُهرها مالِ سرورند ولی اینجا حفظِ آینه)');
+  assert.ok(res.removed >= 1 && res.added >= 1, 'شمارشِ تغییر: ' + JSON.stringify(res));
+});
+
+test('v12.18.3: سیم‌کشیِ لایه — crmPushStateToServerِ جدید، دکمهٔ عیب‌یابی، پیل، رهاشدنِ قفلِ انفرادی', () => {
+  const { win } = bootSyncLayer();
+  assert.equal(typeof win.window.crmPushStateToServer, 'function');
+  win.window.crmPushStateToServer(); // نباید بیندازد (XHR استاب)
+  assert.ok(bundle.includes('crm12183NowBtn'), 'دکمهٔ گرفتنِ فوری در ردیفِ عیب‌یابی');
+  assert.ok(bundle.includes('data-crm-pull-now'), 'delegationِ دکمه');
+  assert.ok(bundle.includes('crm12183Pill'), 'پیلِ وضعیتِ همگامی');
+  assert.ok(bundle.includes('CRM_APP_STATE_V2'), 'پایدارسازیِ محلی پس ازِ ادغام');
+  assert.ok(bundle.includes('CRM_SOLO_CLAIM'), 'مُهرِ «انفرادی» در بوت پاک می‌شود');
+  assert.ok(/delete s\._soloOnly/.test(bundle), 'پرچمِ solo از state در بوت حذف می‌شود');
+});
+
+test('v12.18.3: سرورِ واقعی — POSTِ مویرگی ادغام می‌کند، نه جایگزینی؛ meta/304؛ replaceِ کهنه بی‌حذف', async () => {
+  const dir = mkdtempSync(path.join(tmpdir(), 'crm12183-'));
+  const PORT = 39000 + (process.pid % 900);
+  const child = spawn(process.execPath, ['server.js'], {
+    cwd: fileURLToPath(root),
+    env: { ...process.env, PORT: String(PORT), CRM_DATA_DIR: dir, CRM_NO_SECONDARY_LISTEN: '1' },
+    stdio: ['ignore', 'pipe', 'pipe']
+  });
+  try {
+    await new Promise((res, rej) => {
+      const t = setTimeout(() => rej(new Error('server boot timeout')), 8000);
+      child.stdout.on('data', (b) => { if (String(b).includes('listening')) { clearTimeout(t); res(); } });
+      child.on('exit', (c) => { clearTimeout(t); rej(new Error('server exited ' + c)); });
+    });
+    const B = `http://127.0.0.1:${PORT}`;
+    const NOW = Date.now();
+    const A = { _dataGen: '11.81.0', _soloOnly: true, pharmacies: [{ id: 'p1', name: 'داروخانهٔ الف', _updatedAt: NOW - 4000 }, { id: 'p2', name: 'داروخانهٔ ب', _updatedAt: NOW - 4000 }] };
+    let r = await fetch(B + '/api/state', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CRM-Request': '1', 'X-CRM-Sync': 'v12183', 'X-CRM-Seen': '' }, body: JSON.stringify(A) });
+    let j = await r.json();
+    assert.ok(j.ok !== undefined ? j.ok : true);
+    const rev1 = j.rev;
+    assert.ok(rev1, 'rev از پاسخ');
+    assert.ok(!j.data._soloOnly, 'پس ازِ اولین چسبندگی، فایل اشتراکی است و مُهرِ انفرادی می‌رود');
+    // دستگاه B با seenِ درست: p1 را ویرایش و p2 را پاک می‌کند
+    const Bp = { _dataGen: '11.81.0', pharmacies: [{ id: 'p1', name: 'الف ویرایش B', _updatedAt: NOW + 1000 }, { id: 'p9', name: 'ازِ C', _updatedAt: NOW }] };
+    r = await fetch(B + '/api/state', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CRM-Request': '1', 'X-CRM-Sync': 'v12183', 'X-CRM-Seen': rev1 }, body: JSON.stringify(Bp) });
+    j = await r.json();
+    const ph = Object.fromEntries(j.data.pharmacies.map((x) => [x.id, x]));
+    assert.equal(ph.p1.name, 'الف ویرایش B', 'تازه‌تر برنده است');
+    assert.ok(!ph.p2, 'seen درست = حذف معتبر');
+    assert.ok(ph.p9, 'افزودنی ماند');
+    // دیدِ کهنه (device C که هنوز p1 قدیمی را دارد و p9 را نمی‌بیند): نباید p9 را پاک کند
+    const Cp = { _dataGen: '11.81.0', pharmacies: [{ id: 'p1', name: 'داروخانهٔ الف', _updatedAt: NOW - 4000 }, { id: 'p2', name: 'داروخانهٔ ب', _updatedAt: NOW - 4000 }] };
+    r = await fetch(B + '/api/state', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CRM-Request': '1', 'X-CRM-Sync': 'v12183', 'X-CRM-Seen': 'STALE' }, body: JSON.stringify(Cp) });
+    j = await r.json();
+    const ph2 = Object.fromEntries(j.data.pharmacies.map((x) => [x.id, x]));
+    assert.ok(ph2.p9, 'رکوردِ دستگاهِ دیگر با دیدِ کهنه نمی‌سوزد');
+    assert.equal(ph2.p1.name, 'الف ویرایش B', 'نسخهٔ تازه حفظ شد');
+    assert.ok(ph2.p2, 'در دیدِ کهنه، نبودِ p2 به معنای حذف نیست — بازمی‌گردد (تا pullِ بعدیِ C همگرا شود)');
+    // متا و 304
+    r = await fetch(B + '/api/state/meta?n=1');
+    const mj = await r.json();
+    assert.ok(mj.rev && mj.shared === true, 'meta می‌گوید فایل اشتراکی است');
+    r = await fetch(B + '/api/state?since=' + mj.rev);
+    assert.equal(r.status, 304, 'بدون تغییر = 304');
+    // replaceِ دستگاهِ کهنه رویِ فایلِ اشتراکی → تنزل به ادغامِ بی‌حذف
+    const oldDev = { _dataGen: '11.81.0', pharmacies: [{ id: 'pX', name: 'دستگاهِ کهنه', _updatedAt: NOW }] };
+    r = await fetch(B + '/api/state?replace=1', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CRM-Request': '1', 'X-CRM-Replace': '1' }, body: JSON.stringify(oldDev) });
+    j = await r.json();
+    const ph3 = Object.fromEntries(j.data.pharmacies.map((x) => [x.id, x]));
+    assert.ok(ph3.p9 && ph3.pX, 'replaceِ کهنه دیگر بقیه را پاک نمی‌کند (روی فایل اشتراکی)');
+  } finally {
+    child.kill('SIGTERM');
+    try { rmSync(dir, { recursive: true, force: true }); } catch (e) {}
+  }
+});
+
+test('v12.18.3: آینهٔ PHP — merge_shared_12183 + state/meta + 304 + تنزلِ replace', () => {
+  assert.ok(phpSrc.includes('function merge_shared_12183'), 'ادغامِ رکوردی در php');
+  assert.ok(phpSrc.includes('"state/meta"'), 'متایِ rev برای چکِ ارزان');
+  assert.ok(phpSrc.includes('http_response_code(304)'), 'since→304');
+  assert.ok(phpSrc.includes('_sharedRev'), 'مُهرِ «اشتراکی» تا replaceِ کهنه نابودگر نباشد');
+  assert.ok(phpSrc.includes('v12183'), 'هدرِ همگام');
+});
+
+test('v12.18.3: سرورِ Node — هلپرهایِ ادغام و گیت‌ها', () => {
+  assert.ok(serverSrc.includes('function mergeCollections12183'), 'ادغامِ رکوردی');
+  assert.ok(serverSrc.includes('pathname === "/api/state/meta"'), 'ROUTE متا');
+  assert.ok(serverSrc.includes('X-CRM-Seen'), 'CORSِ هدرِ seen');
+  assert.ok(serverSrc.includes('s === "v12183"'), 'گیتِ نسلی پروتکلِ تازه را رد نمی‌کند');
+  assert.ok(serverSrc.includes('snapshotCloudBackup(merged)'), 'بکاپِ ابری از نسخهٔ ادغام‌شده');
+  assert.ok(serverSrc.includes('sinceQ === revOut'), 'پاسخِ since→304');
+});

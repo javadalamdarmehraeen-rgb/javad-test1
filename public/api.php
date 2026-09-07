@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
-define("CRM_APP_VERSION", "12.18.2");
+define("CRM_APP_VERSION", "12.18.3");
 
 /* v12.12: همگام سه دامنه — رندر + دو دامنه نت‌افراز */
 function peer_hosts() {
@@ -183,7 +183,7 @@ function stamp_gen($data) {
   $data["_netafrazVersion"] = CRM_APP_VERSION;
   return $data;
 }
-/* v12.18.2: ریشه‌پاک‌کنی — حذفِ رکوردهایِ نمونه‌ی قدیمی (همان فهرستِ سرورِ Node) */
+/* v12.18.3: ریشه‌پاک‌کنی — حذفِ رکوردهایِ نمونه‌ی قدیمی (همان فهرستِ سرورِ Node) */
 function strip_legacy_sample(&$st) {
   if (!is_array($st)) return 0;
   $ids = array("ph-1","ph-2","ph-3","doc-1","doc-2","rep-1","rep-2","rep-3","ord-1","u-2","u-3","u-4",
@@ -352,6 +352,52 @@ function strip_sample($st) {
   }
   return $st;
 }
+/* v12.18.3 — مویرگِ چنددستگاهی: ادغامِ رکورد‌به‌رکورد (آینهٔ سرورِ Node) */
+function rec_stamp_12183($r) {
+  if (!is_array($r)) return 0;
+  foreach (array("_updatedAt", "updatedAt", "savedAt", "_savedAt", "t") as $k) {
+    if (isset($r[$k])) { $n = floatval($r[$k]); if ($n > 0) return (int) $n; }
+  }
+  return 0;
+}
+function key_id_12183($r) {
+  if (!is_array($r)) return null;
+  if (isset($r["id"]) && $r["id"] !== "" && $r["id"] !== null) return "i" . strval($r["id"]);
+  if (isset($r["_id"]) && $r["_id"] !== "" && $r["_id"] !== null) return "i" . strval($r["_id"]);
+  return null;
+}
+function merge_shared_12183($existing, $incoming, $auth) {
+  $base = is_array($existing) ? $existing : array();
+  $incKeys = array();
+  foreach ($incoming as $k => $v) {
+    if (!is_string($k) || $k === "" || $k[0] === "_") continue;
+    $incKeys[$k] = 1;
+    $a0 = isset($base[$k]) ? $base[$k] : null;
+    if (is_array($v) && count($v) > 0 && is_array(res($v)) && array_keys($v) === range(0, count($v) - 1)) {
+      $idful = true;
+      foreach ($v as $r) { if (!is_array($r) || key_id_12183($r) === null) { $idful = false; break; } }
+      if (!$idful) { $base[$k] = array_values($v); continue; }
+      $map = array();
+      if (is_array($a0)) { foreach ($a0 as $r) { if (!is_array($r)) continue; $id = key_id_12183($r); if ($id === null) { $idful = false; break; } $map[$id] = $r; } }
+      if (!$idful) { $base[$k] = array_values($v); continue; }
+      $incIds = array();
+      foreach ($v as $r) { $id = key_id_12183($r); $incIds[$id] = 1; $prev = isset($map[$id]) ? $map[$id] : null; if (!$prev || rec_stamp_12183($r) >= rec_stamp_12183($prev)) $map[$id] = $r; }
+      $out = array();
+      foreach ($map as $id => $r) { if (!$auth || isset($incIds[$id])) $out[] = $r; }
+      $base[$k] = $out;
+    } elseif (is_array($v) && count($v) > 0) {
+      $base[$k] = (is_array($a0) && count($a0) && array_keys($a0) !== range(0, count($a0) - 1)) ? array_merge($a0, $v) : $v;
+    } else {
+      $base[$k] = $v;
+    }
+  }
+  if ($auth) { foreach (array_keys($base) as $k) { if (!is_string($k) || $k[0] === "_") continue; if (!isset($incKeys[$k])) unset($base[$k]); } }
+  return $base;
+}
+function state_rev_12183($data) {
+  if (is_array($data) && !empty($data["_sharedRev"])) return strval($data["_sharedRev"]);
+  return $data ? md5(json_encode($data, JSON_UNESCAPED_UNICODE)) : "";
+}
 function merge_by_id($a, $b) {
   $map = array();
   foreach (array_merge(is_array($a)?$a:array(), is_array($b)?$b:array()) as $r) {
@@ -446,7 +492,7 @@ if ($p === "cleanup" || $p === "purge-legacy") {
     $fp2 = __DIR__ . "/data/" . $fname;
     if (is_file($fp2)) { if (@unlink($fp2)) $removed[] = "data/" . $fname; }
   }
-  /* v12.18.2: purge=1 — فایل‌هایِ پشتیبانِ کهنهٔ کنارِ دادهٔ زنده هم پاک می‌شوند (خودِ crm-live-*.json هرگز) */
+  /* v12.18.3: purge=1 — فایل‌هایِ پشتیبانِ کهنهٔ کنارِ دادهٔ زنده هم پاک می‌شوند (خودِ crm-live-*.json هرگز) */
   if (!empty($_GET["purge"])) {
     foreach (array(__DIR__, __DIR__ . "/data", $DATA_DIR) as $dirx) {
       if (!is_dir($dirx)) continue;
@@ -480,14 +526,22 @@ if ($p === "cleanup" || $p === "purge-legacy") {
 }
 
 if (strpos($p, "state") === 0) {
+  if ($p === "state/meta" && $method === "GET") {
+    $st0 = read_json($DATA);
+    send_json(array("status" => "success", "rev" => state_rev_12183($st0), "savedAt" => is_file($DATA) ? (int) round(filemtime($DATA) * 1000) : 0, "shared" => is_array($st0) && !empty($st0["_sharedRev"])));
+  }
   if ($method === "GET") {
     $local = fill_if_empty(read_json($DATA), $DATA);
-    /* v12.18.2: همان‌جا که سرورِ Node نمونه‌ها را می‌زداید، نت‌افراز هم می‌زداید */
+    /* v12.18.3: همان‌جا که سرورِ Node نمونه‌ها را می‌زداید، نت‌افراز هم می‌زداید */
     if ($local) {
       $srp = strip_legacy_sample($local);
       if ($srp > 0) write_json($DATA, $local);
     }
-    send_json($local ? array("status" => "success", "data" => $local) : array("status" => "empty"));
+    $revOut = state_rev_12183($local);
+    $sinceQ = isset($_GET["since"]) ? strval($_GET["since"]) : "";
+    if ($sinceQ !== "" && $revOut !== "" && $sinceQ === $revOut) { http_response_code(304); exit; }
+    header("X-CRM-Rev: " . $revOut);
+    send_json($local ? array("status" => "success", "data" => $local, "rev" => $revOut) : array("status" => "empty"));
   }
   if ($method === "POST") {
     $raw = file_get_contents("php://input");
@@ -497,13 +551,33 @@ if (strpos($p, "state") === 0) {
     if (too_empty($incoming, $existing)) {
       send_json(array("status" => "success", "data" => $existing, "ignored" => true, "reason" => "empty-rejected"));
     }
-    /* v12.18.2: بدنهٔ یکسان با آخرین ذخیره → دیسک دست نمی‌خورد (چرخهٔ ۱۵ ثانیه‌ایِ همگام، فایلِ زنده را بی‌دلیل بازنویسی نمی‌کند) */
+    /* v12.18.3: بدنهٔ یکسان با آخرین ذخیره → دیسک دست نمی‌خورد (چرخهٔ ۱۵ ثانیه‌ایِ همگام، فایلِ زنده را بی‌دلیل بازنویسی نمی‌کند) */
     $hh = md5(json_encode($incoming, JSON_UNESCAPED_UNICODE));
     $hf = dirname($DATA) . "/state.md5";
     if (!is_dir(dirname($hf))) { @mkdir(dirname($hf), 0775, true); }
     $prev = @file_get_contents($hf);
     if ($prev !== false && trim($prev) === $hh && is_file($DATA)) {
       send_json(array("status" => "success", "data" => $incoming, "dedup" => true));
+    }
+    /* ═══ v12.18.3: مویرگِ چنددستگاهی — ادغامِ رکوردی به‌جایِ جایگزینیِ کل ═══ */
+    $hdrSync = isset($_SERVER["HTTP_X_CRM_SYNC"]) ? strtolower(trim($_SERVER["HTTP_X_CRM_SYNC"])) : "";
+    $hdrSeen = isset($_SERVER["HTTP_X_CRM_SEEN"]) ? trim($_SERVER["HTTP_X_CRM_SEEN"]) : "";
+    $wantRepl = (isset($_GET["replace"]) && strval($_GET["replace"]) === "1") || (isset($_SERVER["HTTP_X_CRM_REPLACE"]) && $_SERVER["HTTP_X_CRM_REPLACE"] === "1");
+    $sharedCur = (is_array($existing) && !empty($existing["_sharedRev"])) ? strval($existing["_sharedRev"]) : "";
+    if ($hdrSync === "v12183" || ($wantRepl && $sharedCur !== "")) {
+      $auth = ($sharedCur !== "" && $hdrSeen !== "" && $hdrSeen === $sharedCur) && !$wantRepl;
+      strip_legacy_sample($incoming);
+      $merged = merge_shared_12183(is_array($existing) ? $existing : array(), $incoming, $auth);
+      $merged["_dataGen"] = "11.81.0"; $merged["_schemaVersion"] = "11.81.0";
+      unset($merged["_soloOnly"], $merged["_soloReplace"], $merged["_soloVersion"], $merged["_soloAt"]);
+      $merged["_sharedRev"] = md5(json_encode($merged, JSON_UNESCAPED_UNICODE));
+      $merged["_sharedAt"] = (int) round(microtime(true) * 1000);
+      if ($sharedCur !== "" && $merged["_sharedRev"] === $sharedCur) {
+        send_json(array("status" => "success", "data" => $merged, "rev" => $merged["_sharedRev"], "merged" => true, "dedup" => true));
+      }
+      write_json($DATA, $merged);
+      @file_put_contents($hf, md5(json_encode($merged, JSON_UNESCAPED_UNICODE)), LOCK_EX);
+      send_json(array("status" => "success", "data" => $merged, "rev" => $merged["_sharedRev"], "merged" => true, "savedAt" => $merged["_sharedAt"]));
     }
     strip_legacy_sample($incoming);
     write_json($DATA, $incoming);

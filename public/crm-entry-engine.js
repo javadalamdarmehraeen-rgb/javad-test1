@@ -1,5 +1,5 @@
 /* ============================================================================
-   crm-entry-engine.js — «موتورِ ورود» (نسخه 12.18.2 — نوبت ۱۳۹)
+   crm-entry-engine.js — «موتورِ ورود» (نسخه 12.18.3 — نوبت ۱۳۹)
    درخواستِ کاربر: «وقتی دکمهٔ ورود به برنامه زده شد، تمامِ اطلاعاتِ قدیمیِ
    دستگاه پاک شود، بعد تغییراتِ تازه اعمال شود، بعد واردِ صفحهٔ اصلی شو؛
    دستی‌اش هم در تب عیب‌یابی باشد؛ اما اطلاعاتِ ثبت‌شده رویِ سرور هرگز پاک نشود.
@@ -23,7 +23,7 @@
   "use strict";
   if (window.crmEntryEngine) return;
 
-  var VER = "12.18.2";
+  var VER = "12.18.3";
   var KEEP_LS = /^(CRM_USERS_AUTH|CRM_LOGIN_OK|CRM_LOGIN_EXP|CRM_REMEMBER|crmRemember|CRM_SOLO_|CRM_BULK|CRM_RUNTIME|CRM_INSTALL|CRM_PWA|crmPwa|crmTheme|CRM_THEME|distPass_|CRM_PENDING_SYNC|CRM_ENTRY_1218_|CRM_V1218_)/i;
   var KEEP_SS = /^(crm[A-Z]|distPass_|CRM_PENDING_SYNC|CRM_SOLO_|CRM_V1218_|CRM_ENTRY_1218_)/;
   var STATE_MIRROR = /^(CRM_APP_STATE_V2|CRM_APP_STATE)$/;
