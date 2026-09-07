@@ -94,7 +94,9 @@
 - تعداد توابع داخلی: 10
 
 ### `public/sw.js` (5417 بایت)
-- نقش: const BUILD = "12.18.0";
+- نقش: const BUILD = "12.18.5";
+- گراف مویرگِ همگام (نوبت ۱۴۰): ذخیره درِ دستگاهِ A → POST /api/state (X-CRM-Sync: v12183، X-CRM-Seen: revA) → mergeCollections12183 رویِ فایلِ مشترک (تازه‌ترِ _updatedAt برنده؛ حذف فقط با seen معتبر) → پاسخِ adغام‌شده+rev → B با GET /api/state/meta (هر ۲۰ث/فوکوس) diff می‌بیند → GET state?since → mergePull → patchِ درجا + رندرِ همانِ تب (بدونِ reload) → convergence هرِ دو. دستگاهِ کهنه با replace=1 → تنزلِ سرور به ادغامِ بی‌حذف. نرسیدن به API → پیلِ «حالتِ محلی» + ردیفِ عیب‌یابی.
+- گراف موتورِ ورود (نوبت ۱۳۹): ورودِ موفق → crmEntryEngine.run (client-only؛ بدونِ شبکه) → جارویِ SW/Cache/کلیدهایِ کهنه/crmV19 → صفرشدنِ مُهرِ v12.18 → bootِ index: ensureStorageMigrated + forceLayoutAll + v1218PinPass (کادرها انتهای گرید) → سرور فقط خوانده می‌شود. عیب‌یابی: پروب‌ها با diagXhr (خارجِ governor).
 - تعداد توابع داخلی: 6
 
 ### `public/vendor/leaflet.js` (147552 بایت)
@@ -413,9 +415,9 @@
 
 ## ط) گراف عملیاتی انتشار و اسناد تحویل
 
-- نسخه سورس package: `12.18.0`
-- مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a058c2-javad-test1`؛ push/PR فقط از همین شاخه.
-- Production فعال: `https://javad-test1.onrender.com` — نسخه سورس فعلی `12.12.0` است و تا push کاربر روی production همان آخرین دیپلوی قبلی می‌ماند.
+- نسخه سورس package: `12.18.5`
+- مخزن GitHub: `javadalamdarmehraeen-rgb/javad-test1`؛ شاخه اجباری جلسه Arena فعلی: `arena/01a07288-javad-test1`؛ push/PR فقط از همین شاخه (PR #8 با 12.18.6 merge شد، نوبت ۱۴۳).
+- Production فعال: `https://javad-test1.onrender.com` — پس ازِ mergeِ نوبتِ ۱۴۳، `12.18.6` سرو می‌شود.
 - ترتیب خواندن چت بعدی: `PROJECT_GRAPH.md` → `GITHUB_REVIEW_HANDOFF.md` → `AI_ACCEPTANCE_CHECKLIST.md` → `AI_RULES.md` → `AI_PROJECT_CONTEXT.md` → `AI_ARCHITECTURE.md`.
 - `GITHUB_REVIEW_HANDOFF.md` مرجع وضعیت commit/push/PR/GitLab/Render/production و دستورات بررسی است؛ قبل از ادعای deploy باید دوباره اندازه‌گیری شود.
 - زنجیره انتشار: source test → commit → push Arena branch → PR main → checks → merge → GitLab mirror → Render deploy → production health.

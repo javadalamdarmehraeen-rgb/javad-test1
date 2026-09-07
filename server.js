@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "12.18.0";
+const APP_VERSION = "12.18.6";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -103,7 +103,7 @@ function corsHeaders(req) {
     return {
       "Access-Control-Allow-Origin": origin,
       "Access-Control-Allow-Methods": "GET, POST, HEAD, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, X-CRM-Request, X-CRM-Replace, X-CRM-Sync, X-CRM-Hub-Sync, X-CRM-Build, Cache-Control",
+      "Access-Control-Allow-Headers": "Content-Type, X-CRM-Request, X-CRM-Replace, X-CRM-Sync, X-CRM-Hub-Sync, X-CRM-Seen, X-CRM-Build, Cache-Control",
       "Access-Control-Max-Age": "86400",
       "Vary": "Origin"
     };
@@ -202,7 +202,7 @@ function stripLegacySample(st) {
 function isV80Gen(st, syncHdr) {
   const g = String((st && (st._dataGen || st._schemaVersion)) || "");
   const s = String(syncHdr || "");
-  return g === "11.81.0" || g.indexOf("11.81") === 0 || s === "v81" || s === "11.81.0" || s === "v80";
+  return g === "11.81.0" || g.indexOf("11.81") === 0 || s === "v81" || s === "11.81.0" || s === "v80" || s === "v12183";
 }
 const LEGACY_WIPE_KEYS = ["pharmacies","doctors","orders","reps","visits","activityLog","repHomes","repRoutes","leaves","hospitals","notifications"];
 function fenceOldSystem(st) {
@@ -213,6 +213,110 @@ function fenceOldSystem(st) {
     st._schemaVersion = "11.81.0";
   }
   return st;
+}
+/* v12.18.3 — همگامِ مویرگیِ چنددستگاهی: ادغامِ رکورد‌به‌رکورد به‌جایِ جایگزینیِ کل فایل.
+   seenRev = نسخه‌ای که دستگاه در آخرین pull دیده؛ اگر با نسخهٔ فعلیِ فایل برابر باشد،
+   عضویتِ آرایه‌هایِ این POST «معتبرِ سانس‌کیت» است و رکوردهایِ غایب واقعاً پاک‌شده‌اند. */
+function recStamp12183(r) {
+  if (!r || typeof r !== "object") return 0;
+  let t = 0;
+  const c = [r._updatedAt, r.updatedAt, r.savedAt, r._savedAt, r.t];
+  for (let i = 0; i < c.length; i++) { const n = Number(c[i]); if (isFinite(n) && n > 0) { t = n; break; } }
+  return t;
+}
+function keyId12183(r) {
+  if (!r || typeof r !== "object") return null;
+  if (r.id != null && r.id !== "") return "i" + String(r.id);
+  if (r._id != null && r._id !== "") return "i" + String(r._id);
+  return null;
+}
+function mergeObj12185(local, remote) {
+  const out = Object.assign({}, (local && typeof local === "object" && !Array.isArray(local)) ? local : {});
+  if (!remote || typeof remote !== "object" || Array.isArray(remote)) return out;
+  for (const kk of Object.keys(remote)) {
+    const rvv = remote[kk], bvv = out[kk];
+    if (Array.isArray(rvv) && rvv.length && rvv.every((r) => r && typeof r === "object" && keyId12183(r) != null)) {
+      const map = new Map(); const order = [];
+      const put = (r) => { const id = String(keyId12183(r) != null ? keyId12183(r) : "u" + order.length + JSON.stringify(r).slice(0, 40)); if (!map.has(id)) order.push(id); const prev = map.get(id); if (!prev || recStamp12183(r) >= recStamp12183(prev)) map.set(id, r); };
+      (Array.isArray(bvv) ? bvv : []).forEach(put); rvv.forEach(put);
+      out[kk] = order.map((id) => map.get(id));
+    } else if (rvv && typeof rvv === "object" && !Array.isArray(rvv)) {
+      out[kk] = mergeObj12185(bvv, rvv);
+    } else if (bvv === undefined) {
+      out[kk] = rvv;
+    } else if (bvv !== rvv) {
+      out[kk] = rvv;
+    }
+  }
+  return out;
+}
+function mergeCollections12183(existing, incoming, authoritative) {
+  let base = {};
+  try { if (existing && typeof existing === "object") base = JSON.parse(JSON.stringify(existing)); } catch (e) { base = (existing && typeof existing === "object") ? existing : {}; }
+  const inc = (incoming && typeof incoming === "object") ? incoming : {};
+  for (const k of Object.keys(inc)) {
+    if (!Object.prototype.hasOwnProperty.call(inc, k)) continue;
+    if (k.charAt(0) === "_") continue;
+    const b = inc[k], a0 = base[k];
+    if (Array.isArray(b)) {
+      let idful = b.length > 0;
+      for (const r of b) { if (r && typeof r === "object" && keyId12183(r) == null) { idful = false; break; } }
+      if (!idful) {
+        /* v12.18.5: آرایهٔ بی‌id یاِ خالی، آرایهٔ idدارِ موجود را بی‌اجازه پاک نمی‌کند:
+           «خالی» یا «بی‌ساختار» بودنِ دیدِ یکِ دستگاه بهِ معنایِ حذفِ جمعی نیست. */
+        const aIsRecArr = Array.isArray(a0) && a0.length > 0 && a0.every((r) => r && typeof r === "object" && keyId12183(r) != null);
+        if (!(aIsRecArr && !authoritative)) {
+          base[k] = b;
+          /* v12.18.6: حذفِ مجازِ «همه» (آرایهٔ خالی باِ authority) هم گورِ کامل می‌گذارد */
+          if (authoritative && aIsRecArr && Array.isArray(b) && b.length === 0) {
+            const tm2 = base._tomb12183 || (base._tomb12183 = {});
+            const tk2 = tm2[k] || (tm2[k] = {});
+            const nw = Date.now();
+            for (const r of a0) { const id0 = keyId12183(r); if (id0 != null) tk2[String(id0)] = nw; }
+          }
+        }
+        continue;
+      }
+      const map = new Map();
+      if (Array.isArray(a0)) for (const r of a0) { const id = keyId12183(r); map.set(id != null ? id : "u" + map.size + String(JSON.stringify(r)).slice(0, 60), r); }
+      const incIds = new Set();
+      for (const r of b) {
+        const id = keyId12183(r);
+        const kk = id != null ? id : "u" + incIds.size + "n";
+        incIds.add(kk);
+        const prev = map.get(kk);
+        if (!prev || recStamp12183(r) >= recStamp12183(prev)) map.set(kk, r);
+      }
+      if (authoritative) for (const id of Array.from(map.keys())) if (!incIds.has(id)) map.delete(id);
+      /* v12.18.6 «گورِ رکورد» (tombstone): حذفِ مجازِ یکِ دستگاه درِ سرور مُهر می‌خورد؛
+         ازِ اینِ بهِ بعد هیچِ unionِ دیدِ کهنه‌ای ازِ دستگاهِ دیگر آنِ رکورد را زنده نمی‌کند
+         (گرهٔ «A حذف کرد، B باِ pushِ کهنه زنده‌اش کرد»). بازنویسیِ تازه‌تر ازِ گور = احیایِ عمدی. */
+      let tmbs = base._tomb12183; if (!tmbs || typeof tmbs !== "object") tmbs = base._tomb12183 = {};
+      let tk = tmbs[k]; if (!tk || typeof tk !== "object") tk = tmbs[k] = {};
+      const nowT = Date.now();
+      for (const tid of Object.keys(tk)) { if (nowT - Number(tk[tid] || 0) > 14 * 864e5) delete tk[tid]; }
+      if (authoritative) for (const r of (Array.isArray(a0) ? a0 : [])) {
+        const id0 = keyId12183(r); if (id0 != null && !incIds.has(id0)) tk[String(id0)] = nowT;
+      }
+      for (const [id, rec] of Array.from(map.entries())) {
+        const t = tk[String(id)];
+        if (t != null) { if (recStamp12183(rec) <= Number(t)) map.delete(id); else delete tk[String(id)]; }
+      }
+      base[k] = Array.from(map.values());
+    } else if (b && typeof b === "object") {
+      /* v12.18.5: آبجکت‌هایِ تنظیمی (customFields/formFieldMeta/layout…) = ادغامِ بازگشتی:
+         آرایه‌هایِ idدارِ داخلشان اجتماعِ رکوردی (هیچِ فیلدِ تازه‌ای باِ pushِ دستگاهِ کهنه نمی‌میرد)
+         و scalarهایِ جدید برندهٔ آخرینِ ذخیره می‌مانند. */
+      base[k] = (a0 && typeof a0 === "object" && !Array.isArray(a0)) ? mergeObj12185(a0, b) : b;
+    } else base[k] = b;
+  }
+  /* v12.18.5: حذفِ کلیدِ غایب فقط برایِ مجموعه‌هایِ رکوردی (آرایه‌ها) — کلیدهایِ تنظیمی/آبجکتی هرگز با «نبودن» پاک نمی‌شوند */
+  if (authoritative) for (const k of Object.keys(base)) { if (k.charAt(0) === "_") continue; if (!(k in inc) && Array.isArray(base[k])) delete base[k]; }
+  return base;
+}
+function stateRev12183(dataObj, rawStr) {
+  try { if (dataObj && dataObj._sharedRev) return String(dataObj._sharedRev); } catch (e) {}
+  try { return crypto.createHash("md5").update(rawStr != null ? rawStr : JSON.stringify(dataObj || {})).digest("hex"); } catch (e) { return ""; }
 }
 function recStamp(r) {
   if (!r || typeof r !== "object") return 0;
@@ -444,7 +548,7 @@ const server = http.createServer((req, res) => {
   }
 
   /* v12.17.0: حذفِ فایل‌هایِ نسخه‌هایِ قدیمی — فقط فهرستِ سفیدِ ثابت (هرگز فایلِ جاری)
-     v12.18.0: + پارامترِ purge=1 (ریشه‌پاک‌کنی): فایل‌هایِ داده‌ایِ کهنهٔ زمانِ نت‌افراز +
+     v12.18.3: + پارامترِ purge=1 (ریشه‌پاک‌کنی): فایل‌هایِ داده‌ایِ کهنهٔ زمانِ نت‌افراز +
      نمونه‌هایِ قدیمیِ داخلِ user-data.json. هرگز به user-data.jsonِ زنده، user-bulk-data.json،
      push-* و پوشه‌ی backups دست نمی‌زنیم — فقط پالایشِ درجا و حذفِ فایل‌هایِ لیست‌شده. */
   if (pathname === "/api/cleanup" && req.method === "GET" && (parsed.searchParams.get("stale") || req.headers["x-crm-admin"] === "1")) {
@@ -725,6 +829,17 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (pathname === "/api/state/meta" && req.method === "GET") {
+    let revOut = "", savedAt = 0, shared = false;
+    try {
+      if (fs.existsSync(SERVER_DATA_PATH)) {
+        const st0 = readJsonSafe(SERVER_DATA_PATH);
+        if (st0) { savedAt = Math.round(fs.statSync(SERVER_DATA_PATH).mtimeMs); revOut = stateRev12183(st0); shared = !!(st0 && st0._sharedRev); }
+      }
+    } catch (eM) {}
+    return send(req, res, 200, JSON.stringify({ status: "success", rev: revOut, savedAt, shared }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
+  }
+
   if (pathname === "/api/state" && req.method === "GET") {
     if (fs.existsSync(SERVER_DATA_PATH)) {
       const data = readJsonSafe(SERVER_DATA_PATH);
@@ -735,14 +850,23 @@ const server = http.createServer((req, res) => {
       if (removed > 0 || beforeGen !== "11.81.0") {
         try { writeJsonAtomic(SERVER_DATA_PATH, data); } catch (e) {}
       }
-      return send(req, res, 200, JSON.stringify({ status: "success", data }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
+      const revOut = stateRev12183(data);
+      const sinceQ = String(parsed.searchParams.get("since") || "");
+      if (sinceQ && revOut && sinceQ === revOut) {
+        return send(req, res, 304, "", "text/plain; charset=utf-8", { "Cache-Control": "no-store", "X-CRM-Rev": revOut });
+      }
+      return send(req, res, 200, JSON.stringify({ status: "success", data, rev: revOut }), "application/json; charset=utf-8", { "Cache-Control": "no-store", "X-CRM-Rev": revOut });
     }
     return send(req, res, 200, JSON.stringify({ status: "empty" }), "application/json; charset=utf-8");
   }
 
   if (pathname === "/api/state" && req.method === "POST") {
-    if (rateLimited(ip + ":state")) {
-      return send(req, res, 429, JSON.stringify({ status: "error", message: "too many requests" }), "application/json; charset=utf-8");
+    /* v12.18.3: پروتکلِ مویرگیِ چنددستگاهی سطلِ سهمیهٔ مستقلِ خودش را دارد —
+       سیلِ چرخه‌هایِ قدیمیِ ۱۵ ثانیه‌ای (که یکِ اداره با چندِ دستگاه IPِ مشترک دارد)
+       دیگر نوشتن‌هایِ همگام را با 429 خفه نمی‌کند. */
+    const bucket = String(req.headers["x-crm-sync"] || "") === "v12183" ? ip + ":sync12183" : ip + ":state";
+    if (rateLimited(bucket)) {
+      return send(req, res, 429, JSON.stringify({ status: "error", message: "too many requests" }), "application/json; charset=utf-8", { "Retry-After": "5" });
     }
     let body = "";
     req.on("data", (c) => { body += c; if (body.length > 8 * 1024 * 1024) req.destroy(); });
@@ -752,6 +876,34 @@ const server = http.createServer((req, res) => {
         const existing = fs.existsSync(SERVER_DATA_PATH) ? readJsonSafe(SERVER_DATA_PATH) : null;
         const wantReplace = parsed.searchParams.get("replace") === "1" || String(req.headers["x-crm-replace"] || "") === "1" || data._soloReplace === true;
         const syncHdr = String(req.headers["x-crm-sync"] || "");
+        /* ═══ v12.18.3: مویرگِ چنددستگاهی — ادغامِ رکوردی، نه جایگزینیِ کل ═══
+           POSTِ v12183 همیشه ادغام است؛ POSTِ replace دستگاه‌هایِ کهنه وقتی فایل
+           «اشتراکی» شده باشد هم به ادغامِ بی‌حذف تنزل می‌یابد تا یکِ دستگاه،
+           تغییراتِ بقیه را پاک نکند. */
+        const sharedRevCur = existing && existing._sharedRev ? String(existing._sharedRev) : "";
+        if (syncHdr === "v12183" || (wantReplace && sharedRevCur)) {
+          try {
+            stripLegacySample(data);
+            const seenH = String(req.headers["x-crm-seen"] || "");
+            const auth = !!(sharedRevCur && seenH && seenH === sharedRevCur && String(data._seenAuth || "") === sharedRevCur);
+            try { delete data._seenAuth; } catch (eSA) {}
+            const merged = mergeCollections12183(existing, data, auth && !wantReplace);
+            merged._dataGen = "11.81.0";
+            merged._schemaVersion = "11.81.0";
+            delete merged._soloOnly; delete merged._soloReplace; delete merged._soloVersion; delete merged._soloAt;
+            merged._sharedRev = crypto.createHash("md5").update(JSON.stringify(merged)).digest("hex");
+            merged._sharedAt = Date.now();
+            if (sharedRevCur && merged._sharedRev === sharedRevCur) {
+              return send(req, res, 200, JSON.stringify({ status: "success", data: merged, rev: merged._sharedRev, merged: true, dedup: true }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
+            }
+            writeJsonAtomic(SERVER_DATA_PATH, merged);
+            try { lastStateWriteHash = crypto.createHash("md5").update(JSON.stringify(data)).digest("hex"); } catch (eH) {}
+            snapshotCloudBackup(merged);
+            return send(req, res, 200, JSON.stringify({ status: "success", data: merged, rev: merged._sharedRev, merged: true, savedAt: Date.now() }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
+          } catch (errM) {
+            return send(req, res, 400, JSON.stringify({ status: "error", message: "merge-failed: " + errM.message }), "application/json; charset=utf-8");
+          }
+        }
         if (!isV80Gen(data, syncHdr)) {
           const keep = existing || {};
           return send(req, res, 200, JSON.stringify({ status: "success", data: keep, ignored: true, reason: "legacy-locked" }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
@@ -763,7 +915,7 @@ const server = http.createServer((req, res) => {
         data._soloOnly = true;
         delete data._soloReplace;
         data._soloEpoch = Number(data._soloEpoch) || (existing && existing._soloEpoch) || Date.now();
-        /* v12.18.0: بدنهٔ یکسان با آخرین ذخیره → نوشتنِ دوباره روی دیسک و بکاپ نمی‌گیریم
+        /* v12.18.3: بدنهٔ یکسان با آخرین ذخیره → نوشتنِ دوباره روی دیسک و بکاپ نمی‌گیریم
            (چرخهٔ ۱۵ ثانیه‌ایِ همگامِ دستگاه‌ها دیگر فایلِ زنده را بی‌دلیل بازنویسی نمی‌کند) */
         let hash = "";
         try { hash = crypto.createHash("md5").update(JSON.stringify(data)).digest("hex"); } catch (e) {}
@@ -840,7 +992,7 @@ const server = http.createServer((req, res) => {
   }
   const ext = path.extname(filePath).toLowerCase();
   const isAsset = [".png", ".jpg", ".jpeg", ".css", ".js", ".woff2", ".svg", ".webp"].indexOf(ext) !== -1;
-  /* v12.14: داراییِ نسخه‌دار (crm-app.js?v=12.18.0) یک سال کش immutable می‌شود
+  /* v12.14: داراییِ نسخه‌دار (crm-app.js?v=12.18.5) یک سال کش immutable می‌شود
      → رفرشِ ساده/سخت دیگر ۶ فایل JS را دوباره از هاست نمی‌کشد (رفع بسته‌شدنِ اتصال) */
   const versioned = /[?&]v=\d/.test(String(req.url || ""));
   const assetCache = (isAsset && versioned) ? 31536000

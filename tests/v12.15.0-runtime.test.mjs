@@ -160,7 +160,7 @@ function run(opts = {}) {
   const win = {};
   const state = opts.state || {};
   win.__CRM_GET_STATE = () => state;
-  win.CRM_APP_VERSION = '12.18.0';
+  win.CRM_APP_VERSION = '12.18.6';
   win.state = state;
   win.addEventListener = () => {};
   win.saveState = () => { store.set('SAVED', (store.get('SAVED') || 0) + 1); };

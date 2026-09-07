@@ -1,5 +1,5 @@
 /**
- * اجرای واقعیِ لایهٔ v12.18.0 — قانون ۹۲: «هیچ بندی بدون مدرک تأییدشده نیست».
+ * اجرای واقعیِ لایهٔ v12.18.3 — قانون ۹۲: «هیچ بندی بدون مدرک تأییدشده نیست».
  * هر بند با فراخوانیِ همانِ کدی که در مرورگر اجرا می‌شود سنجیده می‌شود:
  * ریشه‌پاک‌کن، یکتا‌سازیِ ترتیب (بند ۴)، گیتِ چیدمان (پرش‌ها)، ترددِ نقشه (بند ۹)،
  * ساعتِ HH:MM (بند ۱۲)، ماتریسِ ریزِ دسترسی (بند ۱۵)، آلارمِ ویزیتِ V35 (بند ۱۶)
@@ -11,9 +11,9 @@ import { readFileSync, existsSync } from 'node:fs';
 
 const root = new URL('../', import.meta.url);
 const src = readFileSync(new URL('public/crm-bundle.js', root), 'utf8');
-const MARK = '/* v12.18.0 —';
+const MARK = '/* v12.18.3 —';
 const from = src.indexOf(MARK);
-assert.ok(from > 0, 'لایهٔ v12.18.0 در انتهایِ باندل پیدا نشد');
+assert.ok(from > 0, 'لایهٔ v12.18.3 در انتهایِ باندل پیدا نشد');
 const layer = src.slice(from);
 
 /* ───────── harness کم‌حجم (سبکِ تستِ v12.17) ───────── */
@@ -98,7 +98,7 @@ function bootLayer(opts) {
     fetch: opts.fetch || (() => Promise.resolve({ ok: true })),
     location: { origin: 'https://ndcohub.test', reload() { win.__reloads = (win.__reloads || 0) + 1; } },
     navigator: { onLine: true, serviceWorker: opts.sw ? { getRegistrations: () => Promise.resolve(opts.sw) } : undefined },
-    CRM_APP_VERSION: '12.18.0'
+    CRM_APP_VERSION: '12.18.6'
   };
   if (opts.__CRM_ORIG_FETCH) win.__CRM_ORIG_FETCH = opts.__CRM_ORIG_FETCH;
   if (opts.caches) win.caches = opts.caches;
@@ -117,7 +117,7 @@ function bootLayer(opts) {
 }
 
 /* ───────── ۰) قانونِ ارقامِ لاتین ───────── */
-test('v12.18.0: قانونِ ارقام — toLocaleStringِ فارسی عددِ لاتین می‌دهد و تاریخ شمسی می‌ماند', () => {
+test('v12.18.3: قانونِ ارقام — toLocaleStringِ فارسی عددِ لاتین می‌دهد و تاریخ شمسی می‌ماند', () => {
   const env = bootLayer();
   assert.equal(env.API.isLatinLaw(), true, 'قانونِ لاتین نصب نشده');
   assert.equal((5670000).toLocaleString('fa-IR'), '5,670,000', 'ریال‌ها باید لاتین جدا شوند');
@@ -130,7 +130,7 @@ test('v12.18.0: قانونِ ارقام — toLocaleStringِ فارسی عددِ
 });
 
 /* ───────── ۱) ریشه‌پاک‌کن ───────── */
-test('v12.18.0: ریشه‌پاک‌کن کلیدهایِ کهنه را می‌زداید و state/ورود/سولو/پروژهٔ sync را نگه می‌دارد', () => {
+test('v12.18.3: ریشه‌پاک‌کن کلیدهایِ کهنه را می‌زداید و state/ورود/سولو/پروژهٔ sync را نگه می‌دارد', () => {
   const ls = storageStub({
     CRM_APP_STATE_V2: '{"pharmacies":[]}',
     CRM_USERS_AUTH: '{"users":[]}',
@@ -165,19 +165,19 @@ test('v12.18.0: ریشه‌پاک‌کن کلیدهایِ کهنه را می‌�
   assert.ok(idbDeleted.includes('crmV19'), 'crmV19 باید حذف شود');
   assert.ok(!idbDeleted.includes('crmBulkData'), 'گاوصندوقِ حجمی هرگز حذف نشود');
   assert.match(xhrUrl, /\/api\/cleanup\?stale=1&purge=1/, 'سرور هم باید purge بگیرد');
-  assert.equal(ls.getItem('CRM_V1218_PURGED'), '12.18.0', 'مُهرِ یک‌بارمصرف');
+  assert.equal(ls.getItem('CRM_V1218_PURGED'), '12.18.6', 'مُهرِ یک‌بارمصرف');
   env.flush();
   assert.equal(env.win.__reloads, 1, 'یک بار تازه‌سازی پس از پاک‌سازی');
 });
 
-test('v12.18.0: پاک‌سازی در نسخهٔ همین‌بار اجراشده تکرار نمی‌شود', () => {
-  const ls = storageStub({ CRM_V1218_PURGED: '12.18.0', CRM_DIAG_LOG: 'keep?no' });
+test('v12.18.3: پاک‌سازی در نسخهٔ همین‌بار اجراشده تکرار نمی‌شود', () => {
+  const ls = storageStub({ CRM_V1218_PURGED: '12.18.6', CRM_DIAG_LOG: 'keep?no' });
   const env = bootLayer({ localStorage: ls });
   assert.equal(env.win.__reloads || 0, 0, 'reloadِ دوم نباید بشود');
 });
 
 /* ───────── ۲) بند ۴: ترتیبِ یکتا و ماندگار ───────── */
-test('v12.18.0: شماره‌گذاریِ یکتا روی متادیتا + فیلدِ سفارشی با هم (رفعِ بازگشتِ ترتیب پس از رفرش)', () => {
+test('v12.18.3: شماره‌گذاریِ یکتا روی متادیتا + فیلدِ سفارشی با هم (رفعِ بازگشتِ ترتیب پس از رفرش)', () => {
   const state = {
     formFieldMeta: { pharmacy: { name: { order: 4 }, city: { order: 2 }, gone: { order: 1, deleted: true } } },
     customFields: { pharmacy: [{ id: 'cf-a', order: 1 }, { id: 'cf-b', order: 9 }] }
@@ -195,7 +195,7 @@ test('v12.18.0: شماره‌گذاریِ یکتا روی متادیتا + فی�
   assert.equal(env.API.normalizeOrdersV1218(), 0, 'اجرای دوم بی‌تغییر (پایدار)');
 });
 
-test('v12.18.0: applySavedLayoutV82 و applyFullFormLayout با بی‌تغیر بودن، DOM را نمی‌لمسانند (ضدِ پرش)', () => {
+test('v12.18.3: applySavedLayoutV82 و applyFullFormLayout با بی‌تغیر بودن، DOM را نمی‌لمسانند (ضدِ پرش)', () => {
   let calls = 0;
   const pane = { id: 'tab-pharmacies', classList: { contains: () => true }, querySelector: () => null };
   const env = bootLayer({
@@ -221,7 +221,7 @@ test('v12.18.0: applySavedLayoutV82 و applyFullFormLayout با بی‌تغیر 
   assert.equal(calls, afterFirst + 1, 'پس از ذخیره، نقاشی مجاز است');
 });
 
-test('v12.18.0: مثبتِ بند ۴ — تغییرِ ترتیب، فوراً روی تب اصلی اعمال می‌شود و دوباره‌نویسیِ بی‌تغیر انجام نمی‌شود', () => {
+test('v12.18.3: مثبتِ بند ۴ — تغییرِ ترتیب، فوراً روی تب اصلی اعمال می‌شود و دوباره‌نویسیِ بی‌تغیر انجام نمی‌شود', () => {
   // سه فیلدِ درون‌ساز؛ چیدمانِ DOM فعلی c,a,b است ولی ترتیبِ ذخیره‌شده 1=a 2=b 3=c
   const mk = (fid) => { const g = makeEl('div', null); g.className = 'form-group'; g.setAttribute('data-col-fid', fid); return g; };
   const ga = mk('a'), gb = mk('b'), gc = mk('c');
@@ -259,8 +259,42 @@ test('v12.18.0: مثبتِ بند ۴ — تغییرِ ترتیب، فوراً ر
   assert.equal(gc.style.getPropertyValue('order'), before);
 });
 
+/* ───────── ۲.ب) ریشه‌پاک‌کنِ دستی (نوبت ۱۳۷) ───────── */
+test('v12.18.3+: purgeNow مُهرِ «انجام‌شده» را برمی‌دارد، همه‌چیز را دوباره جارو می‌کند، state را نگه می‌دارد و یک‌بار reload می‌کند', () => {
+  const ls = storageStub({
+    CRM_V1218_PURGED: '12.18.6',
+    CRM_V1218_RELOADED: '1',
+    CRM_OLD_JUNK_KEY: 'junk',
+    CRM_DIAG_LOG: 'x',
+    CRM_APP_STATE_V2: JSON.stringify({ ok: 1 }),
+    CRM_USERS_AUTH: '[]'
+  });
+  const ss = storageStub({ CRM_JUNK_SS: '1' });
+  const fetches = [];
+  const env = bootLayer({
+    localStorage: ls, sessionStorage: ss, state: {},
+    fetch: (u, o) => { fetches.push(String(u) + '|' + ((o && o.mode) || '')); return Promise.resolve({ ok: true }); }
+  });
+  assert.equal(typeof env.API.purgeNow, 'function', 'API دسترسی دارد');
+  const rep = env.API.purgeNow();
+  assert.equal(rep.ran, true, 'جارو اجرا شد');
+  assert.ok(!ls._map.has('CRM_OLD_JUNK_KEY'), 'کلیدِ کهنه پاک شد');
+  assert.ok(!ls._map.has('CRM_DIAG_LOG'), 'لاگِ کهنه پاک شد');
+  assert.ok(ls._map.has('CRM_APP_STATE_V2'), 'state هرگز پاک نمی‌شود');
+  assert.ok(ls._map.has('CRM_USERS_AUTH'), 'لاگین/کاربران می‌مانند');
+  assert.equal(ls._map.get('CRM_V1218_PURGED'), '12.18.6', 'مُهرِ نسخه در همانِ لحظه تازه شد');
+  assert.ok(!ss._map.has('CRM_JUNK_SS'), 'sessionStorage هم جارو شد');
+  assert.ok(env.toasts.some((t) => /ریشه‌پاک‌کنیِ دستی/.test(t)), 'تأییدِ ملموس به مدیر');
+  env.flush();
+  assert.ok(fetches.some((f) => f.includes('/api/cleanup?stale=1&purge=1')), 'پاک‌سازیِ سمتِ سرور هم صدا زده شد');
+  assert.equal(env.win.__reloads, 1, 'دقیقاً یک reload (نه صفر، نه دو تا)');
+  // اجرایِ دوباره باید بی‌مصرف تکرارِ جارو نکند تا مُهر پاک نشده — و دکمه هم همان purgeNow را صدا می‌زند
+  const rep2 = env.API.purgeNow();
+  assert.equal(rep2.ran, true);
+});
+
 /* ───────── ۳) بند ۹: تردد ───────── */
-test('v12.18.0: «نمایش تردد» بدون alert رسم می‌کند؛ نقشهٔsvg و fitBounds صدا زده می‌شوند', () => {
+test('v12.18.3: «نمایش تردد» بدون alert رسم می‌کند؛ نقشهٔsvg و fitBounds صدا زده می‌شوند', () => {
   let fitCalled = false; let invalidated = 0; let lineOpts = null;
   const mk = (name) => ({ addTo: () => ({ bindPopup: () => ({}), getBounds: () => ({ pad: () => ({}) }) }) });
   const mapObj = {
@@ -301,7 +335,7 @@ test('v12.18.0: «نمایش تردد» بدون alert رسم می‌کند؛ ن
 });
 
 /* ───────── ۴) بند ۱۲: ساعت ───────── */
-test('v12.18.0: گزینهٔ ساعت باز‌درج می‌شود و ثانیه از ورودی‌ها بریده می‌شود', () => {
+test('v12.18.3: گزینهٔ ساعت باز‌درج می‌شود و ثانیه از ورودی‌ها بریده می‌شود', () => {
   const env = bootLayer({});
   // no #colFieldType in DOM → ensure returns false but never throws
   assert.equal(env.API.ensureTimeOption(), false, 'بدونِ select نباید چیزی بشکند');
@@ -316,7 +350,7 @@ test('v12.18.0: گزینهٔ ساعت باز‌درج می‌شود و ثانی�
 });
 
 /* ───────── ۵) بند ۱۵: ماتریسِ دسترسی ───────── */
-test('v12.18.0: ماتریسِ ریز، ۳۱ تب یا بیشتر + ستونِ کلیدِ دسترسی + نوشتنِ *_access روی کاربر', () => {
+test('v12.18.3: ماتریسِ ریز، ۳۱ تب یا بیشتر + ستونِ کلیدِ دسترسی + نوشتنِ *_access روی کاربر', () => {
   const state = {
     users: [{ id: 'u1', username: 'reza', fullName: 'رضا نماینده', role: 'rep', permissions: {} },
             { id: 'u9', username: 'boss', fullName: 'مدیر ارشد', role: 'manager', permissions: {} }],
@@ -341,7 +375,7 @@ test('v12.18.0: ماتریسِ ریز، ۳۱ تب یا بیشتر + ستونِ �
 });
 
 /* ───────── ۶) بند ۱۶: آلارمِ ویزیت ───────── */
-test('v12.18.0: آلارمِ ویزیت با فرمتِ مرکزِ اعلان‌ها به نماینده+سرپرست+مدیر می‌رسد (یک‌بار، بدونِ تکرار)', () => {
+test('v12.18.3: آلارمِ ویزیت با فرمتِ مرکزِ اعلان‌ها به نماینده+سرپرست+مدیر می‌رسد (یک‌بار، بدونِ تکرار)', () => {
   const tomorrow = Date.now() + 20 * 3600 * 1000; // کمتر از ۲۴ ساعت آینده → داخلِ پنجره
   const iso = new Date(tomorrow).toISOString().slice(0, 10);
   const state = {
@@ -368,7 +402,7 @@ test('v12.18.0: آلارمِ ویزیت با فرمتِ مرکزِ اعلان‌
 });
 
 /* ───────── ۷) بودجه‌بندیِ fetchِ اصیل ───────── */
-test('v12.18.0: GETهایِ state/sync از مسیرِ اصیل تا ۲۴۰ ثانیه فقط یک‌بار می‌روند', async () => {
+test('v12.18.3: GETهایِ state/sync از مسیرِ اصیل تا ۲۴۰ ثانیه فقط یک‌بار می‌روند', async () => {
   let real = 0;
   const orig = (url, opts) => { real += 1; return Promise.resolve({ ok: true, json: () => Promise.resolve(null) }); };
   const env = bootLayer({ __CRM_ORIG_FETCH: orig });
@@ -384,7 +418,7 @@ test('v12.18.0: GETهایِ state/sync از مسیرِ اصیل تا ۲۴۰ ثا
 });
 
 /* ───────── ۸) صلحِ v68↔v73 ───────── */
-test('v12.18.0: شبح‌هایِ میزبانِ عملیات ساخته و از حذف محافظت می‌شوند', () => {
+test('v12.18.3: شبح‌هایِ میزبانِ عملیات ساخته و از حذف محافظت می‌شوند', () => {
   const env = bootLayer({});
   const after = env.doc.createElement('div'); after.id = 'v34TargetReports';
   const parent = env.doc.createElement('div'); parent.appendChild(after);
@@ -400,24 +434,24 @@ test('v12.18.0: شبح‌هایِ میزبانِ عملیات ساخته و از
 });
 
 /* ───────── ۹) نسخه در همه‌ی سطوح + ارجاع‌ها ───────── */
-test('v12.18.0: بنرِ لاتین، نسخه در همه‌ی سطح‌ها و فایل‌ها، و ریشه‌پاک‌کنِ سرور', () => {
+test('v12.18.3: بنرِ لاتین، نسخه در همه‌ی سطح‌ها و فایل‌ها، و ریشه‌پاک‌کنِ سرور', () => {
   const env = bootLayer({});
   const badge = env.doc.createElement('div'); badge.id = 'crmBuildBadge'; env.doc.body.appendChild(badge); env.doc._ix['crmBuildBadge'] = badge;
   env.API.paintBadgeLatin();
-  assert.equal(badge.textContent, 'نسخه 12.18.0', 'بنرِ ارقامِ لاتین');
+  assert.equal(badge.textContent, 'نسخه 12.18.6', 'بنرِ ارقامِ لاتین');
   const pairs = [
-    ['package.json', /"version":\s*"12\.18\.0"/],
-    ['server.js', /const APP_VERSION = "12\.18\.0"/],
-    ['public/crm-app.js', /CRM_APP_VERSION = "12\.18\.0"/],
-    ['public/index.html', /BUILD="12\.18\.0"/],
-    ['public/sw.js', /BUILD = "12\.18\.0"/],
-    ['public/api.php', /CRM_APP_VERSION", "12\.18\.0"/],
-    ['public/login.html', /نسخه 12\.18\.0/],
-    ['README.md', /نسخه‌ی جاریِ این ریپو \(GitHub main\): \*\*12\.18\.0\*\*/]
+    ['package.json', /"version":\s*"12\.18\.6"/],
+    ['server.js', /const APP_VERSION = "12\.18\.6"/],
+    ['public/crm-app.js', /CRM_APP_VERSION = "12\.18\.6"/],
+    ['public/index.html', /BUILD="12\.18\.6"/],
+    ['public/sw.js', /BUILD = "12\.18\.6"/],
+    ['public/api.php', /CRM_APP_VERSION", "12\.18\.6"/],
+    ['public/login.html', /نسخه 12\.18\.6/],
+    ['README.md', /نسخه‌ی جاریِ این ریپو \(GitHub main\): \*\*12\.18\.6\*\*/]
   ];
   for (const [f, re] of pairs) {
     const t = readFileSync(new URL(f, root), 'utf8');
-    assert.ok(re.test(t), 'نسخه در ' + f + ' باید 12.18.0 باشد');
+    assert.ok(re.test(t), 'نسخه در ' + f + ' باید 12.18.6 باشد');
   }
   const srv = readFileSync(new URL('server.js', root), 'utf8');
   assert.ok(/purge/.test(srv) && /sampleStripped/.test(srv), 'پارامترِ purge در سرور');

@@ -50,6 +50,7 @@ public/cloudflare-worker.js
 public/crm-app.js
 public/crm-bundle.js
 public/crm-data.js
+public/crm-entry-engine.js
 public/crm-hub.js
 public/crm-jalali.js
 public/crm-runtime.js
@@ -257,6 +258,8 @@ tests/v12.15.0-runtime.test.mjs
 tests/v12.16.0-runtime.test.mjs
 tests/v12.17.0-runtime.test.mjs
 tests/v12.18.0-runtime.test.mjs
+tests/v12.18.3-runtime.test.mjs
+tests/v12.18.5-stability.test.mjs
 tests/version-11.24-regressions.test.mjs
 tsconfig.json
 update_chat_arena.py

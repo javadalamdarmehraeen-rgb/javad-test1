@@ -37,7 +37,8 @@ function makeDom(origin = 'https://ndcohub.com') {
     hidden: false
   };
   const win = {
-    CRM_APP_VERSION: '12.18.0',
+    __CRM12184_FW_OFF: 1,
+    CRM_APP_VERSION: '12.18.6',
     addEventListener: () => {},
     state: { pharmacies: [{ id: 'p1' }], doctors: [], orders: [], users: [], settings: { companyName: '' } }
   };
@@ -99,12 +100,12 @@ test('v12.17.1 runtime: header paints exactly the three requested lines', (t) =>
   t.after(() => env.cleanup());
   const els = env.els;
   assert.equal(els.headerCompanyNameDisplay.textContent, 'برنامه ویزیت و گزارشات (مهر آیین نیک دارو)');
-  assert.equal(els.crmBuildBadge.textContent, 'نسخه 12.18.0');
+  assert.equal(els.crmBuildBadge.textContent, 'نسخه 12.18.6');
   assert.equal(els.headerBrandLine.textContent, 'طنین طب طاها  TANIN TEB TAHA');
   /* ارقام لاتین — نه فارسی */
   assert.match(els.crmBuildBadge.textContent, /[0-9]/);
   assert.doesNotMatch(els.crmBuildBadge.textContent, /[۰-۹]/);
-  assert.match(els.crmBuildHint.textContent, /نسخه 12\.18.0/);
+  assert.match(els.crmBuildHint.textContent, /نسخه 12\.18.6/);
 });
 
 test('v12.17.1 runtime: header is protected by a MutationObserver (legacy painters cannot overwrite it)', (t) => {

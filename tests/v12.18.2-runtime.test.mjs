@@ -57,7 +57,7 @@ function evalEngine(env) {
 function baseEnv(opts) {
   opts = opts || {};
   const ls = elStub(); const ss = elStub();
-  (opts.lsInit || [['CRM_OLD_JUNK', '1'], ['CRM_DIAG_LOG', '[]'], ['CRM_APP_STATE_V2', '{"a":1}'], ['CRM_USERS_AUTH', '[]'], ['CRM_V1218_PURGED', '12.18.3']]).forEach(([k, v]) => ls.setItem(k, v));
+  (opts.lsInit || [['CRM_OLD_JUNK', '1'], ['CRM_DIAG_LOG', '[]'], ['CRM_APP_STATE_V2', '{"a":1}'], ['CRM_USERS_AUTH', '[]'], ['CRM_V1218_PURGED', '12.18.6']]).forEach(([k, v]) => ls.setItem(k, v));
   if (opts.extraLs) opts.extraLs.forEach(([k, v]) => ls.setItem(k, v));
   const deletedCaches = [];
   const idbDeleted = [];
@@ -71,14 +71,14 @@ function baseEnv(opts) {
   };
 }
 
-test('v12.18.3: موتورِ ورود در حالتِ عادی — کش/SW/stateِ محلی جارو می‌شود، امانت‌ها می‌مانند، مُهرِ v12.18 خالی می‌شود', async () => {
+test('v12.18.3: موتورِ ورود در حالتِ عادی — کش/SW/کلیدهایِ کهنه جارو می‌شود، آینهٔ state و امانت‌ها می‌مانند، مُهرِ v12.18 خالی می‌شود', async () => {
   const env = baseEnv({});
   const { eng, netCalls } = evalEngine(env);
   assert.equal(typeof eng.run, 'function', 'API موتور');
   const rep = await eng.run({ from: 'login' });
   assert.equal(rep.mode, 'full');
   assert.ok(!env.ls._m.has('CRM_OLD_JUNK'), 'کلیدِ کهنه پاک شد');
-  assert.ok(!env.ls._m.has('CRM_APP_STATE_V2'), 'آینهٔ stateِ محلی پاک شد تا دادهٔ تازه از سرور بیاید');
+  assert.ok(env.ls._m.has('CRM_APP_STATE_V2'), 'v12.18.5: آینهٔ state هرگز پاک نمی‌شود — قانونِ «تنظیماتِ کاربر نمی‌میرد» (فقط کلیدهایِ واقعاً کهنه جارو می‌شوند)');
   assert.ok(env.ls._m.has('CRM_USERS_AUTH'), 'لاگین/کاربران امانت است');
   assert.equal(env.ls._m.get('CRM_V1218_PURGED'), '', 'مُهرِ ریشه‌پاک‌کن خالی شد = مهاجرت/چیدمان دوباره اجرا می‌شود');
   assert.equal(env.deletedCaches.length, 1, 'CacheStorage حذف شد');
@@ -163,7 +163,7 @@ test('v12.18.3: قانونِ «فیلدها پیش از کادرها» — کا�
     getUnifiedFieldList: () => [{ id: 'a', order: 2 }, { id: 'b', order: 1 }],
     setTimeout: () => 0, clearTimeout: () => {}, setInterval: () => 0, clearInterval: () => {},
     addEventListener: () => {}, removeEventListener: () => {},
-    CRM_APP_VERSION: '12.18.3'
+    CRM_APP_VERSION: '12.18.6'
   };
   win.window = win;
   const fn = new Function('window', 'document', 'navigator', 'fetch', 'setTimeout', 'setInterval', 'clearTimeout', 'clearInterval', 'alert', 'MutationObserver', 'Promise',
@@ -186,8 +186,8 @@ test('v12.18.3: قانونِ «فیلدها پیش از کادرها» — کا�
   assert.deepEqual(grid.children, snapshot);
 });
 
-test('v12.18.3: برابریِ نسخهٔ 12.18.3 در همهٔ سطوح + بنرِ README', () => {
-  const VER = '12.18.3';
+test('v12.18.3: برابریِ نسخهٔ 12.18.6 در همهٔ سطوح + بنرِ README', () => {
+  const VER = '12.18.6';
   const files = ['package.json', 'public/index.html', 'public/login.html', 'public/index.php', 'public/api.php', 'server.js', 'public/crm-app.js', 'public/crm-hub.js', 'public/sw.js', 'public/sw-template.js', 'public/crm-entry-engine.js'];
   files.forEach((f) => {
     const t = readFileSync(new URL(f, root), 'utf8');
