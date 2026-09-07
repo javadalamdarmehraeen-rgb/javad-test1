@@ -13000,7 +13000,7 @@ button.v19-gps svg{display:block}
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.18.4");
+        var ver=String(window.CRM_APP_VERSION||"12.18.5");
         var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -14537,7 +14537,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.18.4");
+        var ver=String(window.CRM_APP_VERSION||"12.18.5");
         var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -19331,10 +19331,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.4"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.5"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.4").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.5").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19414,10 +19414,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.4"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.5"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.4").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.5").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -19473,7 +19473,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.18.4");
+  var BUILD = String(window.CRM_APP_VERSION || "12.18.5");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
@@ -19534,10 +19534,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.4"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.5"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.4").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.5").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19564,10 +19564,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.4"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.5"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.4").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.18.5").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -19652,7 +19652,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.4"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.18.5"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -20086,7 +20086,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var TITLE = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
   var BRAND = "طنین طب طاها  TANIN TEB TAHA";
-  var FALLBACK = "12.18.4";
+  var FALLBACK = "12.18.5";
 
   /* ── ۱) سربرگ دقیقاً سه خط؛ شماره نسخه با ارقام لاتین ───────────────── */
   function ver() { try { return String(window.CRM_APP_VERSION || FALLBACK); } catch (e) { return FALLBACK; } }
@@ -20467,7 +20467,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     try { done = localStorage.getItem(FLAG) === "1"; } catch (e) {}
     if (done) return;
     try { localStorage.setItem(FLAG, "1"); } catch (e) {}
-    var ver = String(window.CRM_APP_VERSION || "12.18.4");
+    var ver = String(window.CRM_APP_VERSION || "12.18.5");
     try {
       if (window.caches && typeof caches.keys === "function") {
         caches.keys().then(function (keys) {
@@ -22331,7 +22331,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var API15 = window.v1215Api || {};
   var API16 = window.v1216Api || {};
-  var VER = String(window.CRM_APP_VERSION || "12.18.4");
+  var VER = String(window.CRM_APP_VERSION || "12.18.5");
 
   function $(id) { try { return document.getElementById(id); } catch (e) { return null; } }
   function qsa(sel, root) { try { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); } catch (e) { return []; } }
@@ -22805,7 +22805,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   /* ══ ۱۳) تبِ تغییرات: نسخه‌ی 12.17.0 بالایِ همه + بازرسازی هر بار که تب باز شود ═══════ */
   var CH1217_HTML = "<div id='v1217ChangeEntry' style='border:2px solid #0d9488;background:#f0fdfa;border-radius:12px;padding:10px;margin-bottom:10px'>" +
-    "<b style='color:#0f766e'>📦 نسخه‌ی جاری: 12.18.4</b><ul style='margin:6px 0 0 18px;padding:0;color:#334155;font-size:14px;line-height:2'>" +
+    "<b style='color:#0f766e'>📦 نسخه‌ی جاری: 12.18.5</b><ul style='margin:6px 0 0 18px;padding:0;color:#334155;font-size:14px;line-height:2'>" +
     "<li>ترتیبِ ستون‌ها پس از بازگشایی هم برقرار می‌ماند و در تبِ اصلی هم اعمال می‌شود</li>" +
     "<li>«موقعیت فعلی من» فقط نقطه‌ی تازه می‌پذیرد و آدرس به‌صورتِ فارسیِ مرتب (کشور، استان، شهر، خیابان، پلاک) می‌آید</li>" +
     "<li>کادرِ جایگذاریِ خودکارِ سفارش در بالایِ صفحه (دسکتاپ و گوشی) می‌چسبد و فقط داروخانه‌های هم‌نام با آدرس را نشان می‌دهد</li>" +
@@ -22960,7 +22960,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       function showStaleBar(sv) {
         if (shown) return;
         shown = true;
-        var cur = lv('12.18.4');
+        var cur = lv('12.18.5');
         var a = lv(sv);
         var newer = a[0] > cur[0] || (a[0] === cur[0] && a[1] > cur[1]) || (a[0] === cur[0] && a[1] === cur[1] && a[2] >= cur[2]);
         if (!sv || newer) return;
@@ -22968,7 +22968,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         bar.id = 'crm1217StaleBar';
         bar.setAttribute('dir', 'rtl');
         bar.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#fef3c7;border-top:2px solid #f59e0b;color:#78350f;font:12px/1.9 Tahoma,sans-serif;padding:5px 12px;text-align:center';
-        bar.innerHTML = '⚠️ سرورِ وصل‌شده هنوز نسخهٔ کهنه <b>' + sv + '</b> را اجرا می‌کند — آخرین نسخهٔ برنامه <b>12.18.4</b> است. <a href="http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip" download style="color:#1d4ed8"><b>⬇ دریافت ZIPِ جدید و نصب</b></a>';
+        bar.innerHTML = '⚠️ سرورِ وصل‌شده هنوز نسخهٔ کهنه <b>' + sv + '</b> را اجرا می‌کند — آخرین نسخهٔ برنامه <b>12.18.5</b> است. <a href="http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip" download style="color:#1d4ed8"><b>⬇ دریافت ZIPِ جدید و نصب</b></a>';
         document.body.appendChild(bar);
       }
       /* XHR به‌جای fetch: این پرسش نباید در شمارشِ governor (فریم ۱۳) بیفتد */
@@ -23006,7 +23006,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   window.v1218 = true;
   window.__V1218_MARK = "v12.18.3";
 
-  var VER = String(window.CRM_APP_VERSION || "12.18.4");
+  var VER = String(window.CRM_APP_VERSION || "12.18.5");
   var A15 = window.v1215Api || null;
   var A16 = window.v1216Api || null;
   var A17 = window.v1217Api || null;
@@ -24393,7 +24393,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
      صادقانه می‌گوید این دستگاه جدا کار می‌کند.
    • همه‌چیز با XHR خام — نه governorِ سقفِ درخواست، نه wrapperهایِ skipِ قدیمی. */
 (function () {
-  var VER = "12.18.4";
+  var VER = "12.18.5";
   var SEEN = { rev: "", savedAt: 0 };
   var last = { mode: "", pullAt: 0, pushAt: 0, errs: 0, added: 0, removed: 0, touched: 0, localBackoffUntil: 0 };
   var pushTimer = 0, pushAuthed = false;
@@ -24452,9 +24452,34 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         if (JSON.stringify(out) !== JSON.stringify(Array.isArray(bv) ? bv : [])) { base[k] = out; res.touched++; }
         return;
       }
+      /* v12.18.5: کلیدهایِ آبجکتی (customFields/formFieldMeta/…) جایگزینِ کور نمی‌شوند —
+         زیرِ آرایه‌هایِ idدار اجتماعِ رکوردی می‌شوند (هیچِ فیلدِ تازه‌ای باِ pullِ کهنه نمی‌میرد)
+         و scalarهایِ محلی حفظ می‌شوند (آخرینِ ذخیرهٔ همینِ دستگاه برنده است و درِ pushِ بعدی بهِ سرور می‌رسد). */
+      if (rv && typeof rv === "object" && !Array.isArray(rv)) { var mo = mergeObj12185(bv, rv); try { if (JSON.stringify(mo) !== JSON.stringify(bv)) { base[k] = mo; res.touched++; } } catch (eO) {} return; }
       try { if (JSON.stringify(rv) !== JSON.stringify(bv)) { base[k] = rv; res.touched++; } } catch (eK) { base[k] = rv; res.touched++; }
     });
     return res;
+  }
+  function mergeObj12185(local, remote) {
+    var out = {}; var kk;
+    if (local && typeof local === "object" && !Array.isArray(local)) for (kk in local) if (Object.prototype.hasOwnProperty.call(local, kk)) out[kk] = local[kk];
+    if (!remote || typeof remote !== "object" || Array.isArray(remote)) return out;
+    for (kk in remote) {
+      if (!Object.prototype.hasOwnProperty.call(remote, kk)) continue;
+      var rvv = remote[kk], bvv = out[kk];
+      if (Array.isArray(rvv) && idArray(rvv)) { out[kk] = unionById12185(Array.isArray(bvv) ? bvv : [], rvv); }
+      else if (rvv && typeof rvv === "object" && !Array.isArray(rvv)) { out[kk] = mergeObj12185(bvv, rvv); }
+      else if (bvv === undefined) { out[kk] = rvv; }
+      else { try { if (JSON.stringify(bvv) !== JSON.stringify(rvv)) out[kk] = rvv; } catch (eD1) { out[kk] = rvv; } }
+    }
+    return out;
+  }
+  function unionById12185(a, b) {
+    var map = {}, order = [], i;
+    function put(r) { var id = kidOf(r); if (!id) { id = "u" + order.length; } if (!map[id]) order.push(id); var prev = map[id]; if (!prev || stampOf(r) >= stampOf(prev)) map[id] = r; }
+    for (i = 0; i < a.length; i++) put(a[i]);
+    for (i = 0; i < b.length; i++) put(b[i]);
+    return order.map(function (id) { return map[id]; });
   }
   function repaintLists() {
     var names = ["renderPharmaciesList", "renderDoctorsList", "renderOrdersList", "renderProductsTable", "renderUsersList", "renderActivityLogTable", "renderLeavesTable", "renderSalesTargetsTable"];
@@ -24525,7 +24550,13 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
        pushهایِ بوت/تأییدِ adopt هیچ‌وقت حذف نمی‌کنند؛ وگرنه ریسِ کهنهٔ initِ اپ،
        دیتایِ همینِ لحظهٔ بقیه را می‌سوزاند (سناریوی راستی‌آزماییِ دو-پنجره). */
     if (auth) {
-      try { var __o = JSON.parse(body); __o._seenAuth = SEEN.rev || ""; body = JSON.stringify(__o); } catch (eA) {}
+      /* v12.18.5: نشانهٔ آینه = گیتِ دومِ «حذفِ امن». اگر initِ برنامه بعد ازِ pull، window.state را
+         با کپیِ بی‌مُهر جابه‌جا کرده باشد، این state «دیدِ کامل» نیست و حقِ حذفِ رکوردِ بقیه را ندارد. */
+      try {
+        if (String(st()._12183rev || "") === String(SEEN.rev || "")) {
+          var __o = JSON.parse(body); __o._seenAuth = SEEN.rev || ""; body = JSON.stringify(__o);
+        } else { last.notes = 1; }
+      } catch (eA) {}
     }
     var hsh = hash12183(String(body).length + "|" + (SEEN.rev || "") + "|" + hash12183(String(body)));
     if (!force && hsh === lastSentHash) return; /* بدنهٔ یکسان با آخرین پذیرش = هیچ نوشتنی لازم نیست (ضدِ سیل) */
@@ -24631,3 +24662,188 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   window.fetch._v12184 = 1;
 })();
 /*V12184-FW-END*/
+
+/*V12185-STABLE-START*/
+/* v12.18.5 «ستونِ پایدار» — رفعِ «دکوری‌بودنِ فیلدها» در تبِ ستون‌ها و کالاها:
+   ۱) فیلدهایِ سفارشیِ کالا هیچ‌وقت در فرمِ افزودنِ کالا رندر نمی‌شدند چون
+      renderAllCustomFieldsInFormsAndTables فقطِ سه‌تاییِ داروخانه/پزشک/سفارش را می‌شناخت؛
+      حالا بعدِ هرِ باز‌سازیِ عمومی، میزبانِ کالا هم رندر می‌شود.
+   ۲) موتورهایِ چیدمان ممکن بود گره‌هایِ رندرشده را پاک کنند — یکِ keep-alive با
+      MutationObserver ظرفِ ۳۰۰ms همانِ قفسه را بهِ روزِ فهرستِ فیلدها می‌رساند.
+   ۳) مقادیرِ کشویی/ساده حالا درِ ذخیرهٔ کالا واقعاً ثبت می‌شوند (v20 فقطِ ششِ فیلدِ ثابت را
+      برمی‌داشت) — برداشت درِ فازِ capture ازِ خودِ تب (پیشِ دستِ موتورِ v20) و نوشتن رویِ رکورد.
+   ۴) موقعِ ویرایشِ کالا، مقادیرِ ذخیره‌شده درِ فیلدها می‌نشینند؛ خلاصهٔ مقادیر هم زیرِ نامِ کالا درِ جدول.
+   ۵) پرشِ هدر: نشانِ «آنلاین/آفلاین» باِ عوض‌شدنِ متن، عرضش تغییر می‌کرد وِ کلِ رَویِ سربرگ
+      بهِ راست میلرزید — باِ min-width/nowrap/ellipsis میخکوب شد تاِ نوسانِ اتصال، صفحه را تکان ندهد. */
+(function () {
+  "use strict";
+  var PROD_HOST = "productCustomFieldsContainer";
+  function st12185() { try { return window.state || null; } catch (e) { return null; } }
+  function prodFields12185() { var S = st12185(); var l = (((S || {}).customFields || {}).products) || []; return Array.isArray(l) ? l : []; }
+  function sweepStrays12185() {
+    var cont = document.getElementById(PROD_HOST); if (!cont) return;
+    var form = document.getElementById("formProduct"); if (!form) return;
+    var nodes = form.querySelectorAll("[data-custom-field-id]");
+    for (var i = 0; i < nodes.length; i++) {
+      var g = nodes[i].closest ? (nodes[i].closest(".form-group") || nodes[i].parentNode) : nodes[i].parentNode;
+      if (g && !cont.contains(g)) { try { g.parentNode.removeChild(g); } catch (e) {} }
+    }
+  }
+  function renderProductsHost12185(currentValues) {
+    var cont = document.getElementById(PROD_HOST);
+    if (!cont) {
+      var form = document.getElementById("formProduct");
+      var grid = form && form.querySelector(".form-grid");
+      if (!grid) return;
+      cont = document.createElement("div");
+      cont.id = PROD_HOST; cont.className = "form-group full-width form-grid extra-cf-host";
+      cont.setAttribute("data-cf-host", "products");
+      grid.appendChild(cont);
+    }
+    var rf = window.renderCustomFieldsInForm;
+    if (typeof rf !== "function") return;
+    sweepStrays12185();
+    var par = cont.parentNode, next = cont.nextSibling;
+    try { document.body.appendChild(cont); } catch (e) { return; }
+    try { rf("products", PROD_HOST, currentValues || {}); } catch (e2) {}
+    try { if (par) { if (next && next.parentNode === par) par.insertBefore(cont, next); else par.appendChild(cont); } } catch (e3) {}
+    try { if (typeof window.setupDropdownAutoClear === "function") window.setupDropdownAutoClear(); } catch (e4) {}
+  }
+  function ensure12185() {
+    var cont = document.getElementById(PROD_HOST); if (!cont) return;
+    var want = prodFields12185().filter(function (f) { return f && f.showInForm !== false && !/^widget-/.test(String(f.inputKind || "")); }).length;
+    var have = cont.querySelectorAll("[data-custom-field-id]").length;
+    if (want !== have) renderProductsHost12185();
+  }
+  try {
+    var ra = window.renderAllCustomFieldsInFormsAndTables;
+    if (typeof ra === "function" && !ra._v12185) {
+      var wa = function () { var o = ra.apply(this, arguments); try { renderProductsHost12185(); } catch (e) {} return o; };
+      wa._v12185 = 1; window.renderAllCustomFieldsInFormsAndTables = wa;
+    }
+  } catch (e0) {}
+  var t12185 = 0;
+  function scheduleEnsure12185() { clearTimeout(t12185); t12185 = setTimeout(ensure12185, 300); }
+  function watch12185() {
+    try {
+      /* v12.18.5 رفع: formProduct در بوتِ موتورهایِ قدیمی جابه‌جا می‌شود و ناظرِ چسبیده بهِ آن یتیم می‌ماند —
+         پس pollingِ سبک رویِ خودِ میزبان (بدونِ وابستگی بهِ گره‌هایِ متغیر) + ناظرِ اختیاری رویِ container */
+      setInterval(ensure12185, 700);
+      ensure12185();
+      if (window.MutationObserver) {
+        var moTick = setInterval(function () {
+          var cont = document.getElementById(PROD_HOST);
+          if (cont && !cont._v12185mo) {
+            cont._v12185mo = 1;
+            try { new MutationObserver(scheduleEnsure12185).observe(cont, { childList: true, subtree: true }); } catch (e) {}
+          }
+        }, 2000);
+        setTimeout(function () { clearInterval(moTick); }, 40000);
+      }
+    } catch (e) {}
+  }
+  var pend12185 = null;
+  window.__v12185dbg = { grab: 0, apply: 0, notes: [], note: function (x) { this.notes.push(x); if (this.notes.length > 12) this.notes.shift(); } };
+  function grab12185() {
+    try { window.__v12185dbg.grab++;
+      var cont = document.getElementById(PROD_HOST); if (!cont) return;
+      var nameEl = document.getElementById("productName");
+      var vals = {}; var any = false;
+      prodFields12185().forEach(function (f) {
+        var el = cont.querySelector('[data-custom-field-id="' + f.id + '"]');
+        if (!el) return;
+        var v12185 = String(el.value == null ? "" : el.value).trim();
+        /* قانونِ v12.18.5: خالی‌ها نوشته نمی‌شوند — «فرمِ تازه‌شده پس ازِ ذخیره» (resetِ v20) دقیقاً یکِ ثانیه
+           بعد ازِ برداشتِ درست، دوباره grab می‌زند و اگر تهی‌ها راه یابند، مقدارِ درستِ رکورد پاک می‌شود.
+           پاک‌کردنِ عمدیِ مقدارِ یکِ فیلد: ازِ مسیرِ ویرایش (بازگردانیِ مقدار + نوشتنِ مقدارِ تازه). */
+        if (v12185 === "") return;
+        vals[f.label] = v12185; any = true;
+      });
+      if (!any) { window.__v12185dbg.note("novals"); return; }
+      window.__v12185dbg.note("vals:" + JSON.stringify(vals));
+      pend12185 = { id: window._editingProductId || "", name: String((nameEl && nameEl.value) || "").trim(), vals: vals };
+      setTimeout(apply12185, 90);
+    } catch (e) {}
+  }
+  function apply12185() {
+    window.__v12185dbg.apply++;
+    var p = pend12185; pend12185 = null; if (!p) { window.__v12185dbg.note("nopend"); return; }
+    var S = st12185(); if (!S || !Array.isArray(S.products) || !S.products.length) return;
+    var rec = null;
+    for (var i = 0; i < S.products.length; i++) {
+      var x = S.products[i];
+      if ((p.id && String(x.id) === String(p.id)) || (p.name && String(x.name || "").trim() === p.name)) { rec = x; break; }
+    }
+    if (!rec) rec = S.products[S.products.length - 1];
+    if (!rec) { window.__v12185dbg.note("norec"); return; }
+    var cur = rec.customFields || {};
+    window.__v12185dbg.note("rec:" + (rec.name || "?")); var changed = false;
+    Object.keys(p.vals).forEach(function (k) { if (String(cur[k] == null ? "" : cur[k]) !== p.vals[k]) changed = true; cur[k] = p.vals[k]; });
+    if (!changed) return;
+    rec.customFields = cur;
+    try { rec._updatedAt = Date.now(); } catch (e) {}
+    try { if (typeof window.saveState === "function") window.saveState(false); } catch (e2) {}
+    try { if (typeof window.renderColumnsProductsTable === "function") window.renderColumnsProductsTable(); } catch (e3) {}
+  }
+  try {
+    var bind12185 = function () {
+      var pane = document.getElementById("tab-columns-products");
+      if (!pane) { setTimeout(bind12185, 1200); return; }
+      if (!pane.dataset.v12185grab) {
+        pane.dataset.v12185grab = "1";
+        pane.addEventListener("click", function (ev) {
+          var t = ev && ev.target; if (!t || !t.closest) return;
+          if (t.closest("#btnSaveProduct") || t.closest("#v20SaveProductBtn")) grab12185();
+        }, true);
+        pane.addEventListener("submit", function (ev) { if (ev && ev.target && ev.target.id === "formProduct") grab12185(); }, true);
+      }
+    };
+    bind12185();
+  } catch (e1) {}
+  try {
+    var oe = window.editProductCatalogItem;
+    if (typeof oe === "function" && !oe._v12185) {
+      var we12185 = function (id) {
+        var r = oe.apply(this, arguments);
+        try { var S = st12185(); var p = (((S || {}).products) || []).filter(function (x) { return String(x.id) === String(id); })[0]; if (p) renderProductsHost12185(p.customFields || {}); } catch (e) {}
+        return r;
+      };
+      we12185._v12185 = 1; window.editProductCatalogItem = we12185;
+    }
+  } catch (e2b) {}
+  function paintChips12185() {
+    try {
+      var body = document.getElementById("tableProductsBody"); if (!body) return;
+      var S = st12185(); var list = (((S || {}).products)) || []; var i = 0;
+      Array.prototype.forEach.call(body.children, function (tr) {
+        if (!tr || tr.children.length < 2) return;
+        var p = list[i++]; if (!p) return;
+        var cf = p.customFields || {};
+        var ks = Object.keys(cf).filter(function (k) { return String(cf[k] || "") !== ""; });
+        if (!ks.length) return;
+        var cell = tr.children[0];
+        if (!cell || cell.querySelector(".v12185-chip")) return;
+        var s = document.createElement("div");
+        s.className = "v12185-chip"; s.style.cssText = "font-size:10px;color:#64748b;margin-top:2px";
+        s.textContent = ks.slice(0, 4).map(function (k) { return k + ": " + cf[k]; }).join(" | ") + (ks.length > 4 ? " …" : "");
+        cell.appendChild(s);
+      });
+    } catch (e) {}
+  }
+  try {
+    var orct = window.renderColumnsProductsTable;
+    if (typeof orct === "function" && !orct._v12185) {
+      var wct = function () { var r = orct.apply(this, arguments); setTimeout(paintChips12185, 30); return r; };
+      wct._v12185 = 1; window.renderColumnsProductsTable = wct;
+    }
+  } catch (e3b) {}
+  try {
+    var css = ".v1215-net-badge,[data-net-badge]{display:inline-block!important;min-width:104px;max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:middle;text-align:center}";
+    var stl = document.createElement("style"); stl.id = "v12185PinCss"; stl.textContent = css;
+    (document.head || document.documentElement).appendChild(stl);
+  } catch (e4b) {}
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { setTimeout(watch12185, 1200); });
+  else setTimeout(watch12185, 1200);
+  window.v12185Prod = { render: renderProductsHost12185, ensure: ensure12185, grab: grab12185, chips: paintChips12185 };
+})();
+/*V12185-STABLE-END*/

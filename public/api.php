@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
-define("CRM_APP_VERSION", "12.18.4");
+define("CRM_APP_VERSION", "12.18.5");
 
 /* v12.12: همگام سه دامنه — رندر + دو دامنه نت‌افراز */
 function peer_hosts() {
@@ -376,23 +376,59 @@ function merge_shared_12183($existing, $incoming, $auth) {
     if (is_array($v) && count($v) > 0 && is_array(res($v)) && array_keys($v) === range(0, count($v) - 1)) {
       $idful = true;
       foreach ($v as $r) { if (!is_array($r) || key_id_12183($r) === null) { $idful = false; break; } }
-      if (!$idful) { $base[$k] = array_values($v); continue; }
+      if (!$idful) {
+        /* v12.18.5 (آینهٔ Node): آرایهٔ بی‌id/خالی، مجموعهٔ رکوردیِ موجود را بی‌اجازه پاک نمی‌کند */
+        $aIsRecArr = is_array($a0) && count($a0) > 0;
+        if ($aIsRecArr) { foreach ($a0 as $r0) { if (!is_array($r0) || key_id_12183($r0) === null) { $aIsRecArr = false; break; } } }
+        if (!($aIsRecArr && !$auth)) { $base[$k] = array_values($v); }
+        continue;
+      }
       $map = array();
       if (is_array($a0)) { foreach ($a0 as $r) { if (!is_array($r)) continue; $id = key_id_12183($r); if ($id === null) { $idful = false; break; } $map[$id] = $r; } }
-      if (!$idful) { $base[$k] = array_values($v); continue; }
+      if (!$idful) {
+        /* v12.18.5 (آینهٔ Node): آرایهٔ بی‌id/خالی، مجموعهٔ رکوردیِ موجود را بی‌اجازه پاک نمی‌کند */
+        $aIsRecArr = is_array($a0) && count($a0) > 0;
+        if ($aIsRecArr) { foreach ($a0 as $r0) { if (!is_array($r0) || key_id_12183($r0) === null) { $aIsRecArr = false; break; } } }
+        if (!($aIsRecArr && !$auth)) { $base[$k] = array_values($v); }
+        continue;
+      }
       $incIds = array();
       foreach ($v as $r) { $id = key_id_12183($r); $incIds[$id] = 1; $prev = isset($map[$id]) ? $map[$id] : null; if (!$prev || rec_stamp_12183($r) >= rec_stamp_12183($prev)) $map[$id] = $r; }
       $out = array();
       foreach ($map as $id => $r) { if (!$auth || isset($incIds[$id])) $out[] = $r; }
       $base[$k] = $out;
     } elseif (is_array($v) && count($v) > 0) {
-      $base[$k] = (is_array($a0) && count($a0) && array_keys($a0) !== range(0, count($a0) - 1)) ? array_merge($a0, $v) : $v;
+      /* v12.18.5 (آینهٔ Node): آبجکتِ تنظیمی = ادغامِ بازگشتی نه array_mergeِ سطحی —
+         آرایه‌هایِ idدارِ زیرین اجتماعِ رکوردی؛ هیچِ فیلد/تنظیمِ تازه باِ pushِ کهنه نمی‌میرد */
+      $base[$k] = (is_array($a0) && count($a0) && array_keys($a0) !== range(0, count($a0) - 1)) ? merge_obj_12185($a0, $v) : $v;
     } else {
       $base[$k] = $v;
     }
   }
-  if ($auth) { foreach (array_keys($base) as $k) { if (!is_string($k) || $k[0] === "_") continue; if (!isset($incKeys[$k])) unset($base[$k]); } }
+  /* v12.18.5: حذفِ کلیدِ غایب فقط برایِ آرایه‌هایِ رکوردی (لیست) — تنظیماتِ آبجکتی هرگز با «نبودن» پاک نمی‌شود */
+  if ($auth) { foreach (array_keys($base) as $k) { if (!is_string($k) || $k[0] === "_") continue; if (isset($incKeys[$k])) continue; $bk = $base[$k]; if (is_array($bk) && (count($bk) === 0 || array_keys($bk) === range(0, count($bk) - 1))) unset($base[$k]); } }
   return $base;
+}
+function merge_obj_12185($local, $remote) {
+  $out = is_array($local) ? $local : array();
+  if (!is_array($remote)) return $out;
+  foreach ($remote as $kk => $rvv) {
+    $bvv = isset($out[$kk]) ? $out[$kk] : null;
+    $has = array_key_exists($kk, $out);
+    if (is_array($rvv) && count($rvv) > 0 && array_keys($rvv) === range(0, count($rvv) - 1)) {
+      $idful = true;
+      foreach ($rvv as $r) { if (!is_array($r) || key_id_12183($r) === null) { $idful = false; break; } }
+      if ($idful) { $out[$kk] = merge_by_id(is_array($bvv) ? $bvv : array(), $rvv); }
+      else { $out[$kk] = $rvv; }
+    } elseif (is_array($rvv) && count($rvv) > 0) {
+      $out[$kk] = merge_obj_12185(is_array($bvv) ? $bvv : array(), $rvv);
+    } elseif (!$has) {
+      $out[$kk] = $rvv;
+    } elseif ($bvv !== $rvv) {
+      $out[$kk] = $rvv;
+    }
+  }
+  return $out;
 }
 function state_rev_12183($data) {
   if (is_array($data) && !empty($data["_sharedRev"])) return strval($data["_sharedRev"]);

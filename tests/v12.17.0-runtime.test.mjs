@@ -367,12 +367,12 @@ test('v12.17.1: فایل‌هایِ نسخه‌هایِ قدیمی حذف شده
 });
 
 test('v12.17.1: نسخه در همه‌ی سطوح 12.17.1 است و README بنرِ نسخه دارد', () => {
-  assert.match(readmeSrc, /نسخه‌ی جاریِ این ریپو \(GitHub main\): \*\*12\.18.4\*\*/, 'بنرِ صدرِ README');
-  assert.match(htmlSrc, /BUILD="12\.18.4"/, 'BUILD در index.html');
-  assert.match(serverSrc, /const APP_VERSION = "12\.18.4"/, 'APP_VERSION در server.js');
+  assert.match(readmeSrc, /نسخه‌ی جاریِ این ریپو \(GitHub main\): \*\*12\.18.5\*\*/, 'بنرِ صدرِ README');
+  assert.match(htmlSrc, /BUILD="12\.18.5"/, 'BUILD در index.html');
+  assert.match(serverSrc, /const APP_VERSION = "12\.18.5"/, 'APP_VERSION در server.js');
   const pkg = JSON.parse(readFileSync(new URL('package.json', root), 'utf8'));
-  assert.equal(pkg.version, '12.18.4');
-  assert.match(apiPhp, /define\("CRM_APP_VERSION", "12\.18.4"\)/, 'نسخه در api.php');
+  assert.equal(pkg.version, '12.18.5');
+  assert.match(apiPhp, /define\("CRM_APP_VERSION", "12\.18.5"\)/, 'نسخه در api.php');
   assert.match(serverSrc, /crm-features-v\(9\|1\[0-9\]\|2\[0-9\]\)\\.js/, 'پاک‌سازیِ قدیمی در server.js');
   assert.match(apiPhp, new RegExp('crm-features-v\\(9\\|1\\[0-9\\]\\|2\\[0-9\\]\\)\\\\\\.js\\$'), 'پاک‌سازیِ قدیمی در api.php');
 });

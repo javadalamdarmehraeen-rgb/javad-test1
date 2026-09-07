@@ -436,7 +436,7 @@ test('v12.17.1: شمارهٔ نسخه در پرونده‌های اصلی یک�
   const files = ['package.json', 'public/index.html', 'public/index.php', 'public/api.php', 'server.js', 'public/crm-bundle.js'];
   files.forEach((f) => {
     const txt = readFileSync(new URL(f, root), 'utf8');
-    assert.ok(/12\.18.4/.test(txt), f + ' باید 12.17.1 را داشته باشد');
+    assert.ok(/12\.18.5/.test(txt), f + ' باید 12.17.1 را داشته باشد');
   });
-  assert.ok(htmlSrc.includes('نسخه 12.18.4') || /12\.18.4/.test(htmlSrc), 'نسخه در صفحه است');
+  assert.ok(htmlSrc.includes('نسخه 12.18.5') || /12\.18.5/.test(htmlSrc), 'نسخه در صفحه است');
 });

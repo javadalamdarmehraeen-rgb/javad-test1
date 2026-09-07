@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "12.18.4";
+const APP_VERSION = "12.18.5";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -230,6 +230,26 @@ function keyId12183(r) {
   if (r._id != null && r._id !== "") return "i" + String(r._id);
   return null;
 }
+function mergeObj12185(local, remote) {
+  const out = Object.assign({}, (local && typeof local === "object" && !Array.isArray(local)) ? local : {});
+  if (!remote || typeof remote !== "object" || Array.isArray(remote)) return out;
+  for (const kk of Object.keys(remote)) {
+    const rvv = remote[kk], bvv = out[kk];
+    if (Array.isArray(rvv) && rvv.length && rvv.every((r) => r && typeof r === "object" && keyId12183(r) != null)) {
+      const map = new Map(); const order = [];
+      const put = (r) => { const id = String(keyId12183(r) != null ? keyId12183(r) : "u" + order.length + JSON.stringify(r).slice(0, 40)); if (!map.has(id)) order.push(id); const prev = map.get(id); if (!prev || recStamp12183(r) >= recStamp12183(prev)) map.set(id, r); };
+      (Array.isArray(bvv) ? bvv : []).forEach(put); rvv.forEach(put);
+      out[kk] = order.map((id) => map.get(id));
+    } else if (rvv && typeof rvv === "object" && !Array.isArray(rvv)) {
+      out[kk] = mergeObj12185(bvv, rvv);
+    } else if (bvv === undefined) {
+      out[kk] = rvv;
+    } else if (bvv !== rvv) {
+      out[kk] = rvv;
+    }
+  }
+  return out;
+}
 function mergeCollections12183(existing, incoming, authoritative) {
   let base = {};
   try { if (existing && typeof existing === "object") base = JSON.parse(JSON.stringify(existing)); } catch (e) { base = (existing && typeof existing === "object") ? existing : {}; }
@@ -241,7 +261,13 @@ function mergeCollections12183(existing, incoming, authoritative) {
     if (Array.isArray(b)) {
       let idful = b.length > 0;
       for (const r of b) { if (r && typeof r === "object" && keyId12183(r) == null) { idful = false; break; } }
-      if (!idful) { base[k] = b; continue; }
+      if (!idful) {
+        /* v12.18.5: آرایهٔ بی‌id یاِ خالی، آرایهٔ idدارِ موجود را بی‌اجازه پاک نمی‌کند:
+           «خالی» یا «بی‌ساختار» بودنِ دیدِ یکِ دستگاه بهِ معنایِ حذفِ جمعی نیست. */
+        const aIsRecArr = Array.isArray(a0) && a0.length > 0 && a0.every((r) => r && typeof r === "object" && keyId12183(r) != null);
+        if (!(aIsRecArr && !authoritative)) base[k] = b;
+        continue;
+      }
       const map = new Map();
       if (Array.isArray(a0)) for (const r of a0) { const id = keyId12183(r); map.set(id != null ? id : "u" + map.size + String(JSON.stringify(r)).slice(0, 60), r); }
       const incIds = new Set();
@@ -255,10 +281,14 @@ function mergeCollections12183(existing, incoming, authoritative) {
       if (authoritative) for (const id of Array.from(map.keys())) if (!incIds.has(id)) map.delete(id);
       base[k] = Array.from(map.values());
     } else if (b && typeof b === "object") {
-      base[k] = (a0 && typeof a0 === "object" && !Array.isArray(a0)) ? Object.assign({}, a0, b) : b;
+      /* v12.18.5: آبجکت‌هایِ تنظیمی (customFields/formFieldMeta/layout…) = ادغامِ بازگشتی:
+         آرایه‌هایِ idدارِ داخلشان اجتماعِ رکوردی (هیچِ فیلدِ تازه‌ای باِ pushِ دستگاهِ کهنه نمی‌میرد)
+         و scalarهایِ جدید برندهٔ آخرینِ ذخیره می‌مانند. */
+      base[k] = (a0 && typeof a0 === "object" && !Array.isArray(a0)) ? mergeObj12185(a0, b) : b;
     } else base[k] = b;
   }
-  if (authoritative) for (const k of Object.keys(base)) { if (k.charAt(0) === "_") continue; if (!(k in inc)) delete base[k]; }
+  /* v12.18.5: حذفِ کلیدِ غایب فقط برایِ مجموعه‌هایِ رکوردی (آرایه‌ها) — کلیدهایِ تنظیمی/آبجکتی هرگز با «نبودن» پاک نمی‌شوند */
+  if (authoritative) for (const k of Object.keys(base)) { if (k.charAt(0) === "_") continue; if (!(k in inc) && Array.isArray(base[k])) delete base[k]; }
   return base;
 }
 function stateRev12183(dataObj, rawStr) {
@@ -939,7 +969,7 @@ const server = http.createServer((req, res) => {
   }
   const ext = path.extname(filePath).toLowerCase();
   const isAsset = [".png", ".jpg", ".jpeg", ".css", ".js", ".woff2", ".svg", ".webp"].indexOf(ext) !== -1;
-  /* v12.14: داراییِ نسخه‌دار (crm-app.js?v=12.18.4) یک سال کش immutable می‌شود
+  /* v12.14: داراییِ نسخه‌دار (crm-app.js?v=12.18.5) یک سال کش immutable می‌شود
      → رفرشِ ساده/سخت دیگر ۶ فایل JS را دوباره از هاست نمی‌کشد (رفع بسته‌شدنِ اتصال) */
   const versioned = /[?&]v=\d/.test(String(req.url || ""));
   const assetCache = (isAsset && versioned) ? 31536000

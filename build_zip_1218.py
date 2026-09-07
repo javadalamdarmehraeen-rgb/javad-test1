@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""ZIP تحویلی نسخه 12.18.4 — قانون GITHUB_REVIEW_HANDOFF:
+"""ZIP تحویلی نسخه 12.18.5 — قانون GITHUB_REVIEW_HANDOFF:
    - زیپ استاندارد PKZIP با create_system=0 (ویندوز اکسپلورر بدونِ هشدارِ مجوزهایِ لینوکس بازش کند)
    - دقیقاً درختِ گیت + chat.arena — بدونِ node_modules و بدونِ فایل‌هایِ حساس (§5.4)
    - نام: namayandeelmi-v{VER}.zip در ریشه‌ی ورک‌اسپیس
@@ -10,7 +10,7 @@ import subprocess
 import zipfile
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-VER = "12.18.4"
+VER = "12.18.5"
 OUT = os.path.join(ROOT, "namayandeelmi-v%s.zip" % VER)
 
 FORBID = (
@@ -39,8 +39,25 @@ def allowed(rel):
         return False
     return True
 
+def static_files():
+    """v12.18.5: build-static را دوباره می‌سازد و پوشهٔ آمادهٔ آپلودِ نت‌افراز را به زیپ اضافه می‌کند"""
+    try:
+        subprocess.run(["node", "build-static.js"], cwd=ROOT, capture_output=True, timeout=180)
+    except Exception as e:
+        print("build-static warning:", e)
+    base = os.path.join(ROOT, "static-build")
+    out = []
+    if os.path.isdir(base):
+        for root, dirs, fnames in os.walk(base):
+            dirs[:] = [d for d in dirs if d not in ("node_modules", ".git")]
+            for fn in fnames:
+                rel = os.path.relpath(os.path.join(root, fn), ROOT).replace("\\", "/")
+                if allowed(rel):
+                    out.append(rel)
+    return sorted(out)
+
 def main():
-    files = [f for f in rel_list() if allowed(f)]
+    files = [f for f in rel_list() if allowed(f)] + static_files()
     if os.path.exists(OUT):
         os.remove(OUT)
     with zipfile.ZipFile(OUT, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as z:

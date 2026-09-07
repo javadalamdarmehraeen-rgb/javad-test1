@@ -5,7 +5,7 @@
  * همان index.html برنامه را تحویل می‌دهد (بدون redirect و بدون حلقه).
  * اگر index.html نبود، کاربر را به login.html می‌فرستد.
  */
-$CRM_INDEX_BUILD = "12.18.4";
+$CRM_INDEX_BUILD = "12.18.5";
 $target = __DIR__ . "/index.html";
 
 if (is_file($target)) {
