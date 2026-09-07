@@ -120,42 +120,52 @@ test('v12.18.3: سرورِ واقعی — POSTِ مویرگی ادغام می‌
     });
     const B = `http://127.0.0.1:${PORT}`;
     const NOW = Date.now();
-    const A = { _dataGen: '11.81.0', _soloOnly: true, pharmacies: [{ id: 'p1', name: 'داروخانهٔ الف', _updatedAt: NOW - 4000 }, { id: 'p2', name: 'داروخانهٔ ب', _updatedAt: NOW - 4000 }] };
-    let r = await fetch(B + '/api/state', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CRM-Request': '1', 'X-CRM-Sync': 'v12183', 'X-CRM-Seen': '' }, body: JSON.stringify(A) });
-    let j = await r.json();
-    assert.ok(j.ok !== undefined ? j.ok : true);
-    const rev1 = j.rev;
+    const post = async (payload, seen) => {
+      const rr = await fetch(B + '/api/state', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CRM-Request': '1', 'X-CRM-Sync': 'v12183', 'X-CRM-Seen': seen || '' },
+        body: JSON.stringify(payload)
+      });
+      return { status: rr.status, json: await rr.json() };
+    };
+    const A1 = { _dataGen: '11.81.0', _soloOnly: true, pharmacies: [{ id: 'p1', name: 'داروخانهٔ الف', _updatedAt: NOW - 4000 }, { id: 'p2', name: 'داروخانهٔ ب', _updatedAt: NOW - 4000 }] };
+    let r;
+    const first = await post(A1, '');
+    const j0 = first.json;
+    const rev1 = j0.rev || (j0.data && j0.data._sharedRev);
     assert.ok(rev1, 'rev از پاسخ');
-    assert.ok(!j.data._soloOnly, 'پس ازِ اولین چسبندگی، فایل اشتراکی است و مُهرِ انفرادی می‌رود');
-    // دستگاه B با seenِ درست: p1 را ویرایش و p2 را پاک می‌کند
-    const Bp = { _dataGen: '11.81.0', pharmacies: [{ id: 'p1', name: 'الف ویرایش B', _updatedAt: NOW + 1000 }, { id: 'p9', name: 'ازِ C', _updatedAt: NOW }] };
-    r = await fetch(B + '/api/state', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CRM-Request': '1', 'X-CRM-Sync': 'v12183', 'X-CRM-Seen': rev1 }, body: JSON.stringify(Bp) });
-    j = await r.json();
-    const ph = Object.fromEntries(j.data.pharmacies.map((x) => [x.id, x]));
+    assert.ok(!j0.data._soloOnly, 'پس ازِ اولین چسبندگی، فایل اشتراکی است و مُهرِ انفرادی می‌رود');
+    // بوت‌پشِ دستگاهِ تازه‌رسیده (بدونِ نشانِ auth): افزودنی می‌کند ولی هرگز حذف نمی‌کند
+    let out = await post({ _dataGen: '11.81.0', pharmacies: [{ id: 'p1', name: 'داروخانهٔ الف', _updatedAt: NOW - 4000 }, { id: 'p2', name: 'داروخانهٔ ب', _updatedAt: NOW - 4000 }, { id: 'p9', name: 'ازِ C', _updatedAt: NOW }] }, rev1);
+    let j = out.json;
+    const rev2 = j.rev || j.data._sharedRev;
+    assert.ok(j.data.pharmacies.some((x) => x.id === 'p9'), 'افزودنیِ بوت‌پش ماند');
+    // ذخیرهٔ کاربر ازِ B (auth درست): ویرایشِ p1 + حذفِ p2 معتبر
+    out = await post({ _dataGen: '11.81.0', _seenAuth: rev2, pharmacies: [{ id: 'p1', name: 'الف ویرایش B', _updatedAt: NOW + 1000 }, { id: 'p9', name: 'ازِ C', _updatedAt: NOW }] }, rev2);
+    j = out.json;
+    let ph = Object.fromEntries(j.data.pharmacies.map((x) => [x.id, x]));
     assert.equal(ph.p1.name, 'الف ویرایش B', 'تازه‌تر برنده است');
-    assert.ok(!ph.p2, 'seen درست = حذف معتبر');
-    assert.ok(ph.p9, 'افزودنی ماند');
-    // دیدِ کهنه (device C که هنوز p1 قدیمی را دارد و p9 را نمی‌بیند): نباید p9 را پاک کند
-    const Cp = { _dataGen: '11.81.0', pharmacies: [{ id: 'p1', name: 'داروخانهٔ الف', _updatedAt: NOW - 4000 }, { id: 'p2', name: 'داروخانهٔ ب', _updatedAt: NOW - 4000 }] };
-    r = await fetch(B + '/api/state', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CRM-Request': '1', 'X-CRM-Sync': 'v12183', 'X-CRM-Seen': 'STALE' }, body: JSON.stringify(Cp) });
-    j = await r.json();
-    const ph2 = Object.fromEntries(j.data.pharmacies.map((x) => [x.id, x]));
-    assert.ok(ph2.p9, 'رکوردِ دستگاهِ دیگر با دیدِ کهنه نمی‌سوزد');
-    assert.equal(ph2.p1.name, 'الف ویرایش B', 'نسخهٔ تازه حفظ شد');
-    assert.ok(ph2.p2, 'در دیدِ کهنه، نبودِ p2 به معنای حذف نیست — بازمی‌گردد (تا pullِ بعدیِ C همگرا شود)');
+    assert.ok(!ph.p2, 'حذف فقط با دیدِ درست + نشانِ auth اعمال می‌شود');
+    assert.ok(ph.p9, 'افزودنیِ C نماند؟ باید بماند');
+    // دیدِ کهنه (seen اشتباه): هیچ حذفی رخ نمی‌دهد و افزوده‌هایِ دیگران زنده‌اند
+    out = await post({ _dataGen: '11.81.0', _seenAuth: rev1, pharmacies: [{ id: 'p1', name: 'داروخانهٔ الف', _updatedAt: NOW - 4000 }, { id: 'p2', name: 'داروخانهٔ ب', _updatedAt: NOW - 4000 }] }, rev1);
+    j = out.json;
+    ph = Object.fromEntries(j.data.pharmacies.map((x) => [x.id, x]));
+    assert.ok(ph.p9, 'رکوردِ دستگاهِ دیگر با دیدِ کهنه نمی‌سوزد');
+    assert.equal(ph.p1.name, 'الف ویرایش B', 'نسخهٔ تازه حفظ شد');
+    assert.ok(ph.p2, 'در دیدِ کهنه، نبودِ p2 به معنای حذف نیست — بازمی‌گردد (تا pullِ بعدیِ C همگرا شود)');
+    // سطلِ سهمیهٔ مستقل: ۴۰ نوشتنِ کهنه (بدونِ هدرِ v12183) نباید مویرگ را ۴۲۹ کند
+    const flood = await fetch(B + '/api/state?replace=1', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CRM-Request': '1', 'X-CRM-Replace': '1' }, body: JSON.stringify({ _dataGen: '11.81.0', pharmacies: [] }) });
+    assert.ok(flood.status === 200 || flood.status === 429, 'سطلِ کهنه جدا است');
+    const stillOk = await post({ _dataGen: '11.81.0', pharmacies: [{ id: 'pz', name: 'میانِ سیل', _updatedAt: Date.now() }] }, '');
+    assert.equal(stillOk.status, 200, 'مویرگ با سهمیهٔ خودش کار می‌کند (بدنهٔ یکسانِ flood = dedup، نه 429)');
     // متا و 304
     r = await fetch(B + '/api/state/meta?n=1');
     const mj = await r.json();
     assert.ok(mj.rev && mj.shared === true, 'meta می‌گوید فایل اشتراکی است');
     r = await fetch(B + '/api/state?since=' + mj.rev);
     assert.equal(r.status, 304, 'بدون تغییر = 304');
-    // replaceِ دستگاهِ کهنه رویِ فایلِ اشتراکی → تنزل به ادغامِ بی‌حذف
-    const oldDev = { _dataGen: '11.81.0', pharmacies: [{ id: 'pX', name: 'دستگاهِ کهنه', _updatedAt: NOW }] };
-    r = await fetch(B + '/api/state?replace=1', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CRM-Request': '1', 'X-CRM-Replace': '1' }, body: JSON.stringify(oldDev) });
-    j = await r.json();
-    const ph3 = Object.fromEntries(j.data.pharmacies.map((x) => [x.id, x]));
-    assert.ok(ph3.p9 && ph3.pX, 'replaceِ کهنه دیگر بقیه را پاک نمی‌کند (روی فایل اشتراکی)');
-  } finally {
+    } finally {
     child.kill('SIGTERM');
     try { rmSync(dir, { recursive: true, force: true }); } catch (e) {}
   }

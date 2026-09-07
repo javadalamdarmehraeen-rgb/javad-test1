@@ -24396,7 +24396,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   var VER = "12.18.3";
   var SEEN = { rev: "", savedAt: 0 };
   var last = { mode: "", pullAt: 0, pushAt: 0, errs: 0, added: 0, removed: 0, touched: 0, localBackoffUntil: 0 };
-  var pushTimer = 0;
+  var pushTimer = 0, pushAuthed = false;
   function st() { return window.state && typeof window.state === "object" ? window.state : null; }
   function online() { try { return !(window.navigator && navigator.onLine === false); } catch (e) { return true; } }
   function hasHttp() { try { return /^https?:$/.test(String(location.protocol)); } catch (e) { return false; } }
@@ -24492,41 +24492,67 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       }
       last.mode = "shared"; last.localBackoffUntil = 0;
       var meta = rr.json || {};
-      if (!force && meta.rev && meta.rev === SEEN.rev) { last.pullAt = Date.now(); paintPill(); if (cb) cb(); return; }
-      rawXhr("GET", "/api/state?since=" + encodeURIComponent(SEEN.rev || "") + "&n=" + Date.now(), null, null, function (e2, rr2) {
+      /* v12.18.3 قانونِ آینه: initِ خودِ برنامه ممکن است بعد ازِ adoptِ ما، window.state را با
+         کپیِ خودش جابه‌جا کند. اگر مُهرِ rev رویِ stateِ جاری نباشد، آینه کهنه است —
+         با وجودِ برابریِ rev باید یک بارِ کاملِ fresh خوانده شود (وگرنه رکوردهایِ بقیه
+         برایِ همیشه درِ همینِ دستگاه غیب می‌مانند). */
+      var mirrorStale = false;
+      try { mirrorStale = String(st()._12183rev || "") !== String(SEEN.rev || meta.rev || ""); } catch (eM0) {}
+      if (!force && !mirrorStale && meta.rev && meta.rev === SEEN.rev) { last.pullAt = Date.now(); paintPill(); if (cb) cb(); return; }
+      rawXhr("GET", "/api/state?since=" + encodeURIComponent((mirrorStale ? "" : SEEN.rev) || "") + "&n=" + Date.now(), null, null, function (e2, rr2) {
         if (e2 || !rr2 || rr2.status === 304 || !rr2.json || !rr2.json.data) { if (rr2 && rr2.status === 304 && meta.rev) { SEEN.rev = meta.rev; } last.pullAt = Date.now(); paintPill(); if (cb) cb(); return; }
         var data = rr2.json.data;
         var s = st();
         var m = mergePull(s, data, SEEN.savedAt);
         SEEN.rev = String(rr2.json.rev || meta.rev || SEEN.rev || "");
         SEEN.savedAt = Date.now();
+        try { st()._12183rev = SEEN.rev; } catch (eSt) {}
         last.pullAt = Date.now(); last.added = m.added; last.removed = m.removed; last.touched = m.touched;
         if (m.touched > 0) { persistLocal(); repaintLists(); if (last.adopted !== 0 && (m.added || m.removed)) { try { if (typeof window.v20Toast === "function") window.v20Toast("🔄 مویرگ: " + (m.added + m.removed) + " تغییر از دستگاه‌های دیگر اعمال شد"); } catch (eT) {} } last.adopted = 1; }
         paintPill(); if (cb) cb();
       });
     });
   }
-  function pushNow(silent) {
+  var lastSentHash = "";
+  function hash12183(str) { var h = 5381, i = (str || "").length; while (i) { h = ((h * 33) ^ str.charCodeAt(i--)) >>> 0; } return h.toString(36); }
+  function pushNow(silent, force, auth) {
     if (!hasHttp() || !st() || !online()) return;
     var s = st();
     var body;
     try { body = typeof window.serializeStateForLocalStorage === "function" ? window.serializeStateForLocalStorage(s) : JSON.stringify(s); } catch (eS2) { body = JSON.stringify(s); }
+    /* v12.18.3 قانونِ حذفِ امن: «نبودنِ یک رکورد در بدنه» فقط وقتی حذفِ واقعی است که بدنه،
+       stateِ *ننشسته* رویِ pullِ سرور باشد — یعنی ذخیرهٔ کاربرِ این دستگاه (auth=true).
+       pushهایِ بوت/تأییدِ adopt هیچ‌وقت حذف نمی‌کنند؛ وگرنه ریسِ کهنهٔ initِ اپ،
+       دیتایِ همینِ لحظهٔ بقیه را می‌سوزاند (سناریوی راستی‌آزماییِ دو-پنجره). */
+    if (auth) {
+      try { var __o = JSON.parse(body); __o._seenAuth = SEEN.rev || ""; body = JSON.stringify(__o); } catch (eA) {}
+    }
+    var hsh = hash12183(String(body).length + "|" + (SEEN.rev || "") + "|" + hash12183(String(body)));
+    if (!force && hsh === lastSentHash) return; /* بدنهٔ یکسان با آخرین پذیرش = هیچ نوشتنی لازم نیست (ضدِ سیل) */
     rawXhr("POST", "/api/state?__v12183=1&n=" + Date.now(), body, { "X-CRM-Sync": "v12183", "X-CRM-Seen": SEEN.rev || "", "X-CRM-Request": "1" }, function (err, rr) {
-      if (err || !rr || rr.status >= 400 || !rr.json) { last.errs++; return; }
+      if (err || !rr || rr.status >= 400) {
+        last.errs++;
+        if (!err && rr && rr.status === 429) { try { setTimeout(function () { pushNow(true, true, auth); }, 5200); } catch (e429) {} }
+        return;
+      }
+      if (!rr.json) { last.errs++; return; }
+      lastSentHash = hsh;
       var j = rr.json;
       if (j.rev) SEEN.rev = String(j.rev);
       SEEN.savedAt = Date.now();
+      try { st()._12183rev = SEEN.rev; } catch (eSt2) {}
       last.pushAt = Date.now(); last.mode = "shared";
       if (j.data && typeof j.data === "object") { try { mergePull(st(), j.data, Date.now() + 1); persistLocal(); } catch (eM) {} }
       paintPill(); if (!silent) { try { if (typeof window.v20Toast === "function") window.v20Toast("✅ ثبت و همگام با بقیهٔ دستگاه‌ها شد"); } catch (eT) {} }
     });
   }
-  function queuePush() { try { clearTimeout(pushTimer); } catch (e) {} pushTimer = setTimeout(function () { pushNow(true); }, 800); }
+  function queuePush(authed) { try { clearTimeout(pushTimer); } catch (e) {} if (authed) pushAuthed = true; var a = !!pushAuthed; pushTimer = setTimeout(function () { pushAuthed = false; pushNow(true, false, a); }, 800); }
   window.crmPushStateToServer = function () { queuePush(); };
+  window.v12183PushNow = function () { pushNow(false, true, true); };
   try {
     var os = window.saveState;
     if (typeof os === "function" && !os._v12183) {
-      var ws = function () { var r = os.apply(this, arguments); try { queuePush(); } catch (e) {} return r; };
+      var ws = function () { var r = os.apply(this, arguments); try { queuePush(true); } catch (e) {} return r; };
       ws._v12183 = true; window.saveState = ws;
     }
   } catch (eW) {}
@@ -24552,7 +24578,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     makePill();
     pullNow(true, function () {
       var s2 = st();
-      if (s2 && meaningful(s2)) pushNow(true);
+      if (s2 && meaningful(s2)) pushNow(true, false, false); /* pushِ بوتی = افزودنی، هرگز حذف‌کننده */
       last.adopted = 0;
     });
     setInterval(tick, 20000);

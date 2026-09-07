@@ -564,7 +564,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
    index.html به‌روز نگه داشته می‌شود.
 ۸. OFFICIAL_FILELIST.txt همگام با فایل‌های جدید به‌روز می‌شود (قانون ۸).
 
-فهرست فایل‌ها (236 فایل متنی + 31 فایل دودویی):
+فهرست فایل‌ها (237 فایل متنی + 31 فایل دودویی):
 
   [متنی ]      654 بایت  .env.example
   [متنی ]      891 بایت  .env.ndcohub.example
@@ -578,9 +578,9 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]    55134 بایت  AI_RULES.md
   [متنی ]    62300 بایت  AI_TASKS.md
   [متنی ]    61003 بایت  ARENA_HANDOFF_PROMPT.md
-  [متنی ]   186738 بایت  CHANGES_V11.md
+  [متنی ]   187440 بایت  CHANGES_V11.md
   [متنی ]     1806 بایت  CLEAN_EXTRA_FILES.bat
-  [متنی ]    86747 بایت  GITHUB_REVIEW_HANDOFF.md
+  [متنی ]    88067 بایت  GITHUB_REVIEW_HANDOFF.md
   [متنی ]      694 بایت  KEEP_ONLY_GITHUB.bat
   [متنی ]     6831 بایت  OFFICIAL_FILELIST.txt
   [متنی ]     1171 بایت  PAKSAZI_EZAFI.bat
@@ -604,26 +604,27 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]      947 بایت  package.json
   [متنی ]      108 بایت  postcss.config.mjs
   [متنی ]     1394 بایت  render.yaml
-  [متنی ]    58881 بایت  server.js
+  [متنی ]    59483 بایت  server.js
   [متنی ]     2355 بایت  sync-all.js
   [متنی ]     2426 بایت  sync_all.sh
   [متنی ]      738 بایت  tsconfig.json
-  [متنی ]   422036 بایت  update_chat_arena.py
+  [متنی ]   422694 بایت  update_chat_arena.py
   [متنی ]    14141 بایت  update_project_graph.py
   [متنی ]     3576 بایت  zip-server.py
   [متنی ]     2558 بایت  .github/workflows/deploy.yml
   [متنی ]      206 بایت  .github/workflows/keep_alive.yml
   [متنی ]      286 بایت  backups/crm-2026-09-07-17-00.json
+  [متنی ]      286 بایت  backups/crm-2026-09-07-17-15.json
   [متنی ]     7164 بایت  mobile/App.tsx
   [متنی ]     9805 بایت  mobile/README.md
   [متنی ]     9966 بایت  mobile/src/simAuth.ts
   [متنی ]     1525 بایت  public/.htaccess
   [متنی ]      168 بایت  public/api-config.json
   [متنی ]      197 بایت  public/api-config.php
-  [متنی ]    29996 بایت  public/api.php
+  [متنی ]    30276 بایت  public/api.php
   [متنی ]     8066 بایت  public/cloudflare-worker.js
   [متنی ]   197181 بایت  public/crm-app.js
-  [متنی ]  1471030 بایت  public/crm-bundle.js
+  [متنی ]  1473473 بایت  public/crm-bundle.js
   [متنی ]    57830 بایت  public/crm-data.js
   [متنی ]     7858 بایت  public/crm-entry-engine.js
   [متنی ]     7553 بایت  public/crm-hub.js
@@ -799,7 +800,7 @@ crm-jalali.js, iran-facilities.js, sw.js, manifest.json, offline.html, icons/, v
   [متنی ]    25150 بایت  tests/v12.17.0-runtime.test.mjs
   [متنی ]    28956 بایت  tests/v12.18.0-runtime.test.mjs
   [متنی ]    13954 بایت  tests/v12.18.2-runtime.test.mjs
-  [متنی ]    12182 بایت  tests/v12.18.3-runtime.test.mjs
+  [متنی ]    12772 بایت  tests/v12.18.3-runtime.test.mjs
   [متنی ]   100782 بایت  tests/version-11.24-regressions.test.mjs
   [متنی ]   304871 بایت  tests/fixtures/crm-features-v20.js
   [تصویر]    23282 بایت  public/apple-touch-icon.png
@@ -4053,7 +4054,7 @@ ZIP اولین نسخه 38 از کامیت تاریخی دقیق همان نسخ
 ──────────────────────────────── نوبت ۱۴۰ ────────────────────────────────
 🧑 کاربر: «من در چند سیستم مختلف برنامه را بالا می‌آورم. اما در هر سیستم که تغییرات را انجام می‌دهم فقط در همان سیستم اعمال می‌شود و بصورت یکپارچه تغییرات اعمال نمی‌شود. لطفاً این مشکل را حل کن. تغییرات جدید بصورت مویرگی باشد و همه برنامه بهم نریزد.»
 
-🤖 دستیار: نسخه 12.18.3 — ریشه‌یابیِ واقعی: موتورهایِ v70/v71/v73/v79 در باندل «حالتِ تک‌دستگاهی» ساخته بودند: مُهرِ `_soloOnly/_soloEpoch` رویِ state، هر ذخیره = POST `replace=1`ِ کلِ فایلِ سرور با کپیِ همان مرورگر، و fetch-wrapperهایی که GETهایِ pullِ موتورها را با «skip» می‌کشتند → هر دستگاهی کپیِ خودش را می‌دید و با هرِ ذخیره، دیتایِ دستگاه‌هایِ دیگر را ازِ سرور پاک می‌کرد. رفعِ مویرگی (بدونِ حذفِ هیچِ لایهٔ قدیمی، بدونِ موتورِ چیدمانِ تازه، بدونِ پرش): لایهٔ انتهاییِ `v12183Sync` — ۱) هر ۲۰ ثانیه + فوکوس/Visible یک `GET /api/state/meta` (XHR خام، خارج از governor و skipها، با `?n=` یکتا ضدِ کشِ SW)؛ اگر rev فرق کرد state کامل با `?since=rev` گرفته و `mergePull` رکورد‌به‌رکورد ادغام می‌کند: کلیدِ `id`، برنده = تازه‌ترِ `_updatedAt`، رکوردِ کثیفِ محلی (تازه‌تر ازِ آخرین pull) حفظ تا pushِ بعد؛ «هست ولی سرور ندارد» = اگر محلی قدیمی است حذفِ قطعیِ بقیه، اگر تازه است افزودنیِ خودی؛ فقط state درجا patch + رندرگرهایِ لیست صدا زده می‌شوند — هیچِ reload/چیدمانِ دوباره‌ای نیست. ۲) هر ذخیره (wrapperِ saveState + بازنشانیِ `window.crmPushStateToServer`، debounce ۸۰۰ms) با `X-CRM-Sync: v12183` + `X-CRM-Seen` بهِ سرور می‌رود؛ **سرور (Node: `mergeCollections12183` / PHP: `merge_shared_12183` آینه‌ای برایِ نت‌افراز) ادغامِ رکوردی می‌کند نه جایگزینی** — حذف فقط وقتی معتبر که seenِ دستگاه برابرِ `_sharedRevِ` فعلیِ فایل باشد (وگرنه unionِ بی‌حذف) و پاسخِ ادغام‌شده + rev برمی‌گردد که کلاینت به‌عنوانِ حقیقتِ همگرا می‌پذیرد. ۳) POSTهایِ `replace=1` دستگاه‌هایِ کهنه وقتی فایلِ اشتراکی شده باشد بهِ ادغامِ بی‌حذف تنزل می‌یابند (نابودیِ بین‌دستگاهی عملاً غیرممکن شد). ۴) قفلِ «انفرادی» در بوتِ لایه باز می‌شود (`_soloOnly`ها و `CRM_SOLO_CLAIM` پاک). ۵) راستیِ صادقانه: پیلِ پایینِ چپ «🔗 همگام HH:MM» یا «🟡 حالتِ محلی — همهٔ دستگاه‌ها را از یکِ آدرسِ اصلی باز کنید» (کپیِ لوکال/فایل‌باز = دیتایِ جزیره‌ای) + ردیفِ «همگام‌سازیِ چنددستگاهی (مویرگ)» در عیب‌یابی با دکمهٔ «🔄 گرفتنِ تغییراتِ بقیه». تست: `tests/v12.18.3-runtime.test.mjs` ۵ تست شاملِ **سرورِ واقعیِ spawn‌شده** با سناریویِ A/B (حذفِ معتبر، دیدِ کهنهٔ بی‌حذف، meta/304، تنزلِ replace) → **۲۳۱/۲۳۱ سبز**؛ بمپِ ۱۲.۱۸.۲←۱۲.۱۸.۳ در ۲۳ پرونده؛ راستی‌آزماییِ زنده با دوِ پنجرهٔ jsdom رویِ :3100 (افزودنِ داروخانه درِ A → بدونِ رفرش درِ B ظاهر شد). یادآوریِ انتشار: Merge PR #8 برایِ رندر/ndcohub؛ برایِ mehraeinpharma.ir آپلودِ کاملِ public/ (چون api.php هم عوض شده) با ZIPِ namayandeelmi-v12.18.3.zip. پس ازِ انتشار هیچِ تنظیمی لازم نیست — همهٔ دستگاه‌ها همانِ آدرسِ اصلی را باز کنند و مویرگ خودکار کار می‌کند.
+🤖 دستیار: نسخه 12.18.3 — ریشه‌یابیِ واقعی: موتورهایِ v70/v71/v73/v79 در باندل «حالتِ تک‌دستگاهی» ساخته بودند: مُهرِ `_soloOnly/_soloEpoch` رویِ state، هر ذخیره = POST `replace=1`ِ کلِ فایلِ سرور با کپیِ همان مرورگر، و fetch-wrapperهایی که GETهایِ pullِ موتورها را با «skip» می‌کشتند → هر دستگاهی کپیِ خودش را می‌دید و با هرِ ذخیره، دیتایِ دستگاه‌هایِ دیگر را ازِ سرور پاک می‌کرد. رفعِ مویرگی (بدونِ حذفِ هیچِ لایهٔ قدیمی، بدونِ موتورِ چیدمانِ تازه، بدونِ پرش): لایهٔ انتهاییِ `v12183Sync` — ۱) هر ۲۰ ثانیه + فوکوس/Visible یک `GET /api/state/meta` (XHR خام، خارج از governor و skipها، با `?n=` یکتا ضدِ کشِ SW)؛ اگر rev فرق کرد state کامل با `?since=rev` گرفته و `mergePull` رکورد‌به‌رکورد ادغام می‌کند: کلیدِ `id`، برنده = تازه‌ترِ `_updatedAt`، رکوردِ کثیفِ محلی (تازه‌تر ازِ آخرین pull) حفظ تا pushِ بعد؛ «هست ولی سرور ندارد» = اگر محلی قدیمی است حذفِ قطعیِ بقیه، اگر تازه است افزودنیِ خودی؛ فقط state درجا patch + رندرگرهایِ لیست صدا زده می‌شوند — هیچِ reload/چیدمانِ دوباره‌ای نیست. ۲) هر ذخیره (wrapperِ saveState + بازنشانیِ `window.crmPushStateToServer`، debounce ۸۰۰ms) با `X-CRM-Sync: v12183` + `X-CRM-Seen` بهِ سرور می‌رود؛ **سرور (Node: `mergeCollections12183` / PHP: `merge_shared_12183` آینه‌ای برایِ نت‌افراز) ادغامِ رکوردی می‌کند نه جایگزینی** — حذف فقط وقتی معتبر که seenِ دستگاه برابرِ `_sharedRevِ` فعلیِ فایل باشد (وگرنه unionِ بی‌حذف) و پاسخِ ادغام‌شده + rev برمی‌گردد که کلاینت به‌عنوانِ حقیقتِ همگرا می‌پذیرد. ۳) POSTهایِ `replace=1` دستگاه‌هایِ کهنه وقتی فایلِ اشتراکی شده باشد بهِ ادغامِ بی‌حذف تنزل می‌یابند (نابودیِ بین‌دستگاهی عملاً غیرممکن شد). ۴) قفلِ «انفرادی» در بوتِ لایه باز می‌شود (`_soloOnly`ها و `CRM_SOLO_CLAIM` پاک). ۵) راستیِ صادقانه: پیلِ پایینِ چپ «🔗 همگام HH:MM» یا «🟡 حالتِ محلی — همهٔ دستگاه‌ها را از یکِ آدرسِ اصلی باز کنید» (کپیِ لوکال/فایل‌باز = دیتایِ جزیره‌ای) + ردیفِ «همگام‌سازیِ چنددستگاهی (مویرگ)» در عیب‌یابی با دکمهٔ «🔄 گرفتنِ تغییراتِ بقیه». تست: `tests/v12.18.3-runtime.test.mjs` ۵ تست شاملِ **سرورِ واقعیِ spawn‌شده** با سناریویِ A/B (حذفِ معتبر، دیدِ کهنهٔ بی‌حذف، meta/304، تنزلِ replace) → **۲۳۱/۲۳۱ سبز**؛ بمپِ ۱۲.۱۸.۲←۱۲.۱۸.۳ در ۲۳ پرونده؛ راستی‌آزماییِ زنده با دوِ پنجرهٔ jsdom رویِ :3100 (افزودنِ داروخانه درِ A → بدونِ رفرش درِ B ظاهر شد). یادآوریِ انتشار: Merge PR #8 برایِ رندر/ndcohub؛ برایِ mehraeinpharma.ir آپلودِ کاملِ public/ (چون api.php هم عوض شده) با ZIPِ namayandeelmi-v12.18.3.zip. پس ازِ انتشار هیچِ تنظیمی لازم نیست — همهٔ دستگاه‌ها همانِ آدرسِ اصلی را باز کنند و مویرگ خودکار کار می‌کند. دو قانونِ ایمنیِ حینِ راستی‌آزماییِ دو-پنجره هم اضافه شد: «حذفِ امن» (نبودنِ رکورد در بدنه فقط با نشانِ `_seenAuth`ِ ذخیرهٔ کاربر حذف معتبر است — بوت/adopt هرگز حذف نمی‌کند) و «مُهرِ آینه» (`state._12183rev`؛ overwrite شدنِ state توسط initِ برنامه، خودکار درِ pullِ بعدیِ کامل جبران می‌شود) + سطلِ سهمیهٔ مستقلِ `sync12183` با dedupِ بدنه و retryِ ۴۲۹ تا سیلِ چرخه‌هایِ کهنه، نوشتنِ همگام را خفه نکند.
 
 
 
@@ -14047,7 +14048,7 @@ static-build فقط فایل. داده خالی از رندر پر می‌شود
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: CHANGES_V11.md (186738 بایت)
+فایل: CHANGES_V11.md (187440 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 
@@ -14055,6 +14056,7 @@ static-build فقط فایل. داده خالی از رندر پر می‌شود
 - **همگام‌سازیِ مویرگیِ چنددستگاهی** (رفعِ «تغییراتِ من فقط در همانِ سیستم اعمال می‌شود»): ریشه، «حالتِ تک‌دستگاهی» لایه‌هایِ v70–v79 بود — مُهرِ `_soloOnly/_soloEpoch` و `replace=1` رویِ کلِ فایلِ سرور و کشتنِ pullهایِ بقیه با fetch-wrapper. لایهٔ انتهاییِ `v12183Sync`: pullِ متایِ ارزان هر ۲۰ ثانیه/فوکوس + ادغامِ رکوردیِ state (کلیدِ `id`، برنده = تازه‌ترِ `_updatedAt`؛ رکوردِ کثیفِ محلی حفظ؛ «نبودن در سرور» با دیدِ معتبر = حذفِ واقعی) و پذیرشِ پاسخِ merge به‌عنوانِ حقیقت. بدونِ رفرش/پرش: فقط همانِ تب باز‌رندرِ لیست می‌شود.
 - سرورها: `mergeCollections12183` در server.js و `merge_shared_12183` در api.php (آینهٔ هم‌سلولک برایِ نت‌افراز)؛ POSTِ v12183 = ادغام، replaceِ دستگاهِ کهنه رویِ فایلِ اشتراکی = تنزل به ادغامِ بی‌حذف؛ مسیرهایِ تازه `GET /api/state/meta` و `GET /api/state?since=rev → 304`؛ هدرهایِ `X-CRM-Seen` (CORS+پاسخ `rev`)؛ گیتِ نسلی `v12183` را می‌پذیرد.
 - تجربهٔ کاربری: پیلِ پایینِ چپ «🔗 همگام HH:MM / 🟡 حالتِ محلی — همهٔ دستگاه‌ها یکِ آدرس را باز کنند»؛ ردیفِ «همگام‌سازیِ چنددستگاهی (مویرگ)» در عیب‌یابی با دکمهٔ «🔄 گرفتنِ تغییراتِ بقیه»؛ رهاشدنِ خودکارِ قفلِ «انفرادی» در بوتِ لایه.
+- دو قانونِ ایمنیِ افزوده‌شده در راستی‌آزماییِ دو-پنجره: «حذفِ امن» (نبودنِ رکورد در بدنه فقط با نشانِ `_seenAuth` = ذخیرهٔ کاربرِ همان دستگاه معتبر است؛ pushهایِ بوت هرگز حذف نمی‌کنند) و «مُهرِ آینه» (`state._12183rev`؛ اگر initِ برنامه state را جابه‌جا کند، pullِ بعدی حتی با revِ برابر syncِ کامل می‌کشد) + سطلِ سهمیهٔ مستقلِ `sync12183` و dedupِ بدنه و retryِ ۴۲۹ (سیلِ چرخه‌هایِ کهنهٔ ۱۵ث، نوشتنِ همگام را خفه نمی‌کند).
 - `tests/v12.18.3-runtime.test.mjs`: ۵ تست از جمله **سرورِ واقعیِ spawn‌شده** با سناریویِ A/B (seen معتبر = حذف اعمال؛ seen کهنه = بقیه نمی‌سوزد؛ meta/304؛ replaceِ کهنه تنزل) → **۲۳۱/۲۳۱ سبز**. بمپِ ۱۲.۱۸.۲←۱۲.۱۸.۳ در ۲۳ پرونده + سندها.
 
 ## 12.18.2 — ۱۴۰۵/۰۶/۱۵ (2026-09-06, نوبت ۱۳۹)
@@ -15427,7 +15429,7 @@ pause
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: GITHUB_REVIEW_HANDOFF.md (86747 بایت)
+فایل: GITHUB_REVIEW_HANDOFF.md (88067 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~markdown
 # GITHUB_REVIEW_HANDOFF — تحویل مویرگی برای بررسی GitHub و هوش مصنوعی بعدی
@@ -15450,6 +15452,7 @@ pause
 - **عیب‌یابی:** ردیفِ «همگام‌سازیِ چنددستگاهی (مویرگ)» (mode/آخرینِ کشیدن/فرستادن/خطاها) + دکمهٔ «🔄 گرفتنِ تغییراتِ بقیه» (`crm12183NowBtn`، delegation درِ خودِ لایه؛ اگر تغییری آمد یکِ reloadِ کوتاه). پیلِ پایینِ چپ: 🔗 همگام · HH:MM / 🟡 حالتِ محلی (با توضیحِ «همهٔ دستگاه‌ها یکِ آدرسِ اصلی را باز کنند»).
 **تست:** `tests/v12.18.3-runtime.test.mjs` ۵ تست — mergePullِ خالص (افزودنی/کثیف-حفظ/حذفِ معتبر)، سیم‌کشیِ لایه، **سرورِ واقعی با spawn** (اولینِ چسبندگی، seen=auth → حذفِ p2 معتبر و p9ِ C زنده می‌ماند؛ seenِ کهنه → بی‌حذف؛ meta/304؛ replaceِ کهنه تنزل)، آینهٔ PHP، گیت‌های Node. **۲۳۱/۲۳۱ سبز**. بمپِ ۱۲.۱۸.۲←۱۲.۱۸.۳ در ۲۳ پرونده.
 **راستی‌آزماییِ زنده:** دوِ پنجرهٔ jsdom رویِ :3100 (این‌نوبت بعداً در چت) — افزودنِ داروخانه درِ پنجرهٔ A، بدونِ رفرش درِ B ظاهر می‌شود.
+- **دو قانونِ ایمنیِ افزوده‌شده حینِ راستی‌آزماییِ دو-پنجره:** (الف) «حذفِ امن» — نبودنِ یک رکورد در بدنهٔ POST فقط وقتی حذفِ واقعی است که نشانِ `_seenAuth` (امضایِ ذخیرهٔ کاربرِ همان دستگاه) با `_sharedRev`ِ سرور بخورد؛ pushهایِ بوت/adopt هیچ‌گاه حذف نمی‌کنند — وگرنه overwrite شدنِ window.state توسط init خودِ برنامه، دیتایِ لحظه‌ایِ بقیه را می‌سوزاند. (ب) «مُهرِ آینه» — هر adopt/push، `state._12183rev` را می‌زند؛ اگر initِ برنامه state را با کپیِ قدیمی جابه‌جا کند، مُهر می‌پرد و pullِ بعدی حتی با revِ برابر یک syncِ کامل می‌کشد (نه 304) — ریشهٔ «B رکورد A را گرفت ولی بعدش stateِ برنامه بازنویسی‌اش کرد». ۴۲۹ها هم حل شدند: پروتکلِ مویرگی سطلِ سهمیهٔ مستقل (`sync12183`) + dedupِ بدنه + retryِ ۵ ثانیه‌ای دارد؛ چرخه‌هایِ کهنهِ ۱۵ ثانیه‌ایِ اداریِ یکِ اداره دیگر نوشتنِ همگام را خفه نمی‌کنند.
 **منتظرِ کاربر:** Merge PR #8 → Render/ndcohub خودکارِ 12.18.3؛ netafraz: ZIPِ همینِ نسخه (api.php هم عوض شده — پوشیدنِ کاملِ public/ لازم است). پس ازِ انتشار، رویِ همهٔ دستگاه‌ها فقط لازم است همانِ آدرسِ اصلی باز شود؛ ورود = موتورِ نوبتِ ۱۳۹ کهنه‌ها را می‌شوید و مویرگ روشن می‌شود.
 
 ## 0.45) وضعیت نوبت ۱۳۹ — نسخه 12.18.2: موتورِ ورود + عیب‌یابیِ صادق + فیلدها پیش ازِ کادرها ✅
@@ -18703,7 +18706,7 @@ services:
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: server.js (58881 بایت)
+فایل: server.js (59483 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 // سرور سبک Node.js برای Render — ورود جدا، gzip، health، ژئوکد، محدودیت نرخ
@@ -19516,8 +19519,12 @@ const server = http.createServer((req, res) => {
   }
 
   if (pathname === "/api/state" && req.method === "POST") {
-    if (rateLimited(ip + ":state")) {
-      return send(req, res, 429, JSON.stringify({ status: "error", message: "too many requests" }), "application/json; charset=utf-8");
+    /* v12.18.3: پروتکلِ مویرگیِ چنددستگاهی سطلِ سهمیهٔ مستقلِ خودش را دارد —
+       سیلِ چرخه‌هایِ قدیمیِ ۱۵ ثانیه‌ای (که یکِ اداره با چندِ دستگاه IPِ مشترک دارد)
+       دیگر نوشتن‌هایِ همگام را با 429 خفه نمی‌کند. */
+    const bucket = String(req.headers["x-crm-sync"] || "") === "v12183" ? ip + ":sync12183" : ip + ":state";
+    if (rateLimited(bucket)) {
+      return send(req, res, 429, JSON.stringify({ status: "error", message: "too many requests" }), "application/json; charset=utf-8", { "Retry-After": "5" });
     }
     let body = "";
     req.on("data", (c) => { body += c; if (body.length > 8 * 1024 * 1024) req.destroy(); });
@@ -19536,7 +19543,8 @@ const server = http.createServer((req, res) => {
           try {
             stripLegacySample(data);
             const seenH = String(req.headers["x-crm-seen"] || "");
-            const auth = !!(sharedRevCur && seenH && seenH === sharedRevCur);
+            const auth = !!(sharedRevCur && seenH && seenH === sharedRevCur && String(data._seenAuth || "") === sharedRevCur);
+            try { delete data._seenAuth; } catch (eSA) {}
             const merged = mergeCollections12183(existing, data, auth && !wantReplace);
             merged._dataGen = "11.81.0";
             merged._schemaVersion = "11.81.0";
@@ -19866,7 +19874,7 @@ git status -sb
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: update_chat_arena.py (422036 بایت)
+فایل: update_chat_arena.py (422694 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~python
 #!/usr/bin/env python3
@@ -23725,7 +23733,7 @@ ZIP اولین نسخه 38 از کامیت تاریخی دقیق همان نسخ
 ──────────────────────────────── نوبت ۱۴۰ ────────────────────────────────
 🧑 کاربر: «من در چند سیستم مختلف برنامه را بالا می‌آورم. اما در هر سیستم که تغییرات را انجام می‌دهم فقط در همان سیستم اعمال می‌شود و بصورت یکپارچه تغییرات اعمال نمی‌شود. لطفاً این مشکل را حل کن. تغییرات جدید بصورت مویرگی باشد و همه برنامه بهم نریزد.»
 
-🤖 دستیار: نسخه 12.18.3 — ریشه‌یابیِ واقعی: موتورهایِ v70/v71/v73/v79 در باندل «حالتِ تک‌دستگاهی» ساخته بودند: مُهرِ `_soloOnly/_soloEpoch` رویِ state، هر ذخیره = POST `replace=1`ِ کلِ فایلِ سرور با کپیِ همان مرورگر، و fetch-wrapperهایی که GETهایِ pullِ موتورها را با «skip» می‌کشتند → هر دستگاهی کپیِ خودش را می‌دید و با هرِ ذخیره، دیتایِ دستگاه‌هایِ دیگر را ازِ سرور پاک می‌کرد. رفعِ مویرگی (بدونِ حذفِ هیچِ لایهٔ قدیمی، بدونِ موتورِ چیدمانِ تازه، بدونِ پرش): لایهٔ انتهاییِ `v12183Sync` — ۱) هر ۲۰ ثانیه + فوکوس/Visible یک `GET /api/state/meta` (XHR خام، خارج از governor و skipها، با `?n=` یکتا ضدِ کشِ SW)؛ اگر rev فرق کرد state کامل با `?since=rev` گرفته و `mergePull` رکورد‌به‌رکورد ادغام می‌کند: کلیدِ `id`، برنده = تازه‌ترِ `_updatedAt`، رکوردِ کثیفِ محلی (تازه‌تر ازِ آخرین pull) حفظ تا pushِ بعد؛ «هست ولی سرور ندارد» = اگر محلی قدیمی است حذفِ قطعیِ بقیه، اگر تازه است افزودنیِ خودی؛ فقط state درجا patch + رندرگرهایِ لیست صدا زده می‌شوند — هیچِ reload/چیدمانِ دوباره‌ای نیست. ۲) هر ذخیره (wrapperِ saveState + بازنشانیِ `window.crmPushStateToServer`، debounce ۸۰۰ms) با `X-CRM-Sync: v12183` + `X-CRM-Seen` بهِ سرور می‌رود؛ **سرور (Node: `mergeCollections12183` / PHP: `merge_shared_12183` آینه‌ای برایِ نت‌افراز) ادغامِ رکوردی می‌کند نه جایگزینی** — حذف فقط وقتی معتبر که seenِ دستگاه برابرِ `_sharedRevِ` فعلیِ فایل باشد (وگرنه unionِ بی‌حذف) و پاسخِ ادغام‌شده + rev برمی‌گردد که کلاینت به‌عنوانِ حقیقتِ همگرا می‌پذیرد. ۳) POSTهایِ `replace=1` دستگاه‌هایِ کهنه وقتی فایلِ اشتراکی شده باشد بهِ ادغامِ بی‌حذف تنزل می‌یابند (نابودیِ بین‌دستگاهی عملاً غیرممکن شد). ۴) قفلِ «انفرادی» در بوتِ لایه باز می‌شود (`_soloOnly`ها و `CRM_SOLO_CLAIM` پاک). ۵) راستیِ صادقانه: پیلِ پایینِ چپ «🔗 همگام HH:MM» یا «🟡 حالتِ محلی — همهٔ دستگاه‌ها را از یکِ آدرسِ اصلی باز کنید» (کپیِ لوکال/فایل‌باز = دیتایِ جزیره‌ای) + ردیفِ «همگام‌سازیِ چنددستگاهی (مویرگ)» در عیب‌یابی با دکمهٔ «🔄 گرفتنِ تغییراتِ بقیه». تست: `tests/v12.18.3-runtime.test.mjs` ۵ تست شاملِ **سرورِ واقعیِ spawn‌شده** با سناریویِ A/B (حذفِ معتبر، دیدِ کهنهٔ بی‌حذف، meta/304، تنزلِ replace) → **۲۳۱/۲۳۱ سبز**؛ بمپِ ۱۲.۱۸.۲←۱۲.۱۸.۳ در ۲۳ پرونده؛ راستی‌آزماییِ زنده با دوِ پنجرهٔ jsdom رویِ :3100 (افزودنِ داروخانه درِ A → بدونِ رفرش درِ B ظاهر شد). یادآوریِ انتشار: Merge PR #8 برایِ رندر/ndcohub؛ برایِ mehraeinpharma.ir آپلودِ کاملِ public/ (چون api.php هم عوض شده) با ZIPِ namayandeelmi-v12.18.3.zip. پس ازِ انتشار هیچِ تنظیمی لازم نیست — همهٔ دستگاه‌ها همانِ آدرسِ اصلی را باز کنند و مویرگ خودکار کار می‌کند.
+🤖 دستیار: نسخه 12.18.3 — ریشه‌یابیِ واقعی: موتورهایِ v70/v71/v73/v79 در باندل «حالتِ تک‌دستگاهی» ساخته بودند: مُهرِ `_soloOnly/_soloEpoch` رویِ state، هر ذخیره = POST `replace=1`ِ کلِ فایلِ سرور با کپیِ همان مرورگر، و fetch-wrapperهایی که GETهایِ pullِ موتورها را با «skip» می‌کشتند → هر دستگاهی کپیِ خودش را می‌دید و با هرِ ذخیره، دیتایِ دستگاه‌هایِ دیگر را ازِ سرور پاک می‌کرد. رفعِ مویرگی (بدونِ حذفِ هیچِ لایهٔ قدیمی، بدونِ موتورِ چیدمانِ تازه، بدونِ پرش): لایهٔ انتهاییِ `v12183Sync` — ۱) هر ۲۰ ثانیه + فوکوس/Visible یک `GET /api/state/meta` (XHR خام، خارج از governor و skipها، با `?n=` یکتا ضدِ کشِ SW)؛ اگر rev فرق کرد state کامل با `?since=rev` گرفته و `mergePull` رکورد‌به‌رکورد ادغام می‌کند: کلیدِ `id`، برنده = تازه‌ترِ `_updatedAt`، رکوردِ کثیفِ محلی (تازه‌تر ازِ آخرین pull) حفظ تا pushِ بعد؛ «هست ولی سرور ندارد» = اگر محلی قدیمی است حذفِ قطعیِ بقیه، اگر تازه است افزودنیِ خودی؛ فقط state درجا patch + رندرگرهایِ لیست صدا زده می‌شوند — هیچِ reload/چیدمانِ دوباره‌ای نیست. ۲) هر ذخیره (wrapperِ saveState + بازنشانیِ `window.crmPushStateToServer`، debounce ۸۰۰ms) با `X-CRM-Sync: v12183` + `X-CRM-Seen` بهِ سرور می‌رود؛ **سرور (Node: `mergeCollections12183` / PHP: `merge_shared_12183` آینه‌ای برایِ نت‌افراز) ادغامِ رکوردی می‌کند نه جایگزینی** — حذف فقط وقتی معتبر که seenِ دستگاه برابرِ `_sharedRevِ` فعلیِ فایل باشد (وگرنه unionِ بی‌حذف) و پاسخِ ادغام‌شده + rev برمی‌گردد که کلاینت به‌عنوانِ حقیقتِ همگرا می‌پذیرد. ۳) POSTهایِ `replace=1` دستگاه‌هایِ کهنه وقتی فایلِ اشتراکی شده باشد بهِ ادغامِ بی‌حذف تنزل می‌یابند (نابودیِ بین‌دستگاهی عملاً غیرممکن شد). ۴) قفلِ «انفرادی» در بوتِ لایه باز می‌شود (`_soloOnly`ها و `CRM_SOLO_CLAIM` پاک). ۵) راستیِ صادقانه: پیلِ پایینِ چپ «🔗 همگام HH:MM» یا «🟡 حالتِ محلی — همهٔ دستگاه‌ها را از یکِ آدرسِ اصلی باز کنید» (کپیِ لوکال/فایل‌باز = دیتایِ جزیره‌ای) + ردیفِ «همگام‌سازیِ چنددستگاهی (مویرگ)» در عیب‌یابی با دکمهٔ «🔄 گرفتنِ تغییراتِ بقیه». تست: `tests/v12.18.3-runtime.test.mjs` ۵ تست شاملِ **سرورِ واقعیِ spawn‌شده** با سناریویِ A/B (حذفِ معتبر، دیدِ کهنهٔ بی‌حذف، meta/304، تنزلِ replace) → **۲۳۱/۲۳۱ سبز**؛ بمپِ ۱۲.۱۸.۲←۱۲.۱۸.۳ در ۲۳ پرونده؛ راستی‌آزماییِ زنده با دوِ پنجرهٔ jsdom رویِ :3100 (افزودنِ داروخانه درِ A → بدونِ رفرش درِ B ظاهر شد). یادآوریِ انتشار: Merge PR #8 برایِ رندر/ndcohub؛ برایِ mehraeinpharma.ir آپلودِ کاملِ public/ (چون api.php هم عوض شده) با ZIPِ namayandeelmi-v12.18.3.zip. پس ازِ انتشار هیچِ تنظیمی لازم نیست — همهٔ دستگاه‌ها همانِ آدرسِ اصلی را باز کنند و مویرگ خودکار کار می‌کند. دو قانونِ ایمنیِ حینِ راستی‌آزماییِ دو-پنجره هم اضافه شد: «حذفِ امن» (نبودنِ رکورد در بدنه فقط با نشانِ `_seenAuth`ِ ذخیرهٔ کاربر حذف معتبر است — بوت/adopt هرگز حذف نمی‌کند) و «مُهرِ آینه» (`state._12183rev`؛ overwrite شدنِ state توسط initِ برنامه، خودکار درِ pullِ بعدیِ کامل جبران می‌شود) + سطلِ سهمیهٔ مستقلِ `sync12183` با dedupِ بدنه و retryِ ۴۲۹ تا سیلِ چرخه‌هایِ کهنه، نوشتنِ همگام را خفه نکند.
 
 """
 
@@ -24206,7 +24214,14 @@ jobs:
 فایل: backups/crm-2026-09-07-17-00.json (286 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~json
-{"_dataGen":"11.81.0","_schemaVersion":"11.81.0","_lastSavedAt":42,"users":[{"id":"sentinel-user","fullName":"اطلاعات قدیمی"}],"formFieldMeta":{"order":{"sentinel":{"order":99}}},"_soloOnly":true,"_soloEpoch":1788800967246,"_soloAt":1788800967247,"_unifiedAt":1788800967247}
+{"_dataGen":"11.81.0","_schemaVersion":"11.81.0","_lastSavedAt":42,"users":[{"id":"sentinel-user","fullName":"اطلاعات قدیمی"}],"formFieldMeta":{"order":{"sentinel":{"order":99}}},"_soloOnly":true,"_soloEpoch":1788801138331,"_soloAt":1788801138331,"_unifiedAt":1788801138331}
+~~~~~~~~
+
+──────────────────────────────────────────────────────────────────────────────────
+فایل: backups/crm-2026-09-07-17-15.json (286 بایت)
+──────────────────────────────────────────────────────────────────────────────────
+~~~~~~~~json
+{"_dataGen":"11.81.0","_schemaVersion":"11.81.0","_lastSavedAt":42,"users":[{"id":"sentinel-user","fullName":"اطلاعات قدیمی"}],"formFieldMeta":{"order":{"sentinel":{"order":99}}},"_soloOnly":true,"_soloEpoch":1788802141462,"_soloAt":1788802141462,"_unifiedAt":1788802141462}
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
@@ -25019,7 +25034,7 @@ return array(
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/api.php (29996 بایت)
+فایل: public/api.php (30276 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~text
 <?php
@@ -25589,7 +25604,9 @@ if (strpos($p, "state") === 0) {
     $wantRepl = (isset($_GET["replace"]) && strval($_GET["replace"]) === "1") || (isset($_SERVER["HTTP_X_CRM_REPLACE"]) && $_SERVER["HTTP_X_CRM_REPLACE"] === "1");
     $sharedCur = (is_array($existing) && !empty($existing["_sharedRev"])) ? strval($existing["_sharedRev"]) : "";
     if ($hdrSync === "v12183" || ($wantRepl && $sharedCur !== "")) {
-      $auth = ($sharedCur !== "" && $hdrSeen !== "" && $hdrSeen === $sharedCur) && !$wantRepl;
+      /* v12.18.3 قانونِ حذفِ امن: حذف فقط با نشانِ _seenAuthِ ذخیرهٔ کاربر (boot push هرگز حذف نمی‌کند) */
+      $auth = ($sharedCur !== "" && $hdrSeen !== "" && $hdrSeen === $sharedCur) && !$wantRepl && isset($incoming["_seenAuth"]) && strval($incoming["_seenAuth"]) === $sharedCur;
+      unset($incoming["_seenAuth"]);
       strip_legacy_sample($incoming);
       $merged = merge_shared_12183(is_array($existing) ? $existing : array(), $incoming, $auth);
       $merged["_dataGen"] = "11.81.0"; $merged["_schemaVersion"] = "11.81.0";
@@ -30297,7 +30314,7 @@ function deleteProductCatalogItem(id) {
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: public/crm-bundle.js (1471030 بایت)
+فایل: public/crm-bundle.js (1473473 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 /* crm-bundle.js — فایل واحد برنامه (ادغام عینی لایه‌ها با همان ترتیب اجرای قبلی؛ نسخه از package.json) */
@@ -54698,7 +54715,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   var VER = "12.18.3";
   var SEEN = { rev: "", savedAt: 0 };
   var last = { mode: "", pullAt: 0, pushAt: 0, errs: 0, added: 0, removed: 0, touched: 0, localBackoffUntil: 0 };
-  var pushTimer = 0;
+  var pushTimer = 0, pushAuthed = false;
   function st() { return window.state && typeof window.state === "object" ? window.state : null; }
   function online() { try { return !(window.navigator && navigator.onLine === false); } catch (e) { return true; } }
   function hasHttp() { try { return /^https?:$/.test(String(location.protocol)); } catch (e) { return false; } }
@@ -54794,41 +54811,67 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       }
       last.mode = "shared"; last.localBackoffUntil = 0;
       var meta = rr.json || {};
-      if (!force && meta.rev && meta.rev === SEEN.rev) { last.pullAt = Date.now(); paintPill(); if (cb) cb(); return; }
-      rawXhr("GET", "/api/state?since=" + encodeURIComponent(SEEN.rev || "") + "&n=" + Date.now(), null, null, function (e2, rr2) {
+      /* v12.18.3 قانونِ آینه: initِ خودِ برنامه ممکن است بعد ازِ adoptِ ما، window.state را با
+         کپیِ خودش جابه‌جا کند. اگر مُهرِ rev رویِ stateِ جاری نباشد، آینه کهنه است —
+         با وجودِ برابریِ rev باید یک بارِ کاملِ fresh خوانده شود (وگرنه رکوردهایِ بقیه
+         برایِ همیشه درِ همینِ دستگاه غیب می‌مانند). */
+      var mirrorStale = false;
+      try { mirrorStale = String(st()._12183rev || "") !== String(SEEN.rev || meta.rev || ""); } catch (eM0) {}
+      if (!force && !mirrorStale && meta.rev && meta.rev === SEEN.rev) { last.pullAt = Date.now(); paintPill(); if (cb) cb(); return; }
+      rawXhr("GET", "/api/state?since=" + encodeURIComponent((mirrorStale ? "" : SEEN.rev) || "") + "&n=" + Date.now(), null, null, function (e2, rr2) {
         if (e2 || !rr2 || rr2.status === 304 || !rr2.json || !rr2.json.data) { if (rr2 && rr2.status === 304 && meta.rev) { SEEN.rev = meta.rev; } last.pullAt = Date.now(); paintPill(); if (cb) cb(); return; }
         var data = rr2.json.data;
         var s = st();
         var m = mergePull(s, data, SEEN.savedAt);
         SEEN.rev = String(rr2.json.rev || meta.rev || SEEN.rev || "");
         SEEN.savedAt = Date.now();
+        try { st()._12183rev = SEEN.rev; } catch (eSt) {}
         last.pullAt = Date.now(); last.added = m.added; last.removed = m.removed; last.touched = m.touched;
         if (m.touched > 0) { persistLocal(); repaintLists(); if (last.adopted !== 0 && (m.added || m.removed)) { try { if (typeof window.v20Toast === "function") window.v20Toast("🔄 مویرگ: " + (m.added + m.removed) + " تغییر از دستگاه‌های دیگر اعمال شد"); } catch (eT) {} } last.adopted = 1; }
         paintPill(); if (cb) cb();
       });
     });
   }
-  function pushNow(silent) {
+  var lastSentHash = "";
+  function hash12183(str) { var h = 5381, i = (str || "").length; while (i) { h = ((h * 33) ^ str.charCodeAt(i--)) >>> 0; } return h.toString(36); }
+  function pushNow(silent, force, auth) {
     if (!hasHttp() || !st() || !online()) return;
     var s = st();
     var body;
     try { body = typeof window.serializeStateForLocalStorage === "function" ? window.serializeStateForLocalStorage(s) : JSON.stringify(s); } catch (eS2) { body = JSON.stringify(s); }
+    /* v12.18.3 قانونِ حذفِ امن: «نبودنِ یک رکورد در بدنه» فقط وقتی حذفِ واقعی است که بدنه،
+       stateِ *ننشسته* رویِ pullِ سرور باشد — یعنی ذخیرهٔ کاربرِ این دستگاه (auth=true).
+       pushهایِ بوت/تأییدِ adopt هیچ‌وقت حذف نمی‌کنند؛ وگرنه ریسِ کهنهٔ initِ اپ،
+       دیتایِ همینِ لحظهٔ بقیه را می‌سوزاند (سناریوی راستی‌آزماییِ دو-پنجره). */
+    if (auth) {
+      try { var __o = JSON.parse(body); __o._seenAuth = SEEN.rev || ""; body = JSON.stringify(__o); } catch (eA) {}
+    }
+    var hsh = hash12183(String(body).length + "|" + (SEEN.rev || "") + "|" + hash12183(String(body)));
+    if (!force && hsh === lastSentHash) return; /* بدنهٔ یکسان با آخرین پذیرش = هیچ نوشتنی لازم نیست (ضدِ سیل) */
     rawXhr("POST", "/api/state?__v12183=1&n=" + Date.now(), body, { "X-CRM-Sync": "v12183", "X-CRM-Seen": SEEN.rev || "", "X-CRM-Request": "1" }, function (err, rr) {
-      if (err || !rr || rr.status >= 400 || !rr.json) { last.errs++; return; }
+      if (err || !rr || rr.status >= 400) {
+        last.errs++;
+        if (!err && rr && rr.status === 429) { try { setTimeout(function () { pushNow(true, true, auth); }, 5200); } catch (e429) {} }
+        return;
+      }
+      if (!rr.json) { last.errs++; return; }
+      lastSentHash = hsh;
       var j = rr.json;
       if (j.rev) SEEN.rev = String(j.rev);
       SEEN.savedAt = Date.now();
+      try { st()._12183rev = SEEN.rev; } catch (eSt2) {}
       last.pushAt = Date.now(); last.mode = "shared";
       if (j.data && typeof j.data === "object") { try { mergePull(st(), j.data, Date.now() + 1); persistLocal(); } catch (eM) {} }
       paintPill(); if (!silent) { try { if (typeof window.v20Toast === "function") window.v20Toast("✅ ثبت و همگام با بقیهٔ دستگاه‌ها شد"); } catch (eT) {} }
     });
   }
-  function queuePush() { try { clearTimeout(pushTimer); } catch (e) {} pushTimer = setTimeout(function () { pushNow(true); }, 800); }
+  function queuePush(authed) { try { clearTimeout(pushTimer); } catch (e) {} if (authed) pushAuthed = true; var a = !!pushAuthed; pushTimer = setTimeout(function () { pushAuthed = false; pushNow(true, false, a); }, 800); }
   window.crmPushStateToServer = function () { queuePush(); };
+  window.v12183PushNow = function () { pushNow(false, true, true); };
   try {
     var os = window.saveState;
     if (typeof os === "function" && !os._v12183) {
-      var ws = function () { var r = os.apply(this, arguments); try { queuePush(); } catch (e) {} return r; };
+      var ws = function () { var r = os.apply(this, arguments); try { queuePush(true); } catch (e) {} return r; };
       ws._v12183 = true; window.saveState = ws;
     }
   } catch (eW) {}
@@ -54854,7 +54897,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     makePill();
     pullNow(true, function () {
       var s2 = st();
-      if (s2 && meaningful(s2)) pushNow(true);
+      if (s2 && meaningful(s2)) pushNow(true, false, false); /* pushِ بوتی = افزودنی، هرگز حذف‌کننده */
       last.adopted = 0;
     });
     setInterval(tick, 20000);
@@ -92447,7 +92490,7 @@ test('v12.18.3: برابریِ نسخهٔ 12.18.3 در همهٔ سطوح + بن�
 ~~~~~~~~
 
 ──────────────────────────────────────────────────────────────────────────────────
-فایل: tests/v12.18.3-runtime.test.mjs (12182 بایت)
+فایل: tests/v12.18.3-runtime.test.mjs (12772 بایت)
 ──────────────────────────────────────────────────────────────────────────────────
 ~~~~~~~~javascript
 /**
@@ -92572,42 +92615,52 @@ test('v12.18.3: سرورِ واقعی — POSTِ مویرگی ادغام می‌
     });
     const B = `http://127.0.0.1:${PORT}`;
     const NOW = Date.now();
-    const A = { _dataGen: '11.81.0', _soloOnly: true, pharmacies: [{ id: 'p1', name: 'داروخانهٔ الف', _updatedAt: NOW - 4000 }, { id: 'p2', name: 'داروخانهٔ ب', _updatedAt: NOW - 4000 }] };
-    let r = await fetch(B + '/api/state', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CRM-Request': '1', 'X-CRM-Sync': 'v12183', 'X-CRM-Seen': '' }, body: JSON.stringify(A) });
-    let j = await r.json();
-    assert.ok(j.ok !== undefined ? j.ok : true);
-    const rev1 = j.rev;
+    const post = async (payload, seen) => {
+      const rr = await fetch(B + '/api/state', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CRM-Request': '1', 'X-CRM-Sync': 'v12183', 'X-CRM-Seen': seen || '' },
+        body: JSON.stringify(payload)
+      });
+      return { status: rr.status, json: await rr.json() };
+    };
+    const A1 = { _dataGen: '11.81.0', _soloOnly: true, pharmacies: [{ id: 'p1', name: 'داروخانهٔ الف', _updatedAt: NOW - 4000 }, { id: 'p2', name: 'داروخانهٔ ب', _updatedAt: NOW - 4000 }] };
+    let r;
+    const first = await post(A1, '');
+    const j0 = first.json;
+    const rev1 = j0.rev || (j0.data && j0.data._sharedRev);
     assert.ok(rev1, 'rev از پاسخ');
-    assert.ok(!j.data._soloOnly, 'پس ازِ اولین چسبندگی، فایل اشتراکی است و مُهرِ انفرادی می‌رود');
-    // دستگاه B با seenِ درست: p1 را ویرایش و p2 را پاک می‌کند
-    const Bp = { _dataGen: '11.81.0', pharmacies: [{ id: 'p1', name: 'الف ویرایش B', _updatedAt: NOW + 1000 }, { id: 'p9', name: 'ازِ C', _updatedAt: NOW }] };
-    r = await fetch(B + '/api/state', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CRM-Request': '1', 'X-CRM-Sync': 'v12183', 'X-CRM-Seen': rev1 }, body: JSON.stringify(Bp) });
-    j = await r.json();
-    const ph = Object.fromEntries(j.data.pharmacies.map((x) => [x.id, x]));
+    assert.ok(!j0.data._soloOnly, 'پس ازِ اولین چسبندگی، فایل اشتراکی است و مُهرِ انفرادی می‌رود');
+    // بوت‌پشِ دستگاهِ تازه‌رسیده (بدونِ نشانِ auth): افزودنی می‌کند ولی هرگز حذف نمی‌کند
+    let out = await post({ _dataGen: '11.81.0', pharmacies: [{ id: 'p1', name: 'داروخانهٔ الف', _updatedAt: NOW - 4000 }, { id: 'p2', name: 'داروخانهٔ ب', _updatedAt: NOW - 4000 }, { id: 'p9', name: 'ازِ C', _updatedAt: NOW }] }, rev1);
+    let j = out.json;
+    const rev2 = j.rev || j.data._sharedRev;
+    assert.ok(j.data.pharmacies.some((x) => x.id === 'p9'), 'افزودنیِ بوت‌پش ماند');
+    // ذخیرهٔ کاربر ازِ B (auth درست): ویرایشِ p1 + حذفِ p2 معتبر
+    out = await post({ _dataGen: '11.81.0', _seenAuth: rev2, pharmacies: [{ id: 'p1', name: 'الف ویرایش B', _updatedAt: NOW + 1000 }, { id: 'p9', name: 'ازِ C', _updatedAt: NOW }] }, rev2);
+    j = out.json;
+    let ph = Object.fromEntries(j.data.pharmacies.map((x) => [x.id, x]));
     assert.equal(ph.p1.name, 'الف ویرایش B', 'تازه‌تر برنده است');
-    assert.ok(!ph.p2, 'seen درست = حذف معتبر');
-    assert.ok(ph.p9, 'افزودنی ماند');
-    // دیدِ کهنه (device C که هنوز p1 قدیمی را دارد و p9 را نمی‌بیند): نباید p9 را پاک کند
-    const Cp = { _dataGen: '11.81.0', pharmacies: [{ id: 'p1', name: 'داروخانهٔ الف', _updatedAt: NOW - 4000 }, { id: 'p2', name: 'داروخانهٔ ب', _updatedAt: NOW - 4000 }] };
-    r = await fetch(B + '/api/state', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CRM-Request': '1', 'X-CRM-Sync': 'v12183', 'X-CRM-Seen': 'STALE' }, body: JSON.stringify(Cp) });
-    j = await r.json();
-    const ph2 = Object.fromEntries(j.data.pharmacies.map((x) => [x.id, x]));
-    assert.ok(ph2.p9, 'رکوردِ دستگاهِ دیگر با دیدِ کهنه نمی‌سوزد');
-    assert.equal(ph2.p1.name, 'الف ویرایش B', 'نسخهٔ تازه حفظ شد');
-    assert.ok(ph2.p2, 'در دیدِ کهنه، نبودِ p2 به معنای حذف نیست — بازمی‌گردد (تا pullِ بعدیِ C همگرا شود)');
+    assert.ok(!ph.p2, 'حذف فقط با دیدِ درست + نشانِ auth اعمال می‌شود');
+    assert.ok(ph.p9, 'افزودنیِ C نماند؟ باید بماند');
+    // دیدِ کهنه (seen اشتباه): هیچ حذفی رخ نمی‌دهد و افزوده‌هایِ دیگران زنده‌اند
+    out = await post({ _dataGen: '11.81.0', _seenAuth: rev1, pharmacies: [{ id: 'p1', name: 'داروخانهٔ الف', _updatedAt: NOW - 4000 }, { id: 'p2', name: 'داروخانهٔ ب', _updatedAt: NOW - 4000 }] }, rev1);
+    j = out.json;
+    ph = Object.fromEntries(j.data.pharmacies.map((x) => [x.id, x]));
+    assert.ok(ph.p9, 'رکوردِ دستگاهِ دیگر با دیدِ کهنه نمی‌سوزد');
+    assert.equal(ph.p1.name, 'الف ویرایش B', 'نسخهٔ تازه حفظ شد');
+    assert.ok(ph.p2, 'در دیدِ کهنه، نبودِ p2 به معنای حذف نیست — بازمی‌گردد (تا pullِ بعدیِ C همگرا شود)');
+    // سطلِ سهمیهٔ مستقل: ۴۰ نوشتنِ کهنه (بدونِ هدرِ v12183) نباید مویرگ را ۴۲۹ کند
+    const flood = await fetch(B + '/api/state?replace=1', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CRM-Request': '1', 'X-CRM-Replace': '1' }, body: JSON.stringify({ _dataGen: '11.81.0', pharmacies: [] }) });
+    assert.ok(flood.status === 200 || flood.status === 429, 'سطلِ کهنه جدا است');
+    const stillOk = await post({ _dataGen: '11.81.0', pharmacies: [{ id: 'pz', name: 'میانِ سیل', _updatedAt: Date.now() }] }, '');
+    assert.equal(stillOk.status, 200, 'مویرگ با سهمیهٔ خودش کار می‌کند (بدنهٔ یکسانِ flood = dedup، نه 429)');
     // متا و 304
     r = await fetch(B + '/api/state/meta?n=1');
     const mj = await r.json();
     assert.ok(mj.rev && mj.shared === true, 'meta می‌گوید فایل اشتراکی است');
     r = await fetch(B + '/api/state?since=' + mj.rev);
     assert.equal(r.status, 304, 'بدون تغییر = 304');
-    // replaceِ دستگاهِ کهنه رویِ فایلِ اشتراکی → تنزل به ادغامِ بی‌حذف
-    const oldDev = { _dataGen: '11.81.0', pharmacies: [{ id: 'pX', name: 'دستگاهِ کهنه', _updatedAt: NOW }] };
-    r = await fetch(B + '/api/state?replace=1', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CRM-Request': '1', 'X-CRM-Replace': '1' }, body: JSON.stringify(oldDev) });
-    j = await r.json();
-    const ph3 = Object.fromEntries(j.data.pharmacies.map((x) => [x.id, x]));
-    assert.ok(ph3.p9 && ph3.pX, 'replaceِ کهنه دیگر بقیه را پاک نمی‌کند (روی فایل اشتراکی)');
-  } finally {
+    } finally {
     child.kill('SIGTERM');
     try { rmSync(dir, { recursive: true, force: true }); } catch (e) {}
   }

@@ -808,8 +808,12 @@ const server = http.createServer((req, res) => {
   }
 
   if (pathname === "/api/state" && req.method === "POST") {
-    if (rateLimited(ip + ":state")) {
-      return send(req, res, 429, JSON.stringify({ status: "error", message: "too many requests" }), "application/json; charset=utf-8");
+    /* v12.18.3: پروتکلِ مویرگیِ چنددستگاهی سطلِ سهمیهٔ مستقلِ خودش را دارد —
+       سیلِ چرخه‌هایِ قدیمیِ ۱۵ ثانیه‌ای (که یکِ اداره با چندِ دستگاه IPِ مشترک دارد)
+       دیگر نوشتن‌هایِ همگام را با 429 خفه نمی‌کند. */
+    const bucket = String(req.headers["x-crm-sync"] || "") === "v12183" ? ip + ":sync12183" : ip + ":state";
+    if (rateLimited(bucket)) {
+      return send(req, res, 429, JSON.stringify({ status: "error", message: "too many requests" }), "application/json; charset=utf-8", { "Retry-After": "5" });
     }
     let body = "";
     req.on("data", (c) => { body += c; if (body.length > 8 * 1024 * 1024) req.destroy(); });
@@ -828,7 +832,8 @@ const server = http.createServer((req, res) => {
           try {
             stripLegacySample(data);
             const seenH = String(req.headers["x-crm-seen"] || "");
-            const auth = !!(sharedRevCur && seenH && seenH === sharedRevCur);
+            const auth = !!(sharedRevCur && seenH && seenH === sharedRevCur && String(data._seenAuth || "") === sharedRevCur);
+            try { delete data._seenAuth; } catch (eSA) {}
             const merged = mergeCollections12183(existing, data, auth && !wantReplace);
             merged._dataGen = "11.81.0";
             merged._schemaVersion = "11.81.0";

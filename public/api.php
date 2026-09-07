@@ -565,7 +565,9 @@ if (strpos($p, "state") === 0) {
     $wantRepl = (isset($_GET["replace"]) && strval($_GET["replace"]) === "1") || (isset($_SERVER["HTTP_X_CRM_REPLACE"]) && $_SERVER["HTTP_X_CRM_REPLACE"] === "1");
     $sharedCur = (is_array($existing) && !empty($existing["_sharedRev"])) ? strval($existing["_sharedRev"]) : "";
     if ($hdrSync === "v12183" || ($wantRepl && $sharedCur !== "")) {
-      $auth = ($sharedCur !== "" && $hdrSeen !== "" && $hdrSeen === $sharedCur) && !$wantRepl;
+      /* v12.18.3 قانونِ حذفِ امن: حذف فقط با نشانِ _seenAuthِ ذخیرهٔ کاربر (boot push هرگز حذف نمی‌کند) */
+      $auth = ($sharedCur !== "" && $hdrSeen !== "" && $hdrSeen === $sharedCur) && !$wantRepl && isset($incoming["_seenAuth"]) && strval($incoming["_seenAuth"]) === $sharedCur;
+      unset($incoming["_seenAuth"]);
       strip_legacy_sample($incoming);
       $merged = merge_shared_12183(is_array($existing) ? $existing : array(), $incoming, $auth);
       $merged["_dataGen"] = "11.81.0"; $merged["_schemaVersion"] = "11.81.0";
