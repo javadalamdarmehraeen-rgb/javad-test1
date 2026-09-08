@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""ZIP تحویلی نسخه 12.21.0 — قانون GITHUB_REVIEW_HANDOFF:
+"""ZIP تحویلی نسخه 12.22.0 — قانون GITHUB_REVIEW_HANDOFF:
    - زیپ استاندارد PKZIP با create_system=0 (ویندوز اکسپلورر بدونِ هشدارِ مجوزهایِ لینوکس بازش کند)
    - دقیقاً درختِ گیت + chat.arena — بدونِ node_modules و بدونِ فایل‌هایِ حساس (§5.4)
    - نام: namayandeelmi-v{VER}.zip در ریشه‌ی ورک‌اسپیس
@@ -10,7 +10,7 @@ import subprocess
 import zipfile
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-VER = "12.21.0"
+VER = "12.22.0"
 OUT = os.path.join(ROOT, "namayandeelmi-v%s.zip" % VER)
 
 FORBID = (
