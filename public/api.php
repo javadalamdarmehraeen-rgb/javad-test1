@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 define("CRM_DEFAULT_RENDER", "https://javad-test1.onrender.com");
-define("CRM_APP_VERSION", "12.19.0");
+define("CRM_APP_VERSION", "12.20.0");
 
 /* v12.12: همگام سه دامنه — رندر + دو دامنه نت‌افراز */
 function peer_hosts() {
@@ -335,6 +335,21 @@ if ($p === "runtime-config") {
     "version" => CRM_APP_VERSION,
     "sync" => true
   ));
+}
+if ($p === "vault") {
+  /* v12.20.0 — گاوصندوقِ تنظیماتِ مدیر روی همان هاست: با آپلودِ نسخهٔ تازه هم
+     فیلدها و تنظیمات از بین نمی‌روند. فایلِ جدا از crm-live-data.json */
+  $vf = __DIR__ . "/crm-settings-vault.json";
+  if ($method === "POST") {
+    $raw = file_get_contents("php://input");
+    $j = json_decode($raw, true);
+    if (!is_array($j)) send_json(array("status" => "error", "message" => "bad-vault"), 400);
+    $j["_savedAt"] = time() * 1000;
+    write_json($vf, $j);
+    send_json(array("status" => "success", "savedAt" => $j["_savedAt"], "version" => CRM_APP_VERSION));
+  }
+  $v = is_file($vf) ? read_json($vf) : null;
+  send_json(array("status" => $v ? "success" : "empty", "vault" => $v));
 }
 if ($p === "backup/status") {
   send_json(array("status" => "ok", "cloud" => false, "local" => is_file($DATA), "platform" => "static-php", "sync" => true));

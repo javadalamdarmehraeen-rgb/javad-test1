@@ -2755,19 +2755,24 @@ html.crm-booting body {
   font-size: 0.82rem;
   color: #ffffff;
   white-space: nowrap;
-  /* اندازهٔ ثابت: تغییرِ رقم‌ها هیچ بخشی از صفحه را جابه‌جا نمی‌کند */
-  min-width: 292px;
+  /* v12.20.0 — اندازهٔ «واقعاً» ثابت: خودِ ساعت جایِ ثابت دارد، پس تپشِ
+     ثانیه‌شمار نه کادر را بزرگ/کوچک می‌کند نه تاریخ را تکان می‌دهد. */
+  flex: 0 0 auto;
   box-sizing: border-box;
-  contain: layout style;
+  contain: layout style paint;
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1;
 }
 .crm-clock-time {
-  min-width: 62px;
+  /* عرضِ ثابت + رقمِ جدولی = هیچ پرشی هنگامِ عوض‌شدنِ ثانیه */
+  width: 64px;
+  flex: 0 0 64px;
   display: inline-block;
   text-align: center;
   direction: ltr;
   letter-spacing: 0.4px;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
 }
 .crm-clock-sep {
   display: inline-block;
@@ -2820,4 +2825,86 @@ html.crm-booting body {
   .crm-header-stack { width: 100%; }
   .crm-header-stack #crmBuildBadge { min-width: 0; font-size: 11px !important; }
   .crm-clock-date { font-size: 0.7rem; }
+}
+
+/* ============================================================================
+   v12.20.0 — هدرِ فشردهٔ تک‌ردیفه (همه‌چیز در بالاترین ردیف، کادرِ کوچک‌تر)
+   + حذفِ برچسبِ نسخهٔ تکراری + دکمه‌هایِ گاوصندوقِ تنظیمات
+   ============================================================================ */
+
+/* برچسبِ نسخهٔ تکراریِ باندل (#v20VersionBadge) دیگر نشان داده نمی‌شود */
+#v20VersionBadge { display: none !important; }
+
+.app-header.crm-compact-header {
+  padding: 0.22rem 0.7rem !important;
+}
+.app-header.crm-compact-header .header-container {
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+}
+.app-header.crm-compact-header .logo-area { gap: 0.45rem; }
+.app-header.crm-compact-header .logo-icon {
+  width: 34px;
+  height: 34px;
+  font-size: 1.1rem;
+}
+.app-header.crm-compact-header .logo-icon img { width: 34px; height: 34px; object-fit: contain; }
+.app-header.crm-compact-header .logo-text h1 {
+  font-size: 0.84rem;
+  line-height: 1.15;
+  margin: 0;
+}
+.app-header.crm-compact-header #headerBrandLine { display: none; }
+.app-header.crm-compact-header .btn-menu-hamburger { padding: 0.18rem 0.4rem; font-size: 0.95rem; }
+
+/* همهٔ اجزایِ هدر در یک ردیفِ باریک */
+.app-header.crm-compact-header .header-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 6px;
+}
+.app-header.crm-compact-header .header-user-pill {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 9px;
+  font-size: 0.72rem;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+.app-header.crm-compact-header #crmBuildBadge {
+  background: #ffffff;
+  color: #0f766e;
+  border: 1px solid #99f6e4;
+  border-radius: 999px;
+  padding: 1px 9px;
+  font-size: 11px !important;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.app-header.crm-compact-header .btn-header-icon,
+.app-header.crm-compact-header .btn-header-teal,
+.app-header.crm-compact-header .btn-header-logout {
+  padding: 0.18rem 0.55rem;
+  font-size: 0.74rem;
+  line-height: 1.4;
+  min-height: 0;
+}
+.app-header.crm-compact-header .crm-vault-btn { position: relative; }
+.app-header.crm-compact-header .notif-count-badge { font-size: 0.62rem; }
+
+/* فاصلهٔ میلی‌متریِ فیلدها در گرید هم دیده شود (کشیدگیِ سلول ممنوع) */
+.form-grid > .form-group[data-crm-gap] { box-sizing: border-box; }
+
+@media (max-width: 900px) {
+  .app-header.crm-compact-header { padding: 0.2rem 0.45rem !important; }
+  .app-header.crm-compact-header .header-container { flex-wrap: wrap; gap: 0.3rem; }
+  .app-header.crm-compact-header .header-actions { flex-wrap: wrap; gap: 4px; }
+  .app-header.crm-compact-header .header-user-pill { font-size: 0.66rem; }
+  .crm-header-clock { font-size: 0.72rem; padding: 0.18rem 0.5rem; }
+  .crm-clock-time { width: 58px; flex: 0 0 58px; }
+  .crm-clock-date { font-size: 0.68rem; }
 }
