@@ -1,5 +1,5 @@
 /**
- * v12.21.0 — نوبت ۱۴۶ (بر پایهٔ ۱۴۵)
+ * v12.22.0 — نوبت ۱۴۶ (بر پایهٔ ۱۴۵)
  *  ۵) تاریخِ شمسیِ بی‌پرش و بی‌ویرگول («1,405» ممنوع) + هدرِ فشرده با «طنین طب طاها»
  *  ۶) قفلِ order+DOM: هم ترتیبِ DOM و هم CSS `order` یکی می‌شوند + کلیدِ خودِ باندل
  *  ۷) طراح عددهایِ «واقعیِ» همان فیلد را نشان می‌دهد (نه ۲۲۰ برایِ همه)
@@ -21,7 +21,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
 const root = new URL('../', import.meta.url);
-const layerSrc = readFileSync(new URL('public/crm-v12.21.0.js', root), 'utf8');
+const layerSrc = readFileSync(new URL('public/crm-v12.22.0.js', root), 'utf8');
 const indexSrc = readFileSync(new URL('public/index.html', root), 'utf8');
 const cssSrc = readFileSync(new URL('public/style.css', root), 'utf8');
 const bundle = readFileSync(new URL('public/crm-bundle.js', root), 'utf8');
@@ -211,7 +211,7 @@ function makeEnv(opts) {
   const toasts = [];
   const win = {
     document: doc,
-    CRM_APP_VERSION: '12.21.0',
+    CRM_APP_VERSION: '12.22.0',
     getComputedStyle: (el) => ({
       getPropertyValue: (prop) => String((el && el._computed && el._computed[prop]) || '')
     }),
@@ -280,19 +280,19 @@ function pharmacyScene(opts) {
 const orderOf = (grid) => grid.children.map((c) => c.id || (c.getAttribute && c.getAttribute('data-col-fid')) || '?');
 
 /* ───────── ۱) بارگذاری و نسخه ───────── */
-test('v12.21.0: لایهٔ پایانی پس از باندل بارگذاری می‌شود و نسخه در همهٔ سطوح یکی است', () => {
-  const iBundle = indexSrc.indexOf('crm-bundle.js?v=12.21.0');
-  const iLayer = indexSrc.indexOf('crm-v12.21.0.js?v=12.21.0');
+test('v12.22.0: لایهٔ پایانی پس از باندل بارگذاری می‌شود و نسخه در همهٔ سطوح یکی است', () => {
+  const iBundle = indexSrc.indexOf('crm-bundle.js?v=12.22.0');
+  const iLayer = indexSrc.indexOf('crm-v12.22.0.js?v=12.22.0');
   assert.ok(iBundle > 0 && iLayer > 0, 'هر دو اسکریپت در index.html');
   assert.ok(iLayer > iBundle, 'لایهٔ ۱۲.۲۰ آخرین اسکریپت است');
-  assert.equal(pkg.version, '12.21.0');
-  assert.match(bundle, /نسخه‌ی جاری: 12\.21\.0/);
-  assert.match(serverSrc, /const APP_VERSION = "12\.21\.0"/);
-  assert.match(phpSrc, /define\("CRM_APP_VERSION", "12\.21\.0"\)/);
+  assert.equal(pkg.version, '12.22.0');
+  assert.match(bundle, /نسخه‌ی جاری: 12\.22\.0/);
+  assert.match(serverSrc, /const APP_VERSION = "12\.22\.0"/);
+  assert.match(phpSrc, /define\("CRM_APP_VERSION", "12\.22\.0"\)/);
 });
 
 /* ───────── ۲) قفلِ لنگر ───────── */
-test('v12.21.0: ترتیبِ لنگر ضبط می‌شود و کادرِ لوکیشن جزوِ فیلدهایِ جابه‌جاشدنی نیست', () => {
+test('v12.22.0: ترتیبِ لنگر ضبط می‌شود و کادرِ لوکیشن جزوِ فیلدهایِ جابه‌جاشدنی نیست', () => {
   const s = pharmacyScene();
   const canon = s.api.captureCanon('tab-pharmacies');
   assert.deepEqual(canon, ['c:pharmacyName', 'c:pharmacyPhone', 'id:phLocationBox', 'c:cf-pharmacy-1']);
@@ -300,7 +300,7 @@ test('v12.21.0: ترتیبِ لنگر ضبط می‌شود و کادرِ لوک�
   assert.deepEqual(orderOf(s.grid), ['pharmacyName', 'pharmacyPhone', 'phLocationBox', 'cf-pharmacy-1']);
 });
 
-test('v12.21.0: فیلدی که به پایینِ کادرِ لوکیشن پرتاب شود، به جایِ اصلی برمی‌گردد', () => {
+test('v12.22.0: فیلدی که به پایینِ کادرِ لوکیشن پرتاب شود، به جایِ اصلی برمی‌گردد', () => {
   const s = pharmacyScene();
   s.api.captureCanon('tab-pharmacies');
 
@@ -316,7 +316,7 @@ test('v12.21.0: فیلدی که به پایینِ کادرِ لوکیشن پرت
   assert.deepEqual(orderOf(s.grid), ['pharmacyName', 'pharmacyPhone', 'phLocationBox', 'cf-pharmacy-1'], 'بازگشت به جایِ اصلی');
 });
 
-test('v12.21.0: ظرفِ فیلدهایِ سفارشی به انتهای گرید برود، ترتیبِ فرم نمی‌شکند', () => {
+test('v12.22.0: ظرفِ فیلدهایِ سفارشی به انتهای گرید برود، ترتیبِ فرم نمی‌شکند', () => {
   const s = pharmacyScene();
   s.api.captureCanon('tab-pharmacies');
   /* applyFullFormLayout با نیتِ مدیر: grid.appendChild(container) */
@@ -329,7 +329,7 @@ test('v12.21.0: ظرفِ فیلدهایِ سفارشی به انتهای گری�
   assert.equal(names[names.length - 1], 'pharmacyCustomFieldsContainer', 'ظرفِ خالی مزاحمِ ترتیبِ فیلدها نمی‌شود');
 });
 
-test('v12.21.0: تنها «شماره ترتیب در فرم» جایِ فیلد را عوض می‌کند، کادرِ لوکیشن سرِ جایش', () => {
+test('v12.22.0: تنها «شماره ترتیب در فرم» جایِ فیلد را عوض می‌کند، کادرِ لوکیشن سرِ جایش', () => {
   const s = pharmacyScene();
   s.api.captureCanon('tab-pharmacies');
 
@@ -346,7 +346,7 @@ test('v12.21.0: تنها «شماره ترتیب در فرم» جایِ فیلد
   assert.deepEqual(orderOf(s.grid), ['cf-pharmacy-1', 'pharmacyName', 'phLocationBox', 'pharmacyPhone']);
 });
 
-test('v12.21.0: تنظیماتِ غیرِ ترتیب (عرض/فاصله/سطر) هیچ جابه‌جاییِ فیلد نمی‌سازند', () => {
+test('v12.22.0: تنظیماتِ غیرِ ترتیب (عرض/فاصله/سطر) هیچ جابه‌جاییِ فیلد نمی‌سازند', () => {
   const s = pharmacyScene();
   s.api.captureCanon('tab-pharmacies');
   const before = orderOf(s.grid).join('|');
@@ -358,7 +358,7 @@ test('v12.21.0: تنظیماتِ غیرِ ترتیب (عرض/فاصله/سطر) 
 });
 
 /* ───────── ۳) ایتم‌هایِ طراح ───────── */
-test('v12.21.0: «فاصله نسبت به فیلد قبلی/بعدی (میلی‌متر)» با تبدیلِ واقعی به پیکسل می‌نشیند', () => {
+test('v12.22.0: «فاصله نسبت به فیلد قبلی/بعدی (میلی‌متر)» با تبدیلِ واقعی به پیکسل می‌نشیند', () => {
   const s = pharmacyScene();
   s.api.captureCanon('tab-pharmacies');
   assert.equal(s.api.mmToPx(5), 18.9, '۵ میلی‌متر = ۱۸٫۹ پیکسل');
@@ -377,7 +377,7 @@ test('v12.21.0: «فاصله نسبت به فیلد قبلی/بعدی (میلی�
   assert.equal(s.gC.getAttribute('data-crm-gap'), '5/2.5mm');
 });
 
-test('v12.21.0: عرض، ارتفاع، شمارهٔ سطر و «زیرِ هم» روی همان فیلد اعمال می‌شوند', () => {
+test('v12.22.0: عرض، ارتفاع، شمارهٔ سطر و «زیرِ هم» روی همان فیلد اعمال می‌شوند', () => {
   const s = pharmacyScene();
   s.api.captureCanon('tab-pharmacies');
   Object.assign(s.fields[2], { size: 320, height: 44, rowNo: 4, place: 'under' });
@@ -393,7 +393,7 @@ test('v12.21.0: عرض، ارتفاع، شمارهٔ سطر و «زیرِ هم»
   assert.equal(s.gC.style.getPropertyValue('grid-column'), '1 / -1', '«زیرِ هم» = تمامِ سطر');
 });
 
-test('v12.21.0: «نمایش در فرم»، «وابسته به فیلد» و «افزودن لحظه‌ای گزینه»', () => {
+test('v12.22.0: «نمایش در فرم»، «وابسته به فیلد» و «افزودن لحظه‌ای گزینه»', () => {
   const s = pharmacyScene();
   s.api.captureCanon('tab-pharmacies');
   const btn = s.node('button', { className: 'btn-instant-add' });
@@ -421,13 +421,13 @@ test('v12.21.0: «نمایش در فرم»، «وابسته به فیلد» و �
   assert.equal(s.gC.style.getPropertyValue('display'), '', 'مرجع پر = نمایان');
 });
 
-test('v12.21.0: «داخل کدام کادر؟» ذخیره می‌شود (پیش از این مقدارِ کشو دور ریخته می‌شد)', () => {
+test('v12.22.0: «داخل کدام کادر؟» ذخیره می‌شود (پیش از این مقدارِ کشو دور ریخته می‌شد)', () => {
   assert.match(layerSrc, /colFieldBoxTarget/, 'کشویِ «داخل کدام کادر» خوانده می‌شود');
   assert.match(layerSrc, /boxId/, 'مقدار در تنظیماتِ فیلد ذخیره می‌شود');
 });
 
 /* ───────── ۴) هدرِ فشرده و ساعتِ بی‌پرش ───────── */
-test('v12.21.0: هدرِ تک‌ردیفه، ساعت نخستین عضو، یک برچسبِ نسخه، دکمه‌هایِ پشتیبان', () => {
+test('v12.22.0: هدرِ تک‌ردیفه، ساعت نخستین عضو، یک برچسبِ نسخه، دکمه‌هایِ پشتیبان', () => {
   const env = makeEnv({});
   const mk = env.node;
   const header = mk('header', { className: 'app-header' });
@@ -435,11 +435,11 @@ test('v12.21.0: هدرِ تک‌ردیفه، ساعت نخستین عضو، یک
   header.appendChild(actions);
   env.doc.body.appendChild(header);
   const logoText = mk('div', { className: 'logo-text' });
-  const badge = mk('div', { id: 'crmBuildBadge', textContent: 'نسخه 12.21.0' });
+  const badge = mk('div', { id: 'crmBuildBadge', textContent: 'نسخه 12.22.0' });
   logoText.appendChild(badge);
   env.doc.body.appendChild(logoText);
   env.byId.set('crmBuildBadge', badge);
-  const dup = mk('span', { id: 'v20VersionBadge', textContent: 'نسخه 12.21.0' });
+  const dup = mk('span', { id: 'v20VersionBadge', textContent: 'نسخه 12.22.0' });
   actions.appendChild(dup);
   env.byId.set('v20VersionBadge', dup);
   const pill = mk('div', { className: 'header-user-pill' });
@@ -460,7 +460,7 @@ test('v12.21.0: هدرِ تک‌ردیفه، ساعت نخستین عضو، یک
   assert.ok(env.doc.getElementById('crmVaultLoadBtn'), 'دکمهٔ ↩ بازیابی');
 });
 
-test('v12.21.0: ساعت عرضِ ثابت دارد و ثانیه‌شمار فقط هنگامِ تغییرِ متن می‌نویسد', () => {
+test('v12.22.0: ساعت عرضِ ثابت دارد و ثانیه‌شمار فقط هنگامِ تغییرِ متن می‌نویسد', () => {
   assert.match(cssSrc, /\.crm-clock-time \{[^}]*width: 64px/s, 'عرضِ ثابتِ ساعت');
   assert.match(cssSrc, /font-variant-numeric: tabular-nums/, 'رقمِ جدولی = بدونِ لرزشِ عرض');
   assert.match(cssSrc, /#v20VersionBadge \{ display: none !important; \}/, 'نسخهٔ تکراری در سبک هم بسته است');
@@ -489,7 +489,7 @@ test('v12.21.0: ساعت عرضِ ثابت دارد و ثانیه‌شمار ف�
 });
 
 /* ───────── ۵) گاوصندوقِ تنظیمات ───────── */
-test('v12.21.0: فیلدهایِ گم‌شده از پشتیبان برمی‌گردند، فیلدِ حذف‌شدهٔ عمدی نه', () => {
+test('v12.22.0: فیلدهایِ گم‌شده از پشتیبان برمی‌گردند، فیلدِ حذف‌شدهٔ عمدی نه', () => {
   const state = {
     customFields: {
       pharmacy: [{ id: 'cf-pharmacy-1', label: 'فیلدِ یک', order: 1, gapBeforeMm: 3 }]
@@ -516,7 +516,7 @@ test('v12.21.0: فیلدهایِ گم‌شده از پشتیبان برمی‌گ
   assert.equal(state.customFields.pharmacy[0].gapBeforeMm, 3, 'تنظیمِ زندهٔ موجود بازنویسی نشد');
 });
 
-test('v12.21.0: حذفِ عمدیِ فیلد، سنگ‌قبر می‌گیرد تا پشتیبان زنده‌اش نکند', () => {
+test('v12.22.0: حذفِ عمدیِ فیلد، سنگ‌قبر می‌گیرد تا پشتیبان زنده‌اش نکند', () => {
   const state = {
     customFields: { pharmacy: [{ id: 'cf-a', label: 'الف', order: 1 }, { id: 'cf-b', label: 'ب', order: 2 }] },
     formFieldMeta: {}
@@ -536,7 +536,7 @@ test('v12.21.0: حذفِ عمدیِ فیلد، سنگ‌قبر می‌گیرد �
   assert.deepEqual(state.customFields.pharmacy.map((f) => f.id), ['cf-a'], 'فقط فیلدِ «الف» برگشت');
 });
 
-test('v12.21.0: ریشه‌پاک‌کنِ نسخهٔ تازه، گاوصندوق و ترتیبِ مدیر را جارو نمی‌کند', () => {
+test('v12.22.0: ریشه‌پاک‌کنِ نسخهٔ تازه، گاوصندوق و ترتیبِ مدیر را جارو نمی‌کند', () => {
   const keep = bundle.match(/var KEEP_LS = \/\^?\(?([^\n]*?)\/i;/);
   assert.ok(keep, 'KEEP_LS پیدا شد');
   ['CRM_V12200_', 'CRM_SETTINGS_VAULT', 'CRM_MANAGER_GRID_ORDER', 'CRM_APP_STATE_V2'].forEach((k) => {
@@ -545,7 +545,7 @@ test('v12.21.0: ریشه‌پاک‌کنِ نسخهٔ تازه، گاوصندو�
   assert.ok(!/crmSettingsVault/.test(bundle.match(/deleteDatabase\("[^"]+"\)/g).join(',')), 'پایگاهِ گاوصندوق حذف نمی‌شود');
 });
 
-test('v12.21.0: گاوصندوق روی سرورِ Node و هاستِ PHP هم ذخیره می‌شود', () => {
+test('v12.22.0: گاوصندوق روی سرورِ Node و هاستِ PHP هم ذخیره می‌شود', () => {
   assert.match(serverSrc, /pathname === "\/api\/vault" && req\.method === "GET"/, 'GET /api/vault');
   assert.match(serverSrc, /pathname === "\/api\/vault" && req\.method === "POST"/, 'POST /api/vault');
   assert.match(serverSrc, /settings-vault\.json/, 'فایلِ جدا از داده‌ها');
@@ -557,7 +557,7 @@ test('v12.21.0: گاوصندوق روی سرورِ Node و هاستِ PHP هم �
 });
 
 /* ───────── ۶) خروجیِ اکسلِ کاملِ تب ───────── */
-test('v12.21.0: خروجیِ اکسل همهٔ اطلاعاتِ تب را می‌دهد (ستونِ فیلدِ دارایِ مقدار هیچ‌وقت نمی‌افتد)', () => {
+test('v12.22.0: خروجیِ اکسل همهٔ اطلاعاتِ تب را می‌دهد (ستونِ فیلدِ دارایِ مقدار هیچ‌وقت نمی‌افتد)', () => {
   const state = {
     customFields: { pharmacy: [{ id: 'cf-pharmacy-1', label: 'کد ملی', order: 1 }, { id: 'cf-pharmacy-2', label: 'ستاره', order: 2, exportExcel: true }] },
     pharmacies: [
@@ -582,14 +582,14 @@ test('v12.21.0: خروجیِ اکسل همهٔ اطلاعاتِ تب را می�
   assert.equal(out.file, 'pharmacies-full-export.csv');
 });
 
-test('v12.21.0: همگام‌سازیِ خودکار هر ۱۰ ثانیه دست‌نخورده باقی است', () => {
+test('v12.22.0: همگام‌سازیِ خودکار هر ۱۰ ثانیه دست‌نخورده باقی است', () => {
   assert.match(bundle, /setInterval\(tick, 10000\)/);
   assert.match(bundle, /خودکار هر ۱۰ ثانیه/);
 });
 
 /* ════════════════ نوبت ۱۴۶ ════════════════ */
 
-test('v12.21.0: تاریخِ شمسی بدونِ ویرگول و بدونِ پرش ساخته می‌شود', () => {
+test('v12.22.0: تاریخِ شمسی بدونِ ویرگول و بدونِ پرش ساخته می‌شود', () => {
   const env = makeEnv();
   env.win.getUnifiedFieldList = () => [];
   const api = env.api;
@@ -608,7 +608,7 @@ test('v12.21.0: تاریخِ شمسی بدونِ ویرگول و بدونِ پر
   assert.equal(a.length, b.length);
 });
 
-test('v12.21.0: ساعتِ هدر فقط در صورتِ تغییر بازنویسی می‌شود', () => {
+test('v12.22.0: ساعتِ هدر فقط در صورتِ تغییر بازنویسی می‌شود', () => {
   const src = layerSrc;
   assert.match(src, /function clockDate\(/, 'تابعِ دست‌سازِ تاریخ وجود دارد');
   assert.ok(src.indexOf('toLocaleDateString') === src.lastIndexOf('toLocaleDateString'),
@@ -619,7 +619,7 @@ test('v12.21.0: ساعتِ هدر فقط در صورتِ تغییر بازنوی
   assert.match(cssSrc, /#headerBrandLine \{[\s\S]*?display: block/, '«طنین طب طاها» نمایش داده می‌شود');
 });
 
-test('v12.21.0: قفلِ order+DOM — CSS `order` هم با ترتیبِ لنگر بازنویسی می‌شود', () => {
+test('v12.22.0: قفلِ order+DOM — CSS `order` هم با ترتیبِ لنگر بازنویسی می‌شود', () => {
   const sc = pharmacyScene();
   sc.api.rebuildAllCanons();
   sc.api.enforceTab('tab-pharmacies');
@@ -636,7 +636,7 @@ test('v12.21.0: قفلِ order+DOM — CSS `order` هم با ترتیبِ لنگ
   assert.equal(kids[0].style.getPropertyValue('order'), '1');
 });
 
-test('v12.21.0: کلیدِ چیدمانِ خودِ باندل با همان ترتیب پر می‌شود تا نجنگد', () => {
+test('v12.22.0: کلیدِ چیدمانِ خودِ باندل با همان ترتیب پر می‌شود تا نجنگد', () => {
   const sc = pharmacyScene();
   sc.api.rebuildAllCanons();
   sc.api.enforceTab('tab-pharmacies');
@@ -654,7 +654,7 @@ test('v12.21.0: کلیدِ چیدمانِ خودِ باندل با همان تر
   assert.deepEqual(raw[key], domSeq.slice(0, raw[key].length));
 });
 
-test('v12.21.0: سرستون‌هایِ اکسل فارسی‌اند (dateAdded/fileName/managerPhone/repId)', () => {
+test('v12.22.0: سرستون‌هایِ اکسل فارسی‌اند (dateAdded/fileName/managerPhone/repId)', () => {
   const env = makeEnv();
   env.win.getUnifiedFieldList = () => [];
   const api = env.api;
@@ -678,7 +678,7 @@ test('v12.21.0: سرستون‌هایِ اکسل فارسی‌اند (dateAdded/
   assert.ok(!out.headers.some((h) => /همانه/.test(h)), 'غلطِ «همانه» اصلاح شد');
 });
 
-test('v12.21.0: طراح عددهایِ «واقعیِ» همان فیلد را نشان می‌دهد، نه ۲۲۰ برایِ همه', () => {
+test('v12.22.0: طراح عددهایِ «واقعیِ» همان فیلد را نشان می‌دهد، نه ۲۲۰ برایِ همه', () => {
   const sc = pharmacyScene();
   const inputs = {};
   ['colFieldSize', 'colFieldHeight', 'colGapBefore', 'colGapAfter', 'colRowNo', 'colFieldOrder', 'colFieldListOrder']
@@ -708,7 +708,7 @@ test('v12.21.0: طراح عددهایِ «واقعیِ» همان فیلد را 
   assert.equal(inputs.colRowNo.value, '3');
 });
 
-test('v12.21.0: منویِ همبرگری با ✕ بسته می‌شود و کشو بالایِ هدر است', () => {
+test('v12.22.0: منویِ همبرگری با ✕ بسته می‌شود و کشو بالایِ هدر است', () => {
   const env = makeEnv();
   env.win.getUnifiedFieldList = () => [];
   const drawer = env.node('div', { id: 'sideMenuDrawer', className: 'side-menu-drawer active' });
@@ -727,7 +727,7 @@ test('v12.21.0: منویِ همبرگری با ✕ بسته می‌شود و ک�
   assert.ok(drawerZ > 4600, 'کشو (' + drawerZ + ') بالایِ هدر (۴۶۰۰) است');
 });
 
-test('v12.21.0: «ارسال به رندر» از shim رد می‌شود و گزارشِ واقعیِ HTTP می‌دهد', () => {
+test('v12.22.0: «ارسال به رندر» از shim رد می‌شود و گزارشِ واقعیِ HTTP می‌دهد', () => {
   assert.match(layerSrc, /XMLHttpRequest/, 'درخواستِ خام، بیرون از shimِ crm-hub');
   assert.match(layerSrc, /syncToRenderSmart/, 'تابعِ هوشمندِ سینک');
   assert.match(layerSrc, /api\.php پاسخِ /, 'پیامِ خطایِ صادقانه با کدِ HTTP');
@@ -737,13 +737,79 @@ test('v12.21.0: «ارسال به رندر» از shim رد می‌شود و گ�
   assert.match(serverSrc, /\/api\/sync/, 'مسیرِ /api/sync رویِ سرورِ node وجود دارد');
 });
 
-test('v12.21.0: نسخه در همهٔ سطوح ۱۲.۲۱ است و لایه پس از باندل می‌آید', () => {
-  assert.equal(pkg.version, '12.21.0');
-  assert.match(indexSrc, /<script src="crm-v12\.21\.0\.js\?v=12\.21\.0"><\/script>/);
-  const layerAt = indexSrc.indexOf('crm-v12.21.0.js');
+test('v12.22.0: نسخه در همهٔ سطوح ۱۲.۲۱ است و لایه پس از باندل می‌آید', () => {
+  assert.equal(pkg.version, '12.22.0');
+  assert.match(indexSrc, /<script src="crm-v12\.22\.0\.js\?v=12\.22\.0"><\/script>/);
+  const layerAt = indexSrc.indexOf('crm-v12.22.0.js');
   const bundleAt = indexSrc.indexOf('crm-bundle.js');
   assert.ok(bundleAt > 0 && layerAt > bundleAt, 'لایه پس از باندل');
-  assert.match(bundle, /<li><b>12\.21\.0<\/b>/, 'بندِ تغییراتِ ۱۲.۲۱ در باندل');
+  assert.match(bundle, /<li><b>12\.22\.0<\/b>/, 'بندِ تغییراتِ ۱۲.۲۱ در باندل');
   assert.match(layerSrc, /window\.v1221Api = window\.v1220Api/, 'نامِ APIِ تازه هم در دسترس است');
   assert.match(layerSrc, /CRM_V12200_ANCHORS/, 'کلیدِ حافظهٔ لنگرها عوض نشده تا داده نپرد');
+});
+
+/* ════════════════ نوبت ۱۴۷ (12.22.0) ════════════════ */
+
+test('v12.22.0: هم‌فرکانس‌سازیِ متا — موتورِ باندل همان orderِ ما را حساب می‌کند (پایانِ پرش)', () => {
+  let saves = 0;
+  const sc = pharmacyScene({ saveState: () => { saves++; } });
+  sc.api.rebuildAllCanons();
+  sc.api.enforceTab('tab-pharmacies');
+
+  const meta = sc.win.state.formFieldMeta.pharmacy || {};
+  /* شمارهٔ خانهٔ نهاییِ هر گره در خودِ متا نوشته شد */
+  assert.equal(meta.pharmacyName && meta.pharmacyName.order, 1);
+  assert.equal(meta.pharmacyPhone && meta.pharmacyPhone.order, 2);
+  assert.equal(meta.pharmacyLat && meta.pharmacyLat.order, 3, 'کادرِ لوکیشن هم شماره گرفت تا باندل جابه‌جایش نکند');
+  assert.equal(meta['cf-pharmacy-1'] && meta['cf-pharmacy-1'].order, 4);
+  assert.ok(saves >= 1, 'تغییرِ متا ذخیره شد (saveState)');
+
+  /* شبیه‌سازیِ دقیقِ الگوریتمِ applySavedLayoutِ باندل */
+  const kids = sc.grid.children.filter((g) => g.classList.contains('form-group'));
+  const items = kids.map((g, i0) => {
+    const fid = sc.api.groupFidOf(g);
+    const m = meta[fid] || {};
+    const ord = Number(m.order);
+    return { g, order: (isFinite(ord) && ord >= 1) ? ord : 9999, i0 };
+  });
+  items.sort((a, b) => a.order - b.order);
+  items.forEach((it, i) => {
+    const vis = it.order < 9999 ? it.order : i + 1;
+    assert.equal(it.g.style.getPropertyValue('order'), String(vis),
+      'خروجیِ موتورِ باندل با خروجیِ لایه یکی است (گرهٔ ' + it.i0 + ')');
+  });
+
+  /* گذرِ دوم: هیچ تغییری (ثبات، بدونِ نوشتنِ مجدد) */
+  const before = saves;
+  const changed = sc.api.harmonizeMetaOrders('tab-pharmacies');
+  assert.equal(changed, 0, 'گذرِ دوم چیزی عوض نمی‌کند → جنگِ موتورها تمام');
+  assert.equal(saves, before);
+});
+
+test('v12.22.0: کادرِ ساعت/تاریخ بلندتر است و نشان‌های هدر میخکوب', () => {
+  assert.match(cssSrc, /\.crm-header-clock \{[\s\S]*?width: 302px;[\s\S]*?padding: 0\.42rem 0\.85rem;/, 'کادرِ ساعت بلندتر با پدینگ');
+  assert.match(cssSrc, /\.crm-header-clock \.crm-clock-time \{[\s\S]*?font-size: 1\.02rem;/, 'قلمِ ساعت بزرگ‌تر');
+  assert.match(cssSrc, /\.crm-header-clock \.crm-clock-date \{[\s\S]*?font-size: 0\.8rem;/, 'قلمِ تاریخ بزرگ‌تر');
+  assert.match(cssSrc, /#globalOnlineStatusBadge \{[\s\S]*?flex: 0 0 92px;/, 'نشانِ آنلاین میخکوب');
+  assert.match(cssSrc, /#btnNotificationBellHeader \{[\s\S]*?flex: 0 0 36px;/, 'زنگوله میخکوب');
+  /* پهنای بیرونی همچنان ثابت = بدون پرش */
+  assert.match(cssSrc, /\.crm-header-clock \{[\s\S]*?max-width: 302px;/);
+});
+
+test('v12.22.0: همهٔ لوگوها و آیکون‌ها با نشانِ تازهٔ طنین طب طاها یکی شدند', () => {
+  const logo = readFileSync(new URL('public/logo.png', root));
+  assert.ok(logo.length > 50000, 'لوگوی تازه موجود است (' + logo.length + ' بایت)');
+  ['favicon.png', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png',
+   'logo-full.png', 'logo-mark.png', 'logo-mark.jpg', 'logo-original.jpg', 'tanin.jpg',
+   'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-192.png', 'icons/maskable-512.png']
+    .forEach((f) => {
+      const b = readFileSync(new URL('public/' + f, root));
+      assert.equal(b.length, logo.length, 'هم‌ارز با لوگوی تازه: ' + f);
+      assert.ok(b.equals(logo), 'بایت‌به‌بایت همان نشان: ' + f);
+    });
+  assert.match(indexSrc, /<img src="logo\.png" alt="TENIN TEB TAHA" \/>/, 'هدر از logo.png استفاده می‌کند');
+  assert.match(indexSrc, /rel="icon"[^>]*favicon\.png/, 'فاویکون وصل است');
+  assert.match(indexSrc, /rel="manifest" href="manifest\.json"/, 'manifest وصل است');
+  const mani = JSON.parse(readFileSync(new URL('public/manifest.json', root), 'utf8'));
+  assert.ok(mani.icons.length >= 4, 'آیکون‌های manifest سرِ جایشان‌اند');
 });

@@ -1,4 +1,14 @@
 /* ============================================================================
+   crm-v12.22.0.js — لایهٔ پایانیِ نسخهٔ 12.22.0 (نوبت ۱۴۷)
+   ----------------------------------------------------------------------------
+   ۱۱) پایانِ «پرشِ زیاد»: `harmonizeMetaOrders` شمارهٔ خانهٔ نهاییِ هر گره را در
+       خودِ `formFieldMeta` می‌نویسد تا `applySavedLayout`ِ باندل همان عددها را
+       حساب کند — دو موتور، یک خروجی، صفر جنگِ `order`.
+   ۱۲) کادرِ ساعت/تاریخ بلندتر و خواناتر (پدینگ و قلمِ بزرگ‌تر، پهنایِ ثابت).
+   ۱۳) میخکوب‌کردنِ عرضِ نشان‌هایِ پویایِ هدر (آنلاین/آفلاین، زنگوله، نامِ کاربر).
+   ۱۴) همهٔ لوگوها/آیکون‌ها (logo.png، favicon، apple-touch، icons/*، manifest)
+       با نشانِ تازهٔ «طنین طب طاها» جایگزین شدند.
+   ----------------------------------------------------------------------------
    crm-v12.21.0.js — لایهٔ پایانیِ نسخهٔ 12.21.0 (نوبت ۱۴۶)
    ----------------------------------------------------------------------------
    افزوده‌هایِ این نوبت بر پایهٔ ۱۲.۲۰:
@@ -45,7 +55,7 @@
   if (window.__CRM_V12200) return;
   window.__CRM_V12200 = true;
 
-  var VER = String(window.CRM_APP_VERSION || "12.21.0");
+  var VER = String(window.CRM_APP_VERSION || "12.22.0");
 
   var TAB_KEY = {
     "tab-pharmacies": "pharmacy",
@@ -301,6 +311,62 @@
     } catch (e) { return ""; }
   }
 
+  /* ───────────────── ۶٫۵) هم‌فرکانس‌سازی با موتورِ چیدمانِ باندل (پایانِ پرش) ─────────────────
+     ریشهٔ «پرشِ زیاد»: دو موتور روی یک ویژگیِ CSS (`order`) عددِ «متفاوت» می‌نوشتند —
+     باندل از `meta.order` (یا i+1) و ما از ترتیبِ لنگر — و هر نوشتن، دیگری را
+     تحریک می‌کرد → میدانِ فیلدها هر چند ثانیه یک‌بار جابه‌جا می‌شد.
+     راه‌حل: شمارهٔ خانهٔ نهاییِ هر گره را در خودِ `formFieldMeta` می‌نویسیم تا
+     `applySavedLayout`ِ باندل «همان» عددها را حساب کند؛ دو موتور، یک خروجی، صفر پرش. */
+  function groupFidOf(g) {
+    try {
+      var d = g && g.getAttribute ? g.getAttribute("data-col-fid") : null;
+      if (d) return d;
+      var els = g && g.querySelectorAll ? g.querySelectorAll("input[id],select[id],textarea[id]") : [];
+      for (var i = 0; i < els.length; i++) {
+        var t = String(els[i].getAttribute && els[i].getAttribute("type") || "").toLowerCase();
+        if (t === "hidden") continue;
+        if (els[i].id) return els[i].id;
+      }
+      return "";
+    } catch (e) { return ""; }
+  }
+
+  function harmonizeMetaOrders(tabId) {
+    var key = TAB_KEY[tabId];
+    if (!key) return 0;
+    var grid = mainGrid(tabId);
+    if (!grid) return 0;
+    var canon = allCanons()[gridKey(tabId, grid)];
+    if (!canon || !canon.length) return 0;
+    var kids = kidsOf(grid);
+    var byAnchor = {};
+    kids.forEach(function (k) { var a = anchorOf(k); if (a && byAnchor[a] == null) byAnchor[a] = k; });
+    var desired = [];
+    canon.forEach(function (a) { if (byAnchor[a]) desired.push(byAnchor[a]); });
+    if (desired.length < 2) return 0;
+    var inCanon = {};
+    canon.forEach(function (a) { inCanon[a] = 1; });
+    var extras = kids.filter(function (k) { var a = anchorOf(k); return a && !inCanon[a]; });
+    var full = desired.concat(extras);
+
+    var S0 = window.state;
+    if (!S0) return 0;
+    S0.formFieldMeta = S0.formFieldMeta || {};
+    S0.formFieldMeta[key] = S0.formFieldMeta[key] || {};
+    var meta = S0.formFieldMeta[key];
+    var changed = 0;
+    for (var i = 0; i < full.length; i++) {
+      var fid = groupFidOf(full[i]);
+      if (!fid) continue;
+      var m = meta[fid] || (meta[fid] = {});
+      if (num(m.order, 0) !== i + 1) { m.order = i + 1; changed += 1; }
+    }
+    if (changed && typeof window.saveState === "function") {
+      try { window.saveState(); } catch (eSv) {}
+    }
+    return changed;
+  }
+
   function bundleGridKey(grid, tabId) {
     try {
       if (grid.id) return "grid:" + grid.id;
@@ -379,6 +445,7 @@
       }
     }
     moved += applyCanon(grid, canon);
+    try { harmonizeMetaOrders(tabId); } catch (eH) {}
     try { syncManagerOrderKey(tabId); } catch (eS) {}
     return moved;
   }
@@ -1603,6 +1670,8 @@
     paintSettings: paintSettings,
     paintAll: paintAll,
     syncManagerOrderKey: syncManagerOrderKey,
+    harmonizeMetaOrders: harmonizeMetaOrders,
+    groupFidOf: groupFidOf,
     applyRealDesignerValues: applyRealDesignerValues,
     faHeader: faHeader,
     clockDate: clockDate,
