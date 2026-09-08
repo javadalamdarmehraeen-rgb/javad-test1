@@ -89,3 +89,8 @@ public/crm-live-bulk.json
 
 # ابزارهای تحویل (زیپ و سرور دانلود) — در مخزن ثبت نمی‌شوند
 /.delivery/
+
+# v12.20.0 — فایلِ دادهٔ زمانِ اجرا (گاوصندوقِ تنظیمات) هرگز در ریپو نمی‌رود
+settings-vault.json
+crm-settings-vault.json
+public/crm-settings-vault.json
