@@ -2738,3 +2738,86 @@ html.crm-booting body {
   .crm1216-pick .crm1215-item .btn { margin-inline-start: 0; width: 100%; }
   .crm1216-sms-num { flex-wrap: wrap; }
 }
+
+/* ============================================================================
+   v12.19.0 — ساعت و تاریخِ بالای صفحه + نسخهٔ برنامه بالای کادرِ آبی
+   + «قفلِ چیدمان» (عرضِ ثابت = بدونِ پرشِ صفحه هنگامِ تپشِ ثانیه‌شمار)
+   ============================================================================ */
+.crm-header-clock {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;                       /* فاصلهٔ کم میانِ ساعت و تاریخ */
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  font-weight: 800;
+  font-size: 0.82rem;
+  color: #ffffff;
+  white-space: nowrap;
+  /* اندازهٔ ثابت: تغییرِ رقم‌ها هیچ بخشی از صفحه را جابه‌جا نمی‌کند */
+  min-width: 292px;
+  box-sizing: border-box;
+  contain: layout style;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+.crm-clock-time {
+  min-width: 62px;
+  display: inline-block;
+  text-align: center;
+  direction: ltr;
+  letter-spacing: 0.4px;
+}
+.crm-clock-sep {
+  display: inline-block;
+  width: 1px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.55);
+  align-self: center;
+  flex: 0 0 auto;
+}
+.crm-clock-date {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.78rem;
+  font-weight: 700;
+  opacity: 0.95;
+}
+
+/* ستونِ «نسخهٔ برنامه» بالای «کادرِ آبی‌رنگِ وضعیت» */
+.crm-header-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 3px;
+}
+.crm-header-stack #crmBuildBadge {
+  background: #ffffff;
+  border: 1px solid #99f6e4;
+  border-radius: 999px;
+  padding: 1px 10px;
+  text-align: center;
+  white-space: nowrap;
+  min-width: 108px;
+  box-sizing: border-box;
+}
+
+/* «جای فیلد در صفحه = زیرِ هم» در همهٔ گریدهای فرم (نه فقط فرمِ انعطاف‌پذیر) */
+.form-grid > .form-group.col-place-under {
+  grid-column: 1 / -1 !important;
+}
+
+@media (max-width: 900px) {
+  .crm-header-clock {
+    min-width: 0;
+    width: 100%;
+    font-size: 0.74rem;
+    padding: 0.22rem 0.6rem;
+    order: 3;
+  }
+  .crm-header-stack { width: 100%; }
+  .crm-header-stack #crmBuildBadge { min-width: 0; font-size: 11px !important; }
+  .crm-clock-date { font-size: 0.7rem; }
+}
