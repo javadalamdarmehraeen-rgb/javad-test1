@@ -1,4 +1,22 @@
 /* ============================================================================
+   crm-v12.21.0.js — لایهٔ پایانیِ نسخهٔ 12.21.0 (نوبت ۱۴۶)
+   ----------------------------------------------------------------------------
+   افزوده‌هایِ این نوبت بر پایهٔ ۱۲.۲۰:
+   ۵) تاریخِ شمسیِ دست‌ساز (بدونِ «1,405» و بدونِ پرش) + پهنایِ ثابتِ کادرِ ساعت
+      + بازگشتِ «طنین طب طاها» به هدر.
+   ۶) پایانِ «فیلدها هنوز زیرِ کادرها می‌روند»: چون `applySavedLayoutV82` رویِ هر
+      گروه CSS `order` می‌گذارد و `order` بر ترتیبِ DOM غلبه می‌کند، حالا هم
+      `order` با ترتیبِ لنگر بازنویسی می‌شود و هم کلیدِ خودِ باندل
+      (CRM_MANAGER_GRID_ORDER_V2) با همان ترتیب پر می‌شود تا نجنگیم.
+   ۷) طراحِ «ستون‌ها و کالاها» عددهایِ «واقعیِ» همان فیلد را نشان می‌دهد
+      (عرض/ارتفاعِ اندازه‌گیری‌شده، فاصلهٔ میلی‌متریِ رویِ صفحه، سطرِ واقعی،
+      ترتیبِ واقعی) نه عددِ پیش‌فرضِ ۲۲۰.
+   ۸) بستنِ منویِ همبرگری با ✕ (z-indexِ کشو بالایِ هدر + بستنِ قطعی در JS).
+   ۹) «ارسال به رندر»: وضعیتِ واقعیِ HTTP + ارسالِ مستقیمِ مرورگر به هاب‌ها.
+   ۱۰) سرستون‌هایِ اکسل همه فارسی (سرستونِ لاتین ممنوع) + اصلاحِ «همانه»→«همراه».
+   ---------------------------------------------------------------------------
+   (۱ تا ۴ همانِ نوبتِ ۱۴۵: قفلِ لنگر، ایتم‌هایِ طراح، هدرِ فشرده، گاوصندوقِ تنظیمات)
+   ----------------------------------------------------------------------------
    crm-v12.20.0.js — لایهٔ پایانیِ نسخهٔ 12.20.0 (نوبت ۱۴۵)
    ----------------------------------------------------------------------------
    این فایل «آخرین» اسکریپتِ برنامه است (پس از crm-bundle.js). چهار مشکلِ گزارشِ
@@ -27,7 +45,7 @@
   if (window.__CRM_V12200) return;
   window.__CRM_V12200 = true;
 
-  var VER = String(window.CRM_APP_VERSION || "12.20.0");
+  var VER = String(window.CRM_APP_VERSION || "12.21.0");
 
   var TAB_KEY = {
     "tab-pharmacies": "pharmacy",
@@ -262,7 +280,58 @@
       ref = node;
       moves += 1;
     }
+
+    /* ★ ریشهٔ «فیلدها هنوز به زیرِ کادرها می‌روند»: `applySavedLayoutV82` در باندل
+       روی هر گروه `order` می‌گذارد (از meta یا i+1) و در CSS همان `order` بر ترتیبِ
+       DOM غلبه می‌کند. پس اینجا همان شماره‌ها را با ترتیبِ لنگر بازنویسی می‌کنیم تا
+       «ترتیبِ DOM» و «order» یکی شوند و هیچ موتورِ دیگری نتواند ظاهر را عوض کند. */
+    for (var k = 0; k < full.length; k++) {
+      setStyle(full[k], "order", k + 1, "important");
+    }
     return moves;
+  }
+
+  /* کلیدِ چیدمانِ خودِ باندل (CRM_MANAGER_GRID_ORDER_V2) را با همان ترتیبِ لنگر
+     پر می‌کنیم تا `restoreDomFieldOrder` همان را ببیند و با ما نجنگد. */
+  function bundleAnchor(g) {
+    try {
+      var e = g && g.querySelector ? g.querySelector("input[id],select[id],textarea[id],button[id]") : null;
+      if (e && e.id) return e.id;
+      return (g && g.id) || "";
+    } catch (e) { return ""; }
+  }
+
+  function bundleGridKey(grid, tabId) {
+    try {
+      if (grid.id) return "grid:" + grid.id;
+      var form = grid.closest ? grid.closest("form[id]") : null;
+      if (form && form.id) return "form:" + form.id;
+    } catch (e) {}
+    return "pane:" + tabId + ":0";
+  }
+
+  function syncManagerOrderKey(tabId) {
+    var grid = mainGrid(tabId);
+    if (!grid) return 0;
+    var canon = allCanons()[gridKey(tabId, grid)];
+    if (!canon || !canon.length) return 0;
+    var byAnchor = {};
+    kidsOf(grid).forEach(function (k) { var a = anchorOf(k); if (a && byAnchor[a] == null) byAnchor[a] = k; });
+    var seq = [];
+    canon.forEach(function (a) {
+      var n = byAnchor[a];
+      if (!n) return;
+      var ba = bundleAnchor(n);
+      if (ba && seq.indexOf(ba) < 0) seq.push(ba);
+    });
+    if (seq.length < 2) return 0;
+    var raw = readJson("CRM_MANAGER_GRID_ORDER_V2", {}) || {};
+    var key = bundleGridKey(grid, tabId);
+    var prev = raw[key];
+    if (prev && prev.length === seq.length && prev.every(function (v, i) { return v === seq[i]; })) return 0;
+    raw[key] = seq;
+    writeJson("CRM_MANAGER_GRID_ORDER_V2", raw);
+    return 1;
   }
 
   /* فیلدِ سفارشی که داخلِ ظرفِ قدیمی ساخته شده، به گریدِ اصلی می‌آید تا شمارهٔ ترتیب کار کند */
@@ -310,6 +379,7 @@
       }
     }
     moved += applyCanon(grid, canon);
+    try { syncManagerOrderKey(tabId); } catch (eS) {}
     return moved;
   }
 
@@ -542,18 +612,51 @@
     } catch (e) { return null; }
   }
 
+  /* تاریخِ شمسیِ «دست‌ساز»: از formatToParts می‌سازیم تا
+     ۱) جداکنندهٔ هزارگان («٬» که قانونِ رقمِ لاتینِ باندل آن را «,» می‌کند و
+        سال می‌شود «1,405») هرگز نیفتد،
+     ۲) رشته همیشه یک شکل و یک پهنا باشد → پرشِ چیدمان ممکن نباشد. */
+  var FA_MONTHS = ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور",
+    "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"];
+  var FA_WEEKDAYS = ["یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه"];
+
+  function cleanNum(s) {
+    return fa2la(String(s == null ? "" : s)).replace(/[\u066C\u066B,،\u200F\u200E]/g, "").trim();
+  }
+
+  function clockDate(now) {
+    now = now || new Date();
+    var p = {};
+    try {
+      var f = new Intl.DateTimeFormat("fa-IR-u-ca-persian-nu-latn", {
+        weekday: "long", day: "numeric", month: "numeric", year: "numeric"
+      });
+      var parts = f.formatToParts(now);
+      for (var i = 0; i < parts.length; i++) p[parts[i].type] = parts[i].value;
+    } catch (e) { p = {}; }
+
+    var day = cleanNum(p.day);
+    var mon = parseInt(cleanNum(p.month), 10);
+    var year = cleanNum(p.year);
+    var wd = String(p.weekday || "").replace(/[\u200F\u200E]/g, "").trim();
+    if (!wd) { try { wd = FA_WEEKDAYS[now.getDay()]; } catch (e2) { wd = ""; } }
+    var monthName = (mon >= 1 && mon <= 12) ? FA_MONTHS[mon - 1] : cleanNum(p.month);
+    if (!day || !monthName || !year) {
+      /* راهِ پشتیبان: بدونِ جداکنندهٔ هزارگان */
+      try {
+        return fa2la(now.toLocaleDateString("en-GB")).replace(/[,،]/g, " ");
+      } catch (e3) { return ""; }
+    }
+    return wd + " " + day + " " + monthName + " " + year;
+  }
+
   function tickClock() {
     try {
       var t = $("crmClockTime"), d = $("crmClockDate");
       if (!t || !d) { buildTopBar(); return; }
       var now = new Date();
-      var time = fa2la(now.toLocaleTimeString("en-GB", { hour12: false }));
-      var date;
-      try {
-        date = fa2la(now.toLocaleDateString("fa-IR", {
-          weekday: "long", year: "numeric", month: "long", day: "numeric"
-        }));
-      } catch (eD) { date = fa2la(now.toLocaleDateString("en-GB")); }
+      var time = cleanNum(now.toLocaleTimeString("en-GB", { hour12: false }));
+      var date = clockDate(now);
       /* فقط وقتی متن عوض شده بنویس؛ نوشتنِ بی‌اثر هم ناظرهایِ چیدمان را بیدار می‌کند */
       if (t.textContent !== time) t.textContent = time;
       if (d.textContent !== date) d.textContent = date;
@@ -812,10 +915,64 @@
   }
 
   /* ───────────────── ۶) خروجیِ اکسلِ کاملِ تب ───────────────── */
+  /* قانونِ نوبتِ ۱۴۶: «سرستونِ لاتین ممنوع» — هر کلیدِ رکورد به فارسی برمی‌گردد. */
+  var FA_HEADER = {
+    name: "نام", fullName: "نام و نام خانوادگی", pharmacyName: "نام داروخانه", doctorName: "نام پزشک",
+    repName: "نام نماینده علمی", rep: "نماینده علمی", repId: "شناسهٔ نماینده",
+    phone: "تلفن", mobile: "همراه", tel: "تلفن", managerPhone: "تلفن مدیر", orderManagerPhone: "تلفن مدیر سفارش",
+    province: "استان", city: "شهر", district: "منطقه", address: "آدرس", plate: "پلاک", floor: "طبقه",
+    type: "نوع", specialty: "تخصص", kind: "گونه", status: "وضعیت", priority: "اولویت", notes: "توضیحات",
+    manager: "مدیر", orderManager: "مدیر سفارش", isPercentage: "درصدی", percentage: "درصد",
+    lat: "عرض جغرافیایی", lng: "طول جغرافیایی", latitude: "عرض جغرافیایی", longitude: "طول جغرافیایی",
+    dateAdded: "تاریخ افزودن", createdAt: "تاریخ ثبت", updatedAt: "آخرین ویرایش", savedAt: "تاریخ ذخیره",
+    orderDate: "تاریخ سفارش", visitDate: "تاریخ ویزیت", lastVisit: "آخرین ویزیت", date: "تاریخ",
+    fileName: "نام فایل", file: "فایل", filePath: "مسیر فایل", photo: "تصویر",
+    totalAmount: "مبلغ کل (ریال)", amount: "مبلغ", price: "قیمت", count: "تعداد", items: "اقلام",
+    giftCount: "تعداد جایزه", discount: "تخفیف", creditLevel: "درجهٔ اعتبار", contractType: "نوع قرارداد",
+    nationalCode: "کد ملی", email: "رایانامه", website: "وب‌سایت", instagram: "اینستاگرام",
+    username: "نام کاربری", role: "نقش", id: "شناسه", code: "کد", label: "عنوان", value: "مقدار",
+    owner: "مالک", supervisor: "سرپرست", region: "ناحیه", route: "مسیر", home: "منزل",
+    shelf: "قفسه", fridge: "یخچال", box: "کادر", product: "کالا", productName: "نام کالا",
+    qty: "تعداد", unit: "واحد", unitPrice: "قیمت واحد", gift: "جایزه", total: "جمع",
+    _tomb12183: "", _updatedAt: "", _dataGen: "", _schemaVersion: "", _sharedRev: "", _sharedAt: ""
+  };
+  var FA_DIGITS = ["۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹", "۱۰"];
+  var FA_TOKEN = {
+    name: "نام", phone: "تلفن", mobile: "همراه", date: "تاریخ", added: "ثبت", time: "ساعت",
+    file: "فایل", manager: "مدیر", rep: "نماینده", id: "شناسهٔ", code: "کد", level: "سطح",
+    credit: "اعتبار", contract: "قرارداد", type: "نوع", count: "تعداد", price: "قیمت",
+    amount: "مبلغ", total: "جمع", order: "سفارش", product: "کالا", user: "کاربر", city: "شهر",
+    province: "استان", address: "آدرس", status: "وضعیت", note: "توضیح", notes: "توضیحات",
+    created: "ایجاد", updated: "ویرایش", at: "", lat: "عرض جغرافیایی", lng: "طول جغرافیایی",
+    gift: "جایزه", percent: "درصد", percentage: "درصدی", doctor: "پزشک", pharmacy: "داروخانه",
+    visit: "ویزیت", last: "آخرین", first: "اولین", unit: "واحد", shelf: "قفسه", box: "کادر",
+    national: "ملی", email: "رایانامه", web: "وب", site: "سایت", phone2: "تلفن ۲", role: "نقش"
+  };
+
+  function faHeader(key) {
+    var k = String(key == null ? "" : key);
+    if (!k) return "";
+    if (FA_HEADER[k] != null) return FA_HEADER[k];
+    try {
+      var m = window.FA_FIELD_LABELS || window.FA_LABELS;
+      if (m && m[k]) return String(m[k]);
+    } catch (e) {}
+    /* ساختِ برچسبِ فارسی از تکه‌هایِ کلید (orderManagerPhone → تلفن مدیر سفارش) */
+    var parts = k.replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase().split(/[\s_\-.]+/).filter(Boolean);
+    var fa = [];
+    for (var i = parts.length - 1; i >= 0; i--) {
+      var t = FA_TOKEN[parts[i]];
+      if (t) fa.push(t);
+      else if (fa.length) fa.push(parts[i]);
+      else return "";
+    }
+    return fa.length ? fa.join(" ") : "";
+  }
+
   var EXPORT_BASE = {
     pharmacy: {
       file: "pharmacies-full-export.csv", arr: "pharmacies", tab: "tab-pharmacies",
-      cols: [["name", "نام داروخانه"], ["phone", "تلفن"], ["mobile", "همانه"], ["province", "استان"], ["city", "شهر"], ["district", "منطقه"], ["address", "آدرس"], ["plate", "پلاک"], ["floor", "طبقه"], ["type", "نوع"], ["specialty", "تخصص"], ["repName", "نماینده علمی"], ["isPercentage", "درصدی"], ["createdAt", "تاریخ ثبت"]]
+      cols: [["name", "نام داروخانه"], ["phone", "تلفن"], ["mobile", "همراه"], ["province", "استان"], ["city", "شهر"], ["district", "منطقه"], ["address", "آدرس"], ["plate", "پلاک"], ["floor", "طبقه"], ["type", "نوع"], ["specialty", "تخصص"], ["repName", "نماینده علمی"], ["isPercentage", "درصدی"], ["createdAt", "تاریخ ثبت"]]
     },
     doctor: {
       file: "doctors-full-export.csv", arr: "doctors", tab: "tab-doctors",
@@ -923,7 +1080,23 @@
       }
     });
     extra.sort(function (a, b) { return String(a).localeCompare(String(b), "fa"); });
-    extra.forEach(function (k) { headers.push(k.indexOf("cf:") === 0 ? k.slice(3) : k); });
+    var seenHeader = {};
+    headers.forEach(function (h) { seenHeader[h] = 1; });
+    var finalExtra = [];
+    extra.forEach(function (k) {
+      var h, baseHeader;
+      if (k.indexOf("cf:") === 0) { h = k.slice(3); }
+      else { h = faHeader(k) || k; }      /* سرستونِ لاتین ممنوع */
+      baseHeader = h;
+      /* سرستونِ هم‌نام → با عددِ فارسی جدا می‌شود، نه با کلیدِ لاتین */
+      var dup = 1;
+      while (seenHeader[h]) { dup += 1; h = baseHeader + " " + FA_DIGITS[dup - 1]; }
+      void 0;
+      seenHeader[h] = 1;
+      finalExtra.push({ key: k, header: h });
+      headers.push(h);
+    });
+    extra = finalExtra.map(function (x) { return x.key; });
 
     var rows = recs.map(function (r) {
       var out = [];
@@ -939,6 +1112,12 @@
       return out;
     });
 
+    /* اگر کلیدی فارسی نشد، در کنسول گزارش می‌شود تا برچسبش را اضافه کنیم */
+    try {
+      var latin = headers.filter(function (h) { return /[A-Za-z]/.test(String(h)); });
+      if (latin.length) console.warn("⚠️ v1221 سرستونِ بی‌برچسبِ فارسی (به من بگویید تا اضافه کنم): " + latin.join(" | "));
+      console.log("📊 v1221 خروجیِ کاملِ " + cfg.label + ": " + rows.length + " رکورد × " + headers.length + " ستون");
+    } catch (eL) {}
     return { file: cfg.file, headers: headers, rows: rows, count: recs.length };
   }
 
@@ -958,6 +1137,225 @@
     try {
       return String((inp.getAttribute && inp.getAttribute("data-custom-field-id")) || inp.id || "");
     } catch (e) { return ""; }
+  }
+
+  /* ───────────────── ۷) عددهایِ واقعیِ همان فیلد در طراح ─────────────────
+     شکایت: «برایِ همهٔ فیلدها عرض را ۲۲۰ نشان می‌دهد» — چون `fillDesignerForm`
+     فقط مقدارِ «ذخیره‌شده» را می‌خواند و اگر مدیر هیچ‌وقت آن فیلد را ویرایش
+     نکرده باشد meta خالی است و عددِ پیش‌فرض می‌آید. حالا عددِ واقعیِ رویِ صفحه
+     اندازه‌گیری و نشان داده می‌شود. */
+  function pxToMm(px) {
+    var n = num(px, 0);
+    if (!(n > 0)) return 0;
+    return Math.round((n * 25.4 / 96) * 10) / 10;
+  }
+
+  function measureBox(el) {
+    try {
+      if (el && typeof el.getBoundingClientRect === "function") {
+        var r = el.getBoundingClientRect();
+        return { w: Math.round(r.width || 0), h: Math.round(r.height || 0) };
+      }
+    } catch (e) {}
+    return { w: 0, h: 0 };
+  }
+
+  function computedOf(el, prop) {
+    try {
+      if (typeof window.getComputedStyle !== "function" || !el) return "";
+      var cs = window.getComputedStyle(el);
+      return String((cs && (cs.getPropertyValue ? cs.getPropertyValue(prop) : cs[prop])) || "");
+    } catch (e) { return ""; }
+  }
+
+  function setDesignerValue(id, val) {
+    var el = $(id);
+    if (!el) return 0;
+    var want = String(val == null ? "" : val);
+    if (String(el.value || "") === want) return 0;
+    try { el.value = want; } catch (e) { return 0; }
+    return 1;
+  }
+
+  function editingField(tab) {
+    var f = window._editingColField;
+    if (f && f.id) return f;
+    var labelInp = $("colFieldLabel");
+    var label = labelInp ? String(labelInp.value || "").trim() : "";
+    if (!label) return null;
+    var list = listOf(tab);
+    for (var i = 0; i < list.length; i++) {
+      if (String(list[i].label || "").trim() === label) return list[i];
+    }
+    return null;
+  }
+
+  function applyRealDesignerValues() {
+    var tab = String(window._activeColTab || "");
+    if (!tab || !TAB_KEY[tab]) return 0;
+    var f = editingField(tab);
+    if (!f) return 0;
+    var g = groupOfField(tab, f);
+    if (!g) return 0;
+    var inp = fieldInput(g) || g;
+    var n = 0;
+
+    /* عرض و ارتفاعِ واقعیِ همان فیلد (اگر مدیر عددی ذخیره نکرده باشد) */
+    var savedW = num(f.size, 0), savedH = num(f.height, 0);
+    var box = measureBox(inp);
+    var groupBox = measureBox(g);
+    if (!(savedW > 40) && box.w > 40) n += setDesignerValue("colFieldSize", box.w);
+    if (!(savedH > 20) && box.h > 10) n += setDesignerValue("colFieldHeight", box.h);
+
+    /* فاصلهٔ میلی‌متریِ واقعیِ همین حالا رویِ صفحه */
+    var savedGb = num(f.gapBeforeMm, 0), savedGa = num(f.gapAfterMm, 0);
+    if (!(savedGb > 0)) {
+      var mb = parseFloat(computedOf(g, "margin-inline-start") || computedOf(g, "margin-right")) || 0;
+      n += setDesignerValue("colGapBefore", pxToMm(mb));
+    }
+    if (!(savedGa > 0)) {
+      var ma = parseFloat(computedOf(g, "margin-inline-end") || computedOf(g, "margin-left")) || 0;
+      n += setDesignerValue("colGapAfter", pxToMm(ma));
+    }
+
+    /* شمارهٔ سطرِ واقعی (از grid-row) */
+    if (!(num(f.rowNo, 0) > 0)) {
+      var gr = parseInt(computedOf(g, "grid-row-start"), 10);
+      if (isFinite(gr) && gr > 0) n += setDesignerValue("colRowNo", gr);
+    }
+
+    /* شمارهٔ ترتیبِ واقعیِ همان فیلد در فرم و در لیست */
+    if (!(num(f.order, 0) > 0)) {
+      var grid = mainGrid(tab);
+      var canon = grid ? (allCanons()[gridKey(tab, grid)] || []) : [];
+      var byAnchor = {};
+      if (grid) kidsOf(grid).forEach(function (k) { var a = anchorOf(k); if (a && byAnchor[a] == null) byAnchor[a] = k; });
+      var pos = 0;
+      for (var i = 0; i < canon.length; i++) {
+        var node = byAnchor[canon[i]];
+        if (!node || !isSingleFieldNode(node)) continue;
+        pos += 1;
+        if (node === g) { n += setDesignerValue("colFieldOrder", pos); break; }
+      }
+    }
+    if (!(num(f.listOrder, 0) > 0)) {
+      var list = listOf(tab);
+      var byList = list.slice().sort(function (a, b) {
+        return num(a.listOrder, num(a.order, 999)) - num(b.listOrder, num(b.order, 999));
+      });
+      for (var j = 0; j < byList.length; j++) {
+        if (String(byList[j].id) === String(f.id)) { n += setDesignerValue("colFieldListOrder", j + 1); break; }
+      }
+    }
+    return n;
+  }
+
+  /* ───────────────── ۸) بستنِ منویِ همبرگری ─────────────────
+     شکایت: «ضربدر منوی همبرگری را می‌زنم، منو بسته نمی‌شود».
+     ریشه: در صفحهٔ باریک `.app-header` با `z-index:4600!important` «بالای»
+     کشویِ منو (`z-index:3000`) می‌نشیند، پس کلیک رویِ ✕ به هدر می‌رسد.
+     هم سبک را درست کردیم و هم اینجا بستنِ قطعی را خودمان انجام می‌دهیم. */
+  function forceCloseSideMenu() {
+    try {
+      if (typeof window.closeSideMenu === "function") window.closeSideMenu();
+    } catch (e) {}
+    try {
+      var d = $("sideMenuDrawer"), o = $("sideMenuOverlay");
+      if (d && d.classList) {
+        d.classList.remove("active");
+        d.style.transform = ""; d.style.webkitTransform = ""; d.style.right = "";
+      }
+      if (o && o.classList) { o.classList.remove("active"); o.style.display = "none"; }
+      if (document.body && document.body.classList) document.body.classList.remove("v90-drawer-open");
+    } catch (e2) {}
+  }
+
+  /* ───────────────── ۹) «ارسال به رندر» با گزارشِ صادقانه ─────────────────
+     «ارسال نشد: sync-local-only» یعنی درخواست به `/api/sync` رویِ هاستِ PHP
+     نرسیده/ناموفق بوده و shimِ crm-hub پاسخِ ساختگی داده است. اینجا با
+     XMLHttpRequest (بیرون از shim) وضعیتِ «واقعی» HTTP گرفته می‌شود و اگر
+     relayِ هاست کار نکرد، داده مستقیم از مرورگر به رندر فرستاده می‌شود. */
+  function rawRequest(method, url, body, cb) {
+    try {
+      var x = new XMLHttpRequest();
+      x.open(method, url, true);
+      x.setRequestHeader("X-CRM-Request", "1");
+      x.setRequestHeader("X-CRM-Sync", "v12183");
+      if (body != null) x.setRequestHeader("Content-Type", "application/json");
+      x.timeout = 20000;
+      x.onload = function () {
+        var j = null;
+        try { j = JSON.parse(String(x.responseText || "null")); } catch (e) {}
+        cb({ ok: x.status >= 200 && x.status < 300, status: x.status, j: j });
+      };
+      x.onerror = function () { cb({ ok: false, status: 0, j: null }); };
+      x.ontimeout = function () { cb({ ok: false, status: 0, j: { message: "زمان تمام شد (۲۰ ثانیه)" } }); };
+      x.send(body == null ? null : body);
+    } catch (e) { cb({ ok: false, status: 0, j: { message: String(e && e.message || e) } }); }
+  }
+
+  function stateBody() {
+    try {
+      var S = window.state || {};
+      if (typeof window.serializeStateForLocalStorage === "function") return window.serializeStateForLocalStorage(S);
+      return JSON.stringify(S);
+    } catch (e) { return "{}"; }
+  }
+
+  function hubHosts() {
+    var out = [];
+    try {
+      var rt = window.CRM_RUNTIME || {};
+      (rt.hubs || []).forEach(function (h) { if (h) out.push(String(h).replace(/\/+$/, "")); });
+    } catch (e) {}
+    ["https://javad-test1.onrender.com", "https://mehraeinpharma.ir", "https://ndcohub.com"].forEach(function (h) {
+      if (out.indexOf(h) < 0) out.push(h);
+    });
+    try {
+      var same = window.location && window.location.origin ? String(window.location.origin) : "";
+      return out.filter(function (h) { return h !== same; });
+    } catch (e2) { return out; }
+  }
+
+  function pushDirectToHubs(done) {
+    var hosts = hubHosts();
+    var body = stateBody();
+    var results = [];
+    var i = 0;
+    function step() {
+      if (i >= hosts.length) { done(results); return; }
+      var h = hosts[i++];
+      rawRequest("POST", h + "/api/state", body, function (r) {
+        results.push({ host: h, ok: r.ok, status: r.status, msg: (r.j && (r.j.message || r.j.status)) || "" });
+        step();
+      });
+    }
+    step();
+  }
+
+  function syncToRenderSmart(statusEl) {
+    function say(t) { try { if (statusEl) statusEl.textContent = t; } catch (e) {} }
+    say("در حال ارسال…");
+    rawRequest("GET", "/api/sync?target=render", null, function (r) {
+      if (r.ok && r.j && (r.j.status === "success" || r.j.ok === true)) {
+        say("✅ ارسال شد به " + (r.j.target || "رندر") + " (HTTP " + r.status + ")");
+        return;
+      }
+      var why = r.status === 0
+        ? "درخواست به /api/sync نرسید (شبکه/مسیرِ api.php)"
+        : ("api.php پاسخِ " + r.status + " داد" + (r.j && r.j.message ? " — " + r.j.message : ""));
+      say("⚠️ " + why + " — در حالِ ارسالِ مستقیم به رندر…");
+      pushDirectToHubs(function (res) {
+        var okOnes = res.filter(function (x) { return x.ok; });
+        if (okOnes.length) {
+          say("✅ مستقیم ارسال شد: " + okOnes.map(function (x) { return x.host.replace(/^https?:\/\//, "") + " (HTTP " + x.status + ")"; }).join("، "));
+        } else {
+          say("❌ ارسال نشد. " + why + " | مستقیم هم نشد: " +
+            res.map(function (x) { return x.host.replace(/^https?:\/\//, "") + ":" + (x.status || x.msg || "خطا"); }).join("، ") +
+            " — api.php را در public_html آپلود کنید یا اتصالِ دامنه به رندر را بررسی کنید.");
+        }
+      });
+    });
   }
 
   /* ───────────────── راه‌اندازی ───────────────── */
@@ -1085,6 +1483,51 @@
       }, true);
     } catch (eEX) {}
 
+    /* طراحِ «ستون‌ها و کالاها»: عددهایِ واقعیِ همان فیلد نمایش داده شود */
+    try {
+      document.addEventListener("click", function (e) {
+        var t = e.target;
+        if (!t || !t.closest) return;
+        if (!t.closest("#colFieldList,#columnsDesignerHost,[data-act='edit'],.col-edit-btn")) return;
+        setTimeout(function () { try { applyRealDesignerValues(); } catch (e1) {} }, 80);
+        setTimeout(function () { try { applyRealDesignerValues(); } catch (e2) {} }, 450);
+      }, true);
+      var designer = $("columnsDesignerHost") || $("colDesignerPanel");
+      if (designer && window.MutationObserver) {
+        var dPending = 0;
+        new MutationObserver(function () {
+          if (dPending) return;
+          dPending = setTimeout(function () { dPending = 0; try { applyRealDesignerValues(); } catch (e3) {} }, 200);
+        }).observe(designer, { childList: true, subtree: true });
+      }
+    } catch (eDZ) {}
+
+    /* بستنِ منویِ همبرگری با ✕ (و Escape) — حتی اگر هدر رویِ کشو باشد */
+    try {
+      document.addEventListener("click", function (e) {
+        var t = e.target;
+        if (!t || !t.closest) return;
+        if (t.closest("#btnCloseSideMenu,.btn-close-side")) {
+          setTimeout(forceCloseSideMenu, 0);
+          setTimeout(forceCloseSideMenu, 120);
+        }
+      }, true);
+      window.addEventListener("keydown", function (e) {
+        if (e && (e.key === "Escape" || e.key === "Esc")) forceCloseSideMenu();
+      });
+    } catch (eHM) {}
+
+    /* «ارسال به رندر» در تبِ عیب‌یابی: وضعیتِ واقعیِ HTTP + ارسالِ مستقیم */
+    try {
+      document.addEventListener("click", function (e) {
+        var t = e.target;
+        var btn = t && t.closest ? t.closest("#btnV96SyncRender") : null;
+        if (!btn) return;
+        try { e.preventDefault(); e.stopImmediatePropagation(); } catch (e2) {}
+        syncToRenderSmart($("v96SyncStatus"));
+      }, true);
+    } catch (eSR) {}
+
     /* دکمه‌های گاوصندوق */
     try {
       document.addEventListener("click", function (e) {
@@ -1146,6 +1589,7 @@
     setTimeout(function () { try { saveVault(); } catch (e) {} }, 2500);
   }
 
+  /* نامِ API و کلیدهایِ حافظه از ۱۲.۲۰ نگه داشته شدند تا با ارتقا داده‌ها نپرند */
   window.v1220Api = {
     VERSION: VER,
     mmToPx: mmToPx,
@@ -1158,6 +1602,12 @@
     enforceAll: enforceAll,
     paintSettings: paintSettings,
     paintAll: paintAll,
+    syncManagerOrderKey: syncManagerOrderKey,
+    applyRealDesignerValues: applyRealDesignerValues,
+    faHeader: faHeader,
+    clockDate: clockDate,
+    forceCloseSideMenu: forceCloseSideMenu,
+    syncToRenderSmart: syncToRenderSmart,
     buildTopBar: buildTopBar,
     tickClock: tickClock,
     vaultSnapshot: vaultSnapshot,
@@ -1167,6 +1617,8 @@
     buildFullExport: buildFullExport,
     allowAddOptionFor: allowAddOptionFor
   };
+
+  try { window.v1221Api = window.v1220Api; } catch (eAlias) {}
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { setTimeout(boot, 220); });
   else setTimeout(boot, 220);

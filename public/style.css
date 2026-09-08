@@ -2854,7 +2854,15 @@ html.crm-booting body {
   line-height: 1.15;
   margin: 0;
 }
-.app-header.crm-compact-header #headerBrandLine { display: none; }
+.app-header.crm-compact-header #headerBrandLine {
+  /* نوبت ۱۴۶: «طنین طب طاها» باید دیده شود — فقط ریزتر، نه حذف */
+  display: block;
+  margin: 0;
+  font-size: 0.6rem;
+  line-height: 1.2;
+  opacity: 0.88;
+  white-space: nowrap;
+}
 .app-header.crm-compact-header .btn-menu-hamburger { padding: 0.18rem 0.4rem; font-size: 0.95rem; }
 
 /* همهٔ اجزایِ هدر در یک ردیفِ باریک */
@@ -2907,4 +2915,43 @@ html.crm-booting body {
   .crm-header-clock { font-size: 0.72rem; padding: 0.18rem 0.5rem; }
   .crm-clock-time { width: 58px; flex: 0 0 58px; }
   .crm-clock-date { font-size: 0.68rem; }
+}
+
+/* ============================================================================
+   v12.21.0 — ۱) ساعتِ «واقعاً» بی‌پرش: پهنایِ کادرِ ساعت ثابت است تا تپشِ
+   ثانیه‌شمار نه تاریخ را تکان دهد نه بقیهٔ هدر را.
+   ۲) منویِ همبرگری: کشو و پرده «بالای» هدر می‌نشینند تا ✕ همیشه کلیک‌پذیر باشد
+   (پیش‌تر در صفحهٔ باریک هدر با z-index:4600 رویِ کشو با z-index:3000 می‌نشست).
+   ============================================================================ */
+.crm-header-clock {
+  width: 268px;
+  min-width: 268px;
+  max-width: 268px;
+  flex: 0 0 268px;
+  justify-content: flex-start;
+  overflow: hidden;
+  contain: layout style paint size;
+}
+.crm-header-clock .crm-clock-date {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
+  text-align: start;
+  direction: rtl;
+}
+
+.side-menu-drawer { z-index: 4800 !important; }
+.side-menu-overlay { z-index: 4790 !important; }
+.side-menu-drawer .btn-close-side { position: relative; z-index: 4801 !important; }
+
+@media (max-width: 900px) {
+  .crm-header-clock {
+    width: 232px;
+    min-width: 232px;
+    max-width: 232px;
+    flex: 0 0 232px;
+  }
+  .app-header.crm-compact-header .logo-text h1 { font-size: 0.76rem; }
 }
