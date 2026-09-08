@@ -6,7 +6,7 @@ const zlib = require("zlib");
 const crypto = require("crypto");
 
 const PORT = process.env.PORT || 10000;
-const APP_VERSION = "12.19.0";
+const APP_VERSION = "12.20.0";
 const RUNTIME_DATA_DIR = process.env.CRM_DATA_DIR || (fs.existsSync("/var/data") ? "/var/data" : __dirname);
 try { fs.mkdirSync(RUNTIME_DATA_DIR, { recursive: true }); } catch (e) {}
 const SERVER_DATA_PATH = path.join(RUNTIME_DATA_DIR, "user-data.json");
@@ -571,6 +571,19 @@ const server = http.createServer((req, res) => {
               (/\.json\.(bak|old)$/.test(fname)) || (/^(user-data|user-bulk-data)\.bak/.test(fname));
             if (!isLegacyName) continue;
             if (fp === SERVER_DATA_PATH || fp === USER_BULK_PATH || fp === PUSH_SUBSCRIPTIONS_PATH || fp === VAPID_KEYS_PATH) continue;
+            /* v12.20.0: فایلی که دادهٔ زندهٔ کاربر دارد (crm-live-data.json روی
+               هاست‌هایِ PHP) هرگز با purge پاک نمی‌شود — فقط فایلِ واقعاً کهنه. */
+            if (/^crm-live-(data|bulk)\.json$/.test(fname)) {
+              try {
+                const liveMaybe = readJsonSafe(fp);
+                const keys = ["pharmacies", "doctors", "orders", "reps", "visits", "customFields"];
+                const hasRealData = liveMaybe && keys.some((k) => {
+                  const v = liveMaybe[k];
+                  return Array.isArray(v) ? v.length > 0 : (v && typeof v === "object" && Object.keys(v).length > 0);
+                });
+                if (hasRealData) continue;
+              } catch (eLive) { continue; }
+            }
             try { fs.unlinkSync(fp); removed.push(fname); purged += 1; } catch (e) {}
           }
         } catch (e) {}
@@ -838,6 +851,39 @@ const server = http.createServer((req, res) => {
       }
     } catch (eM) {}
     return send(req, res, 200, JSON.stringify({ status: "success", rev: revOut, savedAt, shared }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
+  }
+
+  /* v12.20.0 — گاوصندوقِ تنظیماتِ مدیر (فیلدها، ترتیب‌ها، کادرها).
+     فایلِ جدا از داده‌ها؛ با نصبِ نسخهٔ تازه هم از بین نمی‌رود و برنامه هنگامِ
+     بالاآمدن هر چه گم شده باشد از همین‌جا برمی‌گرداند. */
+  const SETTINGS_VAULT_PATH = path.join(RUNTIME_DATA_DIR, "settings-vault.json");
+  if (pathname === "/api/vault" && req.method === "GET") {
+    if (fs.existsSync(SETTINGS_VAULT_PATH)) {
+      const vault = readJsonSafe(SETTINGS_VAULT_PATH);
+      return send(req, res, 200, JSON.stringify({ status: "success", vault: vault || null }), "application/json; charset=utf-8", { "Cache-Control": "no-store", "X-CRM-Build": APP_VERSION });
+    }
+    return send(req, res, 200, JSON.stringify({ status: "empty", vault: null }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
+  }
+
+  if (pathname === "/api/vault" && req.method === "POST") {
+    if (rateLimited(ip + ":vault")) {
+      return send(req, res, 429, JSON.stringify({ status: "error", message: "too many requests" }), "application/json; charset=utf-8", { "Retry-After": "10" });
+    }
+    let vbody = "";
+    req.on("data", (c) => { vbody += c; if (vbody.length > 4 * 1024 * 1024) req.destroy(); });
+    req.on("end", () => {
+      try {
+        const vault = sanitizeJsonValue(JSON.parse(vbody));
+        if (!vault || typeof vault !== "object") throw new Error("bad-vault");
+        vault._savedAt = Date.now();
+        vault._version = APP_VERSION;
+        writeJsonAtomic(SETTINGS_VAULT_PATH, vault);
+        return send(req, res, 200, JSON.stringify({ status: "success", savedAt: vault._savedAt, version: APP_VERSION }), "application/json; charset=utf-8", { "Cache-Control": "no-store" });
+      } catch (eV) {
+        return send(req, res, 400, JSON.stringify({ status: "error", message: "vault-failed: " + eV.message }), "application/json; charset=utf-8");
+      }
+    });
+    return;
   }
 
   if (pathname === "/api/state" && req.method === "GET") {

@@ -27,7 +27,7 @@ const phpSrc = readFileSync(new URL('public/api.php', root), 'utf8');
 function bootSyncLayer() {
   const MARK = '/* v12.18.3 —';
   const from = bundle.indexOf(MARK);
-  assert.ok(from > 0, 'لایهٔ 12.19.0 در انتهای باندل است');
+  assert.ok(from > 0, 'لایهٔ 12.20.0 در انتهای باندل است');
   const layer = bundle.slice(from);
   const doc = {
     readyState: 'complete', visibilityState: 'visible',
