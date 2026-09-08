@@ -54,6 +54,7 @@ public/crm-entry-engine.js
 public/crm-hub.js
 public/crm-jalali.js
 public/crm-runtime.js
+public/crm-v12.19.0.js
 public/data/iran-provinces-lite.geojson
 public/data/world-countries.geojson
 public/favicon.png
@@ -261,6 +262,7 @@ tests/v12.18.0-runtime.test.mjs
 tests/v12.18.3-runtime.test.mjs
 tests/v12.18.5-stability.test.mjs
 tests/version-11.24-regressions.test.mjs
+tests/v12.19.0-lock.test.mjs
 tsconfig.json
 update_chat_arena.py
 update_project_graph.py

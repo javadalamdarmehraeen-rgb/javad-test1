@@ -10998,13 +10998,13 @@ button.v19-gps svg{display:block}
       (window.showDirectoryPicker || window.showSaveFilePicker) ? "" : "برای پشتیبان در پوشه مشخص، از Chrome/Edge استفاده کنید."));
     var __syncS = null;
     try { if (window.v12183Sync && window.v12183Sync.status) __syncS = window.v12183Sync.status(); } catch (eSy) {}
-    push(diagRow("همگام‌سازیِ چنددستگاهی (مویرگ)",
+    push(diagRow("همگام‌سازیِ چنددستگاهی (مویرگ) — خودکار هر ۱۰ ثانیه",
       __syncS && __syncS.mode === "shared" ? "ok" : __syncS && __syncS.mode === "local" ? "warn" : "info",
       __syncS && __syncS.mode === "shared"
         ? "وصل بهِ سرورِ اشتراکی — آخرین کشیدن: " + (__syncS.lastPull ? new Date(__syncS.lastPull).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) : "—") + " · آخرین فرستادن: " + (__syncS.lastPush ? new Date(__syncS.lastPush).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) : "—") + " · خطاها: " + (__syncS.errs || 0)
         : (__syncS && __syncS.mode === "local"
           ? "این دستگاه به APIِ اشتراکی نمی‌رسد؛ تغییراتش فقط در همین مرورگر می‌ماند — همهٔ دستگاه‌ها را از یکِ آدرسِ اصلی (رندر/نت‌افرازِ دارایِ php) باز کنید"
-          : "در حالِ ارزیابیِ کانالِ اشتراکی…"),
+          : "در حالِ ارزیابیِ کانالِ اشتراکی… — همگام‌سازی به‌صورتِ خودکار هر ۱۰ ثانیه انجام می‌شود؛ نیازی به کلیکِ دستی نیست"),
       "<button type='button' id='crm12183NowBtn' class='btn btn-sm' style='background:#134e4a;color:#fff'>🔄 گرفتنِ تغییراتِ بقیه</button>"));
     push(diagRow("موتورِ ورود (پاک‌سازیِ از ریشه)", "info",
       "جارویِ کاملِ کشِ مرورگر، سرویس‌ورکر و کلیدهایِ کهنهٔ همین دستگاه — ویندوز و گوشی؛ اطلاعاتِ رویِ سرور هرگز پاک نمی‌شود",
@@ -13000,7 +13000,7 @@ button.v19-gps svg{display:block}
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.18.6");
+        var ver=String(window.CRM_APP_VERSION||"12.19.0");
         var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -14537,7 +14537,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.18.6");
+        var ver=String(window.CRM_APP_VERSION||"12.19.0");
         var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -19331,10 +19331,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.6"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.19.0"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.6").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.19.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19414,10 +19414,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.6"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.19.0"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.6").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.19.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -19473,7 +19473,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.18.6");
+  var BUILD = String(window.CRM_APP_VERSION || "12.19.0");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
@@ -19534,10 +19534,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.6"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.19.0"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.6").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.19.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19564,10 +19564,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.6"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.19.0"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.18.6").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.19.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -19652,7 +19652,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.18.6"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.19.0"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -20086,7 +20086,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var TITLE = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
   var BRAND = "طنین طب طاها  TANIN TEB TAHA";
-  var FALLBACK = "12.18.6";
+  var FALLBACK = "12.19.0";
 
   /* ── ۱) سربرگ دقیقاً سه خط؛ شماره نسخه با ارقام لاتین ───────────────── */
   function ver() { try { return String(window.CRM_APP_VERSION || FALLBACK); } catch (e) { return FALLBACK; } }
@@ -20467,7 +20467,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     try { done = localStorage.getItem(FLAG) === "1"; } catch (e) {}
     if (done) return;
     try { localStorage.setItem(FLAG, "1"); } catch (e) {}
-    var ver = String(window.CRM_APP_VERSION || "12.18.6");
+    var ver = String(window.CRM_APP_VERSION || "12.19.0");
     try {
       if (window.caches && typeof caches.keys === "function") {
         caches.keys().then(function (keys) {
@@ -22331,7 +22331,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var API15 = window.v1215Api || {};
   var API16 = window.v1216Api || {};
-  var VER = String(window.CRM_APP_VERSION || "12.18.6");
+  var VER = String(window.CRM_APP_VERSION || "12.19.0");
 
   function $(id) { try { return document.getElementById(id); } catch (e) { return null; } }
   function qsa(sel, root) { try { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); } catch (e) { return []; } }
@@ -22805,7 +22805,13 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   /* ══ ۱۳) تبِ تغییرات: نسخه‌ی 12.17.0 بالایِ همه + بازرسازی هر بار که تب باز شود ═══════ */
   var CH1217_HTML = "<div id='v1217ChangeEntry' style='border:2px solid #0d9488;background:#f0fdfa;border-radius:12px;padding:10px;margin-bottom:10px'>" +
-    "<b style='color:#0f766e'>📦 نسخه‌ی جاری: 12.18.6</b><ul style='margin:6px 0 0 18px;padding:0;color:#334155;font-size:14px;line-height:2'>" +
+    "<b style='color:#0f766e'>📦 نسخه‌ی جاری: 12.19.0</b><ul style='margin:6px 0 0 18px;padding:0;color:#334155;font-size:14px;line-height:2'>" +
+    "<li><b>12.19.0</b> — ساعت و تاریخِ روز در بالای صفحه (دو برچسبِ جدا با فاصلهٔ کم) و نسخهٔ برنامه بالای کادرِ آبی‌رنگِ وضعیت</li>" +
+    "<li><b>12.19.0</b> — قفلِ چیدمان: جای فیلدها فقط با شمارهٔ ترتیبِ ذخیره‌شده تعیین می‌شود و پس از پاک‌کردنِ فرم، اجرای موتورِ ورود و همگام‌سازی هم سرِ جایش می‌ماند</li>" +
+    "<li><b>12.19.0</b> — تنظیماتِ تبِ «ستون‌ها و کالاها» واقعاً اعمال می‌شوند: عرض، ارتفاع، فاصلهٔ پیش/پس، شمارهٔ سطر، جای فیلد، ستارهٔ الزام، وابسته به فیلد</li>" +
+    "<li><b>12.19.0</b> — برداشتنِ تیکِ «افزودن لحظه‌ای گزینه» دکمهٔ افزودنِ لحظه‌ایِ همان فیلد را واقعاً برمی‌دارد</li>" +
+    "<li><b>12.19.0</b> — خروجیِ اکسلِ هر تب همهٔ اطلاعاتِ همان تب را می‌دهد (ستون‌های ثابت + همهٔ فیلدهای سفارشی + بقیهٔ کلیدهای رکورد)</li>" +
+    "<li><b>12.19.0</b> — همگام‌سازیِ چنددستگاهی به‌صورتِ خودکار هر ۱۰ ثانیه (پیش از این ۲۰ ثانیه و فقط دریافت بود)</li>" +
     "<li>ترتیبِ ستون‌ها پس از بازگشایی هم برقرار می‌ماند و در تبِ اصلی هم اعمال می‌شود</li>" +
     "<li>«موقعیت فعلی من» فقط نقطه‌ی تازه می‌پذیرد و آدرس به‌صورتِ فارسیِ مرتب (کشور، استان، شهر، خیابان، پلاک) می‌آید</li>" +
     "<li>کادرِ جایگذاریِ خودکارِ سفارش در بالایِ صفحه (دسکتاپ و گوشی) می‌چسبد و فقط داروخانه‌های هم‌نام با آدرس را نشان می‌دهد</li>" +
@@ -22960,7 +22966,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       function showStaleBar(sv) {
         if (shown) return;
         shown = true;
-        var cur = lv('12.18.6');
+        var cur = lv('12.19.0');
         var a = lv(sv);
         var newer = a[0] > cur[0] || (a[0] === cur[0] && a[1] > cur[1]) || (a[0] === cur[0] && a[1] === cur[1] && a[2] >= cur[2]);
         if (!sv || newer) return;
@@ -22968,7 +22974,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         bar.id = 'crm1217StaleBar';
         bar.setAttribute('dir', 'rtl');
         bar.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#fef3c7;border-top:2px solid #f59e0b;color:#78350f;font:12px/1.9 Tahoma,sans-serif;padding:5px 12px;text-align:center';
-        bar.innerHTML = '⚠️ سرورِ وصل‌شده هنوز نسخهٔ کهنه <b>' + sv + '</b> را اجرا می‌کند — آخرین نسخهٔ برنامه <b>12.18.6</b> است. <a href="http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip" download style="color:#1d4ed8"><b>⬇ دریافت ZIPِ جدید و نصب</b></a>';
+        bar.innerHTML = '⚠️ سرورِ وصل‌شده هنوز نسخهٔ کهنه <b>' + sv + '</b> را اجرا می‌کند — آخرین نسخهٔ برنامه <b>12.19.0</b> است. <a href="http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip" download style="color:#1d4ed8"><b>⬇ دریافت ZIPِ جدید و نصب</b></a>';
         document.body.appendChild(bar);
       }
       /* XHR به‌جای fetch: این پرسش نباید در شمارشِ governor (فریم ۱۳) بیفتد */
@@ -23006,7 +23012,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   window.v1218 = true;
   window.__V1218_MARK = "v12.18.3";
 
-  var VER = String(window.CRM_APP_VERSION || "12.18.6");
+  var VER = String(window.CRM_APP_VERSION || "12.19.0");
   var A15 = window.v1215Api || null;
   var A16 = window.v1216Api || null;
   var A17 = window.v1217Api || null;
@@ -24393,7 +24399,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
      صادقانه می‌گوید این دستگاه جدا کار می‌کند.
    • همه‌چیز با XHR خام — نه governorِ سقفِ درخواست، نه wrapperهایِ skipِ قدیمی. */
 (function () {
-  var VER = "12.18.6";
+  var VER = "12.19.0";
   var SEEN = { rev: "", savedAt: 0 };
   var last = { mode: "", pullAt: 0, pushAt: 0, errs: 0, added: 0, removed: 0, touched: 0, localBackoffUntil: 0 };
   var pushTimer = 0, pushAuthed = false;
@@ -24599,7 +24605,14 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       });
     }, true);
   } catch (eC) {}
-  function tick() { pullNow(false); }
+  function tick() {
+    /* v12.19.0: همگام‌سازیِ خودکارِ چنددستگاهی هر ۱۰ ثانیه (پیش از این هر ۲۰ ثانیه و
+       فقط pull بود) — pullِ سبک (ابتدا /api/state/meta و فقط در صورتِ تغییرِ rev،
+       دانلودِ کامل) + pushِ بی‌صدا که با هِشِ بدنه جلویِ سیلِ درخواست را می‌گیرد و
+       چون auth=false هرگز رکوردِ دستگاهِ دیگری را حذف نمی‌کند. */
+    pullNow(false);
+    try { pushNow(true, false, false); } catch (e) {}
+  }
   function boot() {
     if (window.__V12183_BOOT) return; window.__V12183_BOOT = 1;
     var s = st();
@@ -24612,7 +24625,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if (s2 && meaningful(s2)) pushNow(true, false, false); /* pushِ بوتی = افزودنی، هرگز حذف‌کننده */
       last.adopted = 0;
     });
-    setInterval(tick, 20000);
+    setInterval(tick, 10000); /* v12.19.0: همگام‌سازیِ خودکار هر ۱۰ ثانیه */
     try { document.addEventListener("visibilitychange", function () { if (document.visibilityState === "visible") pullNow(false); }); } catch (e3) {}
     try { window.addEventListener("focus", function () { pullNow(false); }); } catch (e4) {}
   }
