@@ -3052,3 +3052,81 @@ html.crm-booting body {
   .crm-header-clock .crm-clock-date { font-size: 0.72rem; }
   .app-header.crm-compact-header #globalOnlineStatusBadge { min-width: 78px; max-width: 78px; flex: 0 0 78px; }
 }
+
+/* ============================================================================
+   v12.23.0 — ۱) تابلوِ روانِ رویدادهایِ روزِ تقویمِ شمسی: نوارِ باریک زیرِ هدر،
+      حرکتِ آهسته (نه تند)، تکرارِ پیوسته.
+   ۲) هدر در حالتِ عمودیِ گوشی: دو ردیفِ مرتب (کادرِ ساعت تمام‌عرض در ردیفِ دوم)
+      به‌جایِ به‌هم‌ریختگی.
+   ============================================================================ */
+.crm-event-ticker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(90deg, #0f766e, #14b8a6);
+  color: #fff;
+  padding: 4px 10px;
+  font-size: 0.72rem;
+  overflow: hidden;
+  position: relative;
+  z-index: 4590;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+}
+.crm-event-ticker .crm-ticker-label {
+  flex: 0 0 auto;
+  background: rgba(255,255,255,0.16);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.crm-event-ticker .crm-ticker-view {
+  flex: 1 1 auto;
+  overflow: hidden;
+  direction: ltr;
+  min-width: 0;
+}
+.crm-event-ticker .crm-ticker-move {
+  display: inline-block;
+  white-space: nowrap;
+  direction: rtl;
+  will-change: transform;
+  animation: crmTickerMove 120s linear infinite;
+}
+.crm-event-ticker:hover .crm-ticker-move { animation-play-state: paused; }
+@keyframes crmTickerMove {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(100%); }
+}
+.v1223-center-tip {
+  font-weight: 700;
+  font-size: 11px;
+  direction: rtl;
+}
+
+/* هدرِ عمودیِ گوشی: مرتب در دو ردیف */
+@media (max-width: 640px) and (orientation: portrait) {
+  .app-header.crm-compact-header { padding: 0.35rem 0.5rem !important; }
+  .app-header.crm-compact-header .header-container {
+    flex-wrap: wrap;
+    align-content: center;
+    gap: 0.35rem;
+  }
+  .app-header.crm-compact-header .logo-area { order: 1; flex: 1 1 auto; min-width: 0; }
+  .app-header.crm-compact-header .header-actions {
+    order: 2;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 4px;
+  }
+  .crm-header-clock {
+    order: 3;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    flex: 1 1 100% !important;
+    justify-content: center;
+  }
+  .app-header.crm-compact-header #globalOnlineStatusBadge { flex: 0 0 auto; min-width: 0; max-width: 92px; }
+  .app-header.crm-compact-header .header-user-pill { max-width: 150px; }
+}
