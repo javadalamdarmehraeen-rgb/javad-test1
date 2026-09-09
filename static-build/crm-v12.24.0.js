@@ -1,4 +1,34 @@
 /* ============================================================================
+   crm-v12.24.0.js — لایهٔ پایانیِ نسخهٔ 12.24.0 (نوبت ۱۵۰)
+   ----------------------------------------------------------------------------
+   ۲۱) تابلویِ روان «داخلِ» هدرِ چسبان: با اسکرول همراهِ هدر فریز است.
+   ۲۲) پشتیبانِ خودکارِ دیدنی: هوکِ saveState + هر ۳۰ ثانیه + برچسبِ ساعتِ
+       آخرین پشتیبان در هدر (#v1224BackupChip).
+   ۲۳) مالکیتِ کاملِ شروع/پایانِ ویزیت: GPS صریح، وضعیتِ دیدنی، بیمهٔ ۵ ثانیه‌ای،
+       ذخیرهٔ مسیر در repRoutes + visitTracks.
+   ۲۴) کارتِ انتقالِ داده بینِ رندر و نت‌افراز (تبِ عیب‌یابی).
+   ----------------------------------------------------------------------------
+   crm-v12.23.0.js — لایهٔ پایانیِ نسخهٔ 12.23.0 (نوبت ۱۴۸)
+   ----------------------------------------------------------------------------
+   ۱۵) تابلوِ روانِ آهستهٔ رویدادهایِ روزِ تقویمِ شمسی زیرِ کادرِ بالا (۱۳۰+ مناسبت).
+   ۱۶) هدرِ عمودیِ گوشی: دو ردیفِ مرتب به‌جایِ به‌هم‌ریختگی.
+   ۱۷) نگهبانِ ویزیت: سایهٔ محلیِ v20ActiveVisit (اگر pull آن را پاک کرد برمی‌گردد)
+       + نمایشِ آمارِ جلسهٔ تمام‌شده پس از «پایان ویزیت».
+   ۱۸) نقشهٔ تردد: مراکزِ بینِ مسیر با برچسبِ دائمیِ «ویزیت شده/نشده» + نشانِ
+       شروع/پایانِ تردد.
+   ۱۹) خروجیِ اکسلِ .xlsx واقعی (ZIP معتبر) — پسوندِ نامعتبر روی گوشی تمام.
+   ۲۰) auto-update.php: خودبروزرسانیِ یک‌کلیکیِ نت‌افراز از GitHub Release.
+   ----------------------------------------------------------------------------
+   crm-v12.22.0.js — لایهٔ پایانیِ نسخهٔ 12.22.0 (نوبت ۱۴۷)
+   ----------------------------------------------------------------------------
+   ۱۱) پایانِ «پرشِ زیاد»: `harmonizeMetaOrders` شمارهٔ خانهٔ نهاییِ هر گره را در
+       خودِ `formFieldMeta` می‌نویسد تا `applySavedLayout`ِ باندل همان عددها را
+       حساب کند — دو موتور، یک خروجی، صفر جنگِ `order`.
+   ۱۲) کادرِ ساعت/تاریخ بلندتر و خواناتر (پدینگ و قلمِ بزرگ‌تر، پهنایِ ثابت).
+   ۱۳) میخکوب‌کردنِ عرضِ نشان‌هایِ پویایِ هدر (آنلاین/آفلاین، زنگوله، نامِ کاربر).
+   ۱۴) همهٔ لوگوها/آیکون‌ها (logo.png، favicon، apple-touch، icons/*، manifest)
+       با نشانِ تازهٔ «طنین طب طاها» جایگزین شدند.
+   ----------------------------------------------------------------------------
    crm-v12.21.0.js — لایهٔ پایانیِ نسخهٔ 12.21.0 (نوبت ۱۴۶)
    ----------------------------------------------------------------------------
    افزوده‌هایِ این نوبت بر پایهٔ ۱۲.۲۰:
@@ -45,7 +75,7 @@
   if (window.__CRM_V12200) return;
   window.__CRM_V12200 = true;
 
-  var VER = String(window.CRM_APP_VERSION || "12.21.0");
+  var VER = String(window.CRM_APP_VERSION || "12.24.0");
 
   var TAB_KEY = {
     "tab-pharmacies": "pharmacy",
@@ -301,6 +331,62 @@
     } catch (e) { return ""; }
   }
 
+  /* ───────────────── ۶٫۵) هم‌فرکانس‌سازی با موتورِ چیدمانِ باندل (پایانِ پرش) ─────────────────
+     ریشهٔ «پرشِ زیاد»: دو موتور روی یک ویژگیِ CSS (`order`) عددِ «متفاوت» می‌نوشتند —
+     باندل از `meta.order` (یا i+1) و ما از ترتیبِ لنگر — و هر نوشتن، دیگری را
+     تحریک می‌کرد → میدانِ فیلدها هر چند ثانیه یک‌بار جابه‌جا می‌شد.
+     راه‌حل: شمارهٔ خانهٔ نهاییِ هر گره را در خودِ `formFieldMeta` می‌نویسیم تا
+     `applySavedLayout`ِ باندل «همان» عددها را حساب کند؛ دو موتور، یک خروجی، صفر پرش. */
+  function groupFidOf(g) {
+    try {
+      var d = g && g.getAttribute ? g.getAttribute("data-col-fid") : null;
+      if (d) return d;
+      var els = g && g.querySelectorAll ? g.querySelectorAll("input[id],select[id],textarea[id]") : [];
+      for (var i = 0; i < els.length; i++) {
+        var t = String(els[i].getAttribute && els[i].getAttribute("type") || "").toLowerCase();
+        if (t === "hidden") continue;
+        if (els[i].id) return els[i].id;
+      }
+      return "";
+    } catch (e) { return ""; }
+  }
+
+  function harmonizeMetaOrders(tabId) {
+    var key = TAB_KEY[tabId];
+    if (!key) return 0;
+    var grid = mainGrid(tabId);
+    if (!grid) return 0;
+    var canon = allCanons()[gridKey(tabId, grid)];
+    if (!canon || !canon.length) return 0;
+    var kids = kidsOf(grid);
+    var byAnchor = {};
+    kids.forEach(function (k) { var a = anchorOf(k); if (a && byAnchor[a] == null) byAnchor[a] = k; });
+    var desired = [];
+    canon.forEach(function (a) { if (byAnchor[a]) desired.push(byAnchor[a]); });
+    if (desired.length < 2) return 0;
+    var inCanon = {};
+    canon.forEach(function (a) { inCanon[a] = 1; });
+    var extras = kids.filter(function (k) { var a = anchorOf(k); return a && !inCanon[a]; });
+    var full = desired.concat(extras);
+
+    var S0 = window.state;
+    if (!S0) return 0;
+    S0.formFieldMeta = S0.formFieldMeta || {};
+    S0.formFieldMeta[key] = S0.formFieldMeta[key] || {};
+    var meta = S0.formFieldMeta[key];
+    var changed = 0;
+    for (var i = 0; i < full.length; i++) {
+      var fid = groupFidOf(full[i]);
+      if (!fid) continue;
+      var m = meta[fid] || (meta[fid] = {});
+      if (num(m.order, 0) !== i + 1) { m.order = i + 1; changed += 1; }
+    }
+    if (changed && typeof window.saveState === "function") {
+      try { window.saveState(); } catch (eSv) {}
+    }
+    return changed;
+  }
+
   function bundleGridKey(grid, tabId) {
     try {
       if (grid.id) return "grid:" + grid.id;
@@ -379,6 +465,7 @@
       }
     }
     moved += applyCanon(grid, canon);
+    try { harmonizeMetaOrders(tabId); } catch (eH) {}
     try { syncManagerOrderKey(tabId); } catch (eS) {}
     return moved;
   }
@@ -710,8 +797,196 @@
     writeJson(VAULT_KEY, snap);
     idbPut(snap);
     pushVault(snap);
+    try { backupChipUpdate(); } catch (e) {}
     return snap;
   }
+
+  /* ───────────────── ۱۴) پشتیبانِ خودکارِ «دیدنی» ─────────────────
+     شکایت: «پشتیبان اتوماتیک فعال نیست و باید دستی گرفت». حالا: هر ۳۰ ثانیه،
+     پس از هر saveState (با تأخیرِ کوچک)، و پس از هر ذخیرهٔ طراح؛ به‌علاوه یک
+     نشانِ ساعت در هدر که زمانِ آخرین پشتیبان را نشان می‌دهد تا «دیدنی» باشد. */
+  var bkDebounce = 0;
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+  function backupChipUpdate() {
+    try {
+      var t = new Date();
+      var txt = "🛡 " + pad2(t.getHours()) + ":" + pad2(t.getMinutes()) + ":" + pad2(t.getSeconds());
+      try { if (window.localStorage) window.localStorage.setItem("CRM_V1224_LASTBACKUP", txt); } catch (eL) {}
+      var chip = $("v1224BackupChip");
+      if (!chip) {
+        chip = document.createElement("span");
+        chip.id = "v1224BackupChip";
+        chip.className = "v1224-backup-chip";
+        var clock = $("crmHeaderClock");
+        var host = clock ? clock.parentNode : (document.querySelector(".app-header .header-actions") || null);
+        if (!host) return;
+        host.insertBefore(chip, clock ? clock.nextSibling : null);
+      }
+      chip.title = "آخرین پشتیبانِ خودکار (localStorage + IndexedDB + سرور)";
+      if (chip.textContent !== txt) chip.textContent = txt;
+    } catch (e) {}
+  }
+  function hookSaveStateForBackup() {
+    try {
+      var os = window.saveState;
+      if (typeof os !== "function" || os._v1224bk) return;
+      var w = function () {
+        var r = os.apply(this, arguments);
+        try { clearTimeout(bkDebounce); bkDebounce = setTimeout(function () { try { saveVault(); } catch (e) {} }, 2500); } catch (e2) {}
+        return r;
+      };
+      w._v1224bk = true;
+      window.saveState = w;
+    } catch (e) {}
+  }
+
+  /* ───────────────── ۱۵) مالکیتِ کاملِ شروع/پایانِ ویزیت توسطِ لایه ─────────────────
+     شکایتِ تکراری: «تبِ شروع/پایان ویزیت درست نشد». حالا لایه خودش کلیک‌ها را در
+     فازِ capture می‌گیرد (جلوی هر هندلرِ دیگری را می‌گیرد)، قبل از watch اجازهٔ
+     GPS را صریح می‌خواهد، وضعیتِ GPS را «دیدنی» می‌نویسد، با getCurrentPosition
+     هر ۵ ثانیه بیمه می‌کند، و پایانِ جلسه را در repRoutes + کادرِ آمار می‌نشاند. */
+  var v1224Watch = null, v1224Poll = 0, v1224Timer = 0;
+  function timeStr1224() { try { return cleanNum(new Date().toLocaleTimeString("en-GB", { hour12: false })); } catch (e) { return ""; } }
+  function jalaliYMD() {
+    try {
+      var parts = new Intl.DateTimeFormat("fa-IR-u-ca-persian-nu-latn", { year: "numeric", month: "numeric", day: "numeric" }).formatToParts(new Date());
+      var o = { y: "", m: "", d: "" };
+      parts.forEach(function (p) { if (p.type === "year") o.y = cleanNum(p.value); if (p.type === "month") o.m = cleanNum(p.value); if (p.type === "day") o.d = cleanNum(p.value); });
+      return { y: Number(o.y), m: Number(o.m), d: Number(o.d) };
+    } catch (e) { return { y: 0, m: 0, d: 0 }; }
+  }
+  function gpsSay(t) { var sb = $("visitStatusBox"); if (sb && sb.textContent !== t) sb.textContent = t; }
+  function saveSoft() { try { if (typeof window.saveState === "function") window.saveState(false); } catch (e) {} }
+  function onGpsPos(pos) {
+    var S = window.state, V = S && S.v20ActiveVisit;
+    if (!V) return;
+    var p = { lat: pos.coords.latitude, lng: pos.coords.longitude, t: Date.now(), acc: pos.coords.accuracy };
+    var prev = V.points[V.points.length - 1];
+    var d = havV1223(prev, p);
+    if (isFinite(d) && d >= 3) { V.distance += d; V.lastMoveAt = p.t; }
+    else if (prev) { V.stopMs += Math.max(0, p.t - prev.t); }
+    V.points.push(p);
+    visitShadowSet(V);
+    saveSoft();
+    gpsSay("🛰 GPS متصل — " + V.points.length + " نقطه، " + Math.round(V.distance) + " متر");
+    refreshVisit1224();
+  }
+  function onGpsErr(err) {
+    var c = err && err.code;
+    gpsSay(c === 1 ? "⛔ اجازه موقعیت رد شد — در تنظیماتِ مرورگر دسترسیِ مکان را فعال کنید" : c === 2 ? "⚠️ موقعیت در دسترس نیست (سیگنالِ GPS نیست)" : "⚠️ دریافتِ GPS طول کشید — تلاشِ مجدد…");
+  }
+  function refreshVisit1224() {
+    var S = window.state, V = S && S.v20ActiveVisit;
+    var h = $("v20VisitMetrics");
+    if (!h) return;
+    h.innerHTML = [["مسافت طی‌شده", Math.round(V ? V.distance : 0) + " متر"], ["مدت توقف", Math.round((V ? V.stopMs : 0) / 60000) + " دقیقه"], ["نقاط ثبت‌شده", V ? (V.points || []).length : 0], ["ساعت شروع", V ? V.startTime : "—"]].map(function (x) { return "<div class='v20-metric'>" + x[0] + "<b>" + x[1] + "</b></div>"; }).join("");
+  }
+  function startVisit1224() {
+    var S = window.state;
+    if (!S) return;
+    if (S.v20ActiveVisit) { try { if (window.v20Toast) window.v20Toast("یک ویزیت هم‌اکنون فعال است."); } catch (e) {} return; }
+    if (!navigator.geolocation) { gpsSay("❌ GPS در این دستگاه/مرورگر در دسترس نیست"); try { alert("این دستگاه GPS یا دسترسی موقعیت مکانی ندارد."); } catch (e) {} return; }
+    var rep = "نماینده";
+    try { rep = sessionStorage.getItem("crmUserName") || rep; } catch (e) {}
+    var j = jalaliYMD();
+    var V = { id: "route-" + Date.now(), repName: rep, date: j.y + "/" + j.m + "/" + j.d, startedAt: Date.now(), startTime: timeStr1224(), points: [], distance: 0, stopMs: 0, lastMoveAt: Date.now(), status: "فعال" };
+    S.v20ActiveVisit = V;
+    visitShadowSet(V);
+    saveSoft();
+    gpsSay("🛰 در حالِ دریافتِ GPS…");
+    try { v1224Watch = navigator.geolocation.watchPosition(onGpsPos, onGpsErr, { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 }); } catch (e) { v1224Watch = null; }
+    try { navigator.geolocation.getCurrentPosition(onGpsPos, onGpsErr, { enableHighAccuracy: true, timeout: 10000 }); } catch (e2) {}
+    clearInterval(v1224Poll);
+    v1224Poll = setInterval(function () {
+      try { navigator.geolocation.getCurrentPosition(onGpsPos, function () {}, { enableHighAccuracy: true, maximumAge: 4000, timeout: 10000 }); } catch (e) {}
+    }, 5000);
+    clearInterval(v1224Timer);
+    v1224Timer = setInterval(refreshVisit1224, 1000);
+    refreshVisit1224();
+    try { if (window.v20Toast) window.v20Toast("✅ ثبتِ مسیر آغاز شد — وضعیتِ GPS در کادر دیده می‌شود."); } catch (e3) {}
+  }
+  function endVisit1224() {
+    var S = window.state, V = S && S.v20ActiveVisit;
+    if (!V) { try { if (window.v20Toast) window.v20Toast("ویزیت فعالی وجود ندارد."); } catch (e) {} return; }
+    try { if (v1224Watch != null && navigator.geolocation.clearWatch) navigator.geolocation.clearWatch(v1224Watch); } catch (e) {}
+    v1224Watch = null;
+    clearInterval(v1224Poll);
+    clearInterval(v1224Timer);
+    V.endTime = timeStr1224();
+    V.endedAt = Date.now();
+    V.durationMs = V.endedAt - V.startedAt;
+    V.status = "پایان‌یافته";
+    V.path = (V.points || []).map(function (p) { return [p.lat, p.lng]; });
+    V.visited = (V.points || []).length;
+    S.repRoutes = S.repRoutes || [];
+    S.repRoutes.unshift(V);
+    S.visitTracks = S.visitTracks || [];
+    S.visitTracks.unshift(V);
+    S.v20ActiveVisit = null;
+    visitShadowSet(null);
+    saveSoft();
+    refreshVisit1224();
+    paintFinishedVisitStats();
+    try { if (typeof window.renderV20Routes === "function") window.renderV20Routes(); } catch (e) {}
+    setTimeout(function () { try { drawRouteCenters(); } catch (e) {} }, 500);
+    try { if (window.v20Toast) window.v20Toast("✅ جلسهٔ تردد با " + V.visited + " نقطه و " + Math.round(V.distance) + " متر ذخیره شد."); } catch (e2) {}
+  }
+
+  /* ───────────────── ۱۶) انتقالِ داده بینِ رندر و نت‌افراز ─────────────────
+     شکایت: «کاری کن بشود اطلاعاتِ رندر را به نت‌افراز انتقال داد». سه دکمه در
+     تبِ عیب‌یابی: کپیِ کامل از رندر، ارسالِ کامل به نت‌افراز، ارسالِ کامل به رندر. */
+  function transferSay(t) { var el = $("v1224TransferStatus"); if (el) el.textContent = t; }
+  function copyFromHub(host, cb) {
+    rawRequest("GET", host + "/api/state", null, function (r) {
+      if (!r.ok || !r.j || !r.j.data) { cb(false, "HTTP " + r.status + (r.j && r.j.message ? " — " + r.j.message : "")); return; }
+      var S = window.state || (window.state = {});
+      Object.keys(r.j.data).forEach(function (k) { if (k.charAt(0) === "_") return; S[k] = r.j.data[k]; });
+      saveSoft();
+      cb(true, "");
+    });
+  }
+  function pushFullTo(host, cb) {
+    var S = window.state;
+    var body;
+    try { body = typeof window.serializeStateForLocalStorage === "function" ? window.serializeStateForLocalStorage(S) : JSON.stringify(S); } catch (e) { body = JSON.stringify(S); }
+    rawRequest("POST", host + "/api/state?__v12183=1&n=" + Date.now(), body, function (r) {
+      cb(r.ok, r.ok ? "" : ("HTTP " + r.status + (r.j && r.j.message ? " — " + r.j.message : "")));
+    });
+  }
+  function buildTransferTools() {
+    var pane = $("tab-troubleshooting");
+    if (!pane || $("v1224TransferCard")) return;
+    var card = document.createElement("div");
+    card.id = "v1224TransferCard";
+    card.className = "v1224-transfer-card";
+    card.innerHTML = "<h3 style='margin:0 0 6px;font-size:0.95rem'>🔁 انتقالِ داده بینِ رندر و نت‌افراز</h3>" +
+      "<p style='margin:0 0 8px;font-size:0.75rem;opacity:.85'>کپی/ادغامِ کاملِ رکوردها بینِ دو هاست، بدونِ دست‌کاریِ دستیِ فایل.</p>" +
+      "<button type='button' id='v1224PullRender' class='btn btn-outline btn-sm'>📥 کپیِ کامل از رندر به این دستگاه</button> " +
+      "<button type='button' id='v1224PushNetafraz' class='btn btn-outline btn-sm'>📤 ارسالِ کامل به نت‌افراز</button> " +
+      "<button type='button' id='v1224PushRender' class='btn btn-outline btn-sm'>📤 ارسالِ کامل به رندر</button>" +
+      "<div id='v1224TransferStatus' style='margin-top:6px;font-size:0.75rem;font-weight:700'></div>";
+    pane.insertBefore(card, pane.firstChild);
+    $("v1224PullRender").addEventListener("click", function () {
+      if (!confirm("دادهٔ این دستگاه با دادهٔ رندر ادغام/جایگزین شود؟")) return;
+      transferSay("در حالِ دریافت از رندر…");
+      copyFromHub("https://javad-test1.onrender.com", function (ok, msg) {
+        transferSay(ok ? "✅ دریافت شد؛ صفحه تا لحظاتی دیگر تازه می‌شود…" : "❌ " + msg);
+        if (ok) setTimeout(function () { try { location.reload(); } catch (e) {} }, 1500);
+      });
+    });
+    $("v1224PushNetafraz").addEventListener("click", function () {
+      if (!confirm("همهٔ دادهٔ این دستگاه به نت‌افراز (mehraeinpharma.ir) ارسال شود؟")) return;
+      transferSay("در حالِ ارسال به نت‌افراز…");
+      pushFullTo("https://mehraeinpharma.ir", function (ok, msg) { transferSay(ok ? "✅ به نت‌افراز ارسال شد." : "❌ " + msg); });
+    });
+    $("v1224PushRender").addEventListener("click", function () {
+      if (!confirm("همهٔ دادهٔ این دستگاه به رندر ارسال شود؟")) return;
+      transferSay("در حالِ ارسال به رندر…");
+      pushFullTo("https://javad-test1.onrender.com", function (ok, msg) { transferSay(ok ? "✅ به رندر ارسال شد." : "❌ " + msg); });
+    });
+  }
+
+  /* ───────────────── راه‌اندازی ───────────────── */
 
   function countFields(snap) {
     var n = 0;
@@ -1358,6 +1633,399 @@
     });
   }
 
+  /* ───────────────── ۱۰) تابلوِ روانِ رویدادهایِ روزِ تقویمِ شمسی ─────────────────
+     شکایتِ نوبتِ ۱۴۸: «رویدادهای روز تقویم شمسی ایران را به حالت تابلو روانِ
+     آهسته زیرِ همهٔ اطلاعاتِ کادرِ بالا نشان بده». */
+  var FA_EVENTS = {
+    "1/1": ["آغاز عید نوروز (تعطیل رسمی)", "نخستین روز بهار"],
+    "1/2": ["عید نوروز (تعطیل رسمی)"],
+    "1/3": ["عید نوروز (تعطیل رسمی)"],
+    "1/4": ["عید نوروز (تعطیل رسمی)"],
+    "1/6": ["روز امیدواری و نیک‌کاری"],
+    "1/7": ["روز هنرهای نمایشی"],
+    "1/10": ["روز همبستگی با سوریه و کردستان"],
+    "1/12": ["روز جمهوری اسلامی ایران (تعطیل رسمی)"],
+    "1/13": ["روز طبیعت، سیزده‌بدر (تعطیل رسمی)"],
+    "1/15": ["روز ذخایر ژنتیکی و زیستی"],
+    "1/18": ["روز جهانی سلامتی"],
+    "1/20": ["روز ملی فناوری هسته‌ای"],
+    "1/25": ["روز بزرگداشت عطار نیشابوری"],
+    "1/29": ["روز ارتش جمهوری اسلامی"],
+    "2/1": ["روز بزرگداشت سعدی"],
+    "2/2": ["روز زمین پاک"],
+    "2/3": ["روز بزرگداشت شیخ بهایی"],
+    "2/9": ["روز شوراها"],
+    "2/10": ["روز ملی خلیج فارس"],
+    "2/12": ["روز معلم"],
+    "2/15": ["روز بزرگداشت شیخ صدوق"],
+    "2/18": ["روز بیماری‌های خاص و صعب‌العلاج"],
+    "2/25": ["روز بزرگداشت فردوسی و پاسداشت زبان پارسی"],
+    "2/28": ["روز بزرگداشت حکیم عمر خیام"],
+    "3/1": ["روز بزرگداشت ملاصدرا"],
+    "3/3": ["سالروز فتح خرمشهر"],
+    "3/4": ["روز دزفول، روز مقاومت و پایداری"],
+    "3/14": ["رحلت امام خمینی (تعطیل رسمی)"],
+    "3/15": ["قیام خونین ۱۵ خرداد"],
+    "3/20": ["روز جهانی مسجد"],
+    "3/27": ["روز ارتباطات و روابط عمومی"],
+    "4/1": ["روز تبلیغ و اطلاع‌رسانی دینی"],
+    "4/7": ["روز جهانی عمران"],
+    "4/8": ["روز مبارزه با سلاح‌های شیمیایی و میکروبی (بمباران شیمیایی سردشت)"],
+    "4/12": ["روز ملی مبارزه با تحریم"],
+    "4/14": ["روز قلم"],
+    "4/16": ["روز مالیات"],
+    "4/18": ["روز ادبیات کودکان و نوجوانان"],
+    "4/21": ["روز عفاف و حجاب"],
+    "4/25": ["روز بهزیستی و تامین اجتماعی"],
+    "4/27": ["روز بزرگداشت جهادگران"],
+    "5/5": ["روز عملیات مرصاد"],
+    "5/9": ["روز اهدای خون"],
+    "5/14": ["روز صدور فرمان مشروطیت"],
+    "5/17": ["روز خبرنگار"],
+    "5/21": ["روز حمایت از صنایع کوچک"],
+    "5/27": ["روز داروسازی، بزرگداشت زکریای رازی"],
+    "5/28": ["روز گرامیداشت شهدای مدافع حرم"],
+    "5/30": ["روز بزرگداشت علامهٔ مجلسی"],
+    "6/1": ["روز پزشک، بزرگداشت بوعلی سینا"],
+    "6/2": ["هفتهٔ دولت"],
+    "6/4": ["روز کارمند"],
+    "6/5": ["روز بزرگداشت محمدبن زکریای رازی"],
+    "6/8": ["روز مبارزه با تروریسم (انفجار دفتر نخست‌وزیری)"],
+    "6/10": ["روز بانکداری اسلامی"],
+    "6/12": ["روز مبارزه با استعمار"],
+    "6/13": ["روز تعاون"],
+    "6/14": ["روز اکرام و مهرورزی"],
+    "6/17": ["روز پزشکی ورزشی"],
+    "6/18": ["روز جهانی سوادآموزی", "روز جهانی فیزیوتراپی"],
+    "6/20": ["روز شهدای مدافع حرم"],
+    "6/21": ["روز سینما"],
+    "6/27": ["روز شعر و ادب پارسی، بزرگداشت شهریار"],
+    "6/31": ["آغاز هفتهٔ دفاع مقدس"],
+    "7/5": ["روز ایمنی و آتش‌نشانی"],
+    "7/7": ["روز آتش‌نشانی و ایمنی"],
+    "7/8": ["روز بزرگداشت مولوی"],
+    "7/9": ["روز همبستگی با کودکان"],
+    "7/13": ["روز نیروی انتظامی"],
+    "7/14": ["روز دامپزشکی"],
+    "7/15": ["روز روستا و عشایر"],
+    "7/20": ["روز بزرگداشت حافظ"],
+    "7/24": ["روز پارالمپیک"],
+    "7/26": ["روز تربیت بدنی"],
+    "7/29": ["روز صادرات"],
+    "8/4": ["روز فرهنگ عمومی"],
+    "8/8": ["روز پدافند غیرعامل"],
+    "8/10": ["روز حسابداری"],
+    "8/13": ["روز تسخیر لانهٔ جاسوسی، روز ملی مبارزه با استکبار"],
+    "8/14": ["روز فرهنگ عمومی و مهرورزی"],
+    "8/24": ["روز کتاب، کتابخوانی و کتابدار"],
+    "8/26": ["روز جهانی نیکی"],
+    "8/30": ["روز قهرمان ملی"],
+    "9/5": ["روز بسیج مستضعفان"],
+    "9/7": ["روز نیروی دریایی"],
+    "9/9": ["روز بزرگداشت شیخ مفید"],
+    "9/11": ["روز دانشجو"],
+    "9/16": ["روز دانشمند و پژوهشگر"],
+    "9/19": ["روز تجارت و توسعه"],
+    "9/25": ["روز پژوهش"],
+    "9/26": ["روز حمل‌ونقل و رانندگان"],
+    "9/27": ["روز وحدت حوزه و دانشگاه"],
+    "9/29": ["روز ایمنی در برابر زلزله"],
+    "9/30": ["شب یلدا"],
+    "10/5": ["روز ایمنی در برابر آتش"],
+    "10/7": ["روز جهانی حماسهٔ مردم"],
+    "10/9": ["روز بصیرت"],
+    "10/17": ["روز اجرای قانون اساسی"],
+    "10/19": ["روز عمران روستایی"],
+    "10/22": ["روز صنعت برق"],
+    "10/26": ["روز فرار مغزها"],
+    "10/27": ["روز وحدت و همدلی"],
+    "11/6": ["روز ایمنی غذایی"],
+    "11/12": ["روز آمار"],
+    "11/14": ["روز فناوری فضایی"],
+    "11/19": ["روز ازدواج"],
+    "11/22": ["روز بهمن"],
+    "11/25": ["روز بیمه"],
+    "11/29": ["روز اقتصاد مقاومتی"],
+    "12/3": ["روز مهندسی"],
+    "12/5": ["روز خاک"],
+    "12/9": ["روز حمایت از حقوق مصرف‌کنندگان"],
+    "12/14": ["روز احسان و نیکوکاری"],
+    "12/15": ["روز درختکاری"],
+    "12/18": ["روز بزرگداشت سیدجمال‌الدین اسدآبادی"],
+    "12/22": ["روز بزرگداشت شهدا، سالروز تأسیس بنیاد شهید"],
+    "12/25": ["روز بزرگداشت پروین اعتصامی"],
+    "12/29": ["روز ملی شدن صنعت نفت"]
+  };
+
+  function todayJalaliMD(now) {
+    try {
+      var parts = new Intl.DateTimeFormat("fa-IR-u-ca-persian-nu-latn", { month: "numeric", day: "numeric" }).formatToParts(now || new Date());
+      var m = "", d = "";
+      parts.forEach(function (p) { if (p.type === "month") m = cleanNum(p.value); if (p.type === "day") d = cleanNum(p.value); });
+      return { m: Number(m), d: Number(d) };
+    } catch (e) { return null; }
+  }
+
+  function tickerText() {
+    var md = todayJalaliMD();
+    var out = [];
+    if (md) {
+      var key = md.m + "/" + md.d;
+      var evs = FA_EVENTS[key] || [];
+      var dateStr = "";
+      try { dateStr = clockDate(new Date()); } catch (e) {}
+      out.push("📅 " + dateStr);
+      if (evs.length) {
+        evs.forEach(function (e) { out.push("🌟 " + e); });
+      } else {
+        /* رویدادی برایِ امروز ثبت نشده → رویدادهایِ همین ماه */
+        var monthEvs = [];
+        Object.keys(FA_EVENTS).forEach(function (k) {
+          if (Number(k.split("/")[0]) === md.m) monthEvs.push(k.split("/")[1] + ": " + FA_EVENTS[k][0]);
+        });
+        monthEvs.sort(function (a, b) { return Number(a.split(":")[0]) - Number(b.split(":")[0]); });
+        out.push("رویدادِ ویژه‌ای برای امروز ثبت نشده؛ از دیگر روزهای این ماه: " + monthEvs.slice(0, 6).join(" · "));
+      }
+    } else {
+      out.push("تابلو رویدادهای تقویم شمسی");
+    }
+    return out.join("  ✦  ");
+  }
+
+  function buildTicker() {
+    try {
+      var header = document.querySelector(".app-header");
+      if (!header) return;
+      var bar = document.getElementById("crmEventTicker");
+      if (!bar) {
+        bar = document.createElement("div");
+        bar.id = "crmEventTicker";
+        bar.className = "crm-event-ticker";
+        bar.setAttribute("dir", "rtl");
+        bar.innerHTML = '<div class="crm-ticker-label">🗓 رویدادهای امروز</div><div class="crm-ticker-view"><div class="crm-ticker-move"><span id="crmTickerText"></span><span id="crmTickerText2" aria-hidden="true"></span></div></div>';
+      }
+      /* نوبتِ ۱۴۹: تابلو «داخلِ» هدر می‌نشیند تا با آن فریز باشد و موقعِ اسکرول تکان نخورد */
+      if (bar.parentNode !== header) header.appendChild(bar);
+      var txt = tickerText();
+      var a = document.getElementById("crmTickerText"), b = document.getElementById("crmTickerText2");
+      if (a && a.textContent !== txt) { a.textContent = txt; if (b) b.textContent = "  ✦  " + txt; }
+    } catch (e) {}
+  }
+
+  /* ───────────────── ۱۱) نگهبانِ ویزیت: نقطه‌ها و آمار هیچ‌وقت صفرِ ناخواسته نمی‌مانند ─────────────────
+     شکایت: «شروع/پایان ویزیت را می‌زنم، مسافت ۰ متر، توقف ۰ دقیقه، نقاط ۰».
+     ریشه‌های ممکن: pullِ همگام‌سازی `v20ActiveVisit` را از state پاک می‌کند یا
+     مرورگر رویدادِ GPS را دیر می‌فرستد. حالا یک سایهٔ محلی (sessionStorage) از
+     ویزیتِ فعال نگه می‌داریم و اگر state آن را گم کرد، برمی‌گردانیم؛ و پس از
+     «پایان ویزیت» آمارِ جلسهٔ تمام‌شده را در همان کادر نشان می‌دهیم. */
+  var VISIT_SHADOW = "CRM_V1223_VISIT_SHADOW";
+  function sess() {
+    try { if (window.sessionStorage) return window.sessionStorage; } catch (e) {}
+    try { if (typeof sessionStorage !== "undefined") return sessionStorage; } catch (e2) {}
+    return null;
+  }
+  function visitShadowGet() { try { var s = sess(); return s ? JSON.parse(s.getItem(VISIT_SHADOW) || "null") : null; } catch (e) { return null; } }
+  function visitShadowSet(v) { try { var s = sess(); if (!s) return; if (v) s.setItem(VISIT_SHADOW, JSON.stringify(v)); else s.removeItem(VISIT_SHADOW); } catch (e) {} }
+
+  function visitGuardTick() {
+    var S = window.state;
+    if (!S) return;
+    var sh = visitShadowGet();
+    if (S.v20ActiveVisit) {
+      if (!sh || sh.id !== S.v20ActiveVisit.id) visitShadowSet(S.v20ActiveVisit);
+      else if ((S.v20ActiveVisit.points || []).length !== (sh.points || []).length) visitShadowSet(S.v20ActiveVisit);
+    } else if (sh && sh.id) {
+      /* state ویزیت را گم کرده — برمی‌گردانیم تا watch به ثبت ادامه دهد */
+      S.v20ActiveVisit = sh;
+    }
+  }
+
+  function paintFinishedVisitStats() {
+    try {
+      var S = window.state;
+      if (!S || S.v20ActiveVisit) return;   /* وقتی ویزیت فعال است، کادرِ خودِ برنامه مالک است */
+      var box = document.getElementById("v20VisitMetrics");
+      if (!box) return;
+      var last = (S.repRoutes || [])[0];
+      if (!last || !last.endedAt) return;
+      var html = "<div class='v20-metric'>مسافت طی‌شده<b>" + Math.round(last.distance || 0) + " متر</b></div>" +
+        "<div class='v20-metric'>مدت توقف<b>" + Math.round((last.stopMs || 0) / 60000) + " دقیقه</b></div>" +
+        "<div class='v20-metric'>نقاط ثبت‌شده<b>" + ((last.points || []).length || last.visited || 0) + "</b></div>" +
+        "<div class='v20-metric'>ساعت شروع<b>" + (last.startTime || "—") + "</b></div>" +
+        "<div class='v20-metric'>ساعت پایان<b>" + (last.endTime || "—") + "</b></div>";
+      if (box.innerHTML.indexOf("ساعت پایان") < 0) box.innerHTML = html;
+    } catch (e) {}
+  }
+
+  /* ───────────────── ۱۲) نقشهٔ تردد: خطِ مسیر + مراکزِ بینِ مسیر با برچسبِ ویزیت ─────────────────
+     شکایت: «نمایش تردد باید مثلِ مسیریاب بلد خطِ تردد را روی نقشه بکشد و همهٔ
+     داروخانه‌ها/پزشکانِ بینِ مسیر را با برچسبِ ویزیت‌شده/نشده نشان دهد».
+     خطِ مسیر را خودِ باندل می‌کشد؛ اینجا مراکزِ نزدیکِ مسیر را با برچسبِ دائمی
+     اضافه می‌کنیم. */
+  function havV1223(a, b) {
+    if (!a || !b || a.lat == null || b.lat == null) return 1e9;
+    var R = 6371000, p = Math.PI / 180;
+    var d1 = (b.lat - a.lat) * p, d2 = (b.lng - a.lng) * p;
+    var x = Math.sin(d1 / 2) * Math.sin(d1 / 2) + Math.cos(a.lat * p) * Math.cos(b.lat * p) * Math.sin(d2 / 2) * Math.sin(d2 / 2);
+    return 2 * R * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
+  }
+
+  function drawRouteCenters() {
+    try {
+      var map = window._mapRepRoutes;
+      var LL = window.L;
+      if (!map || typeof LL === "undefined") return 0;
+      window.__v1223Layers = window.__v1223Layers || [];
+      window.__v1223Layers.forEach(function (l) { try { map.removeLayer(l); } catch (e) {} });
+      window.__v1223Layers = [];
+
+      var S = window.state || {};
+      var sel = document.getElementById("routeRepFilterSelect");
+      var rep = sel ? String(sel.value || "") : "";
+      var routes = (S.repRoutes || []).filter(function (r) { return !rep || r.repName === rep; }).slice(0, 4);
+
+      var centers = [];
+      (S.pharmacies || []).forEach(function (c) { if (c.lat && c.lng) centers.push({ name: c.name, lat: +c.lat, lng: +c.lng, kind: "داروخانه" }); });
+      (S.doctors || []).forEach(function (c) { if (c.lat && c.lng) centers.push({ name: c.name, lat: +c.lat, lng: +c.lng, kind: "مطب" }); });
+
+      var added = 0;
+      routes.forEach(function (rt) {
+        var path = rt.path || [];
+        if (!path.length) return;
+        var step = Math.max(1, Math.floor(path.length / 500));
+        centers.forEach(function (c) {
+          var near = false;
+          for (var i = 0; i < path.length; i += step) {
+            if (havV1223(c, path[i]) <= 250) { near = true; break; }
+          }
+          if (!near) return;
+          var visited = (S.visits || []).some(function (v) {
+            return (v.pharmacyName === c.name || v.doctorName === c.name) && (!rt.date || v.date === rt.date);
+          });
+          var mk = LL.circleMarker([c.lat, c.lng], {
+            radius: 9, weight: 3, color: "#fff",
+            fillColor: visited ? "#16a34a" : "#dc2626", fillOpacity: 1
+          }).addTo(map);
+          mk.bindTooltip((visited ? "✅ " : "🔴 ") + c.name + " — " + (visited ? "ویزیت شده" : "ویزیت نشده"), { permanent: true, direction: "top", className: "v1223-center-tip" });
+          window.__v1223Layers.push(mk);
+          added++;
+        });
+        /* برچسبِ آغاز و پایانِ مسیر */
+        var p0 = path[0], p1 = path[path.length - 1];
+        if (p0) window.__v1223Layers.push(LL.circleMarker([p0.lat, p0.lng], { radius: 7, color: "#0f766e", weight: 3, fillColor: "#ccfbf1", fillOpacity: 1 }).addTo(map).bindTooltip(" شروع تردد " + (rt.startTime || ""), { permanent: true, direction: "top" }));
+        if (p1) window.__v1223Layers.push(LL.circleMarker([p1.lat, p1.lng], { radius: 7, color: "#7c2d12", weight: 3, fillColor: "#fed7aa", fillOpacity: 1 }).addTo(map).bindTooltip("🏁 پایان تردد " + (rt.endTime || ""), { permanent: true, direction: "top" }));
+      });
+      return added;
+    } catch (e) { return 0; }
+  }
+
+  /* ───────────────── ۱۳) خروجیِ اکسلِ واقعیِ .xlsx برایِ گوشی ─────────────────
+     شکایت: «پسوندِ فایلِ اکسل برایِ گوشی نامعتبر است». HTML-داخل-.xls روی بسیاری
+     گوشی‌ها رد می‌شود؛ حالا یک .xlsx «واقعی» (ZIP با sheet1) ساخته می‌شود که
+     اندروید و iOS بی‌بهانه باز می‌کنند. */
+  var CRC_T = (function () {
+    var t = [];
+    for (var n = 0; n < 256; n++) { var c = n; for (var k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1); t[n] = c >>> 0; }
+    return t;
+  })();
+  function crc32B(b) { var c = 0xFFFFFFFF; for (var i = 0; i < b.length; i++) c = CRC_T[(c ^ b[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+  function strB(s) {
+    if (typeof TextEncoder !== "undefined") return new TextEncoder().encode(s);
+    var out = []; for (var i = 0; i < s.length; i++) { var c = s.charCodeAt(i); if (c < 128) out.push(c); else { out.push(0xEF, 0xBF, 0xBD); } } return new Uint8Array(out);
+  }
+  function catB(arrs) {
+    var len = 0; arrs.forEach(function (a) { len += a.length; });
+    var out = new Uint8Array(len), o = 0;
+    arrs.forEach(function (a) { out.set(a, o); o += a.length; });
+    return out;
+  }
+  function zipStoreXlsx(files) {
+    var locals = [], centrals = [], off = 0;
+    var d = new Date();
+    var dosT = ((d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1)) & 0xFFFF;
+    var dosD = (((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate()) & 0xFFFF;
+    files.forEach(function (f) {
+      var nameB = strB(f.name), data = f.data, crc = crc32B(data);
+      var lh = new DataView(new ArrayBuffer(30));
+      lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0x0800, true); lh.setUint16(8, 0, true);
+      lh.setUint16(10, dosT, true); lh.setUint16(12, dosD, true); lh.setUint32(14, crc, true);
+      lh.setUint32(18, data.length, true); lh.setUint32(22, data.length, true);
+      lh.setUint16(26, nameB.length, true); lh.setUint16(28, 0, true);
+      locals.push(new Uint8Array(lh.buffer), nameB, data);
+      var ch = new DataView(new ArrayBuffer(46));
+      ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true); ch.setUint16(8, 0x0800, true); ch.setUint16(10, 0, true);
+      ch.setUint16(12, dosT, true); ch.setUint16(14, dosD, true); ch.setUint32(16, crc, true);
+      ch.setUint32(20, data.length, true); ch.setUint32(24, data.length, true);
+      ch.setUint16(28, nameB.length, true); ch.setUint32(42, off, true);
+      centrals.push(new Uint8Array(ch.buffer), nameB);
+      off += 30 + nameB.length + data.length;
+    });
+    var centralSize = centrals.reduce(function (s, a) { return s + a.length; }, 0);
+    var eocd = new DataView(new ArrayBuffer(22));
+    eocd.setUint32(0, 0x06054b50, true); eocd.setUint16(8, files.length, true); eocd.setUint16(10, files.length, true);
+    eocd.setUint32(12, centralSize, true); eocd.setUint32(16, off, true);
+    return catB(locals.concat(centrals).concat([new Uint8Array(eocd.buffer)]));
+  }
+  function colLetter(i) {
+    var s = ""; i += 1;
+    while (i > 0) { var m = (i - 1) % 26; s = String.fromCharCode(65 + m) + s; i = Math.floor((i - 1) / 26); }
+    return s;
+  }
+  function xmlEscX(v) {
+    return String(v == null ? "" : v).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  function buildXlsx(headers, rows) {
+    var sheet = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView rightToLeft="1" workbookViewId="0"/></sheetViews><sheetData>';
+    function rowXml(cells, ri) {
+      return "<row r=\"" + (ri + 1) + "\">" + cells.map(function (c, ci) {
+        return "<c r=\"" + colLetter(ci) + (ri + 1) + "\" t=\"inlineStr\"><is><t xml:space=\"preserve\">" + xmlEscX(c) + "</t></is></c>";
+      }).join("") + "</row>";
+    }
+    sheet += rowXml(headers, 0);
+    rows.forEach(function (r, i) { sheet += rowXml(r, i + 1); });
+    sheet += "</sheetData></worksheet>";
+    var files = [
+      { name: "[Content_Types].xml", data: strB('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>') },
+      { name: "_rels/.rels", data: strB('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>') },
+      { name: "xl/workbook.xml", data: strB('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="گزارش" sheetId="1" r:id="rId1"/></sheets></workbook>') },
+      { name: "xl/_rels/workbook.xml.rels", data: strB('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>') },
+      { name: "xl/worksheets/sheet1.xml", data: strB(sheet) }
+    ];
+    return zipStoreXlsx(files);
+  }
+
+  function installXlsxExport() {
+    var orig = window.downloadCSVFile;
+    if (!orig || orig._v1223) return;
+    var w = function (filename, headers, rows) {
+      try {
+        var hdrs = headers.slice();
+        var rws = rows.map(function (r) { return r.slice(); });
+        if (hdrs[0] !== "ردیف") { hdrs = ["ردیف"].concat(hdrs); rws = rws.map(function (r, i) { return [i + 1].concat(r); }); }
+        var repAt = -1;
+        hdrs.forEach(function (h, i) { if (repAt < 0 && /نام نماینده|نماینده علمی|نماینده/.test(String(h))) repAt = i; });
+        if (repAt < 0) {
+          hdrs.splice(1, 0, "نام نماینده");
+          rws = rws.map(function (r) { var x = r.slice(); x.splice(1, 0, (typeof window.currentUserName === "string" ? window.currentUserName : "—")); return x; });
+        } else if (repAt !== 1) {
+          var rh = hdrs.splice(repAt, 1)[0]; hdrs.splice(1, 0, rh);
+          rws = rws.map(function (r) { var x = r.slice(); var v = x.splice(repAt, 1)[0]; x.splice(1, 0, v); return x; });
+        }
+        var bytes = buildXlsx(hdrs, rws);
+        var blob = new Blob([bytes], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = String(filename || "export.xls").replace(/\.(csv|xls|xlsx)$/i, "") + ".xlsx";
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function () { try { URL.revokeObjectURL(a.href); } catch (e) {} }, 800);
+        try { console.log("📊 v1223 خروجیِ xlsx واقعی: " + a.download + " — " + rws.length + " سطر"); } catch (eL) {}
+        return;
+      } catch (e) { try { return orig(filename, headers, rows); } catch (e2) {} }
+    };
+    w._v1223 = true;
+    window.downloadCSVFile = w;
+  }
+
   /* ───────────────── راه‌اندازی ───────────────── */
   function pass() {
     try { enforceAll(); } catch (e) {}
@@ -1528,6 +2196,55 @@
       }, true);
     } catch (eSR) {}
 
+    /* خروجیِ اکسلِ واقعیِ .xlsx (پسوندِ معتبر برایِ گوشی) */
+    try { installXlsxExport(); } catch (eX) {}
+
+    /* تابلوِ روانِ رویدادهایِ روز — «داخلِ» هدرِ چسبان تا با اسکرول فریز بماند */
+    try {
+      buildTicker();
+      setInterval(function () { try { buildTicker(); } catch (e) {} }, 60000);
+    } catch (eTK) {}
+
+    /* پشتیبانِ «دیدنی»: هوکِ saveState + برچسبِ ساعتِ آخرین پشتیبان در هدر */
+    try { hookSaveStateForBackup(); } catch (eHK) {}
+    try { backupChipUpdate(); } catch (eBC) {}
+    try { var lastBk = null; try { lastBk = window.localStorage ? window.localStorage.getItem("CRM_V1224_LASTBACKUP") : null; } catch (eLB) {} if (lastBk) { var c0 = $("v1224BackupChip"); if (c0 && c0.textContent !== lastBk) c0.textContent = lastBk; } } catch (eLB2) {}
+
+    /* ابزارِ انتقالِ داده بینِ رندر و نت‌افراز (تبِ عیب‌یابی) */
+    try { buildTransferTools(); } catch (eTR) {}
+    try { setTimeout(function () { try { buildTransferTools(); } catch (e2) {} }, 1500); } catch (eTR2) {}
+
+    /* نگهبانِ ویزیت + مالکیتِ کاملِ دکمه‌های شروع/پایان توسطِ لایه (نوبتِ ۱۵۰) */
+    try {
+      setInterval(function () { try { visitGuardTick(); } catch (e) {} try { paintFinishedVisitStats(); } catch (e2) {} }, 1500);
+      document.addEventListener("click", function (e) {
+        var t = e.target;
+        if (!t || !t.closest) return;
+        if (t.closest("#btnStartVisit")) {
+          try { e.preventDefault(); e.stopImmediatePropagation(); } catch (e2) {}
+          startVisit1224();
+        }
+        if (t.closest("#btnEndVisit")) {
+          try { e.preventDefault(); e.stopImmediatePropagation(); } catch (e3) {}
+          endVisit1224();
+        }
+      }, true);
+    } catch (eVG) {}
+
+    /* نقشهٔ تردد: پس از هر بروزرسانی، مراکزِ بینِ مسیر با برچسبِ ویزیت */
+    try {
+      document.addEventListener("click", function (e) {
+        var t = e.target;
+        if (!t || !t.closest) return;
+        if (t.closest("#btnRefreshRepRoutesMap,#v20RouteRefresh,#v20RouteAll,#btnV20ShowRoute")) {
+          setTimeout(function () { try { drawRouteCenters(); } catch (e3) {} }, 400);
+          setTimeout(function () { try { drawRouteCenters(); } catch (e4) {} }, 1200);
+        }
+      }, true);
+      var repSel = $("routeRepFilterSelect");
+      if (repSel) repSel.addEventListener("change", function () { setTimeout(function () { try { drawRouteCenters(); } catch (e5) {} }, 400); });
+    } catch (eRC) {}
+
     /* دکمه‌های گاوصندوق */
     try {
       document.addEventListener("click", function (e) {
@@ -1544,7 +2261,7 @@
       }
     } catch (eVB) {}
 
-    /* پشتیبانِ خودکار: هر ۶۰ ثانیه اگر چیزی عوض شده بود */
+    /* پشتیبانِ خودکارِ «دیدنی»: هر ۳۰ ثانیه اگر چیزی عوض شده بود */
     setInterval(function () {
       try {
         var prev = readJson(VAULT_KEY, null);
@@ -1553,7 +2270,7 @@
         var oldSig = prev ? JSON.stringify([prev.customFields, prev.formFieldMeta, prev.anchors]) : "";
         if (sig !== oldSig) saveVault();
       } catch (e) {}
-    }, 60000);
+    }, 30000);
 
     /* اگر حافظهٔ مرورگر خالی بود (نصبِ تازه/مرورگرِ دیگر) از IndexedDB و سپس سرور برگردان */
     try {
@@ -1603,9 +2320,18 @@
     paintSettings: paintSettings,
     paintAll: paintAll,
     syncManagerOrderKey: syncManagerOrderKey,
+    harmonizeMetaOrders: harmonizeMetaOrders,
+    groupFidOf: groupFidOf,
     applyRealDesignerValues: applyRealDesignerValues,
     faHeader: faHeader,
     clockDate: clockDate,
+    tickerText: tickerText,
+    todayJalaliMD: todayJalaliMD,
+    buildXlsx: buildXlsx,
+    zipStoreXlsx: zipStoreXlsx,
+    drawRouteCenters: drawRouteCenters,
+    visitGuardTick: visitGuardTick,
+    paintFinishedVisitStats: paintFinishedVisitStats,
     forceCloseSideMenu: forceCloseSideMenu,
     syncToRenderSmart: syncToRenderSmart,
     buildTopBar: buildTopBar,
@@ -1615,7 +2341,16 @@
     saveVault: saveVault,
     restoreVault: restoreVault,
     buildFullExport: buildFullExport,
-    allowAddOptionFor: allowAddOptionFor
+    allowAddOptionFor: allowAddOptionFor,
+    backupChipUpdate: backupChipUpdate,
+    hookSaveStateForBackup: hookSaveStateForBackup,
+    startVisit1224: startVisit1224,
+    endVisit1224: endVisit1224,
+    jalaliYMD: jalaliYMD,
+    buildTransferTools: buildTransferTools,
+    copyFromHub: copyFromHub,
+    pushFullTo: pushFullTo,
+    buildTicker: buildTicker
   };
 
   try { window.v1221Api = window.v1220Api; } catch (eAlias) {}

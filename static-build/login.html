@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <script>(function(){try{if(location.search.indexOf("nosw")!==-1&&navigator.serviceWorker){navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister();}));}).then(function(){if(window.caches)return caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.delete(k);}));});}).then(function(){location.replace(location.pathname+(location.hash||""));}).catch(function(){location.reload();});}}catch(e){}})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+  <script src="crm-entry-engine.js?v=12.24.0"></script>
+  <script>
+    (function(){var BUILD="12.24.0";window.CRM_APP_VERSION=BUILD;var key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{
+      var prev=localStorage.getItem(key)||"";
+      localStorage.setItem(key,BUILD);
+      if(prev&&prev!==BUILD&&sessionStorage.getItem("CRM_MOBILE_RELOAD")!==BUILD){
+        sessionStorage.setItem("CRM_MOBILE_RELOAD",BUILD);
+        var go=function(){location.reload();};
+        if(navigator.serviceWorker){
+          navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister();}));}).then(function(){
+            if(window.caches)return caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.delete(k);}));});
+          }).then(go).catch(go);
+        } else go();
+      }
+    }catch(e){}fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD){/* v11.70 no auto go(d.version) */}}).catch(function(){});})();
+  </script>
+  <title>ورود | طنین طب طاها</title>
+
+    <script>/*__PWD_TOGGLE*/
+      /* v11.46: نمایش/پنهان رمز — دابل‌کلیک روی هر فیلد رمز در کل برنامه */
+      document.addEventListener("dblclick", function (e) {
+        var el = e.target;
+        if (el && el.tagName === "INPUT" && el.type === "password") { el.type = "text"; el.title = "دوبار کلیک کنید تا پنهان شود"; }
+        else if (el && el.tagName === "INPUT" && el.type === "text" && el.dataset.wasPassword === "1") { el.type = "password"; }
+      }, true);
+      document.addEventListener("focusout", function (e) {
+        var el = e.target;
+        if (el && el.tagName === "INPUT" && el.type === "text" && el.dataset.wasPassword === "1") { el.type = "password"; }
+      }, true);
+    </script>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d9488">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{min-height:100vh;font-family:Tahoma,Arial,sans-serif;background:linear-gradient(160deg,#0f766e 0%,#134e4a 55%,#0f172a 100%);display:flex;align-items:center;justify-content:center;padding:16px;color:#0f172a}
+    .card{width:100%;max-width:400px;background:#fff;border-radius:18px;padding:22px 18px 18px;box-shadow:0 20px 50px rgba(0,0,0,.28);text-align:center}
+    img.logo{width:168px;height:auto;margin:0 auto 10px;display:block;background:#fff;border-radius:16px;padding:8px}
+    h1{font-size:1.1rem;margin:4px 0 6px}
+    p.sub{font-size:.84rem;color:#64748b;margin-bottom:14px}
+    label{display:block;text-align:right;font-size:.82rem;font-weight:700;margin:8px 0 4px}
+    input,select{width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:10px;font-family:inherit;font-size:.95rem}
+    button{width:100%;margin-top:14px;background:#0d9488;color:#fff;border:0;border-radius:10px;padding:12px;font-family:inherit;font-weight:800;font-size:1rem;cursor:pointer}
+    button:disabled{opacity:.6}
+    .hint{font-size:.75rem;color:#94a3b8;margin-top:10px}
+    .err{display:none;background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;border-radius:8px;padding:8px;font-size:.82rem;margin-top:10px}
+    .ok{font-size:.78rem;color:#0f766e;margin-top:8px;min-height:1.2em}
+  </style>
+</head>
+<body>
+  <script src="crm-runtime.js?v=12.24.0"></script>
+  <script src="crm-hub.js?v=12.24.0"></script>
+
+  <div class="card">
+    <img class="logo" src="logo.png" alt="Tanin Teb Taha">
+    <h1>ورود به سامانه طنین طب طاها</h1>
+    <p class="sub">نام کاربری، رمز عبور و شماره همراه ثبت‌شده را وارد کنید.</p>
+    <form id="f" onsubmit="return false;">
+      <label for="u">نام کاربری</label>
+      <input id="u" autocomplete="username" dir="ltr" placeholder="admin">
+      <label for="p">رمز عبور</label>
+      <input id="p" type="password" autocomplete="current-password" dir="ltr" placeholder="رمز">
+      <label for="ph">شماره همراه</label>
+      <input id="ph" dir="ltr" placeholder="09120000000">
+      <label for="mode">روش تایید شماره همراه</label>
+      <select id="mode">
+        <option value="off">غیرفعال (ورود عادی)</option>
+        <option value="otp">پیامک رمز یک‌بارمصرف (شبیه‌سازی)</option>
+        <option value="admin">ارسال کد تایید به مدیر</option>
+      </select>
+      <div class="err" id="err"></div>
+      <button id="btn" type="submit">ورود به برنامه</button>
+    </form>
+    <div class="ok" id="st"></div>
+    <p class="hint">نمونه مدیر: admin / 123 — شماره 09120000000</p>
+    <p class="hint">هاب‌ها از BASE_URL/CRM_HUBS خوانده می‌شوند (Render، ndcohub.ir، mehraeinpharma.ir).</p>
+    <p class="hint" id="crmBuildHint">نسخه 12.24.0 — گوشی و ویندوز باید همین شماره را ببینند</p>
+  </div>
+  <script>
+    (function(){
+      function crmLogged(){
+        try{if(sessionStorage.getItem("crmLoggedIn")==="1")return true;}catch(e){}
+        try{if(localStorage.getItem("CRM_LOGIN_OK")==="1"){
+          var exp=Number(localStorage.getItem("CRM_LOGIN_EXP")||0);
+          if(!exp||exp>Date.now())return true;
+        }}catch(e){}
+        return false;
+      }
+      /* v11.88: صفحه ورود همیشه دیده شود؛ پرش خودکار به پنل ممنوع */
+
+      var USERS = [
+        {username:"admin", password:"123", phone:"09120000000", name:"مدیر سیستم", role:"مدیر سیستم", phoneRequired:false},
+        {username:"Taheri", password:"456", phone:"09120852097", name:"جواد علمدار", role:"نماینده علمی", phoneRequired:true},
+        {username:"nila", password:"789", phone:"09123334455", name:"خانم نیلا محرمی", role:"نماینده علمی", phoneRequired:true},
+        {username:"davood", password:"321", phone:"09120852097", name:"آقای داوود عقبایی", role:"سرپرست", phoneRequired:false}
+      ];
+      try {
+        var auth = JSON.parse(localStorage.getItem("CRM_USERS_AUTH") || "{}");
+        Object.keys(auth).forEach(function(k){
+          var a = auth[k];
+          var found = USERS.filter(function(x){ return x.username === k; })[0];
+          if (found) { found.password = a.password || found.password; found.phone = a.phone || found.phone; found.name = a.name || found.name; found.role = a.role || found.role; }
+          else USERS.push({ username:k, password:a.password, phone:a.phone, name:a.name, role:a.role, phoneRequired:false });
+        });
+        var stt = JSON.parse(localStorage.getItem("CRM_APP_STATE_V2") || "null");
+        if (stt && stt.users) {
+          stt.users.forEach(function(u){
+            var found = USERS.filter(function(x){ return x.username === u.username; })[0];
+            if (found) { found.password = u.password; found.phone = u.phone || found.phone; found.name = u.fullName || found.name; found.role = u.role || found.role; }
+            else USERS.push({ username:u.username, password:u.password, phone:u.phone, name:u.fullName, role:u.role, phoneRequired:false });
+          });
+        }
+      } catch(e) {}
+      var st = document.getElementById("st");
+      var err = document.getElementById("err");
+      function showErr(m){ err.style.display="block"; err.textContent=m; }
+      function hideErr(){ err.style.display="none"; }
+      fetch("/api/health").then(function(r){return r.json();}).then(function(d){ st.textContent="سرور آماده است — نسخه "+((d&&d.version)||"12.24.0"); var h=document.getElementById("crmBuildHint"); if(h&&d&&d.version&&d.version!=="12.24.0") h.textContent="گوشی نسخه قدیمی می‌بیند ("+d.version+") — یک‌بار کش را خالی کنید یا لینک را با Chrome باز کنید."; }).catch(function(){ st.textContent="در حال بیدار کردن سرور..."; });
+      document.getElementById("f").addEventListener("submit", function(){
+        hideErr();
+        var u=document.getElementById("u").value.trim();
+        var p=document.getElementById("p").value;
+        var ph=document.getElementById("ph").value.trim();
+        var mode=document.getElementById("mode").value;
+        var user=USERS.filter(function(x){return x.username===u && x.password===p;})[0];
+        if(!user){ showErr("نام کاربری یا رمز عبور نادرست است."); return; }
+        if(user.phoneRequired && ph && user.phone && ph!==user.phone){
+          showErr("شماره همراه با شماره ثبت‌شده برای این کاربر یکی نیست. مرورگر وب نمی‌تواند سیم‌کارت واقعی گوشی را بخواند؛ تطابق با شماره ثبت‌شده مدیر انجام شد.");
+          return;
+        }
+        if(mode==="otp"){
+          var code=prompt("رمز یک‌بارمصرف آزمایشی ارسال شد. کد را وارد کنید:", "123456");
+          if(code!=="123456"){ showErr("کد تایید نادرست است."); return; }
+        } else if(mode==="admin"){
+          alert("کد تایید برای مدیر سیستم ثبت شد. ورود پس از تایید مدیر انجام می‌شود (حالت آزمایشی: تایید شد).");
+        }
+        sessionStorage.setItem("crmLoggedIn","1");
+        sessionStorage.setItem("crmUserName", user.name);
+        sessionStorage.setItem("crmUserRole", user.role);
+        sessionStorage.setItem("crmUsername", user.username);
+        try{
+          localStorage.setItem("CRM_LOGIN_OK","1");
+          localStorage.setItem("CRM_LOGIN_EXP", String(Date.now()+7*24*3600*1000));
+          localStorage.setItem("crmUserName", user.name);
+          localStorage.setItem("crmUserRole", user.role);
+          localStorage.setItem("crmUsername", user.username);
+        }catch(e){}
+        /* موتورِ ورود (نوبت ۱۳۹): پاک‌سازیِ اطلاعاتِ قدیمیِ همین دستگاه، بعد ورود؛
+           اطلاعاتِ سرور هرگز پاک نمی‌شود — موتورِ سمتِ مرورگر است. سقفِ ۲٫۵ ثانیه تا ورود. */
+        var __enterDone = false;
+        function __enter() { if (__enterDone) return; __enterDone = true; location.replace("/index.html"); }
+        try {
+          if (window.crmEntryEngine && window.crmEntryEngine.run) {
+            var __p = window.crmEntryEngine.run({ from: "login" });
+            if (__p && typeof __p.then === "function") __p.then(__enter, __enter); else __enter();
+            setTimeout(__enter, 2500);
+          } else __enter();
+        } catch (eEng) { __enter(); }
+      });
+    })();
+  </script>
+</body>
+</html>
