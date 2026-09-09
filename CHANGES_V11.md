@@ -1,4 +1,23 @@
 
+## 12.25.0 — 1405-06-18 (2026-09-09, نوبت 152)
+- **یک ستاره، نه دو ستاره:** `fixStars1225()` در هر گذرِ نگهبان همهٔ `*`هایِ داخلِ متنِ برچسب را پاک می‌کند و از spanهایِ `.req-star` فقط یکی را نگه می‌دارد → «**نام داروخانه*** *» تمام شد.
+- **تابلویِ روان:** یک دور = **60s** (`crmTickerMove 60s`)؛ کپیِ دومِ متن (`#crmTickerText2`) که برایِ حلقهٔ بی‌درز ساخته می‌شد حذف شد (و اگر از نسخهٔ قبل در DOM مانده باشد پاک می‌شود) + `tickerText()` رویدادِ تکراری را حذف می‌کند → هر رویداد «یک‌بار».
+- **موجیبیک و رشتهٔ اقلام:** `cleanFaText1225()` نویزِ کدگذاری (U+FFFD، C1، `â€Ž`/`Ã‚Â`/`ØŒ`/`ÛŒ`، نشانه‌هایِ جهت) را پاک می‌کند و `«»`/`®`/`°`/خط‌تیرهٔ فارسی را دست‌نخورده می‌گذارد؛ `fixGiftCells1225()` خانه‌هایِ «= تعداد کالا:» را به قالبِ فشرده و **بی‌تکرار** تبدیل می‌کند: «سافت ژل امگا 3 (100 کالا / 10 جایزه)».
+- **کالاها:** `productGuard1225()` تکراری‌ها را بر پایهٔ نامِ نرمال‌شده یکی می‌کند و نامِ حذف‌شدهٔ کاربر را در `CRM_V1225_PRODUCT_TOMB` سنگ‌قبر می‌گذارد → mergeِ سرور (مخصوصاً در رندر) آن را برنمی‌گرداند.
+- **آینه‌شدنِ فیلدها:** `mirrorPharmacyToOrders1225()` هر فیلدِ سفارشیِ `customFields.pharmacy` را با همان عنوان/نوع/گزینه‌ها/ترتیب/نمایش در `customFields.order` می‌سازد (`mirrorOf`) و با حذفِ مبدأ، آینه را هم حذف می‌کند؛ سپس `applyFullFormLayout("tab-orders")` + `refreshColumnsDesigner()`.
+- **یک کادرِ جایگذاری:** `singlePickBox1225()` کادرِ دوم (`#crm1216TopPick`) را با `display:none !important` **پنهان** می‌کند (نه حذف) تا سازندهٔ باندل دوباره نسازد → پرش/ظهورِ پیاپی تمام.
+- **شمارهٔ ترتیبِ فرم و لیست:** ریشهٔ خرابی این بود که نگهبانِ لایه هر 900ms لنگرِ آغازین را بازمی‌گرداند. حالا هندلرِ تغییر، `recaptureAfterOrder1225()` را صدا می‌زند (ضبطِ دوبارهٔ لنگر در 1100ms و 2500ms) و `rebuildAllCanons` حذف شد؛ `col-listorder-input`/`colFieldListOrder` هم پوشش دارند.
+- **پشتیبانِ خودکار:** بازهٔ دوره‌ای از 30s به **5 دقیقه** (300000ms) تغییر کرد (هوکِ `saveState` و برچسبِ هدر سرجایشان هستند).
+- **«🗺 نمایش تردد»:** لایه کلیک را در فازِ capture می‌گیرد، تب را باز می‌کند (`openRoutesTab1225`)، نقشه را می‌سازد (`ensureRoutesMap1225`)، مبدأ→مقصد را با `L.polyline` و دو marker می‌کشد و نتیجه را در `#v1225TrafficStatus` «دیدنی» می‌نویسد؛ در نبودِ مسیر/نقطه/نقشه هم دلیلِ روشن می‌دهد (نه سکوت).
+- تست: `tests/v12.25.0-anchor.test.mjs` (51 تست) → کلِ suite **290/290**.
+
+## 12.24.0 — 1405-06-18 (2026-09-09, نوبت 150)
+- **تابلوی روان «داخلِ» هدرِ چسبان:** `buildTicker()` نوار را با `header.appendChild(bar)` به `.app-header` (که `position:sticky; top:0; z-index:1000` است) منتقل می‌کند؛ `.app-header .crm-event-ticker` با margin منفی تمام‌عرض می‌نشیند → با اسکرول، تابلو همراهِ هدر فریز است و تکان نمی‌خورد.
+- **پشتیبانِ خودکارِ «دیدنی»:** `hookSaveStateForBackup()` دورِ `window.saveState` را می‌گیرد (2.5s debounce → `saveVault()`)، بازهٔ دوره‌ای از 60s به **30s** کم شد، و `backupChipUpdate()` برچسبِ `#v1224BackupChip` («🛡 HH:MM:SS») را کنارِ ساعتِ هدر می‌نشاند + `CRM_V1224_LASTBACKUP` را ذخیره می‌کند. `saveVault()` هم در پایان برچسب را تازه می‌کند.
+- **مالکیتِ کاملِ شروع/پایانِ ویزیت:** لایه کلیکِ `#btnStartVisit`/`#btnEndVisit` را در فازِ capture با `preventDefault()+stopImmediatePropagation()` می‌گیرد و خودش `startVisit1224()`/`endVisit1224()` را اجرا می‌کند. شروع: `watchPosition` + `getCurrentPosition` صریح (اجازهٔ GPS) + بیمهٔ `getCurrentPosition` هر 5s. وضعیتِ GPS «دیدنی» در `#visitStatusBox`: «🛰 در حالِ دریافتِ GPS»، «🛰 GPS متصل — n نقطه، m متر»، «⛔ اجازه رد شد»، «⚠️ سیگنال نیست». پایان: مسیر در `state.repRoutes` و `state.visitTracks` با `status:"پایان‌یافته"`، `path`، `visited`، تاریخِ `y/m/d` شمسیِ بی‌ویرگول، سپس `paintFinishedVisitStats()` و `drawRouteCenters()`.
+- **انتقالِ داده بینِ رندر و نت‌افراز:** کارتِ `#v1224TransferCard` در تبِ عیب‌یابی با سه دکمه — 📥 کپیِ کامل از رندر (`GET /api/state` → کپیِ کلیدهای غیرِ `_` → `saveState` → reload)، 📤 ارسالِ کامل به نت‌افراز (`https://mehraeinpharma.ir`)، 📤 ارسالِ کامل به رندر (`POST /api/state?__v12183=1`) — با کادرِ وضعیتِ `#v1224TransferStatus`.
+- تست: `tests/v12.25.0-anchor.test.mjs` (41 تست) → کلِ suite **280/280**.
+
 ## 12.23.0 — 1405-06-18 (2026-09-08, نوبت 148)
 - **تابلو روانِ رویدادهایِ روز:** `FA_EVENTS` (130+ مناسبتِ شمسی) + `tickerText()` با `Intl` شمسی؛ `.crm-event-ticker` زیرِ هدر با انیمیشنِ `crmTickerMove 120s linear infinite` (آهسته)، توقف روی hover.
 - **هدرِ portrait گوشی:** media query دو ردیفه (ساعت تمام‌عرض ردیفِ دوم).
@@ -6,17 +25,17 @@
 - **نقشهٔ تردد:** `drawRouteCenters()` — مراکزِ <=250 متریِ مسیر با `L.circleMarker` و tooltip دائمیِ «ویزیت شده/نشده» (از `state.visits`) + نشانِ شروع/پایان.
 - **xlsx واقعی:** `zipStoreXlsx()` (STORE+CRC32) + `buildXlsx()` (sheet راست‌به‌چپ، inlineStr) + بازنویسیِ `window.downloadCSVFile` با پسوندِ `.xlsx` و MIME رسمی.
 - **خودبروزرسانی:** `public/auto-update.php` — دانلودِ آخرین Release از GitHub عمومی + استخراج با ZipArchive با فهرستِ محافظتِ داده‌ها.
-- تست: `tests/v12.23.0-anchor.test.mjs` (35 تست) → کلِ suite **274/274**.
+- تست: `tests/v12.25.0-anchor.test.mjs` (35 تست در زمانِ انتشارِ 12.23.0) → کلِ suite **274/274**.
 
 ## 12.22.0 — 1405-06-17 (2026-09-08, نوبت 147)
 - **پایانِ «پرشِ زیاد» (هم‌فرکانس‌سازی):** `harmonizeMetaOrders()` ترتیبِ نهاییِ هر گرهٔ فرزند (با `groupFidOf` = `data-col-fid` یا idِ نخستین ورودیِ غیرhidden، شاملِ کادرِ لوکیشن) را در `state.formFieldMeta[key][fid].order` می‌نویسد و `saveState()` می‌کند؛ در نتیجه `applySavedLayout`ِ باندل (که از `meta.order` می‌خواند) دقیقاً همان `order`هایی را می‌سازد که `applyCanon` می‌نویسد → دو موتور یک خروجی و جنگِ `order`/پرش تمام. تست: شبیه‌سازیِ الگوریتمِ باندل برابر با خروجیِ لایه + گذرِ دوم صفر تغییر.
 - **کادرِ ساعت/تاریخ خوانا:** `.crm-header-clock{width:302px;padding:0.42rem 0.85rem;border-radius:12px;background:rgba(13,148,136,.08)}`، ساعت `1.02rem/800`، تاریخ `0.8rem/600`، جداکنندهٔ عمودی؛ پهنای بیرونی ثابت تا نپرد (موبایل ۲۵۸px).
 - **نشان‌های هدر میخکوب:** `#globalOnlineStatusBadge{flex:0 0 92px}`، `#btnNotificationBellHeader{flex:0 0 36px}` + بجِ مطلق، `.header-user-pill{max-width:210px}` با ellipsis.
 - **لوگوی یکپارچهٔ «طنین طب طاها»:** نشانِ ارسالیِ کاربر بازتولید و بایت‌به‌بایت جایگزینِ `logo.png`، `logo-full.png`، `logo-mark.png/jpg`، `logo-original.jpg`، `tanin.jpg`، `favicon.png`، `apple-touch-icon.png`، `icon-192/512.png` و همهٔ `icons/*` (۱۵ فایل) شد؛ manifest و `<link rel=icon>` بی‌تغییر به همین فایل‌ها اشاره می‌کنند. تست: برابریِ بایتِ همه با `logo.png`.
-- تست: `tests/v12.23.0-anchor.test.mjs` (۳۰ تست) → کلِ suite **۲۶۹/۲۶۹**.
+- تست: `tests/v12.25.0-anchor.test.mjs` (۳۰ تست) → کلِ suite **۲۶۹/۲۶۹**.
 
 ## 12.21.0 — ۱۴۰۵-۰۶-۱۷ (2026-09-08, نوبت ۱۴۶)
-- **لایهٔ پایانیِ `public/crm-v12.23.0.js`** جانشینِ `crm-v12.20.0.js` (کلیدهایِ حافظه `CRM_V12200_ANCHORS`/`CRM_SETTINGS_VAULT_V1` و نامِ `window.v1220Api` عمداً بی‌تغییر ماندند تا با ارتقا داده‌ای نپرد؛ `window.v1221Api` هم همان API است).
+- **لایهٔ پایانیِ `public/crm-v12.25.0.js`** جانشینِ `crm-v12.20.0.js` (کلیدهایِ حافظه `CRM_V12200_ANCHORS`/`CRM_SETTINGS_VAULT_V1` و نامِ `window.v1220Api` عمداً بی‌تغییر ماندند تا با ارتقا داده‌ای نپرد؛ `window.v1221Api` هم همان API است).
 - **۱) تاریخِ شمسیِ بی‌ویرگول و بی‌پرش:** ریشهٔ «1,405 شهریور 17, سه‌شنبه» این بود که `installLatinNumberLaw` (باندل، خطِ ۱۱۱۹۰) `Date.prototype.toLocaleDateString` را پچ می‌کند و جداکنندهٔ هزارگانِ فارسی `٬` را به `,` تبدیل می‌کند. حالا `clockDate()` تاریخ را با `Intl.DateTimeFormat("fa-IR-u-ca-persian-nu-latn").formatToParts()` «دست‌ساز» می‌سازد (نامِ ماه/روزِ هفته از جدولِ فارسیِ `FA_MONTHS`/`FA_WEEKDAYS`) و `cleanNum()` هر `٬ ، U+066B , U+200E U+200F` را پاک می‌کند؛ `tickClock` فقط وقتی متن عوض شود می‌نویسد. در CSS هم `.crm-header-clock` پهنایِ **ثابت** گرفت (`268px` و در ≤900px `232px`) + `contain: layout style paint size`، پس تپشِ ثانیه نه تاریخ را تکان می‌دهد نه هدر را.
 - **«طنین طب طاها» به هدر برگشت:** قانونِ `#headerBrandLine{display:none}` (نوبتِ ۱۴۵) برداشته شد و به `display:block` با `font-size:.6rem` تبدیل شد — دیده می‌شود، فقط ریزتر.
 - **۲) پایانِ «فیلدها هنوز به زیرِ کادرها می‌روند»:** قفلِ ۱۲.۲۰ فقط DOM را مرتب می‌کرد، ولی `applySavedLayoutV82` (باندل @۱۸۰۹۸-۱۸۱۰۲) روی هر گروه `style.order` می‌گذارد و در CSS همان `order` بر ترتیبِ DOM غلبه می‌کند. حالا `applyCanon` پس از `insertBefore`ها، `order` را با `!important` روی **همهٔ** فرزندانِ گرید بازنویسی می‌کند (۱..n = ترتیبِ لنگر) و `syncManagerOrderKey()` کلیدِ خودِ باندل (`CRM_MANAGER_GRID_ORDER_V2`) را با همان ترتیب و همان لنگرها (`id`ِ نخستین `input/select/textarea/button`) زیرِ کلیدِ `form:<formId>` پر می‌کند تا `restoreDomFieldOrder` همان را ببیند و با ما نجنگد.
@@ -24,7 +43,7 @@
 - **۴) «ارسال به رندر» با گزارشِ صادقانه:** پیامِ «sync-local-only» پاسخِ ساختگیِ shimِ `crm-hub.js` (خطِ ۱۶۵) برای **هر** پاسخِ غیرِ 2xx از `/api/sync` بود و کدِ واقعیِ HTTP بلعیده می‌شد. حالا کلیک روی `#btnV96SyncRender` در فازِ capture گرفته می‌شود، `rawRequest()` با `XMLHttpRequest` (بیرون از shim) کدِ واقعی را می‌گیرد («api.php پاسخِ ۴۰۴ داد — …») و اگر relayِ هاست کار نکرد، `pushDirectToHubs()` داده را **مستقیم از مرورگر** به هاب‌ها (`javad-test1.onrender.com`، `mehraeinpharma.ir`، `ndcohub.com`) POST می‌کند (با `X-CRM-Request:1`؛ CORSِ `server.js` برایِ هاست‌هایِ هاب باز است).
 - **۵) سرستون‌هایِ اکسل همه فارسی:** `FA_HEADER` + `faHeader()` (جدولِ برچسب، سپس `window.FA_FIELD_LABELS`، سپس ساختِ خودکار از تکه‌هایِ کلید: `orderManagerPhone`→«تلفن مدیر سفارش»)؛ `dateAdded`→«تاریخ افزودن» و `createdAt`→«تاریخ ثبت» (دو ستونِ تاریخ، دو برچسبِ جدا)؛ سرستونِ هم‌نام با عددِ فارسی جدا می‌شود نه با کلیدِ لاتین؛ غلطِ «همانه»→«همراه»؛ کلیدِ بی‌برچسب در کنسول هشدار می‌گیرد.
 - **۶) طراحِ «ستون‌ها و کالاها» عددهایِ واقعیِ همان فیلد:** `applyRealDesignerValues()` (با کلیکِ capture روی `#colFieldList`/`#columnsDesignerHost` و MutationObserver) عرض و ارتفاع را با `getBoundingClientRect` **اندازه می‌گیرد**، فاصلهٔ میلی‌متریِ واقعیِ رویِ صفحه را از `margin-inline-start/end` با `px×25.4/96` می‌خواند، «شماره سطر» را از `grid-row-start` و «شماره ترتیب در فرم/لیست» را از جایِ واقعیِ فیلد برمی‌دارد — پس دیگر برایِ همهٔ فیلدها ۲۲۰ نشان نمی‌دهد (فقط وقتی مقدارِ ذخیره‌شده نیست).
-- تست: `tests/v12.23.0-anchor.test.mjs` (۲۷ تست، ۹ تا تازه) → کلِ suite **۲۶۶/۲۶۶**.
+- تست: `tests/v12.25.0-anchor.test.mjs` (۲۷ تست، ۹ تا تازه) → کلِ suite **۲۶۶/۲۶۶**.
 
 ## 12.20.0 — ۱۴۰۵/۰۶/۱۷ (2026-09-08, نوبت ۱۴۵)
 - **لایهٔ پایانیِ `public/crm-v12.20.0.js`** جانشینِ `crm-v12.19.0.js` (پس ازِ crm-bundle = آخرین کدِ اجرایی)؛ چهار ویرایشِ کوچکِ هدفمند در باندل/سرور/PHP.
