@@ -1,4 +1,15 @@
 /* ============================================================================
+   crm-v12.23.0.js — لایهٔ پایانیِ نسخهٔ 12.23.0 (نوبت ۱۴۸)
+   ----------------------------------------------------------------------------
+   ۱۵) تابلوِ روانِ آهستهٔ رویدادهایِ روزِ تقویمِ شمسی زیرِ کادرِ بالا (۱۳۰+ مناسبت).
+   ۱۶) هدرِ عمودیِ گوشی: دو ردیفِ مرتب به‌جایِ به‌هم‌ریختگی.
+   ۱۷) نگهبانِ ویزیت: سایهٔ محلیِ v20ActiveVisit (اگر pull آن را پاک کرد برمی‌گردد)
+       + نمایشِ آمارِ جلسهٔ تمام‌شده پس از «پایان ویزیت».
+   ۱۸) نقشهٔ تردد: مراکزِ بینِ مسیر با برچسبِ دائمیِ «ویزیت شده/نشده» + نشانِ
+       شروع/پایانِ تردد.
+   ۱۹) خروجیِ اکسلِ .xlsx واقعی (ZIP معتبر) — پسوندِ نامعتبر روی گوشی تمام.
+   ۲۰) auto-update.php: خودبروزرسانیِ یک‌کلیکیِ نت‌افراز از GitHub Release.
+   ----------------------------------------------------------------------------
    crm-v12.22.0.js — لایهٔ پایانیِ نسخهٔ 12.22.0 (نوبت ۱۴۷)
    ----------------------------------------------------------------------------
    ۱۱) پایانِ «پرشِ زیاد»: `harmonizeMetaOrders` شمارهٔ خانهٔ نهاییِ هر گره را در
@@ -55,7 +66,7 @@
   if (window.__CRM_V12200) return;
   window.__CRM_V12200 = true;
 
-  var VER = String(window.CRM_APP_VERSION || "12.22.0");
+  var VER = String(window.CRM_APP_VERSION || "12.23.0");
 
   var TAB_KEY = {
     "tab-pharmacies": "pharmacy",
@@ -1425,6 +1436,398 @@
     });
   }
 
+  /* ───────────────── ۱۰) تابلوِ روانِ رویدادهایِ روزِ تقویمِ شمسی ─────────────────
+     شکایتِ نوبتِ ۱۴۸: «رویدادهای روز تقویم شمسی ایران را به حالت تابلو روانِ
+     آهسته زیرِ همهٔ اطلاعاتِ کادرِ بالا نشان بده». */
+  var FA_EVENTS = {
+    "1/1": ["آغاز عید نوروز (تعطیل رسمی)", "نخستین روز بهار"],
+    "1/2": ["عید نوروز (تعطیل رسمی)"],
+    "1/3": ["عید نوروز (تعطیل رسمی)"],
+    "1/4": ["عید نوروز (تعطیل رسمی)"],
+    "1/6": ["روز امیدواری و نیک‌کاری"],
+    "1/7": ["روز هنرهای نمایشی"],
+    "1/10": ["روز همبستگی با سوریه و کردستان"],
+    "1/12": ["روز جمهوری اسلامی ایران (تعطیل رسمی)"],
+    "1/13": ["روز طبیعت، سیزده‌بدر (تعطیل رسمی)"],
+    "1/15": ["روز ذخایر ژنتیکی و زیستی"],
+    "1/18": ["روز جهانی سلامتی"],
+    "1/20": ["روز ملی فناوری هسته‌ای"],
+    "1/25": ["روز بزرگداشت عطار نیشابوری"],
+    "1/29": ["روز ارتش جمهوری اسلامی"],
+    "2/1": ["روز بزرگداشت سعدی"],
+    "2/2": ["روز زمین پاک"],
+    "2/3": ["روز بزرگداشت شیخ بهایی"],
+    "2/9": ["روز شوراها"],
+    "2/10": ["روز ملی خلیج فارس"],
+    "2/12": ["روز معلم"],
+    "2/15": ["روز بزرگداشت شیخ صدوق"],
+    "2/18": ["روز بیماری‌های خاص و صعب‌العلاج"],
+    "2/25": ["روز بزرگداشت فردوسی و پاسداشت زبان پارسی"],
+    "2/28": ["روز بزرگداشت حکیم عمر خیام"],
+    "3/1": ["روز بزرگداشت ملاصدرا"],
+    "3/3": ["سالروز فتح خرمشهر"],
+    "3/4": ["روز دزفول، روز مقاومت و پایداری"],
+    "3/14": ["رحلت امام خمینی (تعطیل رسمی)"],
+    "3/15": ["قیام خونین ۱۵ خرداد"],
+    "3/20": ["روز جهانی مسجد"],
+    "3/27": ["روز ارتباطات و روابط عمومی"],
+    "4/1": ["روز تبلیغ و اطلاع‌رسانی دینی"],
+    "4/7": ["روز جهانی عمران"],
+    "4/8": ["روز مبارزه با سلاح‌های شیمیایی و میکروبی (بمباران شیمیایی سردشت)"],
+    "4/12": ["روز ملی مبارزه با تحریم"],
+    "4/14": ["روز قلم"],
+    "4/16": ["روز مالیات"],
+    "4/18": ["روز ادبیات کودکان و نوجوانان"],
+    "4/21": ["روز عفاف و حجاب"],
+    "4/25": ["روز بهزیستی و تامین اجتماعی"],
+    "4/27": ["روز بزرگداشت جهادگران"],
+    "5/5": ["روز عملیات مرصاد"],
+    "5/9": ["روز اهدای خون"],
+    "5/14": ["روز صدور فرمان مشروطیت"],
+    "5/17": ["روز خبرنگار"],
+    "5/21": ["روز حمایت از صنایع کوچک"],
+    "5/27": ["روز داروسازی، بزرگداشت زکریای رازی"],
+    "5/28": ["روز گرامیداشت شهدای مدافع حرم"],
+    "5/30": ["روز بزرگداشت علامهٔ مجلسی"],
+    "6/1": ["روز پزشک، بزرگداشت بوعلی سینا"],
+    "6/2": ["هفتهٔ دولت"],
+    "6/4": ["روز کارمند"],
+    "6/5": ["روز بزرگداشت محمدبن زکریای رازی"],
+    "6/8": ["روز مبارزه با تروریسم (انفجار دفتر نخست‌وزیری)"],
+    "6/10": ["روز بانکداری اسلامی"],
+    "6/12": ["روز مبارزه با استعمار"],
+    "6/13": ["روز تعاون"],
+    "6/14": ["روز اکرام و مهرورزی"],
+    "6/17": ["روز پزشکی ورزشی"],
+    "6/18": ["روز جهانی سوادآموزی", "روز جهانی فیزیوتراپی"],
+    "6/20": ["روز شهدای مدافع حرم"],
+    "6/21": ["روز سینما"],
+    "6/27": ["روز شعر و ادب پارسی، بزرگداشت شهریار"],
+    "6/31": ["آغاز هفتهٔ دفاع مقدس"],
+    "7/5": ["روز ایمنی و آتش‌نشانی"],
+    "7/7": ["روز آتش‌نشانی و ایمنی"],
+    "7/8": ["روز بزرگداشت مولوی"],
+    "7/9": ["روز همبستگی با کودکان"],
+    "7/13": ["روز نیروی انتظامی"],
+    "7/14": ["روز دامپزشکی"],
+    "7/15": ["روز روستا و عشایر"],
+    "7/20": ["روز بزرگداشت حافظ"],
+    "7/24": ["روز پارالمپیک"],
+    "7/26": ["روز تربیت بدنی"],
+    "7/29": ["روز صادرات"],
+    "8/4": ["روز فرهنگ عمومی"],
+    "8/8": ["روز پدافند غیرعامل"],
+    "8/10": ["روز حسابداری"],
+    "8/13": ["روز تسخیر لانهٔ جاسوسی، روز ملی مبارزه با استکبار"],
+    "8/14": ["روز فرهنگ عمومی و مهرورزی"],
+    "8/24": ["روز کتاب، کتابخوانی و کتابدار"],
+    "8/26": ["روز جهانی نیکی"],
+    "8/30": ["روز قهرمان ملی"],
+    "9/5": ["روز بسیج مستضعفان"],
+    "9/7": ["روز نیروی دریایی"],
+    "9/9": ["روز بزرگداشت شیخ مفید"],
+    "9/11": ["روز دانشجو"],
+    "9/16": ["روز دانشمند و پژوهشگر"],
+    "9/19": ["روز تجارت و توسعه"],
+    "9/25": ["روز پژوهش"],
+    "9/26": ["روز حمل‌ونقل و رانندگان"],
+    "9/27": ["روز وحدت حوزه و دانشگاه"],
+    "9/29": ["روز ایمنی در برابر زلزله"],
+    "9/30": ["شب یلدا"],
+    "10/5": ["روز ایمنی در برابر آتش"],
+    "10/7": ["روز جهانی حماسهٔ مردم"],
+    "10/9": ["روز بصیرت"],
+    "10/17": ["روز اجرای قانون اساسی"],
+    "10/19": ["روز عمران روستایی"],
+    "10/22": ["روز صنعت برق"],
+    "10/26": ["روز فرار مغزها"],
+    "10/27": ["روز وحدت و همدلی"],
+    "11/6": ["روز ایمنی غذایی"],
+    "11/12": ["روز آمار"],
+    "11/14": ["روز فناوری فضایی"],
+    "11/19": ["روز ازدواج"],
+    "11/22": ["روز بهمن"],
+    "11/25": ["روز بیمه"],
+    "11/29": ["روز اقتصاد مقاومتی"],
+    "12/3": ["روز مهندسی"],
+    "12/5": ["روز خاک"],
+    "12/9": ["روز حمایت از حقوق مصرف‌کنندگان"],
+    "12/14": ["روز احسان و نیکوکاری"],
+    "12/15": ["روز درختکاری"],
+    "12/18": ["روز بزرگداشت سیدجمال‌الدین اسدآبادی"],
+    "12/22": ["روز بزرگداشت شهدا، سالروز تأسیس بنیاد شهید"],
+    "12/25": ["روز بزرگداشت پروین اعتصامی"],
+    "12/29": ["روز ملی شدن صنعت نفت"]
+  };
+
+  function todayJalaliMD(now) {
+    try {
+      var parts = new Intl.DateTimeFormat("fa-IR-u-ca-persian-nu-latn", { month: "numeric", day: "numeric" }).formatToParts(now || new Date());
+      var m = "", d = "";
+      parts.forEach(function (p) { if (p.type === "month") m = cleanNum(p.value); if (p.type === "day") d = cleanNum(p.value); });
+      return { m: Number(m), d: Number(d) };
+    } catch (e) { return null; }
+  }
+
+  function tickerText() {
+    var md = todayJalaliMD();
+    var out = [];
+    if (md) {
+      var key = md.m + "/" + md.d;
+      var evs = FA_EVENTS[key] || [];
+      var dateStr = "";
+      try { dateStr = clockDate(new Date()); } catch (e) {}
+      out.push("📅 " + dateStr);
+      if (evs.length) {
+        evs.forEach(function (e) { out.push("🌟 " + e); });
+      } else {
+        /* رویدادی برایِ امروز ثبت نشده → رویدادهایِ همین ماه */
+        var monthEvs = [];
+        Object.keys(FA_EVENTS).forEach(function (k) {
+          if (Number(k.split("/")[0]) === md.m) monthEvs.push(k.split("/")[1] + ": " + FA_EVENTS[k][0]);
+        });
+        monthEvs.sort(function (a, b) { return Number(a.split(":")[0]) - Number(b.split(":")[0]); });
+        out.push("رویدادِ ویژه‌ای برای امروز ثبت نشده؛ از دیگر روزهای این ماه: " + monthEvs.slice(0, 6).join(" · "));
+      }
+    } else {
+      out.push("تابلو رویدادهای تقویم شمسی");
+    }
+    return out.join("  ✦  ");
+  }
+
+  function buildTicker() {
+    try {
+      var header = document.querySelector(".app-header");
+      if (!header) return;
+      var bar = document.getElementById("crmEventTicker");
+      if (!bar) {
+        bar = document.createElement("div");
+        bar.id = "crmEventTicker";
+        bar.className = "crm-event-ticker";
+        bar.setAttribute("dir", "rtl");
+        bar.innerHTML = '<div class="crm-ticker-label">🗓 رویدادهای امروز</div><div class="crm-ticker-view"><div class="crm-ticker-move"><span id="crmTickerText"></span><span id="crmTickerText2" aria-hidden="true"></span></div></div>';
+        header.parentNode && header.parentNode.insertBefore(bar, header.nextSibling);
+      }
+      var txt = tickerText();
+      var a = document.getElementById("crmTickerText"), b = document.getElementById("crmTickerText2");
+      if (a && a.textContent !== txt) { a.textContent = txt; if (b) b.textContent = "  ✦  " + txt; }
+    } catch (e) {}
+  }
+
+  /* ───────────────── ۱۱) نگهبانِ ویزیت: نقطه‌ها و آمار هیچ‌وقت صفرِ ناخواسته نمی‌مانند ─────────────────
+     شکایت: «شروع/پایان ویزیت را می‌زنم، مسافت ۰ متر، توقف ۰ دقیقه، نقاط ۰».
+     ریشه‌های ممکن: pullِ همگام‌سازی `v20ActiveVisit` را از state پاک می‌کند یا
+     مرورگر رویدادِ GPS را دیر می‌فرستد. حالا یک سایهٔ محلی (sessionStorage) از
+     ویزیتِ فعال نگه می‌داریم و اگر state آن را گم کرد، برمی‌گردانیم؛ و پس از
+     «پایان ویزیت» آمارِ جلسهٔ تمام‌شده را در همان کادر نشان می‌دهیم. */
+  var VISIT_SHADOW = "CRM_V1223_VISIT_SHADOW";
+  function sess() {
+    try { if (window.sessionStorage) return window.sessionStorage; } catch (e) {}
+    try { if (typeof sessionStorage !== "undefined") return sessionStorage; } catch (e2) {}
+    return null;
+  }
+  function visitShadowGet() { try { var s = sess(); return s ? JSON.parse(s.getItem(VISIT_SHADOW) || "null") : null; } catch (e) { return null; } }
+  function visitShadowSet(v) { try { var s = sess(); if (!s) return; if (v) s.setItem(VISIT_SHADOW, JSON.stringify(v)); else s.removeItem(VISIT_SHADOW); } catch (e) {} }
+
+  function visitGuardTick() {
+    var S = window.state;
+    if (!S) return;
+    var sh = visitShadowGet();
+    if (S.v20ActiveVisit) {
+      if (!sh || sh.id !== S.v20ActiveVisit.id) visitShadowSet(S.v20ActiveVisit);
+      else if ((S.v20ActiveVisit.points || []).length !== (sh.points || []).length) visitShadowSet(S.v20ActiveVisit);
+    } else if (sh && sh.id) {
+      /* state ویزیت را گم کرده — برمی‌گردانیم تا watch به ثبت ادامه دهد */
+      S.v20ActiveVisit = sh;
+    }
+  }
+
+  function paintFinishedVisitStats() {
+    try {
+      var S = window.state;
+      if (!S || S.v20ActiveVisit) return;   /* وقتی ویزیت فعال است، کادرِ خودِ برنامه مالک است */
+      var box = document.getElementById("v20VisitMetrics");
+      if (!box) return;
+      var last = (S.repRoutes || [])[0];
+      if (!last || !last.endedAt) return;
+      var html = "<div class='v20-metric'>مسافت طی‌شده<b>" + Math.round(last.distance || 0) + " متر</b></div>" +
+        "<div class='v20-metric'>مدت توقف<b>" + Math.round((last.stopMs || 0) / 60000) + " دقیقه</b></div>" +
+        "<div class='v20-metric'>نقاط ثبت‌شده<b>" + ((last.points || []).length || last.visited || 0) + "</b></div>" +
+        "<div class='v20-metric'>ساعت شروع<b>" + (last.startTime || "—") + "</b></div>" +
+        "<div class='v20-metric'>ساعت پایان<b>" + (last.endTime || "—") + "</b></div>";
+      if (box.innerHTML.indexOf("ساعت پایان") < 0) box.innerHTML = html;
+    } catch (e) {}
+  }
+
+  /* ───────────────── ۱۲) نقشهٔ تردد: خطِ مسیر + مراکزِ بینِ مسیر با برچسبِ ویزیت ─────────────────
+     شکایت: «نمایش تردد باید مثلِ مسیریاب بلد خطِ تردد را روی نقشه بکشد و همهٔ
+     داروخانه‌ها/پزشکانِ بینِ مسیر را با برچسبِ ویزیت‌شده/نشده نشان دهد».
+     خطِ مسیر را خودِ باندل می‌کشد؛ اینجا مراکزِ نزدیکِ مسیر را با برچسبِ دائمی
+     اضافه می‌کنیم. */
+  function havV1223(a, b) {
+    if (!a || !b || a.lat == null || b.lat == null) return 1e9;
+    var R = 6371000, p = Math.PI / 180;
+    var d1 = (b.lat - a.lat) * p, d2 = (b.lng - a.lng) * p;
+    var x = Math.sin(d1 / 2) * Math.sin(d1 / 2) + Math.cos(a.lat * p) * Math.cos(b.lat * p) * Math.sin(d2 / 2) * Math.sin(d2 / 2);
+    return 2 * R * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
+  }
+
+  function drawRouteCenters() {
+    try {
+      var map = window._mapRepRoutes;
+      var LL = window.L;
+      if (!map || typeof LL === "undefined") return 0;
+      window.__v1223Layers = window.__v1223Layers || [];
+      window.__v1223Layers.forEach(function (l) { try { map.removeLayer(l); } catch (e) {} });
+      window.__v1223Layers = [];
+
+      var S = window.state || {};
+      var sel = document.getElementById("routeRepFilterSelect");
+      var rep = sel ? String(sel.value || "") : "";
+      var routes = (S.repRoutes || []).filter(function (r) { return !rep || r.repName === rep; }).slice(0, 4);
+
+      var centers = [];
+      (S.pharmacies || []).forEach(function (c) { if (c.lat && c.lng) centers.push({ name: c.name, lat: +c.lat, lng: +c.lng, kind: "داروخانه" }); });
+      (S.doctors || []).forEach(function (c) { if (c.lat && c.lng) centers.push({ name: c.name, lat: +c.lat, lng: +c.lng, kind: "مطب" }); });
+
+      var added = 0;
+      routes.forEach(function (rt) {
+        var path = rt.path || [];
+        if (!path.length) return;
+        var step = Math.max(1, Math.floor(path.length / 500));
+        centers.forEach(function (c) {
+          var near = false;
+          for (var i = 0; i < path.length; i += step) {
+            if (havV1223(c, path[i]) <= 250) { near = true; break; }
+          }
+          if (!near) return;
+          var visited = (S.visits || []).some(function (v) {
+            return (v.pharmacyName === c.name || v.doctorName === c.name) && (!rt.date || v.date === rt.date);
+          });
+          var mk = LL.circleMarker([c.lat, c.lng], {
+            radius: 9, weight: 3, color: "#fff",
+            fillColor: visited ? "#16a34a" : "#dc2626", fillOpacity: 1
+          }).addTo(map);
+          mk.bindTooltip((visited ? "✅ " : "🔴 ") + c.name + " — " + (visited ? "ویزیت شده" : "ویزیت نشده"), { permanent: true, direction: "top", className: "v1223-center-tip" });
+          window.__v1223Layers.push(mk);
+          added++;
+        });
+        /* برچسبِ آغاز و پایانِ مسیر */
+        var p0 = path[0], p1 = path[path.length - 1];
+        if (p0) window.__v1223Layers.push(LL.circleMarker([p0.lat, p0.lng], { radius: 7, color: "#0f766e", weight: 3, fillColor: "#ccfbf1", fillOpacity: 1 }).addTo(map).bindTooltip(" شروع تردد " + (rt.startTime || ""), { permanent: true, direction: "top" }));
+        if (p1) window.__v1223Layers.push(LL.circleMarker([p1.lat, p1.lng], { radius: 7, color: "#7c2d12", weight: 3, fillColor: "#fed7aa", fillOpacity: 1 }).addTo(map).bindTooltip("🏁 پایان تردد " + (rt.endTime || ""), { permanent: true, direction: "top" }));
+      });
+      return added;
+    } catch (e) { return 0; }
+  }
+
+  /* ───────────────── ۱۳) خروجیِ اکسلِ واقعیِ .xlsx برایِ گوشی ─────────────────
+     شکایت: «پسوندِ فایلِ اکسل برایِ گوشی نامعتبر است». HTML-داخل-.xls روی بسیاری
+     گوشی‌ها رد می‌شود؛ حالا یک .xlsx «واقعی» (ZIP با sheet1) ساخته می‌شود که
+     اندروید و iOS بی‌بهانه باز می‌کنند. */
+  var CRC_T = (function () {
+    var t = [];
+    for (var n = 0; n < 256; n++) { var c = n; for (var k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1); t[n] = c >>> 0; }
+    return t;
+  })();
+  function crc32B(b) { var c = 0xFFFFFFFF; for (var i = 0; i < b.length; i++) c = CRC_T[(c ^ b[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+  function strB(s) {
+    if (typeof TextEncoder !== "undefined") return new TextEncoder().encode(s);
+    var out = []; for (var i = 0; i < s.length; i++) { var c = s.charCodeAt(i); if (c < 128) out.push(c); else { out.push(0xEF, 0xBF, 0xBD); } } return new Uint8Array(out);
+  }
+  function catB(arrs) {
+    var len = 0; arrs.forEach(function (a) { len += a.length; });
+    var out = new Uint8Array(len), o = 0;
+    arrs.forEach(function (a) { out.set(a, o); o += a.length; });
+    return out;
+  }
+  function zipStoreXlsx(files) {
+    var locals = [], centrals = [], off = 0;
+    var d = new Date();
+    var dosT = ((d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1)) & 0xFFFF;
+    var dosD = (((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate()) & 0xFFFF;
+    files.forEach(function (f) {
+      var nameB = strB(f.name), data = f.data, crc = crc32B(data);
+      var lh = new DataView(new ArrayBuffer(30));
+      lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0x0800, true); lh.setUint16(8, 0, true);
+      lh.setUint16(10, dosT, true); lh.setUint16(12, dosD, true); lh.setUint32(14, crc, true);
+      lh.setUint32(18, data.length, true); lh.setUint32(22, data.length, true);
+      lh.setUint16(26, nameB.length, true); lh.setUint16(28, 0, true);
+      locals.push(new Uint8Array(lh.buffer), nameB, data);
+      var ch = new DataView(new ArrayBuffer(46));
+      ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true); ch.setUint16(8, 0x0800, true); ch.setUint16(10, 0, true);
+      ch.setUint16(12, dosT, true); ch.setUint16(14, dosD, true); ch.setUint32(16, crc, true);
+      ch.setUint32(20, data.length, true); ch.setUint32(24, data.length, true);
+      ch.setUint16(28, nameB.length, true); ch.setUint32(42, off, true);
+      centrals.push(new Uint8Array(ch.buffer), nameB);
+      off += 30 + nameB.length + data.length;
+    });
+    var centralSize = centrals.reduce(function (s, a) { return s + a.length; }, 0);
+    var eocd = new DataView(new ArrayBuffer(22));
+    eocd.setUint32(0, 0x06054b50, true); eocd.setUint16(8, files.length, true); eocd.setUint16(10, files.length, true);
+    eocd.setUint32(12, centralSize, true); eocd.setUint32(16, off, true);
+    return catB(locals.concat(centrals).concat([new Uint8Array(eocd.buffer)]));
+  }
+  function colLetter(i) {
+    var s = ""; i += 1;
+    while (i > 0) { var m = (i - 1) % 26; s = String.fromCharCode(65 + m) + s; i = Math.floor((i - 1) / 26); }
+    return s;
+  }
+  function xmlEscX(v) {
+    return String(v == null ? "" : v).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  function buildXlsx(headers, rows) {
+    var sheet = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView rightToLeft="1" workbookViewId="0"/></sheetViews><sheetData>';
+    function rowXml(cells, ri) {
+      return "<row r=\"" + (ri + 1) + "\">" + cells.map(function (c, ci) {
+        return "<c r=\"" + colLetter(ci) + (ri + 1) + "\" t=\"inlineStr\"><is><t xml:space=\"preserve\">" + xmlEscX(c) + "</t></is></c>";
+      }).join("") + "</row>";
+    }
+    sheet += rowXml(headers, 0);
+    rows.forEach(function (r, i) { sheet += rowXml(r, i + 1); });
+    sheet += "</sheetData></worksheet>";
+    var files = [
+      { name: "[Content_Types].xml", data: strB('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>') },
+      { name: "_rels/.rels", data: strB('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>') },
+      { name: "xl/workbook.xml", data: strB('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="گزارش" sheetId="1" r:id="rId1"/></sheets></workbook>') },
+      { name: "xl/_rels/workbook.xml.rels", data: strB('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>') },
+      { name: "xl/worksheets/sheet1.xml", data: strB(sheet) }
+    ];
+    return zipStoreXlsx(files);
+  }
+
+  function installXlsxExport() {
+    var orig = window.downloadCSVFile;
+    if (!orig || orig._v1223) return;
+    var w = function (filename, headers, rows) {
+      try {
+        var hdrs = headers.slice();
+        var rws = rows.map(function (r) { return r.slice(); });
+        if (hdrs[0] !== "ردیف") { hdrs = ["ردیف"].concat(hdrs); rws = rws.map(function (r, i) { return [i + 1].concat(r); }); }
+        var repAt = -1;
+        hdrs.forEach(function (h, i) { if (repAt < 0 && /نام نماینده|نماینده علمی|نماینده/.test(String(h))) repAt = i; });
+        if (repAt < 0) {
+          hdrs.splice(1, 0, "نام نماینده");
+          rws = rws.map(function (r) { var x = r.slice(); x.splice(1, 0, (typeof window.currentUserName === "string" ? window.currentUserName : "—")); return x; });
+        } else if (repAt !== 1) {
+          var rh = hdrs.splice(repAt, 1)[0]; hdrs.splice(1, 0, rh);
+          rws = rws.map(function (r) { var x = r.slice(); var v = x.splice(repAt, 1)[0]; x.splice(1, 0, v); return x; });
+        }
+        var bytes = buildXlsx(hdrs, rws);
+        var blob = new Blob([bytes], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = String(filename || "export.xls").replace(/\.(csv|xls|xlsx)$/i, "") + ".xlsx";
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function () { try { URL.revokeObjectURL(a.href); } catch (e) {} }, 800);
+        try { console.log("📊 v1223 خروجیِ xlsx واقعی: " + a.download + " — " + rws.length + " سطر"); } catch (eL) {}
+        return;
+      } catch (e) { try { return orig(filename, headers, rows); } catch (e2) {} }
+    };
+    w._v1223 = true;
+    window.downloadCSVFile = w;
+  }
+
   /* ───────────────── راه‌اندازی ───────────────── */
   function pass() {
     try { enforceAll(); } catch (e) {}
@@ -1595,6 +1998,44 @@
       }, true);
     } catch (eSR) {}
 
+    /* خروجیِ اکسلِ واقعیِ .xlsx (پسوندِ معتبر برایِ گوشی) */
+    try { installXlsxExport(); } catch (eX) {}
+
+    /* تابلوِ روانِ رویدادهایِ روز — زیرِ همهٔ اطلاعاتِ کادرِ بالا، آهسته */
+    try {
+      buildTicker();
+      setInterval(function () { try { buildTicker(); } catch (e) {} }, 60000);
+    } catch (eTK) {}
+
+    /* نگهبانِ ویزیت + آمارِ جلسهٔ تمام‌شده */
+    try {
+      setInterval(function () { try { visitGuardTick(); } catch (e) {} try { paintFinishedVisitStats(); } catch (e2) {} }, 1500);
+      document.addEventListener("click", function (e) {
+        var t = e.target;
+        if (!t || !t.closest) return;
+        if (t.closest("#btnStartVisit")) {
+          setTimeout(function () { try { var S = window.state; if (S && S.v20ActiveVisit) visitShadowSet(S.v20ActiveVisit); } catch (e1) {} }, 500);
+        }
+        if (t.closest("#btnEndVisit")) {
+          setTimeout(function () { try { visitShadowSet(null); paintFinishedVisitStats(); } catch (e2) {} }, 700);
+        }
+      }, true);
+    } catch (eVG) {}
+
+    /* نقشهٔ تردد: پس از هر بروزرسانی، مراکزِ بینِ مسیر با برچسبِ ویزیت */
+    try {
+      document.addEventListener("click", function (e) {
+        var t = e.target;
+        if (!t || !t.closest) return;
+        if (t.closest("#btnRefreshRepRoutesMap,#v20RouteRefresh,#v20RouteAll,#btnV20ShowRoute")) {
+          setTimeout(function () { try { drawRouteCenters(); } catch (e3) {} }, 400);
+          setTimeout(function () { try { drawRouteCenters(); } catch (e4) {} }, 1200);
+        }
+      }, true);
+      var repSel = $("routeRepFilterSelect");
+      if (repSel) repSel.addEventListener("change", function () { setTimeout(function () { try { drawRouteCenters(); } catch (e5) {} }, 400); });
+    } catch (eRC) {}
+
     /* دکمه‌های گاوصندوق */
     try {
       document.addEventListener("click", function (e) {
@@ -1675,6 +2116,13 @@
     applyRealDesignerValues: applyRealDesignerValues,
     faHeader: faHeader,
     clockDate: clockDate,
+    tickerText: tickerText,
+    todayJalaliMD: todayJalaliMD,
+    buildXlsx: buildXlsx,
+    zipStoreXlsx: zipStoreXlsx,
+    drawRouteCenters: drawRouteCenters,
+    visitGuardTick: visitGuardTick,
+    paintFinishedVisitStats: paintFinishedVisitStats,
     forceCloseSideMenu: forceCloseSideMenu,
     syncToRenderSmart: syncToRenderSmart,
     buildTopBar: buildTopBar,
