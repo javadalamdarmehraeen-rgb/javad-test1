@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""ZIP تحویلی نسخه 12.23.0 — قانون GITHUB_REVIEW_HANDOFF:
+"""ZIP تحویلی نسخه 12.24.0 — قانون GITHUB_REVIEW_HANDOFF:
    - زیپ استاندارد PKZIP با create_system=0 (ویندوز اکسپلورر بدونِ هشدارِ مجوزهایِ لینوکس بازش کند)
    - دقیقاً درختِ گیت + chat.arena — بدونِ node_modules و بدونِ فایل‌هایِ حساس (§5.4)
    - نام: namayandeelmi-v{VER}.zip در ریشه‌ی ورک‌اسپیس
@@ -10,7 +10,7 @@ import subprocess
 import zipfile
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-VER = "12.23.0"
+VER = "12.24.0"
 OUT = os.path.join(ROOT, "namayandeelmi-v%s.zip" % VER)
 
 FORBID = (
@@ -57,7 +57,9 @@ def static_files():
     return sorted(out)
 
 def main():
-    files = [f for f in rel_list() if allowed(f)] + static_files()
+    # static-build/ هم در git است و هم جداگانه پیمایش می‌شود — بدونِ dedupe
+    # هر فایلِ static-build دوبار در زیپ می‌آمد (هشدارِ Duplicate name).
+    files = sorted(set([f for f in rel_list() if allowed(f)] + static_files()))
     if os.path.exists(OUT):
         os.remove(OUT)
     with zipfile.ZipFile(OUT, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as z:

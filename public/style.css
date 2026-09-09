@@ -3130,3 +3130,39 @@ html.crm-booting body {
   .app-header.crm-compact-header #globalOnlineStatusBadge { flex: 0 0 auto; min-width: 0; max-width: 92px; }
   .app-header.crm-compact-header .header-user-pill { max-width: 150px; }
 }
+
+/* ─── v12.24.0: تابلوی روان «داخلِ» هدرِ چسبان (فریز با اسکرول) + برچسبِ پشتیبان + کارتِ انتقال ─── */
+.app-header .crm-event-ticker {
+  margin: 0.55rem -1.5rem -1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 0;
+  width: auto;
+}
+.v1224-backup-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+  direction: ltr;
+  cursor: help;
+}
+.v1224-transfer-card {
+  background: var(--card-bg, #fff);
+  border: 2px solid #0d9488;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin: 0 0 14px;
+  box-shadow: 0 4px 14px rgba(13, 148, 136, 0.15);
+}
+.v1224-transfer-card .btn { margin: 4px 6px 0 0; }
+@media (max-width: 768px) {
+  .app-header .crm-event-ticker { margin: 0.4rem -0.75rem -0.75rem; }
+  .v1224-backup-chip { font-size: 0.64rem; padding: 2px 7px; }
+}

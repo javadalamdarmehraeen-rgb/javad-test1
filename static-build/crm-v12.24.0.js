@@ -1,4 +1,13 @@
 /* ============================================================================
+   crm-v12.24.0.js — لایهٔ پایانیِ نسخهٔ 12.24.0 (نوبت ۱۵۰)
+   ----------------------------------------------------------------------------
+   ۲۱) تابلویِ روان «داخلِ» هدرِ چسبان: با اسکرول همراهِ هدر فریز است.
+   ۲۲) پشتیبانِ خودکارِ دیدنی: هوکِ saveState + هر ۳۰ ثانیه + برچسبِ ساعتِ
+       آخرین پشتیبان در هدر (#v1224BackupChip).
+   ۲۳) مالکیتِ کاملِ شروع/پایانِ ویزیت: GPS صریح، وضعیتِ دیدنی، بیمهٔ ۵ ثانیه‌ای،
+       ذخیرهٔ مسیر در repRoutes + visitTracks.
+   ۲۴) کارتِ انتقالِ داده بینِ رندر و نت‌افراز (تبِ عیب‌یابی).
+   ----------------------------------------------------------------------------
    crm-v12.23.0.js — لایهٔ پایانیِ نسخهٔ 12.23.0 (نوبت ۱۴۸)
    ----------------------------------------------------------------------------
    ۱۵) تابلوِ روانِ آهستهٔ رویدادهایِ روزِ تقویمِ شمسی زیرِ کادرِ بالا (۱۳۰+ مناسبت).
@@ -66,7 +75,7 @@
   if (window.__CRM_V12200) return;
   window.__CRM_V12200 = true;
 
-  var VER = String(window.CRM_APP_VERSION || "12.23.0");
+  var VER = String(window.CRM_APP_VERSION || "12.24.0");
 
   var TAB_KEY = {
     "tab-pharmacies": "pharmacy",
@@ -788,8 +797,196 @@
     writeJson(VAULT_KEY, snap);
     idbPut(snap);
     pushVault(snap);
+    try { backupChipUpdate(); } catch (e) {}
     return snap;
   }
+
+  /* ───────────────── ۱۴) پشتیبانِ خودکارِ «دیدنی» ─────────────────
+     شکایت: «پشتیبان اتوماتیک فعال نیست و باید دستی گرفت». حالا: هر ۳۰ ثانیه،
+     پس از هر saveState (با تأخیرِ کوچک)، و پس از هر ذخیرهٔ طراح؛ به‌علاوه یک
+     نشانِ ساعت در هدر که زمانِ آخرین پشتیبان را نشان می‌دهد تا «دیدنی» باشد. */
+  var bkDebounce = 0;
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+  function backupChipUpdate() {
+    try {
+      var t = new Date();
+      var txt = "🛡 " + pad2(t.getHours()) + ":" + pad2(t.getMinutes()) + ":" + pad2(t.getSeconds());
+      try { if (window.localStorage) window.localStorage.setItem("CRM_V1224_LASTBACKUP", txt); } catch (eL) {}
+      var chip = $("v1224BackupChip");
+      if (!chip) {
+        chip = document.createElement("span");
+        chip.id = "v1224BackupChip";
+        chip.className = "v1224-backup-chip";
+        var clock = $("crmHeaderClock");
+        var host = clock ? clock.parentNode : (document.querySelector(".app-header .header-actions") || null);
+        if (!host) return;
+        host.insertBefore(chip, clock ? clock.nextSibling : null);
+      }
+      chip.title = "آخرین پشتیبانِ خودکار (localStorage + IndexedDB + سرور)";
+      if (chip.textContent !== txt) chip.textContent = txt;
+    } catch (e) {}
+  }
+  function hookSaveStateForBackup() {
+    try {
+      var os = window.saveState;
+      if (typeof os !== "function" || os._v1224bk) return;
+      var w = function () {
+        var r = os.apply(this, arguments);
+        try { clearTimeout(bkDebounce); bkDebounce = setTimeout(function () { try { saveVault(); } catch (e) {} }, 2500); } catch (e2) {}
+        return r;
+      };
+      w._v1224bk = true;
+      window.saveState = w;
+    } catch (e) {}
+  }
+
+  /* ───────────────── ۱۵) مالکیتِ کاملِ شروع/پایانِ ویزیت توسطِ لایه ─────────────────
+     شکایتِ تکراری: «تبِ شروع/پایان ویزیت درست نشد». حالا لایه خودش کلیک‌ها را در
+     فازِ capture می‌گیرد (جلوی هر هندلرِ دیگری را می‌گیرد)، قبل از watch اجازهٔ
+     GPS را صریح می‌خواهد، وضعیتِ GPS را «دیدنی» می‌نویسد، با getCurrentPosition
+     هر ۵ ثانیه بیمه می‌کند، و پایانِ جلسه را در repRoutes + کادرِ آمار می‌نشاند. */
+  var v1224Watch = null, v1224Poll = 0, v1224Timer = 0;
+  function timeStr1224() { try { return cleanNum(new Date().toLocaleTimeString("en-GB", { hour12: false })); } catch (e) { return ""; } }
+  function jalaliYMD() {
+    try {
+      var parts = new Intl.DateTimeFormat("fa-IR-u-ca-persian-nu-latn", { year: "numeric", month: "numeric", day: "numeric" }).formatToParts(new Date());
+      var o = { y: "", m: "", d: "" };
+      parts.forEach(function (p) { if (p.type === "year") o.y = cleanNum(p.value); if (p.type === "month") o.m = cleanNum(p.value); if (p.type === "day") o.d = cleanNum(p.value); });
+      return { y: Number(o.y), m: Number(o.m), d: Number(o.d) };
+    } catch (e) { return { y: 0, m: 0, d: 0 }; }
+  }
+  function gpsSay(t) { var sb = $("visitStatusBox"); if (sb && sb.textContent !== t) sb.textContent = t; }
+  function saveSoft() { try { if (typeof window.saveState === "function") window.saveState(false); } catch (e) {} }
+  function onGpsPos(pos) {
+    var S = window.state, V = S && S.v20ActiveVisit;
+    if (!V) return;
+    var p = { lat: pos.coords.latitude, lng: pos.coords.longitude, t: Date.now(), acc: pos.coords.accuracy };
+    var prev = V.points[V.points.length - 1];
+    var d = havV1223(prev, p);
+    if (isFinite(d) && d >= 3) { V.distance += d; V.lastMoveAt = p.t; }
+    else if (prev) { V.stopMs += Math.max(0, p.t - prev.t); }
+    V.points.push(p);
+    visitShadowSet(V);
+    saveSoft();
+    gpsSay("🛰 GPS متصل — " + V.points.length + " نقطه، " + Math.round(V.distance) + " متر");
+    refreshVisit1224();
+  }
+  function onGpsErr(err) {
+    var c = err && err.code;
+    gpsSay(c === 1 ? "⛔ اجازه موقعیت رد شد — در تنظیماتِ مرورگر دسترسیِ مکان را فعال کنید" : c === 2 ? "⚠️ موقعیت در دسترس نیست (سیگنالِ GPS نیست)" : "⚠️ دریافتِ GPS طول کشید — تلاشِ مجدد…");
+  }
+  function refreshVisit1224() {
+    var S = window.state, V = S && S.v20ActiveVisit;
+    var h = $("v20VisitMetrics");
+    if (!h) return;
+    h.innerHTML = [["مسافت طی‌شده", Math.round(V ? V.distance : 0) + " متر"], ["مدت توقف", Math.round((V ? V.stopMs : 0) / 60000) + " دقیقه"], ["نقاط ثبت‌شده", V ? (V.points || []).length : 0], ["ساعت شروع", V ? V.startTime : "—"]].map(function (x) { return "<div class='v20-metric'>" + x[0] + "<b>" + x[1] + "</b></div>"; }).join("");
+  }
+  function startVisit1224() {
+    var S = window.state;
+    if (!S) return;
+    if (S.v20ActiveVisit) { try { if (window.v20Toast) window.v20Toast("یک ویزیت هم‌اکنون فعال است."); } catch (e) {} return; }
+    if (!navigator.geolocation) { gpsSay("❌ GPS در این دستگاه/مرورگر در دسترس نیست"); try { alert("این دستگاه GPS یا دسترسی موقعیت مکانی ندارد."); } catch (e) {} return; }
+    var rep = "نماینده";
+    try { rep = sessionStorage.getItem("crmUserName") || rep; } catch (e) {}
+    var j = jalaliYMD();
+    var V = { id: "route-" + Date.now(), repName: rep, date: j.y + "/" + j.m + "/" + j.d, startedAt: Date.now(), startTime: timeStr1224(), points: [], distance: 0, stopMs: 0, lastMoveAt: Date.now(), status: "فعال" };
+    S.v20ActiveVisit = V;
+    visitShadowSet(V);
+    saveSoft();
+    gpsSay("🛰 در حالِ دریافتِ GPS…");
+    try { v1224Watch = navigator.geolocation.watchPosition(onGpsPos, onGpsErr, { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 }); } catch (e) { v1224Watch = null; }
+    try { navigator.geolocation.getCurrentPosition(onGpsPos, onGpsErr, { enableHighAccuracy: true, timeout: 10000 }); } catch (e2) {}
+    clearInterval(v1224Poll);
+    v1224Poll = setInterval(function () {
+      try { navigator.geolocation.getCurrentPosition(onGpsPos, function () {}, { enableHighAccuracy: true, maximumAge: 4000, timeout: 10000 }); } catch (e) {}
+    }, 5000);
+    clearInterval(v1224Timer);
+    v1224Timer = setInterval(refreshVisit1224, 1000);
+    refreshVisit1224();
+    try { if (window.v20Toast) window.v20Toast("✅ ثبتِ مسیر آغاز شد — وضعیتِ GPS در کادر دیده می‌شود."); } catch (e3) {}
+  }
+  function endVisit1224() {
+    var S = window.state, V = S && S.v20ActiveVisit;
+    if (!V) { try { if (window.v20Toast) window.v20Toast("ویزیت فعالی وجود ندارد."); } catch (e) {} return; }
+    try { if (v1224Watch != null && navigator.geolocation.clearWatch) navigator.geolocation.clearWatch(v1224Watch); } catch (e) {}
+    v1224Watch = null;
+    clearInterval(v1224Poll);
+    clearInterval(v1224Timer);
+    V.endTime = timeStr1224();
+    V.endedAt = Date.now();
+    V.durationMs = V.endedAt - V.startedAt;
+    V.status = "پایان‌یافته";
+    V.path = (V.points || []).map(function (p) { return [p.lat, p.lng]; });
+    V.visited = (V.points || []).length;
+    S.repRoutes = S.repRoutes || [];
+    S.repRoutes.unshift(V);
+    S.visitTracks = S.visitTracks || [];
+    S.visitTracks.unshift(V);
+    S.v20ActiveVisit = null;
+    visitShadowSet(null);
+    saveSoft();
+    refreshVisit1224();
+    paintFinishedVisitStats();
+    try { if (typeof window.renderV20Routes === "function") window.renderV20Routes(); } catch (e) {}
+    setTimeout(function () { try { drawRouteCenters(); } catch (e) {} }, 500);
+    try { if (window.v20Toast) window.v20Toast("✅ جلسهٔ تردد با " + V.visited + " نقطه و " + Math.round(V.distance) + " متر ذخیره شد."); } catch (e2) {}
+  }
+
+  /* ───────────────── ۱۶) انتقالِ داده بینِ رندر و نت‌افراز ─────────────────
+     شکایت: «کاری کن بشود اطلاعاتِ رندر را به نت‌افراز انتقال داد». سه دکمه در
+     تبِ عیب‌یابی: کپیِ کامل از رندر، ارسالِ کامل به نت‌افراز، ارسالِ کامل به رندر. */
+  function transferSay(t) { var el = $("v1224TransferStatus"); if (el) el.textContent = t; }
+  function copyFromHub(host, cb) {
+    rawRequest("GET", host + "/api/state", null, function (r) {
+      if (!r.ok || !r.j || !r.j.data) { cb(false, "HTTP " + r.status + (r.j && r.j.message ? " — " + r.j.message : "")); return; }
+      var S = window.state || (window.state = {});
+      Object.keys(r.j.data).forEach(function (k) { if (k.charAt(0) === "_") return; S[k] = r.j.data[k]; });
+      saveSoft();
+      cb(true, "");
+    });
+  }
+  function pushFullTo(host, cb) {
+    var S = window.state;
+    var body;
+    try { body = typeof window.serializeStateForLocalStorage === "function" ? window.serializeStateForLocalStorage(S) : JSON.stringify(S); } catch (e) { body = JSON.stringify(S); }
+    rawRequest("POST", host + "/api/state?__v12183=1&n=" + Date.now(), body, function (r) {
+      cb(r.ok, r.ok ? "" : ("HTTP " + r.status + (r.j && r.j.message ? " — " + r.j.message : "")));
+    });
+  }
+  function buildTransferTools() {
+    var pane = $("tab-troubleshooting");
+    if (!pane || $("v1224TransferCard")) return;
+    var card = document.createElement("div");
+    card.id = "v1224TransferCard";
+    card.className = "v1224-transfer-card";
+    card.innerHTML = "<h3 style='margin:0 0 6px;font-size:0.95rem'>🔁 انتقالِ داده بینِ رندر و نت‌افراز</h3>" +
+      "<p style='margin:0 0 8px;font-size:0.75rem;opacity:.85'>کپی/ادغامِ کاملِ رکوردها بینِ دو هاست، بدونِ دست‌کاریِ دستیِ فایل.</p>" +
+      "<button type='button' id='v1224PullRender' class='btn btn-outline btn-sm'>📥 کپیِ کامل از رندر به این دستگاه</button> " +
+      "<button type='button' id='v1224PushNetafraz' class='btn btn-outline btn-sm'>📤 ارسالِ کامل به نت‌افراز</button> " +
+      "<button type='button' id='v1224PushRender' class='btn btn-outline btn-sm'>📤 ارسالِ کامل به رندر</button>" +
+      "<div id='v1224TransferStatus' style='margin-top:6px;font-size:0.75rem;font-weight:700'></div>";
+    pane.insertBefore(card, pane.firstChild);
+    $("v1224PullRender").addEventListener("click", function () {
+      if (!confirm("دادهٔ این دستگاه با دادهٔ رندر ادغام/جایگزین شود؟")) return;
+      transferSay("در حالِ دریافت از رندر…");
+      copyFromHub("https://javad-test1.onrender.com", function (ok, msg) {
+        transferSay(ok ? "✅ دریافت شد؛ صفحه تا لحظاتی دیگر تازه می‌شود…" : "❌ " + msg);
+        if (ok) setTimeout(function () { try { location.reload(); } catch (e) {} }, 1500);
+      });
+    });
+    $("v1224PushNetafraz").addEventListener("click", function () {
+      if (!confirm("همهٔ دادهٔ این دستگاه به نت‌افراز (mehraeinpharma.ir) ارسال شود؟")) return;
+      transferSay("در حالِ ارسال به نت‌افراز…");
+      pushFullTo("https://mehraeinpharma.ir", function (ok, msg) { transferSay(ok ? "✅ به نت‌افراز ارسال شد." : "❌ " + msg); });
+    });
+    $("v1224PushRender").addEventListener("click", function () {
+      if (!confirm("همهٔ دادهٔ این دستگاه به رندر ارسال شود؟")) return;
+      transferSay("در حالِ ارسال به رندر…");
+      pushFullTo("https://javad-test1.onrender.com", function (ok, msg) { transferSay(ok ? "✅ به رندر ارسال شد." : "❌ " + msg); });
+    });
+  }
+
+  /* ───────────────── راه‌اندازی ───────────────── */
 
   function countFields(snap) {
     var n = 0;
@@ -1606,8 +1803,9 @@
         bar.className = "crm-event-ticker";
         bar.setAttribute("dir", "rtl");
         bar.innerHTML = '<div class="crm-ticker-label">🗓 رویدادهای امروز</div><div class="crm-ticker-view"><div class="crm-ticker-move"><span id="crmTickerText"></span><span id="crmTickerText2" aria-hidden="true"></span></div></div>';
-        header.parentNode && header.parentNode.insertBefore(bar, header.nextSibling);
       }
+      /* نوبتِ ۱۴۹: تابلو «داخلِ» هدر می‌نشیند تا با آن فریز باشد و موقعِ اسکرول تکان نخورد */
+      if (bar.parentNode !== header) header.appendChild(bar);
       var txt = tickerText();
       var a = document.getElementById("crmTickerText"), b = document.getElementById("crmTickerText2");
       if (a && a.textContent !== txt) { a.textContent = txt; if (b) b.textContent = "  ✦  " + txt; }
@@ -2001,23 +2199,34 @@
     /* خروجیِ اکسلِ واقعیِ .xlsx (پسوندِ معتبر برایِ گوشی) */
     try { installXlsxExport(); } catch (eX) {}
 
-    /* تابلوِ روانِ رویدادهایِ روز — زیرِ همهٔ اطلاعاتِ کادرِ بالا، آهسته */
+    /* تابلوِ روانِ رویدادهایِ روز — «داخلِ» هدرِ چسبان تا با اسکرول فریز بماند */
     try {
       buildTicker();
       setInterval(function () { try { buildTicker(); } catch (e) {} }, 60000);
     } catch (eTK) {}
 
-    /* نگهبانِ ویزیت + آمارِ جلسهٔ تمام‌شده */
+    /* پشتیبانِ «دیدنی»: هوکِ saveState + برچسبِ ساعتِ آخرین پشتیبان در هدر */
+    try { hookSaveStateForBackup(); } catch (eHK) {}
+    try { backupChipUpdate(); } catch (eBC) {}
+    try { var lastBk = null; try { lastBk = window.localStorage ? window.localStorage.getItem("CRM_V1224_LASTBACKUP") : null; } catch (eLB) {} if (lastBk) { var c0 = $("v1224BackupChip"); if (c0 && c0.textContent !== lastBk) c0.textContent = lastBk; } } catch (eLB2) {}
+
+    /* ابزارِ انتقالِ داده بینِ رندر و نت‌افراز (تبِ عیب‌یابی) */
+    try { buildTransferTools(); } catch (eTR) {}
+    try { setTimeout(function () { try { buildTransferTools(); } catch (e2) {} }, 1500); } catch (eTR2) {}
+
+    /* نگهبانِ ویزیت + مالکیتِ کاملِ دکمه‌های شروع/پایان توسطِ لایه (نوبتِ ۱۵۰) */
     try {
       setInterval(function () { try { visitGuardTick(); } catch (e) {} try { paintFinishedVisitStats(); } catch (e2) {} }, 1500);
       document.addEventListener("click", function (e) {
         var t = e.target;
         if (!t || !t.closest) return;
         if (t.closest("#btnStartVisit")) {
-          setTimeout(function () { try { var S = window.state; if (S && S.v20ActiveVisit) visitShadowSet(S.v20ActiveVisit); } catch (e1) {} }, 500);
+          try { e.preventDefault(); e.stopImmediatePropagation(); } catch (e2) {}
+          startVisit1224();
         }
         if (t.closest("#btnEndVisit")) {
-          setTimeout(function () { try { visitShadowSet(null); paintFinishedVisitStats(); } catch (e2) {} }, 700);
+          try { e.preventDefault(); e.stopImmediatePropagation(); } catch (e3) {}
+          endVisit1224();
         }
       }, true);
     } catch (eVG) {}
@@ -2052,7 +2261,7 @@
       }
     } catch (eVB) {}
 
-    /* پشتیبانِ خودکار: هر ۶۰ ثانیه اگر چیزی عوض شده بود */
+    /* پشتیبانِ خودکارِ «دیدنی»: هر ۳۰ ثانیه اگر چیزی عوض شده بود */
     setInterval(function () {
       try {
         var prev = readJson(VAULT_KEY, null);
@@ -2061,7 +2270,7 @@
         var oldSig = prev ? JSON.stringify([prev.customFields, prev.formFieldMeta, prev.anchors]) : "";
         if (sig !== oldSig) saveVault();
       } catch (e) {}
-    }, 60000);
+    }, 30000);
 
     /* اگر حافظهٔ مرورگر خالی بود (نصبِ تازه/مرورگرِ دیگر) از IndexedDB و سپس سرور برگردان */
     try {
@@ -2132,7 +2341,16 @@
     saveVault: saveVault,
     restoreVault: restoreVault,
     buildFullExport: buildFullExport,
-    allowAddOptionFor: allowAddOptionFor
+    allowAddOptionFor: allowAddOptionFor,
+    backupChipUpdate: backupChipUpdate,
+    hookSaveStateForBackup: hookSaveStateForBackup,
+    startVisit1224: startVisit1224,
+    endVisit1224: endVisit1224,
+    jalaliYMD: jalaliYMD,
+    buildTransferTools: buildTransferTools,
+    copyFromHub: copyFromHub,
+    pushFullTo: pushFullTo,
+    buildTicker: buildTicker
   };
 
   try { window.v1221Api = window.v1220Api; } catch (eAlias) {}
