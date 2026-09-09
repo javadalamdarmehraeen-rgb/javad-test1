@@ -14,8 +14,11 @@ header("Content-Type: text/html; charset=utf-8");
 
 define("REPO", "javadalamdarmehraeen-rgb/javad-test1");
 define("API_LATEST", "https://api.github.com/repos/" . REPO . "/releases/latest");
-/* منبعِ پایدار: ZIPِ آخرین نسخه روی شاخهٔ جلسه (raw) — fallback: release */
+/* منابعِ پایدار (به‌ترتیب): ZIPِ آخرین نسخه روی main (همان که رندر deploy می‌کند)،
+   سپس شاخهٔ جلسه، سپس release API. هر سه یکی‌اند؛ اولی پایدارتر است. */
+define("RAW_MAIN", "https://raw.githubusercontent.com/" . REPO . "/main/release/namayandeelmi-latest.zip");
 define("RAW_LATEST", "https://raw.githubusercontent.com/" . REPO . "/arena/01a080f0-javad-test1/release/namayandeelmi-latest.zip");
+define("RAW_SOURCES", "main");
 
 $protect = array(
   "crm-live-data.json", "crm-live-bulk.json", "crm-settings-vault.json", "settings-vault.json",
@@ -51,9 +54,18 @@ $ctx = stream_context_create(array("http" => array(
   "timeout" => 60
 )));
 $tmp = tempnam(sys_get_temp_dir(), "crmzip");
-$zipData = @file_get_contents(RAW_LATEST, false, $ctx);
+$zipData = false;
+foreach (array(RAW_MAIN, RAW_LATEST) as $src) {
+  $try = @file_get_contents($src, false, $ctx);
+  if ($try !== false && strlen($try) > 100000) {
+    $zipData = $try;
+    logline("📦 دانلود از " . (strpos($src, "/main/") !== false ? "main" : "شاخهٔ جلسه") . ": " . strlen($try) . " بایت");
+    break;
+  }
+  logline("⚠️ منبع در دسترس نبود: " . (strpos($src, "/main/") !== false ? "main" : "شاخهٔ جلسه"));
+}
 if ($zipData !== false && strlen($zipData) > 100000) {
-  logline("📦 دانلود از منبعِ پایدار: " . strlen($zipData) . " بایت");
+  /* دانلود موفق — ادامه به استخراج */
 } else {
   $zipData = null;
   $meta = @file_get_contents(API_LATEST, false, $ctx);
