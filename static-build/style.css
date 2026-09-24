@@ -3091,12 +3091,24 @@ html.crm-booting body {
   white-space: nowrap;
   direction: rtl;
   will-change: transform;
-  animation: crmTickerMove 120s linear infinite;
+  animation: crmTickerMove 60s linear infinite;
 }
 .crm-event-ticker:hover .crm-ticker-move { animation-play-state: paused; }
+/* نوبتِ ۱۵۲: یک دور = ۶۰ ثانیه و متن «یک‌بار» از برابرِ چشم رد می‌شود
+   (کپیِ دومِ حلقه حذف شد، پس از یک سو وارد و از سویِ دیگر خارج می‌شود) */
 @keyframes crmTickerMove {
-  0%   { transform: translateX(0); }
+  0%   { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
+}
+.v1225-traffic-status {
+  margin: 0 0 10px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #f0fdfa;
+  border: 2px solid #0d9488;
+  color: #0f766e;
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 .v1223-center-tip {
   font-weight: 700;
@@ -3166,3 +3178,72 @@ html.crm-booting body {
   .app-header .crm-event-ticker { margin: 0.4rem -0.75rem -0.75rem; }
   .v1224-backup-chip { font-size: 0.64rem; padding: 2px 7px; }
 }
+
+/* ─── v12.26.0: چیدمانِ یکسان در ویندوز، تبلت و گوشی ───────────────────────────
+   پیش‌تر چند قانونِ «دستگاه‌محور» ستون‌هایِ فرم و ردیف‌هایِ هدر را در گوشی عوض
+   می‌کردند (مثلاً `.form-grid{grid-template-columns:1fr}` در ≤720px و کادرِ ساعتِ
+   تمام‌عرض در ≤640pxِ عمودی). حالا قانونِ چیدمان «فقط» تابعِ پهناست: همان پهنا،
+   همان چیدمان — در ویندوز، تبلت و گوشی. جدول‌ها به‌جایِ شکستنِ چیدمان، scrollِ
+   افقی می‌گیرند. */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+.form-grid,
+#formPharmacy > .form-grid,
+#formDoctor > .form-grid,
+#formOrder > .form-grid,
+#tab-pharmacies .form-grid,
+#tab-orders .form-grid,
+#tab-doctors .form-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+  gap: 1.25rem !important;
+}
+.app-header { padding: 1rem 1.5rem !important; }
+.app-header .header-container { flex-wrap: wrap !important; }
+.app-header .crm-header-clock,
+.app-header.crm-compact-header .crm-header-clock { flex: 0 0 auto !important; }
+.app-header .header-actions { flex-wrap: wrap !important; }
+.crm-table-wrap, .table-responsive, .table-wrapper { overflow-x: auto !important; }
+table { min-width: 0 !important; }
+
+/* کلیدِ «چیدمانِ یکسان»: گوشی/تبلت دقیقاً همان چیدمانِ ۱۲۸۰ پیکسلیِ ویندوز را
+   نشان می‌دهند (با scrollِ افقی) — یعنی بایت‌به‌بایت یکی. */
+html[data-crm-uniform="1"] body { min-width: 1280px !important; }
+html[data-crm-uniform="1"] .form-grid,
+html[data-crm-uniform="1"] #formPharmacy > .form-grid,
+html[data-crm-uniform="1"] #formDoctor > .form-grid,
+html[data-crm-uniform="1"] #formOrder > .form-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+html[data-crm-uniform="1"] .app-header { min-width: 1280px !important; }
+html[data-crm-uniform="1"] .sidebar { min-width: 240px !important; }
+
+.v1226-version-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.v1226-uniform-btn { white-space: nowrap; font-size: 0.72rem; }
+@media (max-width: 768px) {
+  .v1226-uniform-btn { font-size: 0.64rem; padding: 3px 7px; }
+}
+
+/* v12.28.0: کلیدِ «نمایشِ رمز» در صفحهٔ ورود — تا کاربرِ گوشی ببیند چه تایپ کرده */
+.p-show {
+  margin: 4px 0 0;
+  padding: 5px 10px;
+  border: 1px solid #0d9488;
+  border-radius: 8px;
+  background: #f0fdfa;
+  color: #0f766e;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.p-show:active { background: #ccfbf1; }

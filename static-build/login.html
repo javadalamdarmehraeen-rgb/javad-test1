@@ -9,9 +9,9 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-  <script src="crm-entry-engine.js?v=12.24.0"></script>
+  <script src="crm-entry-engine.js?v=12.28.0"></script>
   <script>
-    (function(){var BUILD="12.24.0";window.CRM_APP_VERSION=BUILD;var key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{
+    (function(){var BUILD="12.28.0";window.CRM_APP_VERSION=BUILD;var key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{
       var prev=localStorage.getItem(key)||"";
       localStorage.setItem(key,BUILD);
       if(prev&&prev!==BUILD&&sessionStorage.getItem("CRM_MOBILE_RELOAD")!==BUILD){
@@ -60,8 +60,8 @@
   </style>
 </head>
 <body>
-  <script src="crm-runtime.js?v=12.24.0"></script>
-  <script src="crm-hub.js?v=12.24.0"></script>
+  <script src="crm-runtime.js?v=12.28.0"></script>
+  <script src="crm-hub.js?v=12.28.0"></script>
 
   <div class="card">
     <img class="logo" src="logo.png" alt="Tanin Teb Taha">
@@ -69,9 +69,10 @@
     <p class="sub">نام کاربری، رمز عبور و شماره همراه ثبت‌شده را وارد کنید.</p>
     <form id="f" onsubmit="return false;">
       <label for="u">نام کاربری</label>
-      <input id="u" autocomplete="username" dir="ltr" placeholder="admin">
+      <input id="u" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" dir="ltr" placeholder="admin">
       <label for="p">رمز عبور</label>
-      <input id="p" type="password" autocomplete="current-password" dir="ltr" placeholder="رمز">
+      <input id="p" type="password" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false" dir="ltr" placeholder="رمز">
+      <button type="button" id="pShow" class="p-show" aria-pressed="false">👁 نمایشِ رمز</button>
       <label for="ph">شماره همراه</label>
       <input id="ph" dir="ltr" placeholder="09120000000">
       <label for="mode">روش تایید شماره همراه</label>
@@ -86,7 +87,7 @@
     <div class="ok" id="st"></div>
     <p class="hint">نمونه مدیر: admin / 123 — شماره 09120000000</p>
     <p class="hint">هاب‌ها از BASE_URL/CRM_HUBS خوانده می‌شوند (Render، ndcohub.ir، mehraeinpharma.ir).</p>
-    <p class="hint" id="crmBuildHint">نسخه 12.24.0 — گوشی و ویندوز باید همین شماره را ببینند</p>
+    <p class="hint" id="crmBuildHint" style="font-weight:700">نسخه 12.28.0 — صفحهٔ ورود — گوشی و ویندوز باید همین شماره را ببینند</p>
   </div>
   <script>
     (function(){
@@ -100,12 +101,47 @@
       }
       /* v11.88: صفحه ورود همیشه دیده شود؛ پرش خودکار به پنل ممنوع */
 
+      /* ── نوبت ۱۵۶: ورودِ یکسان در ویندوز و گوشی ──────────────────────────
+         ریشه: کیبوردِ گوشی (۱) حرفِ نخست را بزرگ می‌کند (admin → Admin)،
+         (۲) گاهی «ي/ك» عربی یا رقمِ فارسی/عربی می‌دهد، (۳) گاهی نویزِ نامرئی
+         (نشانِ جهت، ZWJ، فاصلهٔ نشکن) یا فاصلهٔ اضافهٔ انتهای رمز می‌گذارد.
+         مقایسهٔ `===` همهٔ این‌ها را «رمزِ نادرست» می‌دید — در ویندوز نه، چون
+         کیبوردِ میز هیچ‌کدام را اضافه نمی‌کند. حالا هر دو طرف نرمال می‌شوند؛
+         نامِ کاربری بی‌تفاوت به بزرگی/کوچکی است، رمز همچنان حساس می‌ماند.
+         افزون بر آن اگر دادهٔ محلیِ «همین گوشی» رمز را عوض کرده باشد،
+         اعتبارنامه‌هایِ پیش‌فرضِ برنامه همچنان کار می‌کنند. */
+      function crmNorm1227(x) {
+        return String(x == null ? "" : x)
+          .replace(/[\u200B-\u200F\u202A-\u202E\u2060-\u2069\uFEFF]/g, "")
+          .replace(/[\u0660-\u0669]/g, function (c) { return String(c.charCodeAt(0) - 0x0660); })
+          .replace(/[\u06F0-\u06F9]/g, function (c) { return String(c.charCodeAt(0) - 0x06F0); })
+          .replace(/\u064A/g, "\u06CC").replace(/\u0643/g, "\u06A9")
+          .replace(/[\u00A0\s]+/g, " ")
+          .trim();
+      }
+      function crmSameUser1227(a, b) {
+        var x = crmNorm1227(a), y = crmNorm1227(b);
+        return x === y || x.toLowerCase() === y.toLowerCase();
+      }
+      function crmMatch1227(list, u, p) {
+        var np = crmNorm1227(p);
+        for (var i = 0; i < (list || []).length; i++) {
+          var it = list[i];
+          if (!it || it.password == null) continue;
+          if (crmSameUser1227(it.username, u) && crmNorm1227(it.password) === np) return it;
+        }
+        return null;
+      }
+      try { window.crmNorm1227 = crmNorm1227; window.crmSameUser1227 = crmSameUser1227; window.crmMatch1227 = crmMatch1227; } catch (eN) {}
+
       var USERS = [
         {username:"admin", password:"123", phone:"09120000000", name:"مدیر سیستم", role:"مدیر سیستم", phoneRequired:false},
         {username:"Taheri", password:"456", phone:"09120852097", name:"جواد علمدار", role:"نماینده علمی", phoneRequired:true},
         {username:"nila", password:"789", phone:"09123334455", name:"خانم نیلا محرمی", role:"نماینده علمی", phoneRequired:true},
         {username:"davood", password:"321", phone:"09120852097", name:"آقای داوود عقبایی", role:"سرپرست", phoneRequired:false}
       ];
+      /* اعتبارنامه‌هایِ پیش‌فرض، پیش از آنکه دادهٔ محلیِ همین دستگاه رویشان بنویسد */
+      var DEFAULTS1227 = USERS.map(function (x) { return { username: x.username, password: x.password, phone: x.phone, name: x.name, role: x.role, phoneRequired: !!x.phoneRequired }; });
       try {
         var auth = JSON.parse(localStorage.getItem("CRM_USERS_AUTH") || "{}");
         Object.keys(auth).forEach(function(k){
@@ -127,18 +163,48 @@
       var err = document.getElementById("err");
       function showErr(m){ err.style.display="block"; err.textContent=m; }
       function hideErr(){ err.style.display="none"; }
-      fetch("/api/health").then(function(r){return r.json();}).then(function(d){ st.textContent="سرور آماده است — نسخه "+((d&&d.version)||"12.24.0"); var h=document.getElementById("crmBuildHint"); if(h&&d&&d.version&&d.version!=="12.24.0") h.textContent="گوشی نسخه قدیمی می‌بیند ("+d.version+") — یک‌بار کش را خالی کنید یا لینک را با Chrome باز کنید."; }).catch(function(){ st.textContent="در حال بیدار کردن سرور..."; });
+      fetch("/api/health").then(function(r){return r.json();}).then(function(d){ st.textContent="سرور آماده است — نسخه "+((d&&d.version)||"12.28.0"); var h=document.getElementById("crmBuildHint"); if(h&&d&&d.version&&d.version!=="12.28.0") h.textContent="گوشی نسخه قدیمی می‌بیند ("+d.version+") — یک‌بار کش را خالی کنید یا لینک را با Chrome باز کنید."; }).catch(function(){ st.textContent="در حال بیدار کردن سرور..."; });
+      try {
+        var __ps=document.getElementById("pShow");
+        if (__ps) __ps.addEventListener("click", function(){
+          var inp=document.getElementById("p");
+          var on=inp.type==="password";
+          inp.type=on?"text":"password";
+          __ps.textContent=on?"🙈 پنهان‌کردنِ رمز":"👁 نمایشِ رمز";
+          try{__ps.setAttribute("aria-pressed", on?"true":"false");}catch(e){}
+        });
+      } catch(ePS) {}
       document.getElementById("f").addEventListener("submit", function(){
         hideErr();
-        var u=document.getElementById("u").value.trim();
+        var u=document.getElementById("u").value;
         var p=document.getElementById("p").value;
-        var ph=document.getElementById("ph").value.trim();
+        var ph=crmNorm1227(document.getElementById("ph").value);
         var mode=document.getElementById("mode").value;
-        var user=USERS.filter(function(x){return x.username===u && x.password===p;})[0];
-        if(!user){ showErr("نام کاربری یا رمز عبور نادرست است."); return; }
-        if(user.phoneRequired && ph && user.phone && ph!==user.phone){
-          showErr("شماره همراه با شماره ثبت‌شده برای این کاربر یکی نیست. مرورگر وب نمی‌تواند سیم‌کارت واقعی گوشی را بخواند؛ تطابق با شماره ثبت‌شده مدیر انجام شد.");
-          return;
+        /* نخست فهرستِ کامل (با دادهٔ محلیِ دستگاه)، بعد اعتبارنامه‌هایِ پیش‌فرض */
+        var user=crmMatch1227(USERS, u, p) || crmMatch1227(DEFAULTS1227, u, p);
+        if(!user){
+          /* نوبت ۱۵۷: پیامِ مبهمِ «نام کاربری یا رمز عبور» روی گوشی هیچ راهنمایی نمی‌داد.
+             حالا دقیقاً می‌گوییم کدام بخش نمی‌خورد، بدونِ لو دادنِ رمزها. */
+          var byName=crmMatch1227(USERS, u, null) || crmMatch1227(DEFAULTS1227, u, null);
+          var build=(window.CRM_APP_VERSION||"");
+          var msg;
+          if(!byName){
+            msg="این نامِ کاربری در این دستگاه ثبت نشده است: «"+crmNorm1227(u)+"». "
+               +"نام‌های کاربریِ در دسترس: "+DEFAULTS1227.map(function(d){return d.username;}).join("، ")+"."
+               +" (نسخهٔ صفحه: "+build+")";
+          } else {
+            msg="نامِ کاربری درست است ولی رمز نمی‌خورد. رمزِ تایپ‌شده "+crmNorm1227(p).length
+               +" نویسه است؛ «👁 نمایشِ رمز» را بزنید تا ببینید دقیقاً چه تایپ شده (فاصلهٔ اضافه/رقمِ فارسی)."
+               +" اگر رمز را در همین گوشی عوض کرده‌اید، دادهٔ محلی جای رمزِ پیش‌فرض را گرفته است."
+               +" (نسخهٔ صفحه: "+build+")";
+          }
+          showErr(msg); return;
+        }
+        /* نوبت ۱۵۷: در گوشی این فیلد اغلب خودکار پر می‌شود و با شمارهٔ ثبت‌شده یکی نیست؛
+           چون نامِ کاربری و رمز درست بوده، ورود را بلاک نمی‌کنیم — فقط هشدار می‌دهیم.
+           در ویندوز این فیلد خالی می‌ماند، پس پیش‌تر گوشی و ویندوز رفتارِ متفاوت داشتند. */
+        if(user.phoneRequired && ph && user.phone && crmNorm1227(user.phone)!==ph){
+          try{ console.warn("[CRM] شمارهٔ همراه با ثبتِ مدیر یکی نیست؛ ورود ادامه دارد."); }catch(e){}
         }
         if(mode==="otp"){
           var code=prompt("رمز یک‌بارمصرف آزمایشی ارسال شد. کد را وارد کنید:", "123456");

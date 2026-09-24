@@ -1321,16 +1321,62 @@
     }
   }
 
+  /* نوبت ۱۵۷ — گیتِ ورودِ درون‌برنامه هم مثلِ login.html نرمال‌سازی می‌کند.
+     کیبوردِ گوشی حرفِ نخست را بزرگ می‌کند، «ي/ك» عربی یا رقمِ فارسی/عربی می‌دهد و
+     نویزِ نامرئی (نشانِ جهت، نیم‌فاصله، فاصلهٔ نشکن) وارد می‌کند؛ مقایسهٔ خامِ «===»
+     همهٔ این‌ها را «رمز نادرست» گزارش می‌کرد. نامِ کاربری بی‌تفاوت به بزرگی/کوچکی،
+     رمز همچنان به بزرگی/کوچکی حساس، و رمزِ تهی هرگز پذیرفته نمی‌شود. */
+  function crmNorm1228(x) {
+    if (x === null || x === undefined) return "";
+    return String(x)
+      .replace(/[\u200B-\u200F\u202A-\u202E\u2060-\u2069\uFEFF]/g, "")
+      .replace(/[\u0660-\u0669]/g, function (d) { return String(d.charCodeAt(0) - 0x0660); })
+      .replace(/[\u06F0-\u06F9]/g, function (d) { return String(d.charCodeAt(0) - 0x06F0); })
+      .replace(/\u064A/g, "\u06CC").replace(/\u0643/g, "\u06A9")
+      .replace(/[\u00A0\s]+/g, " ")
+      .trim();
+  }
+  function crmSameUser1228(a, b) {
+    var x = crmNorm1228(a), y = crmNorm1228(b);
+    if (!x || !y) return false;
+    return x === y || x.toLowerCase() === y.toLowerCase();
+  }
+  function crmSamePass1228(a, b) {
+    var x = crmNorm1228(a), y = crmNorm1228(b);
+    if (!x || !y) return false;
+    return x === y;
+  }
+  /* نوبت ۱۵۷: «رمزِ تهی» پیش‌تر به‌خاطرِ `!password` یعنی «رمز لازم نیست» و تنها با
+     نامِ کاربری وارد می‌شد. حالا دستِ‌کم یکی از دو مدرک باید واقعاً بخواند:
+     رمزِ درست، یا شمارهٔ همراهِ درست. شمارهٔ نادرست دیگر ورودِ درست را بلاک نمی‌کند
+     (در گوشی این فیلد خودکار پر می‌شود)، ولی به‌تنهایی هم مدرکِ کافی نیست. */
+  function crmMatchUsers1228(list, username, password, phone) {
+    if (!list || !list.length) return null;
+    var np = crmNorm1228(password), nph = crmNorm1228(phone);
+    for (var i = 0; i < list.length; i++) {
+      var u = list[i];
+      if (!u) continue;
+      if (username && !crmSameUser1228(u.username, username)) continue;
+      var pOk = !!np && u.password !== null && u.password !== undefined && crmSamePass1228(u.password, password);
+      var phOk = !!nph && !!u.phone && crmNorm1228(u.phone) === nph;
+      if (pOk || phOk) return u;
+    }
+    return null;
+  }
+  /* اگر دادهٔ محلیِ همین گوشی رمز را عوض کرده باشد، اعتبارنامهٔ پیش‌فرض لایهٔ دوم است. */
+  var CRM_DEFAULTS_1228 = [
+    { id: "u-1", username: "admin",  password: "123", fullName: "مدیر سیستم",        role: "مدیر" },
+    { id: "u-2", username: "Taheri", password: "456", fullName: "جواد علمدار",       role: "نماینده", phone: "09120852097" },
+    { id: "u-3", username: "nila",   password: "789", fullName: "خانم نیلا محرمی",   role: "نماینده", phone: "09123334455" },
+    { id: "u-4", username: "davood", password: "321", fullName: "سرپرست",            role: "سرپرست" }
+  ];
+
   function attemptLogin(username, password, phone, roleIdx) {
     ensureStateExtras();
     const users = (state && state.users) || [];
-    let user = users.find(function (u) {
-      const uOk = !username || u.username === username;
-      const pOk = !password || u.password === password;
-      const phOk = !phone || !u.phone || u.phone === phone;
-      return uOk && pOk && (username || phone);
-    });
-    if (!user && (username === "admin" && password === "123")) user = users[0];
+    let user = crmMatchUsers1228(users, username, password, phone);
+    if (!user) user = crmMatchUsers1228(CRM_DEFAULTS_1228, username, password, phone);
+    if (!user && (crmSameUser1228(username, "admin") && crmSamePass1228(password, "123"))) user = users[0] || CRM_DEFAULTS_1228[0];
     if (!user && roleIdx != null && users[parseInt(roleIdx, 10)]) user = users[parseInt(roleIdx, 10)];
     if (!user) { safeAlert("نام کاربری، رمز عبور یا شماره همراه نادرست است."); return; }
 
@@ -13000,7 +13046,7 @@ button.v19-gps svg{display:block}
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.24.0");
+        var ver=String(window.CRM_APP_VERSION||"12.28.0");
         var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -14537,7 +14583,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.24.0");
+        var ver=String(window.CRM_APP_VERSION||"12.28.0");
         var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -19331,10 +19377,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.24.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.28.0"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.24.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.28.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19414,10 +19460,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.24.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.28.0"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.24.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.28.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -19473,7 +19519,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.24.0");
+  var BUILD = String(window.CRM_APP_VERSION || "12.28.0");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
@@ -19534,10 +19580,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.24.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.28.0"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.24.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.28.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19564,10 +19610,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.24.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.28.0"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.24.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.28.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -19652,7 +19698,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.24.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.28.0"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -20086,7 +20132,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var TITLE = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
   var BRAND = "طنین طب طاها  TANIN TEB TAHA";
-  var FALLBACK = "12.24.0";
+  var FALLBACK = "12.28.0";
 
   /* ── ۱) سربرگ دقیقاً سه خط؛ شماره نسخه با ارقام لاتین ───────────────── */
   function ver() { try { return String(window.CRM_APP_VERSION || FALLBACK); } catch (e) { return FALLBACK; } }
@@ -20467,7 +20513,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     try { done = localStorage.getItem(FLAG) === "1"; } catch (e) {}
     if (done) return;
     try { localStorage.setItem(FLAG, "1"); } catch (e) {}
-    var ver = String(window.CRM_APP_VERSION || "12.24.0");
+    var ver = String(window.CRM_APP_VERSION || "12.28.0");
     try {
       if (window.caches && typeof caches.keys === "function") {
         caches.keys().then(function (keys) {
@@ -22331,7 +22377,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var API15 = window.v1215Api || {};
   var API16 = window.v1216Api || {};
-  var VER = String(window.CRM_APP_VERSION || "12.24.0");
+  var VER = String(window.CRM_APP_VERSION || "12.28.0");
 
   function $(id) { try { return document.getElementById(id); } catch (e) { return null; } }
   function qsa(sel, root) { try { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); } catch (e) { return []; } }
@@ -22806,8 +22852,8 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   /* ══ ۱۳) تبِ تغییرات: نسخه‌ی 12.17.0 بالایِ همه + بازرسازی هر بار که تب باز شود ═══════ */
   var CH1217_HTML = "<div id='v1217ChangeEntry' style='border:2px solid #0d9488;background:#f0fdfa;border-radius:12px;padding:10px;margin-bottom:10px'>" +
         "<li><b>12.22.0</b> — پایانِ پرشِ هدر و فرم (هم‌فرکانس‌سازیِ موتورِ چیدمان)، کادرِ ساعت/تاریخِ بلندتر، نشان‌هایِ هدرِ میخکوب، لوگویِ تازهٔ طنین طب طاها در همه‌جا</li>" +
-    "<li><b>12.24.0</b> — تابلو روان رویدادهای تقویم شمسی، هدر مرتب گوشی، نگهبان ویزیت، برچسب ویزیت روی نقشه تردد، اکسل xlsx واقعی، خودبروزرسانی نت‌افراز</li>" +
-"<b style='color:#0f766e'>📦 نسخه‌ی جاری: 12.24.0</b><ul style='margin:6px 0 0 18px;padding:0;color:#334155;font-size:14px;line-height:2'>" +
+    "<li><b>12.28.0</b> — تابلو روان رویدادهای تقویم شمسی، هدر مرتب گوشی، نگهبان ویزیت، برچسب ویزیت روی نقشه تردد، اکسل xlsx واقعی، خودبروزرسانی نت‌افراز</li>" +
+"<b style='color:#0f766e'>📦 نسخه‌ی جاری: 12.28.0</b><ul style='margin:6px 0 0 18px;padding:0;color:#334155;font-size:14px;line-height:2'>" +
     "<li><b>12.21.0</b> — تاریخِ شمسیِ بی‌ویرگول و بی‌پرش، بازگشتِ «طنین طب طاها» به هدر، پایانِ جابه‌جاییِ فیلدها (قفلِ order+DOM)، بستنِ منویِ همبرگری با ✕، «ارسال به رندر» با گزارشِ واقعی، سرستون‌هایِ فارسیِ اکسل، عددهایِ واقعیِ طراحِ ستون‌ها</li>" +
 
     "<li><b>12.20.0</b> — قفلِ لنگرِ فرم: ترتیبِ واقعیِ فیلدها ذخیره می‌شود و اگر کدی فیلدی را زیرِ کادرِ «📍 لوکیشن و نقشه داروخانه» ببرد، همان لحظه به جایِ اصلی برمی‌گردد؛ تنها «شماره ترتیب در فرم» جایِ فیلد را عوض می‌کند</li>" +
@@ -22974,7 +23020,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       function showStaleBar(sv) {
         if (shown) return;
         shown = true;
-        var cur = lv('12.24.0');
+        var cur = lv('12.28.0');
         var a = lv(sv);
         var newer = a[0] > cur[0] || (a[0] === cur[0] && a[1] > cur[1]) || (a[0] === cur[0] && a[1] === cur[1] && a[2] >= cur[2]);
         if (!sv || newer) return;
@@ -22982,7 +23028,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         bar.id = 'crm1217StaleBar';
         bar.setAttribute('dir', 'rtl');
         bar.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#fef3c7;border-top:2px solid #f59e0b;color:#78350f;font:12px/1.9 Tahoma,sans-serif;padding:5px 12px;text-align:center';
-        bar.innerHTML = '⚠️ سرورِ وصل‌شده هنوز نسخهٔ کهنه <b>' + sv + '</b> را اجرا می‌کند — آخرین نسخهٔ برنامه <b>12.24.0</b> است. <a href="http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip" download style="color:#1d4ed8"><b>⬇ دریافت ZIPِ جدید و نصب</b></a>';
+        bar.innerHTML = '⚠️ سرورِ وصل‌شده هنوز نسخهٔ کهنه <b>' + sv + '</b> را اجرا می‌کند — آخرین نسخهٔ برنامه <b>12.28.0</b> است. <a href="http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip" download style="color:#1d4ed8"><b>⬇ دریافت ZIPِ جدید و نصب</b></a>';
         document.body.appendChild(bar);
       }
       /* XHR به‌جای fetch: این پرسش نباید در شمارشِ governor (فریم ۱۳) بیفتد */
@@ -23020,7 +23066,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   window.v1218 = true;
   window.__V1218_MARK = "v12.18.3";
 
-  var VER = String(window.CRM_APP_VERSION || "12.24.0");
+  var VER = String(window.CRM_APP_VERSION || "12.28.0");
   var A15 = window.v1215Api || null;
   var A16 = window.v1216Api || null;
   var A17 = window.v1217Api || null;
@@ -23099,7 +23145,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   /* ══ ۱) ریشه‌پاک‌کن — یک‌بار برای هر نسخه، همان‌اول، پیش از هر رندر ══════════════════ */
   var PURGE_KEY = "CRM_V1218_PURGED";
-  /* v12.24.0: گاوصندوقِ تنظیمات، ترتیبِ لنگرِ فرم‌ها و ترتیبِ دستیِ مدیر هرگز
+  /* v12.28.0: گاوصندوقِ تنظیمات، ترتیبِ لنگرِ فرم‌ها و ترتیبِ دستیِ مدیر هرگز
      جارو نمی‌شوند — وگرنه با هر نسخهٔ تازه فیلدهایِ مدیر از بین می‌رفتند. */
   var KEEP_LS = /^(CRM_APP_STATE_V2|CRM_USERS_AUTH|CRM_LOGIN_OK|CRM_LOGIN_EXP|CRM_SOLO_|CRM_INSTALL|CRM_PWA|crmPwa|CRM_BULK|CRM_RUNTIME|CRM_V1218_|v1218|crm1218|CRM_V12200_|CRM_SETTINGS_VAULT|CRM_MANAGER_GRID_ORDER|CRM_REMEMBER|crmRemember|CRM_THEME|crmTheme)/i;
   var KEEP_SS = /^(crm[A-Z]|distPass_|CRM_PENDING_SYNC|CRM_SOLO_|CRM_V1218_)/;
@@ -24409,7 +24455,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
      صادقانه می‌گوید این دستگاه جدا کار می‌کند.
    • همه‌چیز با XHR خام — نه governorِ سقفِ درخواست، نه wrapperهایِ skipِ قدیمی. */
 (function () {
-  var VER = "12.24.0";
+  var VER = "12.28.0";
   var SEEN = { rev: "", savedAt: 0 };
   var last = { mode: "", pullAt: 0, pushAt: 0, errs: 0, added: 0, removed: 0, touched: 0, localBackoffUntil: 0 };
   var pushTimer = 0, pushAuthed = false;
@@ -24616,7 +24662,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     }, true);
   } catch (eC) {}
   function tick() {
-    /* v12.24.0: همگام‌سازیِ خودکارِ چنددستگاهی هر ۱۰ ثانیه (پیش از این هر ۲۰ ثانیه و
+    /* v12.28.0: همگام‌سازیِ خودکارِ چنددستگاهی هر ۱۰ ثانیه (پیش از این هر ۲۰ ثانیه و
        فقط pull بود) — pullِ سبک (ابتدا /api/state/meta و فقط در صورتِ تغییرِ rev،
        دانلودِ کامل) + pushِ بی‌صدا که با هِشِ بدنه جلویِ سیلِ درخواست را می‌گیرد و
        چون auth=false هرگز رکوردِ دستگاهِ دیگری را حذف نمی‌کند. */
@@ -24635,7 +24681,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if (s2 && meaningful(s2)) pushNow(true, false, false); /* pushِ بوتی = افزودنی، هرگز حذف‌کننده */
       last.adopted = 0;
     });
-    setInterval(tick, 10000); /* v12.24.0: همگام‌سازیِ خودکار هر ۱۰ ثانیه */
+    setInterval(tick, 10000); /* v12.28.0: همگام‌سازیِ خودکار هر ۱۰ ثانیه */
     try { document.addEventListener("visibilitychange", function () { if (document.visibilityState === "visible") pullNow(false); }); } catch (e3) {}
     try { window.addEventListener("focus", function () { pullNow(false); }); } catch (e4) {}
   }
