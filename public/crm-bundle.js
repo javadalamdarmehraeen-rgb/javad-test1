@@ -1374,7 +1374,24 @@
   function attemptLogin(username, password, phone, roleIdx) {
     ensureStateExtras();
     const users = (state && state.users) || [];
-    let user = crmMatchUsers1228(users, username, password, phone);
+    /* نوبت ۱۶۳: رمزِ تغییر‌یافته (CRM_USERS_AUTH) بر state.users مقدم است —
+       پیش‌تر این دروازه هرگز CRM_USERS_AUTH را نمی‌خواند؛ پس رمزِ تازه‌عوض‌شده
+       در همان دستگاه هم رد می‌شد و رمزِ قدیمی هنوز کار می‌کرد. */
+    let users2 = users;
+    try {
+      const authMap163 = JSON.parse(localStorage.getItem("CRM_USERS_AUTH") || "{}");
+      if (authMap163 && Object.keys(authMap163).length) {
+        users2 = users.map(function (u) {
+          if (!u) return u;
+          var hitPw = null;
+          Object.keys(authMap163).forEach(function (k) {
+            if (authMap163[k] && authMap163[k].password != null && authMap163[k].password !== "" && crmSameUser1228(k, u.username)) hitPw = authMap163[k].password;
+          });
+          return (hitPw != null) ? Object.assign({}, u, { password: hitPw }) : u;
+        });
+      }
+    } catch (eAuth) {}
+    let user = crmMatchUsers1228(users2, username, password, phone);
     if (!user) user = crmMatchUsers1228(CRM_DEFAULTS_1228, username, password, phone);
     if (!user && (crmSameUser1228(username, "admin") && crmSamePass1228(password, "123"))) user = users[0] || CRM_DEFAULTS_1228[0];
     if (!user && roleIdx != null && users[parseInt(roleIdx, 10)]) user = users[parseInt(roleIdx, 10)];
@@ -11318,7 +11335,7 @@ button.v19-gps svg{display:block}
       ".table-responsive{max-height:72vh;overflow:auto!important;position:relative!important}.data-table{border-collapse:collapse!important;border-spacing:0!important}.data-table th,.data-table td{border:1px solid #94a3b8!important;padding:7px!important}.data-table thead th{position:sticky!important;top:0!important;z-index:25!important;background:#87CEEB!important;color:#000!important;box-shadow:none!important}.tbl-freeze-head{background:#87CEEB!important;border-bottom:0!important}.tbl-freeze-head th{background:#87CEEB!important;color:#000!important}.tbl-freeze-xbar,.tbl-x-row{display:none!important}" +
       "#tab-distributor-sales #distributorActionGrid,#tab-distributor-database #distributorDatabaseGrid{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))!important;gap:10px!important}#invoiceStatusFilterGrid{display:flex!important;flex-flow:row nowrap!important;align-items:flex-start!important;gap:10px!important;overflow-x:auto!important;padding-bottom:6px!important;width:100%!important}#invoiceStatusFilterGrid>.form-group{flex:1 0 180px!important;min-width:0!important;margin:0!important}#invoiceStatusFilterGrid input:disabled,#invoiceStatusFilterGrid select:disabled{background:#e5e7eb!important;color:#6b7280!important;border-color:#cbd5e1!important;cursor:not-allowed!important}#tab-distributor-sales #distributorFilterGrid{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))!important;gap:10px!important;width:100%!important}#tab-distributor-sales #distributorFilterGrid>.form-group{grid-column:auto!important;width:auto!important;min-width:0!important;margin:0!important}#tab-distributor-sales .v20-combo-card{padding:10px!important}#tab-distributor-sales .v20-card-tools .btn{padding:7px 9px!important;font-size:.78rem!important}#tab-distributor-sales #distributorFilterGrid{display:flex!important;flex-flow:row nowrap!important;align-items:flex-start!important;overflow-x:auto!important;padding-bottom:6px!important}#tab-distributor-sales #distributorFilterGrid>.form-group{flex:1 0 180px!important;max-width:none!important}" +
       "#representativeRoutesGrid{grid-template-columns:repeat(4,minmax(0,1fr))!important}#representativeRoutesGrid select[multiple]{min-height:150px!important}.v34-target-head{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin:12px 0}.v34-target-head label{font-weight:700}.v34-target-row{display:grid;grid-template-columns:minmax(180px,2fr) repeat(5,minmax(105px,1fr));gap:7px;align-items:center;border-bottom:1px solid #cbd5e1;padding:8px 4px}.v34-target-row>div{text-align:center}.v34-prod-name{text-align:right!important;font-weight:800}.v34-head{background:#87CEEB;color:#000;font-weight:800;position:sticky;top:0;z-index:5}.v34-target-grand{display:flex;gap:18px;justify-content:flex-end;flex-wrap:wrap;padding:12px;background:#f0fdfa;margin:10px 0}.v34-total{font-weight:800;color:#dc2626}" +
-      "@media(max-width:768px){html,body{max-width:100%!important;overflow-x:hidden!important}.app-nav{display:none!important}.btn-menu-hamburger{display:flex!important;visibility:visible!important}.header-container{padding:7px 9px!important;gap:6px!important;flex-wrap:nowrap!important}.logo-area{min-width:0!important;flex:1!important}.logo-icon{width:38px!important;height:38px!important;min-width:38px!important}.logo-text{min-width:0!important}.logo-text h1{font-size:.82rem!important;white-space:normal!important;line-height:1.35!important}.logo-text p{font-size:.65rem!important}.header-actions{gap:4px!important;flex:0 0 auto!important}.header-user-pill,.btn-header-icon,#v20VersionBadge,#v20ChpassFab{display:none!important}.btn-header-logout{padding:7px!important;font-size:.72rem!important}.main-content,.app-main,.container{width:100%!important;max-width:100%!important;padding:8px!important;margin:0!important;box-sizing:border-box!important}.tab-pane,.card{width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important}.card{padding:10px!important;margin:8px 0!important;border-radius:10px!important}.card-header{gap:8px!important;align-items:flex-start!important;flex-direction:column!important}.card-title{font-size:.95rem!important}.form-grid,.form-grid.form-grid-sized{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:10px!important;width:100%!important}.form-grid>.form-group,.form-grid.form-grid-sized>.form-group,.form-group,.full-width,.col-place-beside,.col-place-under{grid-column:1!important;width:100%!important;max-width:100%!important;min-width:0!important;margin:0!important;box-sizing:border-box!important}.form-input,.form-select,textarea,.crm-combo,.crm-combo-input,.jalali-input-wrapper{width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important}.btn,.card-header button,.card-header label.btn{max-width:100%!important;white-space:normal!important;min-height:40px!important}.table-responsive{display:block!important;width:100%!important;max-width:100%!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}.data-table{width:max-content!important;min-width:700px!important}.order-item-row{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:7px!important}.order-item-row>*{width:100%!important;max-width:100%!important}.map-container,.map-container-large{width:100%!important;height:340px!important;max-width:100%!important}.side-menu-drawer{width:min(88vw,340px)!important;max-width:88vw!important}.modal-content,.modal-card,.v20-modal-card{width:94vw!important;max-width:94vw!important;max-height:90vh!important;overflow:auto!important}.v20-visit-metrics,.stats-grid,.v20-cards{grid-template-columns:minmax(0,1fr)!important}#v20SnappActionBar{position:static!important;display:grid!important;grid-template-columns:1fr!important}#v20SnappActionBar .btn{width:100%!important;max-width:100%!important}.jalali-calendar-popup{max-width:calc(100vw - 16px)!important;left:8px!important;right:8px!important}.ph-pick-overlay,.v20-local-match{position:fixed!important;left:8px!important;right:8px!important;top:auto!important;bottom:8px!important;width:auto!important;max-width:none!important}.manual-design-canvas,.man-canvas{max-width:100%!important;overflow:auto!important}}" +
+      "@media(max-width:768px){html,body{max-width:100%!important;overflow-x:hidden!important}.app-nav{display:none!important}.btn-menu-hamburger{display:flex!important;visibility:visible!important}.header-container{padding:7px 9px!important;gap:6px!important;flex-wrap:wrap!important}.logo-area{min-width:0!important;flex:1 1 100%!important}.logo-icon{width:38px!important;height:38px!important;min-width:38px!important}.logo-text{min-width:0!important}.logo-text h1{font-size:.82rem!important;white-space:normal!important;line-height:1.35!important}.logo-text p{font-size:.65rem!important}.header-actions{gap:4px!important;flex:1 1 100%!important;min-width:0!important}.header-user-pill,.btn-header-icon,#v20VersionBadge{display:none!important}.btn-header-logout{padding:7px!important;font-size:.72rem!important}.main-content,.app-main,.container{width:100%!important;max-width:100%!important;padding:8px!important;margin:0!important;box-sizing:border-box!important}.tab-pane,.card{width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important}.card{padding:10px!important;margin:8px 0!important;border-radius:10px!important}.card-header{gap:8px!important;align-items:flex-start!important;flex-direction:column!important}.card-title{font-size:.95rem!important}.form-grid,.form-grid.form-grid-sized{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:10px!important;width:100%!important}.form-grid>.form-group,.form-grid.form-grid-sized>.form-group,.form-group,.full-width,.col-place-beside,.col-place-under{grid-column:1!important;width:100%!important;max-width:100%!important;min-width:0!important;margin:0!important;box-sizing:border-box!important}.form-input,.form-select,textarea,.crm-combo,.crm-combo-input,.jalali-input-wrapper{width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important}.btn,.card-header button,.card-header label.btn{max-width:100%!important;white-space:normal!important;min-height:40px!important}.table-responsive{display:block!important;width:100%!important;max-width:100%!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}.data-table{width:max-content!important;min-width:700px!important}.order-item-row{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:7px!important}.order-item-row>*{width:100%!important;max-width:100%!important}.map-container,.map-container-large{width:100%!important;height:340px!important;max-width:100%!important}.side-menu-drawer{width:min(88vw,340px)!important;max-width:88vw!important}.modal-content,.modal-card,.v20-modal-card{width:94vw!important;max-width:94vw!important;max-height:90vh!important;overflow:auto!important}.v20-visit-metrics,.stats-grid,.v20-cards{grid-template-columns:minmax(0,1fr)!important}#v20SnappActionBar{position:static!important;display:grid!important;grid-template-columns:1fr!important}#v20SnappActionBar .btn{width:100%!important;max-width:100%!important}.jalali-calendar-popup{max-width:calc(100vw - 16px)!important;left:8px!important;right:8px!important}.ph-pick-overlay,.v20-local-match{position:fixed!important;left:8px!important;right:8px!important;top:auto!important;bottom:8px!important;width:auto!important;max-width:none!important}.manual-design-canvas,.man-canvas{max-width:100%!important;overflow:auto!important}}" +
       "@media(max-width:950px){html,body{width:100%!important;max-width:100%!important;overflow-x:hidden!important}.app-nav{display:none!important}.btn-menu-hamburger{display:flex!important}.tab-pane,.card,.card-header,.card-header>div{max-width:100%!important;min-width:0!important;box-sizing:border-box!important}.card-header>div[style*='display:flex'],.card-header>div[style*='display: flex'],.v20-card-tools,.man-toolbar-row{width:100%!important;display:flex!important;flex-wrap:wrap!important;gap:8px!important}.card-header .btn,.v20-card-tools .btn,.man-toolbar-row .btn{flex:1 1 150px!important;max-width:100%!important;min-width:0!important;white-space:normal!important;overflow-wrap:anywhere!important}#btnShowPhForm,#btnShowPhList,#btnShowDocForm,#btnShowDocList,#btnShowOrdForm,#btnShowOrdList{display:inline-flex!important;flex:1 1 calc(50% - 6px)!important;width:auto!important;min-width:0!important;justify-content:center!important}.form-input,.form-select,.btn,textarea{max-width:100%!important;box-sizing:border-box!important}#invoiceStatusFilterGrid,#distributorFilterGrid,#snappTripFilterGrid,#snappTopupFilterGrid{max-width:100%!important;overflow-x:auto!important}.modal-content{left:auto!important;right:auto!important}}" +
       "@media(max-width:950px) and (orientation:landscape){.main-content,.app-main,.container{padding:6px!important}.form-grid:not(#invoiceStatusFilterGrid):not(#distributorFilterGrid){grid-template-columns:repeat(2,minmax(0,1fr))!important}.form-grid>.form-group{grid-column:auto!important}.form-grid>.full-width{grid-column:1/-1!important}.map-container,.map-container-large{height:260px!important}.side-menu-drawer{width:min(72vw,380px)!important;max-width:380px!important}}" +
       "@media(max-width:950px){#representativeRoutesGrid{grid-template-columns:1fr!important}.v34-target-head{grid-template-columns:1fr!important}.v34-head{display:none!important}.v34-target-row{grid-template-columns:1fr 1fr!important;min-width:0!important;gap:8px!important;background:#fff;border:1px solid #cbd5e1;border-radius:10px;margin:8px 0;padding:10px!important}.v34-target-row .v34-prod-name,.v34-target-row .v34-target-count{grid-column:1/-1!important}.v34-target-row>div{padding:5px;background:#f8fafc;border-radius:6px}.btn-menu-hamburger{display:flex!important;visibility:visible!important;position:relative!important;z-index:1200!important;flex:0 0 44px!important;width:44px!important;min-width:44px!important}.side-menu-drawer{z-index:9000!important}.side-menu-drawer.active{transform:translateX(0)!important}.order-item-head{display:none!important}.order-item-row{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 40px 40px!important;gap:6px!important;align-items:center!important;padding:8px!important}.order-item-row>*{min-width:0!important;max-width:100%!important;width:100%!important;box-sizing:border-box!important}.order-item-row .order-item-name{grid-column:1/-1!important;grid-row:1!important}.order-item-row .order-item-count{grid-column:1!important;grid-row:2!important}.order-item-row .order-item-gift{grid-column:2!important;grid-row:2!important}.order-item-row .order-item-price{grid-column:1!important;grid-row:3!important}.order-item-row .order-item-total{grid-column:2!important;grid-row:3!important}.order-item-row .order-item-edit{grid-column:3!important;grid-row:3!important;width:40px!important;height:40px!important;min-height:40px!important;padding:4px!important}.order-item-row>.btn-danger{grid-column:4!important;grid-row:3!important;width:40px!important;height:40px!important;min-height:40px!important;padding:4px!important}#btnSaveOrderClearV19,#btnSavePharmacyClearV19,#btnSaveDoctorClearV19{flex:0 0 auto!important;width:auto!important;max-width:130px!important;min-height:38px!important;padding:7px 10px!important;font-size:.78rem!important;margin:0!important}#orderItemsContainer{width:100%!important;max-width:100%!important;overflow:visible!important}}";
@@ -12050,6 +12067,23 @@ button.v19-gps svg{display:block}
       map[username].password = newPass;
       localStorage.setItem("CRM_USERS_AUTH", JSON.stringify(map));
     } catch (e) {}
+    /* نوبت ۱۶۳: «پسورد عوض نمی‌شود» — این تابع فقط localStorage دستگاهِ خودِ
+       کاربر را می‌نوشت؛ دروازهٔ دومِ ورود (attemptLogin) state.users را می‌خواند و
+       گوشی‌ها کاربران را از سرور می‌گیرند → رمزِ قدیمی همیشه برمی‌گشت. اکنون
+       state و سرور هم همان لحظه عوض می‌شوند. */
+    try {
+      var S = st();
+      if (S && Array.isArray(S.users)) {
+        var hit163 = false;
+        S.users.forEach(function (u) {
+          if (u && crmSameUser1228(u.username, username)) { u.password = newPass; hit163 = true; }
+        });
+        if (hit163) {
+          save(false);
+          try { if (typeof window.crmPushStateToServer === "function") window.crmPushStateToServer(); } catch (ePush) {}
+        }
+      }
+    } catch (e3) {}
   }
   function bindChpassFab() {
     if ($("v20ChpassFab")) return;
@@ -12105,9 +12139,34 @@ button.v19-gps svg{display:block}
     }
     v20RefreshFab();
   }
+  /* نوبت ۱۶۰: این تنها مرجعِ نمایشِ دکمهٔ «تغییر رمز» است و فقط sessionStorage را
+     می‌خواند. در گوشی نشستِ sessionStorage زود از دست می‌رود (بازشدنِ زبانهٔ تازه،
+     بازگردانیِ مرورگر، PWA)، در حالی که CRM_LOGIN_OK در localStorage باقی است —
+     نتیجه: در ویندوز دکمه دیده می‌شد و در گوشی نه. حالا همان الگویِ خطِ ۱۱۰۰۱
+     (sessionStorage، و در نبودِ آن localStorage با تاریخِ انقضا) به‌کار می‌رود. */
+  function crmSessionActiveV1230() {
+    try {
+      if (sessionStorage.getItem("crmLoggedIn") === "1") return true;
+    } catch (e) {}
+    try {
+      if (localStorage.getItem("CRM_LOGIN_OK") === "1") {
+        var exp = Number(localStorage.getItem("CRM_LOGIN_EXP") || 0);
+        if (!exp || exp > Date.now()) return true;
+      }
+    } catch (e2) {}
+    return false;
+  }
   function v20RefreshFab() {
     var b = $("v20ChpassFab"); if (!b) return;
-    b.style.display = sessionStorage.getItem("crmLoggedIn") === "1" ? "inline-block" : "none";
+    /* نوبت ۱۶۲: استایلِ درون‌خطیِ «important» — استایلِ درون‌خطی با اولویت بر
+       «هر» قاعدهٔ استایل‌شتی (حتی display:none!important تزریقیِ موبایل) می‌چربد؛
+       پس تا وقتیِ کاربر وارد است هیچ CSSای نمی‌تواند دکمهٔ «تغییر رمز» را پنهان کند. */
+    var on = crmSessionActiveV1230();
+    try {
+      b.style.setProperty("display", on ? "inline-flex" : "none", "important");
+    } catch (e) {
+      b.style.display = on ? "inline-flex" : "none";
+    }
   }
 
   /* ---------- ۱۱) سطوح دسترسی آماده ---------- */
@@ -12418,13 +12477,18 @@ button.v19-gps svg{display:block}
   }
 
   /* ---------- ۱۶) GPS واقعی، کارت آمار، سابقه و جستجو/اکسل رصد ---------- */
-  var v20Watch = null, v20VisitTimer = null;
+  var v20Watch = null, v20VisitTimer = null, v20LastPoint = null, v20LastPersistAt = 0;
   function hav(a,b){if(!a||!b)return 0;var R=6371000,p=Math.PI/180,d1=(b.lat-a.lat)*p,d2=(b.lng-a.lng)*p,x=Math.sin(d1/2)*Math.sin(d1/2)+Math.cos(a.lat*p)*Math.cos(b.lat*p)*Math.sin(d2/2)*Math.sin(d2/2);return 2*R*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));}
   function visitDate(){return new Date().toLocaleDateString("fa-IR",{timeZone:"Asia/Tehran"});}
   function ensureVisitCards(){var stBox=$("visitStatusBox");if(!stBox)return null;var h=$("v20VisitMetrics");if(!h){h=document.createElement("div");h.id="v20VisitMetrics";h.className="v20-visit-metrics";stBox.parentNode.insertBefore(h,stBox.nextSibling);}return h;}
   function refreshVisitCards(){var S=st(),v=S&&S.v20ActiveVisit,h=ensureVisitCards();if(!h)return;var dur=v?Math.max(0,Math.floor((Date.now()-v.startedAt)/1000)):0;h.innerHTML=[["مسافت طی‌شده",Math.round(v?v.distance:0)+" متر"],["مدت توقف",Math.round((v?v.stopMs:0)/60000)+" دقیقه"],["نقاط ثبت‌شده",v?(v.points||[]).length:0],["ساعت شروع",v?v.startTime:"—"]].map(function(x){return "<div class='v20-metric'>"+x[0]+"<b>"+x[1]+"</b></div>";}).join("");var sb=$("visitStatusBox");if(sb&&v)sb.textContent="GPS متصل است — مدت فعالیت: "+Math.floor(dur/60)+" دقیقه و "+(dur%60)+" ثانیه";}
-  function startV20Visit(){var S=st();if(S.v20ActiveVisit){v20Toast("یک ویزیت هم‌اکنون فعال است.");return;}if(!navigator.geolocation){alert("این دستگاه GPS یا دسترسی موقعیت مکانی ندارد.");return;}var rep=sessionStorage.getItem("crmUserName")||"نماینده";S.v20ActiveVisit={id:"route-"+Date.now(),repName:rep,date:visitDate(),startedAt:Date.now(),startTime:new Date().toLocaleTimeString("fa-IR"),points:[],distance:0,stopMs:0,lastMoveAt:Date.now()};save();
-    v20Watch=navigator.geolocation.watchPosition(function(pos){var V=st().v20ActiveVisit;if(!V)return;var p={lat:pos.coords.latitude,lng:pos.coords.longitude,t:Date.now(),acc:pos.coords.accuracy};var prev=V.points[V.points.length-1],d=hav(prev,p);if(d>=3){V.distance+=d;V.lastMoveAt=p.t;}else if(prev){V.stopMs+=Math.max(0,p.t-prev.t);}V.points.push(p);save(false);refreshVisitCards();},function(err){alert(err.code===1?"برای شروع ویزیت، اجازه موقعیت مکانی (GPS) را در مرورگر فعال کنید.":"اتصال GPS برقرار نشد؛ دوباره تلاش کنید.");},{enableHighAccuracy:true,maximumAge:0,timeout:15000});
+  function startV20Visit(){var S=st();if(S.v20ActiveVisit){v20Toast("یک ویزیت هم‌اکنون فعال است.");return;}if(!navigator.geolocation){alert("این دستگاه GPS یا دسترسی موقعیت مکانی ندارد.");return;}var rep=sessionStorage.getItem("crmUserName")||"نماینده";S.v20ActiveVisit={id:"route-"+Date.now(),repName:rep,date:visitDate(),startedAt:Date.now(),startTime:new Date().toLocaleTimeString("fa-IR"),points:[],distance:0,stopMs:0,lastMoveAt:Date.now()};v20LastPoint=null;v20LastPersistAt=0;save();
+    /* نوبت ۱۶۳: (۱) نقطهٔ با accuracy بدتر از ۶۰ متر (داخلِ ساختمان) هرگز
+       مسافت نمی‌سازد؛ (۲) حرکت فقط وقتی می‌شمرد که از «عدمِ قطعیتِ هر دو
+       نقطه» بزرگ‌تر باشد → نوسانِ GPS در سکون («۱۰۰ کیلومترِ» خیالی) دیگر
+       انباشته نمی‌شود؛ (۳) ذخیره/رندر حداکثر هر ۵ ثانیه، نه با هر تیکِ GPS
+       (علتِ سنگینیِ گوشی)؛ (۴) maximumAge از ۰ به ۳۰۰۰. */
+    v20Watch=navigator.geolocation.watchPosition(function(pos){var V=st().v20ActiveVisit;if(!V)return;var acc=Number(pos.coords.accuracy||0);if(acc>60)return;var p={lat:pos.coords.latitude,lng:pos.coords.longitude,t:Date.now(),acc:acc};var prev=v20LastPoint||V.points[V.points.length-1]||null;if(prev){var d=hav(prev,p);var noise=Math.max(10,(prev.acc||0)+(p.acc||0));if(d>=noise){V.distance+=d;V.lastMoveAt=p.t;}else{V.stopMs+=Math.max(0,p.t-prev.t);}}v20LastPoint=p;if(p.t-v20LastPersistAt>=5000){v20LastPersistAt=p.t;V.points.push(p);save(false);refreshVisitCards();}},function(err){alert(err&&err.code===1?"اجازهٔ موقعیت مکانی (GPS) داده نشده است.\nآیفون: تنظیمات ← حریم خصوصی و امنیت ← خدمات مکان (Location Services) ← Safari یا این برنامه ← «هنگام استفاده» را روشن کنید و صفحه را دوباره باز کنید.\nاندروید: تنظیمات ← موقعیت مکانی ← مجوزِ مرورگر/برنامه ← «اجازه» را انتخاب کنید.":"اتصال GPS برقرار نشد؛ دوباره تلاش کنید.");},{enableHighAccuracy:true,maximumAge:3000,timeout:20000});
     clearInterval(v20VisitTimer);v20VisitTimer=setInterval(refreshVisitCards,1000);refreshVisitCards();v20Toast("✅ GPS متصل شد و ثبت مسیر آغاز شد.");}
   function stopV20Visit(){var S=st(),V=S&&S.v20ActiveVisit;if(!V){v20Toast("ویزیت فعالی وجود ندارد.");return;}if(v20Watch!=null)navigator.geolocation.clearWatch(v20Watch);v20Watch=null;clearInterval(v20VisitTimer);V.endTime=new Date().toLocaleTimeString("fa-IR");V.endedAt=Date.now();V.durationMs=V.endedAt-V.startedAt;V.status="پایان‌یافته";V.path=(V.points||[]).map(function(p){return[p.lat,p.lng];});V.visited=(V.points||[]).length;V.pending=0;V.lastStop=V.points.length?"آخرین نقطه GPS":"بدون نقطه";S.repRoutes=S.repRoutes||[];S.repRoutes.unshift(V);S.visitTracks=S.visitTracks||[];S.visitTracks.unshift(V);S.v20ActiveVisit=null;save();refreshVisitCards();renderV20Routes();v20Toast("✅ همه فعالیت‌ها با تاریخ در رصد تردد ذخیره شد.");}
   function bindV20Visit(){var b1=$("btnStartVisit"),b2=$("btnEndVisit");if(b1){var n1=b1.cloneNode(true);b1.parentNode.replaceChild(n1,b1);n1.addEventListener("click",startV20Visit);}if(b2){var n2=b2.cloneNode(true);b2.parentNode.replaceChild(n2,b2);n2.addEventListener("click",stopV20Visit);}refreshVisitCards();}
@@ -13032,10 +13096,20 @@ button.v19-gps svg{display:block}
       return out;
     }
     window.mergeCrmStateClient=mergeAll;
-    return fetch("/api/state?__v65="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+    /* نوبت ۱۶۳: سقفِ ۱۰ ثانیه برای fetchِ بوت‌استرپ — پیش‌تر در شبکهٔ کندِ
+       گوشی این fetch معلق می‌ماند و bindOriginSaveGate همهٔ saveهای کاربر را
+       بی‌صدا می‌انداخت («ثری نمی‌شود»). با سقفِ زمانی، درِ ذخیره حداکثر پس از
+       ۱۰ ثانیه باز می‌شود و دادهٔ درونِ حافظه با ادغامِ اجتماعی حفظ می‌شود. */
+    var __bsCtl=(typeof AbortController==="function")?new AbortController():null;
+    if(__bsCtl)setTimeout(function(){try{__bsCtl.abort();}catch(eA){}},10000);
+    return fetch("/api/state?__v65="+Date.now(),{cache:"no-store",signal:__bsCtl?__bsCtl.signal:undefined}).then(function(r){return r.ok?r.json():null;}).then(function(j){
       var remote=j&&j.data;
       if(remote&&typeof remote==="object"){
         window.state=mergeAll(window.state||{},remote);
+        /* نوبت ۱۶۳: mergeArrِ این تابع قبرستان را نمی‌شناسد و حذف‌شده‌ها را
+           برمی‌گرداند — بلافاصله بعدِ ادغام پاکشان می‌کنیم (همان قاعدهٔ
+           purgeDeleted موتورِ v67: رکوردی که بعد از حذف به‌روز نشده باشد). */
+        try{var __del163=window.state._deletedIds||{};["pharmacies","doctors","orders","products","users","reps","leaves","visits","repRoutes","repHomes","hospitals","notifications","salesTargets","distSalesTargets","activityLog"].forEach(function(k){if(Array.isArray(window.state[k]))window.state[k]=window.state[k].filter(function(r){if(!r||r.id==null)return true;var t=__del163[String(r.id)];return !(t&&Number(r._updatedAt||r.updatedAt||r._lastSavedAt||0)<=Number(t));});});}catch(ePurge){}
     try{
       if(!window.state.settings) window.state.settings={};
       var cn=String(window.state.settings.companyName||"");
@@ -13046,7 +13120,7 @@ button.v19-gps svg{display:block}
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.28.0");
+        var ver=String(window.CRM_APP_VERSION||"12.33.0");
         var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -13223,7 +13297,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",v49bind);else v49bind();
   document.addEventListener("click",function(e){if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-orders"]'))setTimeout(v49bind,250);},true);
-  setInterval(v49GreyOrderFields,4000);
+  setInterval(function(){if(!document.hidden)v49GreyOrderFields();},4000); /* نوبت ۱۶۳ */
 })();
 
 /* v11.50 / بند ۱۲(نیمه اول): بروزرسانی خودکار فعالیت لحظه‌ای */
@@ -13236,7 +13310,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     try{if(typeof window.renderActivityLogTable==="function")window.renderActivityLogTable();}catch(e){}
     try{if(typeof window.renderActivityMapAndChart==="function")window.renderActivityMapAndChart();}catch(e){}
   }
-  setInterval(v50ActivityAutoRefresh,30000);
+  setInterval(function(){if(!document.hidden)v50ActivityAutoRefresh();},30000); /* نوبت ۱۶۳ */
 })();
 
 /* v11.51 / بند ۲۴ (نیمه اول): مسیرهای ثبت‌شده جلو نام نماینده در سلکتورها */
@@ -13270,7 +13344,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     });
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(v51RouteLabels,2500);});else setTimeout(v51RouteLabels,2500);
-  setInterval(v51RouteLabels,8000);
+  setInterval(function(){if(!document.hidden)v51RouteLabels();},8000); /* نوبت ۱۶۳ */
 })();
 
 /* v11.53 / بند ۱۲: فیلترهای فعالیت لحظه‌ای + رفع سایز نقشه */
@@ -13641,7 +13715,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(v58bind,1500);});else setTimeout(v58bind,1500);
   document.addEventListener("click",function(e){if(e.target&&e.target.closest&&e.target.closest('[data-target="tab-snapp-corporate"]'))setTimeout(v58bind,300);},true);
-  setInterval(v58UnwrapSnappCombos,4000);
+  setInterval(function(){if(!document.hidden)v58UnwrapSnappCombos();},4000); /* نوبت ۱۶۳ */
 })();
 
 /* v11.59 / نوبت جدید: همگام‌سازی چند-سیستمی + مخفی‌کردن فیلد + اصلاح پاک‌کردن + تطبیق هم‌نام داروخانه */
@@ -13718,7 +13792,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       row.appendChild(b);
     });
   }
-  setInterval(v60AddHideButtons,2000);
+  setInterval(function(){if(!document.hidden)v60AddHideButtons();},2000); /* نوبت ۱۶۳ */
 
   /* ---------- ۳) اصلاح کلید پاک کردن (بدون ظاهرشدن دکمه اضافه) ---------- */
   function v60RealClear(paneId,formId){
@@ -13746,7 +13820,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       b.onclick=function(){v60RealClear(id.replace("v42clear-",""),id.indexOf("pharmacies")!==-1?"formPharmacy":"formDoctor");};
     });
   }
-  setInterval(v60RewireClearButtons,3000);setTimeout(v60RewireClearButtons,2000);
+  setInterval(function(){if(!document.hidden)v60RewireClearButtons();},3000);setTimeout(v60RewireClearButtons,2000); /* نوبت ۱۶۳ */
 
   /* ---------- ۴) تطبیق فقط هم‌نام در کادر داروخانه سفارشات ---------- */
   if(typeof window.renderPharmacyPicks==="function"){
@@ -14583,13 +14657,14 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.28.0");
+        var ver=String(window.CRM_APP_VERSION||"12.33.0");
         var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
     }catch(eC){}
 
     try{localStorage.setItem("CRM_APP_STATE_V2",typeof serializeStateForLocalStorage==="function"?serializeStateForLocalStorage(window.state):JSON.stringify(window.state));}catch(e){}
+    if(document.hidden)return true; /* نوبت ۱۶۳: پشتِ صفحه فقط ادغام و ذخیره — رندر نه */
     try{
       if(typeof renderPharmaciesList==="function")renderPharmaciesList();
       if(typeof renderDoctorsList==="function")renderDoctorsList();
@@ -14621,7 +14696,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   function bindUnified(){
     if(window.__V67_SYNC)return;window.__V67_SYNC=1;
     pullServer();
-    setInterval(pullServer,8000);
+    setInterval(function(){if(!document.hidden)pullServer();},8000); /* نوبت ۱۶۳: بازگشتِ صفحه خودش pull می‌کند */
     document.addEventListener("visibilitychange",function(){if(!document.hidden)pullServer();});
     window.addEventListener("online",function(){setTimeout(function(){pullServer();window.crmPushStateToServer();},400);});
     setInterval(function(){try{window.crmPushStateToServer();}catch(e){}},20000);
@@ -15148,6 +15223,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     st._deletedIds=st._deletedIds||{};
     st._deletedIds[String(id)]=Date.now();
   }
+  try{window.crmMarkDeleted=tombstone;}catch(eTS){} /* نوبت ۱۶۳: حذفِ داروخانه/پزشک/سفارش هم قبرستان می‌گیرد */
   function purgeDeleted(st){
     if(!st)return st;
     var del=st._deletedIds||{};
@@ -15661,6 +15737,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     window.state=remote;
     if(remote._soloEpoch){try{localStorage.setItem("CRM_SOLO_EPOCH",String(remote._soloEpoch));}catch(e){}}
     persist();
+    if(document.hidden)return true; /* نوبت ۱۶۳: پشتِ صفحه فقط ادغام و ذخیره — رندر نه */
     try{
       if(typeof renderPharmaciesList==="function")renderPharmaciesList();
       if(typeof renderDoctorsList==="function")renderDoctorsList();
@@ -19377,10 +19454,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.28.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.33.0"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.28.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.33.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19460,10 +19537,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.28.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.33.0"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.28.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.33.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -19519,7 +19596,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.28.0");
+  var BUILD = String(window.CRM_APP_VERSION || "12.33.0");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
@@ -19580,10 +19657,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.28.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.33.0"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.28.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.33.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19610,10 +19687,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.28.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.33.0"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.28.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.33.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -19698,7 +19775,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.28.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.33.0"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -20132,7 +20209,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var TITLE = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
   var BRAND = "طنین طب طاها  TANIN TEB TAHA";
-  var FALLBACK = "12.28.0";
+  var FALLBACK = "12.33.0";
 
   /* ── ۱) سربرگ دقیقاً سه خط؛ شماره نسخه با ارقام لاتین ───────────────── */
   function ver() { try { return String(window.CRM_APP_VERSION || FALLBACK); } catch (e) { return FALLBACK; } }
@@ -20513,7 +20590,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     try { done = localStorage.getItem(FLAG) === "1"; } catch (e) {}
     if (done) return;
     try { localStorage.setItem(FLAG, "1"); } catch (e) {}
-    var ver = String(window.CRM_APP_VERSION || "12.28.0");
+    var ver = String(window.CRM_APP_VERSION || "12.33.0");
     try {
       if (window.caches && typeof caches.keys === "function") {
         caches.keys().then(function (keys) {
@@ -22377,7 +22454,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var API15 = window.v1215Api || {};
   var API16 = window.v1216Api || {};
-  var VER = String(window.CRM_APP_VERSION || "12.28.0");
+  var VER = String(window.CRM_APP_VERSION || "12.33.0");
 
   function $(id) { try { return document.getElementById(id); } catch (e) { return null; } }
   function qsa(sel, root) { try { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); } catch (e) { return []; } }
@@ -22852,8 +22929,8 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   /* ══ ۱۳) تبِ تغییرات: نسخه‌ی 12.17.0 بالایِ همه + بازرسازی هر بار که تب باز شود ═══════ */
   var CH1217_HTML = "<div id='v1217ChangeEntry' style='border:2px solid #0d9488;background:#f0fdfa;border-radius:12px;padding:10px;margin-bottom:10px'>" +
         "<li><b>12.22.0</b> — پایانِ پرشِ هدر و فرم (هم‌فرکانس‌سازیِ موتورِ چیدمان)، کادرِ ساعت/تاریخِ بلندتر، نشان‌هایِ هدرِ میخکوب، لوگویِ تازهٔ طنین طب طاها در همه‌جا</li>" +
-    "<li><b>12.28.0</b> — تابلو روان رویدادهای تقویم شمسی، هدر مرتب گوشی، نگهبان ویزیت، برچسب ویزیت روی نقشه تردد، اکسل xlsx واقعی، خودبروزرسانی نت‌افراز</li>" +
-"<b style='color:#0f766e'>📦 نسخه‌ی جاری: 12.28.0</b><ul style='margin:6px 0 0 18px;padding:0;color:#334155;font-size:14px;line-height:2'>" +
+    "<li><b>12.33.0</b> — تابلو روان رویدادهای تقویم شمسی، هدر مرتب گوشی، نگهبان ویزیت، برچسب ویزیت روی نقشه تردد، اکسل xlsx واقعی، خودبروزرسانی نت‌افراز</li>" +
+"<b style='color:#0f766e'>📦 نسخه‌ی جاری: 12.33.0</b><ul style='margin:6px 0 0 18px;padding:0;color:#334155;font-size:14px;line-height:2'>" +
     "<li><b>12.21.0</b> — تاریخِ شمسیِ بی‌ویرگول و بی‌پرش، بازگشتِ «طنین طب طاها» به هدر، پایانِ جابه‌جاییِ فیلدها (قفلِ order+DOM)، بستنِ منویِ همبرگری با ✕، «ارسال به رندر» با گزارشِ واقعی، سرستون‌هایِ فارسیِ اکسل، عددهایِ واقعیِ طراحِ ستون‌ها</li>" +
 
     "<li><b>12.20.0</b> — قفلِ لنگرِ فرم: ترتیبِ واقعیِ فیلدها ذخیره می‌شود و اگر کدی فیلدی را زیرِ کادرِ «📍 لوکیشن و نقشه داروخانه» ببرد، همان لحظه به جایِ اصلی برمی‌گردد؛ تنها «شماره ترتیب در فرم» جایِ فیلد را عوض می‌کند</li>" +
@@ -23020,7 +23097,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       function showStaleBar(sv) {
         if (shown) return;
         shown = true;
-        var cur = lv('12.28.0');
+        var cur = lv('12.33.0');
         var a = lv(sv);
         var newer = a[0] > cur[0] || (a[0] === cur[0] && a[1] > cur[1]) || (a[0] === cur[0] && a[1] === cur[1] && a[2] >= cur[2]);
         if (!sv || newer) return;
@@ -23028,7 +23105,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         bar.id = 'crm1217StaleBar';
         bar.setAttribute('dir', 'rtl');
         bar.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#fef3c7;border-top:2px solid #f59e0b;color:#78350f;font:12px/1.9 Tahoma,sans-serif;padding:5px 12px;text-align:center';
-        bar.innerHTML = '⚠️ سرورِ وصل‌شده هنوز نسخهٔ کهنه <b>' + sv + '</b> را اجرا می‌کند — آخرین نسخهٔ برنامه <b>12.28.0</b> است. <a href="http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip" download style="color:#1d4ed8"><b>⬇ دریافت ZIPِ جدید و نصب</b></a>';
+        bar.innerHTML = '⚠️ سرورِ وصل‌شده هنوز نسخهٔ کهنه <b>' + sv + '</b> را اجرا می‌کند — آخرین نسخهٔ برنامه <b>12.33.0</b> است. <a href="http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip" download style="color:#1d4ed8"><b>⬇ دریافت ZIPِ جدید و نصب</b></a>';
         document.body.appendChild(bar);
       }
       /* XHR به‌جای fetch: این پرسش نباید در شمارشِ governor (فریم ۱۳) بیفتد */
@@ -23066,7 +23143,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   window.v1218 = true;
   window.__V1218_MARK = "v12.18.3";
 
-  var VER = String(window.CRM_APP_VERSION || "12.28.0");
+  var VER = String(window.CRM_APP_VERSION || "12.33.0");
   var A15 = window.v1215Api || null;
   var A16 = window.v1216Api || null;
   var A17 = window.v1217Api || null;
@@ -23145,7 +23222,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   /* ══ ۱) ریشه‌پاک‌کن — یک‌بار برای هر نسخه، همان‌اول، پیش از هر رندر ══════════════════ */
   var PURGE_KEY = "CRM_V1218_PURGED";
-  /* v12.28.0: گاوصندوقِ تنظیمات، ترتیبِ لنگرِ فرم‌ها و ترتیبِ دستیِ مدیر هرگز
+  /* v12.33.0: گاوصندوقِ تنظیمات، ترتیبِ لنگرِ فرم‌ها و ترتیبِ دستیِ مدیر هرگز
      جارو نمی‌شوند — وگرنه با هر نسخهٔ تازه فیلدهایِ مدیر از بین می‌رفتند. */
   var KEEP_LS = /^(CRM_APP_STATE_V2|CRM_USERS_AUTH|CRM_LOGIN_OK|CRM_LOGIN_EXP|CRM_SOLO_|CRM_INSTALL|CRM_PWA|crmPwa|CRM_BULK|CRM_RUNTIME|CRM_V1218_|v1218|crm1218|CRM_V12200_|CRM_SETTINGS_VAULT|CRM_MANAGER_GRID_ORDER|CRM_REMEMBER|crmRemember|CRM_THEME|crmTheme)/i;
   var KEEP_SS = /^(crm[A-Z]|distPass_|CRM_PENDING_SYNC|CRM_SOLO_|CRM_V1218_)/;
@@ -24455,7 +24532,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
      صادقانه می‌گوید این دستگاه جدا کار می‌کند.
    • همه‌چیز با XHR خام — نه governorِ سقفِ درخواست، نه wrapperهایِ skipِ قدیمی. */
 (function () {
-  var VER = "12.28.0";
+  var VER = "12.33.0";
   var SEEN = { rev: "", savedAt: 0 };
   var last = { mode: "", pullAt: 0, pushAt: 0, errs: 0, added: 0, removed: 0, touched: 0, localBackoffUntil: 0 };
   var pushTimer = 0, pushAuthed = false;
@@ -24662,7 +24739,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     }, true);
   } catch (eC) {}
   function tick() {
-    /* v12.28.0: همگام‌سازیِ خودکارِ چنددستگاهی هر ۱۰ ثانیه (پیش از این هر ۲۰ ثانیه و
+    /* v12.33.0: همگام‌سازیِ خودکارِ چنددستگاهی هر ۱۰ ثانیه (پیش از این هر ۲۰ ثانیه و
        فقط pull بود) — pullِ سبک (ابتدا /api/state/meta و فقط در صورتِ تغییرِ rev،
        دانلودِ کامل) + pushِ بی‌صدا که با هِشِ بدنه جلویِ سیلِ درخواست را می‌گیرد و
        چون auth=false هرگز رکوردِ دستگاهِ دیگری را حذف نمی‌کند. */
@@ -24681,7 +24758,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if (s2 && meaningful(s2)) pushNow(true, false, false); /* pushِ بوتی = افزودنی، هرگز حذف‌کننده */
       last.adopted = 0;
     });
-    setInterval(tick, 10000); /* v12.28.0: همگام‌سازیِ خودکار هر ۱۰ ثانیه */
+    setInterval(tick, 10000); /* v12.33.0: همگام‌سازیِ خودکار هر ۱۰ ثانیه */
     try { document.addEventListener("visibilitychange", function () { if (document.visibilityState === "visible") pullNow(false); }); } catch (e3) {}
     try { window.addEventListener("focus", function () { pullNow(false); }); } catch (e4) {}
   }

@@ -1029,6 +1029,41 @@ button.btn-danger {
   cursor: pointer;
 }
 
+/* ── نوبت ۱۶۰: دکمهٔ «🔑 تغییر رمز» در نوارِ بالا ─────────────────────────
+   این دکمه (#v20ChpassFab) تاکنون هیچ استایلی نداشت: یک <button> خام بود که
+   در ردیفِ .header-actions (در حالتِ فشرده flex-wrap:nowrap) جا می‌گرفت و در
+   گوشی یا فشرده/بریده دیده می‌شد یا با استایلِ پیش‌فرضِ مرورگر ناهمگون بود.
+   حالا هم‌شکلِ .btn-header-teal است و با flex:0 0 auto هرگز فشرده یا حذف
+   نمی‌شود، پس در هر عرضی در نوارِ بالا دیده می‌شود. */
+#v20ChpassFab {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.4;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  min-height: 0;
+}
+#v20ChpassFab:hover { background: rgba(255, 255, 255, 0.32); }
+@media (max-width: 900px) {
+  /* در گوشی ردیفِ هدر باید بشکند تا دکمه بیرون نزند */
+  .header-actions { flex-wrap: wrap !important; }
+  #v20ChpassFab { font-size: 0.74rem; padding: 0.2rem 0.6rem; }
+}
+@media (max-width: 480px) {
+  #v20ChpassFab { font-size: 0.7rem; padding: 0.18rem 0.5rem; }
+}
+
 .btn-header-logout {
   background: #0f766e;
   color: #fff;
@@ -3234,7 +3269,7 @@ html[data-crm-uniform="1"] .sidebar { min-width: 240px !important; }
   .v1226-uniform-btn { font-size: 0.64rem; padding: 3px 7px; }
 }
 
-/* v12.28.0: کلیدِ «نمایشِ رمز» در صفحهٔ ورود — تا کاربرِ گوشی ببیند چه تایپ کرده */
+/* v12.33.0: کلیدِ «نمایشِ رمز» در صفحهٔ ورود — تا کاربرِ گوشی ببیند چه تایپ کرده */
 .p-show {
   margin: 4px 0 0;
   padding: 5px 10px;
@@ -3247,3 +3282,37 @@ html[data-crm-uniform="1"] .sidebar { min-width: 240px !important; }
   cursor: pointer;
 }
 .p-show:active { background: #ccfbf1; }
+
+/* ============================================================================
+   v12.33.0 — نوبت ۱۶۱: در گوشی «فقط منویِ همبرگری» فریز می‌ماند
+   ============================================================================
+   پیش‌تر (بلوکِ v12.07.0 بالا) کلِ هدرِ سبز در عرضِ ≤900px با
+   position:fixed فریز می‌شد و body تنها ۶۲px برایش جا می‌گرفت؛ اگر هدر در
+   گوشی چند ردیفی می‌شد، نیمی از صفحه را می‌پوشاند و با اسکرول هم کنار
+   نمی‌رفت. اکنون هدر جزءِ عادیِ صفحه است (با محتوا بالا و پایین می‌رود) و
+   تنها دکمهٔ ☰ شناور و همیشه در دسترس می‌ماند. (خواستِ صریحِ نوبت ۱۶۱ —
+   برتری بر قاعدهٔ هم‌شکلیِ نوبت ۱۵۳، فقط برای هدر و فقط در عرضِ ≤900px) */
+@media (max-width: 900px) {
+  /* خودِ هدر دیگر فریز نیست */
+  .app-header {
+    position: static !important;
+    z-index: 1000 !important;
+  }
+  /* جایِ رزروشدهٔ هدرِ فریزِ قدیمی حذف می‌شود */
+  body { padding-top: 0 !important; }
+  #tab-orders.tab-pane { scroll-margin-top: 8px; }
+
+  /* تنها عضوِ فریز: دکمهٔ منویِ همبرگری — شناور و همیشه کلیک‌پذیر.
+     پس‌زمینهٔ کدر لازم است تا رویِ محتوایِ روشنِ زیرِ هدر هم دیده شود. */
+  #btnToggleSideMenu {
+    position: fixed !important;
+    top: 0.45rem !important;
+    right: 0.5rem !important;
+    z-index: 4601 !important;
+    background: #0d9488 !important;
+    border: 1px solid rgba(255, 255, 255, 0.55) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
+  }
+  /* جایِ همبرگریِ جدا‌شده از جریان، در ردیفِ لوگو خالی می‌ماند */
+  .logo-area { padding-right: 52px; }
+}

@@ -9,9 +9,9 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-  <script src="crm-entry-engine.js?v=12.28.0"></script>
+  <script src="crm-entry-engine.js?v=12.33.0"></script>
   <script>
-    (function(){var BUILD="12.28.0";window.CRM_APP_VERSION=BUILD;var key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{
+    (function(){var BUILD="12.33.0";window.CRM_APP_VERSION=BUILD;var key="CRM_ASSET_BUILD",rk="CRM_CACHE_RESCUED_"+BUILD,old="",rescued=false;try{old=localStorage.getItem(key)||"";rescued=sessionStorage.getItem(rk)==="1";}catch(e){}function go(v){if(sessionStorage.getItem("CRM_RESET_LOCK")==="1")return;location.replace("/cache-reset?to="+encodeURIComponent("/login")+"&build="+encodeURIComponent(v||BUILD)+"&t="+Date.now());}try{
       var prev=localStorage.getItem(key)||"";
       localStorage.setItem(key,BUILD);
       if(prev&&prev!==BUILD&&sessionStorage.getItem("CRM_MOBILE_RELOAD")!==BUILD){
@@ -60,8 +60,8 @@
   </style>
 </head>
 <body>
-  <script src="crm-runtime.js?v=12.28.0"></script>
-  <script src="crm-hub.js?v=12.28.0"></script>
+  <script src="crm-runtime.js?v=12.33.0"></script>
+  <script src="crm-hub.js?v=12.33.0"></script>
 
   <div class="card">
     <img class="logo" src="logo.png" alt="Tanin Teb Taha">
@@ -85,9 +85,10 @@
       <button id="btn" type="submit">ورود به برنامه</button>
     </form>
     <div class="ok" id="st"></div>
+    <p class="hint" id="crmUserCount">⏳ در حال گرفتنِ فهرستِ کاربران از سرور…</p>
     <p class="hint">نمونه مدیر: admin / 123 — شماره 09120000000</p>
     <p class="hint">هاب‌ها از BASE_URL/CRM_HUBS خوانده می‌شوند (Render، ndcohub.ir، mehraeinpharma.ir).</p>
-    <p class="hint" id="crmBuildHint" style="font-weight:700">نسخه 12.28.0 — صفحهٔ ورود — گوشی و ویندوز باید همین شماره را ببینند</p>
+    <p class="hint" id="crmBuildHint" style="font-weight:700">نسخه 12.33.0 — صفحهٔ ورود — گوشی و ویندوز باید همین شماره را ببینند</p>
   </div>
   <script>
     (function(){
@@ -133,6 +134,18 @@
         return null;
       }
       try { window.crmNorm1227 = crmNorm1227; window.crmSameUser1227 = crmSameUser1227; window.crmMatch1227 = crmMatch1227; } catch (eN) {}
+      /* نوبت ۱۵۹: تابعِ تشخیصیِ نوبتِ قبل crmMatch1227(USERS,u,null) را صدا می‌زد؛
+         crmNorm1227(null) می‌شود "" و شرطِ «"123" === ""» هرگز برقرار نیست، پس byName
+         برای «همه» null بود و پیامِ «ثبت نشده» همیشه نشان داده می‌شد — حتی وقتی کاربر
+         ثبت بود. این تابع فقط نامِ کاربری را می‌سنجد و رمز را کار ندارد. */
+      function crmFindByName1229(list, u) {
+        for (var i = 0; i < (list || []).length; i++) {
+          var it = list[i];
+          if (it && crmSameUser1227(it.username, u)) return it;
+        }
+        return null;
+      }
+      try { window.crmFindByName1229 = crmFindByName1229; } catch (eF) {}
 
       var USERS = [
         {username:"admin", password:"123", phone:"09120000000", name:"مدیر سیستم", role:"مدیر سیستم", phoneRequired:false},
@@ -163,7 +176,44 @@
       var err = document.getElementById("err");
       function showErr(m){ err.style.display="block"; err.textContent=m; }
       function hideErr(){ err.style.display="none"; }
-      fetch("/api/health").then(function(r){return r.json();}).then(function(d){ st.textContent="سرور آماده است — نسخه "+((d&&d.version)||"12.28.0"); var h=document.getElementById("crmBuildHint"); if(h&&d&&d.version&&d.version!=="12.28.0") h.textContent="گوشی نسخه قدیمی می‌بیند ("+d.version+") — یک‌بار کش را خالی کنید یا لینک را با Chrome باز کنید."; }).catch(function(){ st.textContent="در حال بیدار کردن سرور..."; });
+      /* نوبت ۱۵۹ — ریشهٔ اصلیِ «در گوشی می‌گوید کاربر ثبت نشده»:
+         این صفحه فهرستِ کاربران را فقط از localStorageِ «همین دستگاه» می‌خواند.
+         در ویندوز آن حافظه پر است، ولی در گوشیِ تازه خالی است — پس فقط همان ۴ کاربرِ
+         سخت‌کدشده شناخته می‌شدند و بقیه «ثبت‌نشده» گزارش می‌شدند. حالا فهرست از سرور
+         هم گرفته می‌شود تا گوشی و ویندوز دقیقاً یک فهرست داشته باشند. */
+      var SERVER_USERS = [];
+      var crmServerDone1229 = false;
+      function crmReportUsers1229(k){
+        var h = document.getElementById("crmUserCount");
+        if (!h) return;
+        if (k > 0) h.textContent = "✅ " + k + " کاربر از سرور بارگذاری شد — گوشی و ویندوز یک فهرست دارند.";
+        else if (k === 0) h.textContent = "⚠️ سرور هیچ کاربری ندارد — فقط اعتبارنامه‌های پیش‌فرض کار می‌کنند.";
+        else h.textContent = "⚠️ فهرستِ کاربران از سرور گرفته نشد — فقط دادهٔ همین دستگاه.";
+      }
+      var serverUsersReady = fetch("/api/state?__crm_login=1", { cache: "no-store", headers: { "Cache-Control": "no-cache" } })
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+          var arr = (d && d.data && d.data.users) || (d && d.users) || [];
+          arr.forEach(function(su){
+            if (!su || !su.username) return;
+            SERVER_USERS.push(su);
+            var found = USERS.filter(function(x){ return crmSameUser1227(x.username, su.username); })[0];
+            if (found) {
+              if (su.password != null) found.password = su.password;
+              if (su.phone) found.phone = su.phone;
+              if (su.fullName) found.name = su.fullName;
+              if (su.role) found.role = su.role;
+            } else {
+              USERS.push({ username:su.username, password:su.password, phone:su.phone, name:su.fullName||su.name, role:su.role, phoneRequired:false });
+            }
+          });
+          crmServerDone1229 = true;
+          crmReportUsers1229(arr.length);
+          return arr.length;
+        })
+        .catch(function(){ crmServerDone1229 = true; crmReportUsers1229(-1); return -1; });
+      try { window.SERVER_USERS = SERVER_USERS; window.serverUsersReady = serverUsersReady; } catch (eS) {}
+      fetch("/api/health").then(function(r){return r.json();}).then(function(d){ st.textContent="سرور آماده است — نسخه "+((d&&d.version)||"12.33.0"); var h=document.getElementById("crmBuildHint"); if(h&&d&&d.version&&d.version!=="12.33.0") h.textContent="گوشی نسخه قدیمی می‌بیند ("+d.version+") — یک‌بار کش را خالی کنید یا لینک را با Chrome باز کنید."; }).catch(function(){ st.textContent="در حال بیدار کردن سرور..."; });
       try {
         var __ps=document.getElementById("pShow");
         if (__ps) __ps.addEventListener("click", function(){
@@ -175,6 +225,12 @@
         });
       } catch(ePS) {}
       document.getElementById("f").addEventListener("submit", function(){
+        if (!crmServerDone1229) {
+          hideErr();
+          showErr("⏳ در حال گرفتنِ فهرستِ کاربران از سرور… یک لحظه دیگر دوباره «ورود به برنامه» را بزنید.");
+          serverUsersReady.then(function(){ hideErr(); });
+          return;
+        }
         hideErr();
         var u=document.getElementById("u").value;
         var p=document.getElementById("p").value;
@@ -185,12 +241,14 @@
         if(!user){
           /* نوبت ۱۵۷: پیامِ مبهمِ «نام کاربری یا رمز عبور» روی گوشی هیچ راهنمایی نمی‌داد.
              حالا دقیقاً می‌گوییم کدام بخش نمی‌خورد، بدونِ لو دادنِ رمزها. */
-          var byName=crmMatch1227(USERS, u, null) || crmMatch1227(DEFAULTS1227, u, null);
+          var byName=crmFindByName1229(USERS, u) || crmFindByName1229(DEFAULTS1227, u);
           var build=(window.CRM_APP_VERSION||"");
           var msg;
           if(!byName){
             msg="این نامِ کاربری در این دستگاه ثبت نشده است: «"+crmNorm1227(u)+"». "
-               +"نام‌های کاربریِ در دسترس: "+DEFAULTS1227.map(function(d){return d.username;}).join("، ")+"."
+               +"نام‌های کاربریِ شناخته‌شده ("+USERS.length+" مورد): "
+               +USERS.map(function(d){return d.username;}).join("، ")+"."
+               +" کاربرانِ آمده از سرور: "+SERVER_USERS.length+"."
                +" (نسخهٔ صفحه: "+build+")";
           } else {
             msg="نامِ کاربری درست است ولی رمز نمی‌خورد. رمزِ تایپ‌شده "+crmNorm1227(p).length

@@ -66,7 +66,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "12.28.0";
+const CRM_APP_VERSION = "12.33.0";
 window.CRM_APP_VERSION = CRM_APP_VERSION;
 function v12CanonicalCompany(name) {
   var s = String(name || "").trim();
@@ -1518,6 +1518,7 @@ function editPharmacy(id) {
 
 function deletePharmacy(id) {
   if (!confirm("آیا از حذف این داروخانه اطمینان دارید؟")) return;
+  try { if (typeof window.crmMarkDeleted === "function") window.crmMarkDeleted(id); } catch (eTS) {} /* نوبت ۱۶۳: قبرستان — تا از سرور هم برنگردد */
   state.pharmacies = state.pharmacies.filter(p => p.id !== id);
   saveState();
   renderPharmaciesList();
@@ -1585,6 +1586,7 @@ function setupDoctorTab() {
       const city = document.getElementById("doctorCity").value;
       const district = document.getElementById("doctorDistrict").value;
       const address = document.getElementById("doctorAddress").value.trim();
+      const notes = (document.getElementById("doctorNotes") ? document.getElementById("doctorNotes").value.trim() : ""); /* نوبت ۱۶۳ */
       const docPlate = document.getElementById("docPlate") ? document.getElementById("docPlate").value.trim() : "";
       const docFloor = document.getElementById("docFloor") ? document.getElementById("docFloor").value.trim() : "";
       const lat = parseFloat(document.getElementById("doctorLat").value) || 35.7580;
@@ -1600,7 +1602,7 @@ function setupDoctorTab() {
         if (idx !== -1) {
           state.doctors[idx] = {
             ...state.doctors[idx],
-            dateAdded, name, specialty, phone, province, city, district, address, docPlate, docFloor, lat, lng,
+            dateAdded, name, specialty, phone, province, city, district, address, notes, docPlate, docFloor, lat, lng,
             isPercentage, fileName: fileName || state.doctors[idx].fileName,
             customFields: customFieldsVals
           };
@@ -1609,7 +1611,7 @@ function setupDoctorTab() {
       } else {
         const newDoc = {
           id: "doc-" + Date.now(),
-          dateAdded, name, specialty, phone, province, city, district, address, docPlate, docFloor, lat, lng,
+          dateAdded, name, specialty, phone, province, city, district, address, notes, docPlate, docFloor, lat, lng,
           isPercentage, fileName,
           repName: "جواد علمدار",
           customFields: customFieldsVals
@@ -1635,6 +1637,7 @@ function resetDoctorForm() {
   document.getElementById("doctorSpecialty").value = "";
   document.getElementById("doctorPhone").value = "";
   document.getElementById("doctorAddress").value = "";
+  if (document.getElementById("doctorNotes")) document.getElementById("doctorNotes").value = ""; /* نوبت ۱۶۳ */
   document.getElementById("doctorLocationText").value = "";
   document.getElementById("doctorIsPercentage").value = "false";
   document.getElementById("btnDocPercentageNo").classList.add("active");
@@ -1667,6 +1670,7 @@ function renderDoctorsList(searchQuery = "") {
     <th>تخصص</th>
     <th>درصدی</th>
     <th>فایل</th>
+    <th>توضیحات</th>
     <th>عملیات</th>
   `;
 
@@ -1685,7 +1689,7 @@ function renderDoctorsList(searchQuery = "") {
 
   const filtered = state.doctors.filter(doc => {
     if (!searchQuery) return true;
-    return String(doc.name || "").includes(searchQuery) || String(doc.specialty || "").includes(searchQuery) || String(doc.address || "").includes(searchQuery);
+    return String(doc.name || "").includes(searchQuery) || String(doc.specialty || "").includes(searchQuery) || String(doc.address || "").includes(searchQuery) || String(doc.notes || "").includes(searchQuery); /* نوبت ۱۶۳ */
   });
 
   filtered.forEach((doc, index) => {
@@ -1700,6 +1704,7 @@ function renderDoctorsList(searchQuery = "") {
       <td><span class="status-badge" style="background: #f0fdf4; color: #15803d;">${doc.specialty}</span></td>
       <td>${doc.isPercentage ? '<span class="badge-status-online">بله</span>' : '<span>خیر</span>'}</td>
       <td>${doc.fileName ? `<span style="color:#0d9488;">📎 ${doc.fileName}</span>` : '-'}</td>
+      <td>${doc.notes ? `<span style="white-space:normal;">📝 ${String(doc.notes).replace(/[&<>"]/g, function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];})}</span>` : '-'}</td>
     `;
 
     fieldsList.forEach(f => {
@@ -1731,6 +1736,7 @@ function editDoctor(id) {
   document.getElementById("doctorSpecialty").value = doc.specialty;
   document.getElementById("doctorPhone").value = doc.phone || "";
   document.getElementById("doctorAddress").value = doc.address || "";
+  if (document.getElementById("doctorNotes")) document.getElementById("doctorNotes").value = doc.notes || ""; /* نوبت ۱۶۳ */
   document.getElementById("doctorLocationText").value = doc.address || "";
 
   if (doc.isPercentage) {
@@ -1759,6 +1765,7 @@ function editDoctor(id) {
 
 function deleteDoctor(id) {
   if (!confirm("آیا از حذف این پزشک/مطب اطمینان دارید؟")) return;
+  try { if (typeof window.crmMarkDeleted === "function") window.crmMarkDeleted(id); } catch (eTS) {} /* نوبت ۱۶۳: قبرستان — تا از سرور هم برنگردد */
   state.doctors = state.doctors.filter(d => d.id !== id);
   saveState();
   renderDoctorsList();
@@ -2888,6 +2895,7 @@ function editOrder(id) {
 
 function deleteOrder(id) {
   if (!confirm("آیا از حذف این سفارش اطمینان دارید؟")) return;
+  try { if (typeof window.crmMarkDeleted === "function") window.crmMarkDeleted(id); } catch (eTS) {} /* نوبت ۱۶۳: قبرستان — تا از سرور هم برنگردد */
   state.orders = state.orders.filter(o => o.id !== id);
   saveState();
   renderOrdersList();
@@ -3273,7 +3281,7 @@ function setupPWAServiceWorker() {
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
   /* v12.12: فقط دامنه‌های دارای گواهی خراب از ثبت سرویس‌ورکر مستثنا می‌شوند؛ ndcohub.com سرویس‌ورکر می‌گیرد */
   if (!/(^|\.)ndcohub\.ir$|(^|\.)mehraeinpharma\.ir$/.test(location.hostname || "")) {
-  navigator.serviceWorker.register('/sw.js?v=12.28.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=12.33.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;

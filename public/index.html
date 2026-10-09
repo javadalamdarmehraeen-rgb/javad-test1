@@ -35,7 +35,7 @@
   <style>html.crm-booting body{visibility:visible!important;opacity:1!important}</style>
   <script>
     (function(){
-      var BUILD="12.28.0";window.CRM_APP_VERSION=BUILD;var key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
+      var BUILD="12.33.0";window.CRM_APP_VERSION=BUILD;var key="CRM_ASSET_BUILD",rescueKey="CRM_CACHE_RESCUED_"+BUILD;var __justRescued=(location.search.indexOf("__crm_reload")!==-1);
       try{
         var GEN="11.81.0";
         var raw=localStorage.getItem("CRM_APP_STATE_V2");
@@ -50,7 +50,12 @@
       document.documentElement.classList.add("crm-booting");
       function target(){return location.pathname+location.search+location.hash;}
       function rescue(serverBuild){if(true)return;var u="/cache-reset?to="+encodeURIComponent(target())+"&build="+encodeURIComponent(serverBuild||BUILD)+"&t="+Date.now();location.replace(u);}
-      function crmLogged(){try{if(sessionStorage.getItem("crmLoggedIn")==="1")return true;}catch(e){} /* CRM_LOGIN_OK دیگر ورود را دور نمی‌زند */ return false;}
+      /* نوبت ۱۶۳: خواستِ صریحِ کاربر — «وقتی از اپ خارج می‌شود، دوباره رمز
+         نخواهد». نشستِ معتبر = sessionStorage یا CRM_LOGIN_OK در localStorage
+         با انقضای معتبر (همان چیزی که login.html هنگامِ ورودِ موفق می‌نویسد). */
+      function crmLogged(){try{if(sessionStorage.getItem("crmLoggedIn")==="1")return true;}catch(e){}
+        try{if(localStorage.getItem("CRM_LOGIN_OK")==="1"){var exp=Number(localStorage.getItem("CRM_LOGIN_EXP")||0);if(!exp||exp>Date.now())return true;}}catch(e2){}
+        return false;}
       if(!crmLogged()){location.replace("/login.html");return;}
       try{localStorage.setItem(key,BUILD);}catch(e){}
       fetch("/api/health?__crm_nocache="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.version&&d.version!==BUILD){/* v11.70: حلقه cache-reset قطع شد */}}).catch(function(){});
@@ -63,14 +68,14 @@
   <meta name="application-name" content="برنامه ویزیت و گزارشات" />
   
   <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="leaflet.css?v=12.28.0" />
+  <link rel="stylesheet" href="leaflet.css?v=12.33.0" />
   
   <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0d9488" />
   
   <!-- Custom Style with Anti-Cache Version 9.1.0 -->
-  <link rel="stylesheet" href="style.css?v=12.28.0" />
+  <link rel="stylesheet" href="style.css?v=12.33.0" />
 </head>
 <body>
 
@@ -90,7 +95,7 @@
         </div>
         <div class="logo-text">
           <h1 id="headerCompanyNameDisplay">برنامه ویزیت و گزارشات (مهر آیین نیک دارو)</h1>
-          <div id="crmBuildBadge" style="font-size:12px;font-weight:800;color:#0f766e" title="آخرین ZIP هر بار: http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip">نسخه 12.28.0</div>
+          <div id="crmBuildBadge" style="font-size:12px;font-weight:800;color:#0f766e" title="آخرین ZIP هر بار: http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip">نسخه 12.33.0</div>
           <p id="headerBrandLine">طنین طب طاها&nbsp;&nbsp;TANIN TEB TAHA</p>
         </div>
       </div>
@@ -787,6 +792,11 @@
             <div class="form-group full-width">
               <label class="form-label" for="doctorAddress">آدرس متنی کامل مطب *</label>
               <textarea id="doctorAddress" class="form-input" rows="3" placeholder="آدرس دقیق مطب..." required></textarea>
+            </div>
+            <div class="form-group full-width">
+              <!-- نوبت ۱۶۳: «جایی برای توضیح پزشک‌ها پیدا نمی‌کنم» — فیلدِ توضیحات -->
+              <label class="form-label" for="doctorNotes">توضیحات پزشک / یادداشت</label>
+              <textarea id="doctorNotes" class="form-input" rows="3" placeholder="توضیح، نکته یا یادداشت مهم دربارهٔ این پزشک/مطب (اختیاری)..." data-lpignore="true" data-1p-ignore="true"></textarea>
             </div>
             <div class="form-group">
               <label class="form-label" for="docPlate">پلاک</label>
@@ -2613,21 +2623,21 @@
   </div>
 
   <!-- Leaflet JS -->
-  <script src="leaflet.js?v=12.28.0"></script>
+  <script src="leaflet.js?v=12.33.0"></script>
   
   <!-- Data & Application Logic with Anti-Cache Version 11.10.0 -->
-  <script src="crm-runtime.js?v=12.28.0"></script>
-  <script src="crm-hub.js?v=12.28.0"></script>
+  <script src="crm-runtime.js?v=12.33.0"></script>
+  <script src="crm-hub.js?v=12.33.0"></script>
   <script>window.v92HubFetch=true;</script>
-  <script src="crm-data.js?v=12.28.0"></script>
-  <script src="crm-entry-engine.js?v=12.28.0"></script>
-  <script src="crm-app.js?v=12.28.0"></script>
-          <script src="crm-bundle.js?v=12.28.0"></script>
-  <!-- v12.28.0: لایهٔ پایانی — قفلِ لنگرِ چیدمانِ فیلدها (بدونِ پرش زیرِ کادرِ
+  <script src="crm-data.js?v=12.33.0"></script>
+  <script src="crm-entry-engine.js?v=12.33.0"></script>
+  <script src="crm-app.js?v=12.33.0"></script>
+          <script src="crm-bundle.js?v=12.33.0"></script>
+  <!-- v12.33.0: لایهٔ پایانی — قفلِ لنگرِ چیدمانِ فیلدها (بدونِ پرش زیرِ کادرِ
        لوکیشن)، اعمالِ واقعیِ همهٔ ایتم‌هایِ طراح (میلی‌متر/پیکسل/سطر/کادر)،
        هدرِ فشردهٔ تک‌ردیفه با ساعتِ بی‌پرش، گاوصندوقِ تنظیمات و خروجیِ اکسلِ کامل
        (باید آخرین اسکریپت باشد) -->
-  <script src="crm-v12.28.0.js?v=12.28.0"></script>
+  <script src="crm-v12.33.0.js?v=12.33.0"></script>
   <!-- فیلدهای مخفی سازگاری با کد قبلی (نباید در UI دیده شوند) -->
   <input type="hidden" id="pharmacyLocationText" value="" />
   <input type="hidden" id="doctorLocationText" value="" />
