@@ -7252,6 +7252,7 @@ window.IRAN_FACILITIES = [
       btn.addEventListener("click", function () {
         var rec = (state.pharmacies || []).filter(function (p) { return p.id === btn.getAttribute("data-pid"); })[0];
         fillPharmacyFromRec(rec);
+        try { if (typeof window.v20FillOrderPharmacy === "function") window.v20FillOrderPharmacy(); } catch (eV34) {} /* نوبت ۱۶۴: جایگذاریِ واقعیِ همهٔ فیلدها */
         host.hidden = true;
       });
     });
@@ -11772,7 +11773,7 @@ button.v19-gps svg{display:block}
   window.v20ApplyGreyChains = v20ApplyGreyChains;
 
   /* ---------- ۵) قفل طوسی فرم سفارش ---------- */
-  var ORDER_DESCRIPTORS = ["orderProvince", "orderCity", "orderDistrict", "orderAddress", "orderRepName"];
+  var ORDER_DESCRIPTORS = ["orderProvince", "orderCity", "orderDistrict", "orderAddress", "orderRepName", "orderPharmacyPhone"]; /* نوبت ۱۶۴: تلفن هم توصیف‌گر است */
   var ORDER_PRODUCT_SCOPE = "#orderItemsContainer, #orderProductCatalogBar, #orderProductCatalogList, #orderTotalsArea";
   function orderMatched() { return !!(($("orderPharmacyMatchedId") || {}).value); }
   function v20ApplyOrderLock() {
@@ -12348,11 +12349,12 @@ button.v19-gps svg{display:block}
     v20SetValue("orderPharmacyName", rec.name); v20SetValue("orderPharmacyMatchedId", rec.id);
     v20SetValue("orderProvince", rec.province); try { if (typeof populateCities === "function") populateCities(rec.province, $("orderCity"), rec.city); } catch (e) {}
     v20SetValue("orderCity", rec.city); try { if (typeof populateDistricts === "function") populateDistricts(rec.province, rec.city, $("orderDistrict"), rec.district); } catch (e2) {}
-    v20SetValue("orderDistrict", rec.district); v20SetValue("orderAddress", rec.address);
+    v20SetValue("orderDistrict", rec.district); v20SetValue("orderAddress", rec.address); if ($("orderPharmacyPhone")) v20SetValue("orderPharmacyPhone", rec.phone || ""); /* نوبت ۱۶۴ */
     var phFields = (S.customFields && S.customFields.pharmacy) || [], orFields = (S.customFields && S.customFields.order) || [];
     phFields.forEach(function (f) { var of = orFields.filter(function (x) { return x.id === "ordm-" + f.id || x.label === f.label; })[0]; if (of) v20SetValue(of.id, (rec.customFields || {})[f.label]); });
     v20ApplyOrderLock();hidePlacedOrderNotices();setTimeout(hidePlacedOrderNotices,0);setTimeout(hidePlacedOrderNotices,120);v20Toast("✅ همه اطلاعات داروخانه دقیقاً در فیلدهای متناظر جایگذاری شد.");
   }
+  try{window.v20FillOrderPharmacy=v20FillOrderPharmacy;}catch(eV34){} /* نوبت ۱۶۴: مسیرِ کارتِ کاندید هم همین فیلرِ کامل را صدا می‌زند */
   function applyOrderItemRoleControls(){var manager=v20IsManager(),host=$("orderItemsContainer");if(!host)return;Array.prototype.forEach.call(host.querySelectorAll(".order-item-row"),function(row){var name=row.querySelector(".order-item-name"),total=row.querySelector(".order-item-total"),edit=row.querySelector(".order-item-edit"),del=row.querySelector(":scope > .btn-danger");if(name){name.removeAttribute("list");name.readOnly=true;name.setAttribute("aria-readonly","true");}if(total){total.style.setProperty("display","block","important");total.style.setProperty("visibility","visible","important");}if(edit)edit.style.setProperty("display",manager?"":"none","important");if(del)del.style.setProperty("display",manager?"":"none","important");});}
   function bindOrderItemRuntime(){var host=$("orderItemsContainer");if(!host||host.dataset.v33runtime)return;host.dataset.v33runtime="1";host.addEventListener("input",function(e){if(e.target&&e.target.matches(".order-item-count,.order-item-gift,.order-item-price")){try{if(typeof window.updateOrderTotalAmountDisplay==="function")window.updateOrderTotalAmountDisplay();}catch(x){}applyOrderItemRoleControls();}},true);if(window.MutationObserver)new MutationObserver(function(){applyOrderItemRoleControls();try{if(typeof window.updateOrderTotalAmountDisplay==="function")window.updateOrderTotalAmountDisplay();}catch(e){}}).observe(host,{childList:true,subtree:true});applyOrderItemRoleControls();}
   function bindPlacedPharmacyNoticeGuard(){var inp=$("orderPharmacyName"),alertBox=$("existingPharmacyTopAlert"),pickBox=$("orderPharmacyPickBox");if(!inp||inp.dataset.placedGuard)return;inp.dataset.placedGuard="1";function isPlaced(){return inp.dataset.v20PlacedName&&norm(inp.value)===norm(inp.dataset.v20PlacedName)&&String(($("orderPharmacyMatchedId")||{}).value||"");}function enforce(){if(isPlaced())hidePlacedOrderNotices();}inp.addEventListener("input",function(){if(inp.dataset.v20PlacedName&&norm(inp.value)!==norm(inp.dataset.v20PlacedName)){delete inp.dataset.v20PlacedName;if(alertBox){alertBox.hidden=false;alertBox.removeAttribute("aria-hidden");alertBox.style.removeProperty("display");}if(pickBox){pickBox.removeAttribute("aria-hidden");pickBox.style.removeProperty("display");}}setTimeout(enforce,0);},true);if(window.MutationObserver){if(alertBox)new MutationObserver(enforce).observe(alertBox,{attributes:true,childList:true,subtree:true});if(pickBox)new MutationObserver(enforce).observe(pickBox,{attributes:true,childList:true,subtree:true});}enforce();}
@@ -12931,7 +12933,11 @@ button.v19-gps svg{display:block}
   function ensureProductCodes(){var S=st(),changed=false;(S.products||[]).forEach(function(p){if(!p.code){var code=PRODUCT_CODE_SEED[norm(p.name)];if(code){p.code=code;changed=true;}}if(p.code&&!p.dayaDbCode){p.dayaDbCode=1111000+Number(p.code);changed=true;}if(p.code&&SHAFA_CODE_MAP[p.code]&&String(p.shafaDbCode||"")!==String(SHAFA_CODE_MAP[p.code])){p.shafaDbCode=SHAFA_CODE_MAP[p.code];changed=true;}if(p.code&&MASHATEB_CODE_MAP[p.code]&&String(p.mashatebDbCode||"")!==String(MASHATEB_CODE_MAP[p.code])){p.mashatebDbCode=MASHATEB_CODE_MAP[p.code];changed=true;}});if(changed)save();}
 
   function resetProductV20(){window._editingProductId="";var f=$("formProduct");if(f)f.reset();var n=$("productName");if(n){n.value="";n.focus();}var b=$("productSavedBanner");if(b)b.hidden=true;}
-  function saveProductV20(){var S=st(),name=String(($("productName")||{}).value||"").trim(),code=parseInt(($("productCode")||{}).value,10)||0;if(!code)return alert("کد کالا را وارد کنید.");if(!name)return alert("نام کالا را وارد کنید.");var id=window._editingProductId||"",idx=(S.products||[]).findIndex(function(p){return(id&&p.id===id)||(!id&&norm(p.name)===norm(name));}),rec=idx>=0?S.products[idx]:{id:"prod-"+Date.now()};rec.name=name;rec.code=code;rec.dayaDbCode=1111000+code;if(SHAFA_CODE_MAP[code])rec.shafaDbCode=SHAFA_CODE_MAP[code];if(MASHATEB_CODE_MAP[code])rec.mashatebDbCode=MASHATEB_CODE_MAP[code];rec.distributorPrice=parseInt(($("productDistPrice")||{}).value,10)||0;rec.pharmacyPrice=parseInt(($("productPrice")||{}).value,10)||0;rec.consumerPrice=parseInt((($("productConsumerPrice")||{}).value),10)||rec.pharmacyPrice||0;rec.stock=parseInt(($("productStock")||{}).value,10)||0;if(idx<0)S.products.push(rec);save();window._editingProductId="";try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}v20Toast("✅ کالا «"+name+"» "+(idx<0?"اضافه":"ویرایش")+" شد.");resetProductV20();}
+  /* نوبت ۱۶۴: «قیمت‌ها تغییر نمی‌کنند» — parseInt رویِ رقمِ فارسی یا جداکنندهٔ
+     هزارگان NaN می‌داد و «||0» قیمت را صفر می‌کرد؛ سپس fallbackهای نمایشِ
+     ۴۰۰۰۰/۴۵۰۰۰ مقدارِ قدیمی را جلوه می‌کردند. این رقم‌گیر اول نرمال می‌کند. */
+  function v163Num(v){var s=String(v==null?"":v).replace(/[\u066A\u066B\u066C\u060C,\u00A0\u200E\u200F\s]/g,"").replace(/[\u06F0-\u06F9]/g,function(d){return String.fromCharCode(d.charCodeAt(0)-0x06F0+48);}).replace(/[\u0660-\u0669]/g,function(d){return String.fromCharCode(d.charCodeAt(0)-0x0660+48);});return parseInt(s,10);}
+  function saveProductV20(){var S=st(),name=String(($("productName")||{}).value||"").trim(),code=v163Num(($("productCode")||{}).value)||0;if(!code)return alert("کد کالا را وارد کنید.");if(!name)return alert("نام کالا را وارد کنید.");var id=window._editingProductId||"",idx=(S.products||[]).findIndex(function(p){return(id&&p.id===id)||(!id&&norm(p.name)===norm(name));}),rec=idx>=0?S.products[idx]:{id:"prod-"+Date.now()};rec.name=name;rec.code=code;rec.dayaDbCode=1111000+code;if(SHAFA_CODE_MAP[code])rec.shafaDbCode=SHAFA_CODE_MAP[code];if(MASHATEB_CODE_MAP[code])rec.mashatebDbCode=MASHATEB_CODE_MAP[code];rec.distributorPrice=v163Num(($("productDistPrice")||{}).value)||0;rec.pharmacyPrice=v163Num(($("productPrice")||{}).value)||0;rec.consumerPrice=v163Num(($("productConsumerPrice")||{}).value)||rec.pharmacyPrice||0;rec.stock=v163Num(($("productStock")||{}).value)||0;rec._updatedAt=Date.now();if(idx<0)S.products.push(rec);save();window._editingProductId="";try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}v20Toast("✅ کالا «"+name+"» "+(idx<0?"اضافه":"ویرایش")+" شد.");resetProductV20();}
   function bindProductCrudV20(){var form=$("formProduct"),btn=$("btnSaveProduct");if(btn&&!btn.dataset.v20crud){btn.dataset.v20crud="1";btn.addEventListener("click",function(e){e.preventDefault();e.stopImmediatePropagation();saveProductV20();},true);}if(form&&!form.dataset.v20crud){form.dataset.v20crud="1";form.addEventListener("submit",function(e){e.preventDefault();e.stopImmediatePropagation();saveProductV20();},true);}var pane=$("tab-columns-products"),head=pane&&pane.querySelector("#formProduct")&&pane.querySelector("#formProduct").closest(".card").querySelector(".card-header");if(head&&!$("v20NewProduct")){var n=document.createElement("button");n.id="v20NewProduct";n.type="button";n.className="btn btn-outline btn-sm";n.textContent="➕ کالای جدید";n.onclick=resetProductV20;head.appendChild(n);}window.editProductCatalogItem=function(id){var p=(st().products||[]).filter(function(x){return String(x.id)===String(id);})[0];if(!p)return;window._editingProductId=p.id;if($("productCode"))$("productCode").value=p.code||"";if($("productName"))$("productName").value=p.name||"";if($("productDistPrice"))$("productDistPrice").value=p.distributorPrice||p.price||"";if($("productPrice"))$("productPrice").value=p.pharmacyPrice||p.price||"";if($("productConsumerPrice"))$("productConsumerPrice").value=p.consumerPrice||p.pharmacyPrice||p.price||"";if($("productStock"))$("productStock").value=p.stock||"";$("productName").scrollIntoView({behavior:"smooth",block:"center"});};function patchCodes(){var body=$("tableProductsBody"),S=st();if(!body)return;Array.prototype.forEach.call(body.children,function(tr,i){if(!tr||tr.querySelector('.v20-product-code'))return;if(tr.children.length>=8)return;var nameCell=tr.querySelector('.product-name-cell');if(nameCell&&tr.children[1]&&tr.children[1]!==nameCell)return;var td=document.createElement('td');td.className='v20-product-code';td.setAttribute('data-no-number-group','1');td.innerHTML='<strong>'+esc(((S.products||[])[i]||{}).code||'—')+'</strong>';tr.insertBefore(td,nameCell||tr.children[1]||null);});}if(typeof window.renderColumnsProductsTable==='function'&&!window.renderColumnsProductsTable._v20code){var rr=window.renderColumnsProductsTable,w=function(){var x=rr.apply(this,arguments);patchCodes();return x;};w._v20code=true;window.renderColumnsProductsTable=w;}patchCodes();var old=window.deleteProductCatalogItem;window.deleteProductCatalogItem=function(id){var S=st(),p=(S.products||[]).filter(function(x){return String(x.id)===String(id);})[0];if(!p)return;if(!confirm("کالای «"+(p.name||"")+"» حذف شود؟"))return;S.products=(S.products||[]).filter(function(x){return String(x.id)!==String(id);});S.salesTargets=(S.salesTargets||[]).filter(function(t){return norm(t.productName)!==norm(p.name);});(S.orders||[]).forEach(function(o){o.items=(o.items||[]).filter(function(i){return norm(i.name)!==norm(p.name);});});Array.prototype.forEach.call(document.querySelectorAll('.order-item-row'),function(r){var n=r.querySelector('.order-item-name');if(n&&norm(n.value)===norm(p.name))r.remove();});save();try{if(typeof renderColumnsProductsTable==="function")renderColumnsProductsTable();}catch(e){}try{if(typeof mergeCatalogIntoOrderItems==="function")mergeCatalogIntoOrderItems();}catch(e){}v20Toast("✅ کالا حذف شد.");};}
 
   /* ---------- ۲۹) IndexedDB برای ماندگاری فایل‌های حجیم اکسل ---------- */
@@ -13120,7 +13126,7 @@ button.v19-gps svg{display:block}
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.33.0");
+        var ver=String(window.CRM_APP_VERSION||"12.34.0");
         var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -14657,7 +14663,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if(ch) ch.textContent=window.state.settings.companyName||"برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
       var badge=document.getElementById("crmBuildBadge");
       if(badge){
-        var ver=String(window.CRM_APP_VERSION||"12.33.0");
+        var ver=String(window.CRM_APP_VERSION||"12.34.0");
         var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
         badge.textContent="نسخه "+ver.replace(/[0-9]/g,function(d){return map[d];});
       }
@@ -19454,10 +19460,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v95OriginOnly = true;
   window.v95SameBadge = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.33.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.34.0"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.33.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.34.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19537,10 +19543,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v96NetafrazSync = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.33.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.34.0"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.33.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.34.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var b = document.getElementById("crmBuildBadge");
@@ -19596,7 +19602,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v97CanonSync = true;
-  var BUILD = String(window.CRM_APP_VERSION || "12.33.0");
+  var BUILD = String(window.CRM_APP_VERSION || "12.34.0");
   var KEY = "CRM_CANON_BUILD";
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
@@ -19657,10 +19663,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v98BootFix = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.33.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.34.0"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.33.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.34.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var label = "نسخه " + faVer(ver());
@@ -19687,10 +19693,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 (function(){
   "use strict";
   window.v99FastIndependent = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.33.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.34.0"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
-    return String(v||window.CRM_APP_VERSION||"12.33.0").replace(/[0-9]/g, function(d){ return map[d]; });
+    return String(v||window.CRM_APP_VERSION||"12.34.0").replace(/[0-9]/g, function(d){ return map[d]; });
   }
   function paintBadge(){
     var el = document.getElementById("crmBuildBadge");
@@ -19775,7 +19781,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   "use strict";
   window.v12SameBadge = true;
   window.v12TahaName = true;
-  function ver(){ return String(window.CRM_APP_VERSION || "12.33.0"); }
+  function ver(){ return String(window.CRM_APP_VERSION || "12.34.0"); }
   function faVer(v){
     var map={"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9"};/*v12.18: ارقام لاتین*/
     return String(v||ver()).replace(/[0-9]/g, function(d){ return map[d]; });
@@ -20209,7 +20215,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var TITLE = "برنامه ویزیت و گزارشات (مهر آیین نیک دارو)";
   var BRAND = "طنین طب طاها  TANIN TEB TAHA";
-  var FALLBACK = "12.33.0";
+  var FALLBACK = "12.34.0";
 
   /* ── ۱) سربرگ دقیقاً سه خط؛ شماره نسخه با ارقام لاتین ───────────────── */
   function ver() { try { return String(window.CRM_APP_VERSION || FALLBACK); } catch (e) { return FALLBACK; } }
@@ -20590,7 +20596,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     try { done = localStorage.getItem(FLAG) === "1"; } catch (e) {}
     if (done) return;
     try { localStorage.setItem(FLAG, "1"); } catch (e) {}
-    var ver = String(window.CRM_APP_VERSION || "12.33.0");
+    var ver = String(window.CRM_APP_VERSION || "12.34.0");
     try {
       if (window.caches && typeof caches.keys === "function") {
         caches.keys().then(function (keys) {
@@ -22454,7 +22460,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   var API15 = window.v1215Api || {};
   var API16 = window.v1216Api || {};
-  var VER = String(window.CRM_APP_VERSION || "12.33.0");
+  var VER = String(window.CRM_APP_VERSION || "12.34.0");
 
   function $(id) { try { return document.getElementById(id); } catch (e) { return null; } }
   function qsa(sel, root) { try { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); } catch (e) { return []; } }
@@ -22929,8 +22935,8 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   /* ══ ۱۳) تبِ تغییرات: نسخه‌ی 12.17.0 بالایِ همه + بازرسازی هر بار که تب باز شود ═══════ */
   var CH1217_HTML = "<div id='v1217ChangeEntry' style='border:2px solid #0d9488;background:#f0fdfa;border-radius:12px;padding:10px;margin-bottom:10px'>" +
         "<li><b>12.22.0</b> — پایانِ پرشِ هدر و فرم (هم‌فرکانس‌سازیِ موتورِ چیدمان)، کادرِ ساعت/تاریخِ بلندتر، نشان‌هایِ هدرِ میخکوب، لوگویِ تازهٔ طنین طب طاها در همه‌جا</li>" +
-    "<li><b>12.33.0</b> — تابلو روان رویدادهای تقویم شمسی، هدر مرتب گوشی، نگهبان ویزیت، برچسب ویزیت روی نقشه تردد، اکسل xlsx واقعی، خودبروزرسانی نت‌افراز</li>" +
-"<b style='color:#0f766e'>📦 نسخه‌ی جاری: 12.33.0</b><ul style='margin:6px 0 0 18px;padding:0;color:#334155;font-size:14px;line-height:2'>" +
+    "<li><b>12.34.0</b> — تابلو روان رویدادهای تقویم شمسی، هدر مرتب گوشی، نگهبان ویزیت، برچسب ویزیت روی نقشه تردد، اکسل xlsx واقعی، خودبروزرسانی نت‌افراز</li>" +
+"<b style='color:#0f766e'>📦 نسخه‌ی جاری: 12.34.0</b><ul style='margin:6px 0 0 18px;padding:0;color:#334155;font-size:14px;line-height:2'>" +
     "<li><b>12.21.0</b> — تاریخِ شمسیِ بی‌ویرگول و بی‌پرش، بازگشتِ «طنین طب طاها» به هدر، پایانِ جابه‌جاییِ فیلدها (قفلِ order+DOM)، بستنِ منویِ همبرگری با ✕، «ارسال به رندر» با گزارشِ واقعی، سرستون‌هایِ فارسیِ اکسل، عددهایِ واقعیِ طراحِ ستون‌ها</li>" +
 
     "<li><b>12.20.0</b> — قفلِ لنگرِ فرم: ترتیبِ واقعیِ فیلدها ذخیره می‌شود و اگر کدی فیلدی را زیرِ کادرِ «📍 لوکیشن و نقشه داروخانه» ببرد، همان لحظه به جایِ اصلی برمی‌گردد؛ تنها «شماره ترتیب در فرم» جایِ فیلد را عوض می‌کند</li>" +
@@ -23097,7 +23103,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       function showStaleBar(sv) {
         if (shown) return;
         shown = true;
-        var cur = lv('12.33.0');
+        var cur = lv('12.34.0');
         var a = lv(sv);
         var newer = a[0] > cur[0] || (a[0] === cur[0] && a[1] > cur[1]) || (a[0] === cur[0] && a[1] === cur[1] && a[2] >= cur[2]);
         if (!sv || newer) return;
@@ -23105,7 +23111,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
         bar.id = 'crm1217StaleBar';
         bar.setAttribute('dir', 'rtl');
         bar.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#fef3c7;border-top:2px solid #f59e0b;color:#78350f;font:12px/1.9 Tahoma,sans-serif;padding:5px 12px;text-align:center';
-        bar.innerHTML = '⚠️ سرورِ وصل‌شده هنوز نسخهٔ کهنه <b>' + sv + '</b> را اجرا می‌کند — آخرین نسخهٔ برنامه <b>12.33.0</b> است. <a href="http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip" download style="color:#1d4ed8"><b>⬇ دریافت ZIPِ جدید و نصب</b></a>';
+        bar.innerHTML = '⚠️ سرورِ وصل‌شده هنوز نسخهٔ کهنه <b>' + sv + '</b> را اجرا می‌کند — آخرین نسخهٔ برنامه <b>12.34.0</b> است. <a href="http://i3yqf6n7q7j214m32v9u8e9q08.dev.e2b.app:8000/zip" download style="color:#1d4ed8"><b>⬇ دریافت ZIPِ جدید و نصب</b></a>';
         document.body.appendChild(bar);
       }
       /* XHR به‌جای fetch: این پرسش نباید در شمارشِ governor (فریم ۱۳) بیفتد */
@@ -23143,7 +23149,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   window.v1218 = true;
   window.__V1218_MARK = "v12.18.3";
 
-  var VER = String(window.CRM_APP_VERSION || "12.33.0");
+  var VER = String(window.CRM_APP_VERSION || "12.34.0");
   var A15 = window.v1215Api || null;
   var A16 = window.v1216Api || null;
   var A17 = window.v1217Api || null;
@@ -23222,7 +23228,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
   /* ══ ۱) ریشه‌پاک‌کن — یک‌بار برای هر نسخه، همان‌اول، پیش از هر رندر ══════════════════ */
   var PURGE_KEY = "CRM_V1218_PURGED";
-  /* v12.33.0: گاوصندوقِ تنظیمات، ترتیبِ لنگرِ فرم‌ها و ترتیبِ دستیِ مدیر هرگز
+  /* v12.34.0: گاوصندوقِ تنظیمات، ترتیبِ لنگرِ فرم‌ها و ترتیبِ دستیِ مدیر هرگز
      جارو نمی‌شوند — وگرنه با هر نسخهٔ تازه فیلدهایِ مدیر از بین می‌رفتند. */
   var KEEP_LS = /^(CRM_APP_STATE_V2|CRM_USERS_AUTH|CRM_LOGIN_OK|CRM_LOGIN_EXP|CRM_SOLO_|CRM_INSTALL|CRM_PWA|crmPwa|CRM_BULK|CRM_RUNTIME|CRM_V1218_|v1218|crm1218|CRM_V12200_|CRM_SETTINGS_VAULT|CRM_MANAGER_GRID_ORDER|CRM_REMEMBER|crmRemember|CRM_THEME|crmTheme)/i;
   var KEEP_SS = /^(crm[A-Z]|distPass_|CRM_PENDING_SYNC|CRM_SOLO_|CRM_V1218_)/;
@@ -24532,7 +24538,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
      صادقانه می‌گوید این دستگاه جدا کار می‌کند.
    • همه‌چیز با XHR خام — نه governorِ سقفِ درخواست، نه wrapperهایِ skipِ قدیمی. */
 (function () {
-  var VER = "12.33.0";
+  var VER = "12.34.0";
   var SEEN = { rev: "", savedAt: 0 };
   var last = { mode: "", pullAt: 0, pushAt: 0, errs: 0, added: 0, removed: 0, touched: 0, localBackoffUntil: 0 };
   var pushTimer = 0, pushAuthed = false;
@@ -24739,7 +24745,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     }, true);
   } catch (eC) {}
   function tick() {
-    /* v12.33.0: همگام‌سازیِ خودکارِ چنددستگاهی هر ۱۰ ثانیه (پیش از این هر ۲۰ ثانیه و
+    /* v12.34.0: همگام‌سازیِ خودکارِ چنددستگاهی هر ۱۰ ثانیه (پیش از این هر ۲۰ ثانیه و
        فقط pull بود) — pullِ سبک (ابتدا /api/state/meta و فقط در صورتِ تغییرِ rev،
        دانلودِ کامل) + pushِ بی‌صدا که با هِشِ بدنه جلویِ سیلِ درخواست را می‌گیرد و
        چون auth=false هرگز رکوردِ دستگاهِ دیگری را حذف نمی‌کند. */
@@ -24758,7 +24764,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       if (s2 && meaningful(s2)) pushNow(true, false, false); /* pushِ بوتی = افزودنی، هرگز حذف‌کننده */
       last.adopted = 0;
     });
-    setInterval(tick, 10000); /* v12.33.0: همگام‌سازیِ خودکار هر ۱۰ ثانیه */
+    setInterval(tick, 10000); /* v12.34.0: همگام‌سازیِ خودکار هر ۱۰ ثانیه */
     try { document.addEventListener("visibilitychange", function () { if (document.visibilityState === "visible") pullNow(false); }); } catch (e3) {}
     try { window.addEventListener("focus", function () { pullNow(false); }); } catch (e4) {}
   }

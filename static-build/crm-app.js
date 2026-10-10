@@ -66,7 +66,7 @@ let markersLiveReps = {};
 let markersFullOverview = [];
 
 // لیست ۲۰ قابلیت در منوی برنامه (هماهنگ با اسکرین‌شات ۱ کاربر)
-const CRM_APP_VERSION = "12.33.0";
+const CRM_APP_VERSION = "12.34.0";
 window.CRM_APP_VERSION = CRM_APP_VERSION;
 function v12CanonicalCompany(name) {
   var s = String(name || "").trim();
@@ -3281,7 +3281,7 @@ function setupPWAServiceWorker() {
   navigator.serviceWorker.addEventListener('controllerchange', markReady, { once: true });
   /* v12.12: فقط دامنه‌های دارای گواهی خراب از ثبت سرویس‌ورکر مستثنا می‌شوند؛ ndcohub.com سرویس‌ورکر می‌گیرد */
   if (!/(^|\.)ndcohub\.ir$|(^|\.)mehraeinpharma\.ir$/.test(location.hostname || "")) {
-  navigator.serviceWorker.register('/sw.js?v=12.33.0', { scope: '/', updateViaCache: 'none' })
+  navigator.serviceWorker.register('/sw.js?v=12.34.0', { scope: '/', updateViaCache: 'none' })
     .then(async reg => {
       try { await reg.update(); } catch (e) {}
       const ready = await navigator.serviceWorker.ready;
@@ -3364,8 +3364,8 @@ function setupSalesTargetsTab() {
     const cnt = parseInt(countInp.value) || 0;
     const prod = (state.products || []).find(p => p.name === prodId || p.id === prodId);
     if (prod) {
-      const dPrice = (prod.distributorPrice || prod.price || 40000) * cnt;
-      const pPrice = (prod.pharmacyPrice || prod.price || 45000) * cnt;
+      const dPrice = (prod.distributorPrice || prod.price || 0) * cnt; /* نوبت ۱۶۴: قیمتِ جعلی ممنوع */
+      const pPrice = (prod.pharmacyPrice || prod.price || 0) * cnt; /* نوبت ۱۶۴ */
       if (distDisp) distDisp.textContent = `${dPrice.toLocaleString("fa-IR")} ریال`;
       if (phDisp) phDisp.textContent = `${pPrice.toLocaleString("fa-IR")} ریال`;
     } else {
@@ -3407,8 +3407,8 @@ function setupSalesTargetsTab() {
       }
 
       const prod = (state.products || []).find(p => p.name === productName);
-      const totalDist = targetCount * (prod ? (prod.distributorPrice || prod.price || 40000) : 40000);
-      const totalPh = targetCount * (prod ? (prod.pharmacyPrice || prod.price || 45000) : 45000);
+      const totalDist = targetCount * (prod ? (prod.distributorPrice || prod.price || 0) : 0); /* نوبت ۱۶۴ */
+      const totalPh = targetCount * (prod ? (prod.pharmacyPrice || prod.price || 0) : 0); /* نوبت ۱۶۴ */
 
       const newTgt = {
         id: "tgt-" + Date.now(),
@@ -3719,7 +3719,7 @@ function setupAllFormSubmitHandlers() {
       if (tgt) {
         tgt.achievedCount = (tgt.achievedCount || 0) + item.count;
         const prod = (state.products || []).find(p => p.name === item.name);
-        tgt.achievedAmount = tgt.achievedCount * (prod ? (prod.pharmacyPrice || prod.price || 45000) : 45000);
+        tgt.achievedAmount = tgt.achievedCount * (prod ? (prod.pharmacyPrice || prod.price || 0) : 0); /* نوبت ۱۶۴ */
       }
     });
 
@@ -4257,16 +4257,18 @@ function setupColumnsProductsTab() {
   const formProd = document.getElementById("formProduct");
   const btnProd = document.getElementById("btnSaveProduct");
 
+  /* نوبت ۱۶۴: همین رقم‌گیرِ مقاوم برایِ مسیرِ قدیمی (رقمِ فارسی/جداکننده) */
+  const faNum164 = (v) => parseInt(String(v == null ? "" : v).replace(/[۰-۹]/g, (d) => String.fromCharCode(d.charCodeAt(0) - 0x06F0 + 48)).replace(/[٠-٩]/g, (d) => String.fromCharCode(d.charCodeAt(0) - 0x0660 + 48)).replace(/[,٬،\u00A0\s]/g, ""), 10);
   const handleSaveProd = () => {
     const nameEl = document.getElementById("productName");
     const name = nameEl ? nameEl.value.trim() : "";
     const codeEl = document.getElementById("productCode");
     const code = codeEl ? String(codeEl.value || "").trim() : "";
-    const distPrice = parseInt(document.getElementById("productDistPrice") ? document.getElementById("productDistPrice").value : 40000) || 40000;
-    const phPrice = parseInt(document.getElementById("productPrice") ? document.getElementById("productPrice").value : 45000) || 45000;
+    const distPrice = faNum164(document.getElementById("productDistPrice") ? document.getElementById("productDistPrice").value : "") || 0;
+    const phPrice = faNum164(document.getElementById("productPrice") ? document.getElementById("productPrice").value : "") || 0;
     const consEl = document.getElementById("productConsumerPrice");
     const consPrice = parseInt(consEl && consEl.value ? consEl.value : 0, 10) || 0;
-    const stock = parseInt(document.getElementById("productStock") ? document.getElementById("productStock").value : 5000) || 5000;
+    const stock = faNum164(document.getElementById("productStock") ? document.getElementById("productStock").value : "") || 0;
     const customFieldsVals = (typeof extractCustomFieldValuesFromForm === "function")
       ? extractCustomFieldValuesFromForm("products", "productCustomFieldsContainer")
       : {};
@@ -4350,10 +4352,10 @@ function renderColumnsProductsTable() {
       <td>${index + 1}</td>
       <td class="v20-product-code" data-no-number-group="1"><strong>${prod.code || "—"}</strong></td>
       <td class="product-name-cell"><strong>${shownName}</strong></td>
-      <td><strong style="color:#1e40af;">${Number(prod.distributorPrice || prod.price || 40000).toLocaleString("fa-IR")} ریال</strong></td>
-      <td><strong style="color:#0d9488;">${Number(prod.pharmacyPrice || prod.price || 45000).toLocaleString("fa-IR")} ریال</strong></td>
+      <td><strong style="color:#1e40af;">${Number(prod.distributorPrice || prod.price || 0).toLocaleString("fa-IR")} ریال</strong></td>
+      <td><strong style="color:#0d9488;">${Number(prod.pharmacyPrice || prod.price || 0).toLocaleString("fa-IR")} ریال</strong></td>
       <td><strong style="color:#7c3aed;">${Number(prod.consumerPrice || prod.pharmacyPrice || prod.price || 0).toLocaleString("fa-IR")} ریال</strong></td>
-      <td>${prod.stock || 5000} عدد</td>
+      <td>${prod.stock || 0} عدد</td>
       <td>
         <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
           <button type="button" class="btn btn-outline btn-sm" onclick="editProductCatalogItem('${prod.id}')">✏️ ویرایش</button>
